@@ -61,14 +61,14 @@
     "url": "https://github.com/cristiandeluxe"
   },
   "license": "MIT",
-  "homepage": "https://github.com/cristiandeluxe/eslint-plugin-code-policy#readme",
+  "homepage": "https://github.com/VibraComet/eslint-plugin-code-policy#readme",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/cristiandeluxe/eslint-plugin-code-policy.git",
+    "url": "git+https://github.com/VibraComet/eslint-plugin-code-policy.git",
     "directory": "packages/eslint-plugin-code-policy"
   },
   "bugs": {
-    "url": "https://github.com/cristiandeluxe/eslint-plugin-code-policy/issues"
+    "url": "https://github.com/VibraComet/eslint-plugin-code-policy/issues"
   },
   "publishConfig": {
     "access": "public",
