@@ -41,27 +41,23 @@ yarn add --dev eslint-plugin-code-policy
 ```js
 import codePolicy from 'eslint-plugin-code-policy'
 
-export default [
-  codePolicy.configs.recommended,
-]
+export default [codePolicy.configs.recommended]
 ```
 
 ### Choosing a preset
 
-| Preset | Import path | Best for |
-|---|---|---|
+| Preset        | Import path                      | Best for               |
+| ------------- | -------------------------------- | ---------------------- |
 | `recommended` | `codePolicy.configs.recommended` | Any TypeScript project |
-| `strict` | `codePolicy.configs.strict` | Maximum enforcement |
-| `react` | `codePolicy.configs.react` | React (Vite, CRA, …) |
-| `next` | `codePolicy.configs.next` | Next.js App Router |
+| `strict`      | `codePolicy.configs.strict`      | Maximum enforcement    |
+| `react`       | `codePolicy.configs.react`       | React (Vite, CRA, …)   |
+| `next`        | `codePolicy.configs.next`        | Next.js App Router     |
 
 ```js
 // Next.js example
 import codePolicy from 'eslint-plugin-code-policy'
 
-export default [
-  codePolicy.configs.next,
-]
+export default [codePolicy.configs.next]
 ```
 
 ### Manual rule configuration
@@ -206,8 +202,8 @@ import { formatDate } from '@myorg/utils'
 }
 ```
 
-| Option | Type | Default | Description |
-|---|---|---|---|
+| Option           | Type       | Default     | Description                                 |
+| ---------------- | ---------- | ----------- | ------------------------------------------- |
 | `bannedSubpaths` | `string[]` | `['/src/']` | Segments that signal a deep internal import |
 
 ---
@@ -243,10 +239,10 @@ import { helper } from '@myorg/core'
 }
 ```
 
-| Option | Type | Default | Description |
-|---|---|---|---|
-| `minParentTraversals` | `number` | `2` | Minimum `../` segments before the rule activates |
-| `internalDirs` | `string[]` | `['src']` | Directory names that indicate internal code |
+| Option                | Type       | Default   | Description                                      |
+| --------------------- | ---------- | --------- | ------------------------------------------------ |
+| `minParentTraversals` | `number`   | `2`       | Minimum `../` segments before the rule activates |
+| `internalDirs`        | `string[]` | `['src']` | Directory names that indicate internal code      |
 
 ---
 

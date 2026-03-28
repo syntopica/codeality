@@ -34,13 +34,17 @@ ruleTester.run('no-cross-module-deep-imports', rule as any, {
     // three levels up, then into src
     {
       code: `import { api } from '../../../packages/api/src/client'`,
-      errors: [{ messageId: 'deepImport', data: { importPath: '../../../packages/api/src/client' } }],
+      errors: [
+        { messageId: 'deepImport', data: { importPath: '../../../packages/api/src/client' } },
+      ],
     },
     // custom internalDirs option
     {
       code: `import { x } from '../../other-module/lib/internal'`,
       options: [{ internalDirs: ['lib'] }],
-      errors: [{ messageId: 'deepImport', data: { importPath: '../../other-module/lib/internal' } }],
+      errors: [
+        { messageId: 'deepImport', data: { importPath: '../../other-module/lib/internal' } },
+      ],
     },
     // minParentTraversals: 1 — even one level up into src is flagged
     {

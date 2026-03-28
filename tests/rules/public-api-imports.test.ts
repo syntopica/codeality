@@ -22,7 +22,9 @@ ruleTester.run('public-api-imports', rule as any, {
       code: `
       import { util } from '@my-pkg/core/src/utils'
       `,
-      errors: [{ messageId: 'deepImportNotAllowed', data: { importPath: '@my-pkg/core/src/utils' } }],
+      errors: [
+        { messageId: 'deepImportNotAllowed', data: { importPath: '@my-pkg/core/src/utils' } },
+      ],
     },
     {
       code: `

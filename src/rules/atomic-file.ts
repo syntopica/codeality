@@ -1,10 +1,24 @@
 import type { Rule } from 'eslint'
 
 const NEXT_RESERVED_EXPORTS = new Set([
-  'config', 'metadata', 'dynamic', 'revalidate', 'fetchCache', 
-  'runtime', 'preferredRegion', 'viewport', 'generateMetadata', 
-  'generateViewport', 'generateStaticParams', 'GET', 'POST', 'PUT', 
-  'PATCH', 'DELETE', 'HEAD', 'OPTIONS'
+  'config',
+  'metadata',
+  'dynamic',
+  'revalidate',
+  'fetchCache',
+  'runtime',
+  'preferredRegion',
+  'viewport',
+  'generateMetadata',
+  'generateViewport',
+  'generateStaticParams',
+  'GET',
+  'POST',
+  'PUT',
+  'PATCH',
+  'DELETE',
+  'HEAD',
+  'OPTIONS',
 ])
 
 export default {
@@ -17,7 +31,8 @@ export default {
     fixable: undefined,
     schema: [],
     messages: {
-      multipleDeclarations: 'File contains multiple top-level declarations (found {{count}}). Extract them into separate files to enforce atomic file structure.',
+      multipleDeclarations:
+        'File contains multiple top-level declarations (found {{count}}). Extract them into separate files to enforce atomic file structure.',
     },
   },
   create(context) {
@@ -36,11 +51,15 @@ export default {
       return {}
     }
 
-    const isNextJsRouterFile = /(?:page|layout|loading|error|not-found)\.tsx$|route\.ts$|middleware\.ts$|proxy\.ts$/.test(filename)
+    const isNextJsRouterFile =
+      /(?:page|layout|loading|error|not-found)\.tsx$|route\.ts$|middleware\.ts$|proxy\.ts$/.test(
+        filename
+      )
 
     return {
       Program(node) {
         let count = 0
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
         const declarations: any[] = []
 
         for (const statement of node.body) {
@@ -58,13 +77,21 @@ export default {
             continue
           }
 
-          if (isNextJsRouterFile && statement.type === 'ExportNamedDeclaration' && statement.declaration) {
-            if (statement.declaration.type === 'FunctionDeclaration' && statement.declaration.id && NEXT_RESERVED_EXPORTS.has(statement.declaration.id.name)) {
+          if (
+            isNextJsRouterFile &&
+            statement.type === 'ExportNamedDeclaration' &&
+            statement.declaration
+          ) {
+            if (
+              statement.declaration.type === 'FunctionDeclaration' &&
+              statement.declaration.id &&
+              NEXT_RESERVED_EXPORTS.has(statement.declaration.id.name)
+            ) {
               continue
             }
             if (statement.declaration.type === 'VariableDeclaration') {
-              const allReserved = statement.declaration.declarations.every(d => 
-                d.id.type === 'Identifier' && NEXT_RESERVED_EXPORTS.has(d.id.name)
+              const allReserved = statement.declaration.declarations.every(
+                (d) => d.id.type === 'Identifier' && NEXT_RESERVED_EXPORTS.has(d.id.name)
               )
               if (allReserved) {
                 continue
@@ -73,7 +100,12 @@ export default {
           }
 
           if (statement.type === 'ExpressionStatement') {
-            if ((statement as any).directive || (statement.expression.type === 'Literal' && typeof statement.expression.value === 'string')) {
+            if (
+              // eslint-disable-next-line @typescript-eslint/no-explicit-any
+              (statement as any).directive ||
+              (statement.expression.type === 'Literal' &&
+                typeof statement.expression.value === 'string')
+            ) {
               continue
             }
           }
@@ -91,18 +123,14 @@ export default {
             }
           }
 
-          let added = 0
-          if (statement.type === 'VariableDeclaration') {
-            added = statement.declarations.length
-          } else if (
-            statement.type === 'ExportNamedDeclaration' &&
-            statement.declaration &&
-            statement.declaration.type === 'VariableDeclaration'
-          ) {
-            added = statement.declaration.declarations.length
-          } else {
-            added = 1
-          }
+          const added =
+            statement.type === 'VariableDeclaration'
+              ? statement.declarations.length
+              : statement.type === 'ExportNamedDeclaration' &&
+                  statement.declaration &&
+                  statement.declaration.type === 'VariableDeclaration'
+                ? statement.declaration.declarations.length
+                : 1
 
           count += added
           if (added > 0) {
@@ -115,6 +143,7 @@ export default {
           for (const { statement, added } of declarations) {
             if (reported > 0 || added > 1) {
               context.report({
+                // eslint-disable-next-line @typescript-eslint/no-explicit-any
                 node: statement as any,
                 messageId: 'multipleDeclarations',
                 data: { count },

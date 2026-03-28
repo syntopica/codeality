@@ -55,16 +55,22 @@ export default {
 
     return {
       Program(node) {
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
         const units: Array<{ node: any; name: string }> = []
 
         for (const stmt of node.body) {
+          // eslint-disable-next-line @typescript-eslint/no-explicit-any
           let decl: any = stmt
           let isExport = false
 
+          // eslint-disable-next-line @typescript-eslint/no-explicit-any
           if (stmt.type === 'ExportNamedDeclaration' && (stmt as any).declaration) {
+            // eslint-disable-next-line @typescript-eslint/no-explicit-any
             decl = (stmt as any).declaration
             isExport = true
+            // eslint-disable-next-line @typescript-eslint/no-explicit-any
           } else if (stmt.type === 'ExportDefaultDeclaration' && (stmt as any).declaration) {
+            // eslint-disable-next-line @typescript-eslint/no-explicit-any
             decl = (stmt as any).declaration
             isExport = true
           }

@@ -1,5 +1,4 @@
 import type { Rule } from 'eslint'
-import path from 'node:path'
 
 /**
  * no-cross-module-deep-imports
@@ -57,12 +56,14 @@ export default {
     },
   },
   create(context) {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const options = (context.options[0] as any) || {}
     const minParentTraversals: number = options.minParentTraversals ?? 2
     const internalDirs: string[] = options.internalDirs ?? ['src']
 
     return {
       ImportDeclaration(node) {
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
         const importPath = (node.source as any).value as string
 
         if (typeof importPath !== 'string') return

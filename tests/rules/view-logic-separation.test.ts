@@ -66,7 +66,9 @@ ruleTester.run('view-logic-separation', rule as any, {
         }
       `,
       filename: '/src/components/Tracker.tsx',
-      errors: [{ messageId: 'noReactHooks', data: { name: 'useEffect', componentName: 'Tracker' } }],
+      errors: [
+        { messageId: 'noReactHooks', data: { name: 'useEffect', componentName: 'Tracker' } },
+      ],
     },
     // Named inline handler inside component — flagged
     {

@@ -5,6 +5,7 @@ import type { Rule } from 'eslint'
  * Top-level means it is directly under Program, ExportNamedDeclaration,
  * ExportDefaultDeclaration, or assigned as a top-level VariableDeclarator.
  */
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 function isComponentNode(node: any): boolean {
   if (!node.parent) return false
   const isTopLevel =
@@ -20,6 +21,7 @@ function isComponentNode(node: any): boolean {
 /**
  * Walks up the AST to find the nearest enclosing top-level function component.
  */
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 function getEnclosingComponent(node: any): any {
   let curr = node.parent
   while (curr) {
@@ -54,6 +56,7 @@ export default {
     },
   },
   create(context) {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const filename = context.filename || (context as any).physicalFilename || ''
 
     // Only run this rule on .tsx files
@@ -62,14 +65,14 @@ export default {
     }
 
     return {
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
       'FunctionDeclaration, ArrowFunctionExpression, FunctionExpression'(node: any) {
         if (!isComponentNode(node)) {
           const component = getEnclosingComponent(node)
           if (component) {
             if (
               node.parent &&
-              (node.parent.type === 'VariableDeclarator' ||
-                node.type === 'FunctionDeclaration')
+              (node.parent.type === 'VariableDeclarator' || node.type === 'FunctionDeclaration')
             ) {
               let name = 'anonymous function'
               if (node.id && node.id.name) name = node.id.name
@@ -90,6 +93,7 @@ export default {
         }
       },
 
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
       CallExpression(node: any) {
         if (node.callee && node.callee.type === 'Identifier') {
           const name = node.callee.name
