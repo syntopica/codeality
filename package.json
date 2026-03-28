@@ -1,0 +1,52 @@
+{
+  "name": "eslint-plugin-code-policy",
+  "version": "0.1.0",
+  "type": "module",
+  "main": "./dist/index.cjs",
+  "module": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js",
+      "require": "./dist/index.cjs"
+    },
+    "./configs/recommended": {
+      "types": "./dist/configs/recommended.d.ts",
+      "import": "./dist/configs/recommended.js",
+      "require": "./dist/configs/recommended.cjs"
+    },
+    "./configs/strict": {
+      "types": "./dist/configs/strict.d.ts",
+      "import": "./dist/configs/strict.js",
+      "require": "./dist/configs/strict.cjs"
+    },
+    "./configs/react": {
+      "types": "./dist/configs/react.d.ts",
+      "import": "./dist/configs/react.js",
+      "require": "./dist/configs/react.cjs"
+    },
+    "./configs/next": {
+      "types": "./dist/configs/next.d.ts",
+      "import": "./dist/configs/next.js",
+      "require": "./dist/configs/next.cjs"
+    }
+  },
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "build": "tsup",
+    "dev": "tsup --watch"
+  },
+  "sideEffects": false,
+  "peerDependencies": {
+    "eslint": "^9.0.0",
+    "typescript": "^5.4.0"
+  },
+  "devDependencies": {
+    "eslint": "^9.0.0",
+    "typescript": "^5.4.0",
+    "@types/eslint": "^9.0.0"
+  }
+}
