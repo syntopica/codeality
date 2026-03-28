@@ -1,6 +1,7 @@
 {
   "name": "eslint-plugin-code-policy",
   "version": "0.1.0",
+  "description": "Architectural linting for TypeScript · enforce atomic files, explicit public APIs, clean runtime boundaries, and view/logic separation.",
   "type": "module",
   "main": "./dist/index.cjs",
   "module": "./dist/index.js",
@@ -33,16 +34,55 @@
     }
   },
   "files": [
-    "dist"
+    "dist",
+    "README.md",
+    "LICENSE"
   ],
   "scripts": {
-    "build": "tsup",
+    "build": "tsup && tsc -p tsconfig.build.json",
     "dev": "tsup --watch"
+  },
+  "keywords": [
+    "eslint",
+    "eslint-plugin",
+    "typescript",
+    "architectural-linting",
+    "atomic-file",
+    "public-api",
+    "module-boundaries",
+    "react",
+    "nextjs",
+    "monorepo",
+    "code-policy",
+    "flat-config"
+  ],
+  "author": {
+    "name": "Cristian Deluxe",
+    "url": "https://github.com/cristiandeluxe"
+  },
+  "license": "MIT",
+  "homepage": "https://github.com/cristiandeluxe/eslint-plugin-code-policy#readme",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/cristiandeluxe/eslint-plugin-code-policy.git",
+    "directory": "packages/eslint-plugin-code-policy"
+  },
+  "bugs": {
+    "url": "https://github.com/cristiandeluxe/eslint-plugin-code-policy/issues"
+  },
+  "publishConfig": {
+    "access": "public",
+    "provenance": true
   },
   "sideEffects": false,
   "peerDependencies": {
     "eslint": "^9.0.0",
     "typescript": "^5.4.0"
+  },
+  "peerDependenciesMeta": {
+    "typescript": {
+      "optional": true
+    }
   },
   "devDependencies": {
     "eslint": "^9.0.0",

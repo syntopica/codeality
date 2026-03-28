@@ -9,7 +9,9 @@ export default defineConfig({
     'src/configs/next.ts',
   ],
   format: ['cjs', 'esm'],
-  dts: true,
+  // DTS is emitted separately by tsc to avoid tsup's internal baseUrl injection
+  // which breaks under TypeScript 6. See package.json "build" script.
+  dts: false,
   clean: true,
   treeshake: true,
   splitting: true,
