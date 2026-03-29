@@ -1,5 +1,7 @@
 import type { Rule } from 'eslint'
 
+import { DOCS_BASE_URL } from '../utils/docsBaseUrl.js'
+
 export default {
   meta: {
     type: 'problem',
@@ -7,6 +9,7 @@ export default {
       description:
         'Enforce that cross-module imports only target the module public API (index), not deep internal files.',
       recommended: true,
+      url: `${DOCS_BASE_URL}/public-api-imports.md`,
     },
     fixable: undefined,
     schema: [
@@ -27,8 +30,8 @@ export default {
     },
   },
   create(context) {
-    const options = context.options[0] || {}
-    const bannedSubpaths: string[] = options.bannedSubpaths || ['/src/']
+    const options = context.options[0] ?? {}
+    const bannedSubpaths: string[] = options.bannedSubpaths ?? ['/src/']
 
     return {
       // eslint-disable-next-line @typescript-eslint/no-explicit-any

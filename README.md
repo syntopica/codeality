@@ -6,7 +6,7 @@
 
 [![npm version](https://img.shields.io/npm/v/eslint-plugin-code-policy?color=2563eb&label=npm&style=flat-square)](https://www.npmjs.com/package/eslint-plugin-code-policy)
 [![License: MIT](https://img.shields.io/badge/License-MIT-22c55e?style=flat-square)](../../LICENSE)
-[![ESLint Flat Config](https://img.shields.io/badge/ESLint-v9%2B%20flat%20config-8b5cf6?style=flat-square)](https://eslint.org/docs/latest/use/configure/configuration-files-new)
+[![ESLint Flat Config](https://img.shields.io/badge/ESLint-v9%2Fv10%20flat%20config-8b5cf6?style=flat-square)](https://eslint.org/docs/latest/use/configure/configuration-files)
 [![TypeScript](https://img.shields.io/badge/TypeScript-5.4%2B-3b82f6?style=flat-square)](https://www.typescriptlang.org/)
 
 </div>
@@ -17,9 +17,9 @@
 
 **Requirements**
 
-- ESLint `^9.0.0` (flat config)
+- ESLint `>=9.0.0` (flat config, including v10)
 - TypeScript `^5.4.0`
-- Node.js `>=20`
+- Node.js `>=20.19`
 
 ```bash
 # npm

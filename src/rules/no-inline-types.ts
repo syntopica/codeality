@@ -1,5 +1,9 @@
 import type { Rule } from 'eslint'
 
+import { NEXT_RESERVED_EXPORTS } from '../utils/nextReservedExports.js'
+import { ROUTE_METHODS } from '../utils/routeMethods.js'
+import { DOCS_BASE_URL } from '../utils/docsBaseUrl.js'
+
 /**
  * @fileoverview ESLint rule: no inline type or interface declarations.
  *
@@ -18,29 +22,14 @@ import type { Rule } from 'eslint'
  *   import declarations + type/interface declarations (possibly exported)
  */
 
-const ALLOWED_NEXT_EXPORTS = new Set([
-  'config',
-  'metadata',
-  'dynamic',
-  'revalidate',
-  'fetchCache',
-  'runtime',
-  'preferredRegion',
-  'viewport',
-  'generateMetadata',
-  'generateViewport',
-  'generateStaticParams',
-])
-
-const ROUTE_METHODS = new Set(['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'HEAD', 'OPTIONS'])
-
 export default {
   meta: {
     type: 'problem',
     docs: {
       description:
-        'Enforces the Atomic File Rule: exactly one top-level declaration (function, type, class, constant) per file.',
+        'Enforce that type aliases and interfaces live in dedicated files, not inline with implementation code.',
       recommended: true,
+      url: `${DOCS_BASE_URL}/no-inline-types.md`,
     },
     fixable: undefined,
     schema: [],
@@ -56,7 +45,7 @@ export default {
     return {
       Program(node) {
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        const units: Array<{ node: any; name: string }> = []
+        const units: { node: any; name: string }[] = []
 
         for (const stmt of node.body) {
           // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -71,7 +60,7 @@ export default {
             // eslint-disable-next-line @typescript-eslint/no-explicit-any
           } else if (stmt.type === 'ExportDefaultDeclaration' && (stmt as any).declaration) {
             // eslint-disable-next-line @typescript-eslint/no-explicit-any
-            decl = (stmt as any).declaration
+            decl = (stmt as any).declaration ?? stmt
             isExport = true
           }
 
@@ -99,7 +88,7 @@ export default {
           } else if (declType === 'VariableDeclaration') {
             for (const d of decl.declarations) {
               const name = d.id?.name
-              if (isExport && ALLOWED_NEXT_EXPORTS.has(name)) {
+              if (isExport && NEXT_RESERVED_EXPORTS.has(name)) {
                 continue
               }
               if (isRouteFile && isExport && ROUTE_METHODS.has(name)) {
@@ -112,10 +101,12 @@ export default {
 
         if (units.length > 1) {
           for (let i = 1; i < units.length; i++) {
+            const unit = units[i]
+            if (!unit) continue
             context.report({
-              node: units[i].node,
+              node: unit.node,
               messageId: 'singleDeclaration',
-              data: { name: units[i].name },
+              data: { name: unit.name },
             })
           }
         }

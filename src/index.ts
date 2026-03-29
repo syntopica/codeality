@@ -9,10 +9,12 @@ import viewLogicSeparation from './rules/view-logic-separation.js'
 import publicApiImports from './rules/public-api-imports.js'
 import noCrossModuleDeepImports from './rules/no-cross-module-deep-imports.js'
 
+import { PLUGIN_VERSION } from './version.js'
+
 const plugin = {
   meta: {
     name: 'eslint-plugin-code-policy',
-    version: '0.1.0',
+    version: PLUGIN_VERSION,
   },
   rules: {
     'atomic-file': atomicFile,
@@ -27,7 +29,7 @@ const plugin = {
     react,
     next,
   },
-}
+} as const
 
 export default plugin
 export { plugin }

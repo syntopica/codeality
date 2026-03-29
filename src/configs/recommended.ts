@@ -1,10 +1,8 @@
 export default {
+  name: 'code-policy/recommended',
   plugins: {
     get 'code-policy'() {
-      // Workaround for circular dependency
-      // Since configs imports rules, and index exports both
-      // Flat config works best when plugin object is injected locally
-      // We will resolve this strictly in execution.
+      // Workaround for circular dependency: configs import rules, index exports both.
       // eslint-disable-next-line @typescript-eslint/no-require-imports
       return require('../index.js').default
     },
@@ -16,4 +14,4 @@ export default {
     'code-policy/public-api-imports': 'error',
     'code-policy/no-cross-module-deep-imports': 'error',
   },
-}
+} as const

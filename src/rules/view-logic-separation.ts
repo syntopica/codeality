@@ -1,42 +1,8 @@
 import type { Rule } from 'eslint'
 
-/**
- * Determines whether a function node is a top-level component declaration.
- * Top-level means it is directly under Program, ExportNamedDeclaration,
- * ExportDefaultDeclaration, or assigned as a top-level VariableDeclarator.
- */
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-function isComponentNode(node: any): boolean {
-  if (!node.parent) return false
-  const isTopLevel =
-    node.parent.type === 'Program' ||
-    node.parent.type === 'ExportNamedDeclaration' ||
-    node.parent.type === 'ExportDefaultDeclaration' ||
-    (node.parent.type === 'VariableDeclarator' &&
-      (node.parent.parent?.parent?.type === 'Program' ||
-        node.parent.parent?.parent?.type === 'ExportNamedDeclaration'))
-  return isTopLevel
-}
-
-/**
- * Walks up the AST to find the nearest enclosing top-level function component.
- */
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-function getEnclosingComponent(node: any): any {
-  let curr = node.parent
-  while (curr) {
-    if (
-      (curr.type === 'FunctionDeclaration' ||
-        curr.type === 'ArrowFunctionExpression' ||
-        curr.type === 'FunctionExpression') &&
-      isComponentNode(curr)
-    ) {
-      return curr
-    }
-    curr = curr.parent
-  }
-  return null
-}
+import { isComponentNode } from '../utils/isComponentNode.js'
+import { getEnclosingComponent } from '../utils/getEnclosingComponent.js'
+import { DOCS_BASE_URL } from '../utils/docsBaseUrl.js'
 
 export default {
   meta: {
@@ -45,6 +11,7 @@ export default {
       description:
         'Enforces strict separation of logic from views. React views (.tsx) must not contain state, lifecycle effects, or inline handler declarations. Move logic to a custom hook.',
       recommended: true,
+      url: `${DOCS_BASE_URL}/view-logic-separation.md`,
     },
     fixable: undefined,
     schema: [],
@@ -56,8 +23,7 @@ export default {
     },
   },
   create(context) {
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    const filename = context.filename || (context as any).physicalFilename || ''
+    const filename = context.filename
 
     // Only run this rule on .tsx files
     if (!filename.endsWith('.tsx')) {
@@ -75,13 +41,10 @@ export default {
               (node.parent.type === 'VariableDeclarator' || node.type === 'FunctionDeclaration')
             ) {
               let name = 'anonymous function'
-              if (node.id && node.id.name) name = node.id.name
-              else if (
-                node.parent.type === 'VariableDeclarator' &&
-                node.parent.id &&
-                node.parent.id.name
-              )
+              if (node.id?.name) name = node.id.name
+              else if (node.parent.type === 'VariableDeclarator' && node.parent.id?.name) {
                 name = node.parent.id.name
+              }
 
               context.report({
                 node,
@@ -95,7 +58,7 @@ export default {
 
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
       CallExpression(node: any) {
-        if (node.callee && node.callee.type === 'Identifier') {
+        if (node.callee?.type === 'Identifier') {
           const name = node.callee.name
           if (
             /^use(State|Effect|Reducer|Callback|Memo|Ref|ImperativeHandle|LayoutEffect|DebugValue|DeferredValue|Transition|Id|SyncExternalStore|InsertionEffect|Query|Mutation)$/.test(
@@ -105,7 +68,7 @@ export default {
             const component = getEnclosingComponent(node)
             if (component) {
               const componentNameBase =
-                filename.split('/').pop()?.replace('.tsx', '') || 'Component'
+                filename.split('/').pop()?.replace('.tsx', '') ?? 'Component'
               context.report({
                 node,
                 messageId: 'noReactHooks',

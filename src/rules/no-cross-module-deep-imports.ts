@@ -1,5 +1,7 @@
 import type { Rule } from 'eslint'
 
+import { DOCS_BASE_URL } from '../utils/docsBaseUrl.js'
+
 /**
  * no-cross-module-deep-imports
  *
@@ -35,6 +37,7 @@ export default {
       description:
         'Forbid relative imports that bypass the public API of another module within the monorepo by importing directly from its internal directories.',
       recommended: true,
+      url: `${DOCS_BASE_URL}/no-cross-module-deep-imports.md`,
     },
     fixable: undefined,
     schema: [
@@ -56,10 +59,12 @@ export default {
     },
   },
   create(context) {
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    const options = (context.options[0] as any) || {}
-    const minParentTraversals: number = options.minParentTraversals ?? 2
-    const internalDirs: string[] = options.internalDirs ?? ['src']
+    const opts = (context.options[0] ?? {}) as {
+      minParentTraversals?: number
+      internalDirs?: string[]
+    }
+    const minParentTraversals: number = opts.minParentTraversals ?? 2
+    const internalDirs: string[] = opts.internalDirs ?? ['src']
 
     return {
       ImportDeclaration(node) {

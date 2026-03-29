@@ -1,25 +1,7 @@
 import type { Rule } from 'eslint'
 
-const NEXT_RESERVED_EXPORTS = new Set([
-  'config',
-  'metadata',
-  'dynamic',
-  'revalidate',
-  'fetchCache',
-  'runtime',
-  'preferredRegion',
-  'viewport',
-  'generateMetadata',
-  'generateViewport',
-  'generateStaticParams',
-  'GET',
-  'POST',
-  'PUT',
-  'PATCH',
-  'DELETE',
-  'HEAD',
-  'OPTIONS',
-])
+import { NEXT_RESERVED_EXPORTS } from '../utils/nextReservedExports.js'
+import { DOCS_BASE_URL } from '../utils/docsBaseUrl.js'
 
 export default {
   meta: {
@@ -27,6 +9,7 @@ export default {
     docs: {
       description: 'Enforce atomic file structure (exactly one top-level unit per file)',
       recommended: true,
+      url: `${DOCS_BASE_URL}/atomic-file.md`,
     },
     fixable: undefined,
     schema: [],
@@ -84,7 +67,8 @@ export default {
           ) {
             if (
               statement.declaration.type === 'FunctionDeclaration' &&
-              statement.declaration.id &&
+              // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition -- id can be null for anonymous default exports
+              statement.declaration.id !== null &&
               NEXT_RESERVED_EXPORTS.has(statement.declaration.id.name)
             ) {
               continue
@@ -117,7 +101,7 @@ export default {
             if (
               statement.declaration.type === 'CallExpression' &&
               statement.declaration.arguments.length === 1 &&
-              statement.declaration.arguments[0].type === 'Identifier'
+              statement.declaration.arguments[0]?.type === 'Identifier'
             ) {
               continue // e.g., export default memo(Component)
             }
@@ -127,8 +111,7 @@ export default {
             statement.type === 'VariableDeclaration'
               ? statement.declarations.length
               : statement.type === 'ExportNamedDeclaration' &&
-                  statement.declaration &&
-                  statement.declaration.type === 'VariableDeclaration'
+                  statement.declaration?.type === 'VariableDeclaration'
                 ? statement.declaration.declarations.length
                 : 1
 
@@ -143,12 +126,12 @@ export default {
           for (const { statement, added } of declarations) {
             if (reported > 0 || added > 1) {
               context.report({
-                // eslint-disable-next-line @typescript-eslint/no-explicit-any
-                node: statement as any,
+                node: statement,
                 messageId: 'multipleDeclarations',
-                data: { count },
+                data: { count: String(count) },
               })
             }
+            // eslint-disable-next-line @typescript-eslint/restrict-plus-operands -- count is always number
             reported += added
           }
         }
