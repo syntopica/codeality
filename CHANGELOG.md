@@ -1,5 +1,18 @@
 # eslint-plugin-code-policy
 
+## 0.2.1
+
+### Patch Changes
+
+- ### Fixed
+  - Fix CI lint failure caused by ESLint traversing into `examples/` and failing to resolve unbuilt plugin imports
+  - Fix `import-x/newline-after-import` lint error in test utility by removing ASI-guard semicolons
+
+  ### Changed
+  - Exclude `examples/**` from ESLint global ignores to prevent cross-project resolution errors
+  - Upgrade all GitHub Actions to latest major versions (`configure-pages` v6, `deploy-pages` v5, `upload-pages-artifact` v4, `checkout` v6)
+  - Enable GitHub Pages deployment for documentation site
+
 ## 0.2.0
 
 ### Minor Changes
