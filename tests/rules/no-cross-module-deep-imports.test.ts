@@ -1,5 +1,5 @@
-import rule from '../../src/rules/no-cross-module-deep-imports.js'
-import { ruleTester } from '../utils/rule-tester.js'
+import rule from '@/rules/no-cross-module-deep-imports.js'
+import { ruleTester } from '@tests/utils/rule-tester.js'
 
 ruleTester.run('no-cross-module-deep-imports', rule as any, {
   valid: [

@@ -1,7 +1,7 @@
 import type { Rule } from 'eslint'
 
-import { NEXT_RESERVED_EXPORTS } from '../utils/next-reserved-exports.js'
-import { DOCS_BASE_URL } from '../utils/docs-base-url.js'
+import { NEXT_RESERVED_EXPORTS } from '@/utils/next-reserved-exports.js'
+import { DOCS_BASE_URL } from '@/utils/docs-base-url.js'
 
 export default {
   meta: {

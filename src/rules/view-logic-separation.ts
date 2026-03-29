@@ -1,8 +1,8 @@
 import type { Rule } from 'eslint'
 
-import { isComponentNode } from '../utils/is-component-node.js'
-import { getEnclosingComponent } from '../utils/get-enclosing-component.js'
-import { DOCS_BASE_URL } from '../utils/docs-base-url.js'
+import { isComponentNode } from '@/utils/is-component-node.js'
+import { getEnclosingComponent } from '@/utils/get-enclosing-component.js'
+import { DOCS_BASE_URL } from '@/utils/docs-base-url.js'
 
 export default {
   meta: {

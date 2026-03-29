@@ -1,4 +1,4 @@
-import { isComponentNode } from './is-component-node.js'
+import { isComponentNode } from '@/utils/is-component-node.js'
 
 /**
  * Walks up the AST to find the nearest enclosing top-level function component.

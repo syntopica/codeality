@@ -1,3 +1,5 @@
+import path from 'node:path'
+
 import { defineConfig } from 'tsup'
 
 export default defineConfig({
@@ -17,4 +19,9 @@ export default defineConfig({
   splitting: true,
   sourcemap: true,
   minify: false,
+  esbuildOptions(options) {
+    options.alias = {
+      '@': path.resolve(import.meta.dirname, 'src'),
+    }
+  },
 })

@@ -1,4 +1,4 @@
-import recommended from './recommended.js'
+import recommended from '@/configs/recommended.js'
 
 export default {
   ...recommended,
