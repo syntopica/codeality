@@ -1,5 +1,5 @@
 import rule from '../../src/rules/view-logic-separation.js'
-import { ruleTester } from '../utils/ruleTester.js'
+import { ruleTester } from '../utils/rule-tester.js'
 
 /**
  * view-logic-separation:

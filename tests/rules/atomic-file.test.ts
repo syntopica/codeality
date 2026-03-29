@@ -1,5 +1,5 @@
 import rule from '../../src/rules/atomic-file.js'
-import { ruleTester } from '../utils/ruleTester.js'
+import { ruleTester } from '../utils/rule-tester.js'
 
 ruleTester.run('atomic-file', rule as any, {
   valid: [

@@ -1,6 +1,6 @@
 import type { Rule } from 'eslint'
 
-import { DOCS_BASE_URL } from '../utils/docsBaseUrl.js'
+import { DOCS_BASE_URL } from '../utils/docs-base-url.js'
 
 /**
  * no-cross-module-deep-imports

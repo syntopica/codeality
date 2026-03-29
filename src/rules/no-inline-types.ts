@@ -1,8 +1,8 @@
 import type { Rule } from 'eslint'
 
-import { NEXT_RESERVED_EXPORTS } from '../utils/nextReservedExports.js'
-import { ROUTE_METHODS } from '../utils/routeMethods.js'
-import { DOCS_BASE_URL } from '../utils/docsBaseUrl.js'
+import { NEXT_RESERVED_EXPORTS } from '../utils/next-reserved-exports.js'
+import { ROUTE_METHODS } from '../utils/route-methods.js'
+import { DOCS_BASE_URL } from '../utils/docs-base-url.js'
 
 /**
  * @fileoverview ESLint rule: no inline type or interface declarations.

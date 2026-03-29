@@ -1,8 +1,8 @@
 import type { Rule } from 'eslint'
 
-import { isComponentNode } from '../utils/isComponentNode.js'
-import { getEnclosingComponent } from '../utils/getEnclosingComponent.js'
-import { DOCS_BASE_URL } from '../utils/docsBaseUrl.js'
+import { isComponentNode } from '../utils/is-component-node.js'
+import { getEnclosingComponent } from '../utils/get-enclosing-component.js'
+import { DOCS_BASE_URL } from '../utils/docs-base-url.js'
 
 export default {
   meta: {
@@ -35,23 +35,22 @@ export default {
       'FunctionDeclaration, ArrowFunctionExpression, FunctionExpression'(node: any) {
         if (!isComponentNode(node)) {
           const component = getEnclosingComponent(node)
-          if (component) {
-            if (
-              node.parent &&
-              (node.parent.type === 'VariableDeclarator' || node.type === 'FunctionDeclaration')
-            ) {
-              let name = 'anonymous function'
-              if (node.id?.name) name = node.id.name
-              else if (node.parent.type === 'VariableDeclarator' && node.parent.id?.name) {
-                name = node.parent.id.name
-              }
-
-              context.report({
-                node,
-                messageId: 'noInlineHandlers',
-                data: { name },
-              })
+          if (
+            component &&
+            node.parent &&
+            (node.parent.type === 'VariableDeclarator' || node.type === 'FunctionDeclaration')
+          ) {
+            let name = 'anonymous function'
+            if (node.id?.name) name = node.id.name
+            else if (node.parent.type === 'VariableDeclarator' && node.parent.id?.name) {
+              name = node.parent.id.name
             }
+
+            context.report({
+              node,
+              messageId: 'noInlineHandlers',
+              data: { name },
+            })
           }
         }
       },

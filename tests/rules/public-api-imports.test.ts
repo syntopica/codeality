@@ -1,5 +1,5 @@
 import rule from '../../src/rules/public-api-imports.js'
-import { ruleTester } from '../utils/ruleTester.js'
+import { ruleTester } from '../utils/rule-tester.js'
 
 ruleTester.run('public-api-imports', rule as any, {
   valid: [

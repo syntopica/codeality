@@ -1,5 +1,5 @@
 import rule from '../../src/rules/no-inline-types.js'
-import { ruleTester } from '../utils/ruleTester.js'
+import { ruleTester } from '../utils/rule-tester.js'
 
 /**
  * no-inline-types: enforces one top-level declaration per file

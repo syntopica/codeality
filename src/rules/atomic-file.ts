@@ -1,7 +1,7 @@
 import type { Rule } from 'eslint'
 
-import { NEXT_RESERVED_EXPORTS } from '../utils/nextReservedExports.js'
-import { DOCS_BASE_URL } from '../utils/docsBaseUrl.js'
+import { NEXT_RESERVED_EXPORTS } from '../utils/next-reserved-exports.js'
+import { DOCS_BASE_URL } from '../utils/docs-base-url.js'
 
 export default {
   meta: {
@@ -83,15 +83,14 @@ export default {
             }
           }
 
-          if (statement.type === 'ExpressionStatement') {
-            if (
-              // eslint-disable-next-line @typescript-eslint/no-explicit-any
-              (statement as any).directive ||
+          if (
+            statement.type === 'ExpressionStatement' &&
+            // eslint-disable-next-line @typescript-eslint/no-explicit-any
+            ((statement as any).directive ||
               (statement.expression.type === 'Literal' &&
-                typeof statement.expression.value === 'string')
-            ) {
-              continue
-            }
+                typeof statement.expression.value === 'string'))
+          ) {
+            continue
           }
 
           if (statement.type === 'ExportDefaultDeclaration') {
