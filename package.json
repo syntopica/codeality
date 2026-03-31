@@ -1,0 +1,18 @@
+{
+  "name": "engineering-baseline",
+  "private": true,
+  "packageManager": "pnpm@9.15.4",
+  "scripts": {
+    "lint": "pnpm -r lint",
+    "lint:fix": "pnpm -r lint:fix",
+    "type-check": "pnpm -r type-check",
+    "format": "prettier --write .",
+    "format:check": "prettier --check .",
+    "check:all": "pnpm type-check && pnpm lint && pnpm format:check",
+    "check:ci": "pnpm type-check && pnpm lint && pnpm format:check"
+  },
+  "devDependencies": {
+    "prettier": "^3.4.2",
+    "typescript": "^5.7.3"
+  }
+}

@@ -1,0 +1,32 @@
+{
+  "name": "my-astro-site",
+  "version": "0.1.0",
+  "private": true,
+  "packageManager": "pnpm@9.15.4",
+  "scripts": {
+    "dev": "astro dev",
+    "build": "astro build",
+    "preview": "astro preview",
+    "lint": "eslint .",
+    "lint:fix": "eslint . --fix",
+    "format": "prettier --write .",
+    "format:check": "prettier --check .",
+    "type-check": "astro check && tsc --noEmit",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "check:all": "pnpm type-check && pnpm lint && pnpm format:check",
+    "check:ci": "pnpm type-check && pnpm lint && pnpm format:check && pnpm test"
+  },
+  "dependencies": {
+    "astro": "^5.0.0"
+  },
+  "devDependencies": {
+    "@repo/eslint-config": "workspace:*",
+    "@repo/tsconfig": "workspace:*",
+    "@repo/prettier-config": "workspace:*",
+    "eslint": "^9.22.0",
+    "prettier": "^3.4.2",
+    "typescript": "^5.7.3",
+    "vitest": "^3.0.0"
+  }
+}
