@@ -1,5 +1,11 @@
 # eslint-plugin-code-policy
 
+## 0.2.2
+
+### Patch Changes
+
+- Widen `typescript` peer dependency from `^5.4.0` to `>=5.4.0` to support TypeScript 6.x without unmet-peer warnings.
+
 ## 0.2.1
 
 ### Patch Changes
