@@ -1,11 +1,8 @@
 {
   "$schema": "https://json.schemastore.org/tsconfig",
-  "_comment": "Generic browser/frontend app — extends base, adds DOM libs and src alias.",
+  "_comment": "Generic browser/frontend app \u2014 extends base, adds DOM libs and src alias.",
   "extends": "./base.json",
   "compilerOptions": {
-    "lib": ["ES2024", "DOM", "DOM.Iterable"],
-    "paths": {
-      "@/*": ["./src/*"]
-    }
+    "lib": ["ES2024", "DOM", "DOM.Iterable"]
   }
 }

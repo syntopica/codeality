@@ -1,5 +1,7 @@
-import base from '@repo/eslint-config/base'
-import node from '@repo/eslint-config/node'
-import { defineConfig } from 'eslint/config'
+import { createBaseConfig } from '@repo/eslint-config/base'
+import { createNodeConfig } from '@repo/eslint-config/node'
 
-export default defineConfig([...base, ...node])
+export default [
+  ...createBaseConfig({ tsconfigRootDir: import.meta.dirname }),
+  ...createNodeConfig(),
+]

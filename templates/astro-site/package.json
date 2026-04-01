@@ -7,8 +7,8 @@
     "dev": "astro dev",
     "build": "astro build",
     "preview": "astro preview",
-    "lint": "eslint .",
-    "lint:fix": "eslint . --fix",
+    "lint": "eslint src",
+    "lint:fix": "eslint src --fix",
     "format": "prettier --write .",
     "format:check": "prettier --check .",
     "type-check": "astro check && tsc --noEmit",
@@ -21,12 +21,25 @@
     "astro": "^5.0.0"
   },
   "devDependencies": {
+    "@eslint/js": "^9.22.0",
     "@repo/eslint-config": "workspace:*",
-    "@repo/tsconfig": "workspace:*",
     "@repo/prettier-config": "workspace:*",
+    "@repo/tsconfig": "workspace:*",
+    "@types/node": "^24.0.0",
     "eslint": "^9.22.0",
-    "prettier": "^3.4.2",
-    "typescript": "^5.7.3",
-    "vitest": "^3.0.0"
+    "eslint-config-prettier": "^10.1.8",
+    "eslint-plugin-astro": "^0.34.0",
+    "eslint-plugin-boundaries": "^5.1.0",
+    "eslint-plugin-import": "^2.32.0",
+    "eslint-plugin-unused-imports": "^4.4.0",
+    "prettier": "^3.8.1",
+    "prettier-plugin-astro": "^0.14.1",
+    "prettier-plugin-tailwindcss": "^0.7.1",
+    "typescript": "^5.9.3",
+    "typescript-eslint": "^8.58.0",
+    "vitest": "^3.2.4",
+    "eslint-import-resolver-typescript": "^4.4.4",
+    "jiti": "^2.4.2",
+    "@astrojs/check": "^0.9.4"
   }
 }

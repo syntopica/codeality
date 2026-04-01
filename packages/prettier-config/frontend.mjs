@@ -6,10 +6,10 @@
  * Do NOT add organize-imports here — that concern lives in ESLint.
  */
 
-import base from './base.mjs'
+import base from "./base.mjs";
 
 /** @type {import('prettier').Config} */
 export default {
   ...base,
-  plugins: ['prettier-plugin-tailwindcss'],
-}
+  plugins: ["prettier-plugin-tailwindcss"],
+};

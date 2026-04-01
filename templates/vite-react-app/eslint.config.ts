@@ -1,5 +1,7 @@
-import base from '@repo/eslint-config/base'
-import viteReact from '@repo/eslint-config/vite-react'
-import { defineConfig } from 'eslint/config'
+import { createBaseConfig } from '@repo/eslint-config/base'
+import { createViteReactConfig } from '@repo/eslint-config/vite-react'
 
-export default defineConfig([...base, ...viteReact])
+export default [
+  ...createBaseConfig({ tsconfigRootDir: import.meta.dirname }),
+  ...createViteReactConfig(),
+]

@@ -1,5 +1,7 @@
-import base from '@repo/eslint-config/base'
-import astro from '@repo/eslint-config/astro'
-import { defineConfig } from 'eslint/config'
+import { createAstroConfig } from '@repo/eslint-config/astro'
+import { createBaseConfig } from '@repo/eslint-config/base'
 
-export default defineConfig([...base, ...astro])
+export default [
+  ...createBaseConfig({ tsconfigRootDir: import.meta.dirname }),
+  ...createAstroConfig({ tsconfigRootDir: import.meta.dirname }),
+]

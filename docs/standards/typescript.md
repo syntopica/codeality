@@ -4,24 +4,24 @@
 
 All projects must include these — either via `extends` or explicitly. Override at your own risk.
 
-| Flag | Value | Reason |
-|---|---|---|
-| `strict` | `true` | Enables all strictness subflags |
-| `noEmit` | `true` | TS is a type checker only; bundlers emit |
-| `incremental` | `true` | Performance |
-| `target` | `ES2024` | Modern output, no legacy transpilation |
-| `module` | `ESNext` | ESM-first |
-| `moduleResolution` | `Bundler` | Correct for Vite, Next, Astro |
-| `resolveJsonModule` | `true` | Consistent JSON imports |
-| `isolatedModules` | `true` | Required for Babel/esbuild/SWC interop |
-| `esModuleInterop` | `true` | Required for most npm packages |
-| `skipLibCheck` | `true` | Pragmatic — type errors in dependencies are not our problem |
-| `forceConsistentCasingInFileNames` | `true` | Cross-platform correctness |
-| `noUncheckedIndexedAccess` | `true` | Array/object index access returns `T \| undefined` |
-| `exactOptionalPropertyTypes` | `true` | `{ a?: string }` does not accept `{ a: undefined }` |
-| `noImplicitOverride` | `true` | Class overrides must be explicit |
-| `useUnknownInCatchVariables` | `true` | `catch (e)` → `e: unknown` |
-| `allowJs` | `false` | JS files should not exist in TS projects |
+| Flag                               | Value     | Reason                                                      |
+| ---------------------------------- | --------- | ----------------------------------------------------------- |
+| `strict`                           | `true`    | Enables all strictness subflags                             |
+| `noEmit`                           | `true`    | TS is a type checker only; bundlers emit                    |
+| `incremental`                      | `true`    | Performance                                                 |
+| `target`                           | `ES2024`  | Modern output, no legacy transpilation                      |
+| `module`                           | `ESNext`  | ESM-first                                                   |
+| `moduleResolution`                 | `Bundler` | Correct for Vite, Next, Astro                               |
+| `resolveJsonModule`                | `true`    | Consistent JSON imports                                     |
+| `isolatedModules`                  | `true`    | Required for Babel/esbuild/SWC interop                      |
+| `esModuleInterop`                  | `true`    | Required for most npm packages                              |
+| `skipLibCheck`                     | `true`    | Pragmatic — type errors in dependencies are not our problem |
+| `forceConsistentCasingInFileNames` | `true`    | Cross-platform correctness                                  |
+| `noUncheckedIndexedAccess`         | `true`    | Array/object index access returns `T \| undefined`          |
+| `exactOptionalPropertyTypes`       | `true`    | `{ a?: string }` does not accept `{ a: undefined }`         |
+| `noImplicitOverride`               | `true`    | Class overrides must be explicit                            |
+| `useUnknownInCatchVariables`       | `true`    | `catch (e)` → `e: unknown`                                  |
+| `allowJs`                          | `false`   | JS files should not exist in TS projects                    |
 
 ## Alias convention
 

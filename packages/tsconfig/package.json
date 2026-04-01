@@ -5,5 +5,13 @@
   "description": "Shared TypeScript configuration baseline",
   "files": [
     "*.json"
-  ]
+  ],
+  "exports": {
+    "./base.json": "./base.json",
+    "./app.json": "./app.json",
+    "./nextjs.json": "./nextjs.json",
+    "./astro.json": "./astro.json",
+    "./vite-react.json": "./vite-react.json",
+    "./node.json": "./node.json"
+  }
 }

@@ -1,14 +1,11 @@
 {
   "$schema": "https://json.schemastore.org/tsconfig",
-  "_comment": "Astro site — extends Astro strict preset, then applies our base strictness on top.",
-  "extends": ["astro/tsconfigs/strict", "./base.json"],
+  "_comment": "Astro site \u2014 extends Astro strict preset, then applies our base strictness on top.",
+  "extends": "./base.json",
   "compilerOptions": {
     "lib": ["ES2024", "DOM", "DOM.Iterable"],
     "verbatimModuleSyntax": true,
-    "types": ["astro/client"],
-    "paths": {
-      "@/*": ["./src/*"]
-    }
+    "types": ["astro/client"]
   },
   "include": [".astro/types.d.ts", "**/*.ts", "**/*.tsx", "**/*.astro"],
   "exclude": ["dist", "node_modules"]

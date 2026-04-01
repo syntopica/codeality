@@ -5,24 +5,24 @@
 ```js
 // @repo/prettier-config/base.mjs
 export default {
-  trailingComma: 'all',
+  trailingComma: "all",
   tabWidth: 2,
   useTabs: false,
   semi: false,
   singleQuote: true,
   printWidth: 100,
-}
+};
 ```
 
 These values are non-negotiable in new projects. Do not override them per-project.
 
 ## Which preset to use
 
-| Project type | Import |
-|---|---|
-| Node / tooling / no CSS | `@repo/prettier-config` (base) |
+| Project type               | Import                           |
+| -------------------------- | -------------------------------- |
+| Node / tooling / no CSS    | `@repo/prettier-config` (base)   |
 | Any frontend with Tailwind | `@repo/prettier-config/frontend` |
-| Astro site | `@repo/prettier-config/astro` |
+| Astro site                 | `@repo/prettier-config/astro`    |
 
 ## Forbidden plugins
 
@@ -41,8 +41,8 @@ Every project must expose:
 {
   "scripts": {
     "format": "prettier --write .",
-    "format:check": "prettier --check ."
-  }
+    "format:check": "prettier --check .",
+  },
 }
 ```
 

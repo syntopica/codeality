@@ -16,12 +16,13 @@ and shared defaults over per-project reinvention.
 3. **Correctness linting, not style linting.** ESLint enforces correctness and architecture. Prettier enforces formatting. These concerns do not overlap.
 4. **Strictness by default.** TypeScript is maximally strict. Loosening flags requires a documented reason.
 5. **No secrets in config files.** Auth tokens, API keys, and credentials must never be committed anywhere in the repository. Use environment variables or user-level config.
+6. **Shared configs must resolve against the consumer project.** Any shared ESLint or TypeScript helper must accept the consumer root explicitly or default to the consumer's working directory — never the package author's source directory.
 
 ---
 
 ## Repository structure
 
-```
+```text
 engineering-baseline/
   packages/
     eslint-config/        Shared ESLint configs (base + framework extensions)
@@ -47,11 +48,12 @@ engineering-baseline/
 
 ## How to start a new project
 
-1. Copy the relevant template from `templates/`.
-2. Install dependencies with `pnpm install`.
-3. Add project-specific logic. Do not modify the inherited config structure — extend it.
-4. If you need custom architecture boundary rules, create `eslint.architecture.ts` and spread it as the third layer in `eslint.config.ts`.
-5. Run `pnpm check:all` before the first commit.
+1. Choose the relevant template from `templates/`.
+2. If you are working inside this repository, use it directly as a validated workspace template.
+3. If you are creating an external project, copy the template and replace `workspace:*` dependencies with the published versions of the shared packages.
+4. Add project-specific logic. Do not modify the inherited config structure — extend it.
+5. If you need custom architecture boundary rules, create `eslint.architecture.ts` and spread it as the third layer in `eslint.config.ts`.
+6. Run `pnpm check:all` before the first commit.
 
 ---
 
@@ -59,11 +61,15 @@ engineering-baseline/
 
 ```ts
 // eslint.config.ts
-import base from '@repo/eslint-config/base'
-import nextjs from '@repo/eslint-config/nextjs'        // or astro / vite-react / node
-import architecture from './eslint.architecture.ts'    // optional, project-specific
+import { createBaseConfig } from "@repo/eslint-config/base";
+import { createNextjsConfig } from "@repo/eslint-config/nextjs"; // or astro / vite-react / node
+import architecture from "./eslint.architecture.ts"; // optional, project-specific
 
-export default [...base, ...nextjs, ...architecture]
+export default [
+  ...createBaseConfig({ tsconfigRootDir: import.meta.dirname }),
+  ...createNextjsConfig({ tsconfigRootDir: import.meta.dirname }),
+  ...architecture,
+];
 ```
 
 Each layer adds rules. No layer loosens what a previous layer enforced.
@@ -76,12 +82,12 @@ See `docs/standards/eslint.md` for the full rule taxonomy.
 ```jsonc
 // tsconfig.json
 {
-  "extends": "@repo/tsconfig/nextjs.json",   // or astro / vite-react / node
+  "extends": "@repo/tsconfig/nextjs.json",
   "compilerOptions": {
-    "paths": { "@/*": ["./src/*"] }
+    "paths": { "@/*": ["./src/*"] },
   },
   "include": ["..."],
-  "exclude": ["node_modules"]
+  "exclude": ["node_modules"],
 }
 ```
 
@@ -95,9 +101,9 @@ See `docs/standards/typescript.md` for the full flag table.
 
 ```js
 // prettier.config.mjs
-import frontend from '@repo/prettier-config/frontend'
+import frontend from "@repo/prettier-config/frontend";
 
-export default { ...frontend }
+export default { ...frontend };
 ```
 
 Available presets: `@repo/prettier-config` (base), `/frontend` (+ Tailwind), `/astro` (+ Tailwind + Astro parser).

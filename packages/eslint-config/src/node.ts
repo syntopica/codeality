@@ -1,28 +1,17 @@
-/**
- * @repo/eslint-config — Node.js / tooling extension
- *
- * Composes on top of the shared base.
- * Adds: Node globals, node-specific unicorn rules.
- * Use this for scripts, CLI tools, server-only packages (no DOM).
- *
- * Usage:
- *   import base from '@repo/eslint-config/base'
- *   import node from '@repo/eslint-config/node'
- *   export default [...base, ...node]
- */
+import globals from "globals";
+import unicorn from "eslint-plugin-unicorn";
 
-import globals from 'globals'
-import { defineConfig } from 'eslint/config'
-
-export default defineConfig([
+export const createNodeConfig = () => [
   {
-    files: ['**/*.{ts,js,mjs,cjs}'],
+    files: ["**/*.{ts,js,mjs,cjs}"],
     languageOptions: {
       globals: { ...globals.node },
     },
+    plugins: { unicorn },
     rules: {
-      // Enforce the node: protocol for built-in imports
-      'unicorn/prefer-node-protocol': 'error',
+      "unicorn/prefer-node-protocol": "error",
     },
   },
-])
+];
+
+export default createNodeConfig;

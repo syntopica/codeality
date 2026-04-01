@@ -1,13 +1,10 @@
 {
   "$schema": "https://json.schemastore.org/tsconfig",
-  "_comment": "Node.js / tooling-only package — no DOM, no JSX, types=node.",
+  "_comment": "Node.js / tooling-only package \u2014 no DOM, no JSX, types=node.",
   "extends": "./base.json",
   "compilerOptions": {
     "lib": ["ES2024"],
-    "types": ["node"],
-    "paths": {
-      "@/*": ["./*"]
-    }
+    "types": ["node"]
   },
   "exclude": ["node_modules", "dist"]
 }

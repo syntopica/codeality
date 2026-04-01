@@ -3,16 +3,19 @@
   "private": true,
   "packageManager": "pnpm@9.15.4",
   "scripts": {
-    "lint": "pnpm -r lint",
-    "lint:fix": "pnpm -r lint:fix",
-    "type-check": "pnpm -r type-check",
-    "format": "prettier --write .",
+    "lint": "pnpm --filter @repo/eslint-config lint && pnpm --filter './templates/*' lint",
+    "lint:fix": "pnpm --filter @repo/eslint-config lint:fix && pnpm --filter './templates/*' lint:fix",
+    "type-check": "pnpm --filter @repo/eslint-config type-check && pnpm --filter './templates/*' type-check",
+    "format": "prettier --write . --list-different",
     "format:check": "prettier --check .",
     "check:all": "pnpm type-check && pnpm lint && pnpm format:check",
-    "check:ci": "pnpm type-check && pnpm lint && pnpm format:check"
+    "check:ci": "pnpm type-check && pnpm lint && pnpm format:check && pnpm --filter './templates/*' test"
   },
   "devDependencies": {
-    "prettier": "^3.4.2",
-    "typescript": "^5.7.3"
+    "prettier": "^3.8.1",
+    "prettier-plugin-astro": "^0.14.1",
+    "prettier-plugin-tailwindcss": "^0.7.1",
+    "typescript": "^5.9.3",
+    "jiti": "^2.4.2"
   }
 }
