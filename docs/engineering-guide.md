@@ -74,9 +74,9 @@ export default [
 
 Each layer adds rules. No layer loosens what a previous layer enforced.
 
-The three layers are: **base** (correctness + type safety) → **framework** (React/Next/Astro-specific) → **code-quality** (structural enforcement: atomic files, no logic in views, no inline types, no duplication).
+The full layer order is: **base** (correctness + type safety + promise + security) → **framework** (React/Next/Astro-specific) → **code-quality** (structural: atomic files, no logic in views, no inline types, no duplication) → **accessibility** (WCAG 2.1 AA) → **tailwind** (if applicable).
 
-See `docs/standards/eslint.md` for the full rule taxonomy and `docs/standards/code-quality.md` for the structural rules.
+See `docs/standards/eslint.md` for the full rule taxonomy, `docs/standards/code-quality.md` for structural rules, and `docs/standards/accessibility.md` for a11y rules.
 
 ---
 
@@ -128,6 +128,7 @@ See `docs/standards/scripts.md` for the full contract.
 
 - [ESLint](./standards/eslint.md)
 - [Code quality](./standards/code-quality.md)
+- [Accessibility](./standards/accessibility.md)
 - [TypeScript](./standards/typescript.md)
 - [Prettier](./standards/prettier.md)
 - [Scripts & package manager](./standards/scripts.md)

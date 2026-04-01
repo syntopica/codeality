@@ -20,26 +20,40 @@ base → framework extension → local architecture rules
 Generic JS/TS correctness. No framework knowledge. Contains:
 
 - `@eslint/js` recommended
-- `typescript-eslint` strict type-aware rules
-- `eslint-plugin-import` — hygiene rules only
+- `typescript-eslint` strict type-aware rules + consistency (`consistent-type-definitions: type`, `prefer-readonly`)
+- `eslint-plugin-import` — hygiene rules only (no cycles, no duplicates, no self-imports)
 - `eslint-plugin-unused-imports` — hard fail on unused imports
+- `eslint-plugin-promise` — prefer async/await over `.then()`, no nested promises, param naming
+- `eslint-plugin-security` — bans `eval()`, detects ReDoS-prone RegExp, path traversal, timing attacks
 - `eslint-config-prettier` last
 
 ### `@repo/eslint-config/nextjs`
 
-Adds official `eslint-config-next` flat configs and architecture boundary governance defaults.
+Adds `@next/eslint-plugin-next` core-web-vitals rules, full `eslint-plugin-react` correctness rules (leaked render, unstable nested components, no danger, self-closing), `eslint-plugin-react-hooks`, and `eslint-plugin-boundaries` architecture map.
+
+### `@repo/eslint-config/vite-react`
+
+Adds full `eslint-plugin-react` correctness rules, `eslint-plugin-react-hooks`, and `eslint-plugin-react-refresh`.
 
 ### `@repo/eslint-config/astro`
 
 Adds `eslint-plugin-astro`, `.astro` parser setup, Astro-specific correctness rules, and Astro boundary map.
 
-### `@repo/eslint-config/vite-react`
-
-Adds `eslint-plugin-react-hooks` and `eslint-plugin-react-refresh` only.
-
 ### `@repo/eslint-config/node`
 
 Adds Node.js globals and enforces `unicorn/prefer-node-protocol`.
+
+### `@repo/eslint-config/code-quality`
+
+Structural enforcement layer — see [code-quality.md](./code-quality.md).
+
+### `@repo/eslint-config/accessibility`
+
+WCAG 2.1 AA enforcement via `eslint-plugin-jsx-a11y` — see [accessibility.md](./accessibility.md).
+
+### `@repo/eslint-config/tailwind`
+
+Tailwind CSS class ordering, contradiction detection, and shorthand enforcement via `eslint-plugin-tailwindcss`. Only add to projects that use Tailwind CSS.
 
 ## Factory usage
 

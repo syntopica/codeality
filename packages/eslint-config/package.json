@@ -15,7 +15,9 @@
     "./astro": "./src/astro.ts",
     "./vite-react": "./src/vite-react.ts",
     "./node": "./src/node.ts",
-    "./code-quality": "./src/code-quality.ts"
+    "./code-quality": "./src/code-quality.ts",
+    "./accessibility": "./src/accessibility.ts",
+    "./tailwind": "./src/tailwind.ts"
   },
   "scripts": {
     "lint": "eslint src",
@@ -24,25 +26,33 @@
   },
   "peerDependencies": {
     "@eslint/js": ">=9.0.0",
+    "@next/eslint-plugin-next": ">=15.0.0",
     "eslint": ">=9.0.0",
     "eslint-config-next": ">=15.0.0",
     "eslint-config-prettier": ">=9.0.0",
+    "eslint-import-resolver-typescript": ">=3.6.0",
     "eslint-plugin-astro": ">=0.34.0",
     "eslint-plugin-boundaries": ">=4.2.0",
     "eslint-plugin-code-policy": ">=0.2.1",
     "eslint-plugin-import": ">=2.29.0",
+    "eslint-plugin-jsx-a11y": ">=6.8.0",
+    "eslint-plugin-promise": ">=7.0.0",
+    "eslint-plugin-react": ">=7.37.0",
     "eslint-plugin-react-hooks": ">=5.0.0",
     "eslint-plugin-react-refresh": ">=0.4.0",
+    "eslint-plugin-security": ">=3.0.0",
     "eslint-plugin-sonarjs": ">=3.0.0",
+    "eslint-plugin-tailwindcss": ">=3.17.0",
     "eslint-plugin-unicorn": ">=57.0.0",
     "eslint-plugin-unused-imports": ">=4.0.0",
     "globals": ">=15.0.0",
     "typescript": ">=5.0.0",
-    "typescript-eslint": ">=8.0.0",
-    "eslint-import-resolver-typescript": ">=3.6.0",
-    "@next/eslint-plugin-next": ">=15.0.0"
+    "typescript-eslint": ">=8.0.0"
   },
   "peerDependenciesMeta": {
+    "@next/eslint-plugin-next": {
+      "optional": true
+    },
     "eslint-config-next": {
       "optional": true
     },
@@ -55,13 +65,28 @@
     "eslint-plugin-code-policy": {
       "optional": true
     },
+    "eslint-plugin-jsx-a11y": {
+      "optional": true
+    },
+    "eslint-plugin-promise": {
+      "optional": false
+    },
+    "eslint-plugin-react": {
+      "optional": true
+    },
     "eslint-plugin-react-hooks": {
       "optional": true
     },
     "eslint-plugin-react-refresh": {
       "optional": true
     },
+    "eslint-plugin-security": {
+      "optional": false
+    },
     "eslint-plugin-sonarjs": {
+      "optional": true
+    },
+    "eslint-plugin-tailwindcss": {
       "optional": true
     },
     "eslint-plugin-unicorn": {
@@ -72,13 +97,11 @@
     },
     "eslint-import-resolver-typescript": {
       "optional": false
-    },
-    "@next/eslint-plugin-next": {
-      "optional": true
     }
   },
   "devDependencies": {
     "@eslint/js": "^9.22.0",
+    "@next/eslint-plugin-next": "^15.2.4",
     "@types/node": "^24.0.0",
     "eslint": "^9.22.0",
     "eslint-config-next": "^15.2.4",
@@ -88,15 +111,19 @@
     "eslint-plugin-boundaries": "^5.1.0",
     "eslint-plugin-code-policy": "^0.2.1",
     "eslint-plugin-import": "^2.32.0",
+    "eslint-plugin-jsx-a11y": "^6.10.0",
+    "eslint-plugin-promise": "^7.1.0",
+    "eslint-plugin-react": "^7.37.0",
     "eslint-plugin-react-hooks": "^5.2.0",
     "eslint-plugin-react-refresh": "^0.4.20",
+    "eslint-plugin-security": "^3.0.0",
     "eslint-plugin-sonarjs": "^3.0.0",
+    "eslint-plugin-tailwindcss": "^3.18.0",
     "eslint-plugin-unicorn": "^61.0.2",
     "eslint-plugin-unused-imports": "^4.4.0",
     "globals": "^16.4.0",
-    "typescript": "^5.9.3",
-    "typescript-eslint": "^8.58.0",
     "jiti": "^2.4.2",
-    "@next/eslint-plugin-next": "^15.2.4"
+    "typescript": "^5.9.3",
+    "typescript-eslint": "^8.58.0"
   }
 }
