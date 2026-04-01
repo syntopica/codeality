@@ -6,6 +6,7 @@
     "declarationMap": true,
     "emitDeclarationOnly": true,
     "rootDir": "src",
+    "types": ["node"],
     "paths": {
       "@/*": ["./src/*"]
     }
