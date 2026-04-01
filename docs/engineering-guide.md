@@ -63,17 +63,20 @@ engineering-baseline/
 // eslint.config.ts
 import { createBaseConfig } from "@repo/eslint-config/base";
 import { createNextjsConfig } from "@repo/eslint-config/nextjs"; // or astro / vite-react / node
-import architecture from "./eslint.architecture.ts"; // optional, project-specific
+import { createCodeQualityConfig } from "@repo/eslint-config/code-quality";
 
 export default [
   ...createBaseConfig({ tsconfigRootDir: import.meta.dirname }),
   ...createNextjsConfig({ tsconfigRootDir: import.meta.dirname }),
-  ...architecture,
+  ...createCodeQualityConfig(),
 ];
 ```
 
 Each layer adds rules. No layer loosens what a previous layer enforced.
-See `docs/standards/eslint.md` for the full rule taxonomy.
+
+The three layers are: **base** (correctness + type safety) → **framework** (React/Next/Astro-specific) → **code-quality** (structural enforcement: atomic files, no logic in views, no inline types, no duplication).
+
+See `docs/standards/eslint.md` for the full rule taxonomy and `docs/standards/code-quality.md` for the structural rules.
 
 ---
 
@@ -124,6 +127,7 @@ See `docs/standards/scripts.md` for the full contract.
 ## Standards index
 
 - [ESLint](./standards/eslint.md)
+- [Code quality](./standards/code-quality.md)
 - [TypeScript](./standards/typescript.md)
 - [Prettier](./standards/prettier.md)
 - [Scripts & package manager](./standards/scripts.md)

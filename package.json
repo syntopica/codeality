@@ -1,7 +1,7 @@
 {
   "name": "engineering-baseline",
   "private": true,
-  "packageManager": "pnpm@9.15.4",
+  "packageManager": "pnpm@10.33.0",
   "scripts": {
     "lint": "pnpm --filter @repo/eslint-config lint && pnpm --filter './templates/*' lint",
     "lint:fix": "pnpm --filter @repo/eslint-config lint:fix && pnpm --filter './templates/*' lint:fix",
@@ -14,8 +14,8 @@
   "devDependencies": {
     "prettier": "^3.8.1",
     "prettier-plugin-astro": "^0.14.1",
-    "prettier-plugin-tailwindcss": "^0.7.1",
-    "typescript": "^5.9.3",
-    "jiti": "^2.4.2"
+    "prettier-plugin-tailwindcss": "^0.7.2",
+    "typescript": "^6.0.2",
+    "jiti": "^2.6.1"
   }
 }

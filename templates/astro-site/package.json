@@ -21,6 +21,7 @@
     "astro": "^5.0.0"
   },
   "devDependencies": {
+    "@astrojs/check": "^0.9.4",
     "@eslint/js": "^9.22.0",
     "@repo/eslint-config": "workspace:*",
     "@repo/prettier-config": "workspace:*",
@@ -28,18 +29,19 @@
     "@types/node": "^24.0.0",
     "eslint": "^9.22.0",
     "eslint-config-prettier": "^10.1.8",
+    "eslint-import-resolver-typescript": "^4.4.4",
     "eslint-plugin-astro": "^0.34.0",
     "eslint-plugin-boundaries": "^5.1.0",
+    "eslint-plugin-code-policy": "^0.2.1",
     "eslint-plugin-import": "^2.32.0",
+    "eslint-plugin-sonarjs": "^3.0.0",
     "eslint-plugin-unused-imports": "^4.4.0",
+    "jiti": "^2.4.2",
     "prettier": "^3.8.1",
     "prettier-plugin-astro": "^0.14.1",
     "prettier-plugin-tailwindcss": "^0.7.1",
     "typescript": "^5.9.3",
     "typescript-eslint": "^8.58.0",
-    "vitest": "^3.2.4",
-    "eslint-import-resolver-typescript": "^4.4.4",
-    "jiti": "^2.4.2",
-    "@astrojs/check": "^0.9.4"
+    "vitest": "^3.2.4"
   }
 }
