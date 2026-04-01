@@ -2,7 +2,7 @@
   "name": "my-ts-package",
   "version": "0.1.0",
   "private": true,
-  "packageManager": "pnpm@9.15.4",
+  "packageManager": "pnpm@10.33.0",
   "type": "module",
   "scripts": {
     "lint": "eslint src",

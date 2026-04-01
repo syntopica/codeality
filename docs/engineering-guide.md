@@ -41,6 +41,8 @@ engineering-baseline/
       prettier.md         Prettier config and plugin policy
       scripts.md          Mandatory script contract and package manager policy
       testing.md          Test runner policy (Vitest default, Jest exception)
+      seo.md              SEO defaults for public web projects
+      performance.md      Runtime a11y and Lighthouse policy
       migration.md        How to bring existing projects onto the baseline
 ```
 
@@ -118,8 +120,10 @@ See `docs/standards/prettier.md` for the plugin policy.
 
 Every project must expose: `dev`, `build`, `start/preview`, `lint`, `lint:fix`,
 `format`, `format:check`, `type-check`, `test`, `test:watch`, `check:all`, `check:ci`.
+Public web templates should also expose optional `test:a11y` and `perf:check`.
 
 `check:ci` is the CI gate. It always runs type-check + lint + format:check + test.
+`perf:check` remains optional until the project has stable performance budgets and hosting assumptions.
 See `docs/standards/scripts.md` for the full contract.
 
 ---
@@ -133,4 +137,6 @@ See `docs/standards/scripts.md` for the full contract.
 - [Prettier](./standards/prettier.md)
 - [Scripts & package manager](./standards/scripts.md)
 - [Testing](./standards/testing.md)
+- [SEO](./standards/seo.md)
+- [Performance & runtime accessibility](./standards/performance.md)
 - [Migration guide](./standards/migration.md)

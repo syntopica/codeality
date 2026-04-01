@@ -2,11 +2,11 @@ import { render } from '@testing-library/react'
 import { axe } from 'vitest-axe'
 import { describe, expect, it } from 'vitest'
 
-import { App } from './App'
+import { HomePage } from './HomePage'
 
-describe('App', () => {
+describe('HomePage', () => {
   it('has no obvious accessibility violations', async () => {
-    const { container } = render(<App />)
+    const { container } = render(<HomePage />)
     const results = await axe(container, {
       rules: {
         'color-contrast': { enabled: false },

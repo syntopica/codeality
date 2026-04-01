@@ -80,6 +80,13 @@ export default defineConfig({
 });
 ```
 
+## Runtime accessibility tests
+
+For React-based projects, add a smoke-level accessibility test using `@testing-library/react` + `vitest-axe`.
+This is now part of the baseline templates for Next.js and Vite React.
+
+Astro keeps lint-first accessibility by default; add browser-level checks when the site has richer interactivity.
+
 ## E2E: Playwright
 
 Playwright is the optional E2E layer. Add it when the project explicitly requires browser-level integration tests. Do not use it for unit or component tests.

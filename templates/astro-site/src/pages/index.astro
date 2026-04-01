@@ -1,9 +1,27 @@
 ---
-import { add } from '../lib/add'
+import { site } from '../seo/site'
 ---
 
 <html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{site.title}</title>
+    <meta content={site.description} name="description" />
+    <link href={site.canonicalUrl} rel="canonical" />
+    <meta content={site.title} property="og:title" />
+    <meta content={site.description} property="og:description" />
+    <meta content={site.canonicalUrl} property="og:url" />
+    <meta content="website" property="og:type" />
+  </head>
   <body>
-    <main>{add(1, 1)}</main>
+    <main id="content">
+      <a href="#content">Skip to content</a>
+      <h1>{site.title}</h1>
+      <p>{site.description}</p>
+      <p>
+        <a href="https://docs.astro.build">Read the Astro documentation</a>
+      </p>
+    </main>
   </body>
 </html>

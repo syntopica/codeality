@@ -7,9 +7,12 @@ export type AstroConfigOptions = {
 };
 
 type FlatConfigLike = Record<string, unknown>;
-const astroRecommended = astroPlugin.configs[
-  "flat/recommended"
-] as FlatConfigLike[];
+const astroConfigs = astroPlugin.configs as unknown as Record<
+  string,
+  FlatConfigLike[]
+>;
+const astroRecommended = astroConfigs["flat/recommended"] ?? [];
+const astroA11yRecommended = astroConfigs["flat/jsx-a11y-recommended"] ?? [];
 
 export const createAstroConfig = (options: AstroConfigOptions = {}) => {
   const tsconfigRootDir = options.tsconfigRootDir ?? process.cwd();
@@ -17,6 +20,7 @@ export const createAstroConfig = (options: AstroConfigOptions = {}) => {
   return [
     globalIgnores(["dist/**", ".astro/**", "coverage/**"]),
     ...astroRecommended,
+    ...astroA11yRecommended,
     {
       files: ["**/*.astro"],
       languageOptions: {

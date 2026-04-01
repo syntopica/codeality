@@ -1,5 +1,5 @@
-import { add } from '@/lib/add'
+import { HomePage } from '@/ui/HomePage'
 
-export default function HomePage() {
-  return <main>{add(1, 1)}</main>
+export default function Page() {
+  return <HomePage />
 }

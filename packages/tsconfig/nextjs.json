@@ -1,21 +1,13 @@
 {
   "$schema": "https://json.schemastore.org/tsconfig",
-  "_comment": "Next.js app \u2014 extends app, adds Next plugin, JSX runtime, and Next includes.",
+  "_comment": "Next.js app — extends app, adds Next plugin and JSX runtime settings. Consumer owns include/exclude.",
   "extends": "./app.json",
   "compilerOptions": {
-    "jsx": "react-jsx",
+    "jsx": "preserve",
     "plugins": [
       {
         "name": "next"
       }
     ]
-  },
-  "include": [
-    "next-env.d.ts",
-    "**/*.ts",
-    "**/*.tsx",
-    ".next/types/**/*.ts",
-    ".next/dev/types/**/*.ts"
-  ],
-  "exclude": ["node_modules", "dist", "build", ".next"]
+  }
 }
