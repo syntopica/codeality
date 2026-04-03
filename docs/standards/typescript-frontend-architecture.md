@@ -80,6 +80,42 @@ src/
 
 - **`components/`** — UI composition, minimal logic; no direct SDK calls; prefer
   colocated `hooks/` for state and effects.
+
+#### TSX presentation contract
+
+`.tsx` files are **view modules**: they should **render** and wire **thin**
+presentation concerns. Anything that looks like **application or data logic**
+belongs in hooks, services, or server layers — not in the TSX file.
+
+**Allowed in `.tsx` (examples)**
+
+- JSX structure, composition, and conditional rendering driven by **props** or
+  **small** hook outputs (e.g. `{isOpen && <Panel />}`).
+- **Trivial UI derivations**: class names (`cn`, variant maps), spacing or size
+  math for layout, deriving a display color or token from props/theme, simple
+  formatting that only shapes what is shown (e.g. one-line label from a
+  boolean).
+- Event handlers that **only** forward to props or to a **single** hook method
+  (e.g. `onClick={handleClose}` where `handleClose` comes from `useDialog()`).
+
+**Not allowed in `.tsx` (must live elsewhere)**
+
+- Loading data from **DB, HTTP, or SDKs** (including `fetch`, ORM, Supabase
+  clients, React Query/SWR setup with real IO).
+- **Heavy** business rules, multi-step workflows, or non-trivial validation
+  pipelines.
+- **Complex client state** and side effects (`useState` trees, `useEffect` for
+  sync/async work) — use a colocated or shared **hook**;
+  `eslint-plugin-code-policy` enforces this via `view-logic-separation` where
+  configured.
+
+**Where “heavy” logic goes**
+
+- **Client data and effects** → colocated `hooks/` under the component or shared
+  `hooks/`, calling into `services/` for IO.
+- **Server-only data** → Server Components, route handlers, or server actions
+  (framework-specific), not inside presentation components.
+
 - **`services/`** — All **external** boundaries: HTTP clients,
   Supabase/Firebase/OpenAI SDKs, analytics, auth providers, generated API
   clients. Each subfolder is a **bounded context** with its own `types`,
@@ -221,6 +257,7 @@ back this up.
 | Copy-pasted functions / branches                    | **Yes** (SonarJS)                             | Extract shared helper                               |
 | Inline types in implementation files                | **Yes** (`code-policy/no-inline-types`)       | Move to `types/`                                    |
 | “Orchestrator” that implements all sub-steps inline | **Partially** (complexity + length)           | Review + split                                      |
+| Heavy logic, IO, or DB access inside `.tsx`         | **Partially** (`view-logic-separation`)       | Move to hooks + `services/`; keep TSX thin          |
 
 ---
 
@@ -260,8 +297,8 @@ export default [
 ]
 ```
 
-`createNextjsConfig` already includes `createFrontendBoundariesConfig()` for
-layered imports.
+`createNextjsConfig`, `createViteReactConfig`, and `createAstroConfig` already
+include `createFrontendBoundariesConfig()` for layered imports.
 
 **Standalone boundaries** (e.g. custom stack):
 
@@ -271,4 +308,5 @@ import { createFrontendBoundariesConfig } from '@repo/eslint-config/frontend-bou
 export default [...createFrontendBoundariesConfig()]
 ```
 
-See also: `templates/nextjs-app/eslint.config.ts` in this repository.
+See also: `templates/nextjs-app/eslint.config.ts` and
+`templates/astro-site/eslint.config.ts` in this repository.

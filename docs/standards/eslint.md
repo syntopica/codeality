@@ -60,7 +60,13 @@ Adds full `eslint-plugin-react` correctness rules, `eslint-plugin-react-hooks`,
 ### `@repo/eslint-config/astro`
 
 Adds `eslint-plugin-astro`, `.astro` parser setup, Astro-specific correctness
-rules, and Astro boundary map.
+overrides for TypeScript in `src`, and `createFrontendBoundariesConfig()` (same
+layer map as Next.js / Vite React). See
+[typescript-frontend-architecture.md](./typescript-frontend-architecture.md).
+
+**Note:** `code-policy/view-logic-separation` only runs on files whose path ends
+in `.tsx` (plugin implementation). `.astro` scripts are not matched; extract
+React UI to `.tsx` if you want that rule to apply.
 
 ### `@repo/eslint-config/node`
 

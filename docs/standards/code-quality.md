@@ -110,6 +110,14 @@ reusable contract.
 `.tsx` view components must not contain state management, side effects, or
 handler logic. These belong in custom hooks.
 
+**Presentation-only contract (team standard):** TSX should focus on **what is
+shown** and **small, local presentation concerns** — for example class names,
+layout spacing, deriving a display color from props, or a one-line label from a
+flag. **Heavy logic** (DB access, API/SDK calls, multi-step rules, non-trivial
+async) must live in **hooks** plus **`services/`** (or server-only modules), not
+in the TSX file. See
+[typescript-frontend-architecture.md](./typescript-frontend-architecture.md#tsx-presentation-contract).
+
 **Wrong:**
 
 ```tsx
@@ -238,7 +246,7 @@ src/
 
 Layered imports (`components` → `shared` only; `shared` → `services`) are
 enforced by `@repo/eslint-config/frontend-boundaries` when you use
-`createNextjsConfig` or `createViteReactConfig`. See
+`createNextjsConfig`, `createViteReactConfig`, or `createAstroConfig`. See
 [typescript-frontend-architecture.md](./typescript-frontend-architecture.md).
 
 Each file in `components/` should be readable without understanding integration

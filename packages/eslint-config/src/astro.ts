@@ -2,6 +2,8 @@ import astroPlugin from 'eslint-plugin-astro'
 import { globalIgnores } from 'eslint/config'
 import tseslint from 'typescript-eslint'
 
+import { createFrontendBoundariesConfig } from './frontend-boundaries'
+
 export type AstroConfigOptions = {
   tsconfigRootDir?: string
 }
@@ -54,6 +56,8 @@ export const createAstroConfig = (options: AstroConfigOptions = {}) => {
       files: ['**/*.d.ts'],
       rules: { '@typescript-eslint/triple-slash-reference': 'off' },
     },
+    // Same layered boundaries as Next.js / Vite React (components, services, hooks, …)
+    ...createFrontendBoundariesConfig(),
   ]
 }
 

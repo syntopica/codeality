@@ -1,7 +1,8 @@
 import boundaries from 'eslint-plugin-boundaries'
 
 /**
- * Layered import boundaries for frontend apps (Next.js App Router, Vite React).
+ * Layered import boundaries for frontend apps (Next.js App Router, Vite React,
+ * Astro with React islands).
  *
  * Intent:
  * - `components/**` stays UI-oriented: may import shared code, not service internals directly.
