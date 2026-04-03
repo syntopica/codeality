@@ -43,12 +43,19 @@ Generic JS/TS correctness. No framework knowledge. Contains:
 Adds `@next/eslint-plugin-next` core-web-vitals rules, full
 `eslint-plugin-react` correctness rules (leaked render, unstable nested
 components, no danger, self-closing), `eslint-plugin-react-hooks`, and
-`eslint-plugin-boundaries` architecture map.
+`createFrontendBoundariesConfig()` (app / components / shared / services). See
+[typescript-frontend-architecture.md](./typescript-frontend-architecture.md).
+
+### `@repo/eslint-config/frontend-boundaries`
+
+Exports `createFrontendBoundariesConfig()` for the same layer map without the
+Next.js plugin. Use when you do not use `createNextjsConfig` or
+`createViteReactConfig`.
 
 ### `@repo/eslint-config/vite-react`
 
 Adds full `eslint-plugin-react` correctness rules, `eslint-plugin-react-hooks`,
-and `eslint-plugin-react-refresh`.
+`eslint-plugin-react-refresh`, and `createFrontendBoundariesConfig()`.
 
 ### `@repo/eslint-config/astro`
 

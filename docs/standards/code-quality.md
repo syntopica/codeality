@@ -29,6 +29,10 @@ export default [
 ]
 ```
 
+For the full architecture narrative (folders, orchestrators, boundaries,
+migration), see
+[typescript-frontend-architecture.md](./typescript-frontend-architecture.md).
+
 Add the required devDependencies:
 
 ```json
@@ -175,20 +179,26 @@ import { formatDate } from '@/features/billing'
 
 ---
 
-### Complexity limits (warn)
+### Complexity and size limits
 
-These warn before a function becomes unmaintainable:
+| Rule                     | Severity  | Limit                    | What it catches                                               |
+| ------------------------ | --------- | ------------------------ | ------------------------------------------------------------- |
+| `max-lines`              | **error** | **100** meaningful lines | Files that should be split (`skipBlankLines`, `skipComments`) |
+| `max-lines-per-function` | **warn**  | **50** meaningful lines  | Functions that should be split or delegated                   |
+| `complexity`             | warn      | 10                       | Too many branching paths                                      |
+| `max-depth`              | warn      | 4                        | Deeply nested logic                                           |
+| `max-params`             | warn      | 4                        | Functions needing an options object instead                   |
 
-| Rule                     | Limit | What it catches                             |
-| ------------------------ | ----- | ------------------------------------------- |
-| `max-lines`              | 150   | Files that are doing too much               |
-| `max-lines-per-function` | 40    | Functions with too many responsibilities    |
-| `complexity`             | 10    | Too many branching paths                    |
-| `max-depth`              | 4     | Deeply nested logic                         |
-| `max-params`             | 4     | Functions needing an options object instead |
+**Note on “50 vs 100”:** ESLint applies one `max-lines` policy per file. This
+baseline uses a **hard error at 100** lines. The **50-line** band is a
+**team/review** signal (see architecture doc); it is not a second ESLint
+severity on the same rule.
 
-Warnings don't block CI but appear in editor. When you hit a limit, the correct
-fix is extraction, not bumping the limit.
+Overrides apply to `*.config.*`, test files, and Next.js App Router special
+files (see `packages/eslint-config/src/code-quality.ts`).
+
+Warnings do not block CI unless your pipeline treats warnings as errors. Errors
+(`max-lines`, code-policy, boundaries) block by default.
 
 ---
 
@@ -217,17 +227,22 @@ A string appearing 4+ times should be extracted to a constant.
 
 ```
 src/
-  components/       # Pure view files only (.tsx)
-  hooks/            # All state and side-effect logic
-  types/            # All interface and type alias declarations
+  components/       # UI composition; colocated types/hooks/utils/const per component
+  hooks/            # Shared hooks only after reuse is proven
+  types/            # Shared types only after reuse is proven
   utils/            # Pure functions, one per file
-  services/         # API calls and external integrations
-  stores/           # Global state (Zustand, Jotai, etc.)
-  constants/        # Shared string/number constants
+  const/            # Shared constants (or constants/ — match project convention)
+  services/         # External integrations (SDKs, APIs), bounded per provider
+  store/            # Global client state (optional)
 ```
 
-Each file in `components/` should be readable without understanding the business
-logic. Each file in `hooks/` should be testable without rendering anything.
+Layered imports (`components` → `shared` only; `shared` → `services`) are
+enforced by `@repo/eslint-config/frontend-boundaries` when you use
+`createNextjsConfig` or `createViteReactConfig`. See
+[typescript-frontend-architecture.md](./typescript-frontend-architecture.md).
+
+Each file in `components/` should be readable without understanding integration
+details. Each file in `hooks/` should be testable without rendering anything.
 
 ## Tuning
 

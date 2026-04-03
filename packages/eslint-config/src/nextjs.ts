@@ -1,7 +1,8 @@
 import nextPlugin from '@next/eslint-plugin-next'
-import boundaries from 'eslint-plugin-boundaries'
 import reactHooks from 'eslint-plugin-react-hooks'
 import { globalIgnores } from 'eslint/config'
+
+import { createFrontendBoundariesConfig } from './frontend-boundaries'
 // eslint-disable-next-line @typescript-eslint/no-require-imports
 const react = require('eslint-plugin-react') as {
   configs: { flat: { recommended: unknown; 'jsx-runtime': unknown } }
@@ -57,38 +58,7 @@ export const createNextjsConfig = (_options: NextjsConfigOptions = {}) => {
         'react/jsx-no-useless-fragment': ['warn', { allowExpressions: true }],
       },
     },
-    {
-      files: ['**/*.{js,jsx,ts,tsx,mjs,cjs}'],
-      plugins: { boundaries },
-      settings: {
-        'boundaries/elements': [
-          { type: 'app', pattern: 'app/*' },
-          { type: 'app', pattern: 'app/**/*' },
-          { type: 'components', pattern: 'components/*' },
-          { type: 'components', pattern: 'components/**/*' },
-          { type: 'shared', pattern: 'lib/*' },
-          { type: 'shared', pattern: 'hooks/*' },
-          { type: 'shared', pattern: 'types/*' },
-          { type: 'shared', pattern: 'store/*' },
-          { type: 'server', pattern: 'services/*' },
-          { type: 'server', pattern: 'actions/*' },
-        ],
-      },
-      rules: {
-        'boundaries/element-types': [
-          'error',
-          {
-            default: 'disallow',
-            rules: [
-              { from: ['app'], allow: ['components', 'shared', 'server'] },
-              { from: ['components'], allow: ['components', 'shared'] },
-              { from: ['shared'], allow: ['shared'] },
-              { from: ['server'], allow: ['server', 'shared'] },
-            ],
-          },
-        ],
-      },
-    },
+    ...createFrontendBoundariesConfig(),
   ]
 }
 

@@ -17,7 +17,8 @@
     "./node": "./src/node.ts",
     "./code-quality": "./src/code-quality.ts",
     "./accessibility": "./src/accessibility.ts",
-    "./tailwind": "./src/tailwind.ts"
+    "./tailwind": "./src/tailwind.ts",
+    "./frontend-boundaries": "./src/frontend-boundaries.ts"
   },
   "scripts": {
     "fix": "pnpm run lint:fix",

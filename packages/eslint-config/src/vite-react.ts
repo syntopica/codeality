@@ -1,5 +1,7 @@
 import reactHooks from 'eslint-plugin-react-hooks'
 import reactRefresh from 'eslint-plugin-react-refresh'
+
+import { createFrontendBoundariesConfig } from './frontend-boundaries'
 // eslint-disable-next-line @typescript-eslint/no-require-imports
 const react = require('eslint-plugin-react') as {
   configs: { flat: { recommended: unknown; 'jsx-runtime': unknown } }
@@ -40,6 +42,8 @@ export const createViteReactConfig = () => [
       'react/jsx-no-useless-fragment': ['warn', { allowExpressions: true }],
     },
   },
+  // Same layered boundaries as Next.js (src/components, src/services, etc.)
+  ...createFrontendBoundariesConfig(),
 ]
 
 export default createViteReactConfig
