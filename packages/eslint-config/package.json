@@ -20,6 +20,7 @@
     "./tailwind": "./src/tailwind.ts"
   },
   "scripts": {
+    "fix": "pnpm run lint:fix",
     "lint": "eslint src",
     "lint:fix": "eslint src --fix",
     "type-check": "tsc --noEmit -p tsconfig.json"

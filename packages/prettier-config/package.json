@@ -10,6 +10,9 @@
     "./frontend": "./frontend.mjs",
     "./astro": "./astro.mjs"
   },
+  "scripts": {
+    "fix": "prettier --write \"*.mjs\" --list-different"
+  },
   "files": [
     "*.mjs"
   ],

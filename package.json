@@ -9,6 +9,7 @@
     "format": "prettier --write . --list-different",
     "format:check": "prettier --check .",
     "check:all": "pnpm type-check && pnpm lint && pnpm format:check",
+    "fix:all": "pnpm -r run fix && pnpm exec prettier --write . --list-different",
     "check:ci": "pnpm type-check && pnpm lint && pnpm format:check && pnpm --filter './templates/*' test && pnpm --filter './templates/*' build",
     "perf:check": "pnpm --filter ./templates/nextjs-app perf:check && pnpm --filter ./templates/astro-site perf:check && pnpm --filter ./templates/vite-react-app perf:check"
   },

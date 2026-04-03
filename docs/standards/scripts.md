@@ -12,13 +12,25 @@ are allowed but cannot replace these.
 | `start` / `preview` | Serve the production build locally                    |
 | `lint`              | Run ESLint (read-only)                                |
 | `lint:fix`          | Run ESLint with auto-fix                              |
-| `format`            | Run Prettier (write)                                  |
+| `format`            | `prettier --write . --list-different`                 |
 | `format:check`      | Run Prettier (check only, no write)                   |
 | `type-check`        | Run `tsc --noEmit`                                    |
 | `test`              | Run test suite (single pass)                          |
 | `test:watch`        | Run test suite in watch mode                          |
 | `check:all`         | Run type-check + lint + format:check locally          |
 | `check:ci`          | Run type-check + lint + format:check + test (CI gate) |
+
+## Optional: `fix` / `fix:all` (monorepo baseline)
+
+In the **engineering-baseline** repository, workspace packages may expose:
+
+| Script    | Purpose                                                               |
+| --------- | --------------------------------------------------------------------- |
+| `fix`     | Auto-fix for that package (typically `lint:fix` + `format` in apps)   |
+| `fix:all` | Run `fix` in every workspace package, then Prettier on the whole repo |
+
+Root command: `pnpm fix:all` (recursive `pnpm -r run fix`, then
+`prettier --write . --list-different`).
 
 ## `check:all` vs `check:ci`
 

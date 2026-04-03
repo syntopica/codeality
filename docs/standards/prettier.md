@@ -66,10 +66,13 @@ Every project must expose:
 ```jsonc
 {
   "scripts": {
-    "format": "prettier --write .",
+    "format": "prettier --write . --list-different",
     "format:check": "prettier --check .",
   },
 }
 ```
+
+Always pass `--list-different` with `prettier --write` so the output lists files
+that were reformatted.
 
 `format:check` must be part of `check:ci`.

@@ -23,6 +23,9 @@ For a real new project:
 3. Run `pnpm install`.
 4. Run `pnpm check:all` before the first commit.
 
+In this monorepo, `pnpm fix:all` runs ESLint fixes and Prettier across all
+workspace packages and the repository root (docs, configs, templates).
+
 Until the shared packages are published, treat `templates/` as validated
 reference starters rather than copy-paste-final packages.
 

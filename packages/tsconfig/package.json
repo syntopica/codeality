@@ -13,5 +13,8 @@
     "./astro.json": "./astro.json",
     "./vite-react.json": "./vite-react.json",
     "./node.json": "./node.json"
+  },
+  "scripts": {
+    "fix": "prettier --write \"*.json\" --list-different"
   }
 }
