@@ -2,6 +2,11 @@
   "name": "engineering-baseline",
   "private": true,
   "packageManager": "pnpm@10.33.0",
+  "pnpm": {
+    "overrides": {
+      "eslint-plugin-react": "github:jsx-eslint/eslint-plugin-react#012ec39f962627d5312e9fbaee3eb41d9a4d8bb6"
+    }
+  },
   "scripts": {
     "lint": "pnpm --filter @repo/eslint-config lint && pnpm --filter './templates/*' lint",
     "lint:fix": "pnpm --filter @repo/eslint-config lint:fix && pnpm --filter './templates/*' lint:fix",

@@ -23,6 +23,8 @@
     "noImplicitOverride": true,
     "useUnknownInCatchVariables": true,
 
-    "allowJs": false
+    "allowJs": false,
+
+    "ignoreDeprecations": "6.0"
   }
 }

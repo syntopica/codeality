@@ -1,3 +1,5 @@
+import path from 'node:path'
+
 import { createAccessibilityConfig } from '@repo/eslint-config/accessibility'
 import { createBaseConfig } from '@repo/eslint-config/base'
 import { createCodeQualityConfig } from '@repo/eslint-config/code-quality'
@@ -12,6 +14,14 @@ export default [
   ...createCodeQualityConfig(),
   ...createAccessibilityConfig(),
   ...createTailwindConfig(),
+  {
+    files: ['**/*.{ts,tsx,js,jsx}'],
+    settings: {
+      tailwindcss: {
+        config: path.join(import.meta.dirname, 'src/styles.css'),
+      },
+    },
+  },
   // Entry-point bootstrap files are allowed multiple top-level statements
   {
     files: ['src/main.tsx', 'src/main.ts'],
