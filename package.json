@@ -13,8 +13,11 @@
     "perf:check": "pnpm --filter ./templates/nextjs-app perf:check && pnpm --filter ./templates/astro-site perf:check && pnpm --filter ./templates/vite-react-app perf:check"
   },
   "devDependencies": {
+    "@repo/prettier-config": "workspace:*",
     "prettier": "^3.8.1",
     "prettier-plugin-astro": "^0.14.1",
+    "prettier-plugin-css-order": "^2.1.2",
+    "prettier-plugin-organize-imports": "^4.1.0",
     "prettier-plugin-tailwindcss": "^0.7.2",
     "typescript": "^6.0.2",
     "jiti": "^2.6.1"

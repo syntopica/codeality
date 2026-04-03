@@ -1,16 +1,22 @@
 /**
  * @repo/prettier-config — Base
  *
- * Universal formatting defaults. No framework plugins.
- * Import this in any project that doesn't need Tailwind or Astro formatting.
+ * Universal formatting defaults plus import and CSS ordering plugins shared with
+ * most portfolio projects. No Tailwind or Astro plugins here — use /frontend or /astro.
  */
 
 /** @type {import('prettier').Config} */
 export default {
-  trailingComma: "all",
+  trailingComma: 'all',
   tabWidth: 2,
   useTabs: false,
   semi: false,
   singleQuote: true,
-  printWidth: 100,
-};
+  plugins: ['prettier-plugin-organize-imports', 'prettier-plugin-css-order'],
+  overrides: [
+    {
+      files: '*.md',
+      options: { proseWrap: 'always' },
+    },
+  ],
+}

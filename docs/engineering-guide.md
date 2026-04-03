@@ -1,22 +1,33 @@
 # Engineering Guide
 
 This is the canonical engineering standard for all projects in this portfolio.
-It defines the shared baseline, the framework extensions, the mandatory conventions,
-and the migration path for existing projects.
+It defines the shared baseline, the framework extensions, the mandatory
+conventions, and the migration path for existing projects.
 
-When in doubt: prefer modern over legacy, explicit structure over ad hoc flexibility,
-and shared defaults over per-project reinvention.
+When in doubt: prefer modern over legacy, explicit structure over ad hoc
+flexibility, and shared defaults over per-project reinvention.
 
 ---
 
 ## Guiding principles
 
-1. **One way to do each thing.** Where the standard has made a choice, that choice is not revisited per project. Consistency is more valuable than local optimisation.
-2. **Framework extensions, not framework contamination.** Framework-specific rules live in their own modules. Nothing Next.js-specific belongs in the generic base. Nothing Astro-specific belongs in the Next.js extension.
-3. **Correctness linting, not style linting.** ESLint enforces correctness and architecture. Prettier enforces formatting. These concerns do not overlap.
-4. **Strictness by default.** TypeScript is maximally strict. Loosening flags requires a documented reason.
-5. **No secrets in config files.** Auth tokens, API keys, and credentials must never be committed anywhere in the repository. Use environment variables or user-level config.
-6. **Shared configs must resolve against the consumer project.** Any shared ESLint or TypeScript helper must accept the consumer root explicitly or default to the consumer's working directory — never the package author's source directory.
+1. **One way to do each thing.** Where the standard has made a choice, that
+   choice is not revisited per project. Consistency is more valuable than local
+   optimisation.
+2. **Framework extensions, not framework contamination.** Framework-specific
+   rules live in their own modules. Nothing Next.js-specific belongs in the
+   generic base. Nothing Astro-specific belongs in the Next.js extension.
+3. **Correctness linting, not style linting.** ESLint enforces correctness and
+   architecture. Prettier enforces formatting. These concerns do not overlap.
+4. **Strictness by default.** TypeScript is maximally strict. Loosening flags
+   requires a documented reason.
+5. **No secrets in config files.** Auth tokens, API keys, and credentials must
+   never be committed anywhere in the repository. Use environment variables or
+   user-level config.
+6. **Shared configs must resolve against the consumer project.** Any shared
+   ESLint or TypeScript helper must accept the consumer root explicitly or
+   default to the consumer's working directory — never the package author's
+   source directory.
 
 ---
 
@@ -51,10 +62,16 @@ engineering-baseline/
 ## How to start a new project
 
 1. Choose the relevant template from `templates/`.
-2. If you are working inside this repository, use it directly as a validated workspace template.
-3. If you are creating an external project, copy the template and replace `workspace:*` dependencies with the published versions of the shared packages.
-4. Add project-specific logic. Do not modify the inherited config structure — extend it.
-5. If you need custom architecture boundary rules, create `eslint.architecture.ts` and spread it as the third layer in `eslint.config.ts`.
+2. If you are working inside this repository, use it directly as a validated
+   workspace template.
+3. If you are creating an external project, copy the template and replace
+   `workspace:*` dependencies with the published versions of the shared
+   packages.
+4. Add project-specific logic. Do not modify the inherited config structure —
+   extend it.
+5. If you need custom architecture boundary rules, create
+   `eslint.architecture.ts` and spread it as the third layer in
+   `eslint.config.ts`.
 6. Run `pnpm check:all` before the first commit.
 
 ---
@@ -63,22 +80,27 @@ engineering-baseline/
 
 ```ts
 // eslint.config.ts
-import { createBaseConfig } from "@repo/eslint-config/base";
-import { createNextjsConfig } from "@repo/eslint-config/nextjs"; // or astro / vite-react / node
-import { createCodeQualityConfig } from "@repo/eslint-config/code-quality";
+import { createBaseConfig } from '@repo/eslint-config/base'
+import { createNextjsConfig } from '@repo/eslint-config/nextjs' // or astro / vite-react / node
+import { createCodeQualityConfig } from '@repo/eslint-config/code-quality'
 
 export default [
   ...createBaseConfig({ tsconfigRootDir: import.meta.dirname }),
   ...createNextjsConfig({ tsconfigRootDir: import.meta.dirname }),
   ...createCodeQualityConfig(),
-];
+]
 ```
 
 Each layer adds rules. No layer loosens what a previous layer enforced.
 
-The full layer order is: **base** (correctness + type safety + promise + security) → **framework** (React/Next/Astro-specific) → **code-quality** (structural: atomic files, no logic in views, no inline types, no duplication) → **accessibility** (WCAG 2.1 AA) → **tailwind** (if applicable).
+The full layer order is: **base** (correctness + type safety + promise +
+security) → **framework** (React/Next/Astro-specific) → **code-quality**
+(structural: atomic files, no logic in views, no inline types, no duplication) →
+**accessibility** (WCAG 2.1 AA) → **tailwind** (if applicable).
 
-See `docs/standards/eslint.md` for the full rule taxonomy, `docs/standards/code-quality.md` for structural rules, and `docs/standards/accessibility.md` for a11y rules.
+See `docs/standards/eslint.md` for the full rule taxonomy,
+`docs/standards/code-quality.md` for structural rules, and
+`docs/standards/accessibility.md` for a11y rules.
 
 ---
 
@@ -97,8 +119,8 @@ See `docs/standards/eslint.md` for the full rule taxonomy, `docs/standards/code-
 ```
 
 Never copy compiler flags from the shared base into your project's tsconfig.
-Extend and add only what is genuinely project-specific.
-See `docs/standards/typescript.md` for the full flag table.
+Extend and add only what is genuinely project-specific. See
+`docs/standards/typescript.md` for the full flag table.
 
 ---
 
@@ -106,25 +128,29 @@ See `docs/standards/typescript.md` for the full flag table.
 
 ```js
 // prettier.config.mjs
-import frontend from "@repo/prettier-config/frontend";
+import frontend from '@repo/prettier-config/frontend'
 
-export default { ...frontend };
+export default { ...frontend }
 ```
 
-Available presets: `@repo/prettier-config` (base), `/frontend` (+ Tailwind), `/astro` (+ Tailwind + Astro parser).
-See `docs/standards/prettier.md` for the plugin policy.
+Available presets: `@repo/prettier-config` (base: organize-imports + css-order +
+Markdown wrap), `/frontend` (+ Tailwind last), `/astro` (+ Astro parser +
+Tailwind last). See `docs/standards/prettier.md` for peer dependencies and
+optional `tailwindConfig`.
 
 ---
 
 ## Mandatory script contract
 
 Every project must expose: `dev`, `build`, `start/preview`, `lint`, `lint:fix`,
-`format`, `format:check`, `type-check`, `test`, `test:watch`, `check:all`, `check:ci`.
-Public web templates should also expose optional `test:a11y` and `perf:check`.
+`format`, `format:check`, `type-check`, `test`, `test:watch`, `check:all`,
+`check:ci`. Public web templates should also expose optional `test:a11y` and
+`perf:check`.
 
-`check:ci` is the CI gate. It always runs type-check + lint + format:check + test.
-`perf:check` remains optional until the project has stable performance budgets and hosting assumptions.
-See `docs/standards/scripts.md` for the full contract.
+`check:ci` is the CI gate. It always runs type-check + lint + format:check +
+test. `perf:check` remains optional until the project has stable performance
+budgets and hosting assumptions. See `docs/standards/scripts.md` for the full
+contract.
 
 ---
 

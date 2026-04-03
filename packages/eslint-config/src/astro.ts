@@ -1,39 +1,39 @@
-import astroPlugin from "eslint-plugin-astro";
-import { globalIgnores } from "eslint/config";
-import tseslint from "typescript-eslint";
+import astroPlugin from 'eslint-plugin-astro'
+import { globalIgnores } from 'eslint/config'
+import tseslint from 'typescript-eslint'
 
 export type AstroConfigOptions = {
-  tsconfigRootDir?: string;
-};
+  tsconfigRootDir?: string
+}
 
-type FlatConfigLike = Record<string, unknown>;
+type FlatConfigLike = Record<string, unknown>
 const astroConfigs = astroPlugin.configs as unknown as Record<
   string,
   FlatConfigLike[]
->;
-const astroRecommended = astroConfigs["flat/recommended"] ?? [];
-const astroA11yRecommended = astroConfigs["flat/jsx-a11y-recommended"] ?? [];
+>
+const astroRecommended = astroConfigs['flat/recommended'] ?? []
+const astroA11yRecommended = astroConfigs['flat/jsx-a11y-recommended'] ?? []
 
 export const createAstroConfig = (options: AstroConfigOptions = {}) => {
-  const tsconfigRootDir = options.tsconfigRootDir ?? process.cwd();
+  const tsconfigRootDir = options.tsconfigRootDir ?? process.cwd()
 
   return [
-    globalIgnores(["dist/**", ".astro/**", "coverage/**"]),
+    globalIgnores(['dist/**', '.astro/**', 'coverage/**']),
     ...astroRecommended,
     ...astroA11yRecommended,
     {
-      files: ["**/*.astro"],
+      files: ['**/*.astro'],
       languageOptions: {
         parserOptions: {
           parser: tseslint.parser,
           project: true,
           tsconfigRootDir,
-          extraFileExtensions: [".astro"],
+          extraFileExtensions: ['.astro'],
         },
       },
     },
     {
-      files: ["**/*.{ts,tsx}"],
+      files: ['**/*.{ts,tsx}'],
       languageOptions: {
         parserOptions: {
           projectService: true,
@@ -41,20 +41,20 @@ export const createAstroConfig = (options: AstroConfigOptions = {}) => {
         },
       },
       rules: {
-        "@typescript-eslint/no-confusing-void-expression": "off",
-        "@typescript-eslint/unbound-method": "off",
-        "@typescript-eslint/require-await": "off",
-        "@typescript-eslint/no-misused-promises": [
-          "error",
+        '@typescript-eslint/no-confusing-void-expression': 'off',
+        '@typescript-eslint/unbound-method': 'off',
+        '@typescript-eslint/require-await': 'off',
+        '@typescript-eslint/no-misused-promises': [
+          'error',
           { checksVoidReturn: false },
         ],
       },
     },
     {
-      files: ["**/*.d.ts"],
-      rules: { "@typescript-eslint/triple-slash-reference": "off" },
+      files: ['**/*.d.ts'],
+      rules: { '@typescript-eslint/triple-slash-reference': 'off' },
     },
-  ];
-};
+  ]
+}
 
-export default createAstroConfig;
+export default createAstroConfig

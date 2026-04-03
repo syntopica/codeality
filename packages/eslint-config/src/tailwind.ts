@@ -1,7 +1,7 @@
 // eslint-disable-next-line @typescript-eslint/no-require-imports
-const tailwindcss = require("eslint-plugin-tailwindcss") as {
-  configs: { "flat/recommended": unknown[] };
-};
+const tailwindcss = require('eslint-plugin-tailwindcss') as {
+  configs: { 'flat/recommended': unknown[] }
+}
 
 /**
  * Tailwind CSS lint rules.
@@ -12,6 +12,6 @@ const tailwindcss = require("eslint-plugin-tailwindcss") as {
  * Only add this to projects that use Tailwind CSS.
  */
 export const createTailwindConfig = () =>
-  tailwindcss.configs["flat/recommended"];
+  tailwindcss.configs['flat/recommended']
 
-export default createTailwindConfig;
+export default createTailwindConfig

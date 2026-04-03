@@ -1,6 +1,7 @@
 # Script Contract Standard
 
-Every project must expose this standard script vocabulary. Additional scripts are allowed but cannot replace these.
+Every project must expose this standard script vocabulary. Additional scripts
+are allowed but cannot replace these.
 
 ## Mandatory scripts
 
@@ -34,12 +35,14 @@ Every project must expose this standard script vocabulary. Additional scripts ar
 }
 ```
 
-Update the pinned version when upgrading. Do not mix `npm` or `yarn` into a pnpm workspace.
+Update the pinned version when upgrading. Do not mix `npm` or `yarn` into a pnpm
+workspace.
 
 ## Templates vs published packages
 
-Inside this repository, templates consume the shared packages through `workspace:*` so the baseline can validate them continuously.
-Outside this repository, replace `workspace:*` with the published package versions.
+Inside this repository, templates consume the shared packages through
+`workspace:*` so the baseline can validate them continuously. Outside this
+repository, replace `workspace:*` with the published package versions.
 
 ## `.npmrc`
 
@@ -50,4 +53,5 @@ engine-strict=true
 auto-install-peers=true
 ```
 
-Auth tokens must **never** be committed to `.npmrc` or any config file. Use environment variables or user-level npm config (`~/.npmrc`).
+Auth tokens must **never** be committed to `.npmrc` or any config file. Use
+environment variables or user-level npm config (`~/.npmrc`).

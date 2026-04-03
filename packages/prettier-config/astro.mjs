@@ -1,20 +1,25 @@
 /**
  * @repo/prettier-config — Astro
  *
- * Extends frontend (Tailwind) with prettier-plugin-astro.
- * Use in Astro projects. Includes Tailwind class sorting and .astro parser.
+ * Base plugins + Astro + Tailwind. prettier-plugin-tailwindcss must load last.
+ * Use in Astro projects with Tailwind.
  */
 
-import frontend from "./frontend.mjs";
+import base from './base.mjs'
 
 /** @type {import('prettier').Config} */
 export default {
-  ...frontend,
-  plugins: [...(frontend.plugins ?? []), "prettier-plugin-astro"],
+  ...base,
+  plugins: [
+    ...(base.plugins ?? []),
+    'prettier-plugin-astro',
+    'prettier-plugin-tailwindcss',
+  ],
   overrides: [
+    ...(base.overrides ?? []),
     {
-      files: "*.astro",
-      options: { parser: "astro" },
+      files: '*.astro',
+      options: { parser: 'astro' },
     },
   ],
-};
+}

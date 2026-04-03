@@ -34,6 +34,8 @@
     "globals": "^16.4.0",
     "jiti": "^2.4.2",
     "prettier": "^3.8.1",
+    "prettier-plugin-css-order": "^2.1.2",
+    "prettier-plugin-organize-imports": "^4.1.0",
     "typescript": "^5.9.3",
     "typescript-eslint": "^8.58.0",
     "vitest": "^3.2.4"

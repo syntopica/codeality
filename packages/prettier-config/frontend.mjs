@@ -1,15 +1,14 @@
 /**
  * @repo/prettier-config — Frontend (Tailwind)
  *
- * Extends base with prettier-plugin-tailwindcss.
+ * Extends base with prettier-plugin-tailwindcss (must load last).
  * Use in any project that uses Tailwind CSS.
- * Do NOT add organize-imports here — that concern lives in ESLint.
  */
 
-import base from "./base.mjs";
+import base from './base.mjs'
 
 /** @type {import('prettier').Config} */
 export default {
   ...base,
-  plugins: ["prettier-plugin-tailwindcss"],
-};
+  plugins: [...(base.plugins ?? []), 'prettier-plugin-tailwindcss'],
+}

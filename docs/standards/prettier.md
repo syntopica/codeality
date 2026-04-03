@@ -2,36 +2,62 @@
 
 ## Canonical config
 
-```js
-// @repo/prettier-config/base.mjs
-export default {
-  trailingComma: "all",
-  tabWidth: 2,
-  useTabs: false,
-  semi: false,
-  singleQuote: true,
-  printWidth: 100,
-};
-```
+The shared package `@repo/prettier-config` encodes non-negotiable formatting and
+the plugin stack used across this portfolio.
 
-These values are non-negotiable in new projects. Do not override them per-project.
+### Base (`@repo/prettier-config`)
+
+- **Formatting:** `trailingComma: "all"`, `tabWidth: 2`, `useTabs: false`,
+  `semi: false`, `singleQuote: true`, `printWidth: 100`.
+- **Plugins:** `prettier-plugin-organize-imports`, `prettier-plugin-css-order`
+  (same order as in the published config).
+- **Overrides:** `*.md` uses `proseWrap: "always"` for readable docs and
+  READMEs.
+
+Do not override the core formatting keys in new projects unless there is a
+documented exception (e.g. generated code, Liquid, legacy PHP).
+
+### Frontend (`@repo/prettier-config/frontend`)
+
+Everything in base, plus `prettier-plugin-tailwindcss` **last** (required by
+that plugin).
+
+### Astro (`@repo/prettier-config/astro`)
+
+Base plugins, then `prettier-plugin-astro`, then `prettier-plugin-tailwindcss`
+last. Includes an override so `*.astro` uses the `astro` parser.
 
 ## Which preset to use
 
-| Project type               | Import                           |
-| -------------------------- | -------------------------------- |
-| Node / tooling / no CSS    | `@repo/prettier-config` (base)   |
-| Any frontend with Tailwind | `@repo/prettier-config/frontend` |
-| Astro site                 | `@repo/prettier-config/astro`    |
+| Project type                 | Import                           |
+| ---------------------------- | -------------------------------- |
+| Node / tooling / no Tailwind | `@repo/prettier-config` (base)   |
+| Frontend with Tailwind       | `@repo/prettier-config/frontend` |
+| Astro + Tailwind             | `@repo/prettier-config/astro`    |
 
-## Forbidden plugins
+## Peer dependencies
 
-- `prettier-plugin-organize-imports` — import ordering is not Prettier's responsibility. It causes hidden code motion and conflicts with ESLint import rules. Do not add it.
-- `prettier-plugin-css-order` — not in the shared base. Add locally only if justified and documented.
+Install the plugins that match your preset (see
+`@repo/prettier-config/package.json` `peerDependencies`). Base requires Prettier
+plus `prettier-plugin-organize-imports` and `prettier-plugin-css-order`.
+Frontend and Astro add Tailwind and Astro plugins respectively.
+
+## Optional local options
+
+If class sorting or Tailwind resolution misbehaves in a monorepo, you may set
+`tailwindConfig` to the path of your `tailwind.config.*` in the project
+`prettier.config.mjs` after spreading the preset (same pattern as older
+projects).
 
 ## Integration with ESLint
 
-`eslint-config-prettier` is always the last entry in every ESLint config. This disables all ESLint rules that would conflict with Prettier. Never add `prettier/prettier` as an ESLint rule — that pattern is deprecated.
+`eslint-config-prettier` is always the last entry in every ESLint config. Never
+add `prettier/prettier` as an ESLint rule.
+
+Import order is handled by `prettier-plugin-organize-imports` in the shared
+Prettier preset. Do not add ESLint rules that auto-fix import order in a way
+that fights Prettier on save (e.g. duplicate sort fixes). Keep ESLint focused on
+correctness (cycles, duplicates, unused imports) per `docs/standards/eslint.md`.
 
 ## Mandatory scripts
 

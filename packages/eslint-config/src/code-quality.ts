@@ -34,8 +34,8 @@
  *   { rules: { 'max-lines': ['error', { max: 100 }] } }
  */
 
-import codePolicy from "eslint-plugin-code-policy";
-import sonarjs from "eslint-plugin-sonarjs";
+import codePolicy from 'eslint-plugin-code-policy'
+import sonarjs from 'eslint-plugin-sonarjs'
 
 export const createCodeQualityConfig = () => [
   // ---------------------------------------------------------------------------
@@ -70,28 +70,28 @@ export const createCodeQualityConfig = () => [
   //   { rules: { 'max-lines': ['error', { max: 120 }] } }
   // ---------------------------------------------------------------------------
   {
-    files: ["**/*.{ts,tsx,js,jsx}"],
+    files: ['**/*.{ts,tsx,js,jsx}'],
     rules: {
       // A file over 150 meaningful lines almost always contains too many concerns.
-      "max-lines": [
-        "warn",
+      'max-lines': [
+        'warn',
         { max: 150, skipBlankLines: true, skipComments: true },
       ],
 
       // A function over 40 lines is doing too much. Extract helpers or a hook.
-      "max-lines-per-function": [
-        "warn",
+      'max-lines-per-function': [
+        'warn',
         { max: 40, skipBlankLines: true, skipComments: true, IIFEs: true },
       ],
 
       // Cyclomatic complexity > 10 is hard to test and reason about.
-      complexity: ["warn", { max: 10 }],
+      complexity: ['warn', { max: 10 }],
 
       // Deeply nested code: extract to an early-return or a helper.
-      "max-depth": ["warn", { max: 4 }],
+      'max-depth': ['warn', { max: 4 }],
 
       // More than 4 params is a sign the function should take an options object.
-      "max-params": ["warn", { max: 4 }],
+      'max-params': ['warn', { max: 4 }],
     },
   },
 
@@ -99,19 +99,19 @@ export const createCodeQualityConfig = () => [
   // Duplication — identical code is always a hard error; string repetition is a warn
   // ---------------------------------------------------------------------------
   {
-    files: ["**/*.{ts,tsx,js,jsx}"],
+    files: ['**/*.{ts,tsx,js,jsx}'],
     plugins: { sonarjs },
     rules: {
       // Two functions with identical implementation — extract to a shared util.
-      "sonarjs/no-identical-functions": "error",
+      'sonarjs/no-identical-functions': 'error',
 
       // Two branches with identical bodies — dead code or logic error.
-      "sonarjs/no-duplicated-branches": "error",
+      'sonarjs/no-duplicated-branches': 'error',
 
       // The same string literal used 4+ times — extract to a constant.
-      "sonarjs/no-duplicate-string": ["warn", { threshold: 4 }],
+      'sonarjs/no-duplicate-string': ['warn', { threshold: 4 }],
     },
   },
-];
+]
 
-export default createCodeQualityConfig;
+export default createCodeQualityConfig

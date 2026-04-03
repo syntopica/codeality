@@ -2,23 +2,26 @@
 
 ## Why lint-time accessibility matters
 
-Accessibility issues caught at lint time cost nothing to fix. The same issue caught in QA means a full UI review cycle; caught post-launch it means a legal and reputational risk. `eslint-plugin-jsx-a11y` encodes the WCAG 2.1 AA standard as ESLint rules that run on every save.
+Accessibility issues caught at lint time cost nothing to fix. The same issue
+caught in QA means a full UI review cycle; caught post-launch it means a legal
+and reputational risk. `eslint-plugin-jsx-a11y` encodes the WCAG 2.1 AA standard
+as ESLint rules that run on every save.
 
 ## Activation
 
 Add `createAccessibilityConfig()` after the framework layer:
 
 ```ts
-import { createAccessibilityConfig } from "@repo/eslint-config/accessibility";
-import { createBaseConfig } from "@repo/eslint-config/base";
-import { createNextjsConfig } from "@repo/eslint-config/nextjs";
+import { createAccessibilityConfig } from '@repo/eslint-config/accessibility'
+import { createBaseConfig } from '@repo/eslint-config/base'
+import { createNextjsConfig } from '@repo/eslint-config/nextjs'
 
 export default [
   ...createBaseConfig({ tsconfigRootDir: import.meta.dirname }),
   ...createNextjsConfig({ tsconfigRootDir: import.meta.dirname }),
   ...createCodeQualityConfig(),
   ...createAccessibilityConfig(), // ← last
-];
+]
 ```
 
 Add the devDependency:
@@ -27,7 +30,8 @@ Add the devDependency:
 { "eslint-plugin-jsx-a11y": "^6.10.0" }
 ```
 
-All three React/JSX templates (`nextjs-app`, `vite-react-app`, `astro-site`) include this by default.
+All three React/JSX templates (`nextjs-app`, `vite-react-app`, `astro-site`)
+include this by default.
 
 ## Key rules enforced
 
@@ -128,7 +132,8 @@ All three React/JSX templates (`nextjs-app`, `vite-react-app`, `astro-site`) inc
 
 ## Heading hierarchy
 
-The linter does not enforce heading order (that is a structural concern), but these rules do catch:
+The linter does not enforce heading order (that is a structural concern), but
+these rules do catch:
 
 - Empty headings (`<h2></h2>`)
 - Headings used for styling rather than structure (use CSS classes instead)
@@ -137,11 +142,13 @@ The linter does not enforce heading order (that is a structural concern), but th
 
 `jsx-a11y` catches structural issues in JSX at author time. It cannot catch:
 
-- Dynamic accessibility problems (e.g. a modal that traps focus after a state change)
+- Dynamic accessibility problems (e.g. a modal that traps focus after a state
+  change)
 - Color contrast violations (use a design system token system or Lighthouse)
 - Screen reader announcement ordering
 
-For runtime validation, supplement with Axe DevTools or run Lighthouse CI on every deployment.
+For runtime validation, supplement with Axe DevTools or run Lighthouse CI on
+every deployment.
 
 ## Tuning
 
@@ -151,7 +158,7 @@ To disable a rule for a specific element where the pattern is intentional:
 {
   /* eslint-disable-next-line jsx-a11y/no-autofocus -- search modal, intentional UX decision */
 }
-<input autoFocus />;
+;<input autoFocus />
 ```
 
 Never disable the entire plugin — structural accessibility is non-negotiable.

@@ -2,8 +2,8 @@
 
 ## Goal
 
-Every public web project should ship with sensible SEO defaults on day one.
-The baseline is not "perfect SEO"; it is "no obvious omissions".
+Every public web project should ship with sensible SEO defaults on day one. The
+baseline is not "perfect SEO"; it is "no obvious omissions".
 
 ## Mandatory baseline
 
@@ -31,10 +31,12 @@ The baseline is not "perfect SEO"; it is "no obvious omissions".
 - Set a meaningful document title.
 - Set a description meta tag.
 - Add `robots.txt` if the app is publicly crawled.
-- If the project is SEO-sensitive, prefer SSR/SSG instead of relying on a client-only shell.
+- If the project is SEO-sensitive, prefer SSR/SSG instead of relying on a
+  client-only shell.
 
 ## Important notes
 
 - Replace `https://example.com` placeholders before production.
-- Do not pretend a client-only app has first-class SEO if the business need is real SEO.
+- Do not pretend a client-only app has first-class SEO if the business need is
+  real SEO.
 - For marketing surfaces, prefer Next.js or Astro over SPA-only delivery.

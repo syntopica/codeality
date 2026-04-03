@@ -2,7 +2,8 @@
 
 ## Mandatory flags (non-negotiable)
 
-All projects must include these — either via `extends` or explicitly. Override at your own risk.
+All projects must include these — either via `extends` or explicitly. Override
+at your own risk.
 
 | Flag                               | Value     | Reason                                                      |
 | ---------------------------------- | --------- | ----------------------------------------------------------- |
@@ -49,9 +50,12 @@ Always specify `include` and `exclude` in your project's own `tsconfig.json`.
 
 ## What is forbidden
 
-- `allowJs: true` as a default — only allowed during a documented migration window
-- Multiple `tsconfig.*.json` split configs unless solving a real multi-target build (document why)
-- `project references` unless building a genuine multi-package monorepo that requires them
+- `allowJs: true` as a default — only allowed during a documented migration
+  window
+- Multiple `tsconfig.*.json` split configs unless solving a real multi-target
+  build (document why)
+- `project references` unless building a genuine multi-package monorepo that
+  requires them
 - Targets below `ES2024` in new projects
 - `moduleResolution: node` or `Node16` in new projects
 - Hardcoded auth tokens or secrets in any config file
