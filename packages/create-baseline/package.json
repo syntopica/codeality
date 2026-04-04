@@ -1,0 +1,28 @@
+{
+  "name": "@vibracomet/create-baseline",
+  "version": "0.1.0",
+  "private": false,
+  "description": "CLI to verify and adopt @vibracomet baseline config packages",
+  "publishConfig": {
+    "access": "public"
+  },
+  "type": "module",
+  "engines": {
+    "node": ">=20"
+  },
+  "bin": {
+    "create-baseline": "./bin/create-baseline.mjs"
+  },
+  "files": [
+    "bin"
+  ],
+  "scripts": {
+    "check:self": "node ./bin/create-baseline.mjs --check"
+  },
+  "keywords": [
+    "eslint",
+    "prettier",
+    "typescript",
+    "baseline"
+  ]
+}

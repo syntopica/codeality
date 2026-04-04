@@ -1,8 +1,14 @@
 {
-  "name": "@repo/tsconfig",
+  "name": "@vibracomet/tsconfig",
   "version": "0.1.0",
-  "private": true,
+  "private": false,
   "description": "Shared TypeScript configuration baseline",
+  "publishConfig": {
+    "access": "public"
+  },
+  "engines": {
+    "node": ">=20"
+  },
   "files": [
     "*.json"
   ],

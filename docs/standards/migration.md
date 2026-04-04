@@ -14,11 +14,12 @@ a risky full rewrite.
 
 ## Phase 2 — Prettier (30 minutes)
 
-1. Install `prettier`, `@repo/prettier-config`, and the peer plugins for your
-   preset (`prettier-plugin-organize-imports`, `prettier-plugin-css-order`, and
-   if applicable Tailwind / Astro plugins — see `docs/standards/prettier.md`).
+1. Install `prettier`, `@vibracomet/prettier-config`, and the peer plugins for
+   your preset (`prettier-plugin-organize-imports`, `prettier-plugin-css-order`,
+   and if applicable Tailwind / Astro plugins — see
+   `docs/standards/prettier.md`).
 2. Replace any existing `.prettierrc*` or `prettier.config.*` with the standard
-   config that imports from `@repo/prettier-config`.
+   config that imports from `@vibracomet/prettier-config`.
 3. Remove duplicate local copies of the same plugins unless you extend the
    preset with a documented extra (e.g. Liquid).
 4. Run `pnpm format` and commit the diff.
@@ -30,7 +31,8 @@ a risky full rewrite.
    config).
    - Remove `FlatCompat` if it was added as a migration shim.
    - Remove the `prettier/prettier` ESLint rule.
-2. Extend `@repo/eslint-config/base` plus the appropriate framework extension.
+2. Extend `@vibracomet/eslint-config/base` plus the appropriate framework
+   extension.
 3. Move any project-specific boundary/architecture rules into
    `eslint.architecture.ts`.
 4. Run `pnpm lint:fix` and resolve remaining warnings.
@@ -39,7 +41,7 @@ a risky full rewrite.
 
 ## Phase 4 — TypeScript hardening (1–4 hours depending on codebase state)
 
-1. Add `"extends": "@repo/tsconfig/<variant>.json"` to `tsconfig.json`.
+1. Add `"extends": "@vibracomet/tsconfig/<variant>.json"` to `tsconfig.json`.
 2. Remove `allowJs: true` unless there is an active JS migration in progress
    (document it with a comment and a date).
 3. Enable `noUncheckedIndexedAccess` and `exactOptionalPropertyTypes` — fix type

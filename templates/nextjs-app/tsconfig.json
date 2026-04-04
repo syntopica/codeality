@@ -1,5 +1,5 @@
 {
-  "extends": "@repo/tsconfig/nextjs.json",
+  "extends": "@vibracomet/tsconfig/nextjs.json",
   "compilerOptions": {
     "paths": {
       "@/*": ["./src/*"]

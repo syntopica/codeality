@@ -1,9 +1,15 @@
 {
-  "name": "@repo/prettier-config",
+  "name": "@vibracomet/prettier-config",
   "version": "0.1.0",
-  "private": true,
+  "private": false,
   "description": "Shared Prettier configuration",
+  "publishConfig": {
+    "access": "public"
+  },
   "type": "module",
+  "engines": {
+    "node": ">=20"
+  },
   "main": "./base.mjs",
   "exports": {
     ".": "./base.mjs",

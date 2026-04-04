@@ -1,6 +1,6 @@
-import { createAstroConfig } from '@repo/eslint-config/astro'
-import { createBaseConfig } from '@repo/eslint-config/base'
-import { createCodeQualityConfig } from '@repo/eslint-config/code-quality'
+import { createAstroConfig } from '@vibracomet/eslint-config/astro'
+import { createBaseConfig } from '@vibracomet/eslint-config/base'
+import { createCodeQualityConfig } from '@vibracomet/eslint-config/code-quality'
 
 // Layer order: base → framework (Astro + a11y + frontend boundaries) → code-quality
 

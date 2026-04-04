@@ -22,7 +22,7 @@ Configs compose left to right. Each layer can only add rules, not loosen them.
 base → framework extension → local architecture rules
 ```
 
-### `@repo/eslint-config/base`
+### `@vibracomet/eslint-config/base`
 
 Generic JS/TS correctness. No framework knowledge. Contains:
 
@@ -38,7 +38,7 @@ Generic JS/TS correctness. No framework knowledge. Contains:
   traversal, timing attacks
 - `eslint-config-prettier` last
 
-### `@repo/eslint-config/nextjs`
+### `@vibracomet/eslint-config/nextjs`
 
 Adds `@next/eslint-plugin-next` core-web-vitals rules, full
 `eslint-plugin-react` correctness rules (leaked render, unstable nested
@@ -46,18 +46,18 @@ components, no danger, self-closing), `eslint-plugin-react-hooks`, and
 `createFrontendBoundariesConfig()` (app / components / shared / services). See
 [typescript-frontend-architecture.md](./typescript-frontend-architecture.md).
 
-### `@repo/eslint-config/frontend-boundaries`
+### `@vibracomet/eslint-config/frontend-boundaries`
 
 Exports `createFrontendBoundariesConfig()` for the same layer map without the
 Next.js plugin. Use when you do not use `createNextjsConfig` or
 `createViteReactConfig`.
 
-### `@repo/eslint-config/vite-react`
+### `@vibracomet/eslint-config/vite-react`
 
 Adds full `eslint-plugin-react` correctness rules, `eslint-plugin-react-hooks`,
 `eslint-plugin-react-refresh`, and `createFrontendBoundariesConfig()`.
 
-### `@repo/eslint-config/astro`
+### `@vibracomet/eslint-config/astro`
 
 Adds `eslint-plugin-astro`, `.astro` parser setup, Astro-specific correctness
 overrides for TypeScript in `src`, and `createFrontendBoundariesConfig()` (same
@@ -68,20 +68,20 @@ layer map as Next.js / Vite React). See
 in `.tsx` (plugin implementation). `.astro` scripts are not matched; extract
 React UI to `.tsx` if you want that rule to apply.
 
-### `@repo/eslint-config/node`
+### `@vibracomet/eslint-config/node`
 
 Adds Node.js globals and enforces `unicorn/prefer-node-protocol`.
 
-### `@repo/eslint-config/code-quality`
+### `@vibracomet/eslint-config/code-quality`
 
 Structural enforcement layer — see [code-quality.md](./code-quality.md).
 
-### `@repo/eslint-config/accessibility`
+### `@vibracomet/eslint-config/accessibility`
 
 WCAG 2.1 AA enforcement via `eslint-plugin-jsx-a11y` — see
 [accessibility.md](./accessibility.md).
 
-### `@repo/eslint-config/tailwind`
+### `@vibracomet/eslint-config/tailwind`
 
 Tailwind CSS class ordering, contradiction detection, and shorthand enforcement
 via `eslint-plugin-tailwindcss`. Only add to projects that use Tailwind CSS.
@@ -92,8 +92,8 @@ Shared ESLint configs are exported as factories so they resolve relative to the
 consumer project:
 
 ```ts
-import { createBaseConfig } from '@repo/eslint-config/base'
-import { createNextjsConfig } from '@repo/eslint-config/nextjs'
+import { createBaseConfig } from '@vibracomet/eslint-config/base'
+import { createNextjsConfig } from '@vibracomet/eslint-config/nextjs'
 
 export default [
   ...createBaseConfig({ tsconfigRootDir: import.meta.dirname }),

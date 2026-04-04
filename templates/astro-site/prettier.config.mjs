@@ -1,4 +1,4 @@
-import astro from '@repo/prettier-config/astro'
+import astro from '@vibracomet/prettier-config/astro'
 
 /** @type {import('prettier').Config} */
 export default { ...astro }

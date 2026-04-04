@@ -1,8 +1,8 @@
 # TypeScript frontend architecture and ESLint standard
 
 Opinionated, implementation-ready standard for medium and large TypeScript
-frontends. This repository encodes parts of it in `@repo/eslint-config`; the
-rest is team process and review.
+frontends. This repository encodes parts of it in `@vibracomet/eslint-config`;
+the rest is team process and review.
 
 ---
 
@@ -28,12 +28,12 @@ rest is team process and review.
 
 #### Optional
 
-| Tool                            | Purpose                                      | Why optional                                                                     | Notes                                                                   |
-| ------------------------------- | -------------------------------------------- | -------------------------------------------------------------------------------- | ----------------------------------------------------------------------- |
-| **eslint-plugin-unicorn**       | Modern JS/Node idioms                        | Can conflict with framework quirks; enable rule-by-rule                          | Used in `@repo/eslint-config/node` for `prefer-node-protocol` only      |
-| **eslint-plugin-perfectionist** | Sort keys, imports, etc.                     | **Conflicts** with `prettier-plugin-organize-imports` if both touch import order | If used: enable **object/array** sorting only; let Prettier own imports |
-| **eslint-plugin-security**      | Unsafe eval, weak randomness, risky fs paths | High false positives in some apps                                                | Enabled in `@repo/eslint-config/base` with selected rules               |
-| **eslint-plugin-promise**       | Promise hygiene                              | Nice-to-have                                                                     | Enabled in base as warnings                                             |
+| Tool                            | Purpose                                      | Why optional                                                                     | Notes                                                                    |
+| ------------------------------- | -------------------------------------------- | -------------------------------------------------------------------------------- | ------------------------------------------------------------------------ |
+| **eslint-plugin-unicorn**       | Modern JS/Node idioms                        | Can conflict with framework quirks; enable rule-by-rule                          | Used in `@vibracomet/eslint-config/node` for `prefer-node-protocol` only |
+| **eslint-plugin-perfectionist** | Sort keys, imports, etc.                     | **Conflicts** with `prettier-plugin-organize-imports` if both touch import order | If used: enable **object/array** sorting only; let Prettier own imports  |
+| **eslint-plugin-security**      | Unsafe eval, weak randomness, risky fs paths | High false positives in some apps                                                | Enabled in `@vibracomet/eslint-config/base` with selected rules          |
+| **eslint-plugin-promise**       | Promise hygiene                              | Nice-to-have                                                                     | Enabled in base as warnings                                              |
 
 #### What ESLint cannot solve reliably
 
@@ -51,7 +51,7 @@ rest is team process and review.
 ### 2. Recommended architecture
 
 Final folder model (paths may live under `src/` or project root; both are
-supported by `@repo/eslint-config/frontend-boundaries`):
+supported by `@vibracomet/eslint-config/frontend-boundaries`):
 
 ```text
 src/
@@ -200,10 +200,10 @@ semantics mean **one** `max-lines` entry wins per file.
   - Editor ruler at 50, or
   - A **custom** ESLint rule (maintenance cost).
 
-**Overrides** in `@repo/eslint-config/code-quality`: config files and tests
-relax or disable line limits; Next.js App Router special files use **`warn`** at
-**120** lines so metadata-heavy routes are not blocked while still surfacing
-smell.
+**Overrides** in `@vibracomet/eslint-config/code-quality`: config files and
+tests relax or disable line limits; Next.js App Router special files use
+**`warn`** at **120** lines so metadata-heavy routes are not blocked while still
+surfacing smell.
 
 #### 3) Complexity
 
@@ -230,7 +230,7 @@ enable selectively if the team wants stricter signal.
 ### 6. Boundaries and import rules
 
 **eslint-plugin-boundaries** (see `createFrontendBoundariesConfig` in
-`@repo/eslint-config/frontend-boundaries`):
+`@vibracomet/eslint-config/frontend-boundaries`):
 
 - **`app`** may import **components**, **shared**, **services**
 - **`components`** may import **components**, **shared** — **not** `services`
@@ -284,10 +284,10 @@ feature slice; prefer vertical slices over big-bang rewrites.
 Consumer `eslint.config.ts` (Next.js app using this monorepo’s packages):
 
 ```ts
-import { createAccessibilityConfig } from '@repo/eslint-config/accessibility'
-import { createBaseConfig } from '@repo/eslint-config/base'
-import { createCodeQualityConfig } from '@repo/eslint-config/code-quality'
-import { createNextjsConfig } from '@repo/eslint-config/nextjs'
+import { createAccessibilityConfig } from '@vibracomet/eslint-config/accessibility'
+import { createBaseConfig } from '@vibracomet/eslint-config/base'
+import { createCodeQualityConfig } from '@vibracomet/eslint-config/code-quality'
+import { createNextjsConfig } from '@vibracomet/eslint-config/nextjs'
 
 export default [
   ...createBaseConfig({ tsconfigRootDir: import.meta.dirname }),
@@ -303,7 +303,7 @@ include `createFrontendBoundariesConfig()` for layered imports.
 **Standalone boundaries** (e.g. custom stack):
 
 ```ts
-import { createFrontendBoundariesConfig } from '@repo/eslint-config/frontend-boundaries'
+import { createFrontendBoundariesConfig } from '@vibracomet/eslint-config/frontend-boundaries'
 
 export default [...createFrontendBoundariesConfig()]
 ```

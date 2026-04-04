@@ -1,7 +1,7 @@
-import { createAccessibilityConfig } from '@repo/eslint-config/accessibility'
-import { createBaseConfig } from '@repo/eslint-config/base'
-import { createCodeQualityConfig } from '@repo/eslint-config/code-quality'
-import { createNextjsConfig } from '@repo/eslint-config/nextjs'
+import { createAccessibilityConfig } from '@vibracomet/eslint-config/accessibility'
+import { createBaseConfig } from '@vibracomet/eslint-config/base'
+import { createCodeQualityConfig } from '@vibracomet/eslint-config/code-quality'
+import { createNextjsConfig } from '@vibracomet/eslint-config/nextjs'
 
 // Layer order: base → framework → code-quality → accessibility
 //

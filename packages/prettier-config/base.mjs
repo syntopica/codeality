@@ -1,5 +1,5 @@
 /**
- * @repo/prettier-config — Base
+ * @vibracomet/prettier-config — Base
  *
  * Universal formatting defaults plus import and CSS ordering plugins shared with
  * most portfolio projects. No Tailwind or Astro plugins here — use /frontend or /astro.

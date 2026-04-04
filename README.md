@@ -26,16 +26,24 @@ For a real new project:
 In this monorepo, `pnpm fix:all` runs ESLint fixes and Prettier across all
 workspace packages and the repository root (docs, configs, templates).
 
-Until the shared packages are published, treat `templates/` as validated
-reference starters rather than copy-paste-final packages.
+Published package scope is **`@vibracomet/*`**. Outside this repo, depend on
+semver ranges (for example `^0.1.0`). Inside the monorepo, templates use
+`workspace:*` for local validation.
+
+**Decisions and compatibility:**
+[docs/platform-decisions.md](./docs/platform-decisions.md).
+
+**Adoption:** [docs/adoption/new-repo.md](./docs/adoption/new-repo.md),
+[docs/adoption/existing-repo.md](./docs/adoption/existing-repo.md),
+[docs/migration.md](./docs/migration.md).
 
 ## Packages
 
-| Package                 | Description                                                                          |
-| ----------------------- | ------------------------------------------------------------------------------------ |
-| `@repo/eslint-config`   | Flat ESLint configs — base + nextjs / astro / vite-react / node                      |
-| `@repo/tsconfig`        | TypeScript configs — base + app / nextjs / astro / vite-react / node                 |
-| `@repo/prettier-config` | Prettier — base (organize-imports, css-order, MD wrap) + frontend (Tailwind) + astro |
+| Package                       | Description                                                                          |
+| ----------------------------- | ------------------------------------------------------------------------------------ |
+| `@vibracomet/eslint-config`   | Flat ESLint configs — base + nextjs / astro / vite-react / node                      |
+| `@vibracomet/tsconfig`        | TypeScript configs — base + app / nextjs / astro / vite-react / node                 |
+| `@vibracomet/prettier-config` | Prettier — base (organize-imports, css-order, MD wrap) + frontend (Tailwind) + astro |
 
 ## Documentation
 

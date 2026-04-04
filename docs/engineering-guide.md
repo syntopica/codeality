@@ -80,9 +80,9 @@ engineering-baseline/
 
 ```ts
 // eslint.config.ts
-import { createBaseConfig } from '@repo/eslint-config/base'
-import { createNextjsConfig } from '@repo/eslint-config/nextjs' // or astro / vite-react / node
-import { createCodeQualityConfig } from '@repo/eslint-config/code-quality'
+import { createBaseConfig } from '@vibracomet/eslint-config/base'
+import { createNextjsConfig } from '@vibracomet/eslint-config/nextjs' // or astro / vite-react / node
+import { createCodeQualityConfig } from '@vibracomet/eslint-config/code-quality'
 
 export default [
   ...createBaseConfig({ tsconfigRootDir: import.meta.dirname }),
@@ -109,7 +109,7 @@ See `docs/standards/eslint.md` for the full rule taxonomy,
 ```jsonc
 // tsconfig.json
 {
-  "extends": "@repo/tsconfig/nextjs.json",
+  "extends": "@vibracomet/tsconfig/nextjs.json",
   "compilerOptions": {
     "paths": { "@/*": ["./src/*"] },
   },
@@ -128,15 +128,15 @@ Extend and add only what is genuinely project-specific. See
 
 ```js
 // prettier.config.mjs
-import frontend from '@repo/prettier-config/frontend'
+import frontend from '@vibracomet/prettier-config/frontend'
 
 export default { ...frontend }
 ```
 
-Available presets: `@repo/prettier-config` (base: organize-imports + css-order +
-Markdown wrap), `/frontend` (+ Tailwind last), `/astro` (+ Astro parser +
-Tailwind last). See `docs/standards/prettier.md` for peer dependencies and
-optional `tailwindConfig`.
+Available presets: `@vibracomet/prettier-config` (base: organize-imports +
+css-order + Markdown wrap), `/frontend` (+ Tailwind last), `/astro` (+ Astro
+parser + Tailwind last). See `docs/standards/prettier.md` for peer dependencies
+and optional `tailwindConfig`.
 
 ---
 

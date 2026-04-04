@@ -2,10 +2,10 @@
 
 ## Canonical config
 
-The shared package `@repo/prettier-config` encodes non-negotiable formatting and
-the plugin stack used across this portfolio.
+The shared package `@vibracomet/prettier-config` encodes non-negotiable
+formatting and the plugin stack used across this portfolio.
 
-### Base (`@repo/prettier-config`)
+### Base (`@vibracomet/prettier-config`)
 
 - **Formatting:** `trailingComma: "all"`, `tabWidth: 2`, `useTabs: false`,
   `semi: false`, `singleQuote: true`, `printWidth: 100`.
@@ -17,30 +17,31 @@ the plugin stack used across this portfolio.
 Do not override the core formatting keys in new projects unless there is a
 documented exception (e.g. generated code, Liquid, legacy PHP).
 
-### Frontend (`@repo/prettier-config/frontend`)
+### Frontend (`@vibracomet/prettier-config/frontend`)
 
 Everything in base, plus `prettier-plugin-tailwindcss` **last** (required by
 that plugin).
 
-### Astro (`@repo/prettier-config/astro`)
+### Astro (`@vibracomet/prettier-config/astro`)
 
 Base plugins, then `prettier-plugin-astro`, then `prettier-plugin-tailwindcss`
 last. Includes an override so `*.astro` uses the `astro` parser.
 
 ## Which preset to use
 
-| Project type                 | Import                           |
-| ---------------------------- | -------------------------------- |
-| Node / tooling / no Tailwind | `@repo/prettier-config` (base)   |
-| Frontend with Tailwind       | `@repo/prettier-config/frontend` |
-| Astro + Tailwind             | `@repo/prettier-config/astro`    |
+| Project type                 | Import                                 |
+| ---------------------------- | -------------------------------------- |
+| Node / tooling / no Tailwind | `@vibracomet/prettier-config` (base)   |
+| Frontend with Tailwind       | `@vibracomet/prettier-config/frontend` |
+| Astro + Tailwind             | `@vibracomet/prettier-config/astro`    |
 
 ## Peer dependencies
 
 Install the plugins that match your preset (see
-`@repo/prettier-config/package.json` `peerDependencies`). Base requires Prettier
-plus `prettier-plugin-organize-imports` and `prettier-plugin-css-order`.
-Frontend and Astro add Tailwind and Astro plugins respectively.
+`@vibracomet/prettier-config/package.json` `peerDependencies`). Base requires
+Prettier plus `prettier-plugin-organize-imports` and
+`prettier-plugin-css-order`. Frontend and Astro add Tailwind and Astro plugins
+respectively.
 
 ## Optional local options
 

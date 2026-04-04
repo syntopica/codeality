@@ -18,9 +18,9 @@ files, each doing one thing.
 Add the third layer to any project's `eslint.config.ts`:
 
 ```ts
-import { createBaseConfig } from '@repo/eslint-config/base'
-import { createCodeQualityConfig } from '@repo/eslint-config/code-quality'
-import { createNextjsConfig } from '@repo/eslint-config/nextjs'
+import { createBaseConfig } from '@vibracomet/eslint-config/base'
+import { createCodeQualityConfig } from '@vibracomet/eslint-config/code-quality'
+import { createNextjsConfig } from '@vibracomet/eslint-config/nextjs'
 
 export default [
   ...createBaseConfig({ tsconfigRootDir: import.meta.dirname }),
@@ -245,7 +245,7 @@ src/
 ```
 
 Layered imports (`components` → `shared` only; `shared` → `services`) are
-enforced by `@repo/eslint-config/frontend-boundaries` when you use
+enforced by `@vibracomet/eslint-config/frontend-boundaries` when you use
 `createNextjsConfig`, `createViteReactConfig`, or `createAstroConfig`. See
 [typescript-frontend-architecture.md](./typescript-frontend-architecture.md).
 

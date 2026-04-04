@@ -1,5 +1,5 @@
 {
-  "extends": "@repo/tsconfig/astro.json",
+  "extends": "@vibracomet/tsconfig/astro.json",
   "compilerOptions": {
     "paths": {
       "@/*": ["./src/*"]

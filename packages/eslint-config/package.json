@@ -1,13 +1,20 @@
 {
-  "name": "@repo/eslint-config",
+  "name": "@vibracomet/eslint-config",
   "version": "0.1.0",
-  "private": true,
+  "private": false,
   "description": "Shared ESLint configuration baseline",
+  "publishConfig": {
+    "access": "public"
+  },
   "type": "module",
+  "engines": {
+    "node": ">=20"
+  },
   "files": [
     "src",
     "eslint.config.ts",
-    "tsconfig.json"
+    "tsconfig.json",
+    "PUBLIC_API.md"
   ],
   "exports": {
     "./base": "./src/base.ts",
@@ -26,30 +33,32 @@
     "lint:fix": "eslint src --fix",
     "type-check": "tsc --noEmit -p tsconfig.json"
   },
+  "dependencies": {
+    "@eslint/js": "^10.0.1",
+    "eslint-config-prettier": "^10.1.8",
+    "eslint-import-resolver-typescript": "^4.4.4",
+    "eslint-plugin-import": "^2.32.0",
+    "eslint-plugin-promise": "^7.2.1",
+    "eslint-plugin-security": "^4.0.0",
+    "eslint-plugin-unused-imports": "^4.4.1",
+    "typescript-eslint": "^8.58.0"
+  },
   "peerDependencies": {
-    "@eslint/js": ">=9.0.0",
     "@next/eslint-plugin-next": ">=15.0.0",
     "eslint": ">=9.0.0",
     "eslint-config-next": ">=15.0.0",
-    "eslint-config-prettier": ">=9.0.0",
-    "eslint-import-resolver-typescript": ">=3.6.0",
     "eslint-plugin-astro": ">=0.34.0",
     "eslint-plugin-boundaries": ">=4.2.0",
     "eslint-plugin-code-policy": ">=0.2.1",
-    "eslint-plugin-import": ">=2.29.0",
     "eslint-plugin-jsx-a11y": ">=6.8.0",
-    "eslint-plugin-promise": ">=7.0.0",
     "eslint-plugin-react": ">=7.37.0",
     "eslint-plugin-react-hooks": ">=5.0.0",
     "eslint-plugin-react-refresh": ">=0.4.0",
-    "eslint-plugin-security": ">=3.0.0",
     "eslint-plugin-sonarjs": ">=3.0.0",
     "eslint-plugin-tailwindcss": ">=3.17.0 || >=4.0.0-beta.0",
     "eslint-plugin-unicorn": ">=57.0.0",
-    "eslint-plugin-unused-imports": ">=4.0.0",
     "globals": ">=15.0.0",
-    "typescript": ">=5.0.0",
-    "typescript-eslint": ">=8.0.0"
+    "typescript": ">=5.4.0"
   },
   "peerDependenciesMeta": {
     "@next/eslint-plugin-next": {
@@ -70,9 +79,6 @@
     "eslint-plugin-jsx-a11y": {
       "optional": true
     },
-    "eslint-plugin-promise": {
-      "optional": false
-    },
     "eslint-plugin-react": {
       "optional": true
     },
@@ -81,9 +87,6 @@
     },
     "eslint-plugin-react-refresh": {
       "optional": true
-    },
-    "eslint-plugin-security": {
-      "optional": false
     },
     "eslint-plugin-sonarjs": {
       "optional": true
@@ -96,16 +99,13 @@
     },
     "globals": {
       "optional": true
-    },
-    "eslint-import-resolver-typescript": {
-      "optional": false
     }
   },
   "devDependencies": {
     "@eslint/js": "^10.0.1",
     "@next/eslint-plugin-next": "^16.2.2",
     "@types/node": "^25.5.2",
-    "eslint": "^10.1.0",
+    "eslint": "^10.2.0",
     "eslint-config-next": "^16.2.2",
     "eslint-config-prettier": "^10.1.8",
     "eslint-import-resolver-typescript": "^4.4.4",
