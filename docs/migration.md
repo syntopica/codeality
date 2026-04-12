@@ -23,8 +23,8 @@ Use `npm install -D` with the same spec if you use npm.
 
 Remove legacy `.eslintrc.*` and `FlatCompat` bridges. Add `eslint.config.ts` (or
 `.mjs`) that imports from `@vibracomet/eslint-config/*` — see
-[packages/eslint-config/README.md](../packages/eslint-config/README.md) and
-[standards/eslint.md](./standards/eslint.md).
+[eslint-config README](https://github.com/VibraComet/eslint-config/blob/main/README.md)
+and [standards/eslint.md](./standards/eslint.md).
 
 Install **peer** packages required by the stacks you use (Next.js, React, Astro,
 and so on). Run ESLint and fix new violations incrementally.
@@ -50,6 +50,6 @@ Or `npx @vibracomet/create-baseline@^0.1.0 --check` outside this monorepo.
 
 ## Naming note
 
-Internal monorepo templates use `workspace:*` for local development.
-**Published** projects should depend on **semver** ranges (for example `^0.1.0`)
-on npm.
+Templates in this repository use **semver** ranges for `@vibracomet/*` on npm
+(for example `^0.1.0`). The root `package.json` may temporarily use
+`pnpm.overrides` to resolve those packages from GitHub until they are published.

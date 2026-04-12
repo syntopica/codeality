@@ -4,26 +4,27 @@
   "packageManager": "pnpm@10.33.0",
   "pnpm": {
     "overrides": {
-      "eslint-plugin-react": "github:jsx-eslint/eslint-plugin-react#012ec39f962627d5312e9fbaee3eb41d9a4d8bb6"
+      "eslint-plugin-react": "github:jsx-eslint/eslint-plugin-react#012ec39f962627d5312e9fbaee3eb41d9a4d8bb6",
+      "@vibracomet/eslint-config": "github:VibraComet/eslint-config#main",
+      "@vibracomet/prettier-config": "github:VibraComet/prettier-config#main",
+      "@vibracomet/tsconfig": "github:VibraComet/tsconfig#main"
     }
   },
   "scripts": {
-    "lint": "pnpm --filter @vibracomet/eslint-config lint && pnpm --filter './templates/*' lint",
-    "lint:fix": "pnpm --filter @vibracomet/eslint-config lint:fix && pnpm --filter './templates/*' lint:fix",
-    "type-check": "pnpm --filter @vibracomet/eslint-config type-check && pnpm --filter './templates/*' type-check",
+    "lint": "pnpm --filter './templates/*' lint",
+    "lint:fix": "pnpm --filter './templates/*' lint:fix",
+    "type-check": "pnpm --filter './templates/*' type-check",
     "format": "prettier --write . --list-different",
     "format:check": "prettier --check .",
     "check:all": "pnpm type-check && pnpm lint && pnpm format:check",
     "fix:all": "pnpm -r run fix && pnpm exec prettier --write . --list-different",
-    "changeset": "changeset",
     "check:ci": "pnpm type-check && pnpm lint && pnpm format:check && pnpm --filter './templates/*' test && pnpm --filter './templates/*' build",
     "perf:check": "pnpm --filter ./templates/nextjs-app perf:check && pnpm --filter ./templates/astro-site perf:check && pnpm --filter ./templates/vite-react-app perf:check"
   },
   "devDependencies": {
-    "@changesets/cli": "^2.30.0",
-    "@vibracomet/prettier-config": "workspace:*",
+    "@vibracomet/prettier-config": "^0.1.0",
     "jiti": "^2.6.1",
-    "prettier": "^3.8.1",
+    "prettier": "^3.8.2",
     "prettier-plugin-astro": "^0.14.1",
     "prettier-plugin-css-order": "^2.2.0",
     "prettier-plugin-organize-imports": "^4.3.0",

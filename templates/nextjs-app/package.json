@@ -21,25 +21,25 @@
     "perf:check": "pnpm build && lhci autorun --config=.lighthouserc.json"
   },
   "dependencies": {
-    "next": "^16.2.2",
-    "react": "^19.2.4",
-    "react-dom": "^19.2.4"
+    "next": "^16.2.3",
+    "react": "^19.2.5",
+    "react-dom": "^19.2.5"
   },
   "devDependencies": {
     "@eslint/js": "^10.0.1",
     "@lhci/cli": "^0.15.1",
-    "@next/eslint-plugin-next": "^16.2.2",
-    "@vibracomet/eslint-config": "workspace:*",
-    "@vibracomet/prettier-config": "workspace:*",
-    "@vibracomet/tsconfig": "workspace:*",
+    "@next/eslint-plugin-next": "^16.2.3",
+    "@vibracomet/eslint-config": "^0.1.0",
+    "@vibracomet/prettier-config": "^0.1.0",
+    "@vibracomet/tsconfig": "^0.1.0",
     "@testing-library/jest-dom": "^6.9.1",
     "@testing-library/react": "^16.3.2",
-    "@types/node": "^25.5.2",
+    "@types/node": "^25.6.0",
     "@types/react": "^19.2.14",
     "@types/react-dom": "^19.2.3",
     "@vitejs/plugin-react": "^6.0.1",
     "eslint": "^10.2.0",
-    "eslint-config-next": "^16.2.2",
+    "eslint-config-next": "^16.2.3",
     "eslint-config-prettier": "^10.1.8",
     "eslint-import-resolver-typescript": "^4.4.4",
     "eslint-plugin-boundaries": "^6.0.2",
@@ -53,14 +53,14 @@
     "eslint-plugin-sonarjs": "^4.0.2",
     "eslint-plugin-unused-imports": "^4.4.1",
     "jiti": "^2.6.1",
-    "jsdom": "^29.0.1",
-    "prettier": "^3.8.1",
+    "jsdom": "^29.0.2",
+    "prettier": "^3.8.2",
     "prettier-plugin-css-order": "^2.2.0",
     "prettier-plugin-organize-imports": "^4.3.0",
     "prettier-plugin-tailwindcss": "^0.7.2",
     "typescript": "^6.0.2",
-    "typescript-eslint": "^8.58.0",
-    "vitest": "^4.1.2",
+    "typescript-eslint": "^8.58.1",
+    "vitest": "^4.1.4",
     "vitest-axe": "^0.1.0"
   }
 }

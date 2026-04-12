@@ -203,7 +203,8 @@ baseline uses a **hard error at 100** lines. The **50-line** band is a
 severity on the same rule.
 
 Overrides apply to `*.config.*`, test files, and Next.js App Router special
-files (see `packages/eslint-config/src/code-quality.ts`).
+files (see
+[`code-quality.ts` in eslint-config](https://github.com/VibraComet/eslint-config/blob/main/src/code-quality.ts)).
 
 Warnings do not block CI unless your pipeline treats warnings as errors. Errors
 (`max-lines`, code-policy, boundaries) block by default.

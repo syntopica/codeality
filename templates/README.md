@@ -3,14 +3,14 @@
 These folders are **validated starters** for Next.js, Vite + React, Astro, and a
 generic TypeScript package.
 
-## Workspace vs published dependencies
+## Published dependencies
 
-Inside the **engineering-baseline** monorepo, `package.json` files use
-`workspace:*` for `@vibracomet/eslint-config`, `@vibracomet/prettier-config`,
-and `@vibracomet/tsconfig` so CI can lint and build against local packages.
+Templates depend on **`@vibracomet/*` packages at `^0.1.0`**. Until those
+versions are published to npm, the monorepo root may use **`pnpm.overrides`** to
+pull them from GitHub; see the root [README.md](../README.md).
 
-When you **copy a template out** of this repository, replace those entries with
-**npm semver** ranges, for example:
+When you **copy a template out** of this repository, keep **npm semver** ranges,
+for example:
 
 ```json
 "@vibracomet/eslint-config": "^0.1.0",

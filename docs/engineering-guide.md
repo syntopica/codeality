@@ -33,12 +33,13 @@ flexibility, and shared defaults over per-project reinvention.
 
 ## Repository structure
 
+Shared **@vibracomet/\*** packages (ESLint, Prettier, TypeScript,
+`create-baseline`) are maintained in separate GitHub repositories under
+[VibraComet](https://github.com/VibraComet) and published to npm. This monorepo
+holds **templates** and **documentation** only.
+
 ```text
 engineering-baseline/
-  packages/
-    eslint-config/        Shared ESLint configs (base + framework extensions)
-    tsconfig/             Shared TypeScript configs (base + framework variants)
-    prettier-config/      Shared Prettier configs (base + frontend + astro)
   templates/
     nextjs-app/           Starter config set for a new Next.js app
     astro-site/           Starter config set for a new Astro site
@@ -64,9 +65,9 @@ engineering-baseline/
 1. Choose the relevant template from `templates/`.
 2. If you are working inside this repository, use it directly as a validated
    workspace template.
-3. If you are creating an external project, copy the template and replace
-   `workspace:*` dependencies with the published versions of the shared
-   packages.
+3. If you are creating an external project, copy the template and keep
+   `@vibracomet/*` dependencies as **semver** ranges (for example `^0.1.0`) from
+   npm.
 4. Add project-specific logic. Do not modify the inherited config structure —
    extend it.
 5. If you need custom architecture boundary rules, create

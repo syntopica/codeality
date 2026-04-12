@@ -52,9 +52,10 @@ workspace.
 
 ## Templates vs published packages
 
-Inside this repository, templates consume the shared packages through
-`workspace:*` so the baseline can validate them continuously. Outside this
-repository, replace `workspace:*` with the published package versions.
+Templates depend on **`@vibracomet/*` packages** using **semver** ranges (for
+example `^0.1.0`) from npm. The monorepo root may use **`pnpm.overrides`** to
+resolve those packages from GitHub until the first npm publish; see the root
+README.
 
 ## `.npmrc`
 
