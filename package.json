@@ -7,11 +7,11 @@
   "description": "Shared TypeScript configuration baseline",
   "repository": {
     "type": "git",
-    "url": "https://github.com/VibraComet/tsconfig.git"
+    "url": "https://github.com/BusiRocket/tsconfig.git"
   },
-  "homepage": "https://github.com/VibraComet/tsconfig#readme",
+  "homepage": "https://github.com/BusiRocket/tsconfig#readme",
   "bugs": {
-    "url": "https://github.com/VibraComet/tsconfig/issues"
+    "url": "https://github.com/BusiRocket/tsconfig/issues"
   },
   "publishConfig": {
     "access": "public"

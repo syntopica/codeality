@@ -1,4 +1,4 @@
-# @vibracomet/tsconfig
+# @busirocket/tsconfig
 
 Shared TypeScript `extends` presets for apps and libraries (Next.js, Astro,
 Vite + React, Node).
@@ -11,7 +11,7 @@ Vite + React, Node).
 ## Install
 
 ```bash
-pnpm add -D @vibracomet/tsconfig@^0.1.0 typescript
+pnpm add -D @busirocket/tsconfig@^0.1.0 typescript
 ```
 
 ## Exports
@@ -29,7 +29,7 @@ Example `tsconfig.json`:
 
 ```json
 {
-  "extends": "@vibracomet/tsconfig/nextjs.json",
+  "extends": "@busirocket/tsconfig/nextjs.json",
   "compilerOptions": {
     "paths": { "@/*": ["./src/*"] }
   },
@@ -39,6 +39,6 @@ Example `tsconfig.json`:
 
 ## Repository
 
-Source and issues: [github.com/VibraComet/tsconfig](https://github.com/VibraComet/tsconfig).
+Source and issues: [github.com/BusiRocket/tsconfig](https://github.com/BusiRocket/tsconfig).
 
-Broader adoption docs: [engineering-baseline](https://github.com/VibraComet/engineering-baseline).
+Broader adoption docs: [engineering-baseline](https://github.com/BusiRocket/engineering-baseline).
