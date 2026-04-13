@@ -1,5 +1,5 @@
 /**
- * @vibracomet/prettier-config — Astro
+ * @busirocket/prettier-config — Astro
  *
  * Base plugins + Astro + Tailwind. prettier-plugin-tailwindcss must load last.
  * Use in Astro projects with Tailwind.

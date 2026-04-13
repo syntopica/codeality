@@ -7,11 +7,11 @@
   "description": "Shared Prettier configuration",
   "repository": {
     "type": "git",
-    "url": "https://github.com/VibraComet/prettier-config.git"
+    "url": "https://github.com/BusiRocket/prettier-config.git"
   },
-  "homepage": "https://github.com/VibraComet/prettier-config#readme",
+  "homepage": "https://github.com/BusiRocket/prettier-config#readme",
   "bugs": {
-    "url": "https://github.com/VibraComet/prettier-config/issues"
+    "url": "https://github.com/BusiRocket/prettier-config/issues"
   },
   "publishConfig": {
     "access": "public"
