@@ -18,9 +18,9 @@
   },
   "devDependencies": {
     "@eslint/js": "^10.0.1",
-    "@vibracomet/eslint-config": "^0.1.0",
-    "@vibracomet/prettier-config": "^0.1.0",
-    "@vibracomet/tsconfig": "^0.1.0",
+    "@busirocket/eslint-config": "^0.1.0",
+    "@busirocket/prettier-config": "^0.1.0",
+    "@busirocket/tsconfig": "^0.1.0",
     "@types/node": "^25.6.0",
     "eslint": "^10.2.0",
     "eslint-config-prettier": "^10.1.8",
