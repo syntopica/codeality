@@ -7,11 +7,11 @@
   "description": "Shared ESLint configuration baseline",
   "repository": {
     "type": "git",
-    "url": "https://github.com/VibraComet/eslint-config.git"
+    "url": "https://github.com/BusiRocket/eslint-config.git"
   },
-  "homepage": "https://github.com/VibraComet/eslint-config#readme",
+  "homepage": "https://github.com/BusiRocket/eslint-config#readme",
   "bugs": {
-    "url": "https://github.com/VibraComet/eslint-config/issues"
+    "url": "https://github.com/BusiRocket/eslint-config/issues"
   },
   "publishConfig": {
     "access": "public"

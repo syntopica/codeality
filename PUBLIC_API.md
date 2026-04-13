@@ -1,4 +1,4 @@
-# Public API (`@vibracomet/eslint-config`)
+# Public API (`@busirocket/eslint-config`)
 
 Semver applies to **export subpaths** listed below. Import paths not listed here
 are **private** and may change without a major bump.
@@ -7,15 +7,15 @@ are **private** and may change without a major bump.
 
 | Export subpath                                  | Purpose                                                           |
 | ----------------------------------------------- | ----------------------------------------------------------------- |
-| `@vibracomet/eslint-config/base`                | Core JS/TS correctness, imports, promise, security, Prettier last |
-| `@vibracomet/eslint-config/nextjs`              | Next.js App Router + React + frontend boundaries                  |
-| `@vibracomet/eslint-config/vite-react`          | Vite + React + frontend boundaries                                |
-| `@vibracomet/eslint-config/astro`               | Astro + TS + frontend boundaries                                  |
-| `@vibracomet/eslint-config/node`                | Node globals + unicorn prefer-node-protocol                       |
-| `@vibracomet/eslint-config/code-quality`        | Sonar + code-policy structural rules                              |
-| `@vibracomet/eslint-config/accessibility`       | jsx-a11y                                                          |
-| `@vibracomet/eslint-config/tailwind`            | Tailwind CSS plugin                                               |
-| `@vibracomet/eslint-config/frontend-boundaries` | `eslint-plugin-boundaries` layer map only                         |
+| `@busirocket/eslint-config/base`                | Core JS/TS correctness, imports, promise, security, Prettier last |
+| `@busirocket/eslint-config/nextjs`              | Next.js App Router + React + frontend boundaries                  |
+| `@busirocket/eslint-config/vite-react`          | Vite + React + frontend boundaries                                |
+| `@busirocket/eslint-config/astro`               | Astro + TS + frontend boundaries                                  |
+| `@busirocket/eslint-config/node`                | Node globals + unicorn prefer-node-protocol                       |
+| `@busirocket/eslint-config/code-quality`        | Sonar + code-policy structural rules                              |
+| `@busirocket/eslint-config/accessibility`       | jsx-a11y                                                          |
+| `@busirocket/eslint-config/tailwind`            | Tailwind CSS plugin                                               |
+| `@busirocket/eslint-config/frontend-boundaries` | `eslint-plugin-boundaries` layer map only                         |
 
 Each entry resolves to **TypeScript source** (`*.ts`) published in the package.
 Consumers load flat config with **ESM** and a TypeScript-aware runner (for
