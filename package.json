@@ -1,5 +1,5 @@
 {
-  "name": "@vibracomet/eslint-config",
+  "name": "@busirocket/eslint-config",
   "version": "0.1.0",
   "private": false,
   "packageManager": "pnpm@10.33.0",
