@@ -21,7 +21,7 @@
     "perf:check": "pnpm build && lhci autorun --config=.lighthouserc.json"
   },
   "dependencies": {
-    "astro": "^6.1.5"
+    "astro": "^6.1.6"
   },
   "devDependencies": {
     "@astrojs/check": "^0.9.8",
@@ -49,7 +49,7 @@
     "prettier-plugin-organize-imports": "^4.3.0",
     "prettier-plugin-tailwindcss": "^0.7.2",
     "typescript": "^6.0.2",
-    "typescript-eslint": "^8.58.1",
+    "typescript-eslint": "^8.58.2",
     "vitest": "^4.1.4",
     "@lhci/cli": "^0.15.1"
   }
