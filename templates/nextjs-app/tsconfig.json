@@ -1,5 +1,5 @@
 {
-  "extends": "@vibracomet/tsconfig/nextjs.json",
+  "extends": "@busirocket/tsconfig/nextjs.json",
   "compilerOptions": {
     "paths": {
       "@/*": ["./src/*"]

@@ -52,7 +52,7 @@ workspace.
 
 ## Templates vs published packages
 
-Templates depend on **`@vibracomet/*` packages** using **semver** ranges (for
+Templates depend on **`@busirocket/*` packages** using **semver** ranges (for
 example `^0.1.0`) from npm. The monorepo root may use **`pnpm.overrides`** to
 resolve those packages from GitHub until the first npm publish; see the root
 README.

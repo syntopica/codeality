@@ -1,5 +1,5 @@
 {
-  "extends": "@vibracomet/tsconfig/node.json",
+  "extends": "@busirocket/tsconfig/node.json",
   "compilerOptions": {
     "paths": {
       "@/*": ["./*"]

@@ -34,16 +34,16 @@ Do not introduce additional aliases unless there is a clear, documented reason.
 
 ```jsonc
 // App (Next.js)
-{ "extends": "@vibracomet/tsconfig/nextjs.json" }
+{ "extends": "@busirocket/tsconfig/nextjs.json" }
 
 // App (Astro)
-{ "extends": "@vibracomet/tsconfig/astro.json" }
+{ "extends": "@busirocket/tsconfig/astro.json" }
 
 // App (Vite + React)
-{ "extends": "@vibracomet/tsconfig/vite-react.json" }
+{ "extends": "@busirocket/tsconfig/vite-react.json" }
 
 // Node / tooling package
-{ "extends": "@vibracomet/tsconfig/node.json" }
+{ "extends": "@busirocket/tsconfig/node.json" }
 ```
 
 Always specify `include` and `exclude` in your project's own `tsconfig.json`.

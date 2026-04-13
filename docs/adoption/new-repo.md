@@ -8,21 +8,21 @@ on). Enable TypeScript and ESM where the template allows.
 ## 2. Add baseline packages
 
 ```bash
-pnpm add -D @vibracomet/eslint-config@^0.1.0 @vibracomet/prettier-config@^0.1.0 @vibracomet/tsconfig@^0.1.0
+pnpm add -D @busirocket/eslint-config@^0.1.0 @busirocket/prettier-config@^0.1.0 @busirocket/tsconfig@^0.1.0
 ```
 
 Add framework peers as required by the ESLint layers you will import (see
-`@vibracomet/eslint-config` README).
+`@busirocket/eslint-config` README).
 
 ## 3. Wire Prettier
 
 Create `prettier.config.mjs`:
 
 ```javascript
-export { default } from '@vibracomet/prettier-config'
+export { default } from '@busirocket/prettier-config'
 ```
 
-For a frontend app with Tailwind, use `@vibracomet/prettier-config/frontend`
+For a frontend app with Tailwind, use `@busirocket/prettier-config/frontend`
 instead.
 
 ## 4. Wire TypeScript
@@ -32,13 +32,13 @@ example:
 
 ```json
 {
-  "extends": "@vibracomet/tsconfig/nextjs.json"
+  "extends": "@busirocket/tsconfig/nextjs.json"
 }
 ```
 
 ## 5. Wire ESLint (flat config)
 
-Add `eslint.config.ts` and compose layers from `@vibracomet/eslint-config` (for
+Add `eslint.config.ts` and compose layers from `@busirocket/eslint-config` (for
 example `base`, then `nextjs` or `vite-react`). Use `jiti` or your bundler to
 load TypeScript if needed.
 
@@ -50,7 +50,7 @@ Add scripts such as `"lint": "eslint ."`, `"format": "prettier --write ."`, and
 ## 7. Optional CLI check
 
 ```bash
-pnpm dlx @vibracomet/create-baseline@^0.1.0 --check
+pnpm dlx @busirocket/create-baseline@^0.1.0 --check
 ```
 
 Use `--soft` to print install hints without failing.

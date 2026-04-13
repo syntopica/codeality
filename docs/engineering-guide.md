@@ -33,9 +33,9 @@ flexibility, and shared defaults over per-project reinvention.
 
 ## Repository structure
 
-Shared **@vibracomet/\*** packages (ESLint, Prettier, TypeScript,
+Shared **@busirocket/\*** packages (ESLint, Prettier, TypeScript,
 `create-baseline`) are maintained in separate GitHub repositories under
-[VibraComet](https://github.com/VibraComet) and published to npm. This monorepo
+[BusiRocket](https://github.com/BusiRocket) and published to npm. This monorepo
 holds **templates** and **documentation** only.
 
 ```text
@@ -66,7 +66,7 @@ engineering-baseline/
 2. If you are working inside this repository, use it directly as a validated
    workspace template.
 3. If you are creating an external project, copy the template and keep
-   `@vibracomet/*` dependencies as **semver** ranges (for example `^0.1.0`) from
+   `@busirocket/*` dependencies as **semver** ranges (for example `^0.1.0`) from
    npm.
 4. Add project-specific logic. Do not modify the inherited config structure —
    extend it.
@@ -81,9 +81,9 @@ engineering-baseline/
 
 ```ts
 // eslint.config.ts
-import { createBaseConfig } from '@vibracomet/eslint-config/base'
-import { createNextjsConfig } from '@vibracomet/eslint-config/nextjs' // or astro / vite-react / node
-import { createCodeQualityConfig } from '@vibracomet/eslint-config/code-quality'
+import { createBaseConfig } from '@busirocket/eslint-config/base'
+import { createNextjsConfig } from '@busirocket/eslint-config/nextjs' // or astro / vite-react / node
+import { createCodeQualityConfig } from '@busirocket/eslint-config/code-quality'
 
 export default [
   ...createBaseConfig({ tsconfigRootDir: import.meta.dirname }),
@@ -110,7 +110,7 @@ See `docs/standards/eslint.md` for the full rule taxonomy,
 ```jsonc
 // tsconfig.json
 {
-  "extends": "@vibracomet/tsconfig/nextjs.json",
+  "extends": "@busirocket/tsconfig/nextjs.json",
   "compilerOptions": {
     "paths": { "@/*": ["./src/*"] },
   },
@@ -129,12 +129,12 @@ Extend and add only what is genuinely project-specific. See
 
 ```js
 // prettier.config.mjs
-import frontend from '@vibracomet/prettier-config/frontend'
+import frontend from '@busirocket/prettier-config/frontend'
 
 export default { ...frontend }
 ```
 
-Available presets: `@vibracomet/prettier-config` (base: organize-imports +
+Available presets: `@busirocket/prettier-config` (base: organize-imports +
 css-order + Markdown wrap), `/frontend` (+ Tailwind last), `/astro` (+ Astro
 parser + Tailwind last). See `docs/standards/prettier.md` for peer dependencies
 and optional `tailwindConfig`.

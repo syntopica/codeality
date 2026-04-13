@@ -1,10 +1,10 @@
 import path from 'node:path'
 
-import { createAccessibilityConfig } from '@vibracomet/eslint-config/accessibility'
-import { createBaseConfig } from '@vibracomet/eslint-config/base'
-import { createCodeQualityConfig } from '@vibracomet/eslint-config/code-quality'
-import { createTailwindConfig } from '@vibracomet/eslint-config/tailwind'
-import { createViteReactConfig } from '@vibracomet/eslint-config/vite-react'
+import { createAccessibilityConfig } from '@busirocket/eslint-config/accessibility'
+import { createBaseConfig } from '@busirocket/eslint-config/base'
+import { createCodeQualityConfig } from '@busirocket/eslint-config/code-quality'
+import { createTailwindConfig } from '@busirocket/eslint-config/tailwind'
+import { createViteReactConfig } from '@busirocket/eslint-config/vite-react'
 
 // Layer order: base → framework → code-quality → accessibility → tailwind
 

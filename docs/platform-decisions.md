@@ -1,8 +1,8 @@
 # Platform decisions (baseline packages)
 
 This document records the executable decisions for publishing
-`@vibracomet/eslint-config`, `@vibracomet/prettier-config`, and
-`@vibracomet/tsconfig`. It is the counterpart to internal engineering standards
+`@busirocket/eslint-config`, `@busirocket/prettier-config`, and
+`@busirocket/tsconfig`. It is the counterpart to internal engineering standards
 under `docs/standards/`.
 
 ## Criterion (executive)
@@ -10,31 +10,31 @@ under `docs/standards/`.
 **Stabilize the public surface first; automate adoption second.**
 
 Publishing the three config packages and documenting manual adoption takes
-priority over a perfect CLI. The CLI (`@vibracomet/create-baseline`) follows
+priority over a perfect CLI. The CLI (`@busirocket/create-baseline`) follows
 once the API and dependency model are stable.
 
 ## Decision 1 — Plugin stays narrow
 
 `eslint-plugin-code-policy` (separate repository) ships **custom rules and
 minimal presets only**. It does **not** ship the full ESLint ecosystem. The full
-baseline is composed in `@vibracomet/eslint-config`.
+baseline is composed in `@busirocket/eslint-config`.
 
 ## Decision 2 — Official config entry point
 
-`@vibracomet/eslint-config` is the **official** entry point for the shared
+`@busirocket/eslint-config` is the **official** entry point for the shared
 ESLint baseline (flat config). It composes core plugins, TypeScript ESLint,
 import hygiene, optional framework plugins, and `eslint-plugin-code-policy`
 where enabled.
 
 ## Decision 3 — Dedicated bootstrap
 
-`@vibracomet/create-baseline` is the dedicated CLI for install, wiring, and
+`@busirocket/create-baseline` is the dedicated CLI for install, wiring, and
 migration. It is versioned independently and must not block the first npm
 release of the config packages.
 
 ## Decision 4 — Hybrid dependencies
 
-`@vibracomet/eslint-config` uses:
+`@busirocket/eslint-config` uses:
 
 - **`dependencies`:** core stack shipped with the package — `@eslint/js`,
   `eslint-config-prettier`, `eslint-import-resolver-typescript`,
@@ -46,7 +46,7 @@ release of the config packages.
   and others as listed in `package.json`).
 - **`peerDependenciesMeta`:** `optional: true` for non-universal presets.
 
-`@vibracomet/prettier-config` and `@vibracomet/tsconfig` keep **peer-only**
+`@busirocket/prettier-config` and `@busirocket/tsconfig` keep **peer-only**
 Prettier / plugins / TypeScript as documented in each `package.json`.
 
 ## Compatibility matrix (supported)
@@ -71,4 +71,4 @@ CommonJS-only consumers are **out of scope** unless explicitly documented later.
 - **This repo (`engineering-baseline`):** published config packages, templates,
   CLI, and product docs.
 - **`eslint-plugin-code-policy`:** plugin source, rule changes, and plugin
-  README (link to `@vibracomet/eslint-config` for the full stack).
+  README (link to `@busirocket/eslint-config` for the full stack).

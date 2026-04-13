@@ -1,6 +1,6 @@
-import { createBaseConfig } from '@vibracomet/eslint-config/base'
-import { createCodeQualityConfig } from '@vibracomet/eslint-config/code-quality'
-import { createNodeConfig } from '@vibracomet/eslint-config/node'
+import { createBaseConfig } from '@busirocket/eslint-config/base'
+import { createCodeQualityConfig } from '@busirocket/eslint-config/code-quality'
+import { createNodeConfig } from '@busirocket/eslint-config/node'
 
 export default [
   ...createBaseConfig({ tsconfigRootDir: import.meta.dirname }),

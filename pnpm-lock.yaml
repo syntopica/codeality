@@ -6,17 +6,17 @@ settings:
 
 overrides:
   eslint-plugin-react: github:jsx-eslint/eslint-plugin-react#012ec39f962627d5312e9fbaee3eb41d9a4d8bb6
-  '@vibracomet/eslint-config': github:VibraComet/eslint-config#main
-  '@vibracomet/prettier-config': github:VibraComet/prettier-config#main
-  '@vibracomet/tsconfig': github:VibraComet/tsconfig#main
+  '@busirocket/eslint-config': github:BusiRocket/eslint-config#main
+  '@busirocket/prettier-config': github:BusiRocket/prettier-config#main
+  '@busirocket/tsconfig': github:BusiRocket/tsconfig#main
 
 importers:
 
   .:
     devDependencies:
-      '@vibracomet/prettier-config':
-        specifier: github:VibraComet/prettier-config#main
-        version: https://codeload.github.com/VibraComet/prettier-config/tar.gz/d8d35f9c34315318b31b15f60a12da04afa4134d(prettier-plugin-astro@0.14.1)(prettier-plugin-css-order@2.2.0(postcss@8.5.8)(prettier@3.8.2))(prettier-plugin-organize-imports@4.3.0(prettier@3.8.2)(typescript@6.0.2))(prettier-plugin-tailwindcss@0.7.2(prettier-plugin-astro@0.14.1)(prettier-plugin-css-order@2.2.0(postcss@8.5.8)(prettier@3.8.2))(prettier-plugin-organize-imports@4.3.0(prettier@3.8.2)(typescript@6.0.2))(prettier@3.8.2))(prettier@3.8.2)
+      '@busirocket/prettier-config':
+        specifier: github:BusiRocket/prettier-config#main
+        version: https://codeload.github.com/BusiRocket/prettier-config/tar.gz/d8d35f9c34315318b31b15f60a12da04afa4134d(prettier-plugin-astro@0.14.1)(prettier-plugin-css-order@2.2.0(postcss@8.5.8)(prettier@3.8.2))(prettier-plugin-organize-imports@4.3.0(prettier@3.8.2)(typescript@6.0.2))(prettier-plugin-tailwindcss@0.7.2(prettier-plugin-astro@0.14.1)(prettier-plugin-css-order@2.2.0(postcss@8.5.8)(prettier@3.8.2))(prettier-plugin-organize-imports@4.3.0(prettier@3.8.2)(typescript@6.0.2))(prettier@3.8.2))(prettier@3.8.2)
       jiti:
         specifier: ^2.6.1
         version: 2.6.1
@@ -57,15 +57,15 @@ importers:
       '@types/node':
         specifier: ^25.6.0
         version: 25.6.0
-      '@vibracomet/eslint-config':
-        specifier: github:VibraComet/eslint-config#main
-        version: https://codeload.github.com/VibraComet/eslint-config/tar.gz/78a4cf85caa7399ff98adb9da6d89dce954a2d5e(8b5c69f7623fc91fb445e0bae5ace52b)
-      '@vibracomet/prettier-config':
-        specifier: github:VibraComet/prettier-config#main
-        version: https://codeload.github.com/VibraComet/prettier-config/tar.gz/d8d35f9c34315318b31b15f60a12da04afa4134d(prettier-plugin-astro@0.14.1)(prettier-plugin-css-order@2.2.0(postcss@8.5.8)(prettier@3.8.2))(prettier-plugin-organize-imports@4.3.0(prettier@3.8.2)(typescript@6.0.2))(prettier-plugin-tailwindcss@0.7.2(prettier-plugin-astro@0.14.1)(prettier-plugin-css-order@2.2.0(postcss@8.5.8)(prettier@3.8.2))(prettier-plugin-organize-imports@4.3.0(prettier@3.8.2)(typescript@6.0.2))(prettier@3.8.2))(prettier@3.8.2)
-      '@vibracomet/tsconfig':
-        specifier: github:VibraComet/tsconfig#main
-        version: https://codeload.github.com/VibraComet/tsconfig/tar.gz/0c9b9b078be1e9d97842cdd10f524c0000049d92
+      '@busirocket/eslint-config':
+        specifier: github:BusiRocket/eslint-config#main
+        version: https://codeload.github.com/BusiRocket/eslint-config/tar.gz/78a4cf85caa7399ff98adb9da6d89dce954a2d5e(8b5c69f7623fc91fb445e0bae5ace52b)
+      '@busirocket/prettier-config':
+        specifier: github:BusiRocket/prettier-config#main
+        version: https://codeload.github.com/BusiRocket/prettier-config/tar.gz/d8d35f9c34315318b31b15f60a12da04afa4134d(prettier-plugin-astro@0.14.1)(prettier-plugin-css-order@2.2.0(postcss@8.5.8)(prettier@3.8.2))(prettier-plugin-organize-imports@4.3.0(prettier@3.8.2)(typescript@6.0.2))(prettier-plugin-tailwindcss@0.7.2(prettier-plugin-astro@0.14.1)(prettier-plugin-css-order@2.2.0(postcss@8.5.8)(prettier@3.8.2))(prettier-plugin-organize-imports@4.3.0(prettier@3.8.2)(typescript@6.0.2))(prettier@3.8.2))(prettier@3.8.2)
+      '@busirocket/tsconfig':
+        specifier: github:BusiRocket/tsconfig#main
+        version: https://codeload.github.com/BusiRocket/tsconfig/tar.gz/0c9b9b078be1e9d97842cdd10f524c0000049d92
       eslint:
         specifier: ^10.2.0
         version: 10.2.0(jiti@2.6.1)
@@ -166,15 +166,15 @@ importers:
       '@types/react-dom':
         specifier: ^19.2.3
         version: 19.2.3(@types/react@19.2.14)
-      '@vibracomet/eslint-config':
-        specifier: github:VibraComet/eslint-config#main
-        version: https://codeload.github.com/VibraComet/eslint-config/tar.gz/78a4cf85caa7399ff98adb9da6d89dce954a2d5e(170027c8eebb6cecd5a9987d0d2f93c8)
-      '@vibracomet/prettier-config':
-        specifier: github:VibraComet/prettier-config#main
-        version: https://codeload.github.com/VibraComet/prettier-config/tar.gz/d8d35f9c34315318b31b15f60a12da04afa4134d(prettier-plugin-astro@0.14.1)(prettier-plugin-css-order@2.2.0(postcss@8.5.8)(prettier@3.8.2))(prettier-plugin-organize-imports@4.3.0(prettier@3.8.2)(typescript@6.0.2))(prettier-plugin-tailwindcss@0.7.2(prettier-plugin-astro@0.14.1)(prettier-plugin-css-order@2.2.0(postcss@8.5.8)(prettier@3.8.2))(prettier-plugin-organize-imports@4.3.0(prettier@3.8.2)(typescript@6.0.2))(prettier@3.8.2))(prettier@3.8.2)
-      '@vibracomet/tsconfig':
-        specifier: github:VibraComet/tsconfig#main
-        version: https://codeload.github.com/VibraComet/tsconfig/tar.gz/0c9b9b078be1e9d97842cdd10f524c0000049d92
+      '@busirocket/eslint-config':
+        specifier: github:BusiRocket/eslint-config#main
+        version: https://codeload.github.com/BusiRocket/eslint-config/tar.gz/78a4cf85caa7399ff98adb9da6d89dce954a2d5e(170027c8eebb6cecd5a9987d0d2f93c8)
+      '@busirocket/prettier-config':
+        specifier: github:BusiRocket/prettier-config#main
+        version: https://codeload.github.com/BusiRocket/prettier-config/tar.gz/d8d35f9c34315318b31b15f60a12da04afa4134d(prettier-plugin-astro@0.14.1)(prettier-plugin-css-order@2.2.0(postcss@8.5.8)(prettier@3.8.2))(prettier-plugin-organize-imports@4.3.0(prettier@3.8.2)(typescript@6.0.2))(prettier-plugin-tailwindcss@0.7.2(prettier-plugin-astro@0.14.1)(prettier-plugin-css-order@2.2.0(postcss@8.5.8)(prettier@3.8.2))(prettier-plugin-organize-imports@4.3.0(prettier@3.8.2)(typescript@6.0.2))(prettier@3.8.2))(prettier@3.8.2)
+      '@busirocket/tsconfig':
+        specifier: github:BusiRocket/tsconfig#main
+        version: https://codeload.github.com/BusiRocket/tsconfig/tar.gz/0c9b9b078be1e9d97842cdd10f524c0000049d92
       '@vitejs/plugin-react':
         specifier: ^6.0.1
         version: 6.0.1(vite@8.0.8(@types/node@25.6.0)(esbuild@0.27.4)(jiti@2.6.1)(yaml@2.8.3))
@@ -259,15 +259,15 @@ importers:
       '@types/node':
         specifier: ^25.6.0
         version: 25.6.0
-      '@vibracomet/eslint-config':
-        specifier: github:VibraComet/eslint-config#main
-        version: https://codeload.github.com/VibraComet/eslint-config/tar.gz/78a4cf85caa7399ff98adb9da6d89dce954a2d5e(8b5c69f7623fc91fb445e0bae5ace52b)
-      '@vibracomet/prettier-config':
-        specifier: github:VibraComet/prettier-config#main
-        version: https://codeload.github.com/VibraComet/prettier-config/tar.gz/d8d35f9c34315318b31b15f60a12da04afa4134d(prettier-plugin-astro@0.14.1)(prettier-plugin-css-order@2.2.0(postcss@8.5.8)(prettier@3.8.2))(prettier-plugin-organize-imports@4.3.0(prettier@3.8.2)(typescript@6.0.2))(prettier-plugin-tailwindcss@0.7.2(prettier-plugin-astro@0.14.1)(prettier-plugin-css-order@2.2.0(postcss@8.5.8)(prettier@3.8.2))(prettier-plugin-organize-imports@4.3.0(prettier@3.8.2)(typescript@6.0.2))(prettier@3.8.2))(prettier@3.8.2)
-      '@vibracomet/tsconfig':
-        specifier: github:VibraComet/tsconfig#main
-        version: https://codeload.github.com/VibraComet/tsconfig/tar.gz/0c9b9b078be1e9d97842cdd10f524c0000049d92
+      '@busirocket/eslint-config':
+        specifier: github:BusiRocket/eslint-config#main
+        version: https://codeload.github.com/BusiRocket/eslint-config/tar.gz/78a4cf85caa7399ff98adb9da6d89dce954a2d5e(8b5c69f7623fc91fb445e0bae5ace52b)
+      '@busirocket/prettier-config':
+        specifier: github:BusiRocket/prettier-config#main
+        version: https://codeload.github.com/BusiRocket/prettier-config/tar.gz/d8d35f9c34315318b31b15f60a12da04afa4134d(prettier-plugin-astro@0.14.1)(prettier-plugin-css-order@2.2.0(postcss@8.5.8)(prettier@3.8.2))(prettier-plugin-organize-imports@4.3.0(prettier@3.8.2)(typescript@6.0.2))(prettier-plugin-tailwindcss@0.7.2(prettier-plugin-astro@0.14.1)(prettier-plugin-css-order@2.2.0(postcss@8.5.8)(prettier@3.8.2))(prettier-plugin-organize-imports@4.3.0(prettier@3.8.2)(typescript@6.0.2))(prettier@3.8.2))(prettier@3.8.2)
+      '@busirocket/tsconfig':
+        specifier: github:BusiRocket/tsconfig#main
+        version: https://codeload.github.com/BusiRocket/tsconfig/tar.gz/0c9b9b078be1e9d97842cdd10f524c0000049d92
       eslint:
         specifier: ^10.2.0
         version: 10.2.0(jiti@2.6.1)
@@ -353,15 +353,15 @@ importers:
       '@types/react-dom':
         specifier: ^19.2.3
         version: 19.2.3(@types/react@19.2.14)
-      '@vibracomet/eslint-config':
-        specifier: github:VibraComet/eslint-config#main
-        version: https://codeload.github.com/VibraComet/eslint-config/tar.gz/78a4cf85caa7399ff98adb9da6d89dce954a2d5e(170027c8eebb6cecd5a9987d0d2f93c8)
-      '@vibracomet/prettier-config':
-        specifier: github:VibraComet/prettier-config#main
-        version: https://codeload.github.com/VibraComet/prettier-config/tar.gz/d8d35f9c34315318b31b15f60a12da04afa4134d(prettier-plugin-astro@0.14.1)(prettier-plugin-css-order@2.2.0(postcss@8.5.8)(prettier@3.8.2))(prettier-plugin-organize-imports@4.3.0(prettier@3.8.2)(typescript@6.0.2))(prettier-plugin-tailwindcss@0.7.2(prettier-plugin-astro@0.14.1)(prettier-plugin-css-order@2.2.0(postcss@8.5.8)(prettier@3.8.2))(prettier-plugin-organize-imports@4.3.0(prettier@3.8.2)(typescript@6.0.2))(prettier@3.8.2))(prettier@3.8.2)
-      '@vibracomet/tsconfig':
-        specifier: github:VibraComet/tsconfig#main
-        version: https://codeload.github.com/VibraComet/tsconfig/tar.gz/0c9b9b078be1e9d97842cdd10f524c0000049d92
+      '@busirocket/eslint-config':
+        specifier: github:BusiRocket/eslint-config#main
+        version: https://codeload.github.com/BusiRocket/eslint-config/tar.gz/78a4cf85caa7399ff98adb9da6d89dce954a2d5e(170027c8eebb6cecd5a9987d0d2f93c8)
+      '@busirocket/prettier-config':
+        specifier: github:BusiRocket/prettier-config#main
+        version: https://codeload.github.com/BusiRocket/prettier-config/tar.gz/d8d35f9c34315318b31b15f60a12da04afa4134d(prettier-plugin-astro@0.14.1)(prettier-plugin-css-order@2.2.0(postcss@8.5.8)(prettier@3.8.2))(prettier-plugin-organize-imports@4.3.0(prettier@3.8.2)(typescript@6.0.2))(prettier-plugin-tailwindcss@0.7.2(prettier-plugin-astro@0.14.1)(prettier-plugin-css-order@2.2.0(postcss@8.5.8)(prettier@3.8.2))(prettier-plugin-organize-imports@4.3.0(prettier@3.8.2)(typescript@6.0.2))(prettier@3.8.2))(prettier@3.8.2)
+      '@busirocket/tsconfig':
+        specifier: github:BusiRocket/tsconfig#main
+        version: https://codeload.github.com/BusiRocket/tsconfig/tar.gz/0c9b9b078be1e9d97842cdd10f524c0000049d92
       '@vitejs/plugin-react':
         specifier: ^6.0.1
         version: 6.0.1(vite@8.0.8(@types/node@25.6.0)(esbuild@0.27.4)(jiti@2.6.1)(yaml@2.8.3))
@@ -1842,8 +1842,8 @@ packages:
     cpu: [x64]
     os: [win32]
 
-  '@vibracomet/eslint-config@https://codeload.github.com/VibraComet/eslint-config/tar.gz/78a4cf85caa7399ff98adb9da6d89dce954a2d5e':
-    resolution: {tarball: https://codeload.github.com/VibraComet/eslint-config/tar.gz/78a4cf85caa7399ff98adb9da6d89dce954a2d5e}
+  '@busirocket/eslint-config@https://codeload.github.com/BusiRocket/eslint-config/tar.gz/78a4cf85caa7399ff98adb9da6d89dce954a2d5e':
+    resolution: {tarball: https://codeload.github.com/BusiRocket/eslint-config/tar.gz/78a4cf85caa7399ff98adb9da6d89dce954a2d5e}
     version: 0.1.0
     engines: {node: '>=20'}
     peerDependencies:
@@ -1890,8 +1890,8 @@ packages:
       globals:
         optional: true
 
-  '@vibracomet/prettier-config@https://codeload.github.com/VibraComet/prettier-config/tar.gz/d8d35f9c34315318b31b15f60a12da04afa4134d':
-    resolution: {tarball: https://codeload.github.com/VibraComet/prettier-config/tar.gz/d8d35f9c34315318b31b15f60a12da04afa4134d}
+  '@busirocket/prettier-config@https://codeload.github.com/BusiRocket/prettier-config/tar.gz/d8d35f9c34315318b31b15f60a12da04afa4134d':
+    resolution: {tarball: https://codeload.github.com/BusiRocket/prettier-config/tar.gz/d8d35f9c34315318b31b15f60a12da04afa4134d}
     version: 0.1.0
     engines: {node: '>=20'}
     peerDependencies:
@@ -1906,8 +1906,8 @@ packages:
       prettier-plugin-tailwindcss:
         optional: true
 
-  '@vibracomet/tsconfig@https://codeload.github.com/VibraComet/tsconfig/tar.gz/0c9b9b078be1e9d97842cdd10f524c0000049d92':
-    resolution: {tarball: https://codeload.github.com/VibraComet/tsconfig/tar.gz/0c9b9b078be1e9d97842cdd10f524c0000049d92}
+  '@busirocket/tsconfig@https://codeload.github.com/BusiRocket/tsconfig/tar.gz/0c9b9b078be1e9d97842cdd10f524c0000049d92':
+    resolution: {tarball: https://codeload.github.com/BusiRocket/tsconfig/tar.gz/0c9b9b078be1e9d97842cdd10f524c0000049d92}
     version: 0.1.0
     engines: {node: '>=20'}
 
@@ -6930,7 +6930,7 @@ snapshots:
   '@unrs/resolver-binding-win32-x64-msvc@1.11.1':
     optional: true
 
-  '@vibracomet/eslint-config@https://codeload.github.com/VibraComet/eslint-config/tar.gz/78a4cf85caa7399ff98adb9da6d89dce954a2d5e(170027c8eebb6cecd5a9987d0d2f93c8)':
+  '@busirocket/eslint-config@https://codeload.github.com/BusiRocket/eslint-config/tar.gz/78a4cf85caa7399ff98adb9da6d89dce954a2d5e(170027c8eebb6cecd5a9987d0d2f93c8)':
     dependencies:
       '@eslint/js': 10.0.1(eslint@10.2.0(jiti@2.6.1))
       eslint: 10.2.0(jiti@2.6.1)
@@ -6963,7 +6963,7 @@ snapshots:
       - eslint-plugin-import-x
       - supports-color
 
-  '@vibracomet/eslint-config@https://codeload.github.com/VibraComet/eslint-config/tar.gz/78a4cf85caa7399ff98adb9da6d89dce954a2d5e(8b5c69f7623fc91fb445e0bae5ace52b)':
+  '@busirocket/eslint-config@https://codeload.github.com/BusiRocket/eslint-config/tar.gz/78a4cf85caa7399ff98adb9da6d89dce954a2d5e(8b5c69f7623fc91fb445e0bae5ace52b)':
     dependencies:
       '@eslint/js': 10.0.1(eslint@10.2.0(jiti@2.6.1))
       eslint: 10.2.0(jiti@2.6.1)
@@ -6996,7 +6996,7 @@ snapshots:
       - eslint-plugin-import-x
       - supports-color
 
-  '@vibracomet/prettier-config@https://codeload.github.com/VibraComet/prettier-config/tar.gz/d8d35f9c34315318b31b15f60a12da04afa4134d(prettier-plugin-astro@0.14.1)(prettier-plugin-css-order@2.2.0(postcss@8.5.8)(prettier@3.8.2))(prettier-plugin-organize-imports@4.3.0(prettier@3.8.2)(typescript@6.0.2))(prettier-plugin-tailwindcss@0.7.2(prettier-plugin-astro@0.14.1)(prettier-plugin-css-order@2.2.0(postcss@8.5.8)(prettier@3.8.2))(prettier-plugin-organize-imports@4.3.0(prettier@3.8.2)(typescript@6.0.2))(prettier@3.8.2))(prettier@3.8.2)':
+  '@busirocket/prettier-config@https://codeload.github.com/BusiRocket/prettier-config/tar.gz/d8d35f9c34315318b31b15f60a12da04afa4134d(prettier-plugin-astro@0.14.1)(prettier-plugin-css-order@2.2.0(postcss@8.5.8)(prettier@3.8.2))(prettier-plugin-organize-imports@4.3.0(prettier@3.8.2)(typescript@6.0.2))(prettier-plugin-tailwindcss@0.7.2(prettier-plugin-astro@0.14.1)(prettier-plugin-css-order@2.2.0(postcss@8.5.8)(prettier@3.8.2))(prettier-plugin-organize-imports@4.3.0(prettier@3.8.2)(typescript@6.0.2))(prettier@3.8.2))(prettier@3.8.2)':
     dependencies:
       prettier: 3.8.2
       prettier-plugin-css-order: 2.2.0(postcss@8.5.8)(prettier@3.8.2)
@@ -7005,7 +7005,7 @@ snapshots:
       prettier-plugin-astro: 0.14.1
       prettier-plugin-tailwindcss: 0.7.2(prettier-plugin-astro@0.14.1)(prettier-plugin-css-order@2.2.0(postcss@8.5.8)(prettier@3.8.2))(prettier-plugin-organize-imports@4.3.0(prettier@3.8.2)(typescript@6.0.2))(prettier@3.8.2)
 
-  '@vibracomet/tsconfig@https://codeload.github.com/VibraComet/tsconfig/tar.gz/0c9b9b078be1e9d97842cdd10f524c0000049d92': {}
+  '@busirocket/tsconfig@https://codeload.github.com/BusiRocket/tsconfig/tar.gz/0c9b9b078be1e9d97842cdd10f524c0000049d92': {}
 
   '@vitejs/plugin-react@6.0.1(vite@8.0.8(@types/node@25.6.0)(esbuild@0.27.4)(jiti@2.6.1)(yaml@2.8.3))':
     dependencies:

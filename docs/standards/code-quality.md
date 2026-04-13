@@ -18,9 +18,9 @@ files, each doing one thing.
 Add the third layer to any project's `eslint.config.ts`:
 
 ```ts
-import { createBaseConfig } from '@vibracomet/eslint-config/base'
-import { createCodeQualityConfig } from '@vibracomet/eslint-config/code-quality'
-import { createNextjsConfig } from '@vibracomet/eslint-config/nextjs'
+import { createBaseConfig } from '@busirocket/eslint-config/base'
+import { createCodeQualityConfig } from '@busirocket/eslint-config/code-quality'
+import { createNextjsConfig } from '@busirocket/eslint-config/nextjs'
 
 export default [
   ...createBaseConfig({ tsconfigRootDir: import.meta.dirname }),
@@ -204,7 +204,7 @@ severity on the same rule.
 
 Overrides apply to `*.config.*`, test files, and Next.js App Router special
 files (see
-[`code-quality.ts` in eslint-config](https://github.com/VibraComet/eslint-config/blob/main/src/code-quality.ts)).
+[`code-quality.ts` in eslint-config](https://github.com/BusiRocket/eslint-config/blob/main/src/code-quality.ts)).
 
 Warnings do not block CI unless your pipeline treats warnings as errors. Errors
 (`max-lines`, code-policy, boundaries) block by default.
@@ -246,7 +246,7 @@ src/
 ```
 
 Layered imports (`components` → `shared` only; `shared` → `services`) are
-enforced by `@vibracomet/eslint-config/frontend-boundaries` when you use
+enforced by `@busirocket/eslint-config/frontend-boundaries` when you use
 `createNextjsConfig`, `createViteReactConfig`, or `createAstroConfig`. See
 [typescript-frontend-architecture.md](./typescript-frontend-architecture.md).
 

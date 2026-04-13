@@ -1,4 +1,4 @@
-import base from '@vibracomet/prettier-config'
+import base from '@busirocket/prettier-config'
 
 /** @type {import('prettier').Config} */
 export default { ...base }
