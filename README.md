@@ -1,7 +1,7 @@
-# @vibracomet/create-baseline
+# @busirocket/create-baseline
 
 Small CLI to print install commands and verify that your project lists the
-`@vibracomet` baseline config packages (`eslint-config`, `prettier-config`,
+`@busirocket` baseline config packages (`eslint-config`, `prettier-config`,
 `tsconfig`) and optionally checks for a flat ESLint config file.
 
 ## Requirements
@@ -13,7 +13,7 @@ Small CLI to print install commands and verify that your project lists the
 Use via `pnpm dlx` / `npx` (no need to add as a dependency for one-off checks):
 
 ```bash
-pnpm dlx @vibracomet/create-baseline@^0.1.0 --soft
+pnpm dlx @busirocket/create-baseline@^0.1.0 --soft
 ```
 
 ## Usage
@@ -29,6 +29,6 @@ shipped with this package; update that file when releasing aligned semver bumps.
 
 ## Repository
 
-Source and issues: [github.com/VibraComet/create-baseline](https://github.com/VibraComet/create-baseline).
+Source and issues: [github.com/BusiRocket/create-baseline](https://github.com/BusiRocket/create-baseline).
 
-Adoption guides: [engineering-baseline/docs/adoption](https://github.com/VibraComet/engineering-baseline/tree/main/docs/adoption).
+Adoption guides: [engineering-baseline/docs/adoption](https://github.com/BusiRocket/engineering-baseline/tree/main/docs/adoption).

@@ -8,9 +8,9 @@ const __dirname = dirname(fileURLToPath(import.meta.url))
 const PACKAGE_ROOT = resolve(__dirname, '..')
 
 const BASELINE_PACKAGE_NAMES = [
-  '@vibracomet/eslint-config',
-  '@vibracomet/prettier-config',
-  '@vibracomet/tsconfig',
+  '@busirocket/eslint-config',
+  '@busirocket/prettier-config',
+  '@busirocket/tsconfig',
 ]
 
 async function loadBaselineVersions() {
@@ -86,7 +86,7 @@ async function main() {
     manifest = await readPackageJson(root)
   } catch {
     if (flags.soft) {
-      console.log('@vibracomet baseline — add these devDependencies:\n')
+      console.log('@busirocket baseline — add these devDependencies:\n')
       printInstall()
       console.log(
         '\n(No package.json in current directory; skipped dependency scan.)',
@@ -102,7 +102,7 @@ async function main() {
   const eslintOk = await hasEslintConfig(root)
 
   if (flags.soft) {
-    console.log('@vibracomet baseline — add these devDependencies:\n')
+    console.log('@busirocket baseline — add these devDependencies:\n')
     printInstall()
     if (missing.length) {
       console.log('\nMissing from package.json:', missing.join(', '))
@@ -111,7 +111,7 @@ async function main() {
     }
     if (!eslintOk) {
       console.log(
-        '\nNo eslint.config.* found. Add a flat config that imports @vibracomet/eslint-config (see https://github.com/VibraComet/engineering-baseline/tree/main/docs/adoption).',
+        '\nNo eslint.config.* found. Add a flat config that imports @busirocket/eslint-config (see https://github.com/BusiRocket/engineering-baseline/tree/main/docs/adoption).',
       )
     }
   }
