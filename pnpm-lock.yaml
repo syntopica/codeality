@@ -13,7 +13,7 @@ importers:
     devDependencies:
       '@busirocket/prettier-config':
         specifier: ^0.1.0
-        version: 0.1.0(prettier-plugin-astro@0.14.1)(prettier-plugin-css-order@2.2.0(postcss@8.5.9)(prettier@3.8.2))(prettier-plugin-organize-imports@4.3.0(prettier@3.8.2)(typescript@6.0.2))(prettier-plugin-tailwindcss@0.7.2(prettier-plugin-astro@0.14.1)(prettier-plugin-css-order@2.2.0(postcss@8.5.9)(prettier@3.8.2))(prettier-plugin-organize-imports@4.3.0(prettier@3.8.2)(typescript@6.0.2))(prettier@3.8.2))(prettier@3.8.2)
+        version: 0.1.1(prettier-plugin-astro@0.14.1)(prettier-plugin-css-order@2.2.0(postcss@8.5.9)(prettier@3.8.2))(prettier-plugin-organize-imports@4.3.0(prettier@3.8.2)(typescript@6.0.2))(prettier-plugin-tailwindcss@0.7.2(prettier-plugin-astro@0.14.1)(prettier-plugin-css-order@2.2.0(postcss@8.5.9)(prettier@3.8.2))(prettier-plugin-organize-imports@4.3.0(prettier@3.8.2)(typescript@6.0.2))(prettier@3.8.2))(prettier@3.8.2)
       jiti:
         specifier: ^2.6.1
         version: 2.6.1
@@ -47,13 +47,13 @@ importers:
         version: 0.9.8(prettier-plugin-astro@0.14.1)(prettier@3.8.2)(typescript@6.0.2)
       '@busirocket/eslint-config':
         specifier: ^0.1.0
-        version: 0.1.0(f8d1b9d35399c1a6d00fa232c6f8da11)
+        version: 0.1.1(f8d1b9d35399c1a6d00fa232c6f8da11)
       '@busirocket/prettier-config':
         specifier: ^0.1.0
-        version: 0.1.0(prettier-plugin-astro@0.14.1)(prettier-plugin-css-order@2.2.0(postcss@8.5.9)(prettier@3.8.2))(prettier-plugin-organize-imports@4.3.0(prettier@3.8.2)(typescript@6.0.2))(prettier-plugin-tailwindcss@0.7.2(prettier-plugin-astro@0.14.1)(prettier-plugin-css-order@2.2.0(postcss@8.5.9)(prettier@3.8.2))(prettier-plugin-organize-imports@4.3.0(prettier@3.8.2)(typescript@6.0.2))(prettier@3.8.2))(prettier@3.8.2)
+        version: 0.1.1(prettier-plugin-astro@0.14.1)(prettier-plugin-css-order@2.2.0(postcss@8.5.9)(prettier@3.8.2))(prettier-plugin-organize-imports@4.3.0(prettier@3.8.2)(typescript@6.0.2))(prettier-plugin-tailwindcss@0.7.2(prettier-plugin-astro@0.14.1)(prettier-plugin-css-order@2.2.0(postcss@8.5.9)(prettier@3.8.2))(prettier-plugin-organize-imports@4.3.0(prettier@3.8.2)(typescript@6.0.2))(prettier@3.8.2))(prettier@3.8.2)
       '@busirocket/tsconfig':
         specifier: ^0.1.0
-        version: 0.1.0
+        version: 0.1.1
       '@eslint/js':
         specifier: ^10.0.1
         version: 10.0.1(eslint@10.2.0(jiti@2.6.1))
@@ -141,13 +141,13 @@ importers:
     devDependencies:
       '@busirocket/eslint-config':
         specifier: ^0.1.0
-        version: 0.1.0(0b02f96f6f25318bb06c4ca093d525bf)
+        version: 0.1.1(0b02f96f6f25318bb06c4ca093d525bf)
       '@busirocket/prettier-config':
         specifier: ^0.1.0
-        version: 0.1.0(prettier-plugin-astro@0.14.1)(prettier-plugin-css-order@2.2.0(postcss@8.5.9)(prettier@3.8.2))(prettier-plugin-organize-imports@4.3.0(prettier@3.8.2)(typescript@6.0.2))(prettier-plugin-tailwindcss@0.7.2(prettier-plugin-astro@0.14.1)(prettier-plugin-css-order@2.2.0(postcss@8.5.9)(prettier@3.8.2))(prettier-plugin-organize-imports@4.3.0(prettier@3.8.2)(typescript@6.0.2))(prettier@3.8.2))(prettier@3.8.2)
+        version: 0.1.1(prettier-plugin-astro@0.14.1)(prettier-plugin-css-order@2.2.0(postcss@8.5.9)(prettier@3.8.2))(prettier-plugin-organize-imports@4.3.0(prettier@3.8.2)(typescript@6.0.2))(prettier-plugin-tailwindcss@0.7.2(prettier-plugin-astro@0.14.1)(prettier-plugin-css-order@2.2.0(postcss@8.5.9)(prettier@3.8.2))(prettier-plugin-organize-imports@4.3.0(prettier@3.8.2)(typescript@6.0.2))(prettier@3.8.2))(prettier@3.8.2)
       '@busirocket/tsconfig':
         specifier: ^0.1.0
-        version: 0.1.0
+        version: 0.1.1
       '@eslint/js':
         specifier: ^10.0.1
         version: 10.0.1(eslint@10.2.0(jiti@2.6.1))
@@ -252,13 +252,13 @@ importers:
     devDependencies:
       '@busirocket/eslint-config':
         specifier: ^0.1.0
-        version: 0.1.0(f8d1b9d35399c1a6d00fa232c6f8da11)
+        version: 0.1.1(f8d1b9d35399c1a6d00fa232c6f8da11)
       '@busirocket/prettier-config':
         specifier: ^0.1.0
-        version: 0.1.0(prettier-plugin-astro@0.14.1)(prettier-plugin-css-order@2.2.0(postcss@8.5.9)(prettier@3.8.2))(prettier-plugin-organize-imports@4.3.0(prettier@3.8.2)(typescript@6.0.2))(prettier-plugin-tailwindcss@0.7.2(prettier-plugin-astro@0.14.1)(prettier-plugin-css-order@2.2.0(postcss@8.5.9)(prettier@3.8.2))(prettier-plugin-organize-imports@4.3.0(prettier@3.8.2)(typescript@6.0.2))(prettier@3.8.2))(prettier@3.8.2)
+        version: 0.1.1(prettier-plugin-astro@0.14.1)(prettier-plugin-css-order@2.2.0(postcss@8.5.9)(prettier@3.8.2))(prettier-plugin-organize-imports@4.3.0(prettier@3.8.2)(typescript@6.0.2))(prettier-plugin-tailwindcss@0.7.2(prettier-plugin-astro@0.14.1)(prettier-plugin-css-order@2.2.0(postcss@8.5.9)(prettier@3.8.2))(prettier-plugin-organize-imports@4.3.0(prettier@3.8.2)(typescript@6.0.2))(prettier@3.8.2))(prettier@3.8.2)
       '@busirocket/tsconfig':
         specifier: ^0.1.0
-        version: 0.1.0
+        version: 0.1.1
       '@eslint/js':
         specifier: ^10.0.1
         version: 10.0.1(eslint@10.2.0(jiti@2.6.1))
@@ -334,13 +334,13 @@ importers:
     devDependencies:
       '@busirocket/eslint-config':
         specifier: ^0.1.0
-        version: 0.1.0(0b02f96f6f25318bb06c4ca093d525bf)
+        version: 0.1.1(0b02f96f6f25318bb06c4ca093d525bf)
       '@busirocket/prettier-config':
         specifier: ^0.1.0
-        version: 0.1.0(prettier-plugin-astro@0.14.1)(prettier-plugin-css-order@2.2.0(postcss@8.5.9)(prettier@3.8.2))(prettier-plugin-organize-imports@4.3.0(prettier@3.8.2)(typescript@6.0.2))(prettier-plugin-tailwindcss@0.7.2(prettier-plugin-astro@0.14.1)(prettier-plugin-css-order@2.2.0(postcss@8.5.9)(prettier@3.8.2))(prettier-plugin-organize-imports@4.3.0(prettier@3.8.2)(typescript@6.0.2))(prettier@3.8.2))(prettier@3.8.2)
+        version: 0.1.1(prettier-plugin-astro@0.14.1)(prettier-plugin-css-order@2.2.0(postcss@8.5.9)(prettier@3.8.2))(prettier-plugin-organize-imports@4.3.0(prettier@3.8.2)(typescript@6.0.2))(prettier-plugin-tailwindcss@0.7.2(prettier-plugin-astro@0.14.1)(prettier-plugin-css-order@2.2.0(postcss@8.5.9)(prettier@3.8.2))(prettier-plugin-organize-imports@4.3.0(prettier@3.8.2)(typescript@6.0.2))(prettier@3.8.2))(prettier@3.8.2)
       '@busirocket/tsconfig':
         specifier: ^0.1.0
-        version: 0.1.0
+        version: 0.1.1
       '@eslint/js':
         specifier: ^10.0.1
         version: 10.0.1(eslint@10.2.0(jiti@2.6.1))
@@ -577,8 +577,8 @@ packages:
     resolution: {integrity: sha512-ctxtJ/eA+t+6q2++vj5j7FYX3nRu311q1wfYH3xjlLOsczhlhxAg2FWNUXhpGvAw3BWo1xBcvOV6/YLc2r5FJw==}
     hasBin: true
 
-  '@busirocket/eslint-config@0.1.0':
-    resolution: {integrity: sha512-QG0fgc/sICj9nPWXnUVRDiOvKAG9cPA/OcRMCYTW3TJ9aVOLAjkOVGD4c4vMgp+QEirAs1cyk3+WCUhnuEkvYg==}
+  '@busirocket/eslint-config@0.1.1':
+    resolution: {integrity: sha512-8KwyvRWeygBAv3kgpPy+GyYRo7/EZRcra2MQhPgLqR+60EI4+cffaHboigW1obLOc4XvCR/cU48qgv8I978+vw==}
     engines: {node: '>=20'}
     peerDependencies:
       '@next/eslint-plugin-next': '>=15.0.0'
@@ -624,8 +624,8 @@ packages:
       globals:
         optional: true
 
-  '@busirocket/prettier-config@0.1.0':
-    resolution: {integrity: sha512-0Sdc6li7iLXMumS+fAkWvbxdGwsCpZg7GEL+yZlffdIwmeM2U2DCQUkTigt/wkJeUGWVyY9xipRPv+5StMXxVQ==}
+  '@busirocket/prettier-config@0.1.1':
+    resolution: {integrity: sha512-Re+A88VP8T1BYECkR3UWGQJPuusNWETL2++oewaiJxd23GRQmOmYDsXpMkLz0Z0XZKP07UFBJqIC7E/h+g6brQ==}
     engines: {node: '>=20'}
     peerDependencies:
       prettier: '>=3.0.0'
@@ -639,8 +639,8 @@ packages:
       prettier-plugin-tailwindcss:
         optional: true
 
-  '@busirocket/tsconfig@0.1.0':
-    resolution: {integrity: sha512-IbrZkfm6ZjBrB0Ox1THzK2vOmnvCS2WfLtJtH6s1gQqrAxwAMdt3g1BsF/CpGLaG5hxqrItYsRllYxtwWw8GLQ==}
+  '@busirocket/tsconfig@0.1.1':
+    resolution: {integrity: sha512-UJH9u3AYQ8m9s5BUUQjJtZ+ofjgq/Sspy9f4f3xGco1fwvs2K4wDYiVek/2JY5xGRC5pyqmi4GQTMyocA82xlA==}
     engines: {node: '>=20'}
 
   '@capsizecss/unpack@4.0.0':
@@ -5875,7 +5875,7 @@ snapshots:
     dependencies:
       css-tree: 3.2.1
 
-  '@busirocket/eslint-config@0.1.0(0b02f96f6f25318bb06c4ca093d525bf)':
+  '@busirocket/eslint-config@0.1.1(0b02f96f6f25318bb06c4ca093d525bf)':
     dependencies:
       '@eslint/js': 10.0.1(eslint@10.2.0(jiti@2.6.1))
       eslint: 10.2.0(jiti@2.6.1)
@@ -5908,7 +5908,7 @@ snapshots:
       - eslint-plugin-import-x
       - supports-color
 
-  '@busirocket/eslint-config@0.1.0(f8d1b9d35399c1a6d00fa232c6f8da11)':
+  '@busirocket/eslint-config@0.1.1(f8d1b9d35399c1a6d00fa232c6f8da11)':
     dependencies:
       '@eslint/js': 10.0.1(eslint@10.2.0(jiti@2.6.1))
       eslint: 10.2.0(jiti@2.6.1)
@@ -5941,7 +5941,7 @@ snapshots:
       - eslint-plugin-import-x
       - supports-color
 
-  '@busirocket/prettier-config@0.1.0(prettier-plugin-astro@0.14.1)(prettier-plugin-css-order@2.2.0(postcss@8.5.9)(prettier@3.8.2))(prettier-plugin-organize-imports@4.3.0(prettier@3.8.2)(typescript@6.0.2))(prettier-plugin-tailwindcss@0.7.2(prettier-plugin-astro@0.14.1)(prettier-plugin-css-order@2.2.0(postcss@8.5.9)(prettier@3.8.2))(prettier-plugin-organize-imports@4.3.0(prettier@3.8.2)(typescript@6.0.2))(prettier@3.8.2))(prettier@3.8.2)':
+  '@busirocket/prettier-config@0.1.1(prettier-plugin-astro@0.14.1)(prettier-plugin-css-order@2.2.0(postcss@8.5.9)(prettier@3.8.2))(prettier-plugin-organize-imports@4.3.0(prettier@3.8.2)(typescript@6.0.2))(prettier-plugin-tailwindcss@0.7.2(prettier-plugin-astro@0.14.1)(prettier-plugin-css-order@2.2.0(postcss@8.5.9)(prettier@3.8.2))(prettier-plugin-organize-imports@4.3.0(prettier@3.8.2)(typescript@6.0.2))(prettier@3.8.2))(prettier@3.8.2)':
     dependencies:
       prettier: 3.8.2
       prettier-plugin-css-order: 2.2.0(postcss@8.5.9)(prettier@3.8.2)
@@ -5950,7 +5950,7 @@ snapshots:
       prettier-plugin-astro: 0.14.1
       prettier-plugin-tailwindcss: 0.7.2(prettier-plugin-astro@0.14.1)(prettier-plugin-css-order@2.2.0(postcss@8.5.9)(prettier@3.8.2))(prettier-plugin-organize-imports@4.3.0(prettier@3.8.2)(typescript@6.0.2))(prettier@3.8.2)
 
-  '@busirocket/tsconfig@0.1.0': {}
+  '@busirocket/tsconfig@0.1.1': {}
 
   '@capsizecss/unpack@4.0.0':
     dependencies:
