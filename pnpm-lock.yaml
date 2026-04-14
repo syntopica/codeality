@@ -47,7 +47,7 @@ importers:
         version: 0.9.8(prettier-plugin-astro@0.14.1)(prettier@3.8.2)(typescript@6.0.2)
       '@busirocket/eslint-config':
         specifier: ^0.1.0
-        version: 0.1.0(e057d8de4c0559d7b552a249f69b5c49)
+        version: 0.1.0(f8d1b9d35399c1a6d00fa232c6f8da11)
       '@busirocket/prettier-config':
         specifier: ^0.1.0
         version: 0.1.0(prettier-plugin-astro@0.14.1)(prettier-plugin-css-order@2.2.0(postcss@8.5.9)(prettier@3.8.2))(prettier-plugin-organize-imports@4.3.0(prettier@3.8.2)(typescript@6.0.2))(prettier-plugin-tailwindcss@0.7.2(prettier-plugin-astro@0.14.1)(prettier-plugin-css-order@2.2.0(postcss@8.5.9)(prettier@3.8.2))(prettier-plugin-organize-imports@4.3.0(prettier@3.8.2)(typescript@6.0.2))(prettier@3.8.2))(prettier@3.8.2)
@@ -79,8 +79,8 @@ importers:
         specifier: ^6.0.2
         version: 6.0.2(@typescript-eslint/parser@8.58.2(eslint@10.2.0(jiti@2.6.1))(typescript@6.0.2))(eslint-import-resolver-typescript@4.4.4)(eslint@10.2.0(jiti@2.6.1))
       eslint-plugin-code-policy:
-        specifier: ^0.2.2
-        version: 0.2.2(eslint@10.2.0(jiti@2.6.1))(typescript@6.0.2)
+        specifier: ^0.2.3
+        version: 0.2.3(eslint@10.2.0(jiti@2.6.1))(typescript@6.0.2)
       eslint-plugin-import:
         specifier: ^2.32.0
         version: 2.32.0(@typescript-eslint/parser@8.58.2(eslint@10.2.0(jiti@2.6.1))(typescript@6.0.2))(eslint-import-resolver-typescript@4.4.4)(eslint@10.2.0(jiti@2.6.1))
@@ -141,7 +141,7 @@ importers:
     devDependencies:
       '@busirocket/eslint-config':
         specifier: ^0.1.0
-        version: 0.1.0(a1468945ddc75bd4e574bdad9e7c02e5)
+        version: 0.1.0(0b02f96f6f25318bb06c4ca093d525bf)
       '@busirocket/prettier-config':
         specifier: ^0.1.0
         version: 0.1.0(prettier-plugin-astro@0.14.1)(prettier-plugin-css-order@2.2.0(postcss@8.5.9)(prettier@3.8.2))(prettier-plugin-organize-imports@4.3.0(prettier@3.8.2)(typescript@6.0.2))(prettier-plugin-tailwindcss@0.7.2(prettier-plugin-astro@0.14.1)(prettier-plugin-css-order@2.2.0(postcss@8.5.9)(prettier@3.8.2))(prettier-plugin-organize-imports@4.3.0(prettier@3.8.2)(typescript@6.0.2))(prettier@3.8.2))(prettier@3.8.2)
@@ -191,8 +191,8 @@ importers:
         specifier: ^6.0.2
         version: 6.0.2(@typescript-eslint/parser@8.58.2(eslint@10.2.0(jiti@2.6.1))(typescript@6.0.2))(eslint-import-resolver-typescript@4.4.4)(eslint@10.2.0(jiti@2.6.1))
       eslint-plugin-code-policy:
-        specifier: ^0.2.2
-        version: 0.2.2(eslint@10.2.0(jiti@2.6.1))(typescript@6.0.2)
+        specifier: ^0.2.3
+        version: 0.2.3(eslint@10.2.0(jiti@2.6.1))(typescript@6.0.2)
       eslint-plugin-import:
         specifier: ^2.32.0
         version: 2.32.0(@typescript-eslint/parser@8.58.2(eslint@10.2.0(jiti@2.6.1))(typescript@6.0.2))(eslint-import-resolver-typescript@4.4.4)(eslint@10.2.0(jiti@2.6.1))
@@ -252,7 +252,7 @@ importers:
     devDependencies:
       '@busirocket/eslint-config':
         specifier: ^0.1.0
-        version: 0.1.0(e057d8de4c0559d7b552a249f69b5c49)
+        version: 0.1.0(f8d1b9d35399c1a6d00fa232c6f8da11)
       '@busirocket/prettier-config':
         specifier: ^0.1.0
         version: 0.1.0(prettier-plugin-astro@0.14.1)(prettier-plugin-css-order@2.2.0(postcss@8.5.9)(prettier@3.8.2))(prettier-plugin-organize-imports@4.3.0(prettier@3.8.2)(typescript@6.0.2))(prettier-plugin-tailwindcss@0.7.2(prettier-plugin-astro@0.14.1)(prettier-plugin-css-order@2.2.0(postcss@8.5.9)(prettier@3.8.2))(prettier-plugin-organize-imports@4.3.0(prettier@3.8.2)(typescript@6.0.2))(prettier@3.8.2))(prettier@3.8.2)
@@ -275,8 +275,8 @@ importers:
         specifier: ^4.4.4
         version: 4.4.4(eslint-plugin-import@2.32.0)(eslint@10.2.0(jiti@2.6.1))
       eslint-plugin-code-policy:
-        specifier: ^0.2.2
-        version: 0.2.2(eslint@10.2.0(jiti@2.6.1))(typescript@6.0.2)
+        specifier: ^0.2.3
+        version: 0.2.3(eslint@10.2.0(jiti@2.6.1))(typescript@6.0.2)
       eslint-plugin-import:
         specifier: ^2.32.0
         version: 2.32.0(@typescript-eslint/parser@8.58.2(eslint@10.2.0(jiti@2.6.1))(typescript@6.0.2))(eslint-import-resolver-typescript@4.4.4)(eslint@10.2.0(jiti@2.6.1))
@@ -334,7 +334,7 @@ importers:
     devDependencies:
       '@busirocket/eslint-config':
         specifier: ^0.1.0
-        version: 0.1.0(a1468945ddc75bd4e574bdad9e7c02e5)
+        version: 0.1.0(0b02f96f6f25318bb06c4ca093d525bf)
       '@busirocket/prettier-config':
         specifier: ^0.1.0
         version: 0.1.0(prettier-plugin-astro@0.14.1)(prettier-plugin-css-order@2.2.0(postcss@8.5.9)(prettier@3.8.2))(prettier-plugin-organize-imports@4.3.0(prettier@3.8.2)(typescript@6.0.2))(prettier-plugin-tailwindcss@0.7.2(prettier-plugin-astro@0.14.1)(prettier-plugin-css-order@2.2.0(postcss@8.5.9)(prettier@3.8.2))(prettier-plugin-organize-imports@4.3.0(prettier@3.8.2)(typescript@6.0.2))(prettier@3.8.2))(prettier@3.8.2)
@@ -372,8 +372,8 @@ importers:
         specifier: ^4.4.4
         version: 4.4.4(eslint-plugin-import@2.32.0)(eslint@10.2.0(jiti@2.6.1))
       eslint-plugin-code-policy:
-        specifier: ^0.2.2
-        version: 0.2.2(eslint@10.2.0(jiti@2.6.1))(typescript@6.0.2)
+        specifier: ^0.2.3
+        version: 0.2.3(eslint@10.2.0(jiti@2.6.1))(typescript@6.0.2)
       eslint-plugin-import:
         specifier: ^2.32.0
         version: 2.32.0(@typescript-eslint/parser@8.58.2(eslint@10.2.0(jiti@2.6.1))(typescript@6.0.2))(eslint-import-resolver-typescript@4.4.4)(eslint@10.2.0(jiti@2.6.1))
@@ -2802,8 +2802,8 @@ packages:
     peerDependencies:
       eslint: '>=6.0.0'
 
-  eslint-plugin-code-policy@0.2.2:
-    resolution: {integrity: sha512-TRh/s8mZrd9HreVg5E5JyDWnK4AgNi6H6bLnzCztz8jCWdT+yW9oFlVI//b7boeHVodhVLaez0L40X3zuo/69w==}
+  eslint-plugin-code-policy@0.2.3:
+    resolution: {integrity: sha512-dwt9isbudl4MPRNbW6V133dAxZinY78Z/WB+IWOiTP0mO0HYclyRtT608VVkmuQN/ph4j3R3nMTq3uhxipxCvw==}
     peerDependencies:
       eslint: '>=9.0.0'
       typescript: '>=5.4.0'
@@ -5875,7 +5875,7 @@ snapshots:
     dependencies:
       css-tree: 3.2.1
 
-  '@busirocket/eslint-config@0.1.0(a1468945ddc75bd4e574bdad9e7c02e5)':
+  '@busirocket/eslint-config@0.1.0(0b02f96f6f25318bb06c4ca093d525bf)':
     dependencies:
       '@eslint/js': 10.0.1(eslint@10.2.0(jiti@2.6.1))
       eslint: 10.2.0(jiti@2.6.1)
@@ -5892,7 +5892,7 @@ snapshots:
       eslint-config-next: 16.2.3(@typescript-eslint/parser@8.58.2(eslint@10.2.0(jiti@2.6.1))(typescript@6.0.2))(eslint@10.2.0(jiti@2.6.1))(typescript@6.0.2)
       eslint-plugin-astro: 1.7.0(eslint@10.2.0(jiti@2.6.1))
       eslint-plugin-boundaries: 6.0.2(@typescript-eslint/parser@8.58.2(eslint@10.2.0(jiti@2.6.1))(typescript@6.0.2))(eslint-import-resolver-typescript@4.4.4)(eslint@10.2.0(jiti@2.6.1))
-      eslint-plugin-code-policy: 0.2.2(eslint@10.2.0(jiti@2.6.1))(typescript@6.0.2)
+      eslint-plugin-code-policy: 0.2.3(eslint@10.2.0(jiti@2.6.1))(typescript@6.0.2)
       eslint-plugin-jsx-a11y: 6.10.2(eslint@10.2.0(jiti@2.6.1))
       eslint-plugin-react: https://codeload.github.com/jsx-eslint/eslint-plugin-react/tar.gz/012ec39f962627d5312e9fbaee3eb41d9a4d8bb6(eslint@10.2.0(jiti@2.6.1))
       eslint-plugin-react-hooks: 7.0.1(eslint@10.2.0(jiti@2.6.1))
@@ -5908,7 +5908,7 @@ snapshots:
       - eslint-plugin-import-x
       - supports-color
 
-  '@busirocket/eslint-config@0.1.0(e057d8de4c0559d7b552a249f69b5c49)':
+  '@busirocket/eslint-config@0.1.0(f8d1b9d35399c1a6d00fa232c6f8da11)':
     dependencies:
       '@eslint/js': 10.0.1(eslint@10.2.0(jiti@2.6.1))
       eslint: 10.2.0(jiti@2.6.1)
@@ -5925,7 +5925,7 @@ snapshots:
       eslint-config-next: 16.2.3(@typescript-eslint/parser@8.58.2(eslint@10.2.0(jiti@2.6.1))(typescript@6.0.2))(eslint@10.2.0(jiti@2.6.1))(typescript@6.0.2)
       eslint-plugin-astro: 1.7.0(eslint@10.2.0(jiti@2.6.1))
       eslint-plugin-boundaries: 6.0.2(@typescript-eslint/parser@8.58.2(eslint@10.2.0(jiti@2.6.1))(typescript@6.0.2))(eslint-import-resolver-typescript@4.4.4)(eslint@10.2.0(jiti@2.6.1))
-      eslint-plugin-code-policy: 0.2.2(eslint@10.2.0(jiti@2.6.1))(typescript@6.0.2)
+      eslint-plugin-code-policy: 0.2.3(eslint@10.2.0(jiti@2.6.1))(typescript@6.0.2)
       eslint-plugin-jsx-a11y: 6.10.2(eslint@10.2.0(jiti@2.6.1))
       eslint-plugin-react: 7.37.5(eslint@10.2.0(jiti@2.6.1))
       eslint-plugin-react-hooks: 7.0.1(eslint@10.2.0(jiti@2.6.1))
@@ -8106,7 +8106,7 @@ snapshots:
       - eslint-import-resolver-webpack
       - supports-color
 
-  eslint-plugin-code-policy@0.2.2(eslint@10.2.0(jiti@2.6.1))(typescript@6.0.2):
+  eslint-plugin-code-policy@0.2.3(eslint@10.2.0(jiti@2.6.1))(typescript@6.0.2):
     dependencies:
       eslint: 10.2.0(jiti@2.6.1)
     optionalDependencies:

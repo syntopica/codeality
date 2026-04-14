@@ -9,9 +9,12 @@ import { createNextjsConfig } from '@busirocket/eslint-config/nextjs'
 //   import architecture from './eslint.architecture.ts'
 //   export default [...base, ...nextjs, ...codeQuality, ...a11y, ...architecture]
 
+import architecture from './eslint.architecture.js'
+
 export default [
   ...createBaseConfig({ tsconfigRootDir: import.meta.dirname }),
   ...createNextjsConfig({ tsconfigRootDir: import.meta.dirname }),
   ...createCodeQualityConfig(),
   ...createAccessibilityConfig(),
+  ...architecture,
 ]
