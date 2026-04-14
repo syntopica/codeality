@@ -1,5 +1,11 @@
 # eslint-plugin-code-policy
 
+## 0.2.3
+
+### Patch Changes
+
+- Fix rule edge cases and false positives in one-primary-unit, inline-types, and hidden declarations rules. Support NextJS js/jsx extensions, properly handle metadata re-exports, fix ObjectPattern validation, and permit enums in runtime files.
+
 ## 0.2.2
 
 ### Patch Changes
