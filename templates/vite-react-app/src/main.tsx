@@ -4,7 +4,7 @@ import { createRoot } from 'react-dom/client'
 import { App } from './App'
 import './styles.css'
 
-const rootElement = document.querySelector('#root')
+export const rootElement = document.querySelector('#root')
 
 if (!rootElement) {
   throw new Error('Root element not found')

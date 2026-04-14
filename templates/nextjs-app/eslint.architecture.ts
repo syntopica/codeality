@@ -24,7 +24,8 @@ export default [
             {
               from: ['formatters', 'mappers', 'validators', 'selectors'],
               disallow: ['components', 'hooks'],
-              message: 'Domain logic (formatters/mappers/validators) must be pure and decoupled from React views.',
+              message:
+                'Domain logic (formatters/mappers/validators) must be pure and decoupled from React views.',
             },
           ],
         },
@@ -41,7 +42,7 @@ export default [
       'max-lines': [
         'warn',
         { max: 300, skipBlankLines: true, skipComments: true },
-      ]
-    }
-  }
+      ],
+    },
+  },
 ]
