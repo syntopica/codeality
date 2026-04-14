@@ -1,5 +1,11 @@
 # eslint-plugin-code-policy
 
+## 0.2.4
+
+### Patch Changes
+
+- Allow semantic folders to contain subdirectories (e.g. `hooks/ai/...`) in file-kind-placement rule.
+
 ## 0.2.3
 
 ### Patch Changes

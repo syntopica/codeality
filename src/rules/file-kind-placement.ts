@@ -76,7 +76,7 @@ export default {
       expectedFolder = 'selectors'
     }
 
-    if (kind && expectedFolder && parentFolder !== expectedFolder) {
+    if (kind && expectedFolder && !pathParts.slice(0, -1).includes(expectedFolder)) {
       return {
         Program(node) {
           context.report({
