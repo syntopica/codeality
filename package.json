@@ -31,7 +31,7 @@
     "format:check": "prettier --check \"*.mjs\""
   },
   "devDependencies": {
-    "prettier": "^3.8.1"
+    "prettier": "^3.8.2"
   },
   "files": [
     "LICENSE",
