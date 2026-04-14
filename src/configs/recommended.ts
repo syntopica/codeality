@@ -8,9 +8,15 @@ export default {
     },
   },
   rules: {
-    'code-policy/atomic-file': 'error',
-    'code-policy/no-inline-types': 'error',
-    'code-policy/view-logic-separation': 'error',
+    'code-policy/atomic-file': 'off', // Legacy
+    // New exact specification rules
+    'code-policy/one-primary-unit': 'error',
+    'code-policy/no-hidden-top-level-declarations': 'error',
+    'code-policy/no-inline-types-in-runtime-files': 'error',
+    'code-policy/file-kind-placement': 'error',
+
+    'code-policy/no-inline-types': 'off', // Replaced by more precise rules above
+    'code-policy/view-logic-separation': 'warn',
     'code-policy/public-api-imports': 'error',
     'code-policy/no-cross-module-deep-imports': 'error',
   },

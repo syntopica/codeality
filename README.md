@@ -32,6 +32,14 @@ pnpm add --save-dev eslint-plugin-code-policy
 yarn add --dev eslint-plugin-code-policy
 ```
 
+### Full stack baseline (recommended for VibraComet projects)
+
+This plugin ships **rules and small presets** only. For the full shared ESLint baseline (TypeScript ESLint, imports, security, framework layers, and optional `code-policy` wiring), use the published config package:
+
+- **`@vibracomet/eslint-config`** — published from the `engineering-baseline` repository (`packages/eslint-config`, `PUBLIC_API.md`, and `docs/adoption/` for migration steps).
+
+Install it alongside this plugin when you want parity with the monorepo templates.
+
 ---
 
 ## Usage
