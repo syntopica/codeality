@@ -79,8 +79,10 @@ export default [
   {
     plugins: { 'code-policy': codePolicy },
     rules: {
-      'code-policy/atomic-file': 'error',
-      'code-policy/no-inline-types': 'error',
+      'code-policy/one-primary-unit': 'error',
+      'code-policy/no-hidden-top-level-declarations': 'error',
+      'code-policy/no-inline-types-in-runtime-files': 'error',
+      'code-policy/file-kind-placement': 'error',
       'code-policy/public-api-imports': 'error',
       'code-policy/no-cross-module-deep-imports': 'error',
       'code-policy/view-logic-separation': 'error',
@@ -93,88 +95,47 @@ export default [
 
 ## Rules
 
-### `code-policy/atomic-file`
+### `code-policy/one-primary-unit`
 
-> **Enforce exactly one top-level declaration per file.**
+> **Enforce exactly one top-level exported declaration per file.**
 
-Each file must export exactly one top-level unit — a function, class, constant, or type. This is the foundation of hyper-modular architecture: if a file has two things, one of them belongs in a new file.
-
-**❌ Incorrect**
-
-```ts
-// ❌ src/UserUtils.ts — two exports in one file
-export function formatUserName(user: User) {
-  return `${user.firstName} ${user.lastName}`
-}
-
-export function getUserAge(user: User) {
-  return new Date().getFullYear() - user.birthYear
-}
-```
-
-**✅ Correct**
-
-```ts
-// ✅ src/formatUserName.ts
-export function formatUserName(user: User) {
-  return `${user.firstName} ${user.lastName}`
-}
-```
-
-```ts
-// ✅ src/getUserAge.ts
-export function getUserAge(user: User) {
-  return new Date().getFullYear() - user.birthYear
-}
-```
+Each file must export exactly one top-level unit — a function, class, constant, or type. This focuses the identity of every module.
 
 **Exemptions (automatically skipped)**
 
 - `*.config.ts` / `*.config.js` / `*.config.mjs`
 - `index.ts` / `index.tsx` / `index.js` (barrel files)
-- `*.d.ts` (ambient declaration files)
 - Next.js special files: `page.tsx`, `layout.tsx`, `route.ts`, etc. — reserved exports like `GET`, `POST`, `metadata` are not counted.
 
 ---
 
-### `code-policy/no-inline-types`
+### `code-policy/no-hidden-top-level-declarations`
+
+> **Forbid internal module-scoped logic and helpers.**
+
+Files cannot contain private/unexported top-level declarations that hide complexity. If a helper is needed, it should be extracted to its own file and imported explicitly.
+
+---
+
+### `code-policy/no-inline-types-in-runtime-files`
 
 > **Enforce that type aliases and interfaces live in their own files.**
 
-Type declarations that appear alongside implementation code create hidden coupling and violate the single responsibility principle. Every `type` or `interface` must be in a dedicated file, ideally inside a `types/` directory.
-
-**❌ Incorrect**
-
-```ts
-// ❌ Mixed type + implementation in one file
-type UserRole = 'admin' | 'member' | 'guest'
-
-export function canEdit(role: UserRole) {
-  return role === 'admin'
-}
-```
-
-**✅ Correct**
-
-```ts
-// ✅ src/types/UserRole.ts
-export type UserRole = 'admin' | 'member' | 'guest'
-```
-
-```ts
-// ✅ src/canEdit.ts
-import type { UserRole } from '@/types/UserRole'
-
-export function canEdit(role: UserRole) {
-  return role === 'admin'
-}
-```
+Type declarations that appear alongside implementation code create hidden coupling and violate the single responsibility principle. Every `type` or `interface` must be in a dedicated file, isolating runtime from type declarations.
 
 **Exemptions**
 
 - Files inside `types/` or `types/**` directories
 - `*.d.ts` files
 - "Pure type files" — files whose entire body consists only of `import` + `type`/`interface` declarations
+
+---
+
+### `code-policy/file-kind-placement`
+
+> **Ensure files strictly follow kind-based naming and folder placement.**
+
+Ensures types are placed in `types/`, contexts in `contexts/`, and hooks start with `use`. Strict architectural adherence is enforced at a structural level.
 
 ---
 
@@ -321,8 +282,10 @@ Enables all five rules as errors. Best starting point for any TypeScript project
 
 ```js
 // Rules enabled:
-'code-policy/atomic-file': 'error'
-'code-policy/no-inline-types': 'error'
+'code-policy/one-primary-unit': 'error'
+'code-policy/no-hidden-top-level-declarations': 'error'
+'code-policy/no-inline-types-in-runtime-files': 'error'
+'code-policy/file-kind-placement': 'error'
 'code-policy/view-logic-separation': 'error'
 'code-policy/public-api-imports': 'error'
 'code-policy/no-cross-module-deep-imports': 'error'
@@ -352,7 +315,7 @@ This plugin only supports the **ESLint flat config** format (ESLint v9+). If you
 
 **Q: Why do I get errors on my `index.ts` barrel files?**
 
-`index.ts` files are automatically exempted from the `atomic-file` rule because barrel files by design re-export multiple things.
+`index.ts` files are automatically exempted from the primary unit rules because barrel files by design re-export multiple things.
 
 **Q: How do I exempt a specific file from a rule?**
 
