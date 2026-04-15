@@ -1,0 +1,93 @@
+{
+  "name": "eslint-plugin-code-policy",
+  "version": "0.3.0",
+  "description": "Architectural linting for TypeScript · enforce atomic files, explicit public APIs, clean runtime boundaries, and view/logic separation.",
+  "type": "module",
+  "main": "./dist/index.cjs",
+  "module": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js",
+      "require": "./dist/index.cjs"
+    },
+    "./configs/recommended": {
+      "types": "./dist/configs/recommended.d.ts",
+      "import": "./dist/configs/recommended.js",
+      "require": "./dist/configs/recommended.cjs"
+    },
+    "./configs/strict": {
+      "types": "./dist/configs/strict.d.ts",
+      "import": "./dist/configs/strict.js",
+      "require": "./dist/configs/strict.cjs"
+    },
+    "./configs/react": {
+      "types": "./dist/configs/react.d.ts",
+      "import": "./dist/configs/react.js",
+      "require": "./dist/configs/react.cjs"
+    },
+    "./configs/next": {
+      "types": "./dist/configs/next.d.ts",
+      "import": "./dist/configs/next.js",
+      "require": "./dist/configs/next.cjs"
+    }
+  },
+  "files": [
+    "dist",
+    "README.md",
+    "LICENSE"
+  ],
+  "scripts": {
+    "prebuild": "node scripts/sync-version.mjs",
+    "build": "tsup && tsc -p tsconfig.build.json && tsc-alias -p tsconfig.build.json",
+    "dev": "tsup --watch"
+  },
+  "keywords": [
+    "eslint",
+    "eslint-plugin",
+    "typescript",
+    "architectural-linting",
+    "atomic-file",
+    "public-api",
+    "module-boundaries",
+    "react",
+    "nextjs",
+    "monorepo",
+    "code-policy",
+    "flat-config"
+  ],
+  "author": {
+    "name": "Cristian Deluxe",
+    "url": "https://github.com/cristiandeluxe"
+  },
+  "license": "MIT",
+  "homepage": "https://github.com/VibraComet/eslint-plugin-code-policy#readme",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/VibraComet/eslint-plugin-code-policy.git",
+    "directory": "packages/eslint-plugin-code-policy"
+  },
+  "bugs": {
+    "url": "https://github.com/VibraComet/eslint-plugin-code-policy/issues"
+  },
+  "publishConfig": {
+    "access": "public",
+    "provenance": true
+  },
+  "sideEffects": false,
+  "peerDependencies": {
+    "eslint": ">=9.0.0",
+    "typescript": ">=5.4.0"
+  },
+  "peerDependenciesMeta": {
+    "typescript": {
+      "optional": true
+    }
+  },
+  "devDependencies": {
+    "eslint": "^9.0.0",
+    "typescript": ">=5.4.0",
+    "@types/eslint": "^9.0.0"
+  }
+}
