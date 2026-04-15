@@ -19,9 +19,9 @@
     "perf:check": "pnpm --filter ./templates/nextjs-app perf:check && pnpm --filter ./templates/astro-site perf:check && pnpm --filter ./templates/vite-react-app perf:check"
   },
   "devDependencies": {
-    "@busirocket/prettier-config": "^0.1.0",
+    "@busirocket/prettier-config": "^0.1.1",
     "jiti": "^2.6.1",
-    "prettier": "^3.8.2",
+    "prettier": "^3.8.3",
     "prettier-plugin-astro": "^0.14.1",
     "prettier-plugin-css-order": "^2.2.0",
     "prettier-plugin-organize-imports": "^4.3.0",

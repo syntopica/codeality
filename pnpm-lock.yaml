@@ -12,26 +12,26 @@ importers:
   .:
     devDependencies:
       '@busirocket/prettier-config':
-        specifier: ^0.1.0
-        version: 0.1.1(prettier-plugin-astro@0.14.1)(prettier-plugin-css-order@2.2.0(postcss@8.5.9)(prettier@3.8.2))(prettier-plugin-organize-imports@4.3.0(prettier@3.8.2)(typescript@6.0.2))(prettier-plugin-tailwindcss@0.7.2(prettier-plugin-astro@0.14.1)(prettier-plugin-css-order@2.2.0(postcss@8.5.9)(prettier@3.8.2))(prettier-plugin-organize-imports@4.3.0(prettier@3.8.2)(typescript@6.0.2))(prettier@3.8.2))(prettier@3.8.2)
+        specifier: ^0.1.1
+        version: 0.1.1(prettier-plugin-astro@0.14.1)(prettier-plugin-css-order@2.2.0(postcss@8.5.9)(prettier@3.8.3))(prettier-plugin-organize-imports@4.3.0(prettier@3.8.3)(typescript@6.0.2))(prettier-plugin-tailwindcss@0.7.2(prettier-plugin-astro@0.14.1)(prettier-plugin-css-order@2.2.0(postcss@8.5.9)(prettier@3.8.3))(prettier-plugin-organize-imports@4.3.0(prettier@3.8.3)(typescript@6.0.2))(prettier@3.8.3))(prettier@3.8.3)
       jiti:
         specifier: ^2.6.1
         version: 2.6.1
       prettier:
-        specifier: ^3.8.2
-        version: 3.8.2
+        specifier: ^3.8.3
+        version: 3.8.3
       prettier-plugin-astro:
         specifier: ^0.14.1
         version: 0.14.1
       prettier-plugin-css-order:
         specifier: ^2.2.0
-        version: 2.2.0(postcss@8.5.9)(prettier@3.8.2)
+        version: 2.2.0(postcss@8.5.9)(prettier@3.8.3)
       prettier-plugin-organize-imports:
         specifier: ^4.3.0
-        version: 4.3.0(prettier@3.8.2)(typescript@6.0.2)
+        version: 4.3.0(prettier@3.8.3)(typescript@6.0.2)
       prettier-plugin-tailwindcss:
         specifier: ^0.7.2
-        version: 0.7.2(prettier-plugin-astro@0.14.1)(prettier-plugin-css-order@2.2.0(postcss@8.5.9)(prettier@3.8.2))(prettier-plugin-organize-imports@4.3.0(prettier@3.8.2)(typescript@6.0.2))(prettier@3.8.2)
+        version: 0.7.2(prettier-plugin-astro@0.14.1)(prettier-plugin-css-order@2.2.0(postcss@8.5.9)(prettier@3.8.3))(prettier-plugin-organize-imports@4.3.0(prettier@3.8.3)(typescript@6.0.2))(prettier@3.8.3)
       typescript:
         specifier: ^6.0.2
         version: 6.0.2
@@ -44,15 +44,15 @@ importers:
     devDependencies:
       '@astrojs/check':
         specifier: ^0.9.8
-        version: 0.9.8(prettier-plugin-astro@0.14.1)(prettier@3.8.2)(typescript@6.0.2)
+        version: 0.9.8(prettier-plugin-astro@0.14.1)(prettier@3.8.3)(typescript@6.0.2)
       '@busirocket/eslint-config':
-        specifier: ^0.1.0
-        version: 0.1.1(f8d1b9d35399c1a6d00fa232c6f8da11)
+        specifier: ^0.1.1
+        version: 0.1.1(90197f2e95a2cf0e3c396dd6b548f0bf)
       '@busirocket/prettier-config':
-        specifier: ^0.1.0
-        version: 0.1.1(prettier-plugin-astro@0.14.1)(prettier-plugin-css-order@2.2.0(postcss@8.5.9)(prettier@3.8.2))(prettier-plugin-organize-imports@4.3.0(prettier@3.8.2)(typescript@6.0.2))(prettier-plugin-tailwindcss@0.7.2(prettier-plugin-astro@0.14.1)(prettier-plugin-css-order@2.2.0(postcss@8.5.9)(prettier@3.8.2))(prettier-plugin-organize-imports@4.3.0(prettier@3.8.2)(typescript@6.0.2))(prettier@3.8.2))(prettier@3.8.2)
+        specifier: ^0.1.1
+        version: 0.1.1(prettier-plugin-astro@0.14.1)(prettier-plugin-css-order@2.2.0(postcss@8.5.9)(prettier@3.8.3))(prettier-plugin-organize-imports@4.3.0(prettier@3.8.3)(typescript@6.0.2))(prettier-plugin-tailwindcss@0.7.2(prettier-plugin-astro@0.14.1)(prettier-plugin-css-order@2.2.0(postcss@8.5.9)(prettier@3.8.3))(prettier-plugin-organize-imports@4.3.0(prettier@3.8.3)(typescript@6.0.2))(prettier@3.8.3))(prettier@3.8.3)
       '@busirocket/tsconfig':
-        specifier: ^0.1.0
+        specifier: ^0.1.1
         version: 0.1.1
       '@eslint/js':
         specifier: ^10.0.1
@@ -79,8 +79,8 @@ importers:
         specifier: ^6.0.2
         version: 6.0.2(@typescript-eslint/parser@8.58.2(eslint@10.2.0(jiti@2.6.1))(typescript@6.0.2))(eslint-import-resolver-typescript@4.4.4)(eslint@10.2.0(jiti@2.6.1))
       eslint-plugin-code-policy:
-        specifier: ^0.2.3
-        version: 0.2.3(eslint@10.2.0(jiti@2.6.1))(typescript@6.0.2)
+        specifier: ^0.2.4
+        version: 0.2.4(eslint@10.2.0(jiti@2.6.1))(typescript@6.0.2)
       eslint-plugin-import:
         specifier: ^2.32.0
         version: 2.32.0(@typescript-eslint/parser@8.58.2(eslint@10.2.0(jiti@2.6.1))(typescript@6.0.2))(eslint-import-resolver-typescript@4.4.4)(eslint@10.2.0(jiti@2.6.1))
@@ -103,20 +103,20 @@ importers:
         specifier: ^2.6.1
         version: 2.6.1
       prettier:
-        specifier: ^3.8.2
-        version: 3.8.2
+        specifier: ^3.8.3
+        version: 3.8.3
       prettier-plugin-astro:
         specifier: ^0.14.1
         version: 0.14.1
       prettier-plugin-css-order:
         specifier: ^2.2.0
-        version: 2.2.0(postcss@8.5.9)(prettier@3.8.2)
+        version: 2.2.0(postcss@8.5.9)(prettier@3.8.3)
       prettier-plugin-organize-imports:
         specifier: ^4.3.0
-        version: 4.3.0(prettier@3.8.2)(typescript@6.0.2)
+        version: 4.3.0(prettier@3.8.3)(typescript@6.0.2)
       prettier-plugin-tailwindcss:
         specifier: ^0.7.2
-        version: 0.7.2(prettier-plugin-astro@0.14.1)(prettier-plugin-css-order@2.2.0(postcss@8.5.9)(prettier@3.8.2))(prettier-plugin-organize-imports@4.3.0(prettier@3.8.2)(typescript@6.0.2))(prettier@3.8.2)
+        version: 0.7.2(prettier-plugin-astro@0.14.1)(prettier-plugin-css-order@2.2.0(postcss@8.5.9)(prettier@3.8.3))(prettier-plugin-organize-imports@4.3.0(prettier@3.8.3)(typescript@6.0.2))(prettier@3.8.3)
       typescript:
         specifier: ^6.0.2
         version: 6.0.2
@@ -140,13 +140,13 @@ importers:
         version: 19.2.5(react@19.2.5)
     devDependencies:
       '@busirocket/eslint-config':
-        specifier: ^0.1.0
-        version: 0.1.1(0b02f96f6f25318bb06c4ca093d525bf)
+        specifier: ^0.1.1
+        version: 0.1.1(f26c4ba891e35fae866264dde592097f)
       '@busirocket/prettier-config':
-        specifier: ^0.1.0
-        version: 0.1.1(prettier-plugin-astro@0.14.1)(prettier-plugin-css-order@2.2.0(postcss@8.5.9)(prettier@3.8.2))(prettier-plugin-organize-imports@4.3.0(prettier@3.8.2)(typescript@6.0.2))(prettier-plugin-tailwindcss@0.7.2(prettier-plugin-astro@0.14.1)(prettier-plugin-css-order@2.2.0(postcss@8.5.9)(prettier@3.8.2))(prettier-plugin-organize-imports@4.3.0(prettier@3.8.2)(typescript@6.0.2))(prettier@3.8.2))(prettier@3.8.2)
+        specifier: ^0.1.1
+        version: 0.1.1(prettier-plugin-astro@0.14.1)(prettier-plugin-css-order@2.2.0(postcss@8.5.9)(prettier@3.8.3))(prettier-plugin-organize-imports@4.3.0(prettier@3.8.3)(typescript@6.0.2))(prettier-plugin-tailwindcss@0.7.2(prettier-plugin-astro@0.14.1)(prettier-plugin-css-order@2.2.0(postcss@8.5.9)(prettier@3.8.3))(prettier-plugin-organize-imports@4.3.0(prettier@3.8.3)(typescript@6.0.2))(prettier@3.8.3))(prettier@3.8.3)
       '@busirocket/tsconfig':
-        specifier: ^0.1.0
+        specifier: ^0.1.1
         version: 0.1.1
       '@eslint/js':
         specifier: ^10.0.1
@@ -191,8 +191,8 @@ importers:
         specifier: ^6.0.2
         version: 6.0.2(@typescript-eslint/parser@8.58.2(eslint@10.2.0(jiti@2.6.1))(typescript@6.0.2))(eslint-import-resolver-typescript@4.4.4)(eslint@10.2.0(jiti@2.6.1))
       eslint-plugin-code-policy:
-        specifier: ^0.2.3
-        version: 0.2.3(eslint@10.2.0(jiti@2.6.1))(typescript@6.0.2)
+        specifier: ^0.2.4
+        version: 0.2.4(eslint@10.2.0(jiti@2.6.1))(typescript@6.0.2)
       eslint-plugin-import:
         specifier: ^2.32.0
         version: 2.32.0(@typescript-eslint/parser@8.58.2(eslint@10.2.0(jiti@2.6.1))(typescript@6.0.2))(eslint-import-resolver-typescript@4.4.4)(eslint@10.2.0(jiti@2.6.1))
@@ -224,17 +224,17 @@ importers:
         specifier: ^29.0.2
         version: 29.0.2
       prettier:
-        specifier: ^3.8.2
-        version: 3.8.2
+        specifier: ^3.8.3
+        version: 3.8.3
       prettier-plugin-css-order:
         specifier: ^2.2.0
-        version: 2.2.0(postcss@8.5.9)(prettier@3.8.2)
+        version: 2.2.0(postcss@8.5.9)(prettier@3.8.3)
       prettier-plugin-organize-imports:
         specifier: ^4.3.0
-        version: 4.3.0(prettier@3.8.2)(typescript@6.0.2)
+        version: 4.3.0(prettier@3.8.3)(typescript@6.0.2)
       prettier-plugin-tailwindcss:
         specifier: ^0.7.2
-        version: 0.7.2(prettier-plugin-astro@0.14.1)(prettier-plugin-css-order@2.2.0(postcss@8.5.9)(prettier@3.8.2))(prettier-plugin-organize-imports@4.3.0(prettier@3.8.2)(typescript@6.0.2))(prettier@3.8.2)
+        version: 0.7.2(prettier-plugin-astro@0.14.1)(prettier-plugin-css-order@2.2.0(postcss@8.5.9)(prettier@3.8.3))(prettier-plugin-organize-imports@4.3.0(prettier@3.8.3)(typescript@6.0.2))(prettier@3.8.3)
       typescript:
         specifier: ^6.0.2
         version: 6.0.2
@@ -251,13 +251,13 @@ importers:
   templates/ts-package:
     devDependencies:
       '@busirocket/eslint-config':
-        specifier: ^0.1.0
-        version: 0.1.1(f8d1b9d35399c1a6d00fa232c6f8da11)
+        specifier: ^0.1.1
+        version: 0.1.1(90197f2e95a2cf0e3c396dd6b548f0bf)
       '@busirocket/prettier-config':
-        specifier: ^0.1.0
-        version: 0.1.1(prettier-plugin-astro@0.14.1)(prettier-plugin-css-order@2.2.0(postcss@8.5.9)(prettier@3.8.2))(prettier-plugin-organize-imports@4.3.0(prettier@3.8.2)(typescript@6.0.2))(prettier-plugin-tailwindcss@0.7.2(prettier-plugin-astro@0.14.1)(prettier-plugin-css-order@2.2.0(postcss@8.5.9)(prettier@3.8.2))(prettier-plugin-organize-imports@4.3.0(prettier@3.8.2)(typescript@6.0.2))(prettier@3.8.2))(prettier@3.8.2)
+        specifier: ^0.1.1
+        version: 0.1.1(prettier-plugin-astro@0.14.1)(prettier-plugin-css-order@2.2.0(postcss@8.5.9)(prettier@3.8.3))(prettier-plugin-organize-imports@4.3.0(prettier@3.8.3)(typescript@6.0.2))(prettier-plugin-tailwindcss@0.7.2(prettier-plugin-astro@0.14.1)(prettier-plugin-css-order@2.2.0(postcss@8.5.9)(prettier@3.8.3))(prettier-plugin-organize-imports@4.3.0(prettier@3.8.3)(typescript@6.0.2))(prettier@3.8.3))(prettier@3.8.3)
       '@busirocket/tsconfig':
-        specifier: ^0.1.0
+        specifier: ^0.1.1
         version: 0.1.1
       '@eslint/js':
         specifier: ^10.0.1
@@ -275,8 +275,8 @@ importers:
         specifier: ^4.4.4
         version: 4.4.4(eslint-plugin-import@2.32.0)(eslint@10.2.0(jiti@2.6.1))
       eslint-plugin-code-policy:
-        specifier: ^0.2.3
-        version: 0.2.3(eslint@10.2.0(jiti@2.6.1))(typescript@6.0.2)
+        specifier: ^0.2.4
+        version: 0.2.4(eslint@10.2.0(jiti@2.6.1))(typescript@6.0.2)
       eslint-plugin-import:
         specifier: ^2.32.0
         version: 2.32.0(@typescript-eslint/parser@8.58.2(eslint@10.2.0(jiti@2.6.1))(typescript@6.0.2))(eslint-import-resolver-typescript@4.4.4)(eslint@10.2.0(jiti@2.6.1))
@@ -302,14 +302,14 @@ importers:
         specifier: ^2.6.1
         version: 2.6.1
       prettier:
-        specifier: ^3.8.2
-        version: 3.8.2
+        specifier: ^3.8.3
+        version: 3.8.3
       prettier-plugin-css-order:
         specifier: ^2.2.0
-        version: 2.2.0(postcss@8.5.9)(prettier@3.8.2)
+        version: 2.2.0(postcss@8.5.9)(prettier@3.8.3)
       prettier-plugin-organize-imports:
         specifier: ^4.3.0
-        version: 4.3.0(prettier@3.8.2)(typescript@6.0.2)
+        version: 4.3.0(prettier@3.8.3)(typescript@6.0.2)
       typescript:
         specifier: ^6.0.2
         version: 6.0.2
@@ -333,13 +333,13 @@ importers:
         version: 19.2.5(react@19.2.5)
     devDependencies:
       '@busirocket/eslint-config':
-        specifier: ^0.1.0
-        version: 0.1.1(0b02f96f6f25318bb06c4ca093d525bf)
+        specifier: ^0.1.1
+        version: 0.1.1(f26c4ba891e35fae866264dde592097f)
       '@busirocket/prettier-config':
-        specifier: ^0.1.0
-        version: 0.1.1(prettier-plugin-astro@0.14.1)(prettier-plugin-css-order@2.2.0(postcss@8.5.9)(prettier@3.8.2))(prettier-plugin-organize-imports@4.3.0(prettier@3.8.2)(typescript@6.0.2))(prettier-plugin-tailwindcss@0.7.2(prettier-plugin-astro@0.14.1)(prettier-plugin-css-order@2.2.0(postcss@8.5.9)(prettier@3.8.2))(prettier-plugin-organize-imports@4.3.0(prettier@3.8.2)(typescript@6.0.2))(prettier@3.8.2))(prettier@3.8.2)
+        specifier: ^0.1.1
+        version: 0.1.1(prettier-plugin-astro@0.14.1)(prettier-plugin-css-order@2.2.0(postcss@8.5.9)(prettier@3.8.3))(prettier-plugin-organize-imports@4.3.0(prettier@3.8.3)(typescript@6.0.2))(prettier-plugin-tailwindcss@0.7.2(prettier-plugin-astro@0.14.1)(prettier-plugin-css-order@2.2.0(postcss@8.5.9)(prettier@3.8.3))(prettier-plugin-organize-imports@4.3.0(prettier@3.8.3)(typescript@6.0.2))(prettier@3.8.3))(prettier@3.8.3)
       '@busirocket/tsconfig':
-        specifier: ^0.1.0
+        specifier: ^0.1.1
         version: 0.1.1
       '@eslint/js':
         specifier: ^10.0.1
@@ -372,8 +372,8 @@ importers:
         specifier: ^4.4.4
         version: 4.4.4(eslint-plugin-import@2.32.0)(eslint@10.2.0(jiti@2.6.1))
       eslint-plugin-code-policy:
-        specifier: ^0.2.3
-        version: 0.2.3(eslint@10.2.0(jiti@2.6.1))(typescript@6.0.2)
+        specifier: ^0.2.4
+        version: 0.2.4(eslint@10.2.0(jiti@2.6.1))(typescript@6.0.2)
       eslint-plugin-import:
         specifier: ^2.32.0
         version: 2.32.0(@typescript-eslint/parser@8.58.2(eslint@10.2.0(jiti@2.6.1))(typescript@6.0.2))(eslint-import-resolver-typescript@4.4.4)(eslint@10.2.0(jiti@2.6.1))
@@ -411,17 +411,17 @@ importers:
         specifier: ^29.0.2
         version: 29.0.2
       prettier:
-        specifier: ^3.8.2
-        version: 3.8.2
+        specifier: ^3.8.3
+        version: 3.8.3
       prettier-plugin-css-order:
         specifier: ^2.2.0
-        version: 2.2.0(postcss@8.5.9)(prettier@3.8.2)
+        version: 2.2.0(postcss@8.5.9)(prettier@3.8.3)
       prettier-plugin-organize-imports:
         specifier: ^4.3.0
-        version: 4.3.0(prettier@3.8.2)(typescript@6.0.2)
+        version: 4.3.0(prettier@3.8.3)(typescript@6.0.2)
       prettier-plugin-tailwindcss:
         specifier: ^0.7.2
-        version: 0.7.2(prettier-plugin-astro@0.14.1)(prettier-plugin-css-order@2.2.0(postcss@8.5.9)(prettier@3.8.2))(prettier-plugin-organize-imports@4.3.0(prettier@3.8.2)(typescript@6.0.2))(prettier@3.8.2)
+        version: 0.7.2(prettier-plugin-astro@0.14.1)(prettier-plugin-css-order@2.2.0(postcss@8.5.9)(prettier@3.8.3))(prettier-plugin-organize-imports@4.3.0(prettier@3.8.3)(typescript@6.0.2))(prettier@3.8.3)
       tailwindcss:
         specifier: ^4.2.2
         version: 4.2.2
@@ -2802,8 +2802,8 @@ packages:
     peerDependencies:
       eslint: '>=6.0.0'
 
-  eslint-plugin-code-policy@0.2.3:
-    resolution: {integrity: sha512-dwt9isbudl4MPRNbW6V133dAxZinY78Z/WB+IWOiTP0mO0HYclyRtT608VVkmuQN/ph4j3R3nMTq3uhxipxCvw==}
+  eslint-plugin-code-policy@0.2.4:
+    resolution: {integrity: sha512-SRNrQ7rdAZTIRRdrL0bBXJoDNqpzkYMZ2Rw8spGQy3Iio4famsxr4jD5vINoxNdlgXUeVMdEHTWUt07wMGmmCw==}
     peerDependencies:
       eslint: '>=9.0.0'
       typescript: '>=5.4.0'
@@ -4360,8 +4360,8 @@ packages:
       prettier-plugin-svelte:
         optional: true
 
-  prettier@3.8.2:
-    resolution: {integrity: sha512-8c3mgTe0ASwWAJK+78dpviD+A8EqhndQPUBpNUIPt6+xWlIigCwfN01lWr9MAede4uqXGTEKeQWTvzb3vjia0Q==}
+  prettier@3.8.3:
+    resolution: {integrity: sha512-7igPTM53cGHMW8xWuVTydi2KO233VFiTNyF5hLJqpilHfmn8C8gPf+PS7dUT64YcXFbiMGZxS9pCSxL/Dxm/Jw==}
     engines: {node: '>=14'}
     hasBin: true
 
@@ -5664,9 +5664,9 @@ snapshots:
 
   '@asamuzakjp/nwsapi@2.3.9': {}
 
-  '@astrojs/check@0.9.8(prettier-plugin-astro@0.14.1)(prettier@3.8.2)(typescript@6.0.2)':
+  '@astrojs/check@0.9.8(prettier-plugin-astro@0.14.1)(prettier@3.8.3)(typescript@6.0.2)':
     dependencies:
-      '@astrojs/language-server': 2.16.6(prettier-plugin-astro@0.14.1)(prettier@3.8.2)(typescript@6.0.2)
+      '@astrojs/language-server': 2.16.6(prettier-plugin-astro@0.14.1)(prettier@3.8.3)(typescript@6.0.2)
       chokidar: 4.0.3
       kleur: 4.1.5
       typescript: 6.0.2
@@ -5683,7 +5683,7 @@ snapshots:
     dependencies:
       picomatch: 4.0.4
 
-  '@astrojs/language-server@2.16.6(prettier-plugin-astro@0.14.1)(prettier@3.8.2)(typescript@6.0.2)':
+  '@astrojs/language-server@2.16.6(prettier-plugin-astro@0.14.1)(prettier@3.8.3)(typescript@6.0.2)':
     dependencies:
       '@astrojs/compiler': 2.13.1
       '@astrojs/yaml2ts': 0.2.3
@@ -5697,14 +5697,14 @@ snapshots:
       volar-service-css: 0.0.70(@volar/language-service@2.4.28)
       volar-service-emmet: 0.0.70(@volar/language-service@2.4.28)
       volar-service-html: 0.0.70(@volar/language-service@2.4.28)
-      volar-service-prettier: 0.0.70(@volar/language-service@2.4.28)(prettier@3.8.2)
+      volar-service-prettier: 0.0.70(@volar/language-service@2.4.28)(prettier@3.8.3)
       volar-service-typescript: 0.0.70(@volar/language-service@2.4.28)
       volar-service-typescript-twoslash-queries: 0.0.70(@volar/language-service@2.4.28)
       volar-service-yaml: 0.0.70(@volar/language-service@2.4.28)
       vscode-html-languageservice: 5.6.2
       vscode-uri: 3.1.0
     optionalDependencies:
-      prettier: 3.8.2
+      prettier: 3.8.3
       prettier-plugin-astro: 0.14.1
     transitivePeerDependencies:
       - typescript
@@ -5875,7 +5875,7 @@ snapshots:
     dependencies:
       css-tree: 3.2.1
 
-  '@busirocket/eslint-config@0.1.1(0b02f96f6f25318bb06c4ca093d525bf)':
+  '@busirocket/eslint-config@0.1.1(90197f2e95a2cf0e3c396dd6b548f0bf)':
     dependencies:
       '@eslint/js': 10.0.1(eslint@10.2.0(jiti@2.6.1))
       eslint: 10.2.0(jiti@2.6.1)
@@ -5892,40 +5892,7 @@ snapshots:
       eslint-config-next: 16.2.3(@typescript-eslint/parser@8.58.2(eslint@10.2.0(jiti@2.6.1))(typescript@6.0.2))(eslint@10.2.0(jiti@2.6.1))(typescript@6.0.2)
       eslint-plugin-astro: 1.7.0(eslint@10.2.0(jiti@2.6.1))
       eslint-plugin-boundaries: 6.0.2(@typescript-eslint/parser@8.58.2(eslint@10.2.0(jiti@2.6.1))(typescript@6.0.2))(eslint-import-resolver-typescript@4.4.4)(eslint@10.2.0(jiti@2.6.1))
-      eslint-plugin-code-policy: 0.2.3(eslint@10.2.0(jiti@2.6.1))(typescript@6.0.2)
-      eslint-plugin-jsx-a11y: 6.10.2(eslint@10.2.0(jiti@2.6.1))
-      eslint-plugin-react: https://codeload.github.com/jsx-eslint/eslint-plugin-react/tar.gz/012ec39f962627d5312e9fbaee3eb41d9a4d8bb6(eslint@10.2.0(jiti@2.6.1))
-      eslint-plugin-react-hooks: 7.0.1(eslint@10.2.0(jiti@2.6.1))
-      eslint-plugin-react-refresh: 0.5.2(eslint@10.2.0(jiti@2.6.1))
-      eslint-plugin-sonarjs: 4.0.2(eslint@10.2.0(jiti@2.6.1))
-      eslint-plugin-tailwindcss: 4.0.0-beta.0(tailwindcss@4.2.2)
-      eslint-plugin-unicorn: 64.0.0(eslint@10.2.0(jiti@2.6.1))
-      globals: 17.5.0
-    transitivePeerDependencies:
-      - '@typescript-eslint/eslint-plugin'
-      - '@typescript-eslint/parser'
-      - eslint-import-resolver-webpack
-      - eslint-plugin-import-x
-      - supports-color
-
-  '@busirocket/eslint-config@0.1.1(f8d1b9d35399c1a6d00fa232c6f8da11)':
-    dependencies:
-      '@eslint/js': 10.0.1(eslint@10.2.0(jiti@2.6.1))
-      eslint: 10.2.0(jiti@2.6.1)
-      eslint-config-prettier: 10.1.8(eslint@10.2.0(jiti@2.6.1))
-      eslint-import-resolver-typescript: 4.4.4(eslint-plugin-import@2.32.0)(eslint@10.2.0(jiti@2.6.1))
-      eslint-plugin-import: 2.32.0(@typescript-eslint/parser@8.58.2(eslint@10.2.0(jiti@2.6.1))(typescript@6.0.2))(eslint-import-resolver-typescript@4.4.4)(eslint@10.2.0(jiti@2.6.1))
-      eslint-plugin-promise: 7.2.1(eslint@10.2.0(jiti@2.6.1))
-      eslint-plugin-security: 4.0.0
-      eslint-plugin-unused-imports: 4.4.1(@typescript-eslint/eslint-plugin@8.58.2(@typescript-eslint/parser@8.58.2(eslint@10.2.0(jiti@2.6.1))(typescript@6.0.2))(eslint@10.2.0(jiti@2.6.1))(typescript@6.0.2))(eslint@10.2.0(jiti@2.6.1))
-      typescript: 6.0.2
-      typescript-eslint: 8.58.2(eslint@10.2.0(jiti@2.6.1))(typescript@6.0.2)
-    optionalDependencies:
-      '@next/eslint-plugin-next': 16.2.3
-      eslint-config-next: 16.2.3(@typescript-eslint/parser@8.58.2(eslint@10.2.0(jiti@2.6.1))(typescript@6.0.2))(eslint@10.2.0(jiti@2.6.1))(typescript@6.0.2)
-      eslint-plugin-astro: 1.7.0(eslint@10.2.0(jiti@2.6.1))
-      eslint-plugin-boundaries: 6.0.2(@typescript-eslint/parser@8.58.2(eslint@10.2.0(jiti@2.6.1))(typescript@6.0.2))(eslint-import-resolver-typescript@4.4.4)(eslint@10.2.0(jiti@2.6.1))
-      eslint-plugin-code-policy: 0.2.3(eslint@10.2.0(jiti@2.6.1))(typescript@6.0.2)
+      eslint-plugin-code-policy: 0.2.4(eslint@10.2.0(jiti@2.6.1))(typescript@6.0.2)
       eslint-plugin-jsx-a11y: 6.10.2(eslint@10.2.0(jiti@2.6.1))
       eslint-plugin-react: 7.37.5(eslint@10.2.0(jiti@2.6.1))
       eslint-plugin-react-hooks: 7.0.1(eslint@10.2.0(jiti@2.6.1))
@@ -5941,14 +5908,47 @@ snapshots:
       - eslint-plugin-import-x
       - supports-color
 
-  '@busirocket/prettier-config@0.1.1(prettier-plugin-astro@0.14.1)(prettier-plugin-css-order@2.2.0(postcss@8.5.9)(prettier@3.8.2))(prettier-plugin-organize-imports@4.3.0(prettier@3.8.2)(typescript@6.0.2))(prettier-plugin-tailwindcss@0.7.2(prettier-plugin-astro@0.14.1)(prettier-plugin-css-order@2.2.0(postcss@8.5.9)(prettier@3.8.2))(prettier-plugin-organize-imports@4.3.0(prettier@3.8.2)(typescript@6.0.2))(prettier@3.8.2))(prettier@3.8.2)':
+  '@busirocket/eslint-config@0.1.1(f26c4ba891e35fae866264dde592097f)':
     dependencies:
-      prettier: 3.8.2
-      prettier-plugin-css-order: 2.2.0(postcss@8.5.9)(prettier@3.8.2)
-      prettier-plugin-organize-imports: 4.3.0(prettier@3.8.2)(typescript@6.0.2)
+      '@eslint/js': 10.0.1(eslint@10.2.0(jiti@2.6.1))
+      eslint: 10.2.0(jiti@2.6.1)
+      eslint-config-prettier: 10.1.8(eslint@10.2.0(jiti@2.6.1))
+      eslint-import-resolver-typescript: 4.4.4(eslint-plugin-import@2.32.0)(eslint@10.2.0(jiti@2.6.1))
+      eslint-plugin-import: 2.32.0(@typescript-eslint/parser@8.58.2(eslint@10.2.0(jiti@2.6.1))(typescript@6.0.2))(eslint-import-resolver-typescript@4.4.4)(eslint@10.2.0(jiti@2.6.1))
+      eslint-plugin-promise: 7.2.1(eslint@10.2.0(jiti@2.6.1))
+      eslint-plugin-security: 4.0.0
+      eslint-plugin-unused-imports: 4.4.1(@typescript-eslint/eslint-plugin@8.58.2(@typescript-eslint/parser@8.58.2(eslint@10.2.0(jiti@2.6.1))(typescript@6.0.2))(eslint@10.2.0(jiti@2.6.1))(typescript@6.0.2))(eslint@10.2.0(jiti@2.6.1))
+      typescript: 6.0.2
+      typescript-eslint: 8.58.2(eslint@10.2.0(jiti@2.6.1))(typescript@6.0.2)
+    optionalDependencies:
+      '@next/eslint-plugin-next': 16.2.3
+      eslint-config-next: 16.2.3(@typescript-eslint/parser@8.58.2(eslint@10.2.0(jiti@2.6.1))(typescript@6.0.2))(eslint@10.2.0(jiti@2.6.1))(typescript@6.0.2)
+      eslint-plugin-astro: 1.7.0(eslint@10.2.0(jiti@2.6.1))
+      eslint-plugin-boundaries: 6.0.2(@typescript-eslint/parser@8.58.2(eslint@10.2.0(jiti@2.6.1))(typescript@6.0.2))(eslint-import-resolver-typescript@4.4.4)(eslint@10.2.0(jiti@2.6.1))
+      eslint-plugin-code-policy: 0.2.4(eslint@10.2.0(jiti@2.6.1))(typescript@6.0.2)
+      eslint-plugin-jsx-a11y: 6.10.2(eslint@10.2.0(jiti@2.6.1))
+      eslint-plugin-react: https://codeload.github.com/jsx-eslint/eslint-plugin-react/tar.gz/012ec39f962627d5312e9fbaee3eb41d9a4d8bb6(eslint@10.2.0(jiti@2.6.1))
+      eslint-plugin-react-hooks: 7.0.1(eslint@10.2.0(jiti@2.6.1))
+      eslint-plugin-react-refresh: 0.5.2(eslint@10.2.0(jiti@2.6.1))
+      eslint-plugin-sonarjs: 4.0.2(eslint@10.2.0(jiti@2.6.1))
+      eslint-plugin-tailwindcss: 4.0.0-beta.0(tailwindcss@4.2.2)
+      eslint-plugin-unicorn: 64.0.0(eslint@10.2.0(jiti@2.6.1))
+      globals: 17.5.0
+    transitivePeerDependencies:
+      - '@typescript-eslint/eslint-plugin'
+      - '@typescript-eslint/parser'
+      - eslint-import-resolver-webpack
+      - eslint-plugin-import-x
+      - supports-color
+
+  '@busirocket/prettier-config@0.1.1(prettier-plugin-astro@0.14.1)(prettier-plugin-css-order@2.2.0(postcss@8.5.9)(prettier@3.8.3))(prettier-plugin-organize-imports@4.3.0(prettier@3.8.3)(typescript@6.0.2))(prettier-plugin-tailwindcss@0.7.2(prettier-plugin-astro@0.14.1)(prettier-plugin-css-order@2.2.0(postcss@8.5.9)(prettier@3.8.3))(prettier-plugin-organize-imports@4.3.0(prettier@3.8.3)(typescript@6.0.2))(prettier@3.8.3))(prettier@3.8.3)':
+    dependencies:
+      prettier: 3.8.3
+      prettier-plugin-css-order: 2.2.0(postcss@8.5.9)(prettier@3.8.3)
+      prettier-plugin-organize-imports: 4.3.0(prettier@3.8.3)(typescript@6.0.2)
     optionalDependencies:
       prettier-plugin-astro: 0.14.1
-      prettier-plugin-tailwindcss: 0.7.2(prettier-plugin-astro@0.14.1)(prettier-plugin-css-order@2.2.0(postcss@8.5.9)(prettier@3.8.2))(prettier-plugin-organize-imports@4.3.0(prettier@3.8.2)(typescript@6.0.2))(prettier@3.8.2)
+      prettier-plugin-tailwindcss: 0.7.2(prettier-plugin-astro@0.14.1)(prettier-plugin-css-order@2.2.0(postcss@8.5.9)(prettier@3.8.3))(prettier-plugin-organize-imports@4.3.0(prettier@3.8.3)(typescript@6.0.2))(prettier@3.8.3)
 
   '@busirocket/tsconfig@0.1.1': {}
 
@@ -8106,7 +8106,7 @@ snapshots:
       - eslint-import-resolver-webpack
       - supports-color
 
-  eslint-plugin-code-policy@0.2.3(eslint@10.2.0(jiti@2.6.1))(typescript@6.0.2):
+  eslint-plugin-code-policy@0.2.4(eslint@10.2.0(jiti@2.6.1))(typescript@6.0.2):
     dependencies:
       eslint: 10.2.0(jiti@2.6.1)
     optionalDependencies:
@@ -10016,32 +10016,32 @@ snapshots:
   prettier-plugin-astro@0.14.1:
     dependencies:
       '@astrojs/compiler': 2.13.1
-      prettier: 3.8.2
+      prettier: 3.8.3
       sass-formatter: 0.7.9
 
-  prettier-plugin-css-order@2.2.0(postcss@8.5.9)(prettier@3.8.2):
+  prettier-plugin-css-order@2.2.0(postcss@8.5.9)(prettier@3.8.3):
     dependencies:
       css-declaration-sorter: 7.4.0(postcss@8.5.9)
       postcss-less: 6.0.0(postcss@8.5.9)
       postcss-scss: 4.0.9(postcss@8.5.9)
-      prettier: 3.8.2
+      prettier: 3.8.3
     transitivePeerDependencies:
       - postcss
 
-  prettier-plugin-organize-imports@4.3.0(prettier@3.8.2)(typescript@6.0.2):
+  prettier-plugin-organize-imports@4.3.0(prettier@3.8.3)(typescript@6.0.2):
     dependencies:
-      prettier: 3.8.2
+      prettier: 3.8.3
       typescript: 6.0.2
 
-  prettier-plugin-tailwindcss@0.7.2(prettier-plugin-astro@0.14.1)(prettier-plugin-css-order@2.2.0(postcss@8.5.9)(prettier@3.8.2))(prettier-plugin-organize-imports@4.3.0(prettier@3.8.2)(typescript@6.0.2))(prettier@3.8.2):
+  prettier-plugin-tailwindcss@0.7.2(prettier-plugin-astro@0.14.1)(prettier-plugin-css-order@2.2.0(postcss@8.5.9)(prettier@3.8.3))(prettier-plugin-organize-imports@4.3.0(prettier@3.8.3)(typescript@6.0.2))(prettier@3.8.3):
     dependencies:
-      prettier: 3.8.2
+      prettier: 3.8.3
     optionalDependencies:
       prettier-plugin-astro: 0.14.1
-      prettier-plugin-css-order: 2.2.0(postcss@8.5.9)(prettier@3.8.2)
-      prettier-plugin-organize-imports: 4.3.0(prettier@3.8.2)(typescript@6.0.2)
+      prettier-plugin-css-order: 2.2.0(postcss@8.5.9)(prettier@3.8.3)
+      prettier-plugin-organize-imports: 4.3.0(prettier@3.8.3)(typescript@6.0.2)
 
-  prettier@3.8.2: {}
+  prettier@3.8.3: {}
 
   pretty-format@27.5.1:
     dependencies:
@@ -11198,12 +11198,12 @@ snapshots:
     optionalDependencies:
       '@volar/language-service': 2.4.28
 
-  volar-service-prettier@0.0.70(@volar/language-service@2.4.28)(prettier@3.8.2):
+  volar-service-prettier@0.0.70(@volar/language-service@2.4.28)(prettier@3.8.3):
     dependencies:
       vscode-uri: 3.1.0
     optionalDependencies:
       '@volar/language-service': 2.4.28
-      prettier: 3.8.2
+      prettier: 3.8.3
 
   volar-service-typescript-twoslash-queries@0.0.70(@volar/language-service@2.4.28):
     dependencies:
@@ -11401,7 +11401,7 @@ snapshots:
       '@vscode/l10n': 0.0.18
       ajv: 8.18.0
       ajv-draft-04: 1.0.0(ajv@8.18.0)
-      prettier: 3.8.2
+      prettier: 3.8.3
       request-light: 0.5.8
       vscode-json-languageservice: 4.1.8
       vscode-languageserver: 9.0.1
