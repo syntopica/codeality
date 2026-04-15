@@ -19,5 +19,6 @@ export default {
     'code-policy/view-logic-separation': 'warn',
     'code-policy/public-api-imports': 'error',
     'code-policy/no-cross-module-deep-imports': 'error',
+    'code-policy/no-mixed-barrel': 'error',
   },
 } as const

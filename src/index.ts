@@ -13,6 +13,7 @@ import noInlineTypes from '@/rules/no-inline-types.js'
 import viewLogicSeparation from '@/rules/view-logic-separation.js'
 import publicApiImports from '@/rules/public-api-imports.js'
 import noCrossModuleDeepImports from '@/rules/no-cross-module-deep-imports.js'
+import noMixedBarrel from '@/rules/no-mixed-barrel.js'
 
 import { PLUGIN_VERSION } from '@/version.js'
 
@@ -31,6 +32,7 @@ const plugin = {
     'view-logic-separation': viewLogicSeparation,
     'public-api-imports': publicApiImports,
     'no-cross-module-deep-imports': noCrossModuleDeepImports,
+    'no-mixed-barrel': noMixedBarrel,
   },
   configs: {
     recommended,
