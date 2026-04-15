@@ -1,0 +1,41 @@
+{
+  "name": "@busirocket/create-baseline",
+  "version": "0.1.0",
+  "private": false,
+  "packageManager": "pnpm@10.33.0",
+  "license": "MIT",
+  "description": "CLI to verify and adopt @busirocket baseline config packages",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/BusiRocket/create-baseline.git"
+  },
+  "homepage": "https://github.com/BusiRocket/create-baseline#readme",
+  "bugs": {
+    "url": "https://github.com/BusiRocket/create-baseline/issues"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "type": "module",
+  "engines": {
+    "node": ">=20"
+  },
+  "bin": {
+    "create-baseline": "./bin/create-baseline.mjs"
+  },
+  "files": [
+    "LICENSE",
+    "README.md",
+    "baseline-versions.json",
+    "bin"
+  ],
+  "scripts": {
+    "check:self": "node ./bin/create-baseline.mjs --check"
+  },
+  "keywords": [
+    "eslint",
+    "prettier",
+    "typescript",
+    "baseline"
+  ]
+}
