@@ -1,5 +1,13 @@
 # eslint-plugin-code-policy
 
+## 0.3.0
+
+### Minor Changes
+
+- feat: add `no-mixed-barrel` rule to prevent mixing re-exports and inline declarations in barrel files
+
+  Barrel files must be either pure re-export hubs or pure declaration files — not both. This new rule catches the common mistake of adding `export function` / `export const` declarations alongside `export { ... } from` re-exports in the same file, which undermines the module-boundary guarantees the plugin enforces.
+
 ## 0.2.4
 
 ### Patch Changes
