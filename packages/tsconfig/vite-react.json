@@ -1,0 +1,10 @@
+{
+  "$schema": "https://json.schemastore.org/tsconfig",
+  "_comment": "Vite + React app \u2014 extends app, adds JSX runtime.",
+  "extends": "./app.json",
+  "compilerOptions": {
+    "jsx": "react-jsx"
+  },
+  "include": ["src"],
+  "exclude": ["node_modules", "dist"]
+}

@@ -1,0 +1,42 @@
+{
+  "name": "@busirocket/tsconfig",
+  "version": "0.1.1",
+  "private": false,
+  "packageManager": "pnpm@10.33.0",
+  "license": "MIT",
+  "description": "Shared TypeScript configuration baseline",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/BusiRocket/tsconfig.git"
+  },
+  "homepage": "https://github.com/BusiRocket/tsconfig#readme",
+  "bugs": {
+    "url": "https://github.com/BusiRocket/tsconfig/issues"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "engines": {
+    "node": ">=20"
+  },
+  "files": [
+    "LICENSE",
+    "README.md",
+    "*.json"
+  ],
+  "exports": {
+    "./base.json": "./base.json",
+    "./app.json": "./app.json",
+    "./nextjs.json": "./nextjs.json",
+    "./astro.json": "./astro.json",
+    "./vite-react.json": "./vite-react.json",
+    "./node.json": "./node.json"
+  },
+  "scripts": {
+    "fix": "prettier --write \"*.json\" --list-different",
+    "format:check": "prettier --check \"*.json\""
+  },
+  "devDependencies": {
+    "prettier": "^3.8.2"
+  }
+}
