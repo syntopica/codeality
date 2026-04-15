@@ -18,17 +18,19 @@ pnpm dlx @busirocket/create-baseline@^0.1.0 --soft
 
 ## Usage
 
-| Flag       | Behavior                                                                 |
-| ---------- | ------------------------------------------------------------------------- |
-| `--soft`   | Print recommended `pnpm` / `npm` install lines (default if no other flag) |
-| `--check`  | Exit non-zero if baseline packages are missing from `package.json`        |
-| `--hard`   | Like `--check`, and require `eslint.config.*` in the project root         |
+| Flag      | Behavior                                                                  |
+| --------- | ------------------------------------------------------------------------- |
+| `--soft`  | Print recommended `pnpm` / `npm` install lines (default if no other flag) |
+| `--check` | Exit non-zero if baseline packages are missing from `package.json`        |
+| `--hard`  | Like `--check`, and require `eslint.config.*` in the project root         |
 
 Recommended baseline package versions are defined in `baseline-versions.json`
 shipped with this package; update that file when releasing aligned semver bumps.
 
 ## Repository
 
-Source and issues: [github.com/BusiRocket/create-baseline](https://github.com/BusiRocket/create-baseline).
+Source and issues:
+[github.com/BusiRocket/create-baseline](https://github.com/BusiRocket/create-baseline).
 
-Adoption guides: [engineering-baseline/docs/adoption](https://github.com/BusiRocket/engineering-baseline/tree/main/docs/adoption).
+Adoption guides:
+[engineering-baseline/docs/adoption](https://github.com/BusiRocket/engineering-baseline/tree/main/docs/adoption).

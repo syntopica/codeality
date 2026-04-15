@@ -29,13 +29,21 @@ ruleTester.run('no-cross-module-deep-imports', rule as any, {
     // classic cross-module deep import
     {
       code: `import { helper } from '../../core/src/utils/helper'`,
-      errors: [{ messageId: 'deepImport', data: { importPath: '../../core/src/utils/helper' } }],
+      errors: [
+        {
+          messageId: 'deepImport',
+          data: { importPath: '../../core/src/utils/helper' },
+        },
+      ],
     },
     // three levels up, then into src
     {
       code: `import { api } from '../../../packages/api/src/client'`,
       errors: [
-        { messageId: 'deepImport', data: { importPath: '../../../packages/api/src/client' } },
+        {
+          messageId: 'deepImport',
+          data: { importPath: '../../../packages/api/src/client' },
+        },
       ],
     },
     // custom internalDirs option
@@ -43,14 +51,22 @@ ruleTester.run('no-cross-module-deep-imports', rule as any, {
       code: `import { x } from '../../other-module/lib/internal'`,
       options: [{ internalDirs: ['lib'] }],
       errors: [
-        { messageId: 'deepImport', data: { importPath: '../../other-module/lib/internal' } },
+        {
+          messageId: 'deepImport',
+          data: { importPath: '../../other-module/lib/internal' },
+        },
       ],
     },
     // minParentTraversals: 1 — even one level up into src is flagged
     {
       code: `import { x } from '../sibling/src/module'`,
       options: [{ minParentTraversals: 1 }],
-      errors: [{ messageId: 'deepImport', data: { importPath: '../sibling/src/module' } }],
+      errors: [
+        {
+          messageId: 'deepImport',
+          data: { importPath: '../sibling/src/module' },
+        },
+      ],
     },
   ],
 })

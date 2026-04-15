@@ -49,10 +49,16 @@ export default {
               exportedNames.add(stmt.declaration.name)
             } else if (stmt.declaration.type === 'CallExpression') {
               let currentArgs = stmt.declaration.arguments
-              while (currentArgs.length === 1 && currentArgs[0]?.type === 'CallExpression') {
+              while (
+                currentArgs.length === 1 &&
+                currentArgs[0]?.type === 'CallExpression'
+              ) {
                 currentArgs = currentArgs[0].arguments
               }
-              if (currentArgs.length === 1 && currentArgs[0]?.type === 'Identifier') {
+              if (
+                currentArgs.length === 1 &&
+                currentArgs[0]?.type === 'Identifier'
+              ) {
                 exportedNames.add(currentArgs[0].name)
               }
             }
@@ -77,11 +83,13 @@ export default {
                 } else if (pattern.type === 'ObjectPattern') {
                   for (const prop of pattern.properties) {
                     if (prop.type === 'Property') checkPattern(prop.value)
-                    else if (prop.type === 'RestElement') checkPattern(prop.argument)
+                    else if (prop.type === 'RestElement')
+                      checkPattern(prop.argument)
                   }
                 } else if (pattern.type === 'ArrayPattern') {
                   for (const elem of pattern.elements) {
-                    if (elem?.type === 'RestElement') checkPattern(elem.argument)
+                    if (elem?.type === 'RestElement')
+                      checkPattern(elem.argument)
                     else checkPattern(elem)
                   }
                 }

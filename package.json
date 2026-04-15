@@ -2,30 +2,27 @@
   "name": "engineering-baseline",
   "private": true,
   "packageManager": "pnpm@10.33.0",
-  "pnpm": {
-    "overrides": {
-      "eslint-plugin-react": "github:jsx-eslint/eslint-plugin-react#012ec39f962627d5312e9fbaee3eb41d9a4d8bb6"
-    }
-  },
   "scripts": {
-    "lint": "pnpm --filter './templates/*' lint",
-    "lint:fix": "pnpm --filter './templates/*' lint:fix",
-    "type-check": "pnpm --filter './templates/*' type-check",
+    "lint": "turbo run lint",
+    "lint:fix": "turbo run lint:fix",
+    "type-check": "turbo run type-check",
     "format": "prettier --write . --list-different",
     "format:check": "prettier --check .",
-    "check:all": "pnpm type-check && pnpm lint && pnpm format:check",
-    "fix:all": "pnpm -r run fix && pnpm exec prettier --write . --list-different",
-    "check:ci": "pnpm type-check && pnpm lint && pnpm format:check && pnpm --filter './templates/*' test && pnpm --filter './templates/*' build",
-    "perf:check": "pnpm --filter ./templates/nextjs-app perf:check && pnpm --filter ./templates/astro-site perf:check && pnpm --filter ./templates/vite-react-app perf:check"
+    "check:all": "turbo run type-check lint && pnpm format:check",
+    "fix:all": "turbo run fix && pnpm format",
+    "check:ci": "turbo run type-check lint test build && pnpm format:check",
+    "perf:check": "turbo run perf:check"
   },
   "devDependencies": {
-    "@busirocket/prettier-config": "^0.1.1",
+    "@busirocket/prettier-config": "workspace:*",
+    "@types/node": "^20.19.39",
     "jiti": "^2.6.1",
     "prettier": "^3.8.3",
     "prettier-plugin-astro": "^0.14.1",
     "prettier-plugin-css-order": "^2.2.0",
     "prettier-plugin-organize-imports": "^4.3.0",
     "prettier-plugin-tailwindcss": "^0.7.2",
+    "turbo": "^2.9.6",
     "typescript": "^6.0.2"
   }
 }

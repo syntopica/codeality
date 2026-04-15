@@ -1,14 +1,15 @@
 import type { Rule } from 'eslint'
 
+import { DOCS_BASE_URL } from '@/utils/docs-base-url.js'
 import { NEXT_RESERVED_EXPORTS } from '@/utils/next-reserved-exports.js'
 import { ROUTE_METHODS } from '@/utils/route-methods.js'
-import { DOCS_BASE_URL } from '@/utils/docs-base-url.js'
 
 export default {
   meta: {
     type: 'problem',
     docs: {
-      description: 'A file must contain exactly one primary top-level exported unit.',
+      description:
+        'A file must contain exactly one primary top-level exported unit.',
       recommended: true,
       url: `${DOCS_BASE_URL}/one-primary-unit.md`,
     },
@@ -38,7 +39,7 @@ export default {
 
     const isNextJsRouterFile =
       /(?:page|layout|loading|error|not-found)\.(?:tsx|jsx|js|ts)$|route\.(?:ts|js)$|middleware\.(?:ts|js)$/.test(
-        filename
+        filename,
       )
 
     return {
@@ -52,7 +53,8 @@ export default {
             if (statement.declaration) {
               if (statement.declaration.type === 'VariableDeclaration') {
                 for (const decl of statement.declaration.declarations) {
-                  const name = decl.id.type === 'Identifier' ? decl.id.name : null
+                  const name =
+                    decl.id.type === 'Identifier' ? decl.id.name : null
                   if (
                     name &&
                     isNextJsRouterFile &&
@@ -90,7 +92,9 @@ export default {
             } else if (statement.specifiers.length > 0) {
               for (const specifier of statement.specifiers) {
                 const name =
-                  specifier.exported.type === 'Identifier' ? specifier.exported.name : null
+                  specifier.exported.type === 'Identifier'
+                    ? specifier.exported.name
+                    : null
                 if (
                   name &&
                   isNextJsRouterFile &&

@@ -23,14 +23,22 @@ ruleTester.run('public-api-imports', rule as any, {
       import { util } from '@my-pkg/core/src/utils'
       `,
       errors: [
-        { messageId: 'deepImportNotAllowed', data: { importPath: '@my-pkg/core/src/utils' } },
+        {
+          messageId: 'deepImportNotAllowed',
+          data: { importPath: '@my-pkg/core/src/utils' },
+        },
       ],
     },
     {
       code: `
       import lib from 'dependency/src/lib'
       `,
-      errors: [{ messageId: 'deepImportNotAllowed', data: { importPath: 'dependency/src/lib' } }],
+      errors: [
+        {
+          messageId: 'deepImportNotAllowed',
+          data: { importPath: 'dependency/src/lib' },
+        },
+      ],
     },
   ],
 })

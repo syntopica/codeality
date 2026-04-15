@@ -43,13 +43,17 @@ export default {
           // eslint-disable-next-line @typescript-eslint/no-explicit-any
           let decl: any = stmt
           if (
-            (stmt.type === 'ExportNamedDeclaration' || stmt.type === 'ExportDefaultDeclaration') &&
+            (stmt.type === 'ExportNamedDeclaration' ||
+              stmt.type === 'ExportDefaultDeclaration') &&
             stmt.declaration
           ) {
             decl = stmt.declaration
           }
 
-          if (decl.type === 'TSTypeAliasDeclaration' || decl.type === 'TSInterfaceDeclaration') {
+          if (
+            decl.type === 'TSTypeAliasDeclaration' ||
+            decl.type === 'TSInterfaceDeclaration'
+          ) {
             types.push({ node: decl, name: decl.id?.name ?? 'unknown' })
           } else if (
             stmt.type !== 'ImportDeclaration' &&
@@ -72,7 +76,9 @@ export default {
             context.report({
               node: t.node,
               messageId: 'inlineTypeInRuntimeFile',
-              data: { name: t.name.replace(/(Props|State|Type|Interface)$/i, '') },
+              data: {
+                name: t.name.replace(/(Props|State|Type|Interface)$/i, ''),
+              },
             })
           }
         }

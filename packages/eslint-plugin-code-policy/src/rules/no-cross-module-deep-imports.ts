@@ -86,7 +86,9 @@ export default {
 
         // Check if any of the non-`..` segments is an internal dir
         const descendantParts = parts.slice(parentCount)
-        const hasInternalSegment = descendantParts.some((p) => internalDirs.includes(p))
+        const hasInternalSegment = descendantParts.some((p) =>
+          internalDirs.includes(p),
+        )
 
         if (hasInternalSegment) {
           context.report({

@@ -16,14 +16,14 @@ pnpm add -D @busirocket/tsconfig@^0.1.0 typescript
 
 ## Exports
 
-| Subpath          | Use case                          |
-| ---------------- | --------------------------------- |
-| `./base.json`    | Strict baseline                   |
-| `./app.json`     | Browser / app TS                |
-| `./nextjs.json`  | Next.js App Router                |
-| `./astro.json`   | Astro                             |
-| `./vite-react.json` | Vite + React                   |
-| `./node.json`    | Node libraries                    |
+| Subpath             | Use case           |
+| ------------------- | ------------------ |
+| `./base.json`       | Strict baseline    |
+| `./app.json`        | Browser / app TS   |
+| `./nextjs.json`     | Next.js App Router |
+| `./astro.json`      | Astro              |
+| `./vite-react.json` | Vite + React       |
+| `./node.json`       | Node libraries     |
 
 Example `tsconfig.json`:
 
@@ -39,6 +39,8 @@ Example `tsconfig.json`:
 
 ## Repository
 
-Source and issues: [github.com/BusiRocket/tsconfig](https://github.com/BusiRocket/tsconfig).
+Source and issues:
+[github.com/BusiRocket/tsconfig](https://github.com/BusiRocket/tsconfig).
 
-Broader adoption docs: [engineering-baseline](https://github.com/BusiRocket/engineering-baseline).
+Broader adoption docs:
+[engineering-baseline](https://github.com/BusiRocket/engineering-baseline).

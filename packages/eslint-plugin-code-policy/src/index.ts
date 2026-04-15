@@ -1,19 +1,19 @@
+import next from '@/configs/next.js'
+import react from '@/configs/react.js'
 import recommended from '@/configs/recommended.js'
 import strict from '@/configs/strict.js'
-import react from '@/configs/react.js'
-import next from '@/configs/next.js'
 
 import atomicFile from '@/rules/atomic-file.js'
-import onePrimaryUnit from '@/rules/one-primary-unit.js'
+import fileKindPlacement from '@/rules/file-kind-placement.js'
 import noHiddenTopLevelDeclarations from '@/rules/no-hidden-top-level-declarations.js'
 import noInlineTypesInRuntimeFiles from '@/rules/no-inline-types-in-runtime-files.js'
-import fileKindPlacement from '@/rules/file-kind-placement.js'
+import onePrimaryUnit from '@/rules/one-primary-unit.js'
 
-import noInlineTypes from '@/rules/no-inline-types.js'
-import viewLogicSeparation from '@/rules/view-logic-separation.js'
-import publicApiImports from '@/rules/public-api-imports.js'
 import noCrossModuleDeepImports from '@/rules/no-cross-module-deep-imports.js'
+import noInlineTypes from '@/rules/no-inline-types.js'
 import noMixedBarrel from '@/rules/no-mixed-barrel.js'
+import publicApiImports from '@/rules/public-api-imports.js'
+import viewLogicSeparation from '@/rules/view-logic-separation.js'
 
 import { PLUGIN_VERSION } from '@/version.js'
 

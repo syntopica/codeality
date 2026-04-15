@@ -1,13 +1,14 @@
 import type { Rule } from 'eslint'
 
-import { NEXT_RESERVED_EXPORTS } from '@/utils/next-reserved-exports.js'
 import { DOCS_BASE_URL } from '@/utils/docs-base-url.js'
+import { NEXT_RESERVED_EXPORTS } from '@/utils/next-reserved-exports.js'
 
 export default {
   meta: {
     type: 'problem',
     docs: {
-      description: 'Enforce atomic file structure (exactly one top-level unit per file)',
+      description:
+        'Enforce atomic file structure (exactly one top-level unit per file)',
       recommended: true,
       url: `${DOCS_BASE_URL}/atomic-file.md`,
     },
@@ -36,7 +37,7 @@ export default {
 
     const isNextJsRouterFile =
       /(?:page|layout|loading|error|not-found)\.tsx$|route\.ts$|middleware\.ts$|proxy\.ts$/.test(
-        filename
+        filename,
       )
 
     return {
@@ -56,7 +57,10 @@ export default {
             continue
           }
 
-          if (statement.type === 'ExportNamedDeclaration' && !statement.declaration) {
+          if (
+            statement.type === 'ExportNamedDeclaration' &&
+            !statement.declaration
+          ) {
             continue
           }
 
@@ -75,7 +79,9 @@ export default {
             }
             if (statement.declaration.type === 'VariableDeclaration') {
               const allReserved = statement.declaration.declarations.every(
-                (d) => d.id.type === 'Identifier' && NEXT_RESERVED_EXPORTS.has(d.id.name)
+                (d) =>
+                  d.id.type === 'Identifier' &&
+                  NEXT_RESERVED_EXPORTS.has(d.id.name),
               )
               if (allReserved) {
                 continue

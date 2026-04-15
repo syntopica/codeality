@@ -1,8 +1,8 @@
 import type { Rule } from 'eslint'
 
+import { DOCS_BASE_URL } from '@/utils/docs-base-url.js'
 import { NEXT_RESERVED_EXPORTS } from '@/utils/next-reserved-exports.js'
 import { ROUTE_METHODS } from '@/utils/route-methods.js'
-import { DOCS_BASE_URL } from '@/utils/docs-base-url.js'
 
 /**
  * @fileoverview ESLint rule: no inline type or interface declarations.
@@ -53,19 +53,26 @@ export default {
           let isExport = false
 
           // eslint-disable-next-line @typescript-eslint/no-explicit-any
-          if (stmt.type === 'ExportNamedDeclaration' && (stmt as any).declaration) {
+          if (
+            stmt.type === 'ExportNamedDeclaration' &&
+            (stmt as any).declaration
+          ) {
             // eslint-disable-next-line @typescript-eslint/no-explicit-any
             decl = (stmt as any).declaration
             isExport = true
             // eslint-disable-next-line @typescript-eslint/no-explicit-any
-          } else if (stmt.type === 'ExportDefaultDeclaration' && (stmt as any).declaration) {
+          } else if (
+            stmt.type === 'ExportDefaultDeclaration' &&
+            (stmt as any).declaration
+          ) {
             // eslint-disable-next-line @typescript-eslint/no-explicit-any
             decl = (stmt as any).declaration ?? stmt
             isExport = true
           }
 
           const isRouteFile =
-            context.filename.endsWith('/route.ts') || context.filename.endsWith('/route.js')
+            context.filename.endsWith('/route.ts') ||
+            context.filename.endsWith('/route.js')
           const declType = decl.type
 
           if (

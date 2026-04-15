@@ -34,11 +34,16 @@ yarn add --dev eslint-plugin-code-policy
 
 ### Full stack baseline (recommended for VibraComet projects)
 
-This plugin ships **rules and small presets** only. For the full shared ESLint baseline (TypeScript ESLint, imports, security, framework layers, and optional `code-policy` wiring), use the published config package:
+This plugin ships **rules and small presets** only. For the full shared ESLint
+baseline (TypeScript ESLint, imports, security, framework layers, and optional
+`code-policy` wiring), use the published config package:
 
-- **`@vibracomet/eslint-config`** — published from the `engineering-baseline` repository (`packages/eslint-config`, `PUBLIC_API.md`, and `docs/adoption/` for migration steps).
+- **`@vibracomet/eslint-config`** — published from the `engineering-baseline`
+  repository (`packages/eslint-config`, `PUBLIC_API.md`, and `docs/adoption/`
+  for migration steps).
 
-Install it alongside this plugin when you want parity with the monorepo templates.
+Install it alongside this plugin when you want parity with the monorepo
+templates.
 
 ---
 
@@ -99,13 +104,15 @@ export default [
 
 > **Enforce exactly one top-level exported declaration per file.**
 
-Each file must export exactly one top-level unit — a function, class, constant, or type. This focuses the identity of every module.
+Each file must export exactly one top-level unit — a function, class, constant,
+or type. This focuses the identity of every module.
 
 **Exemptions (automatically skipped)**
 
 - `*.config.ts` / `*.config.js` / `*.config.mjs`
 - `index.ts` / `index.tsx` / `index.js` (barrel files)
-- Next.js special files: `page.tsx`, `layout.tsx`, `route.ts`, etc. — reserved exports like `GET`, `POST`, `metadata` are not counted.
+- Next.js special files: `page.tsx`, `layout.tsx`, `route.ts`, etc. — reserved
+  exports like `GET`, `POST`, `metadata` are not counted.
 
 ---
 
@@ -113,7 +120,9 @@ Each file must export exactly one top-level unit — a function, class, constant
 
 > **Forbid internal module-scoped logic and helpers.**
 
-Files cannot contain private/unexported top-level declarations that hide complexity. If a helper is needed, it should be extracted to its own file and imported explicitly.
+Files cannot contain private/unexported top-level declarations that hide
+complexity. If a helper is needed, it should be extracted to its own file and
+imported explicitly.
 
 ---
 
@@ -121,13 +130,17 @@ Files cannot contain private/unexported top-level declarations that hide complex
 
 > **Enforce that type aliases and interfaces live in their own files.**
 
-Type declarations that appear alongside implementation code create hidden coupling and violate the single responsibility principle. Every `type` or `interface` must be in a dedicated file, isolating runtime from type declarations.
+Type declarations that appear alongside implementation code create hidden
+coupling and violate the single responsibility principle. Every `type` or
+`interface` must be in a dedicated file, isolating runtime from type
+declarations.
 
 **Exemptions**
 
 - Files inside `types/` or `types/**` directories
 - `*.d.ts` files
-- "Pure type files" — files whose entire body consists only of `import` + `type`/`interface` declarations
+- "Pure type files" — files whose entire body consists only of `import` +
+  `type`/`interface` declarations
 
 ---
 
@@ -135,7 +148,8 @@ Type declarations that appear alongside implementation code create hidden coupli
 
 > **Ensure files strictly follow kind-based naming and folder placement.**
 
-Ensures types are placed in `types/`, contexts in `contexts/`, and hooks start with `use`. Strict architectural adherence is enforced at a structural level.
+Ensures types are placed in `types/`, contexts in `contexts/`, and hooks start
+with `use`. Strict architectural adherence is enforced at a structural level.
 
 ---
 
@@ -143,7 +157,9 @@ Ensures types are placed in `types/`, contexts in `contexts/`, and hooks start w
 
 > **Prevent importing directly from internal module subpaths.**
 
-When consuming a package or module, you must import from its public API (the root / index), not from a deep internal path. Deep imports couple you to internal implementation details.
+When consuming a package or module, you must import from its public API (the
+root / index), not from a deep internal path. Deep imports couple you to
+internal implementation details.
 
 **❌ Incorrect**
 
@@ -179,9 +195,12 @@ import { formatDate } from '@myorg/utils'
 
 ### `code-policy/no-cross-module-deep-imports`
 
-> **Prevent relative imports that bypass another module's public API within a monorepo.**
+> **Prevent relative imports that bypass another module's public API within a
+> monorepo.**
 
-In a monorepo, relative paths like `../../core/src/utils/helper` skip the `core` module's public API entirely. This rule detects that pattern by counting `../` traversal depth and checking for internal directory names in the descent.
+In a monorepo, relative paths like `../../core/src/utils/helper` skip the `core`
+module's public API entirely. This rule detects that pattern by counting `../`
+traversal depth and checking for internal directory names in the descent.
 
 **❌ Incorrect**
 
@@ -219,7 +238,9 @@ import { helper } from '@myorg/core'
 
 > **Prevent state, effects, and inline handlers inside React view components.**
 
-React view components (`.tsx` files) are responsible for rendering only. State management, side effects, and event handler logic must live in a dedicated custom hook. This enforces a clean view/controller split.
+React view components (`.tsx` files) are responsible for rendering only. State
+management, side effects, and event handler logic must live in a dedicated
+custom hook. This enforces a clean view/controller split.
 
 **❌ Incorrect**
 
@@ -269,7 +290,8 @@ export function UserCard({ userId }: UserCardProps) {
 
 **What triggers this rule (inside `.tsx` files)**
 
-- Calling React hooks: `useState`, `useEffect`, `useReducer`, `useCallback`, `useMemo`, `useRef`, and more
+- Calling React hooks: `useState`, `useEffect`, `useReducer`, `useCallback`,
+  `useMemo`, `useRef`, and more
 - Declaring inline functions/handlers directly inside a view component body
 
 ---
@@ -278,7 +300,8 @@ export function UserCard({ userId }: UserCardProps) {
 
 ### `recommended`
 
-Enables all five rules as errors. Best starting point for any TypeScript project.
+Enables all five rules as errors. Best starting point for any TypeScript
+project.
 
 ```js
 // Rules enabled:
@@ -293,7 +316,9 @@ Enables all five rules as errors. Best starting point for any TypeScript project
 
 ### `strict`
 
-Extends `recommended`. Intended for projects that want zero tolerance for architectural deviation. Reserved for additional strictness overrides in future versions.
+Extends `recommended`. Intended for projects that want zero tolerance for
+architectural deviation. Reserved for additional strictness overrides in future
+versions.
 
 ### `react`
 
@@ -301,13 +326,18 @@ Extends `recommended` with React-specific adjustments.
 
 ### `next`
 
-Extends `recommended`. Correctly handles Next.js App Router special files (`page.tsx`, `layout.tsx`, `route.ts`, etc.) and reserved exports (`metadata`, `GET`, `POST`, …), preventing false positives.
+Extends `recommended`. Correctly handles Next.js App Router special files
+(`page.tsx`, `layout.tsx`, `route.ts`, etc.) and reserved exports (`metadata`,
+`GET`, `POST`, …), preventing false positives.
 
 ---
 
 ## Migrating from Legacy Config
 
-This plugin only supports the **ESLint flat config** format (ESLint v9+). If you're still on the legacy `.eslintrc` format, migrate using the [official ESLint migration guide](https://eslint.org/docs/latest/use/configure/migration-guide) before installing this plugin.
+This plugin only supports the **ESLint flat config** format (ESLint v9+). If
+you're still on the legacy `.eslintrc` format, migrate using the
+[official ESLint migration guide](https://eslint.org/docs/latest/use/configure/migration-guide)
+before installing this plugin.
 
 ---
 
@@ -315,7 +345,8 @@ This plugin only supports the **ESLint flat config** format (ESLint v9+). If you
 
 **Q: Why do I get errors on my `index.ts` barrel files?**
 
-`index.ts` files are automatically exempted from the primary unit rules because barrel files by design re-export multiple things.
+`index.ts` files are automatically exempted from the primary unit rules because
+barrel files by design re-export multiple things.
 
 **Q: How do I exempt a specific file from a rule?**
 
@@ -338,7 +369,9 @@ Or add file overrides in your `eslint.config.mjs`:
 
 **Q: Does this work with JavaScript (non-TypeScript) projects?**
 
-The rules are language-agnostic at the ESLint AST level. TypeScript-specific nodes are handled gracefully. You can use the plugin on `.js` files, though some rules (like `no-inline-types`) are most meaningful in TypeScript codebases.
+The rules are language-agnostic at the ESLint AST level. TypeScript-specific
+nodes are handled gracefully. You can use the plugin on `.js` files, though some
+rules (like `no-inline-types`) are most meaningful in TypeScript codebases.
 
 ---
 

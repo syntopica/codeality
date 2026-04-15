@@ -2,7 +2,9 @@
 
 > Enforce that type aliases and interfaces live in their own dedicated files.
 
-Type declarations that appear alongside implementation code create hidden coupling and violate the single responsibility principle. Every `type` or `interface` must be in a dedicated file, ideally inside a `types/` directory.
+Type declarations that appear alongside implementation code create hidden
+coupling and violate the single responsibility principle. Every `type` or
+`interface` must be in a dedicated file, ideally inside a `types/` directory.
 
 **Category:** Architectural  
 **Recommended:** Yes  
@@ -10,7 +12,10 @@ Type declarations that appear alongside implementation code create hidden coupli
 
 ## Rule Details
 
-The rule scans every top-level declaration in a file. If the file contains more than one unit (function, class, type, variable, enum), it reports any declarations after the first. This catches type aliases cohabiting with implementation code.
+The rule scans every top-level declaration in a file. If the file contains more
+than one unit (function, class, type, variable, enum), it reports any
+declarations after the first. This catches type aliases cohabiting with
+implementation code.
 
 ### Incorrect
 
@@ -57,4 +62,5 @@ This rule has no options.
 
 ## When Not To Use It
 
-If you prefer co-locating small component prop types with their component (e.g., `ButtonProps` inside `Button.tsx`), disable this rule for those specific files.
+If you prefer co-locating small component prop types with their component (e.g.,
+`ButtonProps` inside `Button.tsx`), disable this rule for those specific files.

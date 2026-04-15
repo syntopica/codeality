@@ -8,9 +8,14 @@
   "types": "./dist/index.d.ts",
   "exports": {
     ".": {
-      "types": "./dist/index.d.ts",
-      "import": "./dist/index.js",
-      "require": "./dist/index.cjs"
+      "import": {
+        "types": "./dist/index.d.ts",
+        "default": "./dist/index.js"
+      },
+      "require": {
+        "types": "./dist/index.d.ts",
+        "default": "./dist/index.cjs"
+      }
     },
     "./configs/recommended": {
       "types": "./dist/configs/recommended.d.ts",
@@ -39,7 +44,6 @@
     "LICENSE"
   ],
   "scripts": {
-    "prebuild": "node scripts/sync-version.mjs",
     "build": "tsup && tsc -p tsconfig.build.json && tsc-alias -p tsconfig.build.json",
     "dev": "tsup --watch"
   },
@@ -85,9 +89,16 @@
       "optional": true
     }
   },
-  "devDependencies": {
-    "eslint": "^9.0.0",
-    "typescript": ">=5.4.0",
+  "dependencies": {
     "@types/eslint": "^9.0.0"
+  },
+  "devDependencies": {
+    "@busirocket/tsconfig": "workspace:*",
+    "@types/node": "^20.19.39",
+    "eslint": "^9.0.0",
+    "tsc-alias": "^1.8.16",
+    "tsup": "^8.5.1",
+    "typescript": ">=5.4.0",
+    "vitest": "^4.1.4"
   }
 }

@@ -1,8 +1,8 @@
 import type { Rule } from 'eslint'
 
-import { isComponentNode } from '@/utils/is-component-node.js'
-import { getEnclosingComponent } from '@/utils/get-enclosing-component.js'
 import { DOCS_BASE_URL } from '@/utils/docs-base-url.js'
+import { getEnclosingComponent } from '@/utils/get-enclosing-component.js'
+import { isComponentNode } from '@/utils/is-component-node.js'
 
 export default {
   meta: {
@@ -32,17 +32,23 @@ export default {
 
     return {
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      'FunctionDeclaration, ArrowFunctionExpression, FunctionExpression'(node: any) {
+      'FunctionDeclaration, ArrowFunctionExpression, FunctionExpression'(
+        node: any,
+      ) {
         if (!isComponentNode(node)) {
           const component = getEnclosingComponent(node)
           if (
             component &&
             node.parent &&
-            (node.parent.type === 'VariableDeclarator' || node.type === 'FunctionDeclaration')
+            (node.parent.type === 'VariableDeclarator' ||
+              node.type === 'FunctionDeclaration')
           ) {
             let name = 'anonymous function'
             if (node.id?.name) name = node.id.name
-            else if (node.parent.type === 'VariableDeclarator' && node.parent.id?.name) {
+            else if (
+              node.parent.type === 'VariableDeclarator' &&
+              node.parent.id?.name
+            ) {
               name = node.parent.id.name
             }
 
@@ -61,7 +67,7 @@ export default {
           const name = node.callee.name
           if (
             /^use(State|Effect|Reducer|Callback|Memo|Ref|ImperativeHandle|LayoutEffect|DebugValue|DeferredValue|Transition|Id|SyncExternalStore|InsertionEffect|Query|Mutation)$/.test(
-              name
+              name,
             )
           ) {
             const component = getEnclosingComponent(node)

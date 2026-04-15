@@ -48,7 +48,10 @@ export default {
               const declAny = stmt.declaration as any
               const declType: string = declAny.type
               let kind: string
-              if (declType === 'TSTypeAliasDeclaration' || declType === 'TSInterfaceDeclaration') {
+              if (
+                declType === 'TSTypeAliasDeclaration' ||
+                declType === 'TSInterfaceDeclaration'
+              ) {
                 kind = 'type'
               } else if (declType === 'FunctionDeclaration') {
                 kind = 'function'

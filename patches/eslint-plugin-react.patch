@@ -1,0 +1,28 @@
+diff --git a/lib/rules/jsx-filename-extension.js b/lib/rules/jsx-filename-extension.js
+index 4a2cfeede66b68255ca48bc38c0eb2f1537a785a..e858f56862b537993a44b503830a807ab7c3149e 100644
+--- a/lib/rules/jsx-filename-extension.js
++++ b/lib/rules/jsx-filename-extension.js
+@@ -61,7 +61,7 @@ module.exports = {
+   },
+ 
+   create(context) {
+-    const filename = context.getFilename();
++    const filename = typeof context.getFilename === 'function' ? context.getFilename() : (context.filename || context.physicalFilename);
+ 
+     let jsxNode;
+ 
+diff --git a/lib/util/version.js b/lib/util/version.js
+index c9dc683b7d149c5a3a941bdcbd32f657facdfbf6..dc235ada80ee0952fec63f051366bc30fb9c6fd8 100644
+--- a/lib/util/version.js
++++ b/lib/util/version.js
+@@ -28,7 +28,9 @@ function resetDetectedVersion() {
+ 
+ function resolveBasedir(contextOrFilename) {
+   if (contextOrFilename) {
+-    const filename = typeof contextOrFilename === 'string' ? contextOrFilename : contextOrFilename.getFilename();
++    const filename = typeof contextOrFilename === 'string'
++      ? contextOrFilename
++      : (typeof contextOrFilename.getFilename === 'function' ? contextOrFilename.getFilename() : (contextOrFilename.filename || contextOrFilename.physicalFilename));
+     const dirname = path.dirname(filename);
+     try {
+       if (fs.statSync(filename).isFile()) {

@@ -39,6 +39,8 @@ export default { ...base }
 
 ## Repository
 
-Source and issues: [github.com/BusiRocket/prettier-config](https://github.com/BusiRocket/prettier-config).
+Source and issues:
+[github.com/BusiRocket/prettier-config](https://github.com/BusiRocket/prettier-config).
 
-Broader adoption docs: [engineering-baseline](https://github.com/BusiRocket/engineering-baseline).
+Broader adoption docs:
+[engineering-baseline](https://github.com/BusiRocket/engineering-baseline).

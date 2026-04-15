@@ -35,7 +35,8 @@ framework-specific plugins remain peers.
 1. Add `@busirocket/eslint-config` and peers for your stack.
 2. Add `eslint.config.ts` (or `.mjs`) using `jiti` / `tsx` / Node 22+ TypeScript
    support as needed.
-3. Follow [docs/adoption/new-repo.md](https://github.com/BusiRocket/engineering-baseline/blob/main/docs/adoption/new-repo.md).
+3. Follow
+   [docs/adoption/new-repo.md](https://github.com/BusiRocket/engineering-baseline/blob/main/docs/adoption/new-repo.md).
 
 Minimal `eslint.config.ts` (Node / library):
 
@@ -47,13 +48,16 @@ export default createBaseConfig({ tsconfigRootDir: import.meta.dirname })
 
 Next.js App Router: import `createNextjsConfig` from
 `@busirocket/eslint-config/nextjs` and compose with `createBaseConfig` as in the
-the Next.js template in [engineering-baseline](https://github.com/BusiRocket/engineering-baseline/tree/main/templates/nextjs-app).
+the Next.js template in
+[engineering-baseline](https://github.com/BusiRocket/engineering-baseline/tree/main/templates/nextjs-app).
 
 ## Existing project
 
-See [docs/adoption/existing-repo.md](https://github.com/BusiRocket/engineering-baseline/blob/main/docs/adoption/existing-repo.md) and
-[docs/migration.md](https://github.com/BusiRocket/engineering-baseline/blob/main/docs/migration.md). Migrate to flat config first, then
-layer `@busirocket/eslint-config`.
+See
+[docs/adoption/existing-repo.md](https://github.com/BusiRocket/engineering-baseline/blob/main/docs/adoption/existing-repo.md)
+and
+[docs/migration.md](https://github.com/BusiRocket/engineering-baseline/blob/main/docs/migration.md).
+Migrate to flat config first, then layer `@busirocket/eslint-config`.
 
 ## Stacks
 

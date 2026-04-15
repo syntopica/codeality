@@ -54,7 +54,12 @@ ruleTester.run('view-logic-separation', rule as any, {
         }
       `,
       filename: '/src/components/Counter.tsx',
-      errors: [{ messageId: 'noReactHooks', data: { name: 'useState', componentName: 'Counter' } }],
+      errors: [
+        {
+          messageId: 'noReactHooks',
+          data: { name: 'useState', componentName: 'Counter' },
+        },
+      ],
     },
     // useEffect inside component — flagged
     {
@@ -67,7 +72,10 @@ ruleTester.run('view-logic-separation', rule as any, {
       `,
       filename: '/src/components/Tracker.tsx',
       errors: [
-        { messageId: 'noReactHooks', data: { name: 'useEffect', componentName: 'Tracker' } },
+        {
+          messageId: 'noReactHooks',
+          data: { name: 'useEffect', componentName: 'Tracker' },
+        },
       ],
     },
     // Named inline handler inside component — flagged
@@ -79,7 +87,9 @@ ruleTester.run('view-logic-separation', rule as any, {
         }
       `,
       filename: '/src/components/Form.tsx',
-      errors: [{ messageId: 'noInlineHandlers', data: { name: 'handleSubmit' } }],
+      errors: [
+        { messageId: 'noInlineHandlers', data: { name: 'handleSubmit' } },
+      ],
     },
   ],
 })

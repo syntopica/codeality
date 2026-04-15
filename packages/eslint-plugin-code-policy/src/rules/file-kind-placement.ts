@@ -58,10 +58,16 @@ export default {
     if (basename.startsWith('use')) {
       kind = 'React hook'
       expectedFolder = 'hooks'
-    } else if (basename.startsWith('format') || basename.endsWith('Formatter.ts')) {
+    } else if (
+      basename.startsWith('format') ||
+      basename.endsWith('Formatter.ts')
+    ) {
       kind = 'formatter'
       expectedFolder = 'formatters'
-    } else if (basename.startsWith('validate') || basename.endsWith('Validator.ts')) {
+    } else if (
+      basename.startsWith('validate') ||
+      basename.endsWith('Validator.ts')
+    ) {
       kind = 'validator'
       expectedFolder = 'validators'
     } else if (
@@ -71,12 +77,19 @@ export default {
     ) {
       kind = 'mapper'
       expectedFolder = 'mappers'
-    } else if (basename.startsWith('select') || basename.endsWith('Selector.ts')) {
+    } else if (
+      basename.startsWith('select') ||
+      basename.endsWith('Selector.ts')
+    ) {
       kind = 'selector'
       expectedFolder = 'selectors'
     }
 
-    if (kind && expectedFolder && !pathParts.slice(0, -1).includes(expectedFolder)) {
+    if (
+      kind &&
+      expectedFolder &&
+      !pathParts.slice(0, -1).includes(expectedFolder)
+    ) {
       return {
         Program(node) {
           context.report({
