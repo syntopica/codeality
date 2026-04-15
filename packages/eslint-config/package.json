@@ -1,0 +1,143 @@
+{
+  "name": "@busirocket/eslint-config",
+  "version": "0.1.0",
+  "private": false,
+  "packageManager": "pnpm@10.33.0",
+  "license": "MIT",
+  "description": "Shared ESLint configuration baseline",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/BusiRocket/eslint-config.git"
+  },
+  "homepage": "https://github.com/BusiRocket/eslint-config#readme",
+  "bugs": {
+    "url": "https://github.com/BusiRocket/eslint-config/issues"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "type": "module",
+  "engines": {
+    "node": ">=20"
+  },
+  "files": [
+    "LICENSE",
+    "README.md",
+    "src",
+    "eslint.config.ts",
+    "tsconfig.json",
+    "PUBLIC_API.md"
+  ],
+  "exports": {
+    "./base": "./src/base.ts",
+    "./nextjs": "./src/nextjs.ts",
+    "./astro": "./src/astro.ts",
+    "./vite-react": "./src/vite-react.ts",
+    "./node": "./src/node.ts",
+    "./code-quality": "./src/code-quality.ts",
+    "./accessibility": "./src/accessibility.ts",
+    "./tailwind": "./src/tailwind.ts",
+    "./frontend-boundaries": "./src/frontend-boundaries.ts"
+  },
+  "scripts": {
+    "fix": "pnpm run lint:fix",
+    "lint": "eslint src",
+    "lint:fix": "eslint src --fix",
+    "type-check": "tsc --noEmit -p tsconfig.json"
+  },
+  "dependencies": {
+    "@eslint/js": "^10.0.1",
+    "eslint-config-prettier": "^10.1.8",
+    "eslint-import-resolver-typescript": "^4.4.4",
+    "eslint-plugin-import": "^2.32.0",
+    "eslint-plugin-promise": "^7.2.1",
+    "eslint-plugin-security": "^4.0.0",
+    "eslint-plugin-unused-imports": "^4.4.1",
+    "typescript-eslint": "^8.58.0"
+  },
+  "peerDependencies": {
+    "@next/eslint-plugin-next": ">=15.0.0",
+    "eslint": ">=9.0.0",
+    "eslint-config-next": ">=15.0.0",
+    "eslint-plugin-astro": ">=0.34.0",
+    "eslint-plugin-boundaries": ">=4.2.0",
+    "eslint-plugin-code-policy": ">=0.2.1",
+    "eslint-plugin-jsx-a11y": ">=6.8.0",
+    "eslint-plugin-react": ">=7.37.0",
+    "eslint-plugin-react-hooks": ">=5.0.0",
+    "eslint-plugin-react-refresh": ">=0.4.0",
+    "eslint-plugin-sonarjs": ">=3.0.0",
+    "eslint-plugin-tailwindcss": ">=3.17.0 || >=4.0.0-beta.0",
+    "eslint-plugin-unicorn": ">=57.0.0",
+    "globals": ">=15.0.0",
+    "typescript": ">=5.4.0"
+  },
+  "peerDependenciesMeta": {
+    "@next/eslint-plugin-next": {
+      "optional": true
+    },
+    "eslint-config-next": {
+      "optional": true
+    },
+    "eslint-plugin-astro": {
+      "optional": true
+    },
+    "eslint-plugin-boundaries": {
+      "optional": true
+    },
+    "eslint-plugin-code-policy": {
+      "optional": true
+    },
+    "eslint-plugin-jsx-a11y": {
+      "optional": true
+    },
+    "eslint-plugin-react": {
+      "optional": true
+    },
+    "eslint-plugin-react-hooks": {
+      "optional": true
+    },
+    "eslint-plugin-react-refresh": {
+      "optional": true
+    },
+    "eslint-plugin-sonarjs": {
+      "optional": true
+    },
+    "eslint-plugin-tailwindcss": {
+      "optional": true
+    },
+    "eslint-plugin-unicorn": {
+      "optional": true
+    },
+    "globals": {
+      "optional": true
+    }
+  },
+  "devDependencies": {
+    "@eslint/js": "^10.0.1",
+    "@next/eslint-plugin-next": "^16.2.2",
+    "@types/node": "^25.5.2",
+    "eslint": "^10.2.0",
+    "eslint-config-next": "^16.2.2",
+    "eslint-config-prettier": "^10.1.8",
+    "eslint-import-resolver-typescript": "^4.4.4",
+    "eslint-plugin-astro": "^1.6.0",
+    "eslint-plugin-boundaries": "^6.0.2",
+    "eslint-plugin-code-policy": "^0.2.2",
+    "eslint-plugin-import": "^2.32.0",
+    "eslint-plugin-jsx-a11y": "^6.10.2",
+    "eslint-plugin-promise": "^7.2.1",
+    "eslint-plugin-react": "^7.37.5",
+    "eslint-plugin-react-hooks": "^7.0.1",
+    "eslint-plugin-react-refresh": "^0.5.2",
+    "eslint-plugin-security": "^4.0.0",
+    "eslint-plugin-sonarjs": "^4.0.2",
+    "eslint-plugin-tailwindcss": "4.0.0-beta.0",
+    "eslint-plugin-unicorn": "^64.0.0",
+    "eslint-plugin-unused-imports": "^4.4.1",
+    "globals": "^17.4.0",
+    "jiti": "^2.6.1",
+    "typescript": "^6.0.2",
+    "typescript-eslint": "^8.58.0"
+  }
+}
