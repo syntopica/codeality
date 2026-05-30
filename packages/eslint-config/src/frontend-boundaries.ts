@@ -15,7 +15,7 @@ import boundaries from 'eslint-plugin-boundaries'
  */
 export const createFrontendBoundariesConfig = () => [
   {
-    files: ['**/*.{js,jsx,ts,tsx,mjs,cjs}'],
+    files: ['**/*.{js,jsx,ts,tsx,vue,mjs,cjs}'],
     plugins: { boundaries },
     settings: {
       'boundaries/elements': [
