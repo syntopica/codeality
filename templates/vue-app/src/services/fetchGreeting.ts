@@ -1,12 +1,11 @@
-import { z } from 'zod'
-
+import { greetingSchema } from '@/services/greetingSchema'
 import type { Greeting } from '@/types/Greeting'
 
-export const fetchGreeting = async (url: string): Promise<Greeting> => {
+export async function fetchGreeting(url: string): Promise<Greeting> {
   const response = await fetch(url)
   if (!response.ok) {
     throw new Error(`Greeting request failed: ${String(response.status)}`)
   }
   const payload: unknown = await response.json()
-  return z.object({ message: z.string().min(1) }).parse(payload)
+  return greetingSchema.parse(payload)
 }

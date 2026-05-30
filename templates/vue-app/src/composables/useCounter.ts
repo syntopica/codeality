@@ -1,12 +1,9 @@
 import { storeToRefs } from 'pinia'
-import type { Ref } from 'vue'
 
 import { useCounterStore } from '@/stores/counter'
+import type { UseCounterReturn } from '@/types/UseCounterReturn'
 
-export const useCounter = (): {
-  count: Ref<number>
-  increment: () => void
-} => {
+export function useCounter(): UseCounterReturn {
   const store = useCounterStore()
   const { count } = storeToRefs(store)
   const increment = (): void => {
