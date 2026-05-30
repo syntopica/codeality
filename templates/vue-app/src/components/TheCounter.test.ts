@@ -17,6 +17,6 @@ it('increments the count when the button is clicked', async () => {
 
 it('has no accessibility violations', async () => {
   const wrapper = mount(TheCounter)
-  const results = await axe(wrapper.element)
+  const results = await axe(wrapper.element as Element)
   expect(results).toHaveNoViolations()
 })
