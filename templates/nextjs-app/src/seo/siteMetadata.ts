@@ -1,12 +1,15 @@
 import type { Metadata } from 'next'
 
+import { env } from '@/env'
+
 export const siteMetadata: Metadata = (() => {
   const title = 'Engineering Baseline Next.js App'
   const description =
     'Production-ready Next.js baseline with strict TypeScript, accessibility defaults, and SEO foundations.'
+  const siteUrl = env.NEXT_PUBLIC_SITE_URL
 
   return {
-    metadataBase: new URL('https://example.com'),
+    metadataBase: new URL(siteUrl),
     title: {
       default: title,
       template: `%s | ${title}`,
@@ -20,7 +23,7 @@ export const siteMetadata: Metadata = (() => {
       type: 'website',
       title,
       description,
-      url: 'https://example.com',
+      url: siteUrl,
       siteName: title,
     },
     twitter: {

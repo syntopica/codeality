@@ -1,0 +1,7 @@
+.next/
+out/
+dist/
+coverage/
+.lighthouseci/
+pnpm-lock.yaml
+next-env.d.ts
