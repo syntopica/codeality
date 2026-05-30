@@ -6,3 +6,6 @@ coverage/
 .turbo/
 .DS_Store
 *.local
+.env
+.env.*
+!.env.example
