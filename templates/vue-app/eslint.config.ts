@@ -25,4 +25,27 @@ export default [
       'code-policy/atomic-file': 'off',
     },
   },
+  // Declaration files need `interface` for module augmentation and may use `any`.
+  {
+    files: ['**/*.d.ts'],
+    rules: {
+      '@typescript-eslint/consistent-type-definitions': 'off',
+      '@typescript-eslint/no-explicit-any': 'off',
+      '@typescript-eslint/no-empty-object-type': 'off',
+    },
+  },
+  // Vue composables are the Vue analogue of React hooks and live in composables/.
+  {
+    files: ['src/composables/**/*.ts'],
+    rules: {
+      'code-policy/file-kind-placement': 'off',
+    },
+  },
+  // <script setup> bindings are not module exports; the rule does not apply to Vue SFCs.
+  {
+    files: ['**/*.vue'],
+    rules: {
+      'code-policy/no-hidden-top-level-declarations': 'off',
+    },
+  },
 ]

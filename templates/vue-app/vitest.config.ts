@@ -23,7 +23,7 @@ export default defineConfig({
         'src/main.ts',
         'src/App.vue',
         'src/router/**',
-        'src/vite-env.d.ts',
+        'src/**/*.d.ts',
       ],
       thresholds: {
         lines: 80,
