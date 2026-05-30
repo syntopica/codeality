@@ -19,16 +19,8 @@ export default [
       },
     },
   },
-  // The app entry wires the root: multiple top-level statements and a local
-  // mount-target declaration are expected here.
-  {
-    files: ['src/main.ts'],
-    rules: {
-      'code-policy/atomic-file': 'off',
-      'code-policy/no-hidden-top-level-declarations': 'off',
-    },
-  },
-  // Declaration files need `interface` for module augmentation and may use `any`.
+  // Declaration files require `interface` for module augmentation (Vite env,
+  // vitest matchers) and mirror upstream `any` generics — language constraints.
   {
     files: ['**/*.d.ts'],
     rules: {
@@ -37,18 +29,20 @@ export default [
       '@typescript-eslint/no-empty-object-type': 'off',
     },
   },
-  // Vue composables are the Vue analogue of React hooks and live in composables/.
-  {
-    files: ['src/composables/**/*.ts'],
-    rules: {
-      'code-policy/file-kind-placement': 'off',
-    },
-  },
-  // <script setup> bindings are not module exports; the rule does not apply to Vue SFCs.
+  // `<script setup>` top-level bindings are the component's reactive state, not
+  // module-level helpers — the hidden-declaration rule does not apply to SFCs.
   {
     files: ['**/*.vue'],
     rules: {
       'code-policy/no-hidden-top-level-declarations': 'off',
+    },
+  },
+  // Vue composables are the framework analogue of React hooks and live in the
+  // conventional `composables/` folder; the placement rule is hook/React-centric.
+  {
+    files: ['src/composables/**/*.ts'],
+    rules: {
+      'code-policy/file-kind-placement': 'off',
     },
   },
   // Disable formatting rules (incl. eslint-plugin-vue's) that conflict with Prettier. Must be last.

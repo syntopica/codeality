@@ -23,6 +23,7 @@ export default defineConfig({
         'src/main.ts',
         'src/App.vue',
         'src/router/**',
+        'src/app/**',
         'src/**/*.d.ts',
       ],
       thresholds: {
