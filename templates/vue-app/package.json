@@ -21,7 +21,6 @@
     "perf:check": "pnpm build && lhci autorun --config=.lighthouserc.json"
   },
   "dependencies": {
-    "@pinia/colada": "^0.21.2",
     "@tailwindcss/vite": "^4.3.0",
     "pinia": "^3.0.4",
     "vue": "^3.5.35",

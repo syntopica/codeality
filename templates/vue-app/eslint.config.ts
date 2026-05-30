@@ -19,11 +19,13 @@ export default [
       },
     },
   },
-  // Bootstrap/wiring files may hold multiple top-level statements.
+  // The app entry wires the root: multiple top-level statements and a local
+  // mount-target declaration are expected here.
   {
-    files: ['src/main.ts', 'src/router/index.ts'],
+    files: ['src/main.ts'],
     rules: {
       'code-policy/atomic-file': 'off',
+      'code-policy/no-hidden-top-level-declarations': 'off',
     },
   },
   // Declaration files need `interface` for module augmentation and may use `any`.
