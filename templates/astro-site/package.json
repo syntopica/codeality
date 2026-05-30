@@ -21,15 +21,18 @@
     "perf:check": "pnpm build && lhci autorun --config=.lighthouserc.json"
   },
   "dependencies": {
-    "astro": "^6.4.2"
+    "astro": "^6.4.2",
+    "zod": "^4.4.3"
   },
   "devDependencies": {
     "@astrojs/check": "^0.9.9",
-    "@eslint/js": "^10.0.1",
     "@busirocket/eslint-config": "workspace:*",
     "@busirocket/prettier-config": "workspace:*",
     "@busirocket/tsconfig": "workspace:*",
+    "@eslint/js": "^10.0.1",
+    "@lhci/cli": "^0.15.1",
     "@types/node": "^25.9.1",
+    "@vitest/coverage-v8": "^4.1.7",
     "eslint": "^10.4.1",
     "eslint-config-prettier": "^10.1.8",
     "eslint-import-resolver-typescript": "^4.4.4",
@@ -50,7 +53,6 @@
     "prettier-plugin-tailwindcss": "^0.8.0",
     "typescript": "^6.0.3",
     "typescript-eslint": "^8.60.0",
-    "vitest": "^4.1.7",
-    "@lhci/cli": "^0.15.1"
+    "vitest": "^4.1.7"
   }
 }

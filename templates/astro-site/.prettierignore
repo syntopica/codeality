@@ -1,0 +1,5 @@
+dist/
+.astro/
+coverage/
+.lighthouseci/
+pnpm-lock.yaml
