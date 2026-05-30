@@ -45,8 +45,8 @@ this monorepo:
 
 | Package                       | Location                             | Description                                                                          |
 | ----------------------------- | ------------------------------------ | ------------------------------------------------------------------------------------ |
-| `@busirocket/eslint-config`   | `packages/eslint-config`             | Flat ESLint configs — base + nextjs / astro / vite-react / node                      |
-| `@busirocket/tsconfig`        | `packages/tsconfig`                  | TypeScript configs — base + app / nextjs / astro / vite-react / node                 |
+| `@busirocket/eslint-config`   | `packages/eslint-config`             | Flat ESLint configs — base + nextjs / astro / vite-react / vite-vue / node           |
+| `@busirocket/tsconfig`        | `packages/tsconfig`                  | TypeScript configs — base + app / nextjs / astro / vite-react / vite-vue / node      |
 | `@busirocket/prettier-config` | `packages/prettier-config`           | Prettier — base (organize-imports, css-order, MD wrap) + frontend (Tailwind) + astro |
 | `@busirocket/create-baseline` | `packages/create-baseline`           | CLI to scaffold baselines from templates                                             |
 | `eslint-plugin-code-policy`   | `packages/eslint-plugin-code-policy` | Custom strict ESLint rules for code boundaries, architecture, and type safety        |
