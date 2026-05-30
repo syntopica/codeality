@@ -11,7 +11,9 @@ const vueA11y = require('eslint-plugin-vuejs-accessibility') as {
   configs: Record<string, unknown[]>
 }
 // eslint-disable-next-line @typescript-eslint/no-require-imports
-const vueParser = require('vue-eslint-parser') as object
+const vueParser = require('vue-eslint-parser') as {
+  parseForESLint: (...args: unknown[]) => unknown
+}
 
 export type ViteVueConfigOptions = {
   tsconfigRootDir?: string
