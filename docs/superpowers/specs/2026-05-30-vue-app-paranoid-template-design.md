@@ -204,3 +204,30 @@ ranges (`vite ^8`, `vitest ^4`, `eslint ^10`, `typescript ^6`,
   env schema.
 - The new `@busirocket/tsconfig/vite-vue.json` and
   `@busirocket/eslint-config/vite-vue` exports resolve and type-check.
+
+## Post-implementation notes (2026-05-30)
+
+- **`.npmrc` cooldown removed.** `minimum-release-age` leaked into the monorepo
+  install (the dev machine also has a global pnpm `minimumReleaseAge` policy)
+  and rewrote `pnpm-workspace.yaml` on every install. Per user decision the
+  template `.npmrc` now carries only `engine-strict` and `auto-install-peers`;
+  supply-chain cooldown is handled by the global policy. The remaining
+  supply-chain paranoia (pinned versions, coverage thresholds, mandatory axe
+  a11y test) stands.
+- **Architecture-boundaries layer is currently inert (pre-existing,
+  repo-wide).** The template wires `createFrontendBoundariesConfig` identically
+  to the React/Astro/Next templates, but `eslint-plugin-boundaries` is at
+  `6.0.2` while `frontend-boundaries.ts` targets the older (v3-era) element /
+  `element-types` API. Under v6 every file classifies as `isUnknown`, so the
+  rule never fires — verified to affect the React template equally. Making the
+  boundaries layer actually enforce requires migrating
+  `packages/eslint-config/src/frontend-boundaries.ts` to the v6 API and
+  re-validating all four frontend templates. Tracked as a separate follow-up;
+  out of scope for adding the Vue template (would risk the other templates'
+  lint if done blindly).
+- **`.vue` type-aware lint** uses a `src/shims-vue.d.ts` `*.vue` module shim so
+  `.ts` files importing components are typed; `vue-tsc` still fully checks the
+  SFCs. Vue-specific ESLint exceptions (declaration-file interfaces,
+  composables-as-hooks placement, `<script setup>` bindings) live as overrides
+  in the template `eslint.config.ts`, with `eslint-config-prettier` applied last
+  to silence Vue formatting rules that conflict with Prettier.
