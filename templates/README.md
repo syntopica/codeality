@@ -1,7 +1,7 @@
 # Templates
 
 These folders are **validated starters** for Next.js, Vite + React, Vite + Vue,
-Astro, and a generic TypeScript package.
+Nuxt 4, Astro, and a generic TypeScript package.
 
 ## Published dependencies
 

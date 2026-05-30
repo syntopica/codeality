@@ -1,0 +1,5 @@
+{
+  "$schema": "https://json.schemastore.org/tsconfig",
+  "_comment": "Nuxt generates .nuxt/tsconfig.json with strict-hardening applied via nuxt.config typescript options; vue-tsc type-checks against it.",
+  "extends": "./.nuxt/tsconfig.json"
+}
