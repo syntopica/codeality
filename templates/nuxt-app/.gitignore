@@ -1,0 +1,15 @@
+node_modules/
+.nuxt/
+.nuxtrc
+.output/
+.data/
+dist/
+coverage/
+*.tsbuildinfo
+.lighthouseci/
+.turbo/
+.DS_Store
+*.local
+.env
+.env.*
+!.env.example
