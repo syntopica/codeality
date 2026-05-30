@@ -1,0 +1,8 @@
+{
+  "extends": "@busirocket/tsconfig/vite-vue.json",
+  "compilerOptions": {
+    "paths": {
+      "@/*": ["./src/*"]
+    }
+  }
+}
