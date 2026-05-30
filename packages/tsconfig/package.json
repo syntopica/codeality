@@ -2,7 +2,7 @@
   "name": "@busirocket/tsconfig",
   "version": "0.1.1",
   "private": false,
-  "packageManager": "pnpm@10.33.0",
+  "packageManager": "pnpm@11.5.0",
   "license": "MIT",
   "description": "Shared TypeScript configuration baseline",
   "repository": {
@@ -30,6 +30,7 @@
     "./nextjs.json": "./nextjs.json",
     "./astro.json": "./astro.json",
     "./vite-react.json": "./vite-react.json",
+    "./vite-vue.json": "./vite-vue.json",
     "./node.json": "./node.json"
   },
   "scripts": {
@@ -37,6 +38,6 @@
     "format:check": "prettier --check \"*.json\""
   },
   "devDependencies": {
-    "prettier": "^3.8.2"
+    "prettier": "^3.8.3"
   }
 }
