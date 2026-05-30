@@ -21,6 +21,8 @@ export default defineConfig({
         'src/**/*.{test,spec}.ts',
         'src/test/**',
         'src/main.ts',
+        'src/App.vue',
+        'src/router/**',
         'src/vite-env.d.ts',
       ],
       thresholds: {
