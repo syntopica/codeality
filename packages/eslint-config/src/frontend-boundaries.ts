@@ -2,11 +2,11 @@ import boundaries from 'eslint-plugin-boundaries'
 
 /**
  * Layered import boundaries for frontend apps (Next.js App Router, Vite React,
- * Astro with React islands).
+ * Vite Vue, Astro with React islands).
  *
  * Intent:
  * - `components/**` stays UI-oriented: may import shared code, not service internals directly.
- * - `hooks`, `types`, `utils`, `const`, `lib`, `store` are shared ownership layers.
+ * - `hooks`, `composables`, `types`, `utils`, `const`, `lib`, `store` are shared ownership layers.
  * - `services/**` holds integrations; may import shared utilities/types, not `components`.
  * - Root/shared code may call into `services` so hooks can orchestrate providers without
  *   leaking SDK details into TSX.
@@ -31,6 +31,10 @@ export const createFrontendBoundariesConfig = () => [
         { type: 'shared', pattern: 'hooks/**/*' },
         { type: 'shared', pattern: 'src/hooks/*' },
         { type: 'shared', pattern: 'src/hooks/**/*' },
+        { type: 'shared', pattern: 'composables/*' },
+        { type: 'shared', pattern: 'composables/**/*' },
+        { type: 'shared', pattern: 'src/composables/*' },
+        { type: 'shared', pattern: 'src/composables/**/*' },
         { type: 'shared', pattern: 'types/*' },
         { type: 'shared', pattern: 'types/**/*' },
         { type: 'shared', pattern: 'src/types/*' },
