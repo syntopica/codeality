@@ -2,6 +2,7 @@ import { createBaseConfig } from '@busirocket/eslint-config/base'
 import { createCodeQualityConfig } from '@busirocket/eslint-config/code-quality'
 import { createTailwindConfig } from '@busirocket/eslint-config/tailwind'
 import { createViteVueConfig } from '@busirocket/eslint-config/vite-vue'
+import prettier from 'eslint-config-prettier'
 import path from 'node:path'
 
 // Layer order: base → vite-vue (vue + a11y + boundaries) → code-quality → tailwind
@@ -48,4 +49,6 @@ export default [
       'code-policy/no-hidden-top-level-declarations': 'off',
     },
   },
+  // Disable formatting rules (incl. eslint-plugin-vue's) that conflict with Prettier. Must be last.
+  prettier,
 ]
