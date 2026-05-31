@@ -2,6 +2,8 @@ node_modules/
 .pnpm-store/
 **/.astro/
 **/.next/
+**/.nuxt/
+**/.output/
 **/dist/
 **/build/
 **/coverage/

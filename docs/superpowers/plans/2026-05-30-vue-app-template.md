@@ -1,12 +1,25 @@
 # Paranoid Vue 3 SPA Template — Implementation Plan
 
-> **For agentic workers:** REQUIRED SUB-SKILL: Use superpowers:subagent-driven-development (recommended) or superpowers:executing-plans to implement this plan task-by-task. Steps use checkbox (`- [ ]`) syntax for tracking.
+> **For agentic workers:** REQUIRED SUB-SKILL: Use
+> superpowers:subagent-driven-development (recommended) or
+> superpowers:executing-plans to implement this plan task-by-task. Steps use
+> checkbox (`- [ ]`) syntax for tracking.
 
-**Goal:** Add a `templates/vue-app` Vue 3 SPA starter to the `baseline` monorepo that mirrors `vite-react-app`, consumes the shared `@busirocket/*` configs, and demonstrates paranoid 2026 practices (Zod-validated env, `vue-tsc` template type-checking, architecture boundaries, supply-chain + coverage hardening).
+**Goal:** Add a `templates/vue-app` Vue 3 SPA starter to the `baseline` monorepo
+that mirrors `vite-react-app`, consumes the shared `@busirocket/*` configs, and
+demonstrates paranoid 2026 practices (Zod-validated env, `vue-tsc` template
+type-checking, architecture boundaries, supply-chain + coverage hardening).
 
-**Architecture:** A Vite SPA whose ESLint layers are `base → vite-vue → code-quality → tailwind`. Vue-specific accessibility lint lives inside the new `vite-vue` layer (jsx-a11y does not apply to SFCs). Type-checking uses `vue-tsc`. Two shared packages gain Vue exports (`@busirocket/tsconfig/vite-vue.json`, `@busirocket/eslint-config/vite-vue`) and `frontend-boundaries` gains a `composables` element.
+**Architecture:** A Vite SPA whose ESLint layers are
+`base → vite-vue → code-quality → tailwind`. Vue-specific accessibility lint
+lives inside the new `vite-vue` layer (jsx-a11y does not apply to SFCs).
+Type-checking uses `vue-tsc`. Two shared packages gain Vue exports
+(`@busirocket/tsconfig/vite-vue.json`, `@busirocket/eslint-config/vite-vue`) and
+`frontend-boundaries` gains a `composables` element.
 
-**Tech Stack:** Vue 3.5, Vite 8, vue-router 5, Pinia 3, Zod 4, Tailwind v4, Vitest 4 + @vue/test-utils + vitest-axe, vue-tsc 3, eslint-plugin-vue 10 + eslint-plugin-vuejs-accessibility 2 + vue-eslint-parser 10, Lighthouse CI.
+**Tech Stack:** Vue 3.5, Vite 8, vue-router 5, Pinia 3, Zod 4, Tailwind v4,
+Vitest 4 + @vue/test-utils + vitest-axe, vue-tsc 3, eslint-plugin-vue 10 +
+eslint-plugin-vuejs-accessibility 2 + vue-eslint-parser 10, Lighthouse CI.
 
 Work happens on branch `feat/vue-app-template` (already created).
 
@@ -14,37 +27,56 @@ Work happens on branch `feat/vue-app-template` (already created).
 
 ## Pinned versions (verified on npm, 2026-05-30)
 
-| Package | Range |
-| --- | --- |
-| `vue` | `^3.5.35` |
-| `vue-router` | `^5.1.0` |
-| `pinia` | `^3.0.4` |
-| `@pinia/colada` | `^0.21.2` (peer of vue-router 5; pinned for reproducibility) |
-| `zod` | `^4.4.3` |
-| `@vitejs/plugin-vue` | `^6.0.7` |
-| `vue-tsc` | `^3.3.3` |
-| `eslint-plugin-vue` | `^10.9.1` |
-| `eslint-plugin-vuejs-accessibility` | `^2.5.0` |
-| `vue-eslint-parser` | `^10.4.0` |
-| `@vue/test-utils` | `^2.4.10` |
-| `@vitest/coverage-v8` | `^4.1.7` |
+| Package                             | Range                                                        |
+| ----------------------------------- | ------------------------------------------------------------ |
+| `vue`                               | `^3.5.35`                                                    |
+| `vue-router`                        | `^5.1.0`                                                     |
+| `pinia`                             | `^3.0.4`                                                     |
+| `@pinia/colada`                     | `^0.21.2` (peer of vue-router 5; pinned for reproducibility) |
+| `zod`                               | `^4.4.3`                                                     |
+| `@vitejs/plugin-vue`                | `^6.0.7`                                                     |
+| `vue-tsc`                           | `^3.3.3`                                                     |
+| `eslint-plugin-vue`                 | `^10.9.1`                                                    |
+| `eslint-plugin-vuejs-accessibility` | `^2.5.0`                                                     |
+| `vue-eslint-parser`                 | `^10.4.0`                                                    |
+| `@vue/test-utils`                   | `^2.4.10`                                                    |
+| `@vitest/coverage-v8`               | `^4.1.7`                                                     |
 
-All other ranges copy `templates/vite-react-app/package.json` verbatim (`vite ^8.0.14`, `vitest ^4.1.7`, `eslint ^10.4.1`, `typescript ^6.0.3`, `typescript-eslint ^8.60.0`, `tailwindcss ^4.3.0`, `@tailwindcss/vite ^4.3.0`, `vitest-axe ^0.1.0`, `jsdom ^29.1.1`, `@lhci/cli ^0.15.1`, `@testing-library/jest-dom ^6.9.1`, `eslint-config-prettier ^10.1.8`, `eslint-import-resolver-typescript ^4.4.4`, `eslint-plugin-import ^2.32.0`, `eslint-plugin-promise ^7.3.0`, `eslint-plugin-security ^4.0.0`, `eslint-plugin-sonarjs ^4.0.3`, `eslint-plugin-tailwindcss 4.0.0-beta.0`, `eslint-plugin-unused-imports ^4.4.1`, `eslint-plugin-boundaries ^6.0.2`, `@eslint/js ^10.0.1`, `jiti ^2.7.0`, `prettier ^3.8.3`, `prettier-plugin-css-order ^2.2.0`, `prettier-plugin-organize-imports ^4.3.0`, `prettier-plugin-tailwindcss ^0.8.0`).
+All other ranges copy `templates/vite-react-app/package.json` verbatim
+(`vite ^8.0.14`, `vitest ^4.1.7`, `eslint ^10.4.1`, `typescript ^6.0.3`,
+`typescript-eslint ^8.60.0`, `tailwindcss ^4.3.0`, `@tailwindcss/vite ^4.3.0`,
+`vitest-axe ^0.1.0`, `jsdom ^29.1.1`, `@lhci/cli ^0.15.1`,
+`@testing-library/jest-dom ^6.9.1`, `eslint-config-prettier ^10.1.8`,
+`eslint-import-resolver-typescript ^4.4.4`, `eslint-plugin-import ^2.32.0`,
+`eslint-plugin-promise ^7.3.0`, `eslint-plugin-security ^4.0.0`,
+`eslint-plugin-sonarjs ^4.0.3`, `eslint-plugin-tailwindcss 4.0.0-beta.0`,
+`eslint-plugin-unused-imports ^4.4.1`, `eslint-plugin-boundaries ^6.0.2`,
+`@eslint/js ^10.0.1`, `jiti ^2.7.0`, `prettier ^3.8.3`,
+`prettier-plugin-css-order ^2.2.0`, `prettier-plugin-organize-imports ^4.3.0`,
+`prettier-plugin-tailwindcss ^0.8.0`).
 
 ---
 
 ## File structure
 
 **Shared packages (modify):**
-- `packages/tsconfig/vite-vue.json` (create) + `packages/tsconfig/package.json` (add export)
-- `packages/eslint-config/src/vite-vue.ts` (create) + `packages/eslint-config/package.json` (add export + deps)
-- `packages/eslint-config/src/frontend-boundaries.ts` (modify: add `composables`)
+
+- `packages/tsconfig/vite-vue.json` (create) + `packages/tsconfig/package.json`
+  (add export)
+- `packages/eslint-config/src/vite-vue.ts` (create) +
+  `packages/eslint-config/package.json` (add export + deps)
+- `packages/eslint-config/src/frontend-boundaries.ts` (modify: add
+  `composables`)
 - `README.md`, `templates/README.md` (modify: mention Vue)
 
 **Template (create `templates/vue-app/`):**
-- Config: `package.json`, `tsconfig.json`, `vite.config.ts`, `vitest.config.ts`, `eslint.config.ts`, `prettier.config.mjs`, `.editorconfig`, `.npmrc`, `.lighthouserc.json`, `index.html`
+
+- Config: `package.json`, `tsconfig.json`, `vite.config.ts`, `vitest.config.ts`,
+  `eslint.config.ts`, `prettier.config.mjs`, `.editorconfig`, `.npmrc`,
+  `.lighthouserc.json`, `index.html`
 - `public/robots.txt`
-- `src/main.ts`, `src/App.vue`, `src/styles.css`, `src/vite-env.d.ts`, `src/env.ts`
+- `src/main.ts`, `src/App.vue`, `src/styles.css`, `src/vite-env.d.ts`,
+  `src/env.ts`
 - `src/router/index.ts`
 - `src/stores/counter.ts`
 - `src/composables/useCounter.ts`
@@ -59,6 +91,7 @@ All other ranges copy `templates/vite-react-app/package.json` verbatim (`vite ^8
 ## Task 1: Add `vite-vue` tsconfig export
 
 **Files:**
+
 - Create: `packages/tsconfig/vite-vue.json`
 - Modify: `packages/tsconfig/package.json`
 
@@ -72,13 +105,14 @@ All other ranges copy `templates/vite-react-app/package.json` verbatim (`vite ^8
   "_comment": "Vite + Vue app — extends app, checked/compiled by vue-tsc.",
   "extends": "./app.json",
   "include": ["src/**/*.ts", "src/**/*.d.ts", "src/**/*.vue"],
-  "exclude": ["node_modules", "dist"]
+  "exclude": ["node_modules", "dist"],
 }
 ```
 
 - [ ] **Step 2: Add the export**
 
-In `packages/tsconfig/package.json`, add to the `exports` object (after the `./vite-react.json` line):
+In `packages/tsconfig/package.json`, add to the `exports` object (after the
+`./vite-react.json` line):
 
 ```json
     "./vite-vue.json": "./vite-vue.json",
@@ -86,8 +120,11 @@ In `packages/tsconfig/package.json`, add to the `exports` object (after the `./v
 
 - [ ] **Step 3: Verify it resolves**
 
-Run: `node -e "require.resolve('@busirocket/tsconfig/vite-vue.json', { paths: ['packages/tsconfig'] })"` from repo root.
-Expected: prints the resolved path, no error. (If using pnpm workspace resolution instead, this step is validated again in Task 13 by the template build.)
+Run:
+`node -e "require.resolve('@busirocket/tsconfig/vite-vue.json', { paths: ['packages/tsconfig'] })"`
+from repo root. Expected: prints the resolved path, no error. (If using pnpm
+workspace resolution instead, this step is validated again in Task 13 by the
+template build.)
 
 - [ ] **Step 4: Commit**
 
@@ -101,11 +138,14 @@ git commit -m "feat(tsconfig): add vite-vue config"
 ## Task 2: Add `composables` to frontend boundaries
 
 **Files:**
+
 - Modify: `packages/eslint-config/src/frontend-boundaries.ts`
 
 - [ ] **Step 1: Add the `composables` shared-layer entries**
 
-In `packages/eslint-config/src/frontend-boundaries.ts`, inside the `boundaries/elements` array, immediately after the four `hooks` entries (the block ending with `{ type: 'shared', pattern: 'src/hooks/**/*' },`), insert:
+In `packages/eslint-config/src/frontend-boundaries.ts`, inside the
+`boundaries/elements` array, immediately after the four `hooks` entries (the
+block ending with `{ type: 'shared', pattern: 'src/hooks/**/*' },`), insert:
 
 ```ts
         { type: 'shared', pattern: 'composables/*' },
@@ -144,8 +184,7 @@ to:
 
 - [ ] **Step 3: Verify the config package still type-checks**
 
-Run: `pnpm --filter @busirocket/eslint-config type-check`
-Expected: exits 0.
+Run: `pnpm --filter @busirocket/eslint-config type-check` Expected: exits 0.
 
 - [ ] **Step 4: Commit**
 
@@ -159,6 +198,7 @@ git commit -m "feat(eslint-config): add composables to frontend boundaries"
 ## Task 3: Create the `vite-vue` ESLint layer
 
 **Files:**
+
 - Create: `packages/eslint-config/src/vite-vue.ts`
 - Modify: `packages/eslint-config/package.json`
 
@@ -254,7 +294,8 @@ In `packages/eslint-config/package.json`:
     "vue-eslint-parser": ">=10.0.0",
 ```
 
-3. Add to `peerDependenciesMeta` (all optional, like the other framework plugins):
+3. Add to `peerDependenciesMeta` (all optional, like the other framework
+   plugins):
 
 ```json
     "eslint-plugin-vue": {
@@ -278,12 +319,14 @@ In `packages/eslint-config/package.json`:
 
 - [ ] **Step 3: Install the new dev deps**
 
-Run: `pnpm install`
-Expected: completes; `eslint-plugin-vue`, `eslint-plugin-vuejs-accessibility`, `vue-eslint-parser` linked into `packages/eslint-config`.
+Run: `pnpm install` Expected: completes; `eslint-plugin-vue`,
+`eslint-plugin-vuejs-accessibility`, `vue-eslint-parser` linked into
+`packages/eslint-config`.
 
 - [ ] **Step 4: Verify the config package type-checks and lints**
 
-Run: `pnpm --filter @busirocket/eslint-config type-check && pnpm --filter @busirocket/eslint-config lint`
+Run:
+`pnpm --filter @busirocket/eslint-config type-check && pnpm --filter @busirocket/eslint-config lint`
 Expected: both exit 0.
 
 - [ ] **Step 5: Commit**
@@ -298,7 +341,10 @@ git commit -m "feat(eslint-config): add vite-vue layer with Vue + a11y rules"
 ## Task 4: Scaffold the template config files
 
 **Files:**
-- Create: `templates/vue-app/package.json`, `tsconfig.json`, `vite.config.ts`, `vitest.config.ts`, `prettier.config.mjs`, `.editorconfig`, `.npmrc`, `.lighthouserc.json`, `index.html`, `public/robots.txt`
+
+- Create: `templates/vue-app/package.json`, `tsconfig.json`, `vite.config.ts`,
+  `vitest.config.ts`, `prettier.config.mjs`, `.editorconfig`, `.npmrc`,
+  `.lighthouserc.json`, `index.html`, `public/robots.txt`
 
 - [ ] **Step 1: `templates/vue-app/package.json`**
 
@@ -374,7 +420,8 @@ git commit -m "feat(eslint-config): add vite-vue layer with Vue + a11y rules"
 }
 ```
 
-- [ ] **Step 2: `templates/vue-app/tsconfig.json`** (inherits `include`/`exclude` from `vite-vue.json`)
+- [ ] **Step 2: `templates/vue-app/tsconfig.json`** (inherits
+      `include`/`exclude` from `vite-vue.json`)
 
 ```json
 {
@@ -503,7 +550,8 @@ insert_final_newline = true
 trim_trailing_whitespace = false
 ```
 
-- [ ] **Step 8: `templates/vue-app/.npmrc`** (supply-chain cooldown; unknown keys are safely ignored by older pnpm)
+- [ ] **Step 8: `templates/vue-app/.npmrc`** (supply-chain cooldown; unknown
+      keys are safely ignored by older pnpm)
 
 ```ini
 engine-strict=true
@@ -560,8 +608,8 @@ Allow: /
 
 - [ ] **Step 12: Install the workspace**
 
-Run: `pnpm install`
-Expected: completes; `templates/vue-app` is linked as a workspace package with all deps resolved.
+Run: `pnpm install` Expected: completes; `templates/vue-app` is linked as a
+workspace package with all deps resolved.
 
 - [ ] **Step 13: Commit**
 
@@ -575,7 +623,9 @@ git commit -m "feat(vue-app): scaffold template config files"
 ## Task 5: `lib/add.ts` (establishes the test harness)
 
 **Files:**
-- Create: `templates/vue-app/src/lib/add.ts`, `templates/vue-app/src/lib/add.test.ts`, `templates/vue-app/src/test/setup.ts`
+
+- Create: `templates/vue-app/src/lib/add.ts`,
+  `templates/vue-app/src/lib/add.test.ts`, `templates/vue-app/src/test/setup.ts`
 
 - [ ] **Step 1: Write the test setup**
 
@@ -605,8 +655,7 @@ it('adds two numbers', () => {
 
 - [ ] **Step 3: Run it to confirm it fails**
 
-Run: `pnpm --filter my-vue-app test`
-Expected: FAIL — cannot resolve `./add`.
+Run: `pnpm --filter my-vue-app test` Expected: FAIL — cannot resolve `./add`.
 
 - [ ] **Step 4: Implement**
 
@@ -618,8 +667,7 @@ export const add = (a: number, b: number): number => a + b
 
 - [ ] **Step 5: Run it to confirm it passes**
 
-Run: `pnpm --filter my-vue-app test`
-Expected: PASS (1 test).
+Run: `pnpm --filter my-vue-app test` Expected: PASS (1 test).
 
 - [ ] **Step 6: Commit**
 
@@ -633,7 +681,9 @@ git commit -m "feat(vue-app): add lib/add with test harness"
 ## Task 6: `env.ts` (Zod-validated, fail-fast)
 
 **Files:**
-- Create: `templates/vue-app/src/vite-env.d.ts`, `templates/vue-app/src/env.ts`, `templates/vue-app/src/env.test.ts`
+
+- Create: `templates/vue-app/src/vite-env.d.ts`, `templates/vue-app/src/env.ts`,
+  `templates/vue-app/src/env.test.ts`
 
 - [ ] **Step 1: Write the typed env declaration**
 
@@ -677,10 +727,11 @@ it('throws when VITE_API_BASE_URL is not a valid URL', async () => {
 
 - [ ] **Step 3: Run it to confirm it fails**
 
-Run: `pnpm --filter my-vue-app test src/env.test.ts`
-Expected: FAIL — cannot resolve `./env`.
+Run: `pnpm --filter my-vue-app test src/env.test.ts` Expected: FAIL — cannot
+resolve `./env`.
 
-- [ ] **Step 4: Implement (single export; schema is inline to satisfy the atomic-file rule)**
+- [ ] **Step 4: Implement (single export; schema is inline to satisfy the
+      atomic-file rule)**
 
 `templates/vue-app/src/env.ts`:
 
@@ -696,8 +747,7 @@ export const env = z
 
 - [ ] **Step 5: Run it to confirm it passes**
 
-Run: `pnpm --filter my-vue-app test src/env.test.ts`
-Expected: PASS (2 tests).
+Run: `pnpm --filter my-vue-app test src/env.test.ts` Expected: PASS (2 tests).
 
 - [ ] **Step 6: Commit**
 
@@ -711,7 +761,10 @@ git commit -m "feat(vue-app): add Zod-validated fail-fast env"
 ## Task 7: `types/Greeting.ts` + `services/fetchGreeting.ts` (boundary validation)
 
 **Files:**
-- Create: `templates/vue-app/src/types/Greeting.ts`, `templates/vue-app/src/services/fetchGreeting.ts`, `templates/vue-app/src/services/fetchGreeting.test.ts`
+
+- Create: `templates/vue-app/src/types/Greeting.ts`,
+  `templates/vue-app/src/services/fetchGreeting.ts`,
+  `templates/vue-app/src/services/fetchGreeting.test.ts`
 
 - [ ] **Step 1: Write the type**
 
@@ -761,10 +814,7 @@ it('throws when the payload fails validation', async () => {
 })
 
 it('throws on a non-ok response', async () => {
-  vi.stubGlobal(
-    'fetch',
-    vi.fn().mockResolvedValue({ ok: false, status: 500 }),
-  )
+  vi.stubGlobal('fetch', vi.fn().mockResolvedValue({ ok: false, status: 500 }))
   await expect(fetchGreeting('/api/greeting')).rejects.toThrow()
 })
 ```
@@ -810,9 +860,12 @@ git commit -m "feat(vue-app): add greeting service with Zod boundary validation"
 ## Task 8: `stores/counter.ts` + `composables/useCounter.ts`
 
 **Files:**
-- Create: `templates/vue-app/src/stores/counter.ts`, `templates/vue-app/src/composables/useCounter.ts`
 
-(No standalone unit test — these are exercised by the component test in Task 9, which gives them coverage.)
+- Create: `templates/vue-app/src/stores/counter.ts`,
+  `templates/vue-app/src/composables/useCounter.ts`
+
+(No standalone unit test — these are exercised by the component test in Task 9,
+which gives them coverage.)
 
 - [ ] **Step 1: Write the Pinia store**
 
@@ -833,7 +886,8 @@ export const useCounterStore = defineStore('counter', () => {
 })
 ```
 
-- [ ] **Step 2: Write the composable (shared → shared import is allowed by boundaries)**
+- [ ] **Step 2: Write the composable (shared → shared import is allowed by
+      boundaries)**
 
 `templates/vue-app/src/composables/useCounter.ts`:
 
@@ -855,8 +909,8 @@ export const useCounter = (): {
 
 - [ ] **Step 3: Type-check**
 
-Run: `pnpm --filter my-vue-app type-check`
-Expected: exits 0 (no `.vue` consumers yet, but the `.ts` files must type-check).
+Run: `pnpm --filter my-vue-app type-check` Expected: exits 0 (no `.vue`
+consumers yet, but the `.ts` files must type-check).
 
 - [ ] **Step 4: Commit**
 
@@ -870,7 +924,11 @@ git commit -m "feat(vue-app): add counter store and composable"
 ## Task 9: `TheCounter.vue` component + a11y test, plus app wiring
 
 **Files:**
-- Create: `templates/vue-app/src/components/TheCounter.vue`, `templates/vue-app/src/components/TheCounter.test.ts`, `templates/vue-app/src/App.vue`, `templates/vue-app/src/router/index.ts`, `templates/vue-app/src/main.ts`, `templates/vue-app/src/styles.css`
+
+- Create: `templates/vue-app/src/components/TheCounter.vue`,
+  `templates/vue-app/src/components/TheCounter.test.ts`,
+  `templates/vue-app/src/App.vue`, `templates/vue-app/src/router/index.ts`,
+  `templates/vue-app/src/main.ts`, `templates/vue-app/src/styles.css`
 
 - [ ] **Step 1: Write the failing component test (behavior + axe a11y)**
 
@@ -903,8 +961,8 @@ it('has no accessibility violations', async () => {
 
 - [ ] **Step 2: Run it to confirm it fails**
 
-Run: `pnpm --filter my-vue-app test src/components/TheCounter.test.ts`
-Expected: FAIL — cannot resolve `./TheCounter.vue`.
+Run: `pnpm --filter my-vue-app test src/components/TheCounter.test.ts` Expected:
+FAIL — cannot resolve `./TheCounter.vue`.
 
 - [ ] **Step 3: Implement the component**
 
@@ -934,8 +992,8 @@ const { count, increment } = useCounter()
 
 - [ ] **Step 4: Run it to confirm it passes**
 
-Run: `pnpm --filter my-vue-app test src/components/TheCounter.test.ts`
-Expected: PASS (2 tests, including the axe assertion).
+Run: `pnpm --filter my-vue-app test src/components/TheCounter.test.ts` Expected:
+PASS (2 tests, including the axe assertion).
 
 - [ ] **Step 5: Write the styles, router, root component, and entry**
 
@@ -991,8 +1049,8 @@ createApp(App).use(createPinia()).use(router).mount('#app')
 
 - [ ] **Step 6: Run the full test suite**
 
-Run: `pnpm --filter my-vue-app test`
-Expected: PASS — all tests across add, env, fetchGreeting, TheCounter.
+Run: `pnpm --filter my-vue-app test` Expected: PASS — all tests across add, env,
+fetchGreeting, TheCounter.
 
 - [ ] **Step 7: Commit**
 
@@ -1009,30 +1067,35 @@ git commit -m "feat(vue-app): add counter component, router, and app entry"
 
 - [ ] **Step 1: Type-check with vue-tsc**
 
-Run: `pnpm --filter my-vue-app type-check`
-Expected: exits 0 (includes `.vue` template type-checking).
+Run: `pnpm --filter my-vue-app type-check` Expected: exits 0 (includes `.vue`
+template type-checking).
 
 - [ ] **Step 2: Lint (Vue + a11y + boundaries + tailwind)**
 
-Run: `pnpm --filter my-vue-app lint`
-Expected: exits 0.
+Run: `pnpm --filter my-vue-app lint` Expected: exits 0.
 
-If `projectService` on `.vue` reports "file not included in any project", debug by confirming `templates/vue-app/tsconfig.json` inherits the `src/**/*.vue` include from `vite-vue.json` (run `pnpm --filter my-vue-app exec tsc --showConfig` and check the `include` array). Do not silence the error with an ignore.
+If `projectService` on `.vue` reports "file not included in any project", debug
+by confirming `templates/vue-app/tsconfig.json` inherits the `src/**/*.vue`
+include from `vite-vue.json` (run
+`pnpm --filter my-vue-app exec tsc --showConfig` and check the `include` array).
+Do not silence the error with an ignore.
 
 - [ ] **Step 3: Format check**
 
-Run: `pnpm --filter my-vue-app format:check`
-Expected: exits 0. If it fails, run `pnpm --filter my-vue-app format` and re-commit.
+Run: `pnpm --filter my-vue-app format:check` Expected: exits 0. If it fails, run
+`pnpm --filter my-vue-app format` and re-commit.
 
 - [ ] **Step 4: Full CI check with coverage**
 
-Run: `pnpm --filter my-vue-app test -- --coverage`
-Expected: PASS and coverage thresholds (80%) met. If a threshold fails, the uncovered file is reported — add a test or adjust the `coverage.exclude` list for genuinely untestable wiring (do not lower the threshold).
+Run: `pnpm --filter my-vue-app test -- --coverage` Expected: PASS and coverage
+thresholds (80%) met. If a threshold fails, the uncovered file is reported — add
+a test or adjust the `coverage.exclude` list for genuinely untestable wiring (do
+not lower the threshold).
 
 - [ ] **Step 5: Production build**
 
-Run: `pnpm --filter my-vue-app build`
-Expected: `vue-tsc --noEmit` passes, then Vite emits `dist/`.
+Run: `pnpm --filter my-vue-app build` Expected: `vue-tsc --noEmit` passes, then
+Vite emits `dist/`.
 
 - [ ] **Step 6: Commit any formatting fixes**
 
@@ -1049,7 +1112,8 @@ git commit -m "chore(vue-app): apply formatting and verify check pipeline" || ec
 
 - [ ] **Step 1: Introduce a forbidden import**
 
-In `templates/vue-app/src/services/fetchGreeting.ts`, temporarily add at the top of the imports:
+In `templates/vue-app/src/services/fetchGreeting.ts`, temporarily add at the top
+of the imports:
 
 ```ts
 import TheCounter from '@/components/TheCounter.vue'
@@ -1057,8 +1121,9 @@ import TheCounter from '@/components/TheCounter.vue'
 
 - [ ] **Step 2: Lint and confirm the boundary error**
 
-Run: `pnpm --filter my-vue-app lint`
-Expected: FAIL with a `boundaries/element-types` error (a `services` file may not import a `components` file).
+Run: `pnpm --filter my-vue-app lint` Expected: FAIL with a
+`boundaries/element-types` error (a `services` file may not import a
+`components` file).
 
 - [ ] **Step 3: Revert the forbidden import**
 
@@ -1072,6 +1137,7 @@ Expected: exits 0.
 ## Task 12: Update documentation
 
 **Files:**
+
 - Modify: `templates/README.md`, `README.md`
 
 - [ ] **Step 1: Update `templates/README.md`**
@@ -1095,13 +1161,15 @@ Astro, and a generic TypeScript package.
 In `README.md`, change the `@busirocket/eslint-config` row to mention Vue:
 
 ```markdown
-| `@busirocket/eslint-config`   | `packages/eslint-config`             | Flat ESLint configs — base + nextjs / astro / vite-react / vite-vue / node           |
+| `@busirocket/eslint-config` | `packages/eslint-config` | Flat ESLint configs —
+base + nextjs / astro / vite-react / vite-vue / node |
 ```
 
 and the `@busirocket/tsconfig` row:
 
 ```markdown
-| `@busirocket/tsconfig`        | `packages/tsconfig`                  | TypeScript configs — base + app / nextjs / astro / vite-react / vite-vue / node      |
+| `@busirocket/tsconfig` | `packages/tsconfig` | TypeScript configs — base + app
+/ nextjs / astro / vite-react / vite-vue / node |
 ```
 
 - [ ] **Step 3: Commit**
@@ -1119,17 +1187,17 @@ git commit -m "docs: mention vue-app template and vite-vue configs"
 
 - [ ] **Step 1: Clean install at the root**
 
-Run: `pnpm install`
-Expected: completes with no errors; lockfile stable.
+Run: `pnpm install` Expected: completes with no errors; lockfile stable.
 
 - [ ] **Step 2: Run the template's CI check end-to-end**
 
-Run: `pnpm --filter my-vue-app check:ci`
-Expected: type-check, lint, format:check, and tests all pass.
+Run: `pnpm --filter my-vue-app check:ci` Expected: type-check, lint,
+format:check, and tests all pass.
 
 - [ ] **Step 3: Confirm the new shared exports resolve from the template**
 
-Run: `pnpm --filter my-vue-app exec node -e "console.log(require.resolve('@busirocket/tsconfig/vite-vue.json'))"`
+Run:
+`pnpm --filter my-vue-app exec node -e "console.log(require.resolve('@busirocket/tsconfig/vite-vue.json'))"`
 Expected: prints the resolved path.
 
 - [ ] **Step 4: Final commit (if anything changed)**
@@ -1143,6 +1211,21 @@ git commit -m "chore: finalize vue-app template" || echo "nothing to commit"
 
 ## Self-review notes
 
-- **Spec coverage:** flavor=SPA (Tasks 4-9); batteries-included router/Pinia/Zod/services (Tasks 6-9); Zod validation (Tasks 6, 7); env-Zod (Task 6); eslint-plugin-vue + vue-tsc (Tasks 3, 10); boundaries (Tasks 2, 11); supply-chain + coverage (Task 4 `.npmrc`, Task 10 coverage); shared exports tsconfig/eslint (Tasks 1, 3); frontend-boundaries composables (Task 2); READMEs (Task 12). All acceptance criteria map to Task 10/11/13.
-- **Deviation from spec (intentional):** the a11y layer is `eslint-plugin-vuejs-accessibility` inside `vite-vue` rather than the shared jsx-a11y `createAccessibilityConfig`, because jsx-a11y does not lint `.vue` SFCs. Tailwind class-ordering on `.vue` is handled by `prettier-plugin-tailwindcss`; `eslint-plugin-tailwindcss` rule coverage on `.vue` is best-effort (it primarily targets ts/tsx/js/jsx) — noted, not silently dropped.
-- **Type consistency:** `useCounterStore` (Task 8) used by `useCounter` (Task 8) and indirectly by `TheCounter.vue` (Task 9); `Greeting` type (Task 7) used by `fetchGreeting` (Task 7); `router` named export (Task 9) imported by `main.ts` (Task 9); `env` single export (Task 6). Component named `TheCounter` (multi-word, satisfies `vue/multi-word-component-names`).
+- **Spec coverage:** flavor=SPA (Tasks 4-9); batteries-included
+  router/Pinia/Zod/services (Tasks 6-9); Zod validation (Tasks 6, 7); env-Zod
+  (Task 6); eslint-plugin-vue + vue-tsc (Tasks 3, 10); boundaries (Tasks 2, 11);
+  supply-chain + coverage (Task 4 `.npmrc`, Task 10 coverage); shared exports
+  tsconfig/eslint (Tasks 1, 3); frontend-boundaries composables (Task 2);
+  READMEs (Task 12). All acceptance criteria map to Task 10/11/13.
+- **Deviation from spec (intentional):** the a11y layer is
+  `eslint-plugin-vuejs-accessibility` inside `vite-vue` rather than the shared
+  jsx-a11y `createAccessibilityConfig`, because jsx-a11y does not lint `.vue`
+  SFCs. Tailwind class-ordering on `.vue` is handled by
+  `prettier-plugin-tailwindcss`; `eslint-plugin-tailwindcss` rule coverage on
+  `.vue` is best-effort (it primarily targets ts/tsx/js/jsx) — noted, not
+  silently dropped.
+- **Type consistency:** `useCounterStore` (Task 8) used by `useCounter` (Task 8)
+  and indirectly by `TheCounter.vue` (Task 9); `Greeting` type (Task 7) used by
+  `fetchGreeting` (Task 7); `router` named export (Task 9) imported by `main.ts`
+  (Task 9); `env` single export (Task 6). Component named `TheCounter`
+  (multi-word, satisfies `vue/multi-word-component-names`).

@@ -3,18 +3,24 @@
   "tasks": {
     "build": {
       "dependsOn": ["^build"],
-      "outputs": ["dist/**", ".next/**", "!.next/cache/**"]
+      "outputs": ["dist/**", ".next/**", "!.next/cache/**", ".output/**"]
     },
     "lint": {
       "dependsOn": ["^build"]
     },
     "lint:fix": {},
     "format": {},
+    "format:check": {},
     "type-check": {
       "dependsOn": ["^build"]
     },
     "test": {
-      "dependsOn": ["^build"]
+      "dependsOn": ["^build"],
+      "outputs": ["coverage/**"]
+    },
+    "perf:check": {
+      "dependsOn": ["build"],
+      "cache": false
     },
     "dev": {
       "cache": false,
