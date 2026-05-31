@@ -1,0 +1,56 @@
+name: Publish
+
+# Monorepo package publishing. Push a scoped tag of the form
+# `<package-dir>-v<version>` to publish a single package, e.g.
+#   git tag eslint-config-v0.2.0 && git push origin eslint-config-v0.2.0
+#   git tag tsconfig-v0.1.2      && git push origin tsconfig-v0.1.2
+# Requires the `NPM_TOKEN` repository secret (npm automation token with publish
+# rights for the @busirocket scope).
+
+on:
+  push:
+    tags:
+      - '*-v*.*.*'
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      id-token: write
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: pnpm/action-setup@v4
+        with:
+          version: 11
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          registry-url: https://registry.npmjs.org
+          cache: pnpm
+
+      - run: pnpm install --frozen-lockfile
+
+      - name: Resolve package directory from tag
+        id: pkg
+        run: |
+          tag="${GITHUB_REF_NAME}"
+          dir="packages/${tag%-v*}"
+          if [ ! -f "${dir}/package.json" ]; then
+            echo "::error::No package.json at ${dir} (resolved from tag ${tag})"
+            exit 1
+          fi
+          echo "dir=${dir}" >> "$GITHUB_OUTPUT"
+
+      - name: Build package (if it defines a build script)
+        env:
+          DIR: ${{ steps.pkg.outputs.dir }}
+        run: pnpm --filter "./$DIR" run build --if-present
+
+      - name: Publish to npm
+        env:
+          DIR: ${{ steps.pkg.outputs.dir }}
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+        run: pnpm --filter "./$DIR" publish --access public --provenance --no-git-checks
