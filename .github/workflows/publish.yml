@@ -1,56 +1,62 @@
 name: Publish
 
-# Monorepo package publishing. Push a scoped tag of the form
-# `<package-dir>-v<version>` to publish a single package, e.g.
-#   git tag eslint-config-v0.2.0 && git push origin eslint-config-v0.2.0
-#   git tag tsconfig-v0.1.2      && git push origin tsconfig-v0.1.2
-# Requires the `NPM_TOKEN` repository secret (npm automation token with publish
-# rights for the @busirocket scope).
+# Manually publish one workspace package to npm. Run from the Actions tab (or
+# `gh workflow run publish.yml -f package=eslint-config`) and pick the package;
+# it publishes the version currently in that package's package.json.
+#
+# Auth is tokenless via npm Trusted Publishing (OIDC): npmjs.com must list this
+# repo (BusiRocket/baseline) + this workflow (publish.yml) as a trusted publisher
+# for each package, with the "npm publish" action allowed and no environment.
+# pnpm exchanges the GitHub OIDC id-token for a short-lived publish credential,
+# so no NPM_TOKEN is needed. Provenance is generated automatically because this
+# repository is public.
 
 on:
-  push:
-    tags:
-      - '*-v*.*.*'
+  workflow_dispatch:
+    inputs:
+      package:
+        description: 'Package to publish (uses the version in its package.json)'
+        type: choice
+        required: true
+        options:
+          - eslint-config
+          - tsconfig
+          - prettier-config
+          - create-baseline
+
+permissions:
+  contents: read
+  id-token: write # OIDC trusted publishing + provenance
 
 jobs:
   publish:
     runs-on: ubuntu-latest
-    permissions:
-      contents: read
-      id-token: write
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
 
-      - uses: pnpm/action-setup@v4
-        with:
-          version: 11
+      # No version pin: pnpm/action-setup reads it from package.json "packageManager".
+      - uses: pnpm/action-setup@v6
 
-      - uses: actions/setup-node@v4
+      - uses: actions/setup-node@v6
         with:
-          node-version: 22
-          registry-url: https://registry.npmjs.org
+          node-version: 24
+          registry-url: 'https://registry.npmjs.org'
           cache: pnpm
 
-      - run: pnpm install --frozen-lockfile
-
-      - name: Resolve package directory from tag
-        id: pkg
-        run: |
-          tag="${GITHUB_REF_NAME}"
-          dir="packages/${tag%-v*}"
-          if [ ! -f "${dir}/package.json" ]; then
-            echo "::error::No package.json at ${dir} (resolved from tag ${tag})"
-            exit 1
-          fi
-          echo "dir=${dir}" >> "$GITHUB_OUTPUT"
+      - run: pnpm install --frozen-lockfile --ignore-scripts
 
       - name: Build package (if it defines a build script)
-        env:
-          DIR: ${{ steps.pkg.outputs.dir }}
-        run: pnpm --filter "./$DIR" run build --if-present
+        working-directory: packages/${{ inputs.package }}
+        run: pnpm run build --if-present
 
+      # Tokenless publish via OIDC trusted publishing. pnpm detects the OIDC
+      # environment (id-token: write) and exchanges the id-token for a
+      # short-lived credential. --ignore-scripts avoids re-running prepare hooks.
       - name: Publish to npm
-        env:
-          DIR: ${{ steps.pkg.outputs.dir }}
-          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
-        run: pnpm --filter "./$DIR" publish --access public --provenance --no-git-checks
+        working-directory: packages/${{ inputs.package }}
+        run: pnpm publish --no-git-checks --ignore-scripts --access public
+
+      - name: Publish failed notice
+        if: failure()
+        run: |
+          echo "::warning title=Publish failed::If the publish step failed on auth, confirm npm Trusted Publishing for this package on npmjs.com (Settings -> Trusted publishing) points to organization 'BusiRocket', repository 'baseline', workflow 'publish.yml', allowed action 'npm publish', and no environment. Also check the version in packages/${{ inputs.package }}/package.json is not already published."
