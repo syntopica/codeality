@@ -1,0 +1,16 @@
+{
+  "$schema": "https://turbo.build/schema.json",
+  "extends": ["//"],
+  "//": "Nuxt's prepare/build/test all read and write the shared .nuxt build cache, so they must not run in parallel with each other. Chain them (build -> type-check -> lint -> test) to avoid transform races under high turbo concurrency; other packages still parallelize freely.",
+  "tasks": {
+    "type-check": {
+      "dependsOn": ["^build", "build"]
+    },
+    "lint": {
+      "dependsOn": ["^build", "type-check"]
+    },
+    "test": {
+      "dependsOn": ["^build", "lint"]
+    }
+  }
+}
