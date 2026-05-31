@@ -1,5 +1,12 @@
 packages:
   - 'packages/*'
   - 'templates/*'
+# Explicit supply-chain allowlist: only these vetted native dependencies may run
+# install/build scripts. Everything else is blocked by pnpm (no silent postinstall).
+onlyBuiltDependencies:
+  - '@parcel/watcher'
+  - esbuild
+  - sharp
+  - unrs-resolver
 patchedDependencies:
   eslint-plugin-react: patches/eslint-plugin-react.patch

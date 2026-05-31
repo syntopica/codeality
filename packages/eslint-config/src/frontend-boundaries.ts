@@ -85,7 +85,9 @@ export const createFrontendBoundariesConfig = () => [
           rules: [
             {
               from: { type: 'app' },
-              allow: { to: { type: ['app', 'components', 'shared', 'services'] } },
+              allow: {
+                to: { type: ['app', 'components', 'shared', 'services'] },
+              },
             },
             {
               from: { type: 'components' },

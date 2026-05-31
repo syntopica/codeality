@@ -17,7 +17,6 @@
     "test:watch": "vitest",
     "check:all": "pnpm type-check && pnpm lint && pnpm format:check",
     "check:ci": "pnpm type-check && pnpm lint && pnpm format:check && pnpm test",
-    "test:a11y": "vitest run",
     "perf:check": "pnpm build && lhci autorun --config=.lighthouserc.json"
   },
   "dependencies": {

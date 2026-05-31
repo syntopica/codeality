@@ -1,8 +1,14 @@
 **/node_modules/**
 **/.next/**
 **/.astro/**
+**/.nuxt/**
+**/.output/**
+**/.turbo/**
 **/dist/**
 **/build/**
 **/coverage/**
 pnpm-lock.yaml
 **/.lighthouseci/
+**/next-env.d.ts
+.cocoindex_code/
+.codegraph/

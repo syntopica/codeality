@@ -1,9 +1,8 @@
 # Design: `templates/vue-app` — Paranoid Vue 3 SPA template (2026, TypeScript)
 
-Date: 2026-05-30
-Status: Approved (design); pending implementation plan
-Scope: This spec covers **only** `vue-app` (Vue 3 SPA on Vite). The `nuxt-app`
-template is a separate follow-up sub-project with its own spec.
+Date: 2026-05-30 Status: Approved (design); pending implementation plan Scope:
+This spec covers **only** `vue-app` (Vue 3 SPA on Vite). The `nuxt-app` template
+is a separate follow-up sub-project with its own spec.
 
 ## Goal
 
@@ -31,13 +30,15 @@ service) — just enough to demonstrate every practice exactly once.
 
 ## Context from the existing repo (verified)
 
-- `tsconfig/base.json` already enables the full strict-hardening set
-  (`strict`, `noUncheckedIndexedAccess`, `exactOptionalPropertyTypes`,
+- `tsconfig/base.json` already enables the full strict-hardening set (`strict`,
+  `noUncheckedIndexedAccess`, `exactOptionalPropertyTypes`,
   `noImplicitOverride`, `useUnknownInCatchVariables`). No need to re-declare.
-- `eslint-config/src/base.ts` already applies `tseslint.configs.strictTypeChecked`
-  plus `eslint-plugin-security`, `promise`, `import`, `unused-imports`.
-- `eslint-config/src/frontend-boundaries.ts` models `components → shared →
-  services` but its `shared` layer uses `hooks`, not `composables`.
+- `eslint-config/src/base.ts` already applies
+  `tseslint.configs.strictTypeChecked` plus `eslint-plugin-security`, `promise`,
+  `import`, `unused-imports`.
+- `eslint-config/src/frontend-boundaries.ts` models
+  `components → shared → services` but its `shared` layer uses `hooks`, not
+  `composables`.
 - `pnpm-workspace.yaml` already globs `templates/*`, so a new template is picked
   up automatically. No workspace wiring needed.
 - `@busirocket/prettier-config/frontend` formats `.vue` natively (no extra
@@ -105,7 +106,7 @@ These additions give Vue the same first-class support React/Astro already have.
   "_comment": "Vite + Vue app — extends app, compiled/checked by vue-tsc.",
   "extends": "./app.json",
   "include": ["src/**/*.ts", "src/**/*.d.ts", "src/**/*.vue"],
-  "exclude": ["node_modules", "dist"]
+  "exclude": ["node_modules", "dist"],
 }
 ```
 
@@ -117,11 +118,11 @@ Add `"./vite-vue.json": "./vite-vue.json"` to the package `exports`.
 
 - `vue.configs['flat/recommended']`.
 - A `.vue` block setting `languageOptions.parser = vue-eslint-parser` with
-  `parserOptions.parser = tseslint.parser`, `extraFileExtensions: ['.vue']`,
-  and `projectService` for type-aware linting (same approach as `astro.ts`).
-- A few explicit correctness rules, notably `vue/no-v-html: 'error'`
-  (anti-XSS), plus `vue/define-props-declaration` and `vue/require-typed-ref`
-  for typed component contracts.
+  `parserOptions.parser = tseslint.parser`, `extraFileExtensions: ['.vue']`, and
+  `projectService` for type-aware linting (same approach as `astro.ts`).
+- A few explicit correctness rules, notably `vue/no-v-html: 'error'` (anti-XSS),
+  plus `vue/define-props-declaration` and `vue/require-typed-ref` for typed
+  component contracts.
 - Reuse `createFrontendBoundariesConfig()`.
 
 Add `"./vite-vue": "./src/vite-vue.ts"` to `exports`. Add `eslint-plugin-vue`
@@ -144,11 +145,11 @@ React/Astro consumers are unaffected. Update the JSDoc to mention Vue.
 
 1. **Env validated with Zod** — `src/env.ts` defines a Zod schema for the
    `VITE_*` variables the app reads, calls `.parse(import.meta.env)` once at
-   module load, and exports a typed `env` object. App code imports `env`,
-   never raw `import.meta.env`. Missing/malformed config fails fast at startup.
-2. **`eslint-plugin-vue` + `vue-tsc`** — `build = vue-tsc --noEmit && vite
-   build`; `type-check = vue-tsc --noEmit`. Type errors inside `<template>` are
-   caught. `vue/no-v-html` is an error.
+   module load, and exports a typed `env` object. App code imports `env`, never
+   raw `import.meta.env`. Missing/malformed config fails fast at startup.
+2. **`eslint-plugin-vue` + `vue-tsc`** —
+   `build = vue-tsc --noEmit && vite build`; `type-check = vue-tsc --noEmit`.
+   Type errors inside `<template>` are caught. `vue/no-v-html` is an error.
 3. **Architecture boundaries** — `eslint-plugin-boundaries` (already a repo
    dependency) enforces `components → composables/shared → services` with
    `boundaries/element-types: 'error'`. No cross-layer or internal-deep imports.
@@ -194,9 +195,9 @@ ranges (`vite ^8`, `vitest ^4`, `eslint ^10`, `typescript ^6`,
 ## Acceptance criteria
 
 - `pnpm install` at the monorepo root resolves with the new template.
-- In `templates/vue-app`: `pnpm check:ci` passes (type-check via `vue-tsc`,
-  lint with the Vue + boundaries + a11y + tailwind layers, format check,
-  tests including the axe assertion, coverage thresholds met).
+- In `templates/vue-app`: `pnpm check:ci` passes (type-check via `vue-tsc`, lint
+  with the Vue + boundaries + a11y + tailwind layers, format check, tests
+  including the axe assertion, coverage thresholds met).
 - `pnpm build` produces a Vite bundle after a clean `vue-tsc` pass.
 - Importing across layers in a way the boundaries forbid produces an ESLint
   error.
@@ -223,8 +224,8 @@ ranges (`vite ^8`, `vitest ^4`, `eslint ^10`, `typescript ^6`,
   boundaries layer actually enforce requires migrating
   `packages/eslint-config/src/frontend-boundaries.ts` to the v6 API and
   re-validating all four frontend templates. Tracked as a separate follow-up;
-  out of scope for adding the Vue template (would risk the other templates'
-  lint if done blindly).
+  out of scope for adding the Vue template (would risk the other templates' lint
+  if done blindly).
 - **`.vue` type-aware lint** uses a `src/shims-vue.d.ts` `*.vue` module shim so
   `.ts` files importing components are typed; `vue-tsc` still fully checks the
   SFCs. Vue-specific ESLint exceptions (declaration-file interfaces,
