@@ -7,11 +7,12 @@
   "description": "CLI to verify and adopt @busirocket baseline config packages",
   "repository": {
     "type": "git",
-    "url": "https://github.com/BusiRocket/create-baseline.git"
+    "url": "git+https://github.com/BusiRocket/baseline.git",
+    "directory": "packages/create-baseline"
   },
-  "homepage": "https://github.com/BusiRocket/create-baseline#readme",
+  "homepage": "https://github.com/BusiRocket/baseline/tree/main/packages/create-baseline#readme",
   "bugs": {
-    "url": "https://github.com/BusiRocket/create-baseline/issues"
+    "url": "https://github.com/BusiRocket/baseline/issues"
   },
   "publishConfig": {
     "access": "public"

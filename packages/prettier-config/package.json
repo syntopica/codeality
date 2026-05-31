@@ -7,11 +7,12 @@
   "description": "Shared Prettier configuration",
   "repository": {
     "type": "git",
-    "url": "https://github.com/BusiRocket/prettier-config.git"
+    "url": "git+https://github.com/BusiRocket/baseline.git",
+    "directory": "packages/prettier-config"
   },
-  "homepage": "https://github.com/BusiRocket/prettier-config#readme",
+  "homepage": "https://github.com/BusiRocket/baseline/tree/main/packages/prettier-config#readme",
   "bugs": {
-    "url": "https://github.com/BusiRocket/prettier-config/issues"
+    "url": "https://github.com/BusiRocket/baseline/issues"
   },
   "publishConfig": {
     "access": "public"
