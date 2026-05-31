@@ -1,13 +1,15 @@
 packages:
   - 'packages/*'
   - 'templates/*'
-# Explicit supply-chain allowlist: only these vetted native dependencies may run
-# install/build scripts. Everything else is blocked by pnpm (no silent postinstall).
-onlyBuiltDependencies:
-  - '@parcel/watcher'
-  - esbuild
-  - sharp
-  - unrs-resolver
+# Explicit supply-chain allowlist (pnpm 11 `allowBuilds`): only these vetted
+# native dependencies may run install/build scripts. Every other dependency's
+# install scripts stay blocked (no silent postinstall). Required for CI:
+# pnpm errors on un-decided build scripts under `--frozen-lockfile`.
+allowBuilds:
+  '@parcel/watcher': true
+  esbuild: true
+  sharp: true
+  unrs-resolver: true
 # Relax the supply-chain release-age cooldown only for Vue's vetted first-party
 # type-checking toolchain, whose patch releases we track and adopt immediately.
 # Everything else still honors the cooldown.
