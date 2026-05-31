@@ -39,8 +39,14 @@ export default [
   },
   // Vue composables are the framework analogue of React hooks and live in the
   // conventional `composables/` folder; the placement rule is hook/React-centric.
+  // Pinia stores follow the same `useXxxStore` naming but live in `stores/` (or
+  // `store/`), not `hooks/` — exempt them from the hook-placement rule too.
   {
-    files: ['src/composables/**/*.ts'],
+    files: [
+      'src/composables/**/*.ts',
+      'src/stores/**/*.ts',
+      'src/store/**/*.ts',
+    ],
     rules: {
       'code-policy/file-kind-placement': 'off',
     },

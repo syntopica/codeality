@@ -49,6 +49,13 @@ export const createCodeQualityConfig = () => [
     rules: {
       'max-lines': 'off',
       'max-lines-per-function': 'warn',
+      // Test files legitimately colocate inline fixture types, builders, and
+      // local helpers next to the cases that use them; the atomic-file/one-unit
+      // discipline targets production architecture, not test scaffolding.
+      'code-policy/no-inline-types-in-runtime-files': 'off',
+      'code-policy/no-hidden-top-level-declarations': 'off',
+      'code-policy/one-primary-unit': 'off',
+      'code-policy/file-kind-placement': 'off',
     },
   },
   // Next.js App Router special files often coordinate wiring and metadata.

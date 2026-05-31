@@ -1,3 +1,4 @@
+import unusedImports from 'eslint-plugin-unused-imports'
 import tseslint from 'typescript-eslint'
 
 import { createFrontendBoundariesConfig } from './frontend-boundaries'
@@ -51,7 +52,27 @@ export const createViteVueConfig = (options: ViteVueConfigOptions = {}) => {
           sourceType: 'module',
         },
       },
+      plugins: {
+        'unused-imports': unusedImports,
+      },
       rules: {
+        // TypeScript (not core ESLint) resolves identifiers inside `<script
+        // setup lang="ts">`; core `no-undef` cannot see ambient/global types and
+        // would false-positive on them. typescript-eslint disables it for .ts
+        // for the same reason — mirror that for .vue SFCs.
+        'no-undef': 'off',
+        // Unused-binding handling consistent with the .ts layer: defer to
+        // unused-imports with the `_`-prefix escape hatch.
+        'no-unused-vars': 'off',
+        'unused-imports/no-unused-vars': [
+          'error',
+          {
+            args: 'after-used',
+            argsIgnorePattern: '^_',
+            varsIgnorePattern: '^_',
+            ignoreRestSiblings: true,
+          },
+        ],
         // raw HTML binding is an XSS vector
         'vue/no-v-html': 'error',
         // force the type-based defineProps<...>() form
