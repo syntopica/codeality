@@ -46,6 +46,9 @@ jobs:
 
       - run: pnpm install --frozen-lockfile --ignore-scripts
 
+      - name: Verify derived version files are in sync
+        run: node scripts/sync-versions.mjs --check
+
       - name: Build package (if it defines a build script)
         working-directory: packages/${{ inputs.package }}
         run: |

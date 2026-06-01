@@ -12,6 +12,13 @@ export type NextjsConfigOptions = {
   tsconfigRootDir?: string
 }
 
+// This preset registers @next/next, react and react-hooks itself and pulls only
+// Next's Core Web Vitals *rules* from @next/eslint-plugin-next. It does NOT spread
+// the full `eslint-config-next` flat config, because that package also registers
+// `import`, `jsx-a11y` and `@typescript-eslint` — plugins the layered baseline
+// (base + accessibility) already owns — which throws "Cannot redefine plugin".
+// `eslint-config-next` is kept as an optional peer dependency so standalone Next
+// projects that do not layer the full baseline can import it directly.
 const nextRules = {
   ...nextPlugin.configs['core-web-vitals'].rules,
 }
