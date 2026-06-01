@@ -56,7 +56,7 @@ export default {
     let expectedFolder = ''
 
     if (basename.startsWith('use')) {
-      kind = 'React hook'
+      kind = 'hook or composable'
       expectedFolder = 'hooks'
     } else if (
       basename.startsWith('format') ||
@@ -85,10 +85,17 @@ export default {
       expectedFolder = 'selectors'
     }
 
+    // `use*` units may live in any framework-appropriate folder: React hooks
+    // (hooks/), Vue composables (composables/), or stores (stores/, store/).
+    const acceptedFolders = basename.startsWith('use')
+      ? ['hooks', 'composables', 'stores', 'store']
+      : [expectedFolder]
+    const parentDirs = pathParts.slice(0, -1)
+
     if (
       kind &&
       expectedFolder &&
-      !pathParts.slice(0, -1).includes(expectedFolder)
+      !acceptedFolders.some((folder) => parentDirs.includes(folder))
     ) {
       return {
         Program(node) {

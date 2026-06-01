@@ -1,6 +1,6 @@
 {
   "name": "eslint-plugin-code-policy",
-  "version": "0.3.0",
+  "version": "0.4.0",
   "description": "Architectural linting for TypeScript · enforce atomic files, explicit public APIs, clean runtime boundaries, and view/logic separation.",
   "type": "module",
   "main": "./dist/index.cjs",
@@ -66,14 +66,14 @@
     "url": "https://github.com/cristiandeluxe"
   },
   "license": "MIT",
-  "homepage": "https://github.com/VibraComet/eslint-plugin-code-policy#readme",
+  "homepage": "https://github.com/BusiRocket/baseline/tree/main/packages/eslint-plugin-code-policy#readme",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/VibraComet/eslint-plugin-code-policy.git",
+    "url": "git+https://github.com/BusiRocket/baseline.git",
     "directory": "packages/eslint-plugin-code-policy"
   },
   "bugs": {
-    "url": "https://github.com/VibraComet/eslint-plugin-code-policy/issues"
+    "url": "https://github.com/BusiRocket/baseline/issues"
   },
   "publishConfig": {
     "access": "public",
