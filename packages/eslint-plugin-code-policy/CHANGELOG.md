@@ -1,5 +1,19 @@
 # eslint-plugin-code-policy
 
+## 0.4.4
+
+### Patch Changes
+
+- fix(file-kind-placement): only treat a kind prefix as that kind at a camelCase
+  word boundary.
+
+  The kind detection used bare `startsWith`, so identifiers like `userCache`,
+  `usersScope`, or `userLockTtlMs` were misreported as hooks (they start with
+  `use`), `mapping` as a mapper, and `selected`/`validated`/`formatted` as their
+  respective kinds. Prefixes (`use`, `format`, `map`, `validate`, `select`) now
+  only match when the next character is uppercase, so `useSync`/`mapEntry` still
+  flag while `user*`/`mapping`/`selected` no longer produce false positives.
+
 ## 0.4.3
 
 ### Patch Changes

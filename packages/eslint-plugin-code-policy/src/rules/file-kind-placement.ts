@@ -1,6 +1,7 @@
 import type { TSESTree } from '@typescript-eslint/utils'
 
 import { createRule } from '@/utils/create-rule.js'
+import { startsWithCamelPrefix } from '@/utils/starts-with-camel-prefix.js'
 import { stripFolderPrivacyPrefix } from '@/utils/strip-folder-privacy-prefix.js'
 
 type Options = [
@@ -87,30 +88,30 @@ export default createRule<Options, MessageIds>({
     let kind = ''
     let expectedFolder = ''
 
-    if (basename.startsWith('use')) {
+    if (startsWithCamelPrefix(basename, 'use')) {
       kind = 'hook or composable'
       expectedFolder = 'hooks'
     } else if (
-      basename.startsWith('format') ||
+      startsWithCamelPrefix(basename, 'format') ||
       basename.endsWith('Formatter.ts')
     ) {
       kind = 'formatter'
       expectedFolder = 'formatters'
     } else if (
-      basename.startsWith('validate') ||
+      startsWithCamelPrefix(basename, 'validate') ||
       basename.endsWith('Validator.ts')
     ) {
       kind = 'validator'
       expectedFolder = 'validators'
     } else if (
-      basename.startsWith('map') ||
+      startsWithCamelPrefix(basename, 'map') ||
       basename.endsWith('Mapper.ts') ||
       basename.endsWith('Transformer.ts')
     ) {
       kind = 'mapper'
       expectedFolder = 'mappers'
     } else if (
-      basename.startsWith('select') ||
+      startsWithCamelPrefix(basename, 'select') ||
       basename.endsWith('Selector.ts')
     ) {
       kind = 'selector'
@@ -119,7 +120,7 @@ export default createRule<Options, MessageIds>({
 
     // `use*` units may live in any framework-appropriate folder: React hooks
     // (hooks/), Vue composables (composables/), or stores (stores/, store/).
-    const acceptedFolders = basename.startsWith('use')
+    const acceptedFolders = startsWithCamelPrefix(basename, 'use')
       ? ['hooks', 'composables', 'stores', 'store']
       : [expectedFolder]
 

@@ -61,6 +61,36 @@ ruleTester.run('file-kind-placement', rule as any, {
       filename: '/src/app/_utils/doThing.ts',
       options: [{ allowGenericFolders: true }],
     },
+    // A kind prefix must form a camelCase word boundary (uppercase next char),
+    // so `user*`/`users*` are NOT hooks, `mapping*` is NOT a mapper, etc.
+    {
+      code: `export const userCache = new Map()`,
+      filename: '/src/services/cache/userCache.ts',
+    },
+    {
+      code: `export function usersScope() {}`,
+      filename: '/src/services/users/usersScope.ts',
+    },
+    {
+      code: `export const userLockTtlMs = 5000`,
+      filename: '/src/services/users/constants/userLockTtlMs.ts',
+    },
+    {
+      code: `export const mapping = {}`,
+      filename: '/src/services/mapping.ts',
+    },
+    {
+      code: `export const selected = true`,
+      filename: '/src/state/selected.ts',
+    },
+    {
+      code: `export const validated = true`,
+      filename: '/src/state/validated.ts',
+    },
+    {
+      code: `export const formatted = ''`,
+      filename: '/src/state/formatted.ts',
+    },
   ],
   invalid: [
     // `use*` outside any accepted folder.
@@ -73,6 +103,13 @@ ruleTester.run('file-kind-placement', rule as any, {
     {
       code: `export function formatDate() {}`,
       filename: '/src/widgets/formatDate.ts',
+      errors: [{ messageId: 'invalidPlacement' }],
+    },
+    // Genuine mapper (camelCase boundary) outside mappers/ still flags, even
+    // though `mapping.ts` (no boundary) is now valid.
+    {
+      code: `export function mapEntry() {}`,
+      filename: '/src/services/mapEntry.ts',
       errors: [{ messageId: 'invalidPlacement' }],
     },
     // Generic grouping folders are banned by default.
