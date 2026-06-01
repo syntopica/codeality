@@ -7,12 +7,6 @@ import { fileURLToPath } from 'node:url'
 const __dirname = dirname(fileURLToPath(import.meta.url))
 const PACKAGE_ROOT = resolve(__dirname, '..')
 
-const BASELINE_PACKAGE_NAMES = [
-  '@busirocket/eslint-config',
-  '@busirocket/prettier-config',
-  '@busirocket/tsconfig',
-]
-
 async function loadBaselineVersions() {
   const path = resolve(PACKAGE_ROOT, 'baseline-versions.json')
   const raw = await readFile(path, 'utf8')
@@ -44,8 +38,8 @@ function collectDeps(manifest) {
   return { ...d, ...dev }
 }
 
-function missingBaseline(deps) {
-  return BASELINE_PACKAGE_NAMES.filter((name) => deps[name] == null)
+function missingBaseline(deps, names) {
+  return names.filter((name) => deps[name] == null)
 }
 
 async function hasEslintConfig(root) {
@@ -68,13 +62,12 @@ async function hasEslintConfig(root) {
 
 async function main() {
   const versions = await loadBaselineVersions()
+  const names = Object.keys(versions)
   const flags = parseArgs(process.argv.slice(2))
   const root = cwd()
 
   const printInstall = () => {
-    const spec = BASELINE_PACKAGE_NAMES.map((p) => `${p}@${versions[p]}`).join(
-      ' ',
-    )
+    const spec = names.map((p) => `${p}@${versions[p]}`).join(' ')
     console.log('pnpm (recommended):')
     console.log(`  pnpm add -D ${spec}`)
     console.log('npm:')
@@ -98,7 +91,7 @@ async function main() {
   }
 
   const deps = collectDeps(manifest)
-  const missing = missingBaseline(deps)
+  const missing = missingBaseline(deps, names)
   const eslintOk = await hasEslintConfig(root)
 
   if (flags.soft) {
@@ -107,7 +100,7 @@ async function main() {
     if (missing.length) {
       console.log('\nMissing from package.json:', missing.join(', '))
     } else {
-      console.log('\nAll three packages are already listed in package.json.')
+      console.log('\nAll baseline packages are already listed in package.json.')
     }
     if (!eslintOk) {
       console.log(

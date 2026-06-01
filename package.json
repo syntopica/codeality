@@ -8,9 +8,11 @@
     "type-check": "turbo run type-check",
     "format": "prettier --write . --list-different",
     "format:check": "prettier --check .",
+    "sync-versions": "node scripts/sync-versions.mjs",
+    "sync-versions:check": "node scripts/sync-versions.mjs --check",
     "check:all": "turbo run type-check lint:fix && pnpm format",
-    "fix:all": "turbo run fix && pnpm format",
-    "check:ci": "turbo run type-check lint test build && pnpm format:check",
+    "fix:all": "pnpm sync-versions && turbo run fix && pnpm format",
+    "check:ci": "pnpm sync-versions:check && turbo run type-check lint test build && pnpm format:check",
     "perf:check": "turbo run perf:check"
   },
   "devDependencies": {
