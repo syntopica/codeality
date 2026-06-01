@@ -1,24 +1,27 @@
-import type { Rule } from 'eslint'
+import type { TSESTree } from '@typescript-eslint/utils'
 
-import { DOCS_BASE_URL } from '@/utils/docs-base-url.js'
+import { createRule } from '@/utils/create-rule.js'
 import { NEXT_RESERVED_EXPORTS } from '@/utils/next-reserved-exports.js'
 
-export default {
+type Options = []
+
+type MessageIds = 'multipleDeclarations'
+
+export default createRule<Options, MessageIds>({
+  name: 'atomic-file',
   meta: {
     type: 'problem',
     docs: {
       description:
         'Enforce atomic file structure (exactly one top-level unit per file)',
-      recommended: true,
-      url: `${DOCS_BASE_URL}/atomic-file.md`,
     },
-    fixable: undefined,
     schema: [],
     messages: {
       multipleDeclarations:
         'File contains multiple top-level declarations (found {{count}}). Extract them into separate files to enforce atomic file structure.',
     },
   },
+  defaultOptions: [],
   create(context) {
     const filename = context.filename || context.physicalFilename || ''
 
@@ -41,17 +44,18 @@ export default {
       )
 
     return {
-      Program(node) {
+      Program(node: TSESTree.Program) {
         let count = 0
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        const declarations: any[] = []
+        const declarations: {
+          statement: TSESTree.ProgramStatement
+          added: number
+        }[] = []
 
         for (const statement of node.body) {
           if (
             statement.type === 'ImportDeclaration' ||
             statement.type === 'ExportAllDeclaration' ||
             statement.type === 'EmptyStatement' ||
-            // @ts-expect-error Typescript specific nodes not in standard estree
             statement.type === 'TSImportEqualsDeclaration'
           ) {
             continue
@@ -71,7 +75,6 @@ export default {
           ) {
             if (
               statement.declaration.type === 'FunctionDeclaration' &&
-              // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition -- id can be null for anonymous default exports
               statement.declaration.id !== null &&
               NEXT_RESERVED_EXPORTS.has(statement.declaration.id.name)
             ) {
@@ -91,8 +94,7 @@ export default {
 
           if (
             statement.type === 'ExpressionStatement' &&
-            // eslint-disable-next-line @typescript-eslint/no-explicit-any
-            ((statement as any).directive ||
+            (statement.directive ||
               (statement.expression.type === 'Literal' &&
                 typeof statement.expression.value === 'string'))
           ) {
@@ -136,11 +138,10 @@ export default {
                 data: { count: String(count) },
               })
             }
-            // eslint-disable-next-line @typescript-eslint/restrict-plus-operands -- count is always number
             reported += added
           }
         }
       },
     }
   },
-} as Rule.RuleModule
+})

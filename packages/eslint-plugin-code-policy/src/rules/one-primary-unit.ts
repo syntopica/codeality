@@ -1,25 +1,28 @@
-import type { Rule } from 'eslint'
+import type { TSESTree } from '@typescript-eslint/utils'
 
-import { DOCS_BASE_URL } from '@/utils/docs-base-url.js'
+import { createRule } from '@/utils/create-rule.js'
 import { NEXT_RESERVED_EXPORTS } from '@/utils/next-reserved-exports.js'
 import { ROUTE_METHODS } from '@/utils/route-methods.js'
 
-export default {
+type Options = []
+
+type MessageIds = 'multiplePrimaryUnits'
+
+export default createRule<Options, MessageIds>({
+  name: 'one-primary-unit',
   meta: {
     type: 'problem',
     docs: {
       description:
         'A file must contain exactly one primary top-level exported unit.',
-      recommended: true,
-      url: `${DOCS_BASE_URL}/one-primary-unit.md`,
     },
-    fixable: undefined,
     schema: [],
     messages: {
       multiplePrimaryUnits:
         'File contains multiple primary exported units (found {{count}}). The Atomic File Rule requires exactly one primary exported unit.',
     },
   },
+  defaultOptions: [],
   create(context) {
     const filename = context.filename || context.physicalFilename || ''
 
@@ -43,10 +46,9 @@ export default {
       )
 
     return {
-      Program(node) {
+      Program(node: TSESTree.Program) {
         let exportCount = 0
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        const exportedEntities: any[] = []
+        const exportedEntities: TSESTree.Node[] = []
 
         for (const statement of node.body) {
           if (statement.type === 'ExportNamedDeclaration') {
@@ -66,18 +68,18 @@ export default {
                   exportedEntities.push(decl)
                 }
               } else {
-                // eslint-disable-next-line @typescript-eslint/no-explicit-any
-                const declAny = statement.declaration as any
+                const declaration = statement.declaration
                 if (
-                  [
-                    'FunctionDeclaration',
-                    'ClassDeclaration',
-                    'TSTypeAliasDeclaration',
-                    'TSInterfaceDeclaration',
-                    'TSEnumDeclaration',
-                  ].includes(declAny.type)
+                  declaration.type === 'FunctionDeclaration' ||
+                  declaration.type === 'ClassDeclaration' ||
+                  declaration.type === 'TSTypeAliasDeclaration' ||
+                  declaration.type === 'TSInterfaceDeclaration' ||
+                  declaration.type === 'TSEnumDeclaration'
                 ) {
-                  const name = declAny.id?.name
+                  const name =
+                    declaration.type === 'TSTypeAliasDeclaration'
+                      ? declaration.id.name
+                      : (declaration.id?.name ?? null)
                   if (
                     name &&
                     isNextJsRouterFile &&
@@ -86,7 +88,7 @@ export default {
                     continue
                   }
                   exportCount += 1
-                  exportedEntities.push(statement.declaration)
+                  exportedEntities.push(declaration)
                 }
               }
             } else if (statement.specifiers.length > 0) {
@@ -128,4 +130,4 @@ export default {
       },
     }
   },
-} as Rule.RuleModule
+})

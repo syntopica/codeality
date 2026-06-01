@@ -1,19 +1,21 @@
-import type { Rule } from 'eslint'
+import type { TSESTree } from '@typescript-eslint/utils'
 
-import { DOCS_BASE_URL } from '@/utils/docs-base-url.js'
+import { createRule } from '@/utils/create-rule.js'
 import { getEnclosingComponent } from '@/utils/get-enclosing-component.js'
 import { isComponentNode } from '@/utils/is-component-node.js'
 
-export default {
+type Options = []
+
+type MessageIds = 'noReactHooks' | 'noInlineHandlers'
+
+export default createRule<Options, MessageIds>({
+  name: 'view-logic-separation',
   meta: {
     type: 'problem',
     docs: {
       description:
         'Enforces strict separation of logic from views. React views (.tsx) must not contain state, lifecycle effects, or inline handler declarations. Move logic to a custom hook.',
-      recommended: true,
-      url: `${DOCS_BASE_URL}/view-logic-separation.md`,
     },
-    fixable: undefined,
     schema: [],
     messages: {
       noReactHooks:
@@ -22,6 +24,7 @@ export default {
         'Strict View Separation: Inline function or handler declaration ({{name}}) inside a view component is forbidden. Return it from your custom hook instead.',
     },
   },
+  defaultOptions: [],
   create(context) {
     const filename = context.filename
 
@@ -31,9 +34,11 @@ export default {
     }
 
     return {
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
       'FunctionDeclaration, ArrowFunctionExpression, FunctionExpression'(
-        node: any,
+        node:
+          | TSESTree.FunctionDeclaration
+          | TSESTree.ArrowFunctionExpression
+          | TSESTree.FunctionExpression,
       ) {
         if (!isComponentNode(node)) {
           const component = getEnclosingComponent(node)
@@ -44,10 +49,11 @@ export default {
               node.type === 'FunctionDeclaration')
           ) {
             let name = 'anonymous function'
-            if (node.id?.name) name = node.id.name
-            else if (
+            if (node.type === 'FunctionDeclaration' && node.id?.name) {
+              name = node.id.name
+            } else if (
               node.parent.type === 'VariableDeclarator' &&
-              node.parent.id?.name
+              node.parent.id.type === 'Identifier'
             ) {
               name = node.parent.id.name
             }
@@ -61,9 +67,8 @@ export default {
         }
       },
 
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      CallExpression(node: any) {
-        if (node.callee?.type === 'Identifier') {
+      CallExpression(node: TSESTree.CallExpression) {
+        if (node.callee.type === 'Identifier') {
           const name = node.callee.name
           if (
             /^use(State|Effect|Reducer|Callback|Memo|Ref|ImperativeHandle|LayoutEffect|DebugValue|DeferredValue|Transition|Id|SyncExternalStore|InsertionEffect|Query|Mutation)$/.test(
@@ -85,4 +90,4 @@ export default {
       },
     }
   },
-} as Rule.RuleModule
+})

@@ -137,6 +137,9 @@ importers:
       '@types/eslint':
         specifier: ^9.6.1
         version: 9.6.1
+      '@typescript-eslint/utils':
+        specifier: ^8.60.0
+        version: 8.60.0(eslint@10.4.1(jiti@2.7.0))(typescript@6.0.3)
     devDependencies:
       '@busirocket/tsconfig':
         specifier: workspace:*

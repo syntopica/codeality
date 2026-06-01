@@ -3,8 +3,10 @@ export default {
   plugins: {
     get 'code-policy'() {
       // Workaround for circular dependency: configs import rules, index exports both.
+      // Cast the dynamic require to a known shape so plugin access is not `any`
+      // (kept portable for declaration emit, unlike a reference to ESLint.Plugin).
       // eslint-disable-next-line @typescript-eslint/no-require-imports
-      return require('../index.js').default
+      return (require('../index.js') as { default: unknown }).default
     },
   },
   rules: {

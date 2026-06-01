@@ -1,6 +1,4 @@
-import type { Rule } from 'eslint'
-
-import { DOCS_BASE_URL } from '@/utils/docs-base-url.js'
+import { createRule } from '@/utils/create-rule.js'
 
 /**
  * no-cross-module-deep-imports
@@ -30,16 +28,23 @@ import { DOCS_BASE_URL } from '@/utils/docs-base-url.js'
  *     internal code that should be accessed only via the public API.
  */
 
-export default {
+type Options = [
+  {
+    minParentTraversals?: number
+    internalDirs?: string[]
+  }?,
+]
+
+type MessageIds = 'deepImport'
+
+export default createRule<Options, MessageIds>({
+  name: 'no-cross-module-deep-imports',
   meta: {
     type: 'problem',
     docs: {
       description:
         'Forbid relative imports that bypass the public API of another module within the monorepo by importing directly from its internal directories.',
-      recommended: true,
-      url: `${DOCS_BASE_URL}/no-cross-module-deep-imports.md`,
     },
-    fixable: undefined,
     schema: [
       {
         type: 'object',
@@ -58,20 +63,15 @@ export default {
         'Cross-module deep import "{{importPath}}" bypasses the module\'s public API. Import from the module root (index) instead.',
     },
   },
-  create(context) {
-    const opts = (context.options[0] ?? {}) as {
-      minParentTraversals?: number
-      internalDirs?: string[]
-    }
-    const minParentTraversals: number = opts.minParentTraversals ?? 2
-    const internalDirs: string[] = opts.internalDirs ?? ['src']
+  defaultOptions: [{}],
+  create(context, [options]) {
+    const minParentTraversals = options?.minParentTraversals ?? 2
+    const internalDirs = options?.internalDirs ?? ['src']
 
     return {
       ImportDeclaration(node) {
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        const importPath = (node.source as any).value as string
+        const importPath = node.source.value
 
-        if (typeof importPath !== 'string') return
         if (!importPath.startsWith('.')) return // ignore absolute/alias imports
 
         // Count leading `../` segments
@@ -100,4 +100,4 @@ export default {
       },
     }
   },
-} as Rule.RuleModule
+})

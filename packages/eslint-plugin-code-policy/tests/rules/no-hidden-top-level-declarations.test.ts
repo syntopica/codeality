@@ -1,7 +1,7 @@
 import rule from '@/rules/no-hidden-top-level-declarations.js'
 import { ruleTester } from '@tests/utils/rule-tester.js'
 
-ruleTester.run('no-hidden-top-level-declarations', rule, {
+ruleTester.run('no-hidden-top-level-declarations', rule as any, {
   valid: [
     // Exported declarations are allowed.
     {
