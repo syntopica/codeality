@@ -37,6 +37,30 @@ ruleTester.run('file-kind-placement', rule as any, {
       code: `export function useThing() {}`,
       filename: '/src/use.config.ts',
     },
+    // Next.js private folder `_hooks/` is recognized as `hooks/`.
+    {
+      code: `export function useThing() {}`,
+      filename: '/src/app/dashboard/_hooks/useThing.ts',
+    },
+    // allowGenericFolders: a pure helper directly in utils/ is accepted.
+    {
+      code: `export function doThing() {}`,
+      filename: '/src/utils/doThing.ts',
+      options: [{ allowGenericFolders: true }],
+    },
+    // allowGenericFolders: utils/<area>/ organization is accepted, even for a
+    // unit that would otherwise be placement-checked (formatter).
+    {
+      code: `export function formatDate() {}`,
+      filename: '/src/utils/dates/formatDate.ts',
+      options: [{ allowGenericFolders: true }],
+    },
+    // allowGenericFolders is `_`-aware too: _utils/ counts as utils/.
+    {
+      code: `export function doThing() {}`,
+      filename: '/src/app/_utils/doThing.ts',
+      options: [{ allowGenericFolders: true }],
+    },
   ],
   invalid: [
     // `use*` outside any accepted folder.
@@ -51,10 +75,16 @@ ruleTester.run('file-kind-placement', rule as any, {
       filename: '/src/widgets/formatDate.ts',
       errors: [{ messageId: 'invalidPlacement' }],
     },
-    // Generic grouping folders are banned.
+    // Generic grouping folders are banned by default.
     {
       code: `export function doThing() {}`,
       filename: '/src/utils/doThing.ts',
+      errors: [{ messageId: 'invalidGenericFolder' }],
+    },
+    // `_`-private generic folder is banned by default too.
+    {
+      code: `export function doThing() {}`,
+      filename: '/src/app/_utils/doThing.ts',
       errors: [{ messageId: 'invalidGenericFolder' }],
     },
   ],

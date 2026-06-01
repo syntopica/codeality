@@ -1,8 +1,13 @@
 import type { TSESTree } from '@typescript-eslint/utils'
 
 import { createRule } from '@/utils/create-rule.js'
+import { stripFolderPrivacyPrefix } from '@/utils/strip-folder-privacy-prefix.js'
 
-type Options = []
+type Options = [
+  {
+    allowGenericFolders?: boolean
+  }?,
+]
 
 type MessageIds = 'invalidPlacement' | 'invalidGenericFolder'
 
@@ -14,16 +19,28 @@ export default createRule<Options, MessageIds>({
       description:
         'Enforce that atomic units are placed within their corresponding feature-local semantic folders.',
     },
-    schema: [],
+    schema: [
+      {
+        type: 'object',
+        properties: {
+          // Allow `utils/` and `helpers/` (at any depth) as homes for pure
+          // helpers. Files under such a folder are then exempt from placement
+          // checks. Off by default to keep the strict semantic-folder policy.
+          allowGenericFolders: { type: 'boolean' },
+        },
+        additionalProperties: false,
+      },
+    ],
     messages: {
       invalidPlacement:
         'The file "{{basename}}" appears to be a {{kind}}, but it is not located in a "{{expectedFolder}}/" folder. Please respect placement boundaries.',
       invalidGenericFolder:
-        'Generic grouping folders like "utils" or "helpers" are forbidden. Use semantic folders (e.g., formatters, validators, mappers, extractors).',
+        'Generic grouping folders like "utils" or "helpers" are forbidden. Use semantic folders (e.g., formatters, validators, mappers, extractors), or enable the "allowGenericFolders" option.',
     },
   },
-  defaultOptions: [],
-  create(context) {
+  defaultOptions: [{}],
+  create(context, [options]) {
+    const allowGenericFolders = options?.allowGenericFolders ?? false
     const filename = context.filename || context.physicalFilename || ''
 
     if (
@@ -42,9 +59,21 @@ export default createRule<Options, MessageIds>({
 
     const basename = pathParts[pathParts.length - 1] ?? ''
     const parentFolder = pathParts[pathParts.length - 2] ?? ''
+    // Folder matching is Next.js `_`-private aware: `_hooks` matches `hooks`.
+    const normalizedDirs = pathParts.slice(0, -1).map(stripFolderPrivacyPrefix)
+    const normalizedParent = stripFolderPrivacyPrefix(parentFolder)
 
-    // Check for banned generic folders
-    if (parentFolder === 'utils' || parentFolder === 'helpers') {
+    // When generic folders are allowed, any file under a `utils/`/`helpers/`
+    // ancestor is an accepted pure helper, exempt from placement checks.
+    if (
+      allowGenericFolders &&
+      (normalizedDirs.includes('utils') || normalizedDirs.includes('helpers'))
+    ) {
+      return {}
+    }
+
+    // Otherwise, generic grouping folders are banned outright.
+    if (normalizedParent === 'utils' || normalizedParent === 'helpers') {
       return {
         Program(node: TSESTree.Program) {
           context.report({
@@ -93,12 +122,11 @@ export default createRule<Options, MessageIds>({
     const acceptedFolders = basename.startsWith('use')
       ? ['hooks', 'composables', 'stores', 'store']
       : [expectedFolder]
-    const parentDirs = pathParts.slice(0, -1)
 
     if (
       kind &&
       expectedFolder &&
-      !acceptedFolders.some((folder) => parentDirs.includes(folder))
+      !acceptedFolders.some((folder) => normalizedDirs.includes(folder))
     ) {
       return {
         Program(node: TSESTree.Program) {

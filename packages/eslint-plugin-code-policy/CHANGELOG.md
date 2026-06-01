@@ -1,5 +1,30 @@
 # eslint-plugin-code-policy
 
+## 0.4.3
+
+### Patch Changes
+
+- feat(file-kind-placement): recognize Next.js `_`-private folders and add an
+  `allowGenericFolders` option.
+
+  Folder matching is now `_`-prefix aware: `_hooks/` is treated as `hooks/`,
+  `_utils/` as `utils/`, etc., so `use*` units in Next.js private folders are no
+  longer reported as misplaced (and `_utils/` is consistently treated as a
+  generic folder). A new `allowGenericFolders` option (default `false`, keeping
+  the strict semantic-folder policy) permits `utils/` and `helpers/` at any
+  depth as homes for pure helpers; files under such a folder are then exempt
+  from placement checks — enable it with
+  `['error', { allowGenericFolders: true }]` in projects that organize helpers
+  as `utils/<area>/`.
+
+## 0.4.2
+
+### Patch Changes
+
+- refactor: type all rules with TSESTree via a typed `createRule` factory
+  (removes internal `any` usage); the package is now linted and type-checked in
+  CI.
+
 ## 0.3.0
 
 ### Minor Changes
