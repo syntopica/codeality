@@ -27,6 +27,7 @@ export default {
       filename.endsWith('.config.mjs') ||
       filename.endsWith('.config.cjs') ||
       filename.endsWith('.d.ts') ||
+      filename.endsWith('.vue') || // SFC <script setup> bindings are reactive state, never exported
       filename.endsWith('proxy.ts') // Exempt explicit configuration or typings
     ) {
       return {}
