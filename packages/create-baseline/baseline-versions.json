@@ -2,5 +2,5 @@
   "@busirocket/eslint-config": "^0.2.1",
   "@busirocket/prettier-config": "^0.1.1",
   "@busirocket/tsconfig": "^0.1.2",
-  "eslint-plugin-code-policy": "^0.4.3"
+  "eslint-plugin-code-policy": "^0.4.4"
 }
