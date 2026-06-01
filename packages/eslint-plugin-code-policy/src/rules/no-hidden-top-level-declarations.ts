@@ -1,23 +1,26 @@
-import type { Rule } from 'eslint'
+import type { TSESTree } from '@typescript-eslint/utils'
 
-import { DOCS_BASE_URL } from '@/utils/docs-base-url.js'
+import { createRule } from '@/utils/create-rule.js'
 
-export default {
+type Options = []
+
+type MessageIds = 'hiddenDeclaration'
+
+export default createRule<Options, MessageIds>({
+  name: 'no-hidden-top-level-declarations',
   meta: {
     type: 'problem',
     docs: {
       description:
         'Disallow non-exported top-level functions, classes, constants, interfaces, and type aliases.',
-      recommended: true,
-      url: `${DOCS_BASE_URL}/no-hidden-top-level-declarations.md`,
     },
-    fixable: undefined,
     schema: [],
     messages: {
       hiddenDeclaration:
         'Top-level declaration "{{name}}" is not exported. The Primary Unit Rule forbids hidden internal helpers or types at the module scope.',
     },
   },
+  defaultOptions: [],
   create(context) {
     const filename = context.filename || context.physicalFilename || ''
 
@@ -34,7 +37,7 @@ export default {
     }
 
     return {
-      Program(node) {
+      Program(node: TSESTree.Program) {
         const exportedNames = new Set<string>()
 
         // First pass: collect all explicitly exported names
@@ -70,8 +73,9 @@ export default {
         for (const stmt of node.body) {
           if (stmt.type === 'VariableDeclaration') {
             for (const decl of stmt.declarations) {
-              // eslint-disable-next-line @typescript-eslint/no-explicit-any
-              const checkPattern = (pattern: any) => {
+              const checkPattern = (
+                pattern: TSESTree.DestructuringPattern | null,
+              ) => {
                 if (!pattern) return
                 if (pattern.type === 'Identifier') {
                   if (!exportedNames.has(pattern.name)) {
@@ -83,7 +87,8 @@ export default {
                   }
                 } else if (pattern.type === 'ObjectPattern') {
                   for (const prop of pattern.properties) {
-                    if (prop.type === 'Property') checkPattern(prop.value)
+                    if (prop.type === 'Property')
+                      checkPattern(prop.value as TSESTree.DestructuringPattern)
                     else if (prop.type === 'RestElement')
                       checkPattern(prop.argument)
                   }
@@ -97,27 +102,23 @@ export default {
               }
               checkPattern(decl.id)
             }
-          } else {
-            // eslint-disable-next-line @typescript-eslint/no-explicit-any
-            const nodeWithId = stmt as any
-            if (
-              (nodeWithId.type === 'FunctionDeclaration' ||
-                nodeWithId.type === 'ClassDeclaration' ||
-                nodeWithId.type === 'TSTypeAliasDeclaration' ||
-                nodeWithId.type === 'TSInterfaceDeclaration' ||
-                nodeWithId.type === 'TSEnumDeclaration') &&
-              nodeWithId.id?.type === 'Identifier' &&
-              !exportedNames.has(nodeWithId.id.name)
-            ) {
-              context.report({
-                node: stmt,
-                messageId: 'hiddenDeclaration',
-                data: { name: nodeWithId.id.name },
-              })
-            }
+          } else if (
+            (stmt.type === 'FunctionDeclaration' ||
+              stmt.type === 'ClassDeclaration' ||
+              stmt.type === 'TSTypeAliasDeclaration' ||
+              stmt.type === 'TSInterfaceDeclaration' ||
+              stmt.type === 'TSEnumDeclaration') &&
+            stmt.id?.type === 'Identifier' &&
+            !exportedNames.has(stmt.id.name)
+          ) {
+            context.report({
+              node: stmt,
+              messageId: 'hiddenDeclaration',
+              data: { name: stmt.id.name },
+            })
           }
         }
       },
     }
   },
-} as Rule.RuleModule
+})

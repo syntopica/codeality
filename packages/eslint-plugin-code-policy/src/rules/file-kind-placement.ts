@@ -1,17 +1,19 @@
-import type { Rule } from 'eslint'
+import type { TSESTree } from '@typescript-eslint/utils'
 
-import { DOCS_BASE_URL } from '@/utils/docs-base-url.js'
+import { createRule } from '@/utils/create-rule.js'
 
-export default {
+type Options = []
+
+type MessageIds = 'invalidPlacement' | 'invalidGenericFolder'
+
+export default createRule<Options, MessageIds>({
+  name: 'file-kind-placement',
   meta: {
     type: 'problem',
     docs: {
       description:
         'Enforce that atomic units are placed within their corresponding feature-local semantic folders.',
-      recommended: true,
-      url: `${DOCS_BASE_URL}/file-kind-placement.md`,
     },
-    fixable: undefined,
     schema: [],
     messages: {
       invalidPlacement:
@@ -20,6 +22,7 @@ export default {
         'Generic grouping folders like "utils" or "helpers" are forbidden. Use semantic folders (e.g., formatters, validators, mappers, extractors).',
     },
   },
+  defaultOptions: [],
   create(context) {
     const filename = context.filename || context.physicalFilename || ''
 
@@ -43,7 +46,7 @@ export default {
     // Check for banned generic folders
     if (parentFolder === 'utils' || parentFolder === 'helpers') {
       return {
-        Program(node) {
+        Program(node: TSESTree.Program) {
           context.report({
             node,
             messageId: 'invalidGenericFolder',
@@ -98,7 +101,7 @@ export default {
       !acceptedFolders.some((folder) => parentDirs.includes(folder))
     ) {
       return {
-        Program(node) {
+        Program(node: TSESTree.Program) {
           context.report({
             node,
             messageId: 'invalidPlacement',
@@ -110,4 +113,4 @@ export default {
 
     return {}
   },
-} as Rule.RuleModule
+})

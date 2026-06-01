@@ -1,6 +1,6 @@
-import type { Rule } from 'eslint'
+import type { TSESTree } from '@typescript-eslint/utils'
 
-import { DOCS_BASE_URL } from '@/utils/docs-base-url.js'
+import { createRule } from '@/utils/create-rule.js'
 import { NEXT_RESERVED_EXPORTS } from '@/utils/next-reserved-exports.js'
 import { ROUTE_METHODS } from '@/utils/route-methods.js'
 
@@ -22,51 +22,42 @@ import { ROUTE_METHODS } from '@/utils/route-methods.js'
  *   import declarations + type/interface declarations (possibly exported)
  */
 
-export default {
+type Options = []
+
+type MessageIds = 'singleDeclaration'
+
+export default createRule<Options, MessageIds>({
+  name: 'no-inline-types',
   meta: {
     type: 'problem',
     docs: {
       description:
         'Enforce that type aliases and interfaces live in dedicated files, not inline with implementation code.',
-      recommended: true,
-      url: `${DOCS_BASE_URL}/no-inline-types.md`,
     },
-    fixable: undefined,
     schema: [],
     messages: {
       singleDeclaration:
         'Atomic File Rule violation: file contains multiple declarations. Extract "{{name}}" into its own file.',
     },
   },
+  defaultOptions: [],
   create(context) {
     // Allow multiple declarations in ambient definition files
     if (context.filename.endsWith('.d.ts')) return {}
 
     return {
-      Program(node) {
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        const units: { node: any; name: string }[] = []
+      Program(node: TSESTree.Program) {
+        const units: { node: TSESTree.Node; name: string }[] = []
 
         for (const stmt of node.body) {
-          // eslint-disable-next-line @typescript-eslint/no-explicit-any
-          let decl: any = stmt
+          let decl: TSESTree.Node = stmt
           let isExport = false
 
-          // eslint-disable-next-line @typescript-eslint/no-explicit-any
-          if (
-            stmt.type === 'ExportNamedDeclaration' &&
-            (stmt as any).declaration
-          ) {
-            // eslint-disable-next-line @typescript-eslint/no-explicit-any
-            decl = (stmt as any).declaration
+          if (stmt.type === 'ExportNamedDeclaration' && stmt.declaration) {
+            decl = stmt.declaration
             isExport = true
-            // eslint-disable-next-line @typescript-eslint/no-explicit-any
-          } else if (
-            stmt.type === 'ExportDefaultDeclaration' &&
-            (stmt as any).declaration
-          ) {
-            // eslint-disable-next-line @typescript-eslint/no-explicit-any
-            decl = (stmt as any).declaration ?? stmt
+          } else if (stmt.type === 'ExportDefaultDeclaration') {
+            decl = stmt.declaration ?? stmt
             isExport = true
           }
 
@@ -94,11 +85,11 @@ export default {
             units.push({ node: decl, name })
           } else if (declType === 'VariableDeclaration') {
             for (const d of decl.declarations) {
-              const name = d.id?.name
-              if (isExport && NEXT_RESERVED_EXPORTS.has(name)) {
+              const name = d.id.type === 'Identifier' ? d.id.name : undefined
+              if (isExport && name && NEXT_RESERVED_EXPORTS.has(name)) {
                 continue
               }
-              if (isRouteFile && isExport && ROUTE_METHODS.has(name)) {
+              if (isRouteFile && isExport && name && ROUTE_METHODS.has(name)) {
                 continue
               }
               units.push({ node: decl, name: name ?? 'unknown' })
@@ -120,4 +111,4 @@ export default {
       },
     }
   },
-} as Rule.RuleModule
+})

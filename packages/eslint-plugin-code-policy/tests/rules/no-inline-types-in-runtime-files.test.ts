@@ -1,7 +1,7 @@
 import rule from '@/rules/no-inline-types-in-runtime-files.js'
 import { ruleTester } from '@tests/utils/rule-tester.js'
 
-ruleTester.run('no-inline-types-in-runtime-files', rule, {
+ruleTester.run('no-inline-types-in-runtime-files', rule as any, {
   valid: [
     // Types-only file: the type is the primary unit, so it is allowed.
     {

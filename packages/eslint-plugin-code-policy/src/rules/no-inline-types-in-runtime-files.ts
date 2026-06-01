@@ -1,23 +1,26 @@
-import type { Rule } from 'eslint'
+import type { TSESTree } from '@typescript-eslint/utils'
 
-import { DOCS_BASE_URL } from '@/utils/docs-base-url.js'
+import { createRule } from '@/utils/create-rule.js'
 
-export default {
+type Options = []
+
+type MessageIds = 'inlineTypeInRuntimeFile'
+
+export default createRule<Options, MessageIds>({
+  name: 'no-inline-types-in-runtime-files',
   meta: {
     type: 'problem',
     docs: {
       description:
         'Disallow inline interfaces and type aliases inside runtime files when they are not the primary unit.',
-      recommended: true,
-      url: `${DOCS_BASE_URL}/no-inline-types-in-runtime-files.md`,
     },
-    fixable: undefined,
     schema: [],
     messages: {
       inlineTypeInRuntimeFile:
         'Inline types (interfaces or type aliases) are not permitted within runtime files. Please extract this type into its own dedicated file (e.g., {{name}}Props.ts or {{name}}State.ts) according to the Atomic File architecture.',
     },
   },
+  defaultOptions: [],
   create(context) {
     const filename = context.filename || context.physicalFilename || ''
 
@@ -33,15 +36,18 @@ export default {
     }
 
     return {
-      Program(node) {
+      Program(node: TSESTree.Program) {
         let hasRuntimeCode = false
 
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        const types: any[] = []
+        const types: Array<{
+          node:
+            | TSESTree.TSTypeAliasDeclaration
+            | TSESTree.TSInterfaceDeclaration
+          name: string
+        }> = []
 
         for (const stmt of node.body) {
-          // eslint-disable-next-line @typescript-eslint/no-explicit-any
-          let decl: any = stmt
+          let decl: TSESTree.Node = stmt
           if (
             (stmt.type === 'ExportNamedDeclaration' ||
               stmt.type === 'ExportDefaultDeclaration') &&
@@ -59,8 +65,7 @@ export default {
             stmt.type !== 'ImportDeclaration' &&
             stmt.type !== 'ExportAllDeclaration' &&
             stmt.type !== 'EmptyStatement' &&
-            // eslint-disable-next-line @typescript-eslint/no-explicit-any
-            (stmt as any).type !== 'TSImportEqualsDeclaration' &&
+            stmt.type !== 'TSImportEqualsDeclaration' &&
             !(
               (stmt.type === 'ExportNamedDeclaration' ||
                 stmt.type === 'ExportDefaultDeclaration') &&
@@ -85,4 +90,4 @@ export default {
       },
     }
   },
-} as Rule.RuleModule
+})

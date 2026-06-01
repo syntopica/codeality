@@ -1,17 +1,19 @@
-import type { Rule } from 'eslint'
+import type { TSESTree } from '@typescript-eslint/utils'
 
-import { DOCS_BASE_URL } from '@/utils/docs-base-url.js'
+import { createRule } from '@/utils/create-rule.js'
 
-export default {
+type Options = []
+
+type MessageIds = 'mixedBarrel'
+
+export default createRule<Options, MessageIds>({
+  name: 'no-mixed-barrel',
   meta: {
     type: 'problem',
     docs: {
       description:
         'Disallow barrel files (index.*) that mix re-exports from other modules with inline declarations.',
-      recommended: true,
-      url: `${DOCS_BASE_URL}/no-mixed-barrel.md`,
     },
-    fixable: undefined,
     schema: [],
     messages: {
       mixedBarrel:
@@ -19,6 +21,7 @@ export default {
         'Either keep this file as a pure barrel (re-exports only) or move inline declarations to their own files.',
     },
   },
+  defaultOptions: [],
   create(context) {
     const filename = context.filename || context.physicalFilename || ''
 
@@ -32,9 +35,11 @@ export default {
     }
 
     return {
-      Program(node) {
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        const inlineDeclarations: { node: any; kind: string }[] = []
+      Program(node: TSESTree.Program) {
+        const inlineDeclarations: {
+          node: TSESTree.ProgramStatement
+          kind: string
+        }[] = []
         let hasRemoteReexport = false
 
         for (const stmt of node.body) {
@@ -44,9 +49,7 @@ export default {
               hasRemoteReexport = true
             } else if (stmt.declaration) {
               // export type Foo = { ... } or export const x = ...
-              // eslint-disable-next-line @typescript-eslint/no-explicit-any
-              const declAny = stmt.declaration as any
-              const declType: string = declAny.type
+              const declType = stmt.declaration.type
               let kind: string
               if (
                 declType === 'TSTypeAliasDeclaration' ||
@@ -83,4 +86,4 @@ export default {
       },
     }
   },
-} as Rule.RuleModule
+})

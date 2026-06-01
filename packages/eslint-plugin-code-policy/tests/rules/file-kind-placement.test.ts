@@ -1,7 +1,7 @@
 import rule from '@/rules/file-kind-placement.js'
 import { ruleTester } from '@tests/utils/rule-tester.js'
 
-ruleTester.run('file-kind-placement', rule, {
+ruleTester.run('file-kind-placement', rule as any, {
   valid: [
     // React hook in hooks/.
     {
