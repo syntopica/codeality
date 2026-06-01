@@ -22,7 +22,7 @@
     "node": ">=20"
   },
   "bin": {
-    "create-baseline": "./bin/create-baseline.mjs"
+    "create-baseline": "bin/create-baseline.mjs"
   },
   "files": [
     "LICENSE",
