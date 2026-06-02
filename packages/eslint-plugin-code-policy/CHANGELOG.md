@@ -1,5 +1,26 @@
 # eslint-plugin-code-policy
 
+## 0.5.0
+
+### Minor Changes
+
+- feat(file-kind-placement): add an `allowColocation` option.
+
+  The rule enforced type-based grouping for every placement-checked unit (a
+  `use*` hook, `map*` mapper, `format*` formatter, etc.) by requiring a matching
+  semantic folder (`hooks/`, `mappers/`, ...) anywhere in its path. That
+  conflicts with feature-folder / colocation architecture, where a
+  single-consumer hook or util lives next to its consumer rather than in a
+  dedicated technical folder.
+
+  The new `allowColocation` option (default `false`, preserving the strict
+  policy) exempts a unit when it is colocated with its consumer: the containing
+  folder holds an _anchor_ alongside the file — a public-API barrel (`index.*`),
+  a component (`PascalCase.tsx`/`.jsx`), or any neighbouring code file that is
+  not itself a placement-checked kind (the consumer). A unit orphaned in a
+  purely technical folder with no anchor still flags. Enable with
+  `['error', { allowColocation: true }]` (composes with `allowGenericFolders`).
+
 ## 0.4.4
 
 ### Patch Changes

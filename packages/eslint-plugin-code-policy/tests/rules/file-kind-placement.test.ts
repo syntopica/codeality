@@ -1,8 +1,35 @@
+import { dirname, join } from 'node:path'
+import { fileURLToPath } from 'node:url'
+
 import rule from '@/rules/file-kind-placement.js'
 import { ruleTester } from '@tests/utils/rule-tester.js'
 
+// Colocation detection reads the real directory of the linted file, so these
+// cases point at on-disk fixtures under tests/fixtures/colocation/.
+const fixtures = join(dirname(fileURLToPath(import.meta.url)), '../fixtures')
+const colocation = (...segments: string[]) =>
+  join(fixtures, 'colocation', ...segments)
+
 ruleTester.run('file-kind-placement', rule as any, {
   valid: [
+    // allowColocation: a hook next to its component (PascalCase .tsx anchor).
+    {
+      code: `export function useWithComponent() {}`,
+      filename: colocation('WithComponent', 'useWithComponent.ts'),
+      options: [{ allowColocation: true }],
+    },
+    // allowColocation: a mapper next to a neighbouring non-kind consumer.
+    {
+      code: `export function mapThing() {}`,
+      filename: colocation('withService', 'mapThing.ts'),
+      options: [{ allowColocation: true }],
+    },
+    // allowColocation: a hook next to a public-API barrel (index.ts anchor).
+    {
+      code: `export function useBarrelled() {}`,
+      filename: colocation('withBarrel', 'useBarrelled.ts'),
+      options: [{ allowColocation: true }],
+    },
     // React hook in hooks/.
     {
       code: `export function useThing() {}`,
@@ -123,6 +150,20 @@ ruleTester.run('file-kind-placement', rule as any, {
       code: `export function doThing() {}`,
       filename: '/src/app/_utils/doThing.ts',
       errors: [{ messageId: 'invalidGenericFolder' }],
+    },
+    // allowColocation: an orphaned hook with no anchor in its folder still flags.
+    {
+      code: `export function useOrphan() {}`,
+      filename: colocation('orphan', 'useOrphan.ts'),
+      options: [{ allowColocation: true }],
+      errors: [{ messageId: 'invalidPlacement' }],
+    },
+    // Without allowColocation, a colocated hook is still flagged (strict default
+    // is preserved): the WithComponent fixture has an anchor but the option off.
+    {
+      code: `export function useWithComponent() {}`,
+      filename: colocation('WithComponent', 'useWithComponent.ts'),
+      errors: [{ messageId: 'invalidPlacement' }],
     },
   ],
 })

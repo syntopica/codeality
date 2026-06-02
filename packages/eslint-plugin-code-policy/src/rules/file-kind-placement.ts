@@ -1,12 +1,17 @@
+import { dirname } from 'node:path'
+
 import type { TSESTree } from '@typescript-eslint/utils'
 
 import { createRule } from '@/utils/create-rule.js'
+import { detectFileKind } from '@/utils/detect-file-kind.js'
+import { hasColocationAnchor } from '@/utils/has-colocation-anchor.js'
 import { startsWithCamelPrefix } from '@/utils/starts-with-camel-prefix.js'
 import { stripFolderPrivacyPrefix } from '@/utils/strip-folder-privacy-prefix.js'
 
 type Options = [
   {
     allowGenericFolders?: boolean
+    allowColocation?: boolean
   }?,
 ]
 
@@ -28,6 +33,13 @@ export default createRule<Options, MessageIds>({
           // helpers. Files under such a folder are then exempt from placement
           // checks. Off by default to keep the strict semantic-folder policy.
           allowGenericFolders: { type: 'boolean' },
+          // Allow colocation: a placement-checked unit (hook, mapper, ...) is
+          // exempt when it sits next to its consumer (a component, a barrel, or
+          // a neighbouring non-kind code file) instead of being orphaned in a
+          // purely technical folder. Matches modern feature-folder guidance:
+          // single-consumer units live beside their consumer; only shared units
+          // graduate to a dedicated hooks//mappers/ folder. Off by default.
+          allowColocation: { type: 'boolean' },
         },
         additionalProperties: false,
       },
@@ -42,6 +54,7 @@ export default createRule<Options, MessageIds>({
   defaultOptions: [{}],
   create(context, [options]) {
     const allowGenericFolders = options?.allowGenericFolders ?? false
+    const allowColocation = options?.allowColocation ?? false
     const filename = context.filename || context.physicalFilename || ''
 
     if (
@@ -85,38 +98,9 @@ export default createRule<Options, MessageIds>({
       }
     }
 
-    let kind = ''
-    let expectedFolder = ''
-
-    if (startsWithCamelPrefix(basename, 'use')) {
-      kind = 'hook or composable'
-      expectedFolder = 'hooks'
-    } else if (
-      startsWithCamelPrefix(basename, 'format') ||
-      basename.endsWith('Formatter.ts')
-    ) {
-      kind = 'formatter'
-      expectedFolder = 'formatters'
-    } else if (
-      startsWithCamelPrefix(basename, 'validate') ||
-      basename.endsWith('Validator.ts')
-    ) {
-      kind = 'validator'
-      expectedFolder = 'validators'
-    } else if (
-      startsWithCamelPrefix(basename, 'map') ||
-      basename.endsWith('Mapper.ts') ||
-      basename.endsWith('Transformer.ts')
-    ) {
-      kind = 'mapper'
-      expectedFolder = 'mappers'
-    } else if (
-      startsWithCamelPrefix(basename, 'select') ||
-      basename.endsWith('Selector.ts')
-    ) {
-      kind = 'selector'
-      expectedFolder = 'selectors'
-    }
+    const detected = detectFileKind(basename)
+    if (!detected) return {}
+    const { kind, expectedFolder } = detected
 
     // `use*` units may live in any framework-appropriate folder: React hooks
     // (hooks/), Vue composables (composables/), or stores (stores/, store/).
@@ -124,22 +108,24 @@ export default createRule<Options, MessageIds>({
       ? ['hooks', 'composables', 'stores', 'store']
       : [expectedFolder]
 
-    if (
-      kind &&
-      expectedFolder &&
-      !acceptedFolders.some((folder) => normalizedDirs.includes(folder))
-    ) {
-      return {
-        Program(node: TSESTree.Program) {
-          context.report({
-            node,
-            messageId: 'invalidPlacement',
-            data: { basename, kind, expectedFolder },
-          })
-        },
-      }
+    if (acceptedFolders.some((folder) => normalizedDirs.includes(folder))) {
+      return {}
     }
 
-    return {}
+    // Colocation escape hatch: a unit sitting next to its consumer (an anchored
+    // feature folder) is not orphaned, so placement is not enforced.
+    if (allowColocation && hasColocationAnchor(dirname(filename), basename)) {
+      return {}
+    }
+
+    return {
+      Program(node: TSESTree.Program) {
+        context.report({
+          node,
+          messageId: 'invalidPlacement',
+          data: { basename, kind, expectedFolder },
+        })
+      },
+    }
   },
 })
