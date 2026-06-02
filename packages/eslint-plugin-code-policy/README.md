@@ -151,6 +151,25 @@ declarations.
 Ensures types are placed in `types/`, contexts in `contexts/`, and hooks start
 with `use`. Strict architectural adherence is enforced at a structural level.
 
+**Options**
+
+- `allowGenericFolders` (default `false`): permit `utils/` and `helpers/` at any
+  depth as homes for pure helpers; files under such a folder are exempt from
+  placement checks.
+- `allowColocation` (default `false`): exempt a placement-checked unit (hook,
+  mapper, formatter, validator, selector) when it is colocated with its consumer
+  instead of orphaned in a purely technical folder. A folder counts as a
+  colocation home when it holds an _anchor_ next to the unit: a public-API
+  barrel (`index.*`), a component (`PascalCase.tsx`/`.jsx`), or any neighbouring
+  code file that is not itself a placement-checked kind (the consumer). This
+  matches modern feature-folder guidance — a single-consumer hook or util lives
+  beside its consumer; only shared units graduate to a dedicated
+  `hooks/`/`mappers/` folder. An orphaned unit with no anchor still flags.
+
+```js
+'code-policy/file-kind-placement': ['error', { allowGenericFolders: true, allowColocation: true }]
+```
+
 ---
 
 ### `code-policy/public-api-imports`
