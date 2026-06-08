@@ -6,6 +6,7 @@ packages:
 # install scripts stay blocked (no silent postinstall). Required for CI:
 # pnpm errors on un-decided build scripts under `--frozen-lockfile`.
 allowBuilds:
+  '@nestjs/core': false
   '@parcel/watcher': true
   esbuild: true
   sharp: true

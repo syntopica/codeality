@@ -1,0 +1,16 @@
+{
+  "$schema": "https://json.schemastore.org/tsconfig",
+  "_comment": "Emit config used by `nest build`. The strict base/nestjs configs are noEmit (type-check only); this one produces the runnable CommonJS output.",
+  "extends": "./tsconfig.json",
+  "compilerOptions": {
+    "module": "nodenext",
+    "moduleResolution": "nodenext",
+    "rootDir": "./src",
+    "noEmit": false,
+    "outDir": "./dist",
+    "declaration": false,
+    "sourceMap": true,
+    "incremental": false
+  },
+  "exclude": ["node_modules", "dist", "**/*.spec.ts", "**/*.test.ts"]
+}
