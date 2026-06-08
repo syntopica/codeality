@@ -1,6 +1,6 @@
 {
   "name": "@busirocket/eslint-config",
-  "version": "0.2.1",
+  "version": "0.3.0",
   "private": false,
   "packageManager": "pnpm@11.5.0",
   "license": "MIT",
@@ -36,6 +36,7 @@
     "./vite-react": "./src/vite-react.ts",
     "./vite-vue": "./src/vite-vue.ts",
     "./node": "./src/node.ts",
+    "./nestjs": "./src/nestjs.ts",
     "./code-quality": "./src/code-quality.ts",
     "./accessibility": "./src/accessibility.ts",
     "./tailwind": "./src/tailwind.ts",

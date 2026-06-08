@@ -1,6 +1,6 @@
 {
-  "@busirocket/eslint-config": "^0.2.1",
+  "@busirocket/eslint-config": "^0.3.0",
   "@busirocket/prettier-config": "^0.1.1",
-  "@busirocket/tsconfig": "^0.1.2",
+  "@busirocket/tsconfig": "^0.2.0",
   "eslint-plugin-code-policy": "^0.5.0"
 }

@@ -12,6 +12,7 @@ are **private** and may change without a major bump.
 | `@busirocket/eslint-config/vite-react`          | Vite + React + frontend boundaries                                |
 | `@busirocket/eslint-config/astro`               | Astro + TS + frontend boundaries                                  |
 | `@busirocket/eslint-config/node`                | Node globals + unicorn prefer-node-protocol                       |
+| `@busirocket/eslint-config/nestjs`              | Node preset + NestJS decorator-aware rule tweaks                  |
 | `@busirocket/eslint-config/code-quality`        | Sonar + code-policy structural rules                              |
 | `@busirocket/eslint-config/accessibility`       | jsx-a11y                                                          |
 | `@busirocket/eslint-config/tailwind`            | Tailwind CSS plugin                                               |
