@@ -1,6 +1,6 @@
 {
   "name": "@busirocket/tsconfig",
-  "version": "0.1.2",
+  "version": "0.2.0",
   "private": false,
   "packageManager": "pnpm@11.5.0",
   "license": "MIT",
@@ -32,7 +32,8 @@
     "./astro.json": "./astro.json",
     "./vite-react.json": "./vite-react.json",
     "./vite-vue.json": "./vite-vue.json",
-    "./node.json": "./node.json"
+    "./node.json": "./node.json",
+    "./nestjs.json": "./nestjs.json"
   },
   "scripts": {
     "fix": "prettier --write \"*.json\" --list-different",
