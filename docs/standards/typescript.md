@@ -59,3 +59,11 @@ Always specify `include` and `exclude` in your project's own `tsconfig.json`.
 - Targets below `ES2024` in new projects
 - `moduleResolution: node` or `Node16` in new projects
 - Hardcoded auth tokens or secrets in any config file
+
+## Compiler version (TypeScript 7)
+
+New and migrated projects use the **TypeScript 7 native compiler** for
+type-checking, with the `typescript` package name aliased to 6.x for tools that
+need the programmatic API (typescript-eslint, framework builds) until TS 7.1
+ships that API. Full playbook, per-stack decision table, and the de-migration
+checklist: [typescript-7-migration.md](../typescript-7-migration.md).
