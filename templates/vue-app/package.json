@@ -45,7 +45,7 @@
     "eslint-plugin-import": "^2.32.0",
     "eslint-plugin-promise": "^7.3.0",
     "eslint-plugin-security": "^4.0.0",
-    "eslint-plugin-sonarjs": "^4.0.3",
+    "eslint-plugin-sonarjs": "^4.2.0",
     "eslint-plugin-tailwindcss": "4.0.0-beta.0",
     "eslint-plugin-unused-imports": "^4.4.1",
     "eslint-plugin-vue": "^10.9.1",
