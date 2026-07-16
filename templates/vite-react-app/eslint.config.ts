@@ -14,7 +14,7 @@ export default [
   ...createViteReactConfig(),
   ...createCodeQualityConfig(),
   ...createAccessibilityConfig(),
-  ...createTailwindConfig(),
+  ...createTailwindConfig({ cssConfigPath: './src/styles.css' }),
   {
     files: ['**/*.{ts,tsx,js,jsx}'],
     settings: {
