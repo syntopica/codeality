@@ -16,3 +16,6 @@ node_modules/
 /.cocoindex_code/
 # Codegraph local index
 /.codegraph/
+
+# Serena (local tool state)
+.serena/
