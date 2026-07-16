@@ -13,13 +13,12 @@ import boundaries from 'eslint-plugin-boundaries'
  *
  * @see docs/standards/typescript-frontend-architecture.md
  *
- * Migration note (eslint-plugin-boundaries v6):
- * - `mode: "full"` is required so patterns are matched against the full relative file path
- *   (e.g., "src/services/fetchGreeting.ts") rather than the accumulated path segments used
- *   by the default "folder" mode. In "folder" mode the effective pattern becomes
- *   `<pattern>/**\/*` which never fires for direct children of `src/<layer>/`.
- * - The rule was renamed from `boundaries/element-types` to `boundaries/dependencies` in v6.
- * - The rule `allow` syntax changed: `{ from: { type }, allow: { to: { type } } }` (object form).
+ * Migration note (eslint-plugin-boundaries v7):
+ * - Element patterns are folder prefixes with `partialMatch: false` (anchored at the
+ *   project root); this replaces v6's `mode: "full"` + `<pattern>/**\/*` full-path globs.
+ * - The per-rule option is `policies` (renamed from `rules` in v7).
+ * - Selectors use the entity model: `{ from: { element: { types } } }` and
+ *   `{ allow: { to: { element: { types: { anyOf } } } } }`.
  */
 export const createFrontendBoundariesConfig = () => [
   {
@@ -32,48 +31,43 @@ export const createFrontendBoundariesConfig = () => [
       'import/resolver': { typescript: true },
       'boundaries/elements': [
         // app layer
-        { type: 'app', mode: 'full', pattern: ['app/**/*', 'src/app/**/*'] },
+        { type: 'app', pattern: ['app', 'src/app'], partialMatch: false },
         // components layer
         {
           type: 'components',
-          mode: 'full',
-          pattern: ['components/**/*', 'src/components/**/*'],
+          pattern: ['components', 'src/components'],
+          partialMatch: false,
         },
         // shared layer: hooks, composables, types, lib, utils, const, constants, store, stores
         {
           type: 'shared',
-          mode: 'full',
           pattern: [
-            'hooks/**/*',
-            'src/hooks/**/*',
-            'composables/**/*',
-            'src/composables/**/*',
-            'types/**/*',
-            'src/types/**/*',
-            'lib/**/*',
-            'src/lib/**/*',
-            'utils/**/*',
-            'src/utils/**/*',
-            'const/**/*',
-            'src/const/**/*',
-            'constants/**/*',
-            'src/constants/**/*',
-            'store/**/*',
-            'src/store/**/*',
-            'stores/**/*',
-            'src/stores/**/*',
+            'hooks',
+            'src/hooks',
+            'composables',
+            'src/composables',
+            'types',
+            'src/types',
+            'lib',
+            'src/lib',
+            'utils',
+            'src/utils',
+            'const',
+            'src/const',
+            'constants',
+            'src/constants',
+            'store',
+            'src/store',
+            'stores',
+            'src/stores',
           ],
+          partialMatch: false,
         },
         // services layer: services, actions
         {
           type: 'services',
-          mode: 'full',
-          pattern: [
-            'services/**/*',
-            'src/services/**/*',
-            'actions/**/*',
-            'src/actions/**/*',
-          ],
+          pattern: ['services', 'src/services', 'actions', 'src/actions'],
+          partialMatch: false,
         },
       ],
     },
@@ -82,26 +76,15 @@ export const createFrontendBoundariesConfig = () => [
         'error',
         {
           default: 'disallow',
-          rules: [
-            {
-              from: { type: 'app' },
-              allow: {
-                to: { type: ['app', 'components', 'shared', 'services'] },
-              },
-            },
-            {
-              from: { type: 'components' },
-              allow: { to: { type: ['components', 'shared'] } },
-            },
-            {
-              from: { type: 'shared' },
-              allow: { to: { type: ['shared', 'services'] } },
-            },
-            {
-              from: { type: 'services' },
-              allow: { to: { type: ['services', 'shared'] } },
-            },
-          ],
+          policies: Object.entries({
+            app: ['app', 'components', 'shared', 'services'],
+            components: ['components', 'shared'],
+            shared: ['shared', 'services'],
+            services: ['services', 'shared'],
+          }).map(([from, to]) => ({
+            from: { element: { types: from } },
+            allow: { to: { element: { types: { anyOf: to } } } },
+          })),
         },
       ],
     },

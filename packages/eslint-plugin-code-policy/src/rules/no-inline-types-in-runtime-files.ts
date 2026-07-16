@@ -41,8 +41,7 @@ export default createRule<Options, MessageIds>({
 
         const types: Array<{
           node:
-            | TSESTree.TSTypeAliasDeclaration
-            | TSESTree.TSInterfaceDeclaration
+            TSESTree.TSTypeAliasDeclaration | TSESTree.TSInterfaceDeclaration
           name: string
         }> = []
 

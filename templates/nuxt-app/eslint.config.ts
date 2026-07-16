@@ -24,7 +24,7 @@ export default await withNuxt(
   ...createBaseConfig({ tsconfigRootDir: import.meta.dirname }),
   ...createViteVueConfig({ tsconfigRootDir: import.meta.dirname }),
   ...createCodeQualityConfig(),
-  ...createTailwindConfig(),
+  ...createTailwindConfig({ cssConfigPath: './app/assets/css/main.css' }),
   {
     files: ['**/*.{ts,vue}'],
     settings: {

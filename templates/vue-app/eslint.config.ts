@@ -10,7 +10,7 @@ export default [
   ...createBaseConfig({ tsconfigRootDir: import.meta.dirname }),
   ...createViteVueConfig({ tsconfigRootDir: import.meta.dirname }),
   ...createCodeQualityConfig(),
-  ...createTailwindConfig(),
+  ...createTailwindConfig({ cssConfigPath: './src/styles.css' }),
   {
     files: ['**/*.{ts,vue}'],
     settings: {
