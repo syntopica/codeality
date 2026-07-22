@@ -1,1 +1,2 @@
-// Configuration module (stub for now)
+#[allow(dead_code)]
+pub struct BaselineConfig;
