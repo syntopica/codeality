@@ -5,7 +5,7 @@ use std::process::Command;
 
 #[test]
 fn init_creates_assets_with_ci() {
-    let temp_dir = std::env::temp_dir().join("bl-init-integration");
+    let temp_dir = std::env::temp_dir().join("bl-init-creates-assets-ci");
     // Clean up before test
     fs::remove_dir_all(&temp_dir).ok();
     fs::create_dir_all(&temp_dir).expect("create temp dir");
@@ -38,7 +38,7 @@ fn init_creates_assets_with_ci() {
 
 #[test]
 fn init_skips_existing_files() {
-    let temp_dir = std::env::temp_dir().join("bl-init-integration-skip");
+    let temp_dir = std::env::temp_dir().join("bl-init-skips-existing");
     // Clean up before test
     fs::remove_dir_all(&temp_dir).ok();
     fs::create_dir_all(&temp_dir).expect("create temp dir");

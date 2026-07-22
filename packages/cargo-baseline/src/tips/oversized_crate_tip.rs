@@ -32,8 +32,8 @@ pub fn oversized_crate_tip(
 mod tests {
     use super::*;
 
-    fn crate_info() -> CrateInfo {
-        let root = std::env::temp_dir().join("bl-oversized-crate-tip-test");
+    fn crate_info(test_name: &str) -> CrateInfo {
+        let root = std::env::temp_dir().join(format!("bl-oversized-crate-tip-{test_name}"));
         std::fs::remove_dir_all(&root).ok();
         std::fs::create_dir_all(&root).unwrap();
         std::fs::write(
@@ -50,7 +50,7 @@ mod tests {
 
     #[test]
     fn flags_when_file_count_exceeds_max() {
-        let info = crate_info();
+        let info = crate_info("file-count-exceeds");
         let cfg = BaselineConfig {
             crate_max_files: 1,
             ..BaselineConfig::default()
@@ -67,7 +67,7 @@ mod tests {
 
     #[test]
     fn flags_when_line_count_exceeds_max() {
-        let info = crate_info();
+        let info = crate_info("line-count-exceeds");
         let cfg = BaselineConfig {
             crate_max_lines: 1,
             ..BaselineConfig::default()
@@ -79,7 +79,7 @@ mod tests {
 
     #[test]
     fn no_tip_when_within_limits() {
-        let info = crate_info();
+        let info = crate_info("within-limits");
         let cfg = BaselineConfig::default();
         let files = vec![file_ctx("src/a.rs", "fn a() {}\n")];
         assert!(oversized_crate_tip(&info, &files, &cfg).is_empty());

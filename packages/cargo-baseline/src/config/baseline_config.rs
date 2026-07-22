@@ -57,7 +57,8 @@ mod tests {
 
     #[test]
     fn loads_partial_toml() {
-        let dir = std::env::temp_dir().join("baseline-cfg-test");
+        let dir = std::env::temp_dir().join("bl-baseline-cfg-loads-partial-toml");
+        std::fs::remove_dir_all(&dir).ok();
         std::fs::create_dir_all(&dir).unwrap();
         std::fs::write(dir.join("baseline.toml"), "max_file_lines = 200\n").unwrap();
         let c = BaselineConfig::load(&dir).unwrap();

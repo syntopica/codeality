@@ -33,9 +33,8 @@ pub fn rusqlite_tip(
 mod tests {
     use super::*;
 
-    fn crate_info(manifest_extra: &str) -> CrateInfo {
-        let root =
-            std::env::temp_dir().join(format!("bl-rusqlite-tip-test-{}", manifest_extra.len()));
+    fn crate_info(test_name: &str, manifest_extra: &str) -> CrateInfo {
+        let root = std::env::temp_dir().join(format!("bl-rusqlite-tip-{test_name}"));
         std::fs::remove_dir_all(&root).ok();
         std::fs::create_dir_all(&root).unwrap();
         std::fs::write(
@@ -48,7 +47,7 @@ mod tests {
 
     #[test]
     fn flags_rusqlite_dependency() {
-        let info = crate_info("[dependencies]\nrusqlite = \"0.40\"\n");
+        let info = crate_info("flags-dependency", "[dependencies]\nrusqlite = \"0.40\"\n");
         let d = rusqlite_tip(&info, &[], &BaselineConfig::default());
         assert_eq!(d.len(), 1);
         assert_eq!(d[0].rule, "rusqlite");
@@ -58,7 +57,7 @@ mod tests {
 
     #[test]
     fn no_tip_without_rusqlite() {
-        let info = crate_info("");
+        let info = crate_info("no-rusqlite", "");
         assert!(rusqlite_tip(&info, &[], &BaselineConfig::default()).is_empty());
     }
 }
