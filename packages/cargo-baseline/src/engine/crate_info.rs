@@ -2,7 +2,6 @@ use std::path::{Path, PathBuf};
 
 use anyhow::Context;
 
-#[allow(dead_code)]
 pub struct CrateInfo {
     pub root: PathBuf,
     pub manifest: toml::Value,
@@ -11,7 +10,6 @@ pub struct CrateInfo {
 }
 
 impl CrateInfo {
-    #[allow(dead_code)]
     pub fn load(dir: &Path) -> anyhow::Result<Self> {
         let manifest_path = dir.join("Cargo.toml");
         let raw = std::fs::read_to_string(&manifest_path)
@@ -86,7 +84,11 @@ mod tests {
         std::fs::remove_dir_all(&root).ok();
         std::fs::create_dir_all(root.join("crates/a")).unwrap();
         std::fs::create_dir_all(root.join("crates/b")).unwrap();
-        std::fs::write(root.join("Cargo.toml"), "[workspace]\nmembers=[\"crates/*\"]\n").unwrap();
+        std::fs::write(
+            root.join("Cargo.toml"),
+            "[workspace]\nmembers=[\"crates/*\"]\n",
+        )
+        .unwrap();
         std::fs::write(
             root.join("crates/a/Cargo.toml"),
             "[package]\nname=\"a\"\nversion=\"0.1.0\"\nedition=\"2024\"\n",

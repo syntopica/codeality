@@ -1,8 +1,6 @@
-#[allow(dead_code)]
 pub fn is_cfg_test_item(attrs: &[syn::Attribute]) -> bool {
     attrs.iter().any(|a| {
-        a.path().is_ident("cfg")
-            && a.parse_args::<syn::Ident>().is_ok_and(|i| i == "test")
+        a.path().is_ident("cfg") && a.parse_args::<syn::Ident>().is_ok_and(|i| i == "test")
     })
 }
 
