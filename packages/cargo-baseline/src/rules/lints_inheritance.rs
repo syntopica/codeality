@@ -2,7 +2,6 @@ use crate::engine::crate_info::CrateInfo;
 use crate::engine::diagnostic::Diagnostic;
 use crate::engine::severity::Severity;
 
-#[allow(dead_code)]
 pub fn check_lints_inheritance(info: &CrateInfo) -> Vec<Diagnostic> {
     let has_workspace_lints = info
         .manifest

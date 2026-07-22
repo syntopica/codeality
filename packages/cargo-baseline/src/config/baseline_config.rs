@@ -30,7 +30,6 @@ impl Default for BaselineConfig {
 }
 
 impl BaselineConfig {
-    #[allow(dead_code)]
     pub fn load(dir: &Path) -> anyhow::Result<Self> {
         let path = dir.join("baseline.toml");
         if !path.exists() {

@@ -2,7 +2,6 @@ use std::path::{Path, PathBuf};
 
 use walkdir::WalkDir;
 
-#[allow(dead_code)]
 pub fn collect_rust_files(src_dir: &Path) -> Vec<PathBuf> {
     let mut files: Vec<PathBuf> = WalkDir::new(src_dir)
         .into_iter()
