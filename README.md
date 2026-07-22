@@ -51,6 +51,7 @@ this monorepo:
 | `@busirocket/prettier-config` | `packages/prettier-config`           | Prettier — base (organize-imports, css-order, MD wrap) + frontend (Tailwind) + astro |
 | `@busirocket/create-baseline` | `packages/create-baseline`           | CLI to scaffold baselines from templates                                             |
 | `eslint-plugin-code-policy`   | `packages/eslint-plugin-code-policy` | Custom strict ESLint rules for code boundaries, architecture, and type safety        |
+| `cargo-baseline`              | `packages/cargo-baseline`            | Rust structural linter and config scaffolder - atomic files, placement, no inline SQL |
 
 ### Maintainers: npm publish
 
