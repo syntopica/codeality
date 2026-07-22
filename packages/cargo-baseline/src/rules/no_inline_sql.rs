@@ -5,7 +5,7 @@ use crate::engine::diagnostic::Diagnostic;
 use crate::engine::file_context::FileContext;
 use crate::engine::rule::Rule;
 use crate::engine::severity::Severity;
-use crate::rules::no_inline_sql_visitor::SqlVisitor;
+use crate::rules::sql_visitor::SqlVisitor;
 
 pub struct NoInlineSql;
 

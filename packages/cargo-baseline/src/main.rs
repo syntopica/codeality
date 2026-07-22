@@ -1,3 +1,4 @@
+mod baseline_command;
 mod cli;
 mod commands;
 mod config;
