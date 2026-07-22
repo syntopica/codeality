@@ -4,8 +4,8 @@ Shared engineering standard and boilerplate for this project portfolio.
 
 This repository is the source of truth for:
 
-- Project templates (Next.js, Astro, Vite + React, Vite + Vue, Nuxt 4, TS
-  package)
+- Project templates (Next.js, Astro, Vite + React, Vite + Vue, Nuxt 4, Tauri,
+  TS package)
 - Engineering standards documentation
 
 Shared **@busirocket/\*** packages (ESLint, Prettier, TypeScript configs, and
