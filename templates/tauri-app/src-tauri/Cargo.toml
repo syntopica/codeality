@@ -1,0 +1,49 @@
+[package]
+name = "tauri-app"
+version = "0.1.0"
+edition = "2024"
+
+[lib]
+name = "tauri_app_lib"
+crate-type = ["staticlib", "cdylib", "rlib"]
+
+[build-dependencies]
+tauri-build = { version = "2", features = [] }
+
+[dependencies]
+tauri = { version = "2", features = [] }
+serde = { version = "1", features = ["derive"] }
+serde_json = "1"
+
+# Single-crate form of workspace-lints.toml (cargo-baseline)
+[lints.rust]
+unsafe_code = "deny"
+rust_2018_idioms = { level = "warn", priority = -1 }
+unsafe_op_in_unsafe_fn = "warn"
+missing_debug_implementations = "warn"
+elided_lifetimes_in_paths = "warn"
+unused_crate_dependencies = "warn"
+
+[lints.rustdoc]
+broken_intra_doc_links = "deny"
+
+[lints.clippy]
+all = { level = "warn", priority = -1 }
+pedantic = { level = "warn", priority = -1 }
+nursery = { level = "warn", priority = -1 }
+# strict denies
+unwrap_used = "deny"
+expect_used = "deny"
+panic = "deny"
+todo = "deny"
+indexing_slicing = "deny"
+dbg_macro = "deny"
+print_stdout = "deny"
+cognitive_complexity = "deny"
+# noisy pedantic/nursery allows
+module_name_repetitions = "allow"
+must_use_candidate = "allow"
+missing_errors_doc = "allow"
+missing_panics_doc = "allow"
+option_if_let_else = "allow"
+significant_drop_tightening = "allow"
