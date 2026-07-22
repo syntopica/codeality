@@ -98,9 +98,10 @@ This works with rusqlite as-is and matches sqlx's `query_file!` convention.
 
 ## Test exemptions
 
-`#[cfg(test)]` modules and `tests/` directories are exempt from
-`one-primary-unit`, `file-matches-item`, and `max-file-lines` - the same test
-carve-out the TypeScript baseline uses.
+Inline `#[cfg(test)]` test modules are exempt from `one-primary-unit` and
+`file-matches-item`. `max-file-lines` additionally skips any file path containing
+`tests`. Integration tests under a top-level `tests/` directory are never scanned:
+`check` only walks `src/`.
 
 ## Existing project?
 
