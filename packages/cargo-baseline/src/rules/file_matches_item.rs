@@ -57,6 +57,11 @@ impl Rule for FileMatchesItem {
                 _ => continue,
             };
 
+            // Skip if name is empty (e.g. unnamed macro)
+            if name.is_empty() {
+                continue;
+            }
+
             // Skip cfg(test) items
             if is_cfg_test_item(attrs) {
                 continue;
@@ -121,5 +126,19 @@ mod tests {
         let d = check("src/store.rs", src);
         assert_eq!(d.len(), 1);
         assert!(d[0].message.contains("sqlite_store.rs"));
+    }
+
+    #[test]
+    fn unnamed_macro_first_item_is_skipped() {
+        let src = "some_macro! { x } pub struct UserRepository;";
+        let d = check("src/user_repository.rs", src);
+        assert!(d.is_empty());
+    }
+
+    #[test]
+    fn only_unnamed_macro_no_diagnostic() {
+        let src = "some_macro! { x }";
+        let d = check("src/anything.rs", src);
+        assert!(d.is_empty());
     }
 }
