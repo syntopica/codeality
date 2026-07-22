@@ -1,1 +1,1 @@
-// Rules module (stub for now)
+pub mod max_file_lines;
