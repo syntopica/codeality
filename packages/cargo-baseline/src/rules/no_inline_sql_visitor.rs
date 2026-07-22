@@ -27,4 +27,37 @@ impl<'ast> Visit<'ast> for SqlVisitor {
         }
         syn::visit::visit_item_mod(self, m);
     }
+
+    fn visit_macro(&mut self, node: &'ast syn::Macro) {
+        let ident = node.path.segments.last().map(|seg| seg.ident.to_string());
+        let allowlisted = matches!(
+            ident.as_deref(),
+            Some("include_str" | "include_bytes" | "env" | "option_env" | "concat")
+        );
+
+        if !allowlisted {
+            let mut stack: Vec<proc_macro2::TokenStream> = vec![node.tokens.clone()];
+            while let Some(stream) = stack.pop() {
+                for tt in stream {
+                    match tt {
+                        proc_macro2::TokenTree::Group(group) => {
+                            stack.push(group.stream());
+                        }
+                        proc_macro2::TokenTree::Literal(lit) => {
+                            if let Ok(lit_str) =
+                                syn::parse2::<syn::LitStr>(std::iter::once(proc_macro2::TokenTree::Literal(lit)).collect())
+                            {
+                                if SQL.is_match(&lit_str.value()) {
+                                    self.hits.push(lit_str.span().start().line);
+                                }
+                            }
+                        }
+                        _ => {}
+                    }
+                }
+            }
+        }
+
+        syn::visit::visit_macro(self, node);
+    }
 }

@@ -58,4 +58,19 @@ mod tests {
         assert_eq!(check(r#"pub fn m() -> &'static str { "hello select something" }"#), 0);
         assert_eq!(check(r#"pub const Q: &str = include_str!("sql/get_user.sql");"#), 0);
     }
+
+    #[test]
+    fn flags_sql_inside_format_macro() {
+        assert_eq!(check(r#"pub fn q(t: &str) -> String { format!("SELECT id FROM {t} WHERE x = ?1") }"#), 1);
+    }
+
+    #[test]
+    fn flags_sql_inside_query_macro() {
+        assert_eq!(check(r#"pub fn q() { let _ = my_sql::query!("DELETE FROM users WHERE id = ?1"); }"#), 1);
+    }
+
+    #[test]
+    fn include_str_macro_still_ignored() {
+        assert_eq!(check(r#"pub const Q: &str = include_str!("sql/select_from_users.sql");"#), 0);
+    }
 }
