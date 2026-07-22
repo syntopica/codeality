@@ -80,7 +80,7 @@ mod tests {
 
     #[test]
     fn expands_trailing_glob_member_to_dirs_with_cargo_toml() {
-        let root = std::env::temp_dir().join("bl-crate-info-glob-test");
+        let root = std::env::temp_dir().join("bl-crate-info-glob-expand");
         std::fs::remove_dir_all(&root).ok();
         std::fs::create_dir_all(root.join("crates/a")).unwrap();
         std::fs::create_dir_all(root.join("crates/b")).unwrap();

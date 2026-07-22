@@ -36,8 +36,8 @@ pub fn unwrap_density_tip(
 mod tests {
     use super::*;
 
-    fn crate_info() -> CrateInfo {
-        let root = std::env::temp_dir().join("bl-unwrap-density-tip-test");
+    fn crate_info(test_name: &str) -> CrateInfo {
+        let root = std::env::temp_dir().join(format!("bl-unwrap-density-tip-{test_name}"));
         std::fs::remove_dir_all(&root).ok();
         std::fs::create_dir_all(&root).unwrap();
         std::fs::write(
@@ -54,7 +54,7 @@ mod tests {
 
     #[test]
     fn flags_when_over_threshold() {
-        let info = crate_info();
+        let info = crate_info("over-threshold");
         let cfg = BaselineConfig {
             unwrap_density: 2,
             ..BaselineConfig::default()
@@ -72,7 +72,7 @@ mod tests {
 
     #[test]
     fn no_tip_under_threshold() {
-        let info = crate_info();
+        let info = crate_info("under-threshold");
         let cfg = BaselineConfig::default();
         let files = vec![file_ctx("src/a.rs", "fn a() { x.unwrap(); }")];
         assert!(unwrap_density_tip(&info, &files, &cfg).is_empty());
@@ -80,7 +80,7 @@ mod tests {
 
     #[test]
     fn no_tip_when_no_files() {
-        let info = crate_info();
+        let info = crate_info("no-files");
         let cfg = BaselineConfig::default();
         assert!(unwrap_density_tip(&info, &[], &cfg).is_empty());
     }

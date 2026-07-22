@@ -65,7 +65,7 @@ mod tests {
 
     #[test]
     fn flags_member_missing_lints_inheritance() {
-        let root = std::env::temp_dir().join("bl-lints-test");
+        let root = std::env::temp_dir().join("bl-lints-flags-missing");
         std::fs::remove_dir_all(&root).ok();
         let member = root.join("crates/a");
         std::fs::create_dir_all(member.join("src")).unwrap();
@@ -85,7 +85,7 @@ mod tests {
 
     #[test]
     fn member_with_lints_workspace_true_has_no_diagnostics() {
-        let root = std::env::temp_dir().join("bl-lints-inherits-test");
+        let root = std::env::temp_dir().join("bl-lints-workspace-true");
         std::fs::remove_dir_all(&root).ok();
         let member = root.join("crates/a");
         std::fs::create_dir_all(member.join("src")).unwrap();
