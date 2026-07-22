@@ -1,0 +1,23 @@
+[package]
+name = "cargo-baseline"
+version = "0.1.0"
+edition = "2024"
+rust-version = "1.85"
+description = "Structural linter and config scaffolder: atomic files, placement, size caps, no inline SQL"
+license = "MIT"
+repository = "https://github.com/BusiRocket/baseline"
+
+[dependencies]
+anyhow = "1"
+clap = { version = "4", features = ["derive"] }
+proc-macro2 = { version = "1", features = ["span-locations"] }
+regex = "1"
+serde = { version = "1", features = ["derive"] }
+syn = { version = "2", features = ["full", "visit", "parsing", "printing"] }
+toml = "0.8"
+walkdir = "2"
+
+[lints.clippy]
+unwrap_used = "deny"
+expect_used = "deny"
+panic = "deny"
