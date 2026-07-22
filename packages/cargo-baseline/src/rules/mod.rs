@@ -1,10 +1,10 @@
 pub mod barrel_only_mod;
+pub mod check_lints_inheritance;
 pub mod file_matches_item;
-pub mod lints_inheritance;
 pub mod max_file_lines;
 pub mod max_trait_methods;
 pub mod no_inline_sql;
-pub mod no_inline_sql_visitor;
 pub mod one_primary_unit;
+pub mod sql_visitor;
 pub mod tauri_command_placement;
 pub mod to_snake_case;

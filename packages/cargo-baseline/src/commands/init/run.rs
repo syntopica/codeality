@@ -2,17 +2,17 @@ use std::fs;
 use std::path::Path;
 
 const ASSETS: &[(&str, &str)] = &[
-    ("baseline.toml", include_str!("../../assets/baseline.toml")),
-    ("clippy.toml", include_str!("../../assets/clippy.toml")),
-    ("rustfmt.toml", include_str!("../../assets/rustfmt.toml")),
-    ("deny.toml", include_str!("../../assets/deny.toml")),
+    ("baseline.toml", include_str!("../../../assets/baseline.toml")),
+    ("clippy.toml", include_str!("../../../assets/clippy.toml")),
+    ("rustfmt.toml", include_str!("../../../assets/rustfmt.toml")),
+    ("deny.toml", include_str!("../../../assets/deny.toml")),
     (
         "rust-toolchain.toml",
-        include_str!("../../assets/rust-toolchain.toml"),
+        include_str!("../../../assets/rust-toolchain.toml"),
     ),
     (
         "workspace-lints.toml",
-        include_str!("../../assets/workspace-lints.toml"),
+        include_str!("../../../assets/workspace-lints.toml"),
     ),
 ];
 
@@ -23,7 +23,7 @@ pub fn run(path: &Path, ci: bool) -> anyhow::Result<()> {
     if ci {
         assets.push((
             ".github/workflows/baseline.yml",
-            include_str!("../../assets/baseline-ci.yml"),
+            include_str!("../../../assets/baseline-ci.yml"),
         ));
     }
 
