@@ -74,14 +74,47 @@ detector-based recommendations that never affect the exit code. v1 tips:
   same suggestion, pointing at the mapping boilerplate as migration payoff.
 - `unwrap()`/`expect()` density above threshold in non-test code → suggest
   error-type consolidation (`thiserror`).
+- Oversized crate (see thresholds below) → suggest workspace split.
+- `anyhow` in a library crate → suggest typed errors (`thiserror`).
 
 Tips configurable (on/off per tip) in `baseline.toml`.
 
+## Large-project best practices (baked into init + rules)
+
+Researched against current community practice (egui's curated workspace
+lints, cargo-workspace-lints, workspace organization guides):
+
+- **Workspace-first architecture.** Flat `crates/` layout; split by domain
+  when coupling hurts, not preemptively. Tool support:
+  - Tip: a crate exceeding thresholds (default: 75 source files or 8,000
+    total lines, configurable) → suggest splitting into workspace crates
+    (faster incremental compiles, compiler-enforced boundaries).
+  - Rule `lints-inheritance`: every workspace member's `Cargo.toml` must
+    contain `[lints] workspace = true` — a forgotten member silently skips
+    the whole lint baseline (this is what cargo-workspace-lints exists for;
+    trivial for us to check by parsing TOML).
+- **Toolchain hygiene from `init`**: `rust-toolchain.toml` (pinned channel),
+  `rust-version` (MSRV) and `edition = "2024"` in Cargo.toml,
+  `[workspace.dependencies]` so every member inherits one version per dep.
+- **Error-handling convention**: `thiserror` for library crates, `anyhow`
+  only at binary edges. Tip: `anyhow` in a lib crate's dependencies →
+  suggest typed errors.
+- **CI recipe**: `cargo baseline init --ci` writes a GitHub Actions workflow:
+  `cargo fmt --check`, `cargo clippy --workspace --all-targets -D warnings`,
+  `cargo test --workspace`, `cargo deny check`, `cargo baseline check`.
+
 ## Complexity and style (delegated to standard tools, shipped by init)
 
-- `[workspace.lints.clippy]`: `all` plus curated `pedantic`/`nursery`
-  selections; deny: `unwrap_used`, `expect_used`, `panic`, `todo`,
-  `indexing_slicing`, `cognitive_complexity`.
+- `[workspace.lints.rust]`: `unsafe_code = "deny"`, `rust_2018_idioms`,
+  `unsafe_op_in_unsafe_fn`, `missing_debug_implementations`,
+  `elided_lifetimes_in_paths`, `unused_crate_dependencies` = warn (catches
+  unused deps without needing cargo-machete; documented bench caveat).
+- `[workspace.lints.rustdoc]`: `broken_intra_doc_links = "deny"`.
+- `[workspace.lints.clippy]`: `all` = warn, plus curated `pedantic`/`nursery`
+  selections egui-style (with an explicit allow-list for the noisy ones,
+  e.g. `module_name_repetitions`); deny: `unwrap_used`, `expect_used`,
+  `panic`, `todo`, `indexing_slicing`, `dbg_macro`, `print_stdout`,
+  `cognitive_complexity`.
 - `clippy.toml`: `too-many-lines` (function cap 50), `too-many-arguments` 4,
   `cognitive-complexity-threshold` 10 — mirrors the TS numbers.
 - `rustfmt.toml`; `deny.toml` (licenses, duplicate deps, advisories).
