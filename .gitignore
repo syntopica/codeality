@@ -19,3 +19,5 @@ node_modules/
 
 # Serena (local tool state)
 .serena/
+
+target/
