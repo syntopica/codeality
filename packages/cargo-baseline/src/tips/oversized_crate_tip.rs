@@ -22,7 +22,7 @@ pub fn oversized_crate_tip(
         rule: "oversized-crate",
         severity: Severity::Tip,
         message: format!(
-            "crate has {file_count} files / {line_count} lines — consider splitting into workspace crates (crates/ flat layout)"
+            "crate has {file_count} files / {line_count} lines - consider splitting into workspace crates (crates/ flat layout)"
         ),
     }]
 }

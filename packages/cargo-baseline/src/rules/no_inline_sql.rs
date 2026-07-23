@@ -24,7 +24,7 @@ impl Rule for NoInlineSql {
                 line,
                 rule: self.name(),
                 severity: Severity::Error,
-                message: "SQL literal in .rs — move to sql/*.sql and load with include_str!".into(),
+                message: "SQL literal in .rs - move to sql/*.sql and load with include_str!".into(),
             })
             .collect()
     }

@@ -44,7 +44,7 @@ impl Rule for BarrelOnlyMod {
                     line: item.span().start().line,
                     rule: self.name(),
                     severity: Severity::Error,
-                    message: "logic in barrel file — mod.rs/lib.rs hold only mod declarations and re-exports".into(),
+                    message: "logic in barrel file - mod.rs/lib.rs hold only mod declarations and re-exports".into(),
                 });
             }
         }
