@@ -3,6 +3,7 @@ use std::path::{Path, PathBuf};
 use super::check_crate::check_crate;
 use super::partition_by_severity::partition_by_severity;
 use super::print_diagnostics::print_diagnostics;
+use super::select_crate_roots::select_crate_roots;
 use crate::config::BaselineConfig;
 use crate::engine::crate_info::CrateInfo;
 use crate::engine::diagnostic::Diagnostic;
@@ -12,11 +13,7 @@ pub fn run(path: &Path) -> anyhow::Result<()> {
     let info = CrateInfo::load(path)?;
     let cfg = BaselineConfig::load(path)?;
 
-    let roots: Vec<PathBuf> = if info.is_workspace_root && !info.member_roots.is_empty() {
-        info.member_roots.clone()
-    } else {
-        vec![path.to_path_buf()]
-    };
+    let roots: Vec<PathBuf> = select_crate_roots(&info);
 
     let mut diagnostics: Vec<Diagnostic> = roots
         .iter()
