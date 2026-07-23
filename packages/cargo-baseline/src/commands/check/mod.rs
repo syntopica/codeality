@@ -6,5 +6,6 @@ mod push_tip;
 mod run;
 mod run_rules;
 mod run_tips;
+mod select_crate_roots;
 
 pub use run::run;
