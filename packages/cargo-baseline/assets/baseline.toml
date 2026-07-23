@@ -1,4 +1,4 @@
-# cargo-baseline configuration — https://github.com/BusiRocket/baseline
+# cargo-baseline configuration - https://github.com/BusiRocket/baseline
 max_file_lines = 150
 max_trait_methods = 12
 crate_max_files = 75

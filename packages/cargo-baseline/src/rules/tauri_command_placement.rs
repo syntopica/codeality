@@ -39,7 +39,7 @@ impl Rule for TauriCommandPlacement {
                         line: f.span().start().line,
                         rule: self.name(),
                         severity: Severity::Error,
-                        message: "#[tauri::command] outside commands/ — one command per file under commands/, thin wrapper delegating to domain fn".into(),
+                        message: "#[tauri::command] outside commands/ - one command per file under commands/, thin wrapper delegating to domain fn".into(),
                     });
                 }
             }

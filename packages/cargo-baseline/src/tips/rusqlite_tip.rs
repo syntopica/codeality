@@ -24,7 +24,7 @@ pub fn rusqlite_tip(
         line: 1,
         rule: "rusqlite",
         severity: Severity::Tip,
-        message: "rusqlite detected — consider a typed data layer (sqlx compile-time-checked queries via query_file_as!, or SeaORM); hand-rolled Row→struct mappings become generated/typed code".into(),
+        message: "rusqlite detected - consider a typed data layer (sqlx compile-time-checked queries via query_file_as!, or SeaORM); hand-rolled Row->struct mappings become generated/typed code".into(),
     }]
 }
 

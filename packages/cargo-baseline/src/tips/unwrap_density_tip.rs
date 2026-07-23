@@ -27,7 +27,7 @@ pub fn unwrap_density_tip(
         line: 1,
         rule: "unwrap-density",
         severity: Severity::Tip,
-        message: format!("{total} unwrap()/expect() calls — consolidate errors with thiserror"),
+        message: format!("{total} unwrap()/expect() calls - consolidate errors with thiserror"),
     }]
 }
 

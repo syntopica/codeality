@@ -26,7 +26,7 @@ pub fn anyhow_in_lib_tip(
         line: 1,
         rule: "anyhow-in-lib",
         severity: Severity::Tip,
-        message: "anyhow in a library crate — prefer typed errors (thiserror); keep anyhow at binary edges".into(),
+        message: "anyhow in a library crate - prefer typed errors (thiserror); keep anyhow at binary edges".into(),
     }]
 }
 

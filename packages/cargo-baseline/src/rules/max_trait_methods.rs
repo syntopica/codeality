@@ -33,7 +33,7 @@ impl Rule for MaxTraitMethods {
                         rule: self.name(),
                         severity: Severity::Error,
                         message: format!(
-                            "trait `{}` has {} methods (max {}) — split into focused traits (interface segregation)",
+                            "trait `{}` has {} methods (max {}) - split into focused traits (interface segregation)",
                             t.ident, count, cfg.max_trait_methods
                         ),
                     });

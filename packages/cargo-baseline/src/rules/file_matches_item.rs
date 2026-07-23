@@ -35,7 +35,7 @@ impl Rule for FileMatchesItem {
                 line: 1,
                 rule: self.name(),
                 severity: Severity::Error,
-                message: format!("grab-bag file name `{stem}.rs` — name files after their single unit"),
+                message: format!("grab-bag file name `{stem}.rs` - name files after their single unit"),
             }];
         }
 

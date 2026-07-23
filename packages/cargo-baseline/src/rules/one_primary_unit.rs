@@ -49,7 +49,7 @@ impl Rule for OnePrimaryUnit {
                 rule: self.name(),
                 severity: Severity::Error,
                 message: format!(
-                    "extra unit `{name}` — one primary item per file; extract to its own file"
+                    "extra unit `{name}` - one primary item per file; extract to its own file"
                 ),
             })
             .collect()
