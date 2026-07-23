@@ -47,9 +47,8 @@ pub fn check_lints_inheritance(info: &CrateInfo) -> Vec<Diagnostic> {
                 line: 1,
                 rule: "lints-inheritance",
                 severity: Severity::Error,
-                message:
-                    "member does not inherit workspace lints — add `[lints]\nworkspace = true`"
-                        .to_string(),
+                message: "member does not inherit workspace lints - add `[lints] workspace = true` to its Cargo.toml"
+                    .to_string(),
             });
         }
     }
