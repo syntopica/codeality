@@ -113,4 +113,6 @@ name. Integration tests under a top-level `tests/` directory are never scanned:
 
 See
 [docs/guides/rust-baseline-adoption.md](https://github.com/BusiRocket/baseline/blob/main/docs/guides/rust-baseline-adoption.md)
-for a step-by-step adoption walkthrough.
+for a step-by-step adoption walkthrough, or
+[docs/guides/rust-baseline-agent-install.md](https://github.com/BusiRocket/baseline/blob/main/docs/guides/rust-baseline-agent-install.md)
+for the deterministic runbook an AI agent can execute non-interactively.

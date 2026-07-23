@@ -5,7 +5,9 @@ project (e.g. a Tauri app with the Rust side under `src-tauri/`). See
 [packages/cargo-baseline/README.md](../../packages/cargo-baseline/README.md)
 for the full rule/tip reference and
 [docs/superpowers/specs/2026-07-23-rust-baseline-design.md](../superpowers/specs/2026-07-23-rust-baseline-design.md)
-for the design rationale.
+for the design rationale. For a non-interactive, command-by-command version
+that an AI agent can execute, see
+[rust-baseline-agent-install.md](rust-baseline-agent-install.md).
 
 ## 1. Scaffold
 
