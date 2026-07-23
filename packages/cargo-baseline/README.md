@@ -27,6 +27,11 @@ cargo baseline check [PATH]  # run structural rules + tips over a crate or
 `check` exits non-zero if any error-severity rule fires - safe as a CI or
 pre-commit gate. Tips never affect the exit code.
 
+For `--ci`: move the generated workflow to the repo root's `.github/workflows/`
+(add `defaults: run: working-directory: src-tauri` for crate-in-subdir layouts
+like Tauri), and until `cargo-baseline` is published on crates.io, install it
+with `cargo install --git https://github.com/BusiRocket/baseline cargo-baseline`.
+
 ## Enforcement
 
 ### Rules (error severity)
@@ -99,8 +104,9 @@ This works with rusqlite as-is and matches sqlx's `query_file!` convention.
 ## Test exemptions
 
 Inline `#[cfg(test)]` test modules are exempt from `one-primary-unit` and
-`file-matches-item`. `max-file-lines` additionally skips any file path containing
-`tests`. Integration tests under a top-level `tests/` directory are never scanned:
+`file-matches-item`. `max-file-lines` additionally skips any file under a `tests`
+path component (e.g. `src/tests/foo.rs`), not just files with "tests" in the
+name. Integration tests under a top-level `tests/` directory are never scanned:
 `check` only walks `src/`.
 
 ## Existing project?

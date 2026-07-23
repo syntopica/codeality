@@ -21,6 +21,26 @@ This writes `baseline.toml`, `clippy.toml`, `rustfmt.toml`, `deny.toml`,
 `.github/workflows/baseline.yml`. Existing files are skipped, never
 overwritten.
 
+`--ci` writes the workflow file relative to the path you ran `init` in - for a
+Tauri app that means it lands under `src-tauri/.github/workflows/baseline.yml`.
+GitHub Actions only runs workflows from the repo root, so move it to
+`.github/workflows/` at the repo root, and add a working-directory default so
+the steps still run from the crate:
+
+```yaml
+defaults:
+  run:
+    working-directory: src-tauri
+```
+
+The generated workflow also runs `cargo install cargo-baseline --locked`,
+which needs the crate published on crates.io. Until then, install from git
+instead:
+
+```bash
+cargo install --git https://github.com/BusiRocket/baseline cargo-baseline
+```
+
 ## 2. Wire up lints
 
 Paste the contents of `workspace-lints.toml` into your root `Cargo.toml`:

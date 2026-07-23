@@ -12,12 +12,8 @@ impl Rule for MaxFileLines {
     }
 
     fn check(&self, ctx: &FileContext, cfg: &BaselineConfig) -> Vec<Diagnostic> {
-        // Skip files with 'tests' in the path
-        if ctx.path.components().any(|c| {
-            c.as_os_str()
-                .to_string_lossy()
-                .contains("tests")
-        }) {
+        // Skip files under a `tests` directory (exact path component, not substring)
+        if ctx.path.components().any(|c| c.as_os_str() == "tests") {
             return Vec::new();
         }
 
@@ -87,5 +83,15 @@ mod tests {
         let body = format!("{}{}", "// c\n\n".repeat(200), "fn a() {}\n");
         let cfg = BaselineConfig::default();
         assert!(MaxFileLines.check(&ctx(&body), &cfg).is_empty());
+    }
+
+    #[test]
+    fn file_named_attests_is_not_treated_as_a_tests_dir() {
+        let body = "fn a() {}\n".repeat(200);
+        let ctx = FileContext::parse(std::path::Path::new("src/attests.rs"), body).unwrap();
+        let cfg = BaselineConfig::default();
+        let d = MaxFileLines.check(&ctx, &cfg);
+        assert_eq!(d.len(), 1);
+        assert_eq!(d[0].rule, "max-file-lines");
     }
 }

@@ -1,3 +1,9 @@
+# This workflow must live at the REPO ROOT (.github/workflows/), not inside src-tauri/.
+# Crate-in-subdir layouts (e.g. Tauri apps) need this under jobs.check:
+#   defaults:
+#     run:
+#       working-directory: src-tauri
+# cargo install cargo-baseline --locked needs crates.io; until published: cargo install --git https://github.com/BusiRocket/baseline cargo-baseline
 name: baseline
 on:
   push:
