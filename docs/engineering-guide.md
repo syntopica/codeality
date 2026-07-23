@@ -44,6 +44,7 @@ engineering-baseline/
     nextjs-app/           Starter config set for a new Next.js app
     astro-site/           Starter config set for a new Astro site
     vite-react-app/       Starter config set for a new Vite + React app
+    tauri-app/            Starter config set for a new Tauri desktop app
     ts-package/           Starter config set for a new TS-only package/tool
   docs/
     engineering-guide.md  This file

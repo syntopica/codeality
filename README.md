@@ -4,8 +4,8 @@ Shared engineering standard and boilerplate for this project portfolio.
 
 This repository is the source of truth for:
 
-- Project templates (Next.js, Astro, Vite + React, Vite + Vue, Nuxt 4, TS
-  package)
+- Project templates (Next.js, Astro, Vite + React, Vite + Vue, Nuxt 4, Tauri,
+  TS package)
 - Engineering standards documentation
 
 Shared **@busirocket/\*** packages (ESLint, Prettier, TypeScript configs, and
@@ -51,6 +51,7 @@ this monorepo:
 | `@busirocket/prettier-config` | `packages/prettier-config`           | Prettier — base (organize-imports, css-order, MD wrap) + frontend (Tailwind) + astro |
 | `@busirocket/create-baseline` | `packages/create-baseline`           | CLI to scaffold baselines from templates                                             |
 | `eslint-plugin-code-policy`   | `packages/eslint-plugin-code-policy` | Custom strict ESLint rules for code boundaries, architecture, and type safety        |
+| `cargo-baseline`              | `packages/cargo-baseline`            | Rust structural linter and config scaffolder - atomic files, placement, no inline SQL |
 
 ### Maintainers: npm publish
 
