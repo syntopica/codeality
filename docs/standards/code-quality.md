@@ -235,10 +235,9 @@ A string appearing 4+ times should be extracted to a constant.
 ## Cross-file duplication (jscpd)
 
 ESLint, including sonarjs, analyzes one file at a time. `no-identical-functions`
-only catches clones inside a single file. Cross-file copy-paste - a new file
-that reimplements logic that already exists elsewhere instead of importing it
-
-- is the dominant AI failure mode, and needs a whole-repo pass to catch.
+only catches clones inside a single file. Cross-file copy-paste (a new file that
+reimplements logic that already exists elsewhere instead of importing it) is the
+dominant AI failure mode, and needs a whole-repo pass to catch.
 
 [jscpd](https://github.com/kucherenko/jscpd) v5 (token-based, Rust engine)
 provides that pass. Config lives in the committed `.jscpd.json` at the project
