@@ -26,7 +26,7 @@ const BASELINE_CONSUMER_PACKAGES = [
 ]
 
 // Third-party tools the baseline mandates in consumer repos. Not derived from
-// packages/* — bump deliberately, in lockstep with the version used by the
+// packages/* - bump deliberately, in lockstep with the version used by the
 // templates.
 const THIRD_PARTY_PINS = {
   jscpd: '^5.0.14',
