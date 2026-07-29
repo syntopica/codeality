@@ -16,8 +16,9 @@
     "type-check": "node node_modules/@typescript/native/bin/tsc --noEmit",
     "test": "vitest run",
     "test:watch": "vitest",
-    "check:all": "pnpm type-check && pnpm lint && pnpm format:check",
-    "check:ci": "pnpm type-check && pnpm lint && pnpm format:check && pnpm test"
+    "dupes": "jscpd .",
+    "check:all": "pnpm type-check && pnpm lint && pnpm format:check && pnpm dupes",
+    "check:ci": "pnpm type-check && pnpm lint && pnpm format:check && pnpm test && pnpm dupes"
   },
   "dependencies": {
     "@nestjs/common": "^11.1.28",
@@ -46,6 +47,7 @@
     "eslint-plugin-unused-imports": "^4.4.1",
     "globals": "^17.7.0",
     "jiti": "^2.7.0",
+    "jscpd": "^5.0.14",
     "prettier": "^3.9.5",
     "prettier-plugin-css-order": "^2.2.0",
     "prettier-plugin-organize-imports": "^4.3.0",

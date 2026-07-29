@@ -266,6 +266,9 @@ importers:
       jiti:
         specifier: ^2.7.0
         version: 2.7.0
+      jscpd:
+        specifier: ^5.0.14
+        version: 5.0.14
       prettier:
         specifier: ^3.9.5
         version: 3.9.5
@@ -366,6 +369,9 @@ importers:
       jiti:
         specifier: ^2.7.0
         version: 2.7.0
+      jscpd:
+        specifier: ^5.0.14
+        version: 5.0.14
       prettier:
         specifier: ^3.9.5
         version: 3.9.5
@@ -487,6 +493,9 @@ importers:
       jiti:
         specifier: ^2.7.0
         version: 2.7.0
+      jscpd:
+        specifier: ^5.0.14
+        version: 5.0.14
       jsdom:
         specifier: ^29.1.1
         version: 29.1.1
@@ -605,6 +614,9 @@ importers:
       jiti:
         specifier: ^2.7.0
         version: 2.7.0
+      jscpd:
+        specifier: ^5.0.14
+        version: 5.0.14
       prettier:
         specifier: ^3.9.5
         version: 3.9.5
@@ -735,6 +747,9 @@ importers:
       jiti:
         specifier: ^2.7.0
         version: 2.7.0
+      jscpd:
+        specifier: ^5.0.14
+        version: 5.0.14
       jsdom:
         specifier: ^29.1.1
         version: 29.1.1
@@ -828,6 +843,9 @@ importers:
       jiti:
         specifier: ^2.7.0
         version: 2.7.0
+      jscpd:
+        specifier: ^5.0.14
+        version: 5.0.14
       prettier:
         specifier: ^3.9.5
         version: 3.9.5
@@ -943,6 +961,9 @@ importers:
       jiti:
         specifier: ^2.7.0
         version: 2.7.0
+      jscpd:
+        specifier: ^5.0.14
+        version: 5.0.14
       jsdom:
         specifier: ^29.1.1
         version: 29.1.1
@@ -1064,6 +1085,9 @@ importers:
       jiti:
         specifier: ^2.7.0
         version: 2.7.0
+      jscpd:
+        specifier: ^5.0.14
+        version: 5.0.14
       jsdom:
         specifier: ^29.1.1
         version: 29.1.1

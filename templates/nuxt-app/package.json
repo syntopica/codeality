@@ -19,8 +19,9 @@
     "test": "vitest run",
     "test:watch": "vitest",
     "test:a11y": "vitest run",
-    "check:all": "pnpm type-check && pnpm lint && pnpm format:check",
-    "check:ci": "pnpm type-check && pnpm lint && pnpm format:check && pnpm test",
+    "dupes": "jscpd .",
+    "check:all": "pnpm type-check && pnpm lint && pnpm format:check && pnpm dupes",
+    "check:ci": "pnpm type-check && pnpm lint && pnpm format:check && pnpm test && pnpm dupes",
     "perf:check": "pnpm build && lhci autorun --config=.lighthouserc.json"
   },
   "dependencies": {
@@ -55,6 +56,7 @@
     "eslint-plugin-vuejs-accessibility": "^2.5.0",
     "happy-dom": "^20.11.0",
     "jiti": "^2.7.0",
+    "jscpd": "^5.0.14",
     "prettier": "^3.9.5",
     "prettier-plugin-css-order": "^2.2.0",
     "prettier-plugin-organize-imports": "^4.3.0",
