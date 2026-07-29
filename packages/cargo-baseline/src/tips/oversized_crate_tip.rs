@@ -31,33 +31,18 @@ pub fn oversized_crate_tip(
 #[allow(clippy::unwrap_used)]
 mod tests {
     use super::*;
-
-    fn crate_info(test_name: &str) -> CrateInfo {
-        let root = std::env::temp_dir().join(format!("bl-oversized-crate-tip-{test_name}"));
-        std::fs::remove_dir_all(&root).ok();
-        std::fs::create_dir_all(&root).unwrap();
-        std::fs::write(
-            root.join("Cargo.toml"),
-            "[package]\nname=\"a\"\nversion=\"0.1.0\"\nedition=\"2024\"\n",
-        )
-        .unwrap();
-        CrateInfo::load(&root).unwrap()
-    }
-
-    fn file_ctx(path: &str, src: &str) -> FileContext {
-        FileContext::parse(std::path::Path::new(path), src.into()).unwrap()
-    }
+    use crate::engine::test_support::{parse_file_ctx, temp_crate_info};
 
     #[test]
     fn flags_when_file_count_exceeds_max() {
-        let info = crate_info("file-count-exceeds");
+        let info = temp_crate_info("bl-oversized-crate-tip-file-count-exceeds");
         let cfg = BaselineConfig {
             crate_max_files: 1,
             ..BaselineConfig::default()
         };
         let files = vec![
-            file_ctx("src/a.rs", "fn a() {}"),
-            file_ctx("src/b.rs", "fn b() {}"),
+            parse_file_ctx("src/a.rs", "fn a() {}"),
+            parse_file_ctx("src/b.rs", "fn b() {}"),
         ];
         let d = oversized_crate_tip(&info, &files, &cfg);
         assert_eq!(d.len(), 1);
@@ -67,21 +52,21 @@ mod tests {
 
     #[test]
     fn flags_when_line_count_exceeds_max() {
-        let info = crate_info("line-count-exceeds");
+        let info = temp_crate_info("bl-oversized-crate-tip-line-count-exceeds");
         let cfg = BaselineConfig {
             crate_max_lines: 1,
             ..BaselineConfig::default()
         };
-        let files = vec![file_ctx("src/a.rs", "fn a() {}\nfn b() {}\n")];
+        let files = vec![parse_file_ctx("src/a.rs", "fn a() {}\nfn b() {}\n")];
         let d = oversized_crate_tip(&info, &files, &cfg);
         assert_eq!(d.len(), 1);
     }
 
     #[test]
     fn no_tip_when_within_limits() {
-        let info = crate_info("within-limits");
+        let info = temp_crate_info("bl-oversized-crate-tip-within-limits");
         let cfg = BaselineConfig::default();
-        let files = vec![file_ctx("src/a.rs", "fn a() {}\n")];
+        let files = vec![parse_file_ctx("src/a.rs", "fn a() {}\n")];
         assert!(oversized_crate_tip(&info, &files, &cfg).is_empty());
     }
 }

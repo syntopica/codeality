@@ -2,6 +2,7 @@ use syn::visit::Visit;
 
 use crate::config::BaselineConfig;
 use crate::engine::diagnostic::Diagnostic;
+use crate::engine::diagnostics_for_lines::diagnostics_for_lines;
 use crate::engine::file_context::FileContext;
 use crate::engine::rule::Rule;
 use crate::engine::severity::Severity;
@@ -17,16 +18,13 @@ impl Rule for NoInlineSql {
     fn check(&self, ctx: &FileContext, _cfg: &BaselineConfig) -> Vec<Diagnostic> {
         let mut v = SqlVisitor { hits: Vec::new() };
         v.visit_file(&ctx.ast);
-        v.hits
-            .into_iter()
-            .map(|line| Diagnostic {
-                path: ctx.path.clone(),
-                line,
-                rule: self.name(),
-                severity: Severity::Error,
-                message: "SQL literal in .rs - move to sql/*.sql and load with include_str!".into(),
-            })
-            .collect()
+        let message = "SQL literal in .rs - move to sql/*.sql and load with include_str!";
+        diagnostics_for_lines(
+            &ctx.path,
+            self.name(),
+            Severity::Error,
+            v.hits.into_iter().map(|line| (line, message.to_string())),
+        )
     }
 }
 
@@ -35,11 +33,11 @@ impl Rule for NoInlineSql {
 mod tests {
     use super::*;
     use crate::config::BaselineConfig;
-    use crate::engine::file_context::FileContext;
     use crate::engine::rule::Rule;
+    use crate::engine::test_support::parse_dummy_file;
 
     fn check(src: &str) -> usize {
-        let ctx = FileContext::parse(std::path::Path::new("src/x.rs"), src.into()).unwrap();
+        let ctx = parse_dummy_file(src);
         NoInlineSql.check(&ctx, &BaselineConfig::default()).len()
     }
 

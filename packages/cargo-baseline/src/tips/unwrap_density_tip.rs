@@ -35,31 +35,16 @@ pub fn unwrap_density_tip(
 #[allow(clippy::unwrap_used)]
 mod tests {
     use super::*;
-
-    fn crate_info(test_name: &str) -> CrateInfo {
-        let root = std::env::temp_dir().join(format!("bl-unwrap-density-tip-{test_name}"));
-        std::fs::remove_dir_all(&root).ok();
-        std::fs::create_dir_all(&root).unwrap();
-        std::fs::write(
-            root.join("Cargo.toml"),
-            "[package]\nname=\"a\"\nversion=\"0.1.0\"\nedition=\"2024\"\n",
-        )
-        .unwrap();
-        CrateInfo::load(&root).unwrap()
-    }
-
-    fn file_ctx(path: &str, src: &str) -> FileContext {
-        FileContext::parse(std::path::Path::new(path), src.into()).unwrap()
-    }
+    use crate::engine::test_support::{parse_file_ctx, temp_crate_info};
 
     #[test]
     fn flags_when_over_threshold() {
-        let info = crate_info("over-threshold");
+        let info = temp_crate_info("bl-unwrap-density-tip-over-threshold");
         let cfg = BaselineConfig {
             unwrap_density: 2,
             ..BaselineConfig::default()
         };
-        let files = vec![file_ctx(
+        let files = vec![parse_file_ctx(
             "src/a.rs",
             "fn a() { x.unwrap(); y.unwrap(); z.expect(\"z\"); }",
         )];
@@ -72,15 +57,15 @@ mod tests {
 
     #[test]
     fn no_tip_under_threshold() {
-        let info = crate_info("under-threshold");
+        let info = temp_crate_info("bl-unwrap-density-tip-under-threshold");
         let cfg = BaselineConfig::default();
-        let files = vec![file_ctx("src/a.rs", "fn a() { x.unwrap(); }")];
+        let files = vec![parse_file_ctx("src/a.rs", "fn a() { x.unwrap(); }")];
         assert!(unwrap_density_tip(&info, &files, &cfg).is_empty());
     }
 
     #[test]
     fn no_tip_when_no_files() {
-        let info = crate_info("no-files");
+        let info = temp_crate_info("bl-unwrap-density-tip-no-files");
         let cfg = BaselineConfig::default();
         assert!(unwrap_density_tip(&info, &[], &cfg).is_empty());
     }

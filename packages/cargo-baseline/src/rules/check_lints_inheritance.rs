@@ -61,44 +61,36 @@ pub fn check_lints_inheritance(info: &CrateInfo) -> Vec<Diagnostic> {
 mod tests {
     use super::*;
     use crate::engine::crate_info::CrateInfo;
+    use crate::engine::test_support::temp_workspace_and_member;
 
-    #[test]
-    fn flags_member_missing_lints_inheritance() {
-        let root = std::env::temp_dir().join("bl-lints-flags-missing");
-        std::fs::remove_dir_all(&root).ok();
-        let member = root.join("crates/a");
-        std::fs::create_dir_all(member.join("src")).unwrap();
+    /// Creates a temp workspace root with `[workspace.lints.clippy]` set and
+    /// one member `crates/a` whose Cargo.toml is `member_manifest`.
+    fn crate_info_with_workspace_lints(dir_name: &str, member_manifest: &str) -> CrateInfo {
+        let (root, member) = temp_workspace_and_member(dir_name);
         std::fs::write(
             root.join("Cargo.toml"),
             "[workspace]\nmembers=[\"crates/a\"]\n[workspace.lints.clippy]\nunwrap_used=\"deny\"\n",
         )
         .unwrap();
-        std::fs::write(
-            member.join("Cargo.toml"),
+        std::fs::write(member.join("Cargo.toml"), member_manifest).unwrap();
+        CrateInfo::load(&root).unwrap()
+    }
+
+    #[test]
+    fn flags_member_missing_lints_inheritance() {
+        let info = crate_info_with_workspace_lints(
+            "bl-lints-flags-missing",
             "[package]\nname=\"a\"\nversion=\"0.1.0\"\nedition=\"2024\"\n",
-        )
-        .unwrap();
-        let info = CrateInfo::load(&root).unwrap();
+        );
         assert_eq!(check_lints_inheritance(&info).len(), 1);
     }
 
     #[test]
     fn member_with_lints_workspace_true_has_no_diagnostics() {
-        let root = std::env::temp_dir().join("bl-lints-workspace-true");
-        std::fs::remove_dir_all(&root).ok();
-        let member = root.join("crates/a");
-        std::fs::create_dir_all(member.join("src")).unwrap();
-        std::fs::write(
-            root.join("Cargo.toml"),
-            "[workspace]\nmembers=[\"crates/a\"]\n[workspace.lints.clippy]\nunwrap_used=\"deny\"\n",
-        )
-        .unwrap();
-        std::fs::write(
-            member.join("Cargo.toml"),
+        let info = crate_info_with_workspace_lints(
+            "bl-lints-workspace-true",
             "[package]\nname=\"a\"\nversion=\"0.1.0\"\nedition=\"2024\"\n[lints]\nworkspace = true\n",
-        )
-        .unwrap();
-        let info = CrateInfo::load(&root).unwrap();
+        );
         assert!(check_lints_inheritance(&info).is_empty());
     }
 }

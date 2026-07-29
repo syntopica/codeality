@@ -1,9 +1,8 @@
-use syn::spanned::Spanned;
-
 use crate::config::BaselineConfig;
 use crate::engine::diagnostic::Diagnostic;
 use crate::engine::file_context::FileContext;
 use crate::engine::is_cfg_test_item::is_cfg_test_item;
+use crate::engine::named_item::named_item;
 use crate::engine::rule::Rule;
 use crate::engine::severity::Severity;
 use super::to_snake_case::to_snake_case;
@@ -42,19 +41,8 @@ impl Rule for FileMatchesItem {
         // Find the FIRST unit (same kinds as one_primary_unit.rs, skipping cfg(test))
         let mut first_unit: Option<(String, usize)> = None;
         for item in &ctx.ast.items {
-            let (name, attrs, span) = match item {
-                syn::Item::Fn(i) => (i.sig.ident.to_string(), &i.attrs, i.span()),
-                syn::Item::Struct(i) => (i.ident.to_string(), &i.attrs, i.span()),
-                syn::Item::Enum(i) => (i.ident.to_string(), &i.attrs, i.span()),
-                syn::Item::Trait(i) => (i.ident.to_string(), &i.attrs, i.span()),
-                syn::Item::Type(i) => (i.ident.to_string(), &i.attrs, i.span()),
-                syn::Item::Union(i) => (i.ident.to_string(), &i.attrs, i.span()),
-                syn::Item::Macro(i) => (
-                    i.ident.as_ref().map(ToString::to_string).unwrap_or_default(),
-                    &i.attrs,
-                    i.span(),
-                ),
-                _ => continue,
+            let Some((name, attrs, span)) = named_item(item) else {
+                continue;
             };
 
             // Skip if name is empty (e.g. unnamed macro)

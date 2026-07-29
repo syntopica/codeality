@@ -1,7 +1,10 @@
 pub mod collect_rust_files;
 pub mod crate_info;
 pub mod diagnostic;
+pub mod diagnostics_for_lines;
 pub mod file_context;
 pub mod is_cfg_test_item;
+pub mod named_item;
 pub mod rule;
 pub mod severity;
+pub(crate) mod test_support;

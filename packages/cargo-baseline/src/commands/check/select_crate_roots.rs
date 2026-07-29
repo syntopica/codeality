@@ -27,13 +27,12 @@ mod tests {
     use super::super::check_crate::check_crate;
     use super::*;
     use crate::config::BaselineConfig;
+    use crate::engine::test_support::temp_workspace_and_member;
 
-    #[test]
-    fn includes_root_when_root_manifest_has_package_and_workspace() {
-        let root = std::env::temp_dir().join("bl-select-roots-implicit-member");
-        std::fs::remove_dir_all(&root).ok();
-        let member = root.join("crates/a");
-        std::fs::create_dir_all(member.join("src")).unwrap();
+    /// Creates a temp workspace root (with its own `src/`) plus a member
+    /// crate `crates/a`, both with minimal Cargo.toml manifests.
+    fn workspace_root_with_member(dir_name: &str) -> (PathBuf, PathBuf) {
+        let (root, member) = temp_workspace_and_member(dir_name);
         std::fs::create_dir_all(root.join("src")).unwrap();
         std::fs::write(
             root.join("Cargo.toml"),
@@ -45,6 +44,12 @@ mod tests {
             "[package]\nname=\"a\"\nversion=\"0.1.0\"\nedition=\"2024\"\n",
         )
         .unwrap();
+        (root, member)
+    }
+
+    #[test]
+    fn includes_root_when_root_manifest_has_package_and_workspace() {
+        let (root, member) = workspace_root_with_member("bl-select-roots-implicit-member");
 
         let info = CrateInfo::load(&root).unwrap();
         let roots = select_crate_roots(&info);
@@ -79,24 +84,10 @@ mod tests {
 
     #[test]
     fn root_src_violation_is_detected_when_root_is_also_a_package() {
-        let root = std::env::temp_dir().join("bl-select-roots-root-violation");
-        std::fs::remove_dir_all(&root).ok();
-        let member = root.join("crates/a");
-        std::fs::create_dir_all(member.join("src")).unwrap();
-        std::fs::create_dir_all(root.join("src")).unwrap();
-        std::fs::write(
-            root.join("Cargo.toml"),
-            "[package]\nname=\"root\"\nversion=\"0.1.0\"\nedition=\"2024\"\n[workspace]\nmembers=[\"crates/a\"]\n",
-        )
-        .unwrap();
+        let (root, member) = workspace_root_with_member("bl-select-roots-root-violation");
         std::fs::write(
             root.join("src/store.rs"),
             "pub fn a() {}\npub fn b() {}\n",
-        )
-        .unwrap();
-        std::fs::write(
-            member.join("Cargo.toml"),
-            "[package]\nname=\"a\"\nversion=\"0.1.0\"\nedition=\"2024\"\n",
         )
         .unwrap();
         std::fs::write(member.join("src/lib.rs"), "pub fn only() {}\n").unwrap();
