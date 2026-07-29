@@ -25,6 +25,13 @@ const BASELINE_CONSUMER_PACKAGES = [
   'eslint-plugin-code-policy',
 ]
 
+// Third-party tools the baseline mandates in consumer repos. Not derived from
+// packages/* — bump deliberately, in lockstep with the version used by the
+// templates.
+const THIRD_PARTY_PINS = {
+  jscpd: '^5.0.14',
+}
+
 async function readWorkspaceVersions() {
   const entries = await readdir(PACKAGES_DIR, { withFileTypes: true })
   const versions = {}
@@ -58,6 +65,7 @@ function renderBaselineVersions(versions) {
       throw new Error(`sync-versions: ${name} version not found in packages/*`)
     pins[name] = `^${version}`
   }
+  Object.assign(pins, THIRD_PARTY_PINS)
   return `${JSON.stringify(pins, null, 2)}\n`
 }
 
