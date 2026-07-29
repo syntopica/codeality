@@ -1,5 +1,14 @@
 # eslint-plugin-code-policy
 
+## 0.5.1
+
+### Patch Changes
+
+- refactor: extract the exempt-filename guard shared by `atomic-file` and
+  `one-primary-unit` into a single `isExemptEntryFilename` util. The two inline
+  copies had already diverged once (`proxy.ts`); behavior is unchanged, and the
+  exemption list can no longer drift between the rules.
+
 ## 0.5.0
 
 ### Minor Changes
