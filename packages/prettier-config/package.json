@@ -2,7 +2,7 @@
   "name": "@busirocket/prettier-config",
   "version": "0.1.1",
   "private": false,
-  "packageManager": "pnpm@11.15.0",
+  "packageManager": "pnpm@11.18.0",
   "license": "MIT",
   "description": "Shared Prettier configuration",
   "repository": {
@@ -32,7 +32,7 @@
     "format:check": "prettier --check \"*.mjs\""
   },
   "devDependencies": {
-    "prettier": "^3.9.5"
+    "prettier": "^3.9.6"
   },
   "files": [
     "LICENSE",

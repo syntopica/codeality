@@ -1,5 +1,12 @@
 # eslint-plugin-code-policy
 
+## 0.5.2
+
+### Patch Changes
+
+- chore: update `@typescript-eslint/utils` to 8.65 and align toolchain
+  dependency ranges.
+
 ## 0.5.1
 
 ### Patch Changes

@@ -1,6 +1,6 @@
 {
   "name": "eslint-plugin-code-policy",
-  "version": "0.5.1",
+  "version": "0.5.2",
   "description": "Architectural linting for TypeScript · enforce atomic files, explicit public APIs, clean runtime boundaries, and view/logic separation.",
   "type": "module",
   "main": "./dist/index.cjs",
@@ -94,12 +94,12 @@
   },
   "dependencies": {
     "@types/eslint": "^9.6.1",
-    "@typescript-eslint/utils": "^8.64.0"
+    "@typescript-eslint/utils": "^8.65.0"
   },
   "devDependencies": {
     "@busirocket/tsconfig": "workspace:*",
-    "@types/node": "^26",
-    "eslint": "^10.7.0",
+    "@types/node": "^26.1.2",
+    "eslint": "^10.8.0",
     "tsc-alias": "^1.9.1",
     "tsup": "^8.5.1",
     "typescript": "npm:@typescript/typescript6@^6.0.2",

@@ -1,7 +1,7 @@
 {
   "name": "engineering-baseline",
   "private": true,
-  "packageManager": "pnpm@11.15.0",
+  "packageManager": "pnpm@11.18.0+sha512.33d83c77da82f49fba836925c6f1b841181ec3132b670639bd012f7075f5c7cf634c5f870147c19aae7478fac01df09d8892e880454896edd23ee9b33757563c",
   "scripts": {
     "lint": "turbo run lint",
     "lint:fix": "turbo run lint:fix",
@@ -18,15 +18,15 @@
   },
   "devDependencies": {
     "@busirocket/prettier-config": "workspace:*",
-    "@types/node": "^26",
+    "@types/node": "^26.1.2",
     "jiti": "^2.7.0",
     "jscpd": "^5.0.14",
-    "prettier": "^3.9.5",
+    "prettier": "^3.9.6",
     "prettier-plugin-astro": "^0.14.1",
     "prettier-plugin-css-order": "^2.2.0",
     "prettier-plugin-organize-imports": "^4.3.0",
     "prettier-plugin-tailwindcss": "^0.8.1",
-    "turbo": "^2.10.5",
+    "turbo": "^2.10.7",
     "typescript": "npm:@typescript/typescript6@^6.0.2"
   }
 }
