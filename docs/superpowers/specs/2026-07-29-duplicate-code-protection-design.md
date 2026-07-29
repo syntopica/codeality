@@ -1,16 +1,15 @@
 # Duplicate Code Protection — Design
 
-Date: 2026-07-29
-Status: approved (pending spec review)
+Date: 2026-07-29 Status: approved (pending spec review)
 
 ## Problem
 
 AI-assisted development produces cross-file duplication: new files that
 re-implement logic that already exists instead of importing it. The baseline
 already enforces within-file duplication via `eslint-plugin-sonarjs`
-(`no-identical-functions`, `no-duplicated-branches`, `no-duplicate-string`),
-but ESLint analyzes one file at a time, so clones spread across files are
-invisible to it. Nothing in the baseline detects cross-file clones today.
+(`no-identical-functions`, `no-duplicated-branches`, `no-duplicate-string`), but
+ESLint analyzes one file at a time, so clones spread across files are invisible
+to it. Nothing in the baseline detects cross-file clones today.
 
 ## Decision
 
@@ -19,10 +18,10 @@ every template and in the baseline monorepo itself.
 
 ### Why jscpd v5
 
-- One tool covers every language the baseline ships: TypeScript, TSX, JS,
-  Vue SFC, Astro, and Rust (tauri-app template).
-- v5 is a Rust rewrite of the v4 CLI: same flags/config, fast enough to run
-  on every CI pass (the calibration run over `packages/ scripts/` took ~20ms).
+- One tool covers every language the baseline ships: TypeScript, TSX, JS, Vue
+  SFC, Astro, and Rust (tauri-app template).
+- v5 is a Rust rewrite of the v4 CLI: same flags/config, fast enough to run on
+  every CI pass (the calibration run over `packages/ scripts/` took ~20ms).
 - Configurable gate: `threshold` (max duplicated %) plus non-zero exit code
   fails the build.
 - Also installable without Node (`cargo install jscpd`) for pure-Rust repos.
@@ -33,8 +32,8 @@ every template and in the baseline monorepo itself.
   Deeper detection, Rust-only, noisier. Not a gate; mentioned in cargo-baseline
   docs as an optional audit tool.
 - **similarity-rs / similarity-ts (mizchi/similarity)** — AST-based semantic
-  similarity. Catches "same logic written differently", but too fuzzy for a
-  hard CI gate. Documented as optional audit tooling only.
+  similarity. Catches "same logic written differently", but too fuzzy for a hard
+  CI gate. Documented as optional audit tooling only.
 - **SonarQube/SonarCloud** — full platform, overdimensioned for templates.
 
 ## Configuration
@@ -60,23 +59,23 @@ One `.jscpd.json` at the baseline repo root and one per template:
 ```
 
 No `exitCode` key: jscpd's gate is threshold-driven, not exit-code-driven. An
-earlier draft of this config set `"exitCode": 1`, which made the run fail on
-any clone at all regardless of `threshold` - removed by ruling. With the
-`exitCode` key absent, jscpd exits non-zero only when total duplicated lines
-exceed `threshold` (1%); a clone below that total is reported but does not
-fail the build.
+earlier draft of this config set `"exitCode": 1`, which made the run fail on any
+clone at all regardless of `threshold` - removed by ruling. With the `exitCode`
+key absent, jscpd exits non-zero only when total duplicated lines exceed
+`threshold` (1%); a clone below that total is reported but does not fail the
+build.
 
 Decisions baked in:
 
-- **`format` restricted to code.** YAML/JSON/Markdown excluded: CI workflows
-  and config files are intentionally near-identical across templates and would
-  drown the signal (calibration: YAML measured 65% duplication by design,
-  TypeScript 0.48% duplicated lines).
-- **`minTokens: 70`**, not the default 50 — calibrated to suppress trivial
-  false positives while catching real copy-paste blocks.
-- **`threshold: 1`** — strict by design. Templates start at 0% duplication;
-  the baseline repo measures 0.48% duplicated TS lines today, and its one
-  existing clone gets refactored as part of this work so the margin is real.
+- **`format` restricted to code.** YAML/JSON/Markdown excluded: CI workflows and
+  config files are intentionally near-identical across templates and would drown
+  the signal (calibration: YAML measured 65% duplication by design, TypeScript
+  0.48% duplicated lines).
+- **`minTokens: 70`**, not the default 50 — calibrated to suppress trivial false
+  positives while catching real copy-paste blocks.
+- **`threshold: 1`** — strict by design. Templates start at 0% duplication; the
+  baseline repo measures 0.48% duplicated TS lines today, and its one existing
+  clone gets refactored as part of this work so the margin is real.
 - **Tests are scanned too.** AI duplicates test scaffolding as readily as
   production code; excluding `**/*.test.*` would hide half the problem.
 - **No cross-template scan.** Each template is standalone; similarity between
@@ -108,10 +107,10 @@ i18n keys and test fixtures). The jscpd gate is additive, not a replacement.
 
 ## Documentation
 
-- `docs/standards/code-quality.md`: new "Cross-file duplication (jscpd)"
-  section — why sonarjs alone is insufficient, how to read the report, and the
-  rule for raising a threshold (conscious, documented decision in the PR, never
-  a silent bump to make CI pass).
+- `docs/standards/code-quality.md`: new "Cross-file duplication (jscpd)" section
+  — why sonarjs alone is insufficient, how to read the report, and the rule for
+  raising a threshold (conscious, documented decision in the PR, never a silent
+  bump to make CI pass).
 - cargo-baseline adoption runbook: note recommending `cargo install jscpd` for
   Rust-only repos, with cargo-dupes/similarity-rs listed as optional deeper
   audits.
