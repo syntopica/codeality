@@ -232,6 +232,39 @@ A string appearing 4+ times should be extracted to a constant.
 
 ---
 
+## Cross-file duplication (jscpd)
+
+ESLint, including sonarjs, analyzes one file at a time. `no-identical-functions`
+only catches clones inside a single file. Cross-file copy-paste - a new file
+that reimplements logic that already exists elsewhere instead of importing it
+
+- is the dominant AI failure mode, and needs a whole-repo pass to catch.
+
+[jscpd](https://github.com/kucherenko/jscpd) v5 (token-based, Rust engine)
+provides that pass. Config lives in the committed `.jscpd.json` at the project
+root, run it with `pnpm dupes`, and it is wired into `check:ci`.
+
+**The knobs and their rationale:**
+
+| Key         | Value                                                                        | Rationale                                                                                                                                                                                    |
+| ----------- | ---------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `minTokens` | `70`                                                                         | Below this, matches are boilerplate noise, not real duplication.                                                                                                                             |
+| `threshold` | `1`                                                                          | Percent of duplicated lines allowed, strict because a healthy codebase sits close to 0%. jscpd fails the build only once total duplication crosses this threshold, not on every clone found. |
+| `format`    | code only (`typescript`, `tsx`, `javascript`, `jsx`, `vue`, `astro`, `rust`) | YAML/JSON/Markdown are excluded: config and doc duplication across templates is intentional and would drown the signal.                                                                      |
+| `gitignore` | `true`                                                                       | Respects the project's own ignore rules.                                                                                                                                                     |
+| tests       | scanned on purpose                                                           | AI duplicates test scaffolding as readily as production code; excluding it would hide half the problem.                                                                                      |
+
+**On a failure:** fix the duplication - extract the shared unit into its own
+file, per the Atomic File Rule. Raising `threshold` or adding an `ignore` entry
+is a documented, reviewed decision explained in the PR description, never a
+silent bump to get CI green.
+
+**What it cannot catch:** semantic duplication - the same logic written with
+different tokens. For in-file cases, `sonarjs/no-identical-functions` still
+applies; cross-file semantic duplication needs manual review.
+
+---
+
 ## Folder conventions enforced by these rules
 
 ```

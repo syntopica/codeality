@@ -5,20 +5,25 @@ are allowed but cannot replace these.
 
 ## Mandatory scripts
 
-| Script              | Purpose                                               |
-| ------------------- | ----------------------------------------------------- |
-| `dev`               | Start local development server                        |
-| `build`             | Production build                                      |
-| `start` / `preview` | Serve the production build locally                    |
-| `lint`              | Run ESLint (read-only)                                |
-| `lint:fix`          | Run ESLint with auto-fix                              |
-| `format`            | `prettier --write . --list-different`                 |
-| `format:check`      | Run Prettier (check only, no write)                   |
-| `type-check`        | Run `tsc --noEmit`                                    |
-| `test`              | Run test suite (single pass)                          |
-| `test:watch`        | Run test suite in watch mode                          |
-| `check:all`         | Run type-check + lint + format:check locally          |
-| `check:ci`          | Run type-check + lint + format:check + test (CI gate) |
+| Script              | Purpose                                                 |
+| ------------------- | ------------------------------------------------------- |
+| `dev`               | Start local development server                          |
+| `build`             | Production build                                        |
+| `start` / `preview` | Serve the production build locally                      |
+| `lint`              | Run ESLint (read-only)                                  |
+| `lint:fix`          | Run ESLint with auto-fix                                |
+| `format`            | `prettier --write . --list-different`                   |
+| `format:check`      | Run Prettier (check only, no write)                     |
+| `type-check`        | Run `tsc --noEmit`                                      |
+| `test`              | Run test suite (single pass)                            |
+| `test:watch`        | Run test suite in watch mode                            |
+| `check:all`         | Run type-check + lint + format:check locally            |
+| `check:ci`          | Run type-check + lint + format:check + test (CI gate)   |
+| `dupes`             | Cross-file duplication gate (jscpd), part of `check:ci` |
+
+`dupes` runs jscpd against the committed `.jscpd.json`: `jscpd .` in templates
+(scans the whole generated project), `jscpd packages scripts` at the
+engineering-baseline root (workspace packages only, not the templates).
 
 ## Optional: `fix` / `fix:all` (monorepo baseline)
 

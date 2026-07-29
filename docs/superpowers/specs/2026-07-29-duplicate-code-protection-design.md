@@ -47,11 +47,24 @@ One `.jscpd.json` at the baseline repo root and one per template:
   "threshold": 1,
   "format": ["typescript", "tsx", "javascript", "jsx", "vue", "astro", "rust"],
   "gitignore": true,
-  "ignore": ["**/node_modules/**", "**/dist/**", "**/.next/**", "**/.output/**", "**/target/**", "**/coverage/**"],
-  "reporters": ["console"],
-  "exitCode": 1
+  "ignore": [
+    "**/node_modules/**",
+    "**/dist/**",
+    "**/.next/**",
+    "**/.output/**",
+    "**/target/**",
+    "**/coverage/**"
+  ],
+  "reporters": ["console"]
 }
 ```
+
+No `exitCode` key: jscpd's gate is threshold-driven, not exit-code-driven. An
+earlier draft of this config set `"exitCode": 1`, which made the run fail on
+any clone at all regardless of `threshold` - removed by ruling. With the
+`exitCode` key absent, jscpd exits non-zero only when total duplicated lines
+exceed `threshold` (1%); a clone below that total is reported but does not
+fail the build.
 
 Decisions baked in:
 
@@ -79,10 +92,13 @@ Decisions baked in:
   `check:ci`, so the gate runs both in the monorepo pipeline and in projects
   generated from the templates.
 - `jscpd@^5` devDependency at root and in all 8 templates; `sync-versions.mjs`
-  keeps the version aligned.
-- `create-baseline` scaffolds new projects with the `.jscpd.json`, script, and
-  devDependency already in place (templates are copied as-is, so this is
-  automatic once templates carry the files).
+  keeps the version aligned via a `THIRD_PARTY_PINS` entry (`jscpd: '^5.0.14'`),
+  not by scanning workspace `package.json` files - jscpd isn't a workspace
+  package, so there's no version to read off it.
+- `create-baseline` is an advisor CLI: it does not scaffold or copy template
+  files. It prints the recommended devDependencies to add, sourced from
+  `baseline-versions.json`, which picks up the `jscpd` pin through the same
+  `THIRD_PARTY_PINS` sync.
 
 ## Existing sonarjs rules
 

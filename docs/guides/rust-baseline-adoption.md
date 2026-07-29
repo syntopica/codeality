@@ -105,3 +105,21 @@ Bring clippy in gradually rather than blocking CI on day one:
 2. Once the workspace is clean, switch CI to `-D warnings` so it stays
    clean (the `baseline.yml` workflow from `init` already runs
    `cargo clippy --workspace --all-targets -D warnings`).
+
+## 6. Cross-file duplication (jscpd)
+
+`cargo-baseline` doesn't gate cross-file duplication itself, but the same
+jscpd gate the rest of the baseline uses is installable without Node:
+
+```bash
+cargo install jscpd
+```
+
+Run it from the crate root: `jscpd .` honors the committed `.jscpd.json` the
+same way the Node-based install does - keep that canonical config rather than
+writing a separate one.
+
+`cargo-dupes` (AST-normalized clone detection, cargo subcommand) and
+`similarity-rs` (AST-based semantic similarity) are optional audit tools worth
+running by hand for deeper matching. Both are noisier than jscpd's token-based
+matching and are not wired in as CI gates.
