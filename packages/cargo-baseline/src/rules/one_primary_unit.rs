@@ -51,7 +51,7 @@ mod tests {
     use super::*;
     use crate::config::BaselineConfig;
     use crate::engine::rule::Rule;
-    use crate::engine::test_support::parse_dummy_file;
+    use crate::engine::parse_dummy_file::parse_dummy_file;
 
     #[test]
     fn struct_plus_impls_is_one_unit() {

@@ -35,7 +35,8 @@ pub fn unwrap_density_tip(
 #[allow(clippy::unwrap_used)]
 mod tests {
     use super::*;
-    use crate::engine::test_support::{parse_file_ctx, temp_crate_info};
+    use crate::engine::parse_file_ctx::parse_file_ctx;
+    use crate::engine::temp_crate_info::temp_crate_info;
 
     #[test]
     fn flags_when_over_threshold() {

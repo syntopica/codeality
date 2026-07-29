@@ -27,7 +27,7 @@ mod tests {
     use super::super::check_crate::check_crate;
     use super::*;
     use crate::config::BaselineConfig;
-    use crate::engine::test_support::temp_workspace_and_member;
+    use crate::engine::temp_workspace_and_member::temp_workspace_and_member;
 
     /// Creates a temp workspace root (with its own `src/`) plus a member
     /// crate `crates/a`, both with minimal Cargo.toml manifests.

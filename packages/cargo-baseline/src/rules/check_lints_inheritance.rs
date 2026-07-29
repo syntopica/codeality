@@ -61,7 +61,7 @@ pub fn check_lints_inheritance(info: &CrateInfo) -> Vec<Diagnostic> {
 mod tests {
     use super::*;
     use crate::engine::crate_info::CrateInfo;
-    use crate::engine::test_support::temp_workspace_and_member;
+    use crate::engine::temp_workspace_and_member::temp_workspace_and_member;
 
     /// Creates a temp workspace root with `[workspace.lints.clippy]` set and
     /// one member `crates/a` whose Cargo.toml is `member_manifest`.
