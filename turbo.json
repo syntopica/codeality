@@ -22,6 +22,9 @@
       "dependsOn": ["build"],
       "cache": false
     },
+    "dupes": {
+      "inputs": ["src/**", "app/**", "*.jscpd.json", ".jscpd.json"]
+    },
     "dev": {
       "cache": false,
       "persistent": true
