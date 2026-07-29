@@ -1,6 +1,7 @@
 import type { TSESTree } from '@typescript-eslint/utils'
 
 import { createRule } from '@/utils/create-rule.js'
+import { isExemptEntryFilename } from '@/utils/is-exempt-entry-filename.js'
 import { NEXT_RESERVED_EXPORTS } from '@/utils/next-reserved-exports.js'
 import { ROUTE_METHODS } from '@/utils/route-methods.js'
 
@@ -27,14 +28,7 @@ export default createRule<Options, MessageIds>({
     const filename = context.filename || context.physicalFilename || ''
 
     if (
-      filename.endsWith('.config.ts') ||
-      filename.endsWith('.config.js') ||
-      filename.endsWith('.config.mjs') ||
-      filename.endsWith('.config.cjs') ||
-      filename.endsWith('.d.ts') ||
-      filename.endsWith('index.ts') ||
-      filename.endsWith('index.tsx') ||
-      filename.endsWith('index.js') ||
+      isExemptEntryFilename(filename) ||
       filename.endsWith('proxy.ts') // Exempt explicit configuration or typings
     ) {
       return {}
