@@ -66,7 +66,9 @@ The repository uses **Turborepo** to orchestrate pipelines via `pnpm check:all`.
 The `type-check` command is configured in `turbo.json` with a strict dependency
 on `^build`. This avoids race conditions where dynamically built definitions
 (e.g., `eslint-plugin-code-policy/dist/*.d.ts`) are wiped out or not properly
-resolved during parallel type checking.
+resolved during parallel type checking. A `dupes` task runs `jscpd` across the
+repo as a cross-file duplication gate, failing the pipeline above a 1%
+duplication threshold.
 
 ## Workarounds & Patches
 
