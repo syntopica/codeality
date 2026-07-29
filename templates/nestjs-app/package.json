@@ -2,7 +2,7 @@
   "name": "my-nestjs-app",
   "version": "0.1.0",
   "private": true,
-  "packageManager": "pnpm@11.5.0",
+  "packageManager": "pnpm@11.15.0",
   "scripts": {
     "build": "nest build",
     "start": "nest start",

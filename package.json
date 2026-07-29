@@ -1,7 +1,7 @@
 {
   "name": "engineering-baseline",
   "private": true,
-  "packageManager": "pnpm@11.5.0",
+  "packageManager": "pnpm@11.15.0",
   "scripts": {
     "lint": "turbo run lint",
     "lint:fix": "turbo run lint:fix",

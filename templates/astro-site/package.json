@@ -2,7 +2,7 @@
   "name": "my-astro-site",
   "version": "0.1.0",
   "private": true,
-  "packageManager": "pnpm@11.5.0",
+  "packageManager": "pnpm@11.15.0",
   "scripts": {
     "dev": "astro dev",
     "build": "astro build",
@@ -20,7 +20,7 @@
     "perf:check": "pnpm build && lhci autorun --config=.lighthouserc.json"
   },
   "dependencies": {
-    "astro": "^7.0.9",
+    "astro": "^7.1.1",
     "zod": "^4.4.3"
   },
   "devDependencies": {
@@ -36,7 +36,7 @@
     "eslint": "^10.7.0",
     "eslint-config-prettier": "^10.1.8",
     "eslint-import-resolver-typescript": "^4.4.5",
-    "eslint-plugin-astro": "^3.0.0",
+    "eslint-plugin-astro": "^3.0.1",
     "eslint-plugin-boundaries": "^7.0.2",
     "eslint-plugin-code-policy": "workspace:*",
     "eslint-plugin-import": "^2.32.0",

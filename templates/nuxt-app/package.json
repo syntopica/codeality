@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "type": "module",
-  "packageManager": "pnpm@11.5.0",
+  "packageManager": "pnpm@11.15.0",
   "scripts": {
     "dev": "nuxt dev",
     "build": "nuxt build",
@@ -24,8 +24,8 @@
     "perf:check": "pnpm build && lhci autorun --config=.lighthouserc.json"
   },
   "dependencies": {
-    "nuxt": "^4.4.8",
-    "vue": "^3.5.39",
+    "nuxt": "^4.5.0",
+    "vue": "^3.5.40",
     "zod": "^4.4.3"
   },
   "devDependencies": {
@@ -36,7 +36,7 @@
     "@lhci/cli": "^0.15.1",
     "@nuxt/eslint": "^1.16.0",
     "@nuxt/test-utils": "^4.0.3",
-    "@tailwindcss/vite": "^4.3.2",
+    "@tailwindcss/vite": "^4.3.3",
     "@testing-library/jest-dom": "^6.9.1",
     "@vitest/coverage-v8": "^4.1.10",
     "@vue/test-utils": "^2.4.11",
@@ -53,13 +53,13 @@
     "eslint-plugin-unused-imports": "^4.4.1",
     "eslint-plugin-vue": "^10.9.2",
     "eslint-plugin-vuejs-accessibility": "^2.5.0",
-    "happy-dom": "^20.10.6",
+    "happy-dom": "^20.11.0",
     "jiti": "^2.7.0",
     "prettier": "^3.9.5",
     "prettier-plugin-css-order": "^2.2.0",
     "prettier-plugin-organize-imports": "^4.3.0",
     "prettier-plugin-tailwindcss": "^0.8.1",
-    "tailwindcss": "^4.3.2",
+    "tailwindcss": "^4.3.3",
     "typescript": "^6.0.3",
     "typescript-eslint": "^8.64.0",
     "vitest": "^4.1.10",

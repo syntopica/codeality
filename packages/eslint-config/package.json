@@ -2,7 +2,7 @@
   "name": "@busirocket/eslint-config",
   "version": "0.4.0",
   "private": false,
-  "packageManager": "pnpm@11.5.0",
+  "packageManager": "pnpm@11.15.0",
   "license": "MIT",
   "description": "Shared ESLint configuration baseline",
   "repository": {
@@ -135,8 +135,8 @@
     "eslint": "^10.7.0",
     "eslint-config-next": "^16.2.10",
     "eslint-config-prettier": "^10.1.8",
-    "eslint-import-resolver-typescript": "^4.4.4",
-    "eslint-plugin-astro": "^3.0.0",
+    "eslint-import-resolver-typescript": "^4.4.5",
+    "eslint-plugin-astro": "^3.0.1",
     "eslint-plugin-boundaries": "^7.0.2",
     "eslint-plugin-code-policy": "workspace:*",
     "eslint-plugin-import": "^2.32.0",
@@ -145,7 +145,7 @@
     "eslint-plugin-react": "^7.37.5",
     "eslint-plugin-react-hooks": "^7.1.1",
     "eslint-plugin-react-refresh": "^0.5.3",
-    "eslint-plugin-security": "^4.0.0",
+    "eslint-plugin-security": "^4.0.1",
     "eslint-plugin-sonarjs": "^4.2.0",
     "eslint-plugin-tailwindcss": "^4.2.0",
     "eslint-plugin-unicorn": "^72.0.0",
@@ -155,7 +155,7 @@
     "globals": "^17.7.0",
     "jiti": "^2.7.0",
     "typescript": "npm:@typescript/typescript6@^6.0.2",
-    "typescript-eslint": "^8.60.0",
+    "typescript-eslint": "^8.64.0",
     "vue-eslint-parser": "^10.4.1"
   }
 }
