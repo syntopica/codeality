@@ -8,6 +8,9 @@
     "lint": {
       "dependsOn": ["^build"]
     },
+    "eslint-plugin-code-policy#lint": {
+      "dependsOn": ["build", "^build"]
+    },
     "lint:fix": {},
     "format": {},
     "format:check": {},
