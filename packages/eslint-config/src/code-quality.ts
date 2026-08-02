@@ -86,5 +86,3 @@ export const createCodeQualityConfig = () => [
     },
   },
 ]
-
-export default createCodeQualityConfig

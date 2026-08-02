@@ -23,5 +23,3 @@ export const createNestjsConfig = () => [
     },
   },
 ]
-
-export default createNestjsConfig

@@ -147,5 +147,3 @@ export const createBaseConfig = (options: SharedConfigOptions = {}) => {
     prettier,
   ]
 }
-
-export default createBaseConfig

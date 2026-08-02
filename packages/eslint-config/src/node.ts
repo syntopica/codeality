@@ -13,5 +13,3 @@ export const createNodeConfig = () => [
     },
   },
 ]
-
-export default createNodeConfig

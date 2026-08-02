@@ -86,5 +86,3 @@ export const createViteVueConfig = (options: ViteVueConfigOptions = {}) => {
     ...createFrontendBoundariesConfig(),
   ]
 }
-
-export default createViteVueConfig

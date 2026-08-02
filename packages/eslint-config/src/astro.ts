@@ -60,5 +60,3 @@ export const createAstroConfig = (options: AstroConfigOptions = {}) => {
     ...createFrontendBoundariesConfig(),
   ]
 }
-
-export default createAstroConfig

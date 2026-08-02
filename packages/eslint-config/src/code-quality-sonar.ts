@@ -12,5 +12,3 @@ export const createCodeQualitySonarConfig = () => [
     },
   },
 ]
-
-export default createCodeQualitySonarConfig

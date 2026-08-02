@@ -93,7 +93,6 @@
     }
   },
   "dependencies": {
-    "@types/eslint": "^9.6.1",
     "@typescript-eslint/utils": "^8.65.0"
   },
   "devDependencies": {

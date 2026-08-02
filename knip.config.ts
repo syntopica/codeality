@@ -1,0 +1,84 @@
+import type { KnipConfig } from 'knip'
+
+// Templates are scaffolding: their exports are consumed by the projects
+// generated from them, not from inside this repo. Only dependency findings
+// are meaningful here.
+const TEMPLATE_GLOB = ['**/*.{ts,tsx,vue,astro}']
+
+// Each template installs these as peer dependencies of
+// @busirocket/eslint-config: the config factories (base.ts and friends)
+// `import` them by bare specifier, and pnpm's isolated node_modules needs
+// each consumer to declare them directly for that import to resolve. No
+// template file ever imports these packages itself (they only import from
+// '@busirocket/eslint-config/*'), so knip can't see the real caller and
+// reports them as unused.
+const TEMPLATE_ESLINT_PEER_DEPENDENCIES = [
+  '@eslint/js',
+  'eslint-config-prettier',
+  'eslint-plugin-promise',
+  'eslint-plugin-security',
+  'eslint-plugin-unused-imports',
+  'typescript-eslint',
+]
+
+const config: KnipConfig = {
+  workspaces: {
+    '.': {
+      entry: ['scripts/*.mjs'],
+      project: ['scripts/*.mjs'],
+    },
+    'packages/*': {
+      entry: ['src/index.ts', 'src/*.ts', 'bin/*.mjs'],
+      project: ['src/**/*.ts'],
+    },
+    'templates/*': {
+      entry: TEMPLATE_GLOB,
+      project: TEMPLATE_GLOB,
+      ignoreDependencies: TEMPLATE_ESLINT_PEER_DEPENDENCIES,
+    },
+    'templates/nuxt-app': {
+      // A workspace-specific key replaces rather than merges with the
+      // `templates/*` wildcard entry, so entry/project/ignoreDependencies are
+      // repeated here rather than inherited.
+      entry: TEMPLATE_GLOB,
+      project: TEMPLATE_GLOB,
+      ignoreDependencies: TEMPLATE_ESLINT_PEER_DEPENDENCIES,
+      // .nuxt/**  is Nuxt's generated type cache (rebuilt by `nuxt prepare`
+      // on every install). Its .d.ts files reference Nuxt's internal modules
+      // (nitropack, @nuxt/devtools, vue-router, ...) which are never meant to
+      // be direct dependencies of the app; scanning generated output as
+      // source produces dozens of unlisted-dependency false positives.
+      ignore: ['.nuxt/**'],
+      // knip's vitest plugin tries to load vitest.config.ts to introspect it,
+      // and that load fails to resolve `@nuxt/kit` through pnpm's nested
+      // store even though Node resolves it fine at runtime (a known knip/jiti
+      // loader limitation, see https://knip.dev/reference/known-issues).
+      // Disabling the plugin avoids the crash; the broad entry glob above
+      // still covers vitest.config.ts and the test files it points to.
+      vitest: false,
+    },
+  },
+  ignoreBinaries: [
+    'turbo',
+    'lhci',
+    'gitleaks',
+    'actionlint',
+    // `typescript` is installed under the npm alias `@typescript/typescript6`
+    // repo-wide (the TS7 native-compiler trial), so knip can't map the `tsc`
+    // binary in package.json scripts back to a declared dependency name.
+    'tsc',
+  ],
+  rules: {
+    files: 'error',
+    dependencies: 'error',
+    devDependencies: 'error',
+    unlisted: 'error',
+    exports: 'error',
+    types: 'error',
+    duplicates: 'error',
+    binaries: 'warn',
+    unresolved: 'warn',
+  },
+}
+
+export default config

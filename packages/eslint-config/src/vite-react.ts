@@ -45,5 +45,3 @@ export const createViteReactConfig = () => [
   // Same layered boundaries as Next.js (src/components, src/services, etc.)
   ...createFrontendBoundariesConfig(),
 ]
-
-export default createViteReactConfig

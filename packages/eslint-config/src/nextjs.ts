@@ -68,5 +68,3 @@ export const createNextjsConfig = (_options: NextjsConfigOptions = {}) => {
     ...createFrontendBoundariesConfig(),
   ]
 }
-
-export default createNextjsConfig

@@ -12,5 +12,3 @@ const jsxA11y = require('eslint-plugin-jsx-a11y') as {
  *   ...createAccessibilityConfig()
  */
 export const createAccessibilityConfig = () => [jsxA11y.flatConfigs.recommended]
-
-export default createAccessibilityConfig

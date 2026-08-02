@@ -90,5 +90,3 @@ export const createFrontendBoundariesConfig = () => [
     },
   },
 ]
-
-export default createFrontendBoundariesConfig
