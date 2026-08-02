@@ -28,7 +28,30 @@ export const createDepCruiserConfig = (
           '(^|/)\\.[^/]+\\.(js|cjs|mjs|ts|json)$',
           '\\.d\\.ts$',
           '(^|/)tsconfig\\.json$',
-          '(^|/)(babel|webpack|vite|vitest|eslint|knip)\\.config\\.(js|cjs|mjs|ts)$',
+          // Framework/tooling config files: loaded directly by that tool's
+          // own runtime, never imported by application code. Being an
+          // orphan in the module graph is their normal state, not a defect.
+          '(^|/)(babel|webpack|vite|vitest|eslint|knip|prettier|tsup|astro|next|nuxt)\\.config\\.(js|cjs|mjs|ts)$',
+          // Next.js App Router special files (sitemap, robots, ...) are
+          // loaded directly by Next's build process by filename convention,
+          // never imported by application code.
+          '(^|/)app/(sitemap|robots)\\.tsx?$',
+          // ESLint rule test fixtures: read from disk by filename in
+          // RuleTester cases, never imported as real modules. Being
+          // unreferenced in the graph is their intended state.
+          '(^|/)tests/fixtures/',
+          // `@/` path-alias imports are resolved per package via that
+          // package's own tsconfig.json "paths". A single repo-wide
+          // dependency-cruiser run has no per-package tsconfig awareness
+          // (and pointing it at one package's tsconfig would incorrectly
+          // apply that package's alias mapping to every other cruised
+          // file), so these aliased imports resolve as `couldNotResolve`
+          // and their real targets show up as false orphans. Verified with
+          // `depcruise --output-type json` that every listed file has a
+          // real `@/`-aliased importer.
+          '^packages/eslint-plugin-code-policy/src/(utils/|version\\.ts$)',
+          '^templates/vue-app/src/(types/|stores/|App\\.vue$)',
+          '^templates/nuxt-app/app/(types/|pages/|app\\.vue$)',
         ],
       },
       to: {},

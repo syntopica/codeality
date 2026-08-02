@@ -4,15 +4,26 @@ Active backlog for the `baseline` repo. Closed items move to `TODO_LOG.md`.
 
 ## Quality gates
 
-- [ ] `@busirocket/quality-config` is not a root `devDependency` right now. Task
-      6 (wire knip at the repo root) installed it per the task-6 brief's Step 1,
-      but the root `knip.config.ts` is standalone and never imports from it, so
-      `pnpm knip` correctly flagged it as an unused devDependency and it was
-      removed to keep the run green. Re-add it
-      (`pnpm add -D -w @busirocket/quality-config@workspace:*`) whenever a later
-      task in the code-quality-gates plan adds a root-level config
-      (dependency-cruiser, lefthook, type-coverage) that actually imports from
-      the package — don't carry it unused in the meantime.
+- [ ] `dependency-cruiser` resolves TypeScript path aliases (`@/*`) through a
+      single, repo-wide `tsConfig` option — it has no concept of "nearest
+      tsconfig to this file" for a monorepo where each package/template defines
+      its own `@/*` -> `./src/*` mapping relative to its own root. Pointing the
+      root `.dependency-cruiser.cjs` at any one package's `tsconfig.json` would
+      apply that package's alias mapping to every other cruised file too,
+      producing wrong edges rather than no edges. With no `tsConfig` passed (the
+      repo has no root `tsconfig.json`), every `@/` import shows up as
+      `couldNotResolve: true` (verified with `depcruise --output-type json`),
+      and files reached only through such imports look like `no-orphans` false
+      positives even though they have real importers. Task 9 tuned around the
+      currently-affected files with `pathNot` patterns scoped to three trees:
+      `packages/eslint-plugin-code-policy/src/{utils/,version.ts}`,
+      `templates/vue-app/src/{types/,stores/,App.vue}`, and
+      `templates/nuxt-app/app/{types/,pages/,app.vue}`. Any _new_ file in those
+      same trees that is reachable only via a `@/` import will silently pass
+      `no-orphans` even if it is genuinely dead — this is a real, open coverage
+      gap, not a one-time fix. Revisit if dependency-cruiser ever adds
+      per-directory tsconfig resolution, or if the affected packages/templates
+      switch these imports to relative paths.
 - [ ] `packages/eslint-config` and `packages/eslint-plugin-code-policy` have a
       real mutual runtime/dev-time dependency:
       `eslint-config/src/code-quality.ts` imports `eslint-plugin-code-policy` as

@@ -14,9 +14,18 @@ importers:
       '@busirocket/prettier-config':
         specifier: workspace:*
         version: link:packages/prettier-config
+      '@busirocket/quality-config':
+        specifier: workspace:*
+        version: link:packages/quality-config
       '@types/node':
         specifier: ^26.1.2
         version: 26.1.2
+      dependency-cruiser:
+        specifier: ^18.1.0
+        version: 18.1.0
+      jiti:
+        specifier: ^2.7.0
+        version: 2.7.0
       jscpd:
         specifier: ^5.0.14
         version: 5.0.14

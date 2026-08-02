@@ -26,6 +26,12 @@ const config: KnipConfig = {
     '.': {
       entry: ['scripts/*.mjs'],
       project: ['scripts/*.mjs'],
+      // @busirocket/quality-config is a real dependency of the root
+      // .dependency-cruiser.cjs, but it's loaded through
+      // `jiti('@busirocket/quality-config/dependency-cruiser')` — a
+      // dynamic string argument, not a static import/require knip's
+      // analysis can trace back to the package.
+      ignoreDependencies: ['@busirocket/quality-config'],
     },
     'packages/*': {
       entry: ['src/index.ts', 'src/*.ts', 'bin/*.mjs'],

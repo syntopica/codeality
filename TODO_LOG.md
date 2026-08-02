@@ -24,6 +24,17 @@ Closed work from `TODO.md`, grouped by year and month.
       plugin is off there) rather than reverting the dependency or re-enabling
       the plugin. Verified: `pnpm knip` (root) exit 0,
       `pnpm -r --filter "./templates/*" knip` exit 0, `pnpm check:ci` exit 0.
+- [x] `@busirocket/quality-config` was not a root `devDependency` (removed by
+      Task 6 as genuinely unused at the time). Task 9 re-added it
+      (`pnpm add -D -w @busirocket/quality-config@workspace:*`) and the new root
+      `.dependency-cruiser.cjs` now consumes it via
+      `jiti('@busirocket/quality-config/dependency-cruiser')`, giving it a real
+      consumer. Because that load goes through a dynamic string argument rather
+      than a static import, root `pnpm knip` still flagged it as unused; fixed
+      with a scoped `ignoreDependencies` entry for the package on the `.`
+      workspace in `knip.config.ts`, with a comment explaining why. Verified:
+      `pnpm knip` (root) exit 0, `pnpm deps:graph` exit 0, `pnpm check:ci`
+      exit 0.
 - [x] `includeEntryExports` probe surfaced `bootstrap` in
       `templates/nestjs-app/src/main.ts` as an apparently-dead export. Attempted
       to drop the `export` keyword; `pnpm lint` then failed on

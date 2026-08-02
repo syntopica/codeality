@@ -12,6 +12,7 @@
     "sync-versions:check": "node scripts/sync-versions.mjs --check",
     "dupes": "jscpd packages scripts",
     "knip": "knip",
+    "deps:graph": "depcruise packages templates scripts",
     "check:all": "turbo run type-check lint:fix && pnpm format && pnpm dupes",
     "fix:all": "pnpm sync-versions && turbo run fix && pnpm format",
     "check:ci": "pnpm sync-versions:check && turbo run type-check lint test build && pnpm format:check && pnpm dupes",
@@ -19,7 +20,10 @@
   },
   "devDependencies": {
     "@busirocket/prettier-config": "workspace:*",
+    "@busirocket/quality-config": "workspace:*",
     "@types/node": "^26.1.2",
+    "dependency-cruiser": "^18.1.0",
+    "jiti": "^2.7.0",
     "jscpd": "^5.0.14",
     "knip": "^6.31.0",
     "prettier": "^3.9.6",
