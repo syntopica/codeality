@@ -2,7 +2,7 @@
   "ci": {
     "collect": {
       "numberOfRuns": 1,
-      "startServerCommand": "node .output/server/index.mjs",
+      "startServerCommand": "NUXT_PUBLIC_API_BASE_URL=https://api.example.com node .output/server/index.mjs",
       "startServerReadyPattern": "Listening",
       "url": ["http://localhost:3000/"]
     },
