@@ -101,6 +101,7 @@ Active backlog for the `baseline` repo. Closed items move to `TODO_LOG.md`.
       on all eight templates before flipping the default on. `nestjs-app`'s
       `bootstrap` needs no further action.
 - [!] `type-coverage` incompatible with the `@typescript/typescript6` alias —
-  blocked. Error: `TypeError: Cannot read properties of undefined (reading 'Unknown')`. Smallest unblock: retry after the repo
-  moves off the alias to a released TypeScript 6, or evaluate
-  `tsc --noEmit --strict` + a custom `as`-cast counter instead.
+  blocked. Error:
+  `TypeError: Cannot read properties of undefined (reading 'Unknown')`. Smallest
+  unblock: retry after the repo moves off the alias to a released TypeScript 6,
+  or evaluate `tsc --noEmit --strict` + a custom `as`-cast counter instead.
