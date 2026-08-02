@@ -40,7 +40,8 @@
     "./code-quality": "./src/code-quality.ts",
     "./accessibility": "./src/accessibility.ts",
     "./tailwind": "./src/tailwind.ts",
-    "./frontend-boundaries": "./src/frontend-boundaries.ts"
+    "./frontend-boundaries": "./src/frontend-boundaries.ts",
+    "./testing": "./src/testing.ts"
   },
   "scripts": {
     "fix": "pnpm run lint:fix",
@@ -62,6 +63,7 @@
   },
   "peerDependencies": {
     "@next/eslint-plugin-next": ">=15.0.0",
+    "@vitest/eslint-plugin": ">=1.0.0",
     "eslint": ">=9.0.0",
     "eslint-config-next": ">=15.0.0",
     "eslint-plugin-astro": ">=0.34.0",
@@ -73,6 +75,7 @@
     "eslint-plugin-react-refresh": ">=0.4.0",
     "eslint-plugin-sonarjs": ">=3.0.0",
     "eslint-plugin-tailwindcss": "^4.2.0",
+    "eslint-plugin-testing-library": ">=7.0.0",
     "eslint-plugin-unicorn": ">=57.0.0",
     "eslint-plugin-vue": ">=10.0.0",
     "eslint-plugin-vuejs-accessibility": ">=2.4.0",
@@ -82,6 +85,9 @@
   },
   "peerDependenciesMeta": {
     "@next/eslint-plugin-next": {
+      "optional": true
+    },
+    "@vitest/eslint-plugin": {
       "optional": true
     },
     "eslint-config-next": {
@@ -114,6 +120,9 @@
     "eslint-plugin-tailwindcss": {
       "optional": true
     },
+    "eslint-plugin-testing-library": {
+      "optional": true
+    },
     "eslint-plugin-unicorn": {
       "optional": true
     },
@@ -133,6 +142,7 @@
   "devDependencies": {
     "@next/eslint-plugin-next": "^16.2.12",
     "@types/node": "^26.1.2",
+    "@vitest/eslint-plugin": "^1.6.25",
     "eslint": "^10.8.0",
     "eslint-plugin-astro": "^3.0.1",
     "eslint-plugin-boundaries": "^7.1.0",
@@ -143,6 +153,7 @@
     "eslint-plugin-react-refresh": "^0.5.3",
     "eslint-plugin-sonarjs": "^4.2.0",
     "eslint-plugin-tailwindcss": "^4.2.0",
+    "eslint-plugin-testing-library": "^7.16.2",
     "eslint-plugin-unicorn": "^72.0.0",
     "eslint-plugin-vue": "^10.10.0",
     "eslint-plugin-vuejs-accessibility": "^2.5.0",

@@ -23,5 +23,6 @@ minimumReleaseAgeExclude:
   - '@nuxt/vite-builder@4.5.0'
   - happy-dom@20.11.0
   - nuxt@4.5.0
+  - '@vitest/eslint-plugin@1.6.25'
 patchedDependencies:
   eslint-plugin-react: patches/eslint-plugin-react.patch

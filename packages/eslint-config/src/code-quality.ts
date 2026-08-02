@@ -9,6 +9,7 @@
 import codePolicy from 'eslint-plugin-code-policy'
 
 import { createCodeQualitySonarConfig } from './code-quality-sonar'
+import { createTestingConfig } from './testing'
 
 export const createCodeQualityConfig = () => [
   codePolicy.configs.recommended,
@@ -29,6 +30,7 @@ export const createCodeQualityConfig = () => [
     },
   },
   ...createCodeQualitySonarConfig(),
+  ...createTestingConfig(),
   // Tooling and framework entrypoints are allowed to exceed the default file budget.
   {
     files: [

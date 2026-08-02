@@ -12,9 +12,11 @@ import { FRAMEWORK_ENTRIES, type KnipFramework } from './knip-framework'
 // repo-root knip.config.ts for the `templates/*` workspace.
 const ESLINT_PEER_DEPENDENCIES = [
   '@eslint/js',
+  '@vitest/eslint-plugin',
   'eslint-config-prettier',
   'eslint-plugin-promise',
   'eslint-plugin-security',
+  'eslint-plugin-testing-library',
   'eslint-plugin-unused-imports',
   'typescript-eslint',
 ]

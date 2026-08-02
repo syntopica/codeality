@@ -17,6 +17,7 @@ are **private** and may change without a major bump.
 | `@busirocket/eslint-config/accessibility`       | jsx-a11y                                                          |
 | `@busirocket/eslint-config/tailwind`            | Tailwind CSS plugin                                               |
 | `@busirocket/eslint-config/frontend-boundaries` | `eslint-plugin-boundaries` layer map only                         |
+| `@busirocket/eslint-config/testing`             | Vitest + Testing Library rules for test files                     |
 
 Each entry resolves to **TypeScript source** (`*.ts`) published in the package.
 Consumers load flat config with **ESM** and a TypeScript-aware runner (for
