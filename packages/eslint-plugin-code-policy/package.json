@@ -2,6 +2,9 @@
   "name": "eslint-plugin-code-policy",
   "version": "0.5.2",
   "description": "Architectural linting for TypeScript · enforce atomic files, explicit public APIs, clean runtime boundaries, and view/logic separation.",
+  "engines": {
+    "node": ">=20"
+  },
   "type": "module",
   "main": "./dist/index.cjs",
   "module": "./dist/index.js",
@@ -13,29 +16,49 @@
         "default": "./dist/index.js"
       },
       "require": {
-        "types": "./dist/index.d.ts",
+        "types": "./dist/index.d.cts",
         "default": "./dist/index.cjs"
       }
     },
     "./configs/recommended": {
-      "types": "./dist/configs/recommended.d.ts",
-      "import": "./dist/configs/recommended.js",
-      "require": "./dist/configs/recommended.cjs"
+      "import": {
+        "types": "./dist/configs/recommended.d.ts",
+        "default": "./dist/configs/recommended.js"
+      },
+      "require": {
+        "types": "./dist/configs/recommended.d.cts",
+        "default": "./dist/configs/recommended.cjs"
+      }
     },
     "./configs/strict": {
-      "types": "./dist/configs/strict.d.ts",
-      "import": "./dist/configs/strict.js",
-      "require": "./dist/configs/strict.cjs"
+      "import": {
+        "types": "./dist/configs/strict.d.ts",
+        "default": "./dist/configs/strict.js"
+      },
+      "require": {
+        "types": "./dist/configs/strict.d.cts",
+        "default": "./dist/configs/strict.cjs"
+      }
     },
     "./configs/react": {
-      "types": "./dist/configs/react.d.ts",
-      "import": "./dist/configs/react.js",
-      "require": "./dist/configs/react.cjs"
+      "import": {
+        "types": "./dist/configs/react.d.ts",
+        "default": "./dist/configs/react.js"
+      },
+      "require": {
+        "types": "./dist/configs/react.d.cts",
+        "default": "./dist/configs/react.cjs"
+      }
     },
     "./configs/next": {
-      "types": "./dist/configs/next.d.ts",
-      "import": "./dist/configs/next.js",
-      "require": "./dist/configs/next.cjs"
+      "import": {
+        "types": "./dist/configs/next.d.ts",
+        "default": "./dist/configs/next.js"
+      },
+      "require": {
+        "types": "./dist/configs/next.d.cts",
+        "default": "./dist/configs/next.cjs"
+      }
     }
   },
   "files": [
@@ -44,13 +67,14 @@
     "LICENSE"
   ],
   "scripts": {
-    "build": "tsup && tsc -p tsconfig.build.json && tsc-alias -p tsconfig.build.json",
+    "build": "tsup && tsc -p tsconfig.build.json && tsc-alias -p tsconfig.build.json && node scripts/emit-cjs-types.mjs",
     "dev": "tsup --watch",
     "lint": "eslint src --max-warnings 0",
     "lint:suppress": "eslint src --suppress-all",
     "lint:prune": "eslint src --prune-suppressions",
     "type-check": "tsc --noEmit -p tsconfig.json",
-    "test": "vitest run"
+    "test": "vitest run",
+    "publish:check": "publint --strict && attw --pack . --profile node16"
   },
   "keywords": [
     "eslint",
@@ -98,9 +122,11 @@
     "@typescript-eslint/utils": "^8.65.0"
   },
   "devDependencies": {
+    "@arethetypeswrong/cli": "^0.18.5",
     "@busirocket/tsconfig": "workspace:*",
     "@types/node": "^26.1.2",
     "eslint": "^10.8.0",
+    "publint": "^0.3.22",
     "tsc-alias": "^1.9.1",
     "tsup": "^8.5.1",
     "typescript": "npm:@typescript/typescript6@^6.0.2",

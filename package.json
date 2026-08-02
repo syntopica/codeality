@@ -23,7 +23,8 @@
     "secrets:check": "gitleaks detect --no-banner --redact",
     "audit:check": "pnpm audit --audit-level=high",
     "workflows:check": "actionlint",
-    "check:quality": "pnpm knip && pnpm deps:graph",
+    "publish:check": "turbo run publish:check",
+    "check:quality": "pnpm knip && pnpm deps:graph && pnpm publish:check",
     "check:security": "pnpm secrets:check && pnpm audit:check && pnpm workflows:check"
   },
   "devDependencies": {

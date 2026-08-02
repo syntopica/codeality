@@ -22,6 +22,7 @@ const BASELINE_CONSUMER_PACKAGES = [
   '@busirocket/eslint-config',
   '@busirocket/prettier-config',
   '@busirocket/tsconfig',
+  '@busirocket/quality-config',
   'eslint-plugin-code-policy',
 ]
 
@@ -30,6 +31,9 @@ const BASELINE_CONSUMER_PACKAGES = [
 // templates.
 const THIRD_PARTY_PINS = {
   jscpd: '^5.0.14',
+  knip: '^6.31.0',
+  'dependency-cruiser': '^18.1.0',
+  lefthook: '^2.1.10',
 }
 
 async function readWorkspaceVersions() {

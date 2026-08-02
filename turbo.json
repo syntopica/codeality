@@ -32,6 +32,9 @@
       "cache": false
     },
     "dupes": {},
+    "publish:check": {
+      "dependsOn": ["^build", "build"]
+    },
     "dev": {
       "cache": false,
       "persistent": true

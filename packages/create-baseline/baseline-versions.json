@@ -2,6 +2,10 @@
   "@busirocket/eslint-config": "^0.4.2",
   "@busirocket/prettier-config": "^0.1.1",
   "@busirocket/tsconfig": "^0.2.0",
+  "@busirocket/quality-config": "^0.1.0",
   "eslint-plugin-code-policy": "^0.5.2",
-  "jscpd": "^5.0.14"
+  "jscpd": "^5.0.14",
+  "knip": "^6.31.0",
+  "dependency-cruiser": "^18.1.0",
+  "lefthook": "^2.1.10"
 }

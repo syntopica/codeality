@@ -24,6 +24,7 @@ on:
           - tsconfig
           - prettier-config
           - create-baseline
+          - quality-config
 
 permissions:
   contents: read

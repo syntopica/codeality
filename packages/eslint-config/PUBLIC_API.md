@@ -27,3 +27,21 @@ example `jiti` or your bundler) as shown in the package README.
 
 Internal modules under `src/` that are not re-exported through the table above
 are **not** public API.
+
+## `publint`/`attw` findings that are expected, not defects
+
+`publish:check` (`publint --strict && attw --pack . --profile node16`) ignores
+two `attw` rules for this package: `cjs-resolves-to-esm` and
+`internal-resolution-error`. Both are consequences of the no-build design above,
+not resolution bugs:
+
+- **`cjs-resolves-to-esm`** — every export subpath resolves to raw `.ts` ESM
+  source; there is no CommonJS build to satisfy a `require()` caller. Consumers
+  load these configs with ESM and a TypeScript-aware runtime (`jiti`), never
+  `require`.
+- **`internal-resolution-error`** — subpaths such as `./nextjs` and `./astro`
+  import framework packages (`@next/eslint-plugin-next`, `eslint-plugin-astro`,
+  etc.) declared as **optional peer dependencies**. `attw`'s sandbox only
+  contains this package's own tarball, so it cannot see peers a real consumer
+  installs, and flags those imports as unresolved. This is the intended shape of
+  an optional peer, not a broken `exports` entry.

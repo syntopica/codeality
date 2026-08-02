@@ -29,10 +29,13 @@
   },
   "scripts": {
     "fix": "prettier --write \"*.mjs\" --list-different",
-    "format:check": "prettier --check \"*.mjs\""
+    "format:check": "prettier --check \"*.mjs\"",
+    "publish:check": "publint --strict && attw --pack . --profile node16"
   },
   "devDependencies": {
-    "prettier": "^3.9.6"
+    "@arethetypeswrong/cli": "^0.18.5",
+    "prettier": "^3.9.6",
+    "publint": "^0.3.22"
   },
   "files": [
     "LICENSE",

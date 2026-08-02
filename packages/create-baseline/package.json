@@ -31,12 +31,17 @@
     "bin"
   ],
   "scripts": {
-    "check:self": "node ./bin/create-baseline.mjs --check"
+    "check:self": "node ./bin/create-baseline.mjs --check",
+    "publish:check": "publint --strict && attw --pack . --profile node16"
   },
   "keywords": [
     "eslint",
     "prettier",
     "typescript",
     "baseline"
-  ]
+  ],
+  "devDependencies": {
+    "@arethetypeswrong/cli": "^0.18.5",
+    "publint": "^0.3.22"
+  }
 }

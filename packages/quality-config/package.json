@@ -41,7 +41,8 @@
     "lint:fix": "eslint src --fix",
     "lint:suppress": "eslint src --suppress-all",
     "lint:prune": "eslint src --prune-suppressions",
-    "type-check": "tsc --noEmit -p tsconfig.json"
+    "type-check": "tsc --noEmit -p tsconfig.json",
+    "publish:check": "publint --strict && attw --pack . --profile node16 --ignore-rules cjs-resolves-to-esm internal-resolution-error"
   },
   "peerDependencies": {
     "dependency-cruiser": ">=18.0.0",
@@ -57,11 +58,13 @@
     }
   },
   "devDependencies": {
+    "@arethetypeswrong/cli": "^0.18.5",
     "@busirocket/eslint-config": "workspace:*",
     "@types/node": "^26.1.2",
     "dependency-cruiser": "^18.1.0",
     "eslint": "^10.8.0",
     "knip": "^6.31.0",
+    "publint": "^0.3.22",
     "typescript": "npm:@typescript/typescript6@^6.0.2"
   }
 }
