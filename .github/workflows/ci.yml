@@ -30,3 +30,6 @@ jobs:
 
       - name: check:ci
         run: pnpm run check:ci
+
+      - name: Performance budget
+        run: pnpm run perf:check
