@@ -18,7 +18,8 @@
     "check:all": "turbo run type-check lint:fix && pnpm format && pnpm dupes",
     "fix:all": "pnpm sync-versions && turbo run fix && pnpm format",
     "check:ci": "pnpm sync-versions:check && turbo run type-check lint test build && pnpm format:check && pnpm dupes",
-    "perf:check": "turbo run perf:check"
+    "perf:check": "turbo run perf:check",
+    "secrets:check": "gitleaks detect --no-banner --redact"
   },
   "devDependencies": {
     "@busirocket/prettier-config": "workspace:*",

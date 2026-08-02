@@ -1,0 +1,13 @@
+# Extends the upstream default ruleset; only additions and allowlists here.
+[extend]
+useDefault = true
+
+[allowlist]
+description = "Paths with no real secrets"
+paths = [
+  '''pnpm-lock\.yaml''',
+  '''Cargo\.lock''',
+  '''(^|/)dist/''',
+  '''(^|/)coverage/''',
+  '''(^|/)target/''',
+]
