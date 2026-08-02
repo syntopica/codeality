@@ -7,7 +7,7 @@ useDefault = true
 # secret into a generated artifact at compile time. If build output is ever
 # committed, it must be scanned like any other file, not skipped. Do not
 # re-add dist/, coverage/, or target/ here just because a lockfile-shaped
-# false positive shows up again — add the lockfile pattern instead.
+# false positive shows up again -- add the lockfile pattern instead.
 [allowlist]
 description = "Lockfiles: integrity hashes read as high-entropy secrets but cannot hold a credential"
 paths = [
