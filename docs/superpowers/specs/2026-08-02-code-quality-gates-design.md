@@ -49,6 +49,22 @@ once at the root. Only the root run is the cross-file gate.
 - Publishing the new package to npm. The package is left publishable and wired
   into `publish.yml`, but the publish itself is a separate, deliberate act.
 
+## Status note: type-coverage is dropped
+
+Every `type-coverage` reference below is superseded. The spike that gated it
+(plan Task 10) found it cannot run in this repo at all: `type-coverage-core`
+throws `TypeError: Cannot read properties of undefined (reading 'Unknown')`
+while reading `ts.SyntaxKind.Unknown` at load time, because it cannot load the
+TypeScript module behind this repo's `npm:@typescript/typescript6` alias. The
+failure is in module loading, not analysis, so no configuration fixes it.
+
+Consequences: `check:quality` does not include `types:coverage`, no
+`types:coverage` script or Turbo task exists, and `type-coverage` is not added
+to `THIRD_PARTY_PINS`. The type-safety ratchet is carried by the ESLint bulk
+suppressions mechanism alone, which was always the load-bearing half. Debt is
+recorded in `TODO.md`; the unblock is a move off the alias to a released
+TypeScript 6.
+
 ## Key finding: betterer is dead, ESLint replaces it
 
 The original shortlist included
@@ -178,12 +194,13 @@ Root `package.json`:
 ```json
 "knip": "knip",
 "deps:graph": "depcruise packages templates scripts",
-"types:coverage": "turbo run types:coverage",
 "publish:check": "turbo run publish:check",
 "lint:suppress": "turbo run lint:suppress",
-"check:quality": "pnpm knip && pnpm deps:graph && pnpm types:coverage && pnpm publish:check",
+"check:quality": "pnpm knip && pnpm deps:graph && pnpm publish:check",
 "check:security": "gitleaks detect --no-banner && pnpm audit --audit-level=high && actionlint"
 ```
+
+`types:coverage` is absent: see the type-coverage status note above.
 
 Each template and package gains:
 
