@@ -229,8 +229,10 @@ For existing repos taking on the baseline, all three channels ship:
 2. **Documented** — `docs/adoption/existing-repo.md` gains the freeze-and-ratchet
    workflow; a new `docs/standards/quality-gates.md` documents each gate, its
    threshold, and why it exists.
-3. **`create-baseline`** — scaffolds the config files and adds the new tools to
-   `baseline-versions.json`.
+3. **`create-baseline`** — the CLI verifies rather than scaffolds (it reports
+   missing baseline packages and, under `--hard`, asserts an `eslint.config.*`
+   exists). It gains the same check for `knip.config.*`, `lefthook.yml`, and
+   `renovate.json`, and picks up the new tools through `baseline-versions.json`.
 
 `scripts/sync-versions.mjs` is extended: `@busirocket/quality-config` joins
 `BASELINE_CONSUMER_PACKAGES`, and the new third-party tools join
