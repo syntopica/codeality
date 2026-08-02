@@ -227,6 +227,9 @@ importers:
       '@busirocket/prettier-config':
         specifier: workspace:*
         version: link:../../packages/prettier-config
+      '@busirocket/quality-config':
+        specifier: workspace:*
+        version: link:../../packages/quality-config
       '@busirocket/tsconfig':
         specifier: workspace:*
         version: link:../../packages/tsconfig
@@ -287,6 +290,9 @@ importers:
       jscpd:
         specifier: ^5.0.14
         version: 5.0.14
+      knip:
+        specifier: ^6.31.0
+        version: 6.31.0
       prettier:
         specifier: ^3.9.6
         version: 3.9.6
@@ -336,6 +342,9 @@ importers:
       '@busirocket/prettier-config':
         specifier: workspace:*
         version: link:../../packages/prettier-config
+      '@busirocket/quality-config':
+        specifier: workspace:*
+        version: link:../../packages/quality-config
       '@busirocket/tsconfig':
         specifier: workspace:*
         version: link:../../packages/tsconfig
@@ -393,6 +402,9 @@ importers:
       jscpd:
         specifier: ^5.0.14
         version: 5.0.14
+      knip:
+        specifier: ^6.31.0
+        version: 6.31.0
       prettier:
         specifier: ^3.9.6
         version: 3.9.6
@@ -433,6 +445,9 @@ importers:
       '@busirocket/prettier-config':
         specifier: workspace:*
         version: link:../../packages/prettier-config
+      '@busirocket/quality-config':
+        specifier: workspace:*
+        version: link:../../packages/quality-config
       '@busirocket/tsconfig':
         specifier: workspace:*
         version: link:../../packages/tsconfig
@@ -520,6 +535,9 @@ importers:
       jsdom:
         specifier: ^30.0.0
         version: 30.0.0
+      knip:
+        specifier: ^6.31.0
+        version: 6.31.0
       prettier:
         specifier: ^3.9.6
         version: 3.9.6
@@ -566,6 +584,9 @@ importers:
       '@busirocket/prettier-config':
         specifier: workspace:*
         version: link:../../packages/prettier-config
+      '@busirocket/quality-config':
+        specifier: workspace:*
+        version: link:../../packages/quality-config
       '@eslint/js':
         specifier: ^10.0.1
         version: 10.0.1(eslint@10.8.0(jiti@2.7.0)(supports-color@10.2.2))
@@ -638,6 +659,9 @@ importers:
       jscpd:
         specifier: ^5.0.14
         version: 5.0.14
+      knip:
+        specifier: ^6.31.0
+        version: 6.31.0
       prettier:
         specifier: ^3.9.6
         version: 3.9.6
@@ -665,6 +689,9 @@ importers:
       vitest-axe:
         specifier: ^0.1.0
         version: 0.1.0(vitest@4.1.10)
+      vitest-environment-nuxt:
+        specifier: ^2.0.0
+        version: 2.0.0(@vue/test-utils@2.4.11(@vue/compiler-dom@3.5.40)(@vue/server-renderer@3.5.40)(vue@3.5.40(typescript@6.0.3)))(esbuild@0.28.1)(happy-dom@20.11.1)(jsdom@30.0.0)(magicast@0.5.3)(rolldown@1.2.0)(rollup@4.62.3)(typescript@6.0.3)(vite@8.1.5(@types/node@26.1.2)(esbuild@0.28.1)(jiti@2.7.0)(terser@5.49.0)(yaml@2.9.0))(vitest@4.1.10)(webpack@5.106.2(cssnano@8.0.2(postcss@8.5.24))(csso@5.0.5)(esbuild@0.28.1)(lightningcss@1.32.0)(postcss@8.5.24)(uglify-js@3.19.3))
       vue-eslint-parser:
         specifier: ^10.4.1
         version: 10.4.1(eslint@10.8.0(jiti@2.7.0)(supports-color@10.2.2))(supports-color@10.2.2)
@@ -693,6 +720,9 @@ importers:
       '@busirocket/prettier-config':
         specifier: workspace:*
         version: link:../../packages/prettier-config
+      '@busirocket/quality-config':
+        specifier: workspace:*
+        version: link:../../packages/quality-config
       '@busirocket/tsconfig':
         specifier: workspace:*
         version: link:../../packages/tsconfig
@@ -774,6 +804,9 @@ importers:
       jsdom:
         specifier: ^30.0.0
         version: 30.0.0
+      knip:
+        specifier: ^6.31.0
+        version: 6.31.0
       prettier:
         specifier: ^3.9.6
         version: 3.9.6
@@ -813,6 +846,9 @@ importers:
       '@busirocket/prettier-config':
         specifier: workspace:*
         version: link:../../packages/prettier-config
+      '@busirocket/quality-config':
+        specifier: workspace:*
+        version: link:../../packages/quality-config
       '@busirocket/tsconfig':
         specifier: workspace:*
         version: link:../../packages/tsconfig
@@ -867,6 +903,9 @@ importers:
       jscpd:
         specifier: ^5.0.14
         version: 5.0.14
+      knip:
+        specifier: ^6.31.0
+        version: 6.31.0
       prettier:
         specifier: ^3.9.6
         version: 3.9.6
@@ -907,6 +946,9 @@ importers:
       '@busirocket/prettier-config':
         specifier: workspace:*
         version: link:../../packages/prettier-config
+      '@busirocket/quality-config':
+        specifier: workspace:*
+        version: link:../../packages/quality-config
       '@busirocket/tsconfig':
         specifier: workspace:*
         version: link:../../packages/tsconfig
@@ -988,6 +1030,9 @@ importers:
       jsdom:
         specifier: ^30.0.0
         version: 30.0.0
+      knip:
+        specifier: ^6.31.0
+        version: 6.31.0
       prettier:
         specifier: ^3.9.6
         version: 3.9.6
@@ -1043,6 +1088,9 @@ importers:
       '@busirocket/prettier-config':
         specifier: workspace:*
         version: link:../../packages/prettier-config
+      '@busirocket/quality-config':
+        specifier: workspace:*
+        version: link:../../packages/quality-config
       '@busirocket/tsconfig':
         specifier: workspace:*
         version: link:../../packages/tsconfig
@@ -1112,6 +1160,9 @@ importers:
       jsdom:
         specifier: ^30.0.0
         version: 30.0.0
+      knip:
+        specifier: ^6.31.0
+        version: 6.31.0
       prettier:
         specifier: ^3.9.6
         version: 3.9.6

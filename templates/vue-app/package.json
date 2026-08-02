@@ -16,8 +16,9 @@
     "test": "vitest run",
     "test:watch": "vitest",
     "dupes": "jscpd .",
+    "knip": "knip",
     "check:all": "pnpm type-check && pnpm lint && pnpm format:check && pnpm dupes",
-    "check:ci": "pnpm type-check && pnpm lint && pnpm format:check && pnpm test && pnpm dupes",
+    "check:ci": "pnpm type-check && pnpm lint && pnpm format:check && pnpm test && pnpm dupes && pnpm knip",
     "test:a11y": "vitest run",
     "perf:check": "pnpm build && lhci autorun --config=.lighthouserc.json"
   },
@@ -31,6 +32,7 @@
   "devDependencies": {
     "@busirocket/eslint-config": "workspace:*",
     "@busirocket/prettier-config": "workspace:*",
+    "@busirocket/quality-config": "workspace:*",
     "@busirocket/tsconfig": "workspace:*",
     "@eslint/js": "^10.0.1",
     "@lhci/cli": "^0.15.1",
@@ -54,6 +56,7 @@
     "jiti": "^2.7.0",
     "jscpd": "^5.0.14",
     "jsdom": "^30.0.0",
+    "knip": "^6.31.0",
     "prettier": "^3.9.6",
     "prettier-plugin-css-order": "^2.2.0",
     "prettier-plugin-organize-imports": "^4.3.0",

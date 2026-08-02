@@ -34,7 +34,10 @@ export const FRAMEWORK_ENTRIES: Record<
     project: ['app/**/*.{ts,vue}', 'server/**/*.ts'],
   },
   tauri: {
-    entry: ['src/main.ts', 'vite.config.*'],
+    // The scaffolded tauri-app frontend is React, so its entry is
+    // src/main.tsx, not src/main.ts; keep both extensions so a plain-TS
+    // Tauri frontend also matches.
+    entry: ['src/main.{ts,tsx}', 'vite.config.*'],
     project: ['src/**/*.{ts,tsx}'],
   },
   'ts-package': {
@@ -46,7 +49,12 @@ export const FRAMEWORK_ENTRIES: Record<
     project: ['src/**/*.{ts,tsx}'],
   },
   'vite-vue': {
-    entry: ['src/main.ts', 'index.html', 'vite.config.*'],
+    // src/main.ts imports the composition root via the '@/app' alias, which
+    // resolves to the directory's index.ts. Knip's resolver does not follow
+    // that implicit directory-index hop through a path alias, so without an
+    // explicit entry here it treats everything main.ts reaches only through
+    // '@/app' (createVueApp, the router, App.vue) as unreached dead code.
+    entry: ['src/main.ts', 'index.html', 'vite.config.*', 'src/app/index.ts'],
     project: ['src/**/*.{ts,vue}'],
   },
 }
