@@ -44,9 +44,10 @@
   },
   "scripts": {
     "fix": "pnpm run lint:fix",
-    "lint": "eslint src --max-warnings 0 --prune-suppressions",
+    "lint": "eslint src --max-warnings 0",
     "lint:fix": "eslint src --fix",
     "lint:suppress": "eslint src --suppress-all",
+    "lint:prune": "eslint src --prune-suppressions",
     "type-check": "tsc --noEmit -p tsconfig.json"
   },
   "dependencies": {

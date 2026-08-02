@@ -46,8 +46,9 @@
   "scripts": {
     "build": "tsup && tsc -p tsconfig.build.json && tsc-alias -p tsconfig.build.json",
     "dev": "tsup --watch",
-    "lint": "eslint src --max-warnings 0 --prune-suppressions",
+    "lint": "eslint src --max-warnings 0",
     "lint:suppress": "eslint src --suppress-all",
+    "lint:prune": "eslint src --prune-suppressions",
     "type-check": "tsc --noEmit -p tsconfig.json",
     "test": "vitest run"
   },

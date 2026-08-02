@@ -15,6 +15,9 @@
     "lint:suppress": {
       "cache": false
     },
+    "lint:prune": {
+      "cache": false
+    },
     "format": {},
     "format:check": {},
     "type-check": {
