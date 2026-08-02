@@ -2,12 +2,15 @@
 [extend]
 useDefault = true
 
+# Build output is deliberately NOT allowlisted here: a bundler `define`, an
+# inlined NEXT_PUBLIC_* value, or a Rust build.rs/env!() can embed a real
+# secret into a generated artifact at compile time. If build output is ever
+# committed, it must be scanned like any other file, not skipped. Do not
+# re-add dist/, coverage/, or target/ here just because a lockfile-shaped
+# false positive shows up again — add the lockfile pattern instead.
 [allowlist]
-description = "Paths with no real secrets"
+description = "Lockfiles: integrity hashes read as high-entropy secrets but cannot hold a credential"
 paths = [
   '''pnpm-lock\.yaml''',
   '''Cargo\.lock''',
-  '''(^|/)dist/''',
-  '''(^|/)coverage/''',
-  '''(^|/)target/''',
 ]
