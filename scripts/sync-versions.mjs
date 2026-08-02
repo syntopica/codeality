@@ -39,6 +39,9 @@ async function readWorkspaceVersions() {
     if (!entry.isDirectory()) continue
     const manifestPath = resolve(PACKAGES_DIR, entry.name, 'package.json')
     try {
+      // `entry.name` comes from a directory listing of this repo's own
+      // packages/ folder, not untrusted input.
+      // eslint-disable-next-line security/detect-non-literal-fs-filename
       const pkg = JSON.parse(await readFile(manifestPath, 'utf8'))
       if (pkg.name && pkg.version) versions[pkg.name] = pkg.version
     } catch {
@@ -91,6 +94,9 @@ async function main() {
   for (const { path, content } of targets) {
     let current = null
     try {
+      // `path` is one of the fixed, hardcoded targets built by
+      // buildTargets() above, not untrusted input.
+      // eslint-disable-next-line security/detect-non-literal-fs-filename
       current = await readFile(path, 'utf8')
     } catch {
       /* file does not exist yet */
@@ -102,6 +108,7 @@ async function main() {
       drift = true
       console.error(`sync-versions: out of sync -> ${rel}`)
     } else {
+      // eslint-disable-next-line security/detect-non-literal-fs-filename -- see above
       await writeFile(path, content)
       console.log(`sync-versions: wrote ${rel}`)
     }
@@ -118,7 +125,9 @@ async function main() {
   )
 }
 
-main().catch((err) => {
+try {
+  await main()
+} catch (err) {
   console.error(err)
   exit(1)
-})
+}

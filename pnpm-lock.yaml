@@ -18,6 +18,9 @@ importers:
 
   .:
     devDependencies:
+      '@busirocket/eslint-config':
+        specifier: workspace:*
+        version: link:packages/eslint-config
       '@busirocket/prettier-config':
         specifier: workspace:*
         version: link:packages/prettier-config

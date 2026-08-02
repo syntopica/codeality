@@ -27,6 +27,7 @@
     "check:security": "pnpm secrets:check && pnpm audit:check && pnpm workflows:check"
   },
   "devDependencies": {
+    "@busirocket/eslint-config": "workspace:*",
     "@busirocket/prettier-config": "workspace:*",
     "@busirocket/quality-config": "workspace:*",
     "@types/node": "^26.1.2",

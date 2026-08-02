@@ -28,6 +28,10 @@ function parseArgs(argv) {
 
 async function readPackageJson(root) {
   const path = resolve(root, 'package.json')
+  // `root` is the directory this CLI was invoked against (cwd, or the target
+  // project it is checking) — reading its manifest is the tool's job, not
+  // untrusted input.
+  // eslint-disable-next-line security/detect-non-literal-fs-filename
   const raw = await readFile(path, 'utf8')
   return JSON.parse(raw)
 }
@@ -132,7 +136,9 @@ async function main() {
   }
 }
 
-main().catch((err) => {
+try {
+  await main()
+} catch (err) {
   console.error(err)
   exit(1)
-})
+}
