@@ -21,3 +21,6 @@ node_modules/
 .serena/
 
 target/
+
+# eslint-suppressions.json is deliberately committed: it is the shared
+# frozen baseline of pre-existing violations.

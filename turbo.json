@@ -12,6 +12,9 @@
       "dependsOn": ["build", "^build"]
     },
     "lint:fix": {},
+    "lint:suppress": {
+      "cache": false
+    },
     "format": {},
     "format:check": {},
     "type-check": {

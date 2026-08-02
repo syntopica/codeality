@@ -5,8 +5,9 @@
   "packageManager": "pnpm@11.18.0",
   "type": "module",
   "scripts": {
-    "lint": "eslint src --max-warnings 0",
+    "lint": "eslint src --max-warnings 0 --prune-suppressions",
     "lint:fix": "eslint src --fix",
+    "lint:suppress": "eslint src --suppress-all",
     "fix": "pnpm lint:fix && pnpm format",
     "format": "prettier --write . --list-different",
     "format:check": "prettier --check .",

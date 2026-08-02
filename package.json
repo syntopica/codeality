@@ -5,6 +5,7 @@
   "scripts": {
     "lint": "turbo run lint",
     "lint:fix": "turbo run lint:fix",
+    "lint:suppress": "turbo run lint:suppress",
     "type-check": "turbo run type-check",
     "format": "prettier --write . --list-different",
     "format:check": "prettier --check .",
