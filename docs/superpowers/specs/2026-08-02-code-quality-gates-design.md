@@ -1,7 +1,6 @@
 # Code quality gates — design
 
-**Date:** 2026-08-02
-**Status:** Approved, pending implementation
+**Date:** 2026-08-02 **Status:** Approved, pending implementation
 
 ## Problem
 
@@ -52,11 +51,11 @@ once at the root. Only the root run is the cross-file gate.
 
 ## Key finding: betterer is dead, ESLint replaces it
 
-The original shortlist included [betterer](https://github.com/phenomnomnominal/betterer)
-for the ratchet (freeze current violations, fail on new ones). It is
-unmaintained: `dist-tags.latest` is `6.0.0-alpha.1`, last published
-**2024-12-01**, and the stable 5.x line declares `eslint >=7` and predates flat
-config. Against ESLint 10 it is a liability.
+The original shortlist included
+[betterer](https://github.com/phenomnomnominal/betterer) for the ratchet (freeze
+current violations, fail on new ones). It is unmaintained: `dist-tags.latest` is
+`6.0.0-alpha.1`, last published **2024-12-01**, and the stable 5.x line declares
+`eslint >=7` and predates flat config. Against ESLint 10 it is a liability.
 
 It is also unnecessary. ESLint 10.8.0 ships bulk suppressions natively:
 
@@ -66,7 +65,7 @@ It is also unnecessary. ESLint 10.8.0 ships bulk suppressions natively:
 ```
 
 `--suppress-all` writes existing violations to `eslint-suppressions.json`; CI
-then fails on any *new* violation. `--prune-suppressions` supplies the ratchet:
+then fails on any _new_ violation. `--prune-suppressions` supplies the ratchet:
 once a developer fixes real debt, the matching suppression is unused and CI
 forces its removal, so the count only ever decreases. One native mechanism
 covers both the adoption gate and the suppression budget, with no dependency.
@@ -110,34 +109,34 @@ exactly the cross-file duplication the `jscpd` gate exists to prevent.
 
 Each gate runs where it has information, not everywhere:
 
-| Gate | Scope | Rationale |
-| --- | --- | --- |
-| knip | repo root, once | Understands pnpm workspaces natively; dead code across packages is only visible with a global view |
-| dependency-cruiser | repo root, once | The coupling graph is global; also detects full-depth cycles, which `import/no-cycle` at `maxDepth: 1` cannot |
-| ESLint suppressions | per package | The suppressions file belongs next to its `eslint.config` |
-| type-coverage | per package/template | Needs each project's own `tsconfig.json` |
-| publint + attw | `packages/*` only | The five published packages. Templates are `private: true` |
-| gitleaks | CI + `pre-push` | Full history in CI; local hook stops it before it leaves the machine |
-| actionlint | repo root | Workflows only exist at the root |
-| `@vitest/eslint-plugin`, `eslint-plugin-testing-library` | new `testing.ts` layer in `eslint-config` | Inherited by every template through the shared config |
-| Renovate | root + copied into templates | So scaffolded repos inherit it |
-| lefthook | root + templates | Same |
+| Gate                                                     | Scope                                     | Rationale                                                                                                     |
+| -------------------------------------------------------- | ----------------------------------------- | ------------------------------------------------------------------------------------------------------------- |
+| knip                                                     | repo root, once                           | Understands pnpm workspaces natively; dead code across packages is only visible with a global view            |
+| dependency-cruiser                                       | repo root, once                           | The coupling graph is global; also detects full-depth cycles, which `import/no-cycle` at `maxDepth: 1` cannot |
+| ESLint suppressions                                      | per package                               | The suppressions file belongs next to its `eslint.config`                                                     |
+| type-coverage                                            | per package/template                      | Needs each project's own `tsconfig.json`                                                                      |
+| publint + attw                                           | `packages/*` only                         | The five published packages. Templates are `private: true`                                                    |
+| gitleaks                                                 | CI + `pre-push`                           | Full history in CI; local hook stops it before it leaves the machine                                          |
+| actionlint                                               | repo root                                 | Workflows only exist at the root                                                                              |
+| `@vitest/eslint-plugin`, `eslint-plugin-testing-library` | new `testing.ts` layer in `eslint-config` | Inherited by every template through the shared config                                                         |
+| Renovate                                                 | root + copied into templates              | So scaffolded repos inherit it                                                                                |
+| lefthook                                                 | root + templates                          | Same                                                                                                          |
 
 Note: `eslint-plugin-vitest` is deprecated. The maintained package is
 `@vitest/eslint-plugin` (1.6.25).
 
 ### Tool versions (verified 2026-08-02)
 
-| Tool | Version | Constraint |
-| --- | --- | --- |
-| knip | 6.31.0 | `node ^20.19.0 \|\| >=22.12.0` |
-| dependency-cruiser | 18.1.0 | `node ^22 \|\| ^24 \|\| >=26` |
-| type-coverage | 2.30.1 | — |
-| publint | 0.3.22 | — |
-| @arethetypeswrong/cli | 0.18.5 | — |
-| lefthook | 2.1.10 | — |
-| @vitest/eslint-plugin | 1.6.25 | `eslint >=8.57.0` |
-| eslint-plugin-testing-library | 7.16.2 | `eslint ^8.57 \|\| ^9 \|\| ^10` |
+| Tool                          | Version | Constraint                      |
+| ----------------------------- | ------- | ------------------------------- |
+| knip                          | 6.31.0  | `node ^20.19.0 \|\| >=22.12.0`  |
+| dependency-cruiser            | 18.1.0  | `node ^22 \|\| ^24 \|\| >=26`   |
+| type-coverage                 | 2.30.1  | —                               |
+| publint                       | 0.3.22  | —                               |
+| @arethetypeswrong/cli         | 0.18.5  | —                               |
+| lefthook                      | 2.1.10  | —                               |
+| @vitest/eslint-plugin         | 1.6.25  | `eslint >=8.57.0`               |
+| eslint-plugin-testing-library | 7.16.2  | `eslint ^8.57 \|\| ^9 \|\| ^10` |
 
 `dependency-cruiser` requires Node ^22; CI currently pins Node 22 for `verify`,
 which satisfies it.
@@ -186,8 +185,9 @@ Published packages (`packages/*` with `private: false`) also gain
 
 `check:ci` gains `perf:check` and drops the redundant per-package `dupes`.
 
-New Turbo tasks: `types:coverage`, `publish:check` (both `dependsOn: ["^build"]`),
-`lint:suppress` (`cache: false`, since it writes a file).
+New Turbo tasks: `types:coverage`, `publish:check` (both
+`dependsOn: ["^build"]`), `lint:suppress` (`cache: false`, since it writes a
+file).
 
 ## Git hooks (lefthook)
 
@@ -226,9 +226,9 @@ For existing repos taking on the baseline, all three channels ship:
 1. **Wired into all eight templates** — `lint:suppress` and
    `--prune-suppressions` present from day one, even though a freshly scaffolded
    template has nothing to suppress.
-2. **Documented** — `docs/adoption/existing-repo.md` gains the freeze-and-ratchet
-   workflow; a new `docs/standards/quality-gates.md` documents each gate, its
-   threshold, and why it exists.
+2. **Documented** — `docs/adoption/existing-repo.md` gains the
+   freeze-and-ratchet workflow; a new `docs/standards/quality-gates.md`
+   documents each gate, its threshold, and why it exists.
 3. **`create-baseline`** — the CLI verifies rather than scaffolds (it reports
    missing baseline packages and, under `--hard`, asserts an `eslint.config.*`
    exists). It gains the same check for `knip.config.*`, `lefthook.yml`, and
@@ -245,17 +245,17 @@ Every gate is proven against a real violation, not against "the package
 installed". Each check is a throwaway experiment: break it, confirm the gate
 fails, revert. None of it is committed.
 
-| Gate | Proof |
-| --- | --- |
-| knip | Add an export with no consumer → fails; remove → passes |
-| dependency-cruiser | Create an A→B→C→A cycle → fails (today's `maxDepth: 1` misses it) |
-| gitleaks | Fake AWS key in a local commit → fails; revert |
-| ESLint suppressions | Introduce a violation of a suppressed rule → fails |
-| publint / attw | Break a package's `exports` map → fails |
-| lefthook | Commit with a lint error → hook blocks it |
-| `--max-warnings 0` | Function at cyclomatic complexity 11 → now breaks the build |
-| type-coverage | Add an `as any` cast → drops below threshold, fails |
-| actionlint | Invalid `runs-on` in a workflow → fails |
+| Gate                | Proof                                                             |
+| ------------------- | ----------------------------------------------------------------- |
+| knip                | Add an export with no consumer → fails; remove → passes           |
+| dependency-cruiser  | Create an A→B→C→A cycle → fails (today's `maxDepth: 1` misses it) |
+| gitleaks            | Fake AWS key in a local commit → fails; revert                    |
+| ESLint suppressions | Introduce a violation of a suppressed rule → fails                |
+| publint / attw      | Break a package's `exports` map → fails                           |
+| lefthook            | Commit with a lint error → hook blocks it                         |
+| `--max-warnings 0`  | Function at cyclomatic complexity 11 → now breaks the build       |
+| type-coverage       | Add an `as any` cast → drops below threshold, fails               |
+| actionlint          | Invalid `runs-on` in a workflow → fails                           |
 
 Final acceptance: `pnpm check:all`, `pnpm check:quality`, and
 `pnpm check:security` all pass on a clean tree, and CI is green across the three
