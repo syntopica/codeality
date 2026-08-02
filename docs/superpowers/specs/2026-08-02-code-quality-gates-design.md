@@ -147,13 +147,24 @@ The single `verify` job splits into three parallel jobs, each doing its own
 checkout, pnpm setup, and cached install:
 
 ```
-verify    → pnpm check:ci        type-check, lint, test, build, format, dupes, perf:check
+verify    → pnpm check:ci        type-check, lint, test, build, format, dupes
+            + pnpm perf:check    Lighthouse budgets, CI-only (see below)
 quality   → pnpm check:quality   knip, dependency-cruiser, type-coverage, publint, attw
 security  → pnpm check:security  gitleaks, pnpm audit, actionlint
 ```
 
 Parallel jobs keep wall-clock feedback flat as gates are added, and a failure
 names its own family without reading the log.
+
+**`perf:check` is a CI step, not part of `check:ci`.** The original design put
+it inside `check:ci`; execution proved that unworkable. Lighthouse cannot obtain
+a first contentful paint under headless Chrome on macOS — verified both in an
+automated shell and by the maintainer in an interactive terminal, same `NO_FCP`
+and same exit 1, and unchanged by `--headless=new --no-sandbox`. Inside
+`check:ci` the budget made the local pipeline permanently red on the templates
+that failed, and passed vacuously (`0 URL(s), 0 total run(s)`) on the rest. As a
+CI step on ubuntu-latest the budget is enforced where Chrome paints, without
+making `pnpm check:ci` unrunnable for anyone developing on a Mac.
 
 `gitleaks` runs with `fetch-depth: 0` — without full history it cannot see a
 secret committed three commits ago. `pnpm audit --audit-level=high` fails only
@@ -183,7 +194,9 @@ Each template and package gains:
 Published packages (`packages/*` with `private: false`) also gain
 `publish:check` — `publint && attw --pack .`.
 
-`check:ci` gains `perf:check` and drops the redundant per-package `dupes`.
+`check:ci` drops the redundant per-package `dupes`, keeping only the root run
+that is the actual cross-file gate. It does **not** gain `perf:check` — see the
+CI structure section for why the budget runs as a CI step instead.
 
 New Turbo tasks: `types:coverage`, `publish:check` (both
 `dependsOn: ["^build"]`), `lint:suppress` (`cache: false`, since it writes a
@@ -265,7 +278,7 @@ jobs.
 
 Five independently verifiable tranches:
 
-1. **Free fixes** — `--max-warnings 0`, `perf:check` into `check:ci`,
+1. **Free fixes** — `--max-warnings 0`, `perf:check` enforced in CI,
    `import/no-cycle` at full depth, drop the duplicated `dupes`.
 2. **`@busirocket/quality-config`** — package scaffold plus knip and
    dependency-cruiser, wired at the root and into the templates.
