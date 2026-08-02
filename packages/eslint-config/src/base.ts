@@ -78,13 +78,22 @@ export const createBaseConfig = (options: SharedConfigOptions = {}) => {
       },
       settings: {
         'import/resolver': { typescript: true },
+        // eslint-plugin-import defaults to ['.js', '.mjs', '.cjs'] for its
+        // own cross-file export-map resolution (separate from the parser
+        // ESLint itself uses). Without .ts/.tsx/.jsx listed here, every rule
+        // that needs that resolution -- import/no-cycle included -- silently
+        // treats every non-JS file as unresolvable and reports nothing.
+        // Mirrors the `files` glob on this config block.
+        'import/extensions': ['.js', '.jsx', '.mjs', '.cjs', '.ts', '.tsx'],
       },
       rules: {
         'import/first': 'error',
         'import/newline-after-import': 'error',
         'import/no-duplicates': 'error',
         'import/no-self-import': 'error',
-        'import/no-cycle': ['error', { maxDepth: 1 }],
+        // No maxDepth: shallow caps miss exactly the long cycles that tangle
+        // large codebases. `allowUnsafeDynamicCyclicDependency` stays off.
+        'import/no-cycle': ['error', { ignoreExternal: true }],
         'unused-imports/no-unused-imports': 'error',
         '@typescript-eslint/no-unused-vars': 'off',
         'unused-imports/no-unused-vars': [
