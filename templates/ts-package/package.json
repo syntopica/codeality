@@ -5,6 +5,7 @@
   "packageManager": "pnpm@11.18.0",
   "type": "module",
   "scripts": {
+    "prepare": "lefthook install",
     "lint": "eslint src --max-warnings 0",
     "lint:fix": "eslint src --fix",
     "lint:suppress": "eslint src --suppress-all",
@@ -45,6 +46,7 @@
     "jiti": "^2.7.0",
     "jscpd": "^5.0.14",
     "knip": "^6.31.0",
+    "lefthook": "^2.1.10",
     "prettier": "^3.9.6",
     "prettier-plugin-css-order": "^2.2.0",
     "prettier-plugin-organize-imports": "^4.3.0",

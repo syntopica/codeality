@@ -4,6 +4,7 @@
   "private": true,
   "packageManager": "pnpm@11.18.0",
   "scripts": {
+    "prepare": "lefthook install",
     "dev": "next dev --turbopack",
     "build": "next build",
     "start": "next start",
@@ -66,6 +67,7 @@
     "jscpd": "^5.0.14",
     "jsdom": "^30.0.0",
     "knip": "^6.31.0",
+    "lefthook": "^2.1.10",
     "prettier": "^3.9.6",
     "prettier-plugin-css-order": "^2.2.0",
     "prettier-plugin-organize-imports": "^4.3.0",

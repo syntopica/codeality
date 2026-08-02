@@ -9,6 +9,7 @@ allowBuilds:
   '@nestjs/core': false
   '@parcel/watcher': true
   esbuild: true
+  lefthook: true
   sharp: true
   unrs-resolver: true
 # Relax the supply-chain release-age cooldown only for Vue's vetted first-party
