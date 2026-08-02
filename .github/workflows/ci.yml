@@ -79,7 +79,7 @@ jobs:
         env:
           GITLEAKS_CONFIG: .gitleaks.toml
 
-      - name: Dependency audit
+      - name: audit:check
         run: pnpm run audit:check
 
       - name: Workflow lint
