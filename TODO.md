@@ -1,7 +1,6 @@
 # TODO
 
-Active backlog for the `baseline` repo. Closed items move to `TODO_LOG.md` (not
-yet created; add it alongside the first closed entry).
+Active backlog for the `baseline` repo. Closed items move to `TODO_LOG.md`.
 
 ## Quality gates
 
@@ -52,9 +51,19 @@ yet created; add it alongside the first closed entry).
       (`packages/quality-config/src/knip.ts`) and left it off, by evidence, not
       by omission. Tested with `--include-entry-exports` across all eight
       templates: six report zero findings either way. `nestjs-app` surfaces one
-      genuine dead export (`bootstrap` in `src/main.ts`, exported but only ever
-      called in the same file via `void bootstrap()` — the `export` keyword
-      serves no purpose). `vue-app` surfaces a false positive: `mountApp`
+      finding: `bootstrap` in `src/main.ts`, exported but only ever called in
+      the same file via `void bootstrap()`. Investigated whether to drop the
+      `export` (fix round 1): doing so makes `pnpm lint` fail —
+      `code-policy/no-hidden-top-level-declarations` (the Primary Unit Rule this
+      repo enforces via `eslint-plugin-code-policy`) requires every top-level
+      declaration to be exported, specifically to forbid hidden internal helpers
+      at module scope. So `bootstrap` is not dead code by this repo's own
+      convention: it looks unused only because nothing inside this monorepo
+      imports `templates/nestjs-app/src/main.ts` as a module (it is a process
+      entry point, run directly, exactly like `page.tsx` or `main.tsx` in the
+      other templates) — the export exists to satisfy the template's own
+      one-exported-unit-per-file rule, not to be consumed by a caller. Reverted
+      the drop; `export` stays. `vue-app` surfaces a false positive: `mountApp`
       (re-exported from `src/app/index.ts`, genuinely consumed by
       `src/main.ts`'s `import { mountApp } from '@/app'`) gets flagged because
       `src/app/index.ts` had to be added to the `vite-vue` entry list in the
@@ -65,31 +74,10 @@ yet created; add it alongside the first closed entry).
       global boolean with no per-entry-pattern override (confirmed against
       knip's docs), so it cannot be enabled for `main.tsx`/`page.tsx` while
       excluded for the `src/app/index.ts` workaround. Turning it on today would
-      fail `pnpm check:ci` for both templates, and the only fixes are
-      template-source changes (drop `export` from `bootstrap`; restructure
-      `vue-app`'s composition-root import) that Task 8 was told not to make just
-      to satisfy knip. Revisit together with template-source ownership: drop the
-      stray `export` on `nestjs-app`'s `bootstrap`, resolve `vue-app`'s
+      still fail `pnpm check:ci` for `vue-app`, and the only fix is a
+      template-source change (restructure `vue-app`'s composition-root
+      import/barrel) that Task 8 was told not to make just to satisfy knip.
+      Revisit together with template-source ownership: resolve `vue-app`'s
       barrel/alias pattern, then re-run the same `--include-entry-exports` probe
-      on all eight templates before flipping the default on.
-- [ ] Task 8 added `vitest-environment-nuxt` to
-      `templates/nuxt-app/package.json` devDependencies — a genuine fix:
-      `app/components/TheCounter.test.ts` has a `// @vitest-environment nuxt`
-      pragma, which needs that package resolvable from the project, and it was
-      not declared (pnpm phantom dependency, only working by transitive luck
-      through `@nuxt/test-utils`). The per-template `pnpm knip` gate this task
-      added correctly flagged it as `Unlisted dependencies` and now passes with
-      it declared. Side effect: the repo-root `pnpm knip` (`knip.config.ts` at
-      the repo root, not part of `pnpm check:ci`) now reports it as an
-      `Unused devDependency` instead, because that config's `templates/nuxt-app`
-      workspace override sets `vitest: false` (disabling knip's vitest plugin
-      there to dodge an unrelated `@nuxt/kit`/jiti resolution crash — see the
-      root `knip.config.ts` comment), so the root config never sees the pragma
-      that makes the dependency used. Root `pnpm knip` went from exit 0 to exit
-      1 because of this one finding (verified: identical otherwise, diffed
-      against the pre-Task-8 baseline). Declaring the dependency is the correct
-      fix and Task 8 was told not to touch the root `knip.config.ts`, so this is
-      left for whoever owns that file next: add `vitest-environment-nuxt` to an
-      `ignoreDependencies` array on the root config's `templates/nuxt-app`
-      workspace override, the same way `TEMPLATE_ESLINT_PEER_DEPENDENCIES` is
-      already ignored there for an analogous reason.
+      on all eight templates before flipping the default on. `nestjs-app`'s
+      `bootstrap` needs no further action.

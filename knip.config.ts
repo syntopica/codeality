@@ -42,7 +42,18 @@ const config: KnipConfig = {
       // repeated here rather than inherited.
       entry: TEMPLATE_GLOB,
       project: TEMPLATE_GLOB,
-      ignoreDependencies: TEMPLATE_ESLINT_PEER_DEPENDENCIES,
+      ignoreDependencies: [
+        ...TEMPLATE_ESLINT_PEER_DEPENDENCIES,
+        // vitest-environment-nuxt is a real dependency, not a false
+        // positive: templates/nuxt-app/knip.config.ts (the per-template
+        // gate a project scaffolded from this template runs) requires it
+        // declared, because app/components/TheCounter.test.ts carries a
+        // `// @vitest-environment nuxt` pragma that needs the package
+        // resolvable. It is invisible to this root config specifically
+        // because `vitest: false` below disables the plugin that would
+        // otherwise see that pragma and count the dependency as used.
+        'vitest-environment-nuxt',
+      ],
       // .nuxt/**  is Nuxt's generated type cache (rebuilt by `nuxt prepare`
       // on every install). Its .d.ts files reference Nuxt's internal modules
       // (nitropack, @nuxt/devtools, vue-router, ...) which are never meant to
