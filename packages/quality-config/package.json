@@ -1,0 +1,66 @@
+{
+  "name": "@busirocket/quality-config",
+  "version": "0.1.0",
+  "private": false,
+  "packageManager": "pnpm@11.18.0",
+  "license": "MIT",
+  "description": "Shared configuration for cross-file quality gates: knip, dependency-cruiser, type-coverage, lefthook",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/BusiRocket/baseline.git",
+    "directory": "packages/quality-config"
+  },
+  "homepage": "https://github.com/BusiRocket/baseline/tree/main/packages/quality-config#readme",
+  "bugs": {
+    "url": "https://github.com/BusiRocket/baseline/issues"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "type": "module",
+  "engines": {
+    "node": ">=22"
+  },
+  "files": [
+    "LICENSE",
+    "README.md",
+    "src",
+    "tsconfig.json",
+    "PUBLIC_API.md"
+  ],
+  "exports": {
+    ".": "./src/index.ts",
+    "./knip": "./src/knip.ts",
+    "./dependency-cruiser": "./src/dependency-cruiser.ts",
+    "./type-coverage": "./src/type-coverage.ts",
+    "./lefthook": "./src/lefthook.ts"
+  },
+  "scripts": {
+    "fix": "pnpm run lint:fix",
+    "lint": "eslint src --max-warnings 0",
+    "lint:fix": "eslint src --fix",
+    "type-check": "tsc --noEmit -p tsconfig.json"
+  },
+  "peerDependencies": {
+    "dependency-cruiser": ">=18.0.0",
+    "knip": ">=6.0.0",
+    "typescript": ">=5.4.0"
+  },
+  "peerDependenciesMeta": {
+    "dependency-cruiser": {
+      "optional": true
+    },
+    "knip": {
+      "optional": true
+    }
+  },
+  "devDependencies": {
+    "@busirocket/eslint-config": "workspace:*",
+    "@busirocket/tsconfig": "workspace:*",
+    "@types/node": "^26.1.2",
+    "dependency-cruiser": "^18.1.0",
+    "eslint": "^10.8.0",
+    "knip": "^6.31.0",
+    "typescript": "npm:@typescript/typescript6@^6.0.2"
+  }
+}
