@@ -70,6 +70,26 @@ resolved during parallel type checking. A `dupes` task runs `jscpd` across the
 repo as a cross-file duplication gate, failing the pipeline above a 1%
 duplication threshold.
 
+CI splits into three parallel jobs so a failure names its own family without
+reading the log. Every gate, its threshold, and how to handle a false positive
+is documented in
+[docs/standards/quality-gates.md](./docs/standards/quality-gates.md).
+
+- **`verify`** - `pnpm check:ci` (type-check, lint with `--max-warnings 0`,
+  test, build, format check, `jscpd` duplication) plus a separate
+  `pnpm perf:check` step (Lighthouse budgets; CI-only, see the reference doc for
+  why it isn't part of `check:ci`).
+- **`quality`** - `pnpm check:quality`: `knip` (dead files/exports/deps),
+  `dependency-cruiser` (import cycles, orphan modules, package/template
+  boundary), and `publint`/`attw` (published package `exports` correctness).
+- **`security`** - `pnpm check:security`: `gitleaks` (committed secrets),
+  `pnpm audit --audit-level=high`, and `actionlint` (workflow syntax).
+
+The ESLint suppressions ratchet (`lint:suppress` / `lint:prune`), the
+`vitest`/`testing-library` ESLint rules, `lefthook` git hooks, and Renovate run
+alongside these but aren't their own CI job - see the reference doc for where
+each one runs.
+
 ## Workarounds & Patches
 
 Because this baseline aggressively adopts **ESLint 10 (Flat Config)** alongside

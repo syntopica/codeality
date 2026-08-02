@@ -47,3 +47,40 @@ exists and baseline packages are listed.
 
 Yarn is not a supported target for documentation or CI in this baseline. Prefer
 pnpm or npm.
+
+## 8. Quality gates (knip, dependency-cruiser, lefthook, Renovate, gitleaks)
+
+Add these after ESLint/Prettier/TypeScript are stable. Each gate, its threshold,
+and how to handle a false positive are documented in
+[quality-gates.md](../standards/quality-gates.md) - read that before tuning any
+of them.
+
+## Adopting on a codebase with existing violations
+
+A large existing codebase will report thousands of violations on day one. Freeze
+them instead of fixing them all up front, then let the count fall:
+
+```bash
+pnpm lint:suppress   # writes eslint-suppressions.json -- commit it
+pnpm lint            # passes: existing violations are frozen, new ones fail
+```
+
+`eslint-suppressions.json` is committed deliberately: it is the shared baseline.
+
+`lint` runs plain `eslint --max-warnings 0`. That alone is the ratchet: ESLint
+checks the committed suppressions file for entries that no longer match a real
+violation and fails with an explicit message when it finds one - so fixing real
+debt makes its suppression stale and `lint` fails until the entry is removed
+with `pnpm lint:prune`. The suppression count can therefore only go down.
+
+Two commands must never end up inside `lint` itself:
+
+- `--suppress-all` (the `lint:suppress` script) freezes the _current_ state.
+  Re-running it to clear a failing `lint` re-freezes debt someone just paid off
+  - never do that to get green.
+- `--prune-suppressions` (the `lint:prune` script) looks like it belongs in the
+  gate but does not: ESLint prunes the suppressions file to disk _before_ it
+  evaluates whether any suppression is unused, so a `lint` run carrying that
+  flag always sees a freshly emptied file and passes silently, every time.
+  Putting it on the gate disables the gate. Keep it on `lint:prune`, run by a
+  human after fixing debt, never on `lint`.

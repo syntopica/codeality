@@ -64,6 +64,33 @@ async function hasEslintConfig(root) {
   return false
 }
 
+const QUALITY_CONFIG_FILES = [
+  'knip.config.ts',
+  'knip.config.js',
+  'lefthook.yml',
+  'renovate.json',
+]
+
+async function missingQualityConfigs(root) {
+  const missing = []
+  for (const name of QUALITY_CONFIG_FILES) {
+    try {
+      await access(resolve(root, name))
+    } catch {
+      missing.push(name)
+    }
+  }
+  // knip.config.ts and knip.config.js are alternatives: only report the pair
+  // as missing if neither exists.
+  const hasKnipConfig =
+    !missing.includes('knip.config.ts') || !missing.includes('knip.config.js')
+  const report = missing.filter(
+    (name) => name !== 'knip.config.ts' && name !== 'knip.config.js',
+  )
+  if (!hasKnipConfig) report.unshift('knip.config.ts or knip.config.js')
+  return report
+}
+
 async function main() {
   const versions = await loadBaselineVersions()
   const names = Object.keys(versions)
@@ -97,6 +124,7 @@ async function main() {
   const deps = collectDeps(manifest)
   const missing = missingBaseline(deps, names)
   const eslintOk = await hasEslintConfig(root)
+  const missingQuality = await missingQualityConfigs(root)
 
   if (flags.soft) {
     console.log('@busirocket baseline — add these devDependencies:\n')
@@ -109,6 +137,13 @@ async function main() {
     if (!eslintOk) {
       console.log(
         '\nNo eslint.config.* found. Add a flat config that imports @busirocket/eslint-config (see https://github.com/BusiRocket/engineering-baseline/tree/main/docs/adoption).',
+      )
+    }
+    if (missingQuality.length) {
+      console.log(
+        '\nMissing quality-gate config:',
+        missingQuality.join(', '),
+        '(see @busirocket/quality-config and docs/adoption/new-repo.md).',
       )
     }
   }
@@ -125,6 +160,13 @@ async function main() {
     if (flags.hard && !eslintOk) {
       console.error(
         'create-baseline --hard: expected eslint.config.js|mjs|cjs|ts in project root.',
+      )
+      failed = true
+    }
+    if (flags.hard && missingQuality.length) {
+      console.error(
+        'create-baseline --hard: missing quality-gate config:',
+        missingQuality.join(', '),
       )
       failed = true
     }

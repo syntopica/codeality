@@ -167,4 +167,5 @@ contract.
 - [Testing](./standards/testing.md)
 - [SEO](./standards/seo.md)
 - [Performance & runtime accessibility](./standards/performance.md)
+- [Quality gates](./standards/quality-gates.md)
 - [Migration guide](./standards/migration.md)
