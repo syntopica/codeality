@@ -4,26 +4,34 @@ Active backlog for the `baseline` repo. Closed items move to `TODO_LOG.md`.
 
 ## Quality gates
 
-- [ ] `dependency-cruiser` resolves TypeScript path aliases (`@/*`) through a
-      single, repo-wide `tsConfig` option — it has no concept of "nearest
-      tsconfig to this file" for a monorepo where each package/template defines
-      its own `@/*` -> `./src/*` mapping relative to its own root. Pointing the
-      root `.dependency-cruiser.cjs` at any one package's `tsconfig.json` would
-      apply that package's alias mapping to every other cruised file too,
-      producing wrong edges rather than no edges. With no `tsConfig` passed (the
-      repo has no root `tsconfig.json`), every `@/` import shows up as
-      `couldNotResolve: true` (verified with `depcruise --output-type json`),
-      and files reached only through such imports look like `no-orphans` false
-      positives even though they have real importers. Task 9 tuned around the
-      currently-affected files with `pathNot` patterns scoped to three trees:
-      `packages/eslint-plugin-code-policy/src/{utils/,version.ts}`,
-      `templates/vue-app/src/{types/,stores/,App.vue}`, and
-      `templates/nuxt-app/app/{types/,pages/,app.vue}`. Any _new_ file in those
-      same trees that is reachable only via a `@/` import will silently pass
-      `no-orphans` even if it is genuinely dead — this is a real, open coverage
-      gap, not a one-time fix. Revisit if dependency-cruiser ever adds
-      per-directory tsconfig resolution, or if the affected packages/templates
-      switch these imports to relative paths.
+- [ ] `dependency-cruiser` resolves TypeScript path aliases through a single,
+      repo-wide `tsConfig` option — it has no concept of "nearest tsconfig to
+      this file" for a monorepo where each package/template defines its own
+      alias relative to its own root (`@/*` in
+      `packages/eslint-plugin-code-policy` and `templates/vue-app`; `~/*` in
+      `templates/nuxt-app`). Pointing the root `.dependency-cruiser.cjs` at any
+      one package's tsconfig would apply that package's alias mapping to every
+      other cruised file too, producing wrong edges rather than no edges. With
+      no `tsConfig` passed (the repo has no root tsconfig), every aliased import
+      shows up as `couldNotResolve: true` (verified with
+      `depcruise --output-type json`), and files reached only through such
+      imports look like `no-orphans` false positives even though they have real
+      importers. Task 9 tuned around the currently-affected files with `pathNot`
+      patterns scoped to the `utils/` directory and `version.ts` in
+      `packages/eslint-plugin-code-policy/src` (reached via `@/`), the `types/`,
+      `stores/`, and `App.vue` under `templates/vue-app/src` (reached via `@/`),
+      and the `types/` directory under `templates/nuxt-app/app` (reached via
+      `~/`). Any _new_ file in those same trees that is reachable only via an
+      aliased import will silently pass `no-orphans` even if it is genuinely
+      dead — this is a real, open coverage gap, not a one-time fix. `app.vue`
+      and everything under `pages/` in `templates/nuxt-app/app` are a different
+      case, excluded separately: they have zero dependencies **and** zero
+      dependents (verified the same way), because Nuxt loads them by filename
+      convention rather than via any import, aliased or not — there is no
+      aliased import to "fix" there.
+
+      **A real fix exists and was not implemented here**: run `depcruise` once per workspace with that workspace's own `--ts-config`, the same pattern this repo already uses for knip (`pnpm -r --filter "./templates/*" knip`, each template running its own `knip.config.ts`/tsconfig). Per-workspace resolution would let each package's aliases resolve correctly and close this coverage gap without any `pathNot` suppression, while the root `deps:graph` run keeps enforcing `no-circular` and `packages-must-not-depend-on-templates`, which genuinely need the whole graph and can't be split per workspace. Not implemented in Task 9 — it's a `package.json`/script restructuring beyond that task's scope, not a config tuning change.
+
 - [ ] `packages/eslint-config` and `packages/eslint-plugin-code-policy` have a
       real mutual runtime/dev-time dependency:
       `eslint-config/src/code-quality.ts` imports `eslint-plugin-code-policy` as

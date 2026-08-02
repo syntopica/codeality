@@ -36,11 +36,19 @@ export const createDepCruiserConfig = (
           // loaded directly by Next's build process by filename convention,
           // never imported by application code.
           '(^|/)app/(sitemap|robots)\\.tsx?$',
+          // Nuxt file-convention entry points: app.vue is the framework's
+          // root component and everything under pages/ is resolved by
+          // Nuxt's file-based router. Both are loaded directly by Nuxt's
+          // build/runtime, not by any application import (verified with
+          // `depcruise --output-type json`: zero dependencies AND zero
+          // dependents), so having no importer is their normal state.
+          '^templates/nuxt-app/app/(app\\.vue$|pages/)',
           // ESLint rule test fixtures: read from disk by filename in
           // RuleTester cases, never imported as real modules. Being
           // unreferenced in the graph is their intended state.
           '(^|/)tests/fixtures/',
-          // `@/` path-alias imports are resolved per package via that
+          // Path-alias imports (`@/` in eslint-plugin-code-policy and
+          // vue-app, `~/` in nuxt-app) are resolved per package via that
           // package's own tsconfig.json "paths". A single repo-wide
           // dependency-cruiser run has no per-package tsconfig awareness
           // (and pointing it at one package's tsconfig would incorrectly
@@ -48,10 +56,10 @@ export const createDepCruiserConfig = (
           // file), so these aliased imports resolve as `couldNotResolve`
           // and their real targets show up as false orphans. Verified with
           // `depcruise --output-type json` that every listed file has a
-          // real `@/`-aliased importer.
+          // real aliased importer.
           '^packages/eslint-plugin-code-policy/src/(utils/|version\\.ts$)',
           '^templates/vue-app/src/(types/|stores/|App\\.vue$)',
-          '^templates/nuxt-app/app/(types/|pages/|app\\.vue$)',
+          '^templates/nuxt-app/app/types/',
         ],
       },
       to: {},
