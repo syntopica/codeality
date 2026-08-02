@@ -31,5 +31,56 @@ jobs:
       - name: check:ci
         run: pnpm run check:ci
 
+      # Deliberately outside check:ci: Lighthouse cannot obtain a first
+      # contentful paint under headless Chrome on macOS, verified both in an
+      # automated shell and interactively. Runs as its own CI step instead.
       - name: Performance budget
         run: pnpm run perf:check
+
+  quality:
+    name: Quality gates
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+
+      - uses: pnpm/action-setup@v6
+
+      - uses: actions/setup-node@v6
+        with:
+          node-version: 22
+          cache: pnpm
+
+      - run: pnpm install --frozen-lockfile
+
+      - name: check:quality
+        run: pnpm run check:quality
+
+  security:
+    name: Security gates
+    runs-on: ubuntu-latest
+    steps:
+      # Full history: gitleaks cannot see a secret committed three commits ago
+      # from a shallow clone.
+      - uses: actions/checkout@v6
+        with:
+          fetch-depth: 0
+
+      - uses: pnpm/action-setup@v6
+
+      - uses: actions/setup-node@v6
+        with:
+          node-version: 22
+          cache: pnpm
+
+      - run: pnpm install --frozen-lockfile
+
+      - name: Secret scan
+        uses: gitleaks/gitleaks-action@v2
+        env:
+          GITLEAKS_CONFIG: .gitleaks.toml
+
+      - name: Dependency audit
+        run: pnpm run audit:check
+
+      - name: Workflow lint
+        uses: raven-actions/actionlint@v2

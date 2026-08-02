@@ -19,7 +19,11 @@
     "fix:all": "pnpm sync-versions && turbo run fix && pnpm format",
     "check:ci": "pnpm sync-versions:check && turbo run type-check lint test build && pnpm format:check && pnpm dupes",
     "perf:check": "turbo run perf:check",
-    "secrets:check": "gitleaks detect --no-banner --redact"
+    "secrets:check": "gitleaks detect --no-banner --redact",
+    "audit:check": "pnpm audit --audit-level=high",
+    "workflows:check": "actionlint",
+    "check:quality": "pnpm knip && pnpm deps:graph",
+    "check:security": "pnpm secrets:check && pnpm audit:check && pnpm workflows:check"
   },
   "devDependencies": {
     "@busirocket/prettier-config": "workspace:*",
