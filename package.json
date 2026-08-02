@@ -13,7 +13,7 @@
     "dupes": "jscpd packages scripts",
     "check:all": "turbo run type-check lint:fix && pnpm format && pnpm dupes",
     "fix:all": "pnpm sync-versions && turbo run fix && pnpm format",
-    "check:ci": "pnpm sync-versions:check && turbo run type-check lint test build dupes && pnpm format:check && pnpm dupes",
+    "check:ci": "pnpm sync-versions:check && turbo run type-check lint test build && pnpm format:check && pnpm dupes && pnpm perf:check",
     "perf:check": "turbo run perf:check"
   },
   "devDependencies": {
