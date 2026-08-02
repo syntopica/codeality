@@ -44,7 +44,7 @@
   },
   "scripts": {
     "fix": "pnpm run lint:fix",
-    "lint": "eslint src",
+    "lint": "eslint src --max-warnings 0",
     "lint:fix": "eslint src --fix",
     "type-check": "tsc --noEmit -p tsconfig.json"
   },

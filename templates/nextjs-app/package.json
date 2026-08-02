@@ -7,7 +7,7 @@
     "dev": "next dev --turbopack",
     "build": "next build",
     "start": "next start",
-    "lint": "eslint app src",
+    "lint": "eslint app src --max-warnings 0",
     "lint:fix": "eslint app src --fix",
     "fix": "pnpm lint:fix && pnpm format",
     "format": "prettier --write . --list-different",

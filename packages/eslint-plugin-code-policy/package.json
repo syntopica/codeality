@@ -46,7 +46,7 @@
   "scripts": {
     "build": "tsup && tsc -p tsconfig.build.json && tsc-alias -p tsconfig.build.json",
     "dev": "tsup --watch",
-    "lint": "eslint src",
+    "lint": "eslint src --max-warnings 0",
     "type-check": "tsc --noEmit -p tsconfig.json",
     "test": "vitest run"
   },
