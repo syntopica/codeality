@@ -39,6 +39,24 @@ export const createKnipConfig = (options: {
   return {
     entry,
     project,
+    // Without this, exports of entry files are never checked, so a dead export
+    // added to main.ts / index.ts would pass the gate. Coverage is real but
+    // partial: verified with a probe export that it now fails `nestjs-app`
+    // (src/main.ts) and `ts-package` (src/index.ts), and that it still does not
+    // fail `nextjs-app` (app/page.tsx), `vite-react-app` (src/main.tsx) or
+    // `vue-app` (src/main.ts) - files a knip framework plugin registers as an
+    // entry of its own, which the option does not reach.
+    includeEntryExports: true,
+    // The Primary Unit Rule (code-policy/no-hidden-top-level-declarations)
+    // forbids a hidden top-level declaration, so a helper an entry file uses
+    // only itself still has to be exported - NestJS's `bootstrap`, called by
+    // `void bootstrap()` one line below its own definition, is the standing
+    // example. The per-type form (`{ function, variable, ... }`) does not
+    // exempt it - knip classifies `export const bootstrap = async () => {}`
+    // under none of the seven keys the schema accepts - so this is the global
+    // boolean. It only hides an export that its own file already uses: an
+    // export nothing references at all still fails the gate.
+    ignoreExportsUsedInFile: true,
     ignoreBinaries: ['turbo', 'lhci'],
     ignoreDependencies: ESLINT_PEER_DEPENDENCIES,
     rules: {

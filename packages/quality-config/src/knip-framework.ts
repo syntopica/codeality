@@ -49,12 +49,7 @@ export const FRAMEWORK_ENTRIES: Record<
     project: ['src/**/*.{ts,tsx}'],
   },
   'vite-vue': {
-    // src/main.ts imports the composition root via the '@/app' alias, which
-    // resolves to the directory's index.ts. Knip's resolver does not follow
-    // that implicit directory-index hop through a path alias, so without an
-    // explicit entry here it treats everything main.ts reaches only through
-    // '@/app' (createVueApp, the router, App.vue) as unreached dead code.
-    entry: ['src/main.ts', 'index.html', 'vite.config.*', 'src/app/index.ts'],
+    entry: ['src/main.ts', 'index.html', 'vite.config.*'],
     project: ['src/**/*.{ts,vue}'],
   },
 }
