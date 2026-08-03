@@ -12,6 +12,7 @@
     "format": "prettier --write . --list-different",
     "format:check": "prettier --check .",
     "release:check": "node scripts/release-check.mjs",
+    "type-coverage": "node scripts/type-coverage.mjs",
     "sync-versions": "node scripts/sync-versions.mjs",
     "sync-versions:check": "node scripts/sync-versions.mjs --check",
     "dupes": "jscpd packages scripts",
@@ -27,7 +28,7 @@
     "audit:check": "pnpm audit --audit-level=high",
     "workflows:check": "actionlint",
     "publish:check": "turbo run publish:check",
-    "check:quality": "pnpm knip && pnpm knip:templates && pnpm deps:graph && pnpm deps:graph:aliased && pnpm publish:check",
+    "check:quality": "pnpm knip && pnpm knip:templates && pnpm deps:graph && pnpm deps:graph:aliased && pnpm type-coverage && pnpm publish:check",
     "check:security": "pnpm secrets:check && pnpm audit:check && pnpm workflows:check"
   },
   "devDependencies": {
@@ -47,6 +48,7 @@
     "prettier-plugin-organize-imports": "^4.3.0",
     "prettier-plugin-tailwindcss": "^0.8.1",
     "turbo": "^2.10.7",
+    "type-coverage": "^2.30.1",
     "typescript": "npm:@typescript/typescript6@^6.0.2"
   }
 }

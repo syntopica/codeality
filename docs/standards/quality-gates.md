@@ -181,35 +181,38 @@ import (a framework config file, a Next.js special file, a Nuxt
 `pathNot` regex on the `no-orphans` rule, with a comment recording how it was
 verified (`depcruise --output-type json`) - never by turning the rule off.
 
-## type-coverage - dropped, not a gate
+## type-coverage
 
-**Status: not used.** `type-coverage-core` throws
+**Detects:** expressions whose type is `any`, including an `any` that arrives
+through a generic argument (`--strict`). The threshold is 99% per workspace.
+
+**Runs:** `pnpm type-coverage` (`scripts/type-coverage.mjs`), and inside
+`pnpm check:quality`. One run per workspace that has its own `tsconfig.json`;
+the threshold comes from `@busirocket/quality-config/type-coverage`
+(`TYPE_COVERAGE_THRESHOLD`) through jiti rather than being restated in the
+script, so the published constant and the gate cannot drift.
+
+**Excluded, and only these:** framework build output (`.next/`, `.nuxt/`), whose
+`any`s belong to the generator, and tests, where casting a rule or a mock to
+`any` is the point. Everything else counts.
+
+**Earlier failure, and why it was not real.** This gate was recorded as blocked
+on `type-coverage-core` throwing
 `TypeError: Cannot read properties of undefined (reading 'Unknown')` while
-reading `ts.SyntaxKind.Unknown` at load time - it cannot load the TypeScript
-module behind this repo's `npm:@typescript/typescript6` alias. The failure is in
-module loading, not in analysis, so no configuration change fixes it.
+reading `ts.SyntaxKind.Unknown`, attributed to this repo's
+`npm:@typescript/typescript6` alias. The attribution was wrong. The failing runs
+were invoked through `npx`, which installs `type-coverage` into its own cache
+directory, so `require('typescript')` resolved from there rather than from the
+workspace and returned a module without `SyntaxKind`. Installed as a workspace
+dependency it resolves this repo's aliased TypeScript and runs normally -
+`packages/eslint-config` reported 99.74% on the first such run. A tool that
+consumes the TypeScript compiler API has to be resolved from the same tree as
+the compiler; running it through `npx` cannot be a test of compatibility.
 
-**Consequences:** there is no `types:coverage` script, no Turbo task, and
-`type-coverage` is not in `THIRD_PARTY_PINS` inside
-`packages/create-baseline/baseline-versions.json`. `check:quality` does not
-include it. The type-safety ratchet in this repo is carried by the ESLint
-bulk-suppressions mechanism alone (see below), which was always the load-bearing
-half.
-
-**Unblock condition:** retry once the repo moves off the
-`@typescript/typescript6` alias to a released TypeScript 6, or evaluate
-`tsc --noEmit --strict` plus a custom `as`-cast counter as a substitute. Both
-are recorded in `TODO.md`; do not re-add `type-coverage` to a project without
-first confirming it loads against that project's TypeScript setup.
-
-**Residue worth knowing about:** `packages/quality-config` still ships a live
-`./type-coverage` export (`TYPE_COVERAGE_THRESHOLD = 99` in
-`src/type-coverage.ts`) and still names "type-coverage" in its package
-`description`, even though nothing imports that export and the gate does not run
-anywhere. A reader who finds the export or the description text alone could
-reasonably conclude the gate exists; it doesn't. This is documented debt, not
-something this task removes -- see the status note above for why the export is
-dormant rather than deleted.
+**What it caught on adoption:** `NestFactory.create()` returns
+`INestApplication<any>`, so `templates/nestjs-app/src/main.ts` sat at 96%. Fixed
+by annotating the binding as `INestApplication<unknown>`, which type-checks and
+takes the template to 100%.
 
 ## ESLint suppressions ratchet
 
