@@ -4,6 +4,34 @@ Closed work from `TODO.md`, grouped by year and month.
 
 ## 2026-08
 
+- [x] Published `@busirocket/quality-config@0.1.0` (first ever release) and
+      `@busirocket/create-baseline@0.3.0`. Hit and resolved the structural limit
+      worth remembering: **`publish.yml`'s tokenless OIDC path cannot do the
+      first publish of a new package name.** npm requires a package to already
+      exist on the registry before a trusted publisher can be configured for it,
+      so there is nothing to exchange the OIDC token against. Run 30805714749
+      failed with
+      `Skipped OIDC: ERR_PNPM_AUTH_TOKEN_EXCHANGE ... (status code 404)`, then
+      pnpm fell back to `NODE_AUTH_TOKEN` - `setup-node`'s literal
+      `XXXXX-XXXXX-XXXXX-XXXXX` placeholder - and npm answered
+      `E404 PUT registry.npmjs.org/@busirocket%2fquality-config`. Unblocked with
+      one authenticated `npm publish` of the package, after which the trusted
+      publisher was configured (org `BusiRocket`, repo `baseline`, workflow
+      `publish.yml`) and `create-baseline@0.3.0` published through the workflow
+      normally. **Every future new package in this repo needs the same
+      bootstrap.** A brand-new package also takes minutes to appear on the
+      public read path, unevenly across CDN edges: `npm access` and the
+      npmjs.com settings page showed it immediately while `npm view` and an
+      authenticated `GET registry.npmjs.org/...` still returned 404 from some
+      edges. That is propagation, not failure - ruled out staged publishing
+      (`npm stage list` empty; staging is opt-in via `npm stage publish` and
+      cannot apply to a new package) and private visibility
+      (`npm access get status` returned `public`). Publish order was
+      load-bearing and honored: `quality-config` first, because
+      `create-baseline@0.3.0` pins `@busirocket/quality-config@^0.1.0` and
+      `--check` now requires it. Verified against the real registry rather than
+      the workflow log: `npx @busirocket/create-baseline@0.3.0 --soft` in a
+      scratch project, then every pin it prints resolved with `npm view`.
 - [x] Audited all five `pnpm-workspace.yaml` security overrides for whether they
       still do anything, which the entry asked for but nobody had run. Removed
       all five at once and reinstalled: `pnpm audit --audit-level=high` went

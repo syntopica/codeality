@@ -1,5 +1,27 @@
 # eslint-plugin-code-policy
 
+## 0.6.0
+
+### Minor Changes
+
+- feat: declare `engines: node >=20`.
+
+  The field did not exist before. Under `engine-strict` a new constraint can
+  reject an install that previously succeeded, which is why this release is a
+  minor rather than the patch the fix below would otherwise warrant.
+
+### Patch Changes
+
+- fix: emit CommonJS type declarations, so `require()` resolves types.
+
+  Every export subpath pointed its `require` condition at the ESM `.d.ts`. All
+  five (`.`, `./configs/recommended`, `./configs/strict`, `./configs/react`,
+  `./configs/next`) now resolve `require` to a matching `.d.cts`, and each
+  subpath uses the nested `import`/`require` form rather than a flat `types` key
+  shared by both.
+
+- fix: drop the unused `@types/eslint` runtime dependency.
+
 ## 0.5.2
 
 ### Patch Changes
