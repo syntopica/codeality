@@ -123,3 +123,15 @@ Active backlog for the `baseline` repo. Closed items move to `TODO_LOG.md`.
       again, so this needs a real decision, not a patch: either wire nuxt-app's
       tsconfig to actually extend `@busirocket/tsconfig`, or make
       create-baseline's required-package list framework-aware.
+- [!] Lighthouse cannot measure `templates/vite-react-app` or
+  `templates/tauri-app` in any environment tried: both report `NO_FCP` ("the
+  page did not paint any content") on macOS and on ubuntu-latest. The other four
+  templates that define `perf:check` measure correctly once their server ports
+  stop colliding (fixed in 2bf9cc9). Because both environments agree, this looks
+  like a property of those two templates - the built bundle does not render -
+  rather than a headless Chrome limit. The `Performance budget` CI step was
+  removed while this is open, so the budget currently enforces nothing. Smallest
+  next step: serve `templates/vite-react-app/dist` and open it in a real browser
+  to see whether the app mounts at all; if it does not, that is a template bug
+  worth more than the gate. Re-add the step to the `verify` job in
+  `.github/workflows/ci.yml` once both templates render.
