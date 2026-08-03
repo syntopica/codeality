@@ -11,6 +11,7 @@
     "type-check": "turbo run type-check",
     "format": "prettier --write . --list-different",
     "format:check": "prettier --check .",
+    "release:check": "node scripts/release-check.mjs",
     "sync-versions": "node scripts/sync-versions.mjs",
     "sync-versions:check": "node scripts/sync-versions.mjs --check",
     "dupes": "jscpd packages scripts",
