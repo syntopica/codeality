@@ -6,6 +6,5 @@
   "eslint-plugin-code-policy": "^0.5.2",
   "jscpd": "^5.0.14",
   "knip": "^6.31.0",
-  "dependency-cruiser": "^18.1.0",
   "lefthook": "^2.1.10"
 }

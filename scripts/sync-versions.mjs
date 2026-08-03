@@ -32,7 +32,6 @@ const BASELINE_CONSUMER_PACKAGES = [
 const THIRD_PARTY_PINS = {
   jscpd: '^5.0.14',
   knip: '^6.31.0',
-  'dependency-cruiser': '^18.1.0',
   lefthook: '^2.1.10',
 }
 
