@@ -9,6 +9,9 @@ node_modules/
 **/coverage/
 **/*.tsbuildinfo
 **/.lighthouseci/
+# Written per workspace by scripts/deps-graph-aliased.mjs and removed again on
+# the way out; ignored so a crashed run cannot leave a tracked file behind.
+**/.baseline-depcruise.tsconfig.json
 **/.turbo/
 .turbo/
 .DS_Store

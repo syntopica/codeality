@@ -125,31 +125,47 @@ point), `packages/*` importing from `templates/*` (inverting the scaffolding
 relationship), a devDependency imported from production code, and imports of
 deprecated Node core modules.
 
-**Runs:** `pnpm deps:graph` (`depcruise packages templates scripts`), repo root
-only, once - the coupling graph is inherently global.
+**Runs:** two passes, both folded into `check:quality`.
+
+- `pnpm deps:graph` (`depcruise packages templates scripts`) at the repo root,
+  for every rule that needs the whole graph. A cycle or a `packages/` ->
+  `templates/` edge can span two workspaces, and `no-dev-dep-in-production-code`
+  matches on a repo-relative path prefix, so none of these can be split up.
+- `pnpm deps:graph:aliased` (`scripts/deps-graph-aliased.mjs`), one cruise per
+  workspace that maps a path alias through its own tsconfig `paths` -
+  `eslint-plugin-code-policy` and `templates/vue-app` (`@/*`),
+  `templates/nuxt-app` (`~/*`). This pass owns `no-orphans` for those three, and
+  the repo-wide pass excludes them from that rule entirely.
 
 **Threshold:** `error` on `no-circular`, `no-orphans`, and
 `packages-must-not-depend-on-templates`; `warn` on
 `no-dev-dep-in-production-code`; `error` on `no-deprecated-core`.
 
-**Why:** a single repo-wide run has no root `tsconfig.json` to resolve
-per-package path aliases (`@/*` in `eslint-plugin-code-policy` and
-`templates/vue-app`, `~/*` in `templates/nuxt-app`), so those runs use no
-`tsConfig` at all.
+**Why two passes:** dependency-cruiser takes a single `tsConfig` for a whole
+cruise. One workspace's alias mapping is wrong for every other workspace - `@/*`
+means `eslint-plugin-code-policy/src` in one place and `vue-app/src` in
+another - so pointing the repo-wide run at any one tsconfig would produce wrong
+edges rather than no edges. Splitting the orphan check per workspace is the only
+way to resolve each mapping correctly.
 
-**Known gap - blind in three directories.** With no `tsConfig`, every aliased
-import resolves as `couldNotResolve: true`, and the files reached only through
-such an import look like `no-orphans` false positives even though they have real
-importers. The config's `pathNot` list in
-`.dependency-cruiser.cjs`/`createDepCruiserConfig` scopes around the
-currently-known affected trees (`eslint-plugin-code-policy/src/utils/` and
-`version.ts`, `vue-app/src/types|stores` and `App.vue`, `nuxt-app/app/types/`).
-**Any new file in those same trees, reachable only via an aliased import, will
-silently pass `no-orphans` even if it is genuinely dead** - this is an open
-coverage gap, not a one-time fix. The real fix (per `TODO.md`) is per-workspace
-`depcruise` runs, each with its own `--ts-config`, mirroring how knip already
-runs per template - not implemented here because it is a script-restructuring
-change beyond a config-tuning task.
+This replaced an earlier `pathNot` list that suppressed the individual files
+then known to be affected. That approach silently exempted any _new_ dead file
+added to the same directories; whole-workspace exclusion plus a real
+per-workspace check does not.
+
+**Gotcha - `paths` resolve against the cwd.** dependency-cruiser resolves a
+tsconfig's relative `paths` against the current working directory, not against
+the config file that declares them. Where a workspace declares its aliases in
+its own root tsconfig the two coincide and it works; Nuxt declares them in the
+generated `.nuxt/tsconfig.json` relative to `.nuxt/`, so every aliased import
+came back `couldNotResolve` even when `--ts-config .nuxt/tsconfig.json` was
+passed directly. `scripts/deps-graph-aliased.mjs` therefore generates a
+`.baseline-depcruise.tsconfig.json` per workspace with the paths rebased to the
+workspace root, and removes it again afterwards. It reads those paths by walking
+the workspace's own `extends` chain rather than restating them, so a renamed
+alias cannot drift from what the gate resolves. `enhancedResolveOptions.alias`
+is not an option here: it is not in dependency-cruiser's config schema
+(`must NOT have additional properties`).
 
 **False positive:** a file that is loaded by filename convention rather than by
 import (a framework config file, a Next.js special file, a Nuxt

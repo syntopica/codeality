@@ -4,6 +4,46 @@ Closed work from `TODO.md`, grouped by year and month.
 
 ## 2026-08
 
+- [x] `dependency-cruiser`'s single repo-wide `tsConfig` left three trees exempt
+      from `no-orphans` by path pattern, so any _new_ dead file in
+      `packages/eslint-plugin-code-policy/src/utils/`,
+      `templates/vue-app/src/types|stores/` or `templates/nuxt-app/app/types/`
+      passed silently. Implemented the per-workspace fix the entry called for:
+      `pnpm deps:graph:aliased` (`scripts/deps-graph-aliased.mjs`) cruises each
+      aliased workspace on its own, and the repo-wide run now excludes those
+      three workspaces from `no-orphans` entirely rather than suppressing
+      individual files - so the per-workspace run is their sole orphan authority
+      and nothing new can slip in behind a stale path pattern. The repo-wide run
+      keeps every rule that genuinely needs the whole graph (`no-circular`,
+      `packages-must-not-depend-on-templates`, `no-dev-dep-in-production-code`,
+      `no-deprecated-core`), via a new `scope: 'repo' | 'workspace'` option on
+      `createDepCruiserConfig`. Two findings worth recording. First,
+      **dependency-cruiser resolves a tsconfig's relative `paths` against the
+      current working directory, not against the config file that declares
+      them.** For vue-app and eslint-plugin-code-policy those are the same
+      directory so it happens to work; for nuxt-app, whose paths live in the
+      generated `.nuxt/tsconfig.json` and are written relative to `.nuxt/`,
+      every aliased import still came back `couldNotResolve` even when passed
+      `--ts-config .nuxt/tsconfig.json` directly. The runner therefore generates
+      a `.baseline-depcruise.tsconfig.json` per workspace with those paths
+      rebased to the workspace root, and removes it in a `finally` (gitignored
+      in case a crash leaves one behind). Aliases are read from each workspace's
+      own tsconfig by walking its `extends` chain, not restated in the runner,
+      so a template that renames an alias cannot drift from what the gate
+      resolves. Second, `enhancedResolveOptions.alias` is **not** in
+      dependency-cruiser's config schema (it rejects the key as an additional
+      property), so passing absolute aliases - the obvious way around the cwd
+      quirk - is not available; that route was tried and abandoned. Verified the
+      gate actually bites, which the old suppression could not: injecting a dead
+      file into all three trees produced `error no-orphans` for each
+      (`src/utils/deadProbe.ts`, `src/types/DeadProbe.ts`,
+      `app/types/DeadProbe.ts`), and the probes were removed afterwards.
+      Confirmed nuxt-app's cruise covers the full tree including `app.vue`,
+      `pages/index.vue`, `.vue` components and `server/`, with zero
+      `couldNotResolve`. `app.vue` and `pages/` remain exempt as genuine Nuxt
+      file-convention entry points, now via a segment-anchored pattern that
+      works at either scope. `pnpm deps:graph` exit 0, `pnpm deps:graph:aliased`
+      exit 0, `pnpm check:quality` exit 0, `pnpm check:ci` exit 0.
 - [x] `templates/nuxt-app` failed `create-baseline --check --hard` on a missing
       `@busirocket/tsconfig` devDependency (reproduced: exit 1, the only one of
       the eight templates that failed). Took the framework-aware branch of the

@@ -17,6 +17,7 @@
     "knip": "knip",
     "knip:templates": "pnpm -r --filter \"./templates/*\" knip",
     "deps:graph": "depcruise packages templates scripts",
+    "deps:graph:aliased": "node scripts/deps-graph-aliased.mjs",
     "check:all": "turbo run type-check lint:fix && pnpm format && pnpm dupes",
     "fix:all": "pnpm sync-versions && turbo run fix && pnpm format",
     "check:ci": "pnpm sync-versions:check && turbo run type-check lint test build && pnpm format:check && pnpm dupes",
@@ -25,7 +26,7 @@
     "audit:check": "pnpm audit --audit-level=high",
     "workflows:check": "actionlint",
     "publish:check": "turbo run publish:check",
-    "check:quality": "pnpm knip && pnpm knip:templates && pnpm deps:graph && pnpm publish:check",
+    "check:quality": "pnpm knip && pnpm knip:templates && pnpm deps:graph && pnpm deps:graph:aliased && pnpm publish:check",
     "check:security": "pnpm secrets:check && pnpm audit:check && pnpm workflows:check"
   },
   "devDependencies": {
