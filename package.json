@@ -15,6 +15,7 @@
     "sync-versions:check": "node scripts/sync-versions.mjs --check",
     "dupes": "jscpd packages scripts",
     "knip": "knip",
+    "knip:templates": "pnpm -r --filter \"./templates/*\" knip",
     "deps:graph": "depcruise packages templates scripts",
     "check:all": "turbo run type-check lint:fix && pnpm format && pnpm dupes",
     "fix:all": "pnpm sync-versions && turbo run fix && pnpm format",
@@ -24,7 +25,7 @@
     "audit:check": "pnpm audit --audit-level=high",
     "workflows:check": "actionlint",
     "publish:check": "turbo run publish:check",
-    "check:quality": "pnpm knip && pnpm deps:graph && pnpm publish:check",
+    "check:quality": "pnpm knip && pnpm knip:templates && pnpm deps:graph && pnpm publish:check",
     "check:security": "pnpm secrets:check && pnpm audit:check && pnpm workflows:check"
   },
   "devDependencies": {
