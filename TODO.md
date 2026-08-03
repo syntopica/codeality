@@ -2,6 +2,33 @@
 
 Active backlog for the `baseline` repo. Closed items move to `TODO_LOG.md`.
 
+## Release
+
+- [!] `@busirocket/quality-config@0.1.0` and `@busirocket/create-baseline@0.3.0`
+  are tagged and green on CI but **not published to npm** - blocked on the first
+  publish of `quality-config`, which cannot go through `publish.yml`. That
+  workflow is tokenless by design (npm Trusted Publishing over OIDC), and npm's
+  own prerequisite is that "the package you're configuring must already exist on
+  the npm registry" - so a brand-new package name has no trusted publisher to
+  exchange the OIDC token against. Run 30805714749 shows exactly that:
+  `Skipped OIDC: ERR_PNPM_AUTH_TOKEN_EXCHANGE ... (status code 404)`, then pnpm
+  falls back to `NODE_AUTH_TOKEN`, which is the literal
+  `XXXXX-XXXXX-XXXXX-XXXXX` placeholder `setup-node` writes when no secret is
+  supplied, and npm answers
+  `E404 PUT https://registry.npmjs.org/@busirocket%2fquality-config`. Smallest
+  unblock: one authenticated `npm publish` of `packages/quality-config` from a
+  machine logged in to an npm account with publish rights on the `@busirocket`
+  scope, then add the trusted publisher on npmjs.com (organization `BusiRocket`,
+  repository `baseline`, workflow `publish.yml`, allowed action `npm publish`,
+  no environment). Every later release then goes through the workflow tokenless,
+  as designed. **Publish order matters:** `create-baseline@0.3.0` must not go
+  out first. Its `baseline-versions.json` pins
+  `@busirocket/quality-config@^0.1.0` and `--check` now requires that package,
+  so releasing the CLI while the dependency is absent from npm hands consumers
+  an install line that cannot resolve. `create-baseline` is already on npm at
+  0.2.1, so its own trusted publisher is presumably configured and it should
+  publish normally once `quality-config` exists.
+
 ## Quality gates
 
 - [ ] `packages/eslint-config` and `packages/eslint-plugin-code-policy` have a
