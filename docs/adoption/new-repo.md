@@ -60,7 +60,7 @@ pnpm add -D @busirocket/quality-config@^0.1.0 knip dependency-cruiser lefthook
 // knip.config.ts
 import { createKnipConfig } from '@busirocket/quality-config/knip'
 
-export default createKnipConfig({ framework: 'nextjs' }) // or vite-react, astro, vue, nuxt, node, nestjs
+export default createKnipConfig({ framework: 'nextjs' }) // or astro, nestjs, nuxt, tauri, ts-package, vite-react, vite-vue
 ```
 
 `lefthook.yml` and `renovate.json` are plain YAML/JSON, not TypeScript factories

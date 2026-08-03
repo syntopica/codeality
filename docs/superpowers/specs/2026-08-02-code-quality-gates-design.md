@@ -99,8 +99,8 @@ carry semver, and third-party tools declared as optional peer dependencies.
 packages/quality-config/
   src/
     knip.ts                 createKnipConfig({ framework })
-    dependency-cruiser.ts   createDepCruiserConfig({ layers })
-    type-coverage.ts        TYPE_COVERAGE_THRESHOLDS
+    dependency-cruiser.ts   createDepCruiserConfig({ tsConfigPath })
+    type-coverage.ts        TYPE_COVERAGE_THRESHOLD
     lefthook.ts             createLefthookConfig()
     index.ts                re-exports
   PUBLIC_API.md
@@ -131,7 +131,7 @@ Each gate runs where it has information, not everywhere:
 | dependency-cruiser                                       | repo root, once                           | The coupling graph is global; also detects full-depth cycles, which `import/no-cycle` at `maxDepth: 1` cannot |
 | ESLint suppressions                                      | per package                               | The suppressions file belongs next to its `eslint.config`                                                     |
 | type-coverage                                            | per package/template                      | Needs each project's own `tsconfig.json`                                                                      |
-| publint + attw                                           | `packages/*` only                         | The five published packages. Templates are `private: true`                                                    |
+| publint + attw                                           | `packages/*` only                         | The six published packages. Templates are `private: true`                                                     |
 | gitleaks                                                 | CI + `pre-push`                           | Full history in CI; local hook stops it before it leaves the machine                                          |
 | actionlint                                               | repo root                                 | Workflows only exist at the root                                                                              |
 | `@vitest/eslint-plugin`, `eslint-plugin-testing-library` | new `testing.ts` layer in `eslint-config` | Inherited by every template through the shared config                                                         |
@@ -166,7 +166,7 @@ checkout, pnpm setup, and cached install:
 verify    → pnpm check:ci        type-check, lint, test, build, format, dupes
             + pnpm perf:check    Lighthouse budgets, CI-only (see below)
 quality   → pnpm check:quality   knip, dependency-cruiser, type-coverage, publint, attw
-security  → pnpm check:security  gitleaks, pnpm audit, actionlint
+security  → three discrete steps, not pnpm check:security: gitleaks, pnpm audit, actionlint
 ```
 
 Parallel jobs keep wall-clock feedback flat as gates are added, and a failure
@@ -197,15 +197,21 @@ Root `package.json`:
 "publish:check": "turbo run publish:check",
 "lint:suppress": "turbo run lint:suppress",
 "check:quality": "pnpm knip && pnpm deps:graph && pnpm publish:check",
-"check:security": "gitleaks detect --no-banner && pnpm audit --audit-level=high && actionlint"
+"secrets:check": "gitleaks detect --no-banner --redact",
+"audit:check": "pnpm audit --audit-level=high",
+"workflows:check": "actionlint",
+"check:security": "pnpm secrets:check && pnpm audit:check && pnpm workflows:check"
 ```
 
 `types:coverage` is absent: see the type-coverage status note above.
 
 Each template and package gains:
 
-- `lint` extended with `--max-warnings 0 --prune-suppressions`
+- `lint` extended with `--max-warnings 0`
 - `lint:suppress` — `eslint . --suppress-all`, run once when adopting
+- `lint:prune` — `eslint . --prune-suppressions`, run by a human after fixing
+  debt; never wired into `lint` itself (ESLint prunes the file to disk before
+  checking for staleness, so that flag on the gate always passes silently)
 - `types:coverage` — `type-coverage --at-least <threshold> --strict`
 
 Published packages (`packages/*` with `private: false`) also gain
@@ -253,9 +259,9 @@ Chosen so the repo passes today and the bar only rises:
 
 For existing repos taking on the baseline, all three channels ship:
 
-1. **Wired into all eight templates** — `lint:suppress` and
-   `--prune-suppressions` present from day one, even though a freshly scaffolded
-   template has nothing to suppress.
+1. **Wired into all eight templates** — `lint:suppress` and `lint:prune` present
+   from day one, even though a freshly scaffolded template has nothing to
+   suppress.
 2. **Documented** — `docs/adoption/existing-repo.md` gains the
    freeze-and-ratchet workflow; a new `docs/standards/quality-gates.md`
    documents each gate, its threshold, and why it exists.
