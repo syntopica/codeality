@@ -4,6 +4,28 @@ Closed work from `TODO.md`, grouped by year and month.
 
 ## 2026-08
 
+- [x] `templates/nuxt-app` failed `create-baseline --check --hard` on a missing
+      `@busirocket/tsconfig` devDependency (reproduced: exit 1, the only one of
+      the eight templates that failed). Took the framework-aware branch of the
+      two options the entry named, because the other one is not honestly
+      available: Nuxt generates `.nuxt/tsconfig.json` from `nuxt.config`'s
+      typescript options and the template's `tsconfig.json` extends that, so the
+      shared presets have no insertion point and re-adding the dependency would
+      trip the knip unused-dependency gate exactly as it did in `d71e1dd`.
+      `create-baseline` now drops `@busirocket/tsconfig` from the required list
+      when the project's `tsconfig.json` extends a path inside a dot-directory -
+      build output a framework regenerates, never an authored file that could
+      extend a preset. Chose that shape over a hardcoded list of framework paths
+      so it covers `.svelte-kit`, `.wxt` and friends without naming frameworks
+      this repo does not ship. Verified with a scratch fixture that it does not
+      over-fire: an authored `./tsconfig.base.json` still requires the package,
+      a project with no `tsconfig.json` still requires it, a JSONC
+      `tsconfig.json` (comments, unparseable as JSON) falls back to requiring it
+      so an unreadable file never silently drops the requirement, and only the
+      `./.nuxt/tsconfig.json` case is exempt. All eight templates now pass
+      `create-baseline --check --hard`. Not done here:
+      `@busirocket/create-baseline` is published at 0.2.1 and this is a behavior
+      change, so it needs a release before consumers see it.
 - [x] Lighthouse `NO_FCP` on `templates/vite-react-app` and
       `templates/tauri-app`. The earlier reading - "a property of those two
       templates" that headless Chrome could not measure - was wrong on both

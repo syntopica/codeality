@@ -46,6 +46,41 @@ function missingBaseline(deps, names) {
   return names.filter((name) => deps[name] == null)
 }
 
+// Presets are consumable only by a project that owns its compiler options. A
+// framework that generates them (Nuxt writes `.nuxt/tsconfig.json`, which the
+// project's own tsconfig then extends) leaves this package no insertion point,
+// so requiring the dependency there would only add one nothing reads - which
+// the knip gate correctly reports as dead weight.
+const TSCONFIG_PACKAGE = '@busirocket/tsconfig'
+
+// A tsconfig inside a dot-directory is build output its framework regenerates,
+// never a file anyone authored and never one that could extend a shared preset.
+const GENERATED_TSCONFIG_PATH = /(^|\/)\.[^/]+\//
+
+async function extendsGeneratedTsConfig(root) {
+  let raw
+  try {
+    // `root` is the directory this CLI was invoked against — reading its
+    // tsconfig is the tool's job, not untrusted input.
+    // eslint-disable-next-line security/detect-non-literal-fs-filename
+    raw = await readFile(resolve(root, 'tsconfig.json'), 'utf8')
+  } catch {
+    return false
+  }
+  let parsed
+  try {
+    parsed = JSON.parse(raw)
+  } catch {
+    // JSONC (comments, trailing commas) is valid tsconfig input but not valid
+    // JSON. Treat an unreadable config as authored rather than generated, so
+    // an unparseable file never silently drops a requirement.
+    return false
+  }
+  const field = parsed.extends
+  const entries = Array.isArray(field) ? field : field == null ? [] : [field]
+  return entries.some((entry) => GENERATED_TSCONFIG_PATH.test(entry))
+}
+
 async function hasEslintConfig(root) {
   const candidates = [
     'eslint.config.js',
@@ -97,8 +132,8 @@ async function main() {
   const flags = parseArgs(process.argv.slice(2))
   const root = cwd()
 
-  const printInstall = () => {
-    const spec = names.map((p) => `${p}@${versions[p]}`).join(' ')
+  const printInstall = (required = names) => {
+    const spec = required.map((p) => `${p}@${versions[p]}`).join(' ')
     console.log('pnpm (recommended):')
     console.log(`  pnpm add -D ${spec}`)
     console.log('npm:')
@@ -122,13 +157,22 @@ async function main() {
   }
 
   const deps = collectDeps(manifest)
-  const missing = missingBaseline(deps, names)
+  const generatedTsConfig = await extendsGeneratedTsConfig(root)
+  const required = generatedTsConfig
+    ? names.filter((name) => name !== TSCONFIG_PACKAGE)
+    : names
+  const missing = missingBaseline(deps, required)
   const eslintOk = await hasEslintConfig(root)
   const missingQuality = await missingQualityConfigs(root)
 
   if (flags.soft) {
     console.log('@busirocket baseline — add these devDependencies:\n')
-    printInstall()
+    printInstall(required)
+    if (generatedTsConfig) {
+      console.log(
+        `\n(${TSCONFIG_PACKAGE} not required: this project's tsconfig extends a framework-generated config, which owns the compiler options.)`,
+      )
+    }
     if (missing.length) {
       console.log('\nMissing from package.json:', missing.join(', '))
     } else {
@@ -171,7 +215,7 @@ async function main() {
       failed = true
     }
     if (failed) {
-      printInstall()
+      printInstall(required)
       exit(1)
     }
     console.log('create-baseline: baseline packages and checks OK.')

@@ -32,6 +32,17 @@ pnpm dlx @busirocket/create-baseline@^0.1.0 --soft
 Recommended baseline package versions are defined in `baseline-versions.json`
 shipped with this package; update that file when releasing aligned semver bumps.
 
+### Framework-generated TypeScript setups
+
+`@busirocket/tsconfig` is not required when the project's own `tsconfig.json`
+extends a config inside a dot-directory - build output its framework
+regenerates, such as Nuxt's `./.nuxt/tsconfig.json`. There the framework owns
+the compiler options end to end and the shared presets have no insertion point,
+so demanding the dependency would only add a package nothing reads, which an
+unused-dependency gate then reports as dead weight. Every other baseline package
+is still required, and a `tsconfig.json` that cannot be parsed as JSON is
+treated as authored, so an unreadable file never silently drops the requirement.
+
 ## Repository
 
 Source and issues:

@@ -115,11 +115,3 @@ Active backlog for the `baseline` repo. Closed items move to `TODO_LOG.md`.
       (brace-expansion). To check whether one is still load-bearing, remove it
       and run `pnpm install && pnpm audit --audit-level=high` - if the advisory
       it named does not come back, drop it for good.
-- [ ] `templates/nuxt-app` fails `create-baseline --check --hard` on a missing
-      `@busirocket/tsconfig` devDependency. Pre-existing since `d71e1dd`, which
-      dropped it as a knip dead-dependency finding because nuxt-app's own
-      tsconfig does not extend the package. Re-adding the dependency to satisfy
-      create-baseline would immediately trip the knip unused-dependency gate
-      again, so this needs a real decision, not a patch: either wire nuxt-app's
-      tsconfig to actually extend `@busirocket/tsconfig`, or make
-      create-baseline's required-package list framework-aware.
