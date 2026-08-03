@@ -51,6 +51,7 @@ this monorepo:
 | `@busirocket/prettier-config` | `packages/prettier-config`           | Prettier — base (organize-imports, css-order, MD wrap) + frontend (Tailwind) + astro  |
 | `@busirocket/create-baseline` | `packages/create-baseline`           | CLI to scaffold baselines from templates                                              |
 | `eslint-plugin-code-policy`   | `packages/eslint-plugin-code-policy` | Custom strict ESLint rules for code boundaries, architecture, and type safety         |
+| `@busirocket/quality-config`  | `packages/quality-config`            | Factories for cross-file quality gates - knip, dependency-cruiser, lefthook configs   |
 | `cargo-baseline`              | `packages/cargo-baseline`            | Rust structural linter and config scaffolder - atomic files, placement, no inline SQL |
 
 ### Maintainers: npm publish
@@ -82,8 +83,10 @@ is documented in
 - **`quality`** - `pnpm check:quality`: `knip` (dead files/exports/deps),
   `dependency-cruiser` (import cycles, orphan modules, package/template
   boundary), and `publint`/`attw` (published package `exports` correctness).
-- **`security`** - three discrete CI steps, not the `check:security` script:
-  `gitleaks/gitleaks-action@v2` (committed secrets, full git history),
+- **`security`** - three discrete CI steps, not the `check:security` script: a
+  pinned `gitleaks` binary running `pnpm run secrets:check` (committed secrets,
+  full git history - `gitleaks/gitleaks-action@v2` needs a paid license for
+  organization repos, so this repo installs the release binary instead),
   `pnpm run audit:check` (`pnpm audit --audit-level=high`), and
   `raven-actions/actionlint@v2` (workflow syntax). `pnpm check:security` is the
   local-developer equivalent, not the same check: it scans only the working tree
