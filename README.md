@@ -75,15 +75,20 @@ reading the log. Every gate, its threshold, and how to handle a false positive
 is documented in
 [docs/standards/quality-gates.md](./docs/standards/quality-gates.md).
 
-- **`verify`** - `pnpm check:ci` (type-check, lint with `--max-warnings 0`,
-  test, build, format check, `jscpd` duplication) plus a separate
-  `pnpm perf:check` step (Lighthouse budgets; CI-only, see the reference doc for
-  why it isn't part of `check:ci`).
+- **`verify`** - `pnpm check:ci` (`sync-versions:check` for derived-file drift,
+  type-check, lint with `--max-warnings 0`, test, build, format check, `jscpd`
+  duplication) plus a separate `pnpm perf:check` step (Lighthouse budgets;
+  CI-only, see the reference doc for why it isn't part of `check:ci`).
 - **`quality`** - `pnpm check:quality`: `knip` (dead files/exports/deps),
   `dependency-cruiser` (import cycles, orphan modules, package/template
   boundary), and `publint`/`attw` (published package `exports` correctness).
-- **`security`** - `pnpm check:security`: `gitleaks` (committed secrets),
-  `pnpm audit --audit-level=high`, and `actionlint` (workflow syntax).
+- **`security`** - three discrete CI steps, not the `check:security` script:
+  `gitleaks/gitleaks-action@v2` (committed secrets, full git history),
+  `pnpm run audit:check` (`pnpm audit --audit-level=high`), and
+  `raven-actions/actionlint@v2` (workflow syntax). `pnpm check:security` is the
+  local-developer equivalent, not the same check: it scans only the working tree
+  with `gitleaks detect`, not the full history CI can see, so a clean local run
+  does not prove the CI job would also pass.
 
 The ESLint suppressions ratchet (`lint:suppress` / `lint:prune`), the
 `vitest`/`testing-library` ESLint rules, `lefthook` git hooks, and Renovate run

@@ -178,6 +178,15 @@ half.
 are recorded in `TODO.md`; do not re-add `type-coverage` to a project without
 first confirming it loads against that project's TypeScript setup.
 
+**Residue worth knowing about:** `packages/quality-config` still ships a live
+`./type-coverage` export (`TYPE_COVERAGE_THRESHOLD = 99` in
+`src/type-coverage.ts`) and still names "type-coverage" in its package
+`description`, even though nothing imports that export and the gate does not run
+anywhere. A reader who finds the export or the description text alone could
+reasonably conclude the gate exists; it doesn't. This is documented debt, not
+something this task removes -- see the status note above for why the export is
+dormant rather than deleted.
+
 ## ESLint suppressions ratchet
 
 **Detects:** new lint violations against a frozen baseline, on a codebase that
@@ -313,8 +322,11 @@ floor moves past the patched version.
 **Detects:** invalid GitHub Actions workflow syntax - bad `runs-on` values,
 undefined expression contexts, shellcheck-style issues inside `run:` blocks.
 
-**Runs:** `actionlint` (`workflows:check` script), repo root only - workflows
-only exist at the root of a repo, never per package.
+**Runs:** `actionlint` (`workflows:check` script) locally, repo root only -
+workflows only exist at the root of a repo, never per package. In CI, the
+`security` job runs the equivalent `raven-actions/actionlint@v2` action directly
+rather than the `workflows:check` script; both run the same tool against the
+same workflow files.
 
 **Threshold:** any finding fails.
 
@@ -336,11 +348,12 @@ packaging conventions; `@arethetypeswrong/cli` (`attw`) simulates how TypeScript
 resolves the package's types under different `moduleResolution` settings.
 
 **Runs:** `publish:check`
-(`publint --strict && attw --pack . --profile node16`), only in the five
+(`publint --strict && attw --pack . --profile node16`), only in the six
 published packages under `packages/*` (`eslint-config`, `prettier-config`,
 `tsconfig`, `quality-config`, `create-baseline`, `eslint-plugin-code-policy`) -
 templates are `private: true` and never published, so the check doesn't apply to
-them.
+them. `cargo-baseline` is the seventh package under `packages/*` and is
+correctly excluded: it's a Rust crate, not an npm package.
 
 **Threshold:** any `publint --strict` finding, or any `attw` finding not
 explicitly ignored, fails.
