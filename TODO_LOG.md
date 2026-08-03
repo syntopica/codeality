@@ -4,6 +4,150 @@ Closed work from `TODO.md`, grouped by year and month.
 
 ## 2026-08
 
+- [x] `type-coverage` is not incompatible with the `@typescript/typescript6`
+      alias. The blocker was misattributed and the gate now runs. Every failing
+      run had been invoked through `npx`, which installs `type-coverage` into
+      its own cache directory, so `require('typescript')` resolved from there
+      rather than from the workspace and returned a module without
+      `SyntaxKind` - hence
+      `TypeError: Cannot read properties of undefined (reading 'Unknown')` at
+      load time. Installed as a workspace dependency it resolves this repo's
+      aliased compiler and works: `packages/eslint-config` reported 99.74% on
+      the first such run. The general lesson: a tool that consumes the
+      TypeScript compiler API has to be resolved from the same tree as the
+      compiler, so running it through `npx` is not a test of compatibility.
+      Wired as `pnpm type-coverage` (`scripts/type-coverage.mjs`), one run per
+      workspace that has its own `tsconfig.json`, at 99% with `--strict`, and
+      added to `check:quality`. The threshold is read from
+      `@busirocket/quality-config/type-coverage` through jiti rather than
+      restated, so the published constant and the gate cannot drift; the same
+      shape as `scripts/deps-graph-aliased.mjs`, so no new published surface was
+      needed. Exclusions are exactly two: framework build output (`.next/`,
+      `.nuxt/`), whose `any`s belong to the generator, and tests, where casting
+      a rule or a mock to `any` is the point. Adoption found one real defect:
+      `NestFactory.create()` returns `INestApplication<any>`, holding
+      `templates/nestjs-app` at 96.07%; annotating the binding as
+      `INestApplication<unknown>` type-checks and takes it to 100%. Verified:
+      all eleven workspaces pass (four at 100%), an injected
+      `export const anyProbe = (value: any): any => value` fails the gate and
+      names both positions, probe removed, `pnpm check:ci` exit 0,
+      `pnpm check:quality` exit 0. `docs/standards/quality-gates.md` rewritten -
+      its "type-coverage - dropped, not a gate" section and the "documented
+      debt" note about the dormant export are both obsolete.
+
+- [x] The pre-commit lint hook could not lint the files it existed for.
+      `pnpm exec eslint <path>` run at the repo root resolves each plugin's own
+      dependencies against the root `node_modules`, which a pnpm workspace does
+      not have, so staging any file in a Tailwind template aborted the hook with
+      `Error: Could not find tailwindcss` before a single rule ran. Found by
+      hitting it: the commit for the knip change, which touches
+      `templates/vue-app/src/main.ts`, failed. ESLint itself was never the
+      problem - it walks up from the file and finds the right config; the
+      plugins' runtime lookups need the workspace as the working directory.
+      `scripts/lint-staged.mjs` groups the staged paths by owning workspace and
+      runs eslint once per group from that directory. Verified directly: the
+      same file that failed from the root passes from `templates/vue-app/`, and
+      the hook now prints one `eslint (<workspace>/)` line per group and passes.
+      `createLefthookConfig()` is deliberately unchanged - a single-project
+      consumer has no workspaces and can keep running eslint from its root - and
+      `lefthook.yml` records why the two differ.
+
+- [x] Released and published everything the repo was holding unreleased:
+      `@busirocket/quality-config@0.2.0` (the `createKnipConfig` behavior change
+      from this same session - a consumer that adopts it now fails on a dead
+      entry-file export, which is a ratchet, not a patch),
+      `@busirocket/prettier-config@0.1.2` and `@busirocket/tsconfig@0.2.1`
+      (metadata only: their published tarballs predated the commits that pointed
+      `repository`/`homepage`/`bugs` at this monorepo, so npm still linked the
+      retired standalone `BusiRocket/prettier-config` repo), and
+      `@busirocket/create-baseline@0.3.1` (its pins are derived from those
+      versions). Published in dependency order through `publish.yml`, four
+      successful runs (30809357438, 30809414554, 30809464477, 30809523862).
+      `create-baseline` showed the propagation lag documented earlier in this
+      log - `npm view` reported 0.3.0 for a moment after a successful run - and
+      settled on 0.3.1. Also pushed the three backfilled tags plus the four new
+      ones. Evidence: `pnpm release:check` exit 0 with all six packages at their
+      published versions, CI green on the release commit (run 30809332981), and
+      `pnpm audit --audit-level=high` exit 0.
+
+- [x] Built the release-integrity gate the "a release is not done when the
+      version is bumped" entry asked for, and closed the drift it found.
+      `pnpm release:check` (`scripts/release-check.mjs`) checks every
+      non-private package in `packages/*` for three things: a git tag
+      `<unscoped-name>@<version>`, that exact version on the npm registry, and a
+      `## <version>` heading in the package's `CHANGELOG.md`. Deliberately kept
+      out of `check:ci`: it needs the network, and the commit that bumps a
+      version legitimately precedes both its tag and its publish, so wiring it
+      into CI would fail every release commit by construction. First run failed
+      on three packages nobody had noticed: `@busirocket/eslint-config@0.5.0`,
+      `@busirocket/prettier-config@0.1.1` and `@busirocket/tsconfig@0.2.0` each
+      had no tag and no CHANGELOG at all - the same failure as the original
+      entry, three times over. npm itself was clean: all six packages' published
+      versions match source. Closed by writing the three missing changelogs
+      (reconstructed from git history, each entry naming the commit that
+      introduced the version, with pre-monorepo releases marked as such rather
+      than invented) and creating three annotated tags at the commit that bumped
+      each version - `ee83404`, `84ecc6f`, and for prettier-config `2acff2e`,
+      the first commit in this repository carrying 0.1.1 since the published
+      release predates the monorepo migration. Evidence: `pnpm release:check`
+      went from exit 1 with three FAIL blocks to exit 0 with
+      `6 packages fully released`. `pnpm check:ci` exit 0, `pnpm check:quality`
+      exit 0. The tags are local; pushing them is tracked in `TODO.md`.
+
+- [x] Turned `includeEntryExports` on for the per-template knip configs, which
+      Task 8 had left off by evidence. Both blockers named in that entry are
+      gone. `vue-app`'s false positive on `mountApp` was fixed at the source:
+      `src/main.ts` now imports `@/app/index` explicitly instead of relying on
+      knip resolving the path-aliased bare `@/app` to the directory's
+      `index.ts`, so `src/app/index.ts` no longer has to be listed as an entry
+      and the entry-to-entry import that knip refused to count as usage no
+      longer exists. `nestjs-app`'s `bootstrap` is handled with
+      `ignoreExportsUsedInFile: true`, which is the correct pairing with this
+      repo's Primary Unit Rule: `code-policy/no-hidden-top-level-declarations`
+      forbids a hidden top-level declaration, so an entry-point helper a file
+      uses only itself still has to be exported. The narrower per-type form was
+      tried first and does not work - knip's schema accepts only `class`,
+      `enum`, `function`, `interface`, `member`, `type` and `variable`, and
+      `export const bootstrap = async () => {}` matches none of them
+      (`{ function: true, variable: true }` still reported it;
+      `{ unknown: true }` is rejected as invalid input). The option only hides
+      an export its own file already uses, so an export nothing references at
+      all still fails. Coverage is real but partial, measured with a probe
+      export rather than assumed: it now fails `nestjs-app` (`src/main.ts`) and
+      `ts-package` (`src/index.ts`), where nothing caught a dead entry export
+      before, and still does not fail `nextjs-app` (`app/page.tsx`),
+      `vite-react-app` (`src/main.tsx`) or `vue-app` (`src/main.ts`) - knip's
+      framework plugins register those files as entries of their own and the
+      option does not reach them. Recorded in the config comment so the next
+      reader does not re-derive it. Verified: all eight templates exit 0
+      (`pnpm knip:templates`), probes removed, `pnpm check:ci` exit 0,
+      `pnpm check:quality` exit 0.
+
+- [x] Evaluated `isIncludeEntryExports` for the **root** `knip.config.ts` and
+      left it off, now with the concrete list the old entry could only predict.
+      `pnpm knip --include-entry-exports` at the root reports 17 unused exports
+      and 4 unused exported types, and every one is a false positive of a
+      different kind: `@busirocket/quality-config`'s public API
+      (`createDepCruiserConfig`, `createKnipConfig`, `createLefthookConfig`,
+      `TYPE_COVERAGE_THRESHOLD`, each reported twice - at its source file and at
+      the barrel), the `default` export of all eight templates' `knip.config.ts`
+      plus `nuxt-app/vitest.config.ts` (config files a tool loads, not a caller
+      imports), `nestjs-app`'s `bootstrap`, and four generated types in
+      `templates/nextjs-app/.next/types/routes.d.ts`. Suppressing that many real
+      public exports to enable the flag would cost more than it buys, so the
+      root config keeps the default. Revisit only if knip gains a
+      per-entry-pattern override.
+
+- [x] Moved the `eslint-config` / `eslint-plugin-code-policy` cyclic-dependency
+      entry out of the backlog. It is not work: it is a standing constraint that
+      already enforces itself, since reintroducing a bare
+      `@busirocket/eslint-config` import in the plugin breaks the build with
+      `Cyclic dependency detected: eslint-plugin-code-policy#build, @busirocket/eslint-config#build`.
+      Recorded as "Decision 5 - the two ESLint packages must not declare a
+      workspace cycle" in `docs/platform-decisions.md`, naming both real edges,
+      why only one may be declared, and that the fix is restoring the relative
+      import rather than adding the dependency.
+
 - [x] Published `@busirocket/quality-config@0.1.0` (first ever release) and
       `@busirocket/create-baseline@0.3.0`. Hit and resolved the structural limit
       worth remembering: **`publish.yml`'s tokenless OIDC path cannot do the

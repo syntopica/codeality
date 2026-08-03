@@ -49,6 +49,30 @@ release of the config packages.
 `@busirocket/prettier-config` and `@busirocket/tsconfig` keep **peer-only**
 Prettier / plugins / TypeScript as documented in each `package.json`.
 
+## Decision 5 — the two ESLint packages must not declare a workspace cycle
+
+`packages/eslint-config` and `packages/eslint-plugin-code-policy` depend on each
+other in both directions, and only one of those edges may exist in a
+`package.json`:
+
+- **Real, declared:** `eslint-config/src/code-quality.ts` imports
+  `eslint-plugin-code-policy` as a rules provider. This is a runtime dependency
+  and stays declared.
+- **Real, deliberately undeclared:**
+  `eslint-plugin-code-policy/eslint.config.ts` lints its own source with
+  `@busirocket/eslint-config`'s presets. It imports them **by relative path**
+  (`../eslint-config/src/base.ts`, the same trick
+  `eslint-config/eslint.config.ts` uses on itself), not by package specifier.
+
+Declaring the second edge as a `workspace:*` dependency - the "correct" fix a
+knip `unlisted dependency` finding suggests - makes turbo's build graph cyclic
+and `pnpm check:ci` fails outright with
+`Cyclic dependency detected: eslint-plugin-code-policy#build, @busirocket/eslint-config#build`.
+
+The trap is self-detecting: reintroducing a bare `@busirocket/eslint-config`
+import in `eslint-plugin-code-policy` breaks the build with that exact message.
+Fix it by restoring the relative import, not by adding the dependency.
+
 ## Compatibility matrix (supported)
 
 These are the **supported** environments for consuming the published packages.
