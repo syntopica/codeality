@@ -13,9 +13,19 @@
     },
     "lint:fix": {},
     "lint:suppress": {
+      "dependsOn": ["^build"],
+      "cache": false
+    },
+    "eslint-plugin-code-policy#lint:suppress": {
+      "dependsOn": ["build", "^build"],
       "cache": false
     },
     "lint:prune": {
+      "dependsOn": ["^build"],
+      "cache": false
+    },
+    "eslint-plugin-code-policy#lint:prune": {
+      "dependsOn": ["build", "^build"],
       "cache": false
     },
     "format": {},
