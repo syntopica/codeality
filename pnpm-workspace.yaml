@@ -31,9 +31,11 @@ patchedDependencies:
 # `pnpm dedupe`. Each pins the transitive edge forward to the patched line
 # named in its advisory, scoped to the vulnerable range so it does not force
 # an unrelated major bump on consumers already resolving the fixed version.
+#
+# Every entry here is load-bearing: removing it and re-running
+# `pnpm install && pnpm audit --audit-level=high` brings its advisory back.
+# Re-run that check when the upstream named in the comment moves its own floor.
 overrides:
   'tmp@<0.2.6': ^0.2.6 # GHSA-ph9p-34f9-6g65, via @lhci/cli>inquirer>external-editor
-  'fast-uri@<3.1.4': ^3.1.4 # GHSA-v2hh-gcrm-f6hx, via astro's language server
   'sharp@<0.35.0': ^0.35.3 # GHSA-f88m-g3jw-g9cj, via templates/nextjs-app's next
   'postcss@<8.5.18': ^8.5.24 # GHSA-6g55-p6wh-862q / GHSA-r28c-9q8g-f849, via next
-  'brace-expansion@<1.1.17': ^1.1.17 # GHSA-mh99-v99m-4gvg, via eslint-plugin-import's minimatch@3

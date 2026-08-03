@@ -6,10 +6,8 @@ settings:
 
 overrides:
   tmp@<0.2.6: ^0.2.6
-  fast-uri@<3.1.4: ^3.1.4
   sharp@<0.35.0: ^0.35.3
   postcss@<8.5.18: ^8.5.24
-  brace-expansion@<1.1.17: ^1.1.17
 
 patchedDependencies:
   eslint-plugin-react: fdc0d4d107280af5a112492a6f5a6181acb084243f353cfbc03e240528360dd1

@@ -4,6 +4,21 @@ Closed work from `TODO.md`, grouped by year and month.
 
 ## 2026-08
 
+- [x] Audited all five `pnpm-workspace.yaml` security overrides for whether they
+      still do anything, which the entry asked for but nobody had run. Removed
+      all five at once and reinstalled: `pnpm audit --audit-level=high` went
+      from 0 high to 4 high, naming `tmp` (GHSA-ph9p-34f9-6g65), `sharp`
+      (GHSA-f88m-g3jw-g9cj) and `postcss` (GHSA-6g55-p6wh-862q and
+      GHSA-r28c-9q8g-f849). `fast-uri` (GHSA-v2hh-gcrm-f6hx, via astro's
+      language server) and `brace-expansion` (GHSA-mh99-v99m-4gvg, via
+      `eslint-plugin-import`'s `minimatch@3`) did **not** come back - both
+      upstreams have moved past the patched version, so those two overrides were
+      dead weight and are dropped. Restored the three that are still
+      load-bearing and re-verified: `pnpm audit --audit-level=high` exit 0,
+      `pnpm install --frozen-lockfile` clean, `pnpm check:ci` exit 0,
+      `pnpm check:quality` exit 0. Lockfile churn is two deleted lines. Added a
+      note above the remaining overrides recording that each is load-bearing and
+      how to re-check, so the next pass does not have to rediscover the method.
 - [x] `dependency-cruiser`'s single repo-wide `tsConfig` left three trees exempt
       from `no-orphans` by path pattern, so any _new_ dead file in
       `packages/eslint-plugin-code-policy/src/utils/`,

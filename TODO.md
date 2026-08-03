@@ -77,13 +77,12 @@ Active backlog for the `baseline` repo. Closed items move to `TODO_LOG.md`.
   `TypeError: Cannot read properties of undefined (reading 'Unknown')`. Smallest
   unblock: retry after the repo moves off the alias to a released TypeScript 6,
   or evaluate `tsc --noEmit --strict` + a custom `as`-cast counter instead.
-- [ ] Task 15 added five `pnpm-workspace.yaml` overrides to clear
-      `pnpm audit --audit-level=high` findings that survived `pnpm dedupe`:
-      `tmp@<0.2.6`, `fast-uri@<3.1.4`, `sharp@<0.35.0`, `postcss@<8.5.18`, and
-      `brace-expansion@<1.1.17`. Each is a stopgap, removable once its own
-      upstream floor moves past the patched version named in the override:
-      `@lhci/cli` (tmp), astro's language server chain (fast-uri), `next`
-      (sharp, postcss), and `eslint-plugin-import`'s `minimatch` dependency
-      (brace-expansion). To check whether one is still load-bearing, remove it
-      and run `pnpm install && pnpm audit --audit-level=high` - if the advisory
-      it named does not come back, drop it for good.
+- [ ] Three `pnpm-workspace.yaml` security overrides remain load-bearing and are
+      still stopgaps: `tmp@<0.2.6` (`@lhci/cli`), `sharp@<0.35.0` and
+      `postcss@<8.5.18` (both `next`). Verified 2026-08-03 by removing all five
+      then-current overrides and reinstalling: those three advisories came back
+      as `high`, so each still carries its own weight. Recheck the same way when
+      `@lhci/cli` or `next` moves its own floor past the patched version named
+      in the override comment - remove the entry, run
+      `pnpm install && pnpm audit --audit-level=high`, and drop it for good if
+      the advisory does not return.
