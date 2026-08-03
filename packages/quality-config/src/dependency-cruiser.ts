@@ -28,24 +28,6 @@ const ORPHAN_EXEMPTIONS = [
   '(^|/)tests/fixtures/',
 ]
 
-// Workspaces that map a path alias (`@/`, `~/`) through their own
-// tsconfig.json "paths". dependency-cruiser resolves aliases from a single
-// `tsConfig` with no per-package awareness, so a repo-wide run cannot resolve
-// more than one of these mappings - and pointing it at one workspace's tsconfig
-// would apply that mapping to every other cruised file, producing wrong edges
-// rather than no edges. Their orphan check therefore runs per workspace against
-// that workspace's own tsconfig, via `pnpm deps:graph:aliased`.
-//
-// Excluding the whole workspace here is what lets that run be the only orphan
-// authority for these trees. The previous approach suppressed individual files
-// by path pattern, which silently exempted any *new* dead file added to the
-// same directory.
-const ALIASED_WORKSPACES = [
-  '^packages/eslint-plugin-code-policy/',
-  '^templates/vue-app/',
-  '^templates/nuxt-app/',
-]
-
 // Rules that need the whole resolved graph and cannot be split per workspace:
 // a cycle or a packages -> templates edge can span two workspaces, and
 // `no-dev-dep-in-production-code` matches on a repo-relative path prefix.
@@ -96,11 +78,20 @@ const REPO_SCOPE_RULES: IForbiddenRuleType[] = [
  * A workspace-scoped cruise needs a `--ts-config` whose `paths` are written
  * relative to the workspace root: dependency-cruiser resolves them against the
  * current working directory rather than against the config file that declares
- * them. `scripts/deps-graph-aliased.mjs` generates one per workspace for
- * exactly this reason.
+ * them, so a config that lives one directory down (a framework-generated one,
+ * for instance) mis-resolves every alias.
+ *
+ * `orphanExemptions` adds project-specific `no-orphans` exemptions on top of
+ * the framework-convention ones built in here. Use it for directories a
+ * repo-wide run cannot judge - typically a workspace whose path aliases only
+ * resolve under its own tsconfig, cruised separately at `scope: 'workspace'`.
  */
 export const createDepCruiserConfig = (
-  options: { tsConfigPath?: string; scope?: 'repo' | 'workspace' } = {},
+  options: {
+    tsConfigPath?: string
+    scope?: 'repo' | 'workspace'
+    orphanExemptions?: string[]
+  } = {},
 ): IConfiguration => ({
   forbidden: [
     {
@@ -110,10 +101,7 @@ export const createDepCruiserConfig = (
         'A module nothing imports and that is not an entry point is dead weight.',
       from: {
         orphan: true,
-        pathNot:
-          options.scope === 'workspace'
-            ? ORPHAN_EXEMPTIONS
-            : [...ORPHAN_EXEMPTIONS, ...ALIASED_WORKSPACES],
+        pathNot: [...ORPHAN_EXEMPTIONS, ...(options.orphanExemptions ?? [])],
       },
       to: {},
     },

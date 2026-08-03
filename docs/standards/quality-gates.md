@@ -153,6 +153,14 @@ then known to be affected. That approach silently exempted any _new_ dead file
 added to the same directories; whole-workspace exclusion plus a real
 per-workspace check does not.
 
+`scripts/aliasedWorkspaces.mjs` is the single source for which workspaces those
+are. `.dependency-cruiser.cjs` turns it into the repo-wide run's
+`orphanExemptions` option, and `scripts/deps-graph-aliased.mjs` cruises the same
+list - so adding an alias to a workspace means adding it there and nowhere else,
+and an exclusion can never outlive the check that covers it. The list lives in
+this repo rather than inside `@busirocket/quality-config` because these
+directory names are ours, not every consumer's.
+
 **Gotcha - `paths` resolve against the cwd.** dependency-cruiser resolves a
 tsconfig's relative `paths` against the current working directory, not against
 the config file that declares them. Where a workspace declares its aliases in

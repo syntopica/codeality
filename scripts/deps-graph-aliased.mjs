@@ -3,8 +3,8 @@
 // tsconfig.json "paths". dependency-cruiser takes a single `tsConfig` per
 // cruise, so the repo-wide `pnpm deps:graph` cannot resolve more than one of
 // these mappings; it excludes these workspaces from `no-orphans` and this run
-// is their only orphan authority (see ALIASED_WORKSPACES in
-// @busirocket/quality-config/dependency-cruiser).
+// is their only orphan authority. Both halves read the same list from
+// `scripts/aliasedWorkspaces.mjs`, so neither can drift from the other.
 //
 // Aliases are read from each workspace's own tsconfig rather than restated
 // here, so a template that renames or adds an alias cannot drift away from what
@@ -28,20 +28,14 @@ import { dirname, relative, resolve } from 'node:path'
 import { exit } from 'node:process'
 import { fileURLToPath } from 'node:url'
 
+import { ALIASED_WORKSPACES } from './aliasedWorkspaces.mjs'
+
 const __dirname = dirname(fileURLToPath(import.meta.url))
 const REPO_ROOT = resolve(__dirname, '..')
 const CONFIG = resolve(REPO_ROOT, '.dependency-cruiser.workspace.cjs')
 // Resolved from the repo root rather than left to PATH, so no shell is needed
 // to find it and the arguments are never concatenated into a command string.
 const DEPCRUISE = resolve(REPO_ROOT, 'node_modules/.bin/depcruise')
-
-// `sources` are relative to the workspace and mirror what the repo-wide run
-// would otherwise have cruised there.
-const ALIASED_WORKSPACES = [
-  { workspace: 'packages/eslint-plugin-code-policy', sources: ['src'] },
-  { workspace: 'templates/vue-app', sources: ['src'] },
-  { workspace: 'templates/nuxt-app', sources: ['app', 'server'] },
-]
 
 // Walks the `extends` chain until it finds the config that declares `paths`,
 // and returns it alongside its own directory - the base every relative entry in
@@ -81,9 +75,10 @@ for (const { workspace, sources } of ALIASED_WORKSPACES) {
   if (!declaration) {
     console.error(
       `deps:graph:aliased: no tsconfig "paths" reachable from ${workspace}/tsconfig.json. ` +
-        'Either the alias was removed - drop this workspace from ALIASED_WORKSPACES and from ' +
-        'the exclusion list in @busirocket/quality-config/dependency-cruiser so the repo-wide ' +
-        'run checks it again - or the config moved and this lookup needs updating.',
+        'Either the alias was removed - drop this workspace from ' +
+        'scripts/aliasedWorkspaces.mjs, which also stops the repo-wide run excluding ' +
+        'it, so that run checks it again - or the config moved and this lookup needs ' +
+        'updating.',
     )
     failed.push(workspace)
     continue

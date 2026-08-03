@@ -13,6 +13,28 @@ are **private** and may change without a major bump.
 | `@busirocket/quality-config/type-coverage`      | `TYPE_COVERAGE_THRESHOLD` — minimum non-`any` type coverage |
 | `@busirocket/quality-config/lefthook`           | `createLefthookConfig` — shared git hook pipeline           |
 
+### `createDepCruiserConfig(options)`
+
+Every option is optional and every default is project-agnostic: the factory
+encodes no directory name belonging to any particular repository.
+
+| Option             | Effect                                                                                                     |
+| ------------------ | ---------------------------------------------------------------------------------------------------------- |
+| `scope`            | `'repo'` (default) emits every rule. `'workspace'` emits only `no-orphans`, for a single-workspace cruise. |
+| `tsConfigPath`     | tsconfig used to resolve path aliases.                                                                     |
+| `orphanExemptions` | Extra `no-orphans` path patterns, on top of the framework-convention ones built in.                        |
+
+**`tsConfigPath` resolves relative `paths` against the current working
+directory**, not against the config file that declares them - a
+dependency-cruiser behavior, not a choice made here. A tsconfig that lives
+somewhere other than the directory you cruise from (a framework-generated one,
+say) therefore mis-resolves every alias. Cruise from the directory its paths are
+written against, or pass a config whose paths are rebased to it.
+
+Use `orphanExemptions` for directories a repo-wide cruise cannot judge - most
+often a workspace whose aliases only resolve under its own tsconfig, which you
+then cruise separately with `scope: 'workspace'`.
+
 ## Stable executables (semver)
 
 | Binary              | Purpose                                                    |
