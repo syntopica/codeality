@@ -2,16 +2,36 @@
   "ci": {
     "collect": {
       "numberOfRuns": 1,
-      "startServerCommand": "NUXT_PUBLIC_API_BASE_URL=https://api.example.com node .output/server/index.mjs",
+      "startServerCommand": "NUXT_PUBLIC_API_BASE_URL=https://api.example.com PORT=3102 node .output/server/index.mjs",
       "startServerReadyPattern": "Listening",
-      "url": ["http://localhost:3000/"]
+      "url": ["http://localhost:3102/"]
     },
     "assert": {
       "assertions": {
-        "categories:accessibility": ["warn", { "minScore": 0.9 }],
-        "categories:best-practices": ["warn", { "minScore": 0.9 }],
-        "categories:seo": ["warn", { "minScore": 0.9 }],
-        "categories:performance": ["warn", { "minScore": 0.6 }]
+        "categories:accessibility": [
+          "warn",
+          {
+            "minScore": 0.9
+          }
+        ],
+        "categories:best-practices": [
+          "warn",
+          {
+            "minScore": 0.9
+          }
+        ],
+        "categories:seo": [
+          "warn",
+          {
+            "minScore": 0.9
+          }
+        ],
+        "categories:performance": [
+          "warn",
+          {
+            "minScore": 0.6
+          }
+        ]
       }
     }
   }
