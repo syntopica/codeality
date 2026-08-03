@@ -1,6 +1,6 @@
 {
   "name": "@busirocket/tsconfig",
-  "version": "0.2.0",
+  "version": "0.2.1",
   "private": false,
   "packageManager": "pnpm@11.18.0",
   "license": "MIT",

@@ -1,5 +1,14 @@
 # @busirocket/create-baseline
 
+## 0.3.1
+
+### Patch Changes
+
+- chore: refresh the pins in `baseline-versions.json`.
+
+  `@busirocket/quality-config` to `^0.2.0`, `@busirocket/prettier-config` to
+  `^0.1.2`, `@busirocket/tsconfig` to `^0.2.1`. No check was added or removed.
+
 ## 0.3.0
 
 ### Minor Changes

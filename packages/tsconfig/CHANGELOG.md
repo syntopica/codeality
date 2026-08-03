@@ -3,6 +3,15 @@
 > Reconstructed from this repository's git history, which starts at the monorepo
 > migration. Each entry names the commit that introduced the version.
 
+## 0.2.1
+
+### Patch Changes
+
+- chore: publish the package metadata fixed after 0.2.0 shipped.
+
+  The published 0.2.0 tarball predates the commits that aligned the toolchain
+  and added `publish:check`. No preset changed.
+
 ## 0.2.0
 
 ### Minor Changes
