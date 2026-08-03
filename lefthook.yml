@@ -1,11 +1,13 @@
 # Mirrors createLefthookConfig() in @busirocket/quality-config/lefthook, which
-# is what create-baseline uses to generate this file for new projects.
+# is what create-baseline uses to generate this file for new projects. The one
+# deliberate difference is the lint command: a single-project consumer can run
+# eslint from its root, this workspace cannot (see scripts/lint-staged.mjs).
 pre-commit:
   parallel: true
   commands:
     lint:
       glob: '*.{js,jsx,ts,tsx,vue,astro,mjs,cjs}'
-      run: pnpm exec eslint --max-warnings 0 --no-warn-ignored {staged_files}
+      run: node scripts/lint-staged.mjs {staged_files}
     format:
       glob: '*.{js,jsx,ts,tsx,vue,astro,mjs,cjs,json,md,css,yml,yaml}'
       run: pnpm exec prettier --check {staged_files}
