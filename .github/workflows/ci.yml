@@ -31,15 +31,16 @@ jobs:
       - name: check:ci
         run: pnpm run check:ci
 
-      # The performance budget step is deliberately absent. Two templates
-      # cannot be measured by Lighthouse in any environment tried so far:
-      # vite-react-app and tauri-app both report NO_FCP ("the page did not
-      # paint any content") on macOS and on ubuntu-latest alike, so this is a
-      # property of those templates rather than of headless Chrome. The other
-      # four measure correctly. Keeping the step here made the pipeline
-      # permanently red on a defect unrelated to the change under test.
-      # `pnpm perf:check` still exists and works for the templates that can be
-      # measured. See the TODO.md entry before re-adding this step.
+      # Lighthouse needs every template's built bundle to actually render.
+      # The client-side templates validate `import.meta.env` against a Zod
+      # schema at module load and throw when a required variable is missing;
+      # Vite inlines those values at build time, so a build with no `.env`
+      # produced a bundle that threw before mounting and reported NO_FCP.
+      # `baseline-env-init` (from @busirocket/quality-config, wired into each
+      # template's `prepare` and `perf:check`) seeds `.env` from the committed
+      # `.env.example`, which is what makes this step measurable at all.
+      - name: Performance budget
+        run: pnpm run perf:check
 
   quality:
     name: Quality gates

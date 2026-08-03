@@ -34,6 +34,26 @@ Add `knip` and/or `dependency-cruiser` for the gates you use.
 | `@busirocket/quality-config/type-coverage`      | Minimum non-`any` type coverage threshold |
 | `@busirocket/quality-config/lefthook`           | Shared git hook pipeline                  |
 
+### `baseline-env-init`
+
+Seeds a gitignored `.env` from the committed `.env.example`, so a freshly cloned
+project boots on the documented example values instead of failing its startup
+env validation. Bundlers inline `VITE_*`/`NEXT_PUBLIC_*` values at build time,
+so without this a project with no `.env` builds a bundle that throws before it
+renders and reports a blank page rather than a useful error.
+
+```json
+{
+  "scripts": {
+    "prepare": "lefthook install && baseline-env-init"
+  }
+}
+```
+
+Idempotent: an existing `.env` is never overwritten, and a project with no
+`.env.example` is a no-op. It never writes a value into version control - `.env`
+stays gitignored, `.env.example` stays the only committed copy.
+
 ## Related
 
 - **Lint / TS configs:** `@busirocket/eslint-config`, `@busirocket/tsconfig`.

@@ -35,6 +35,7 @@ export const createBaseConfig = (options: SharedConfigOptions = {}) => {
       '**/coverage/**',
       '**/.next/**',
       '**/.astro/**',
+      '**/.lighthouseci/**',
       '**/out/**',
     ]),
     js.configs.recommended,

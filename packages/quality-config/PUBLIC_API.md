@@ -13,9 +13,21 @@ are **private** and may change without a major bump.
 | `@busirocket/quality-config/type-coverage`      | `TYPE_COVERAGE_THRESHOLD` — minimum non-`any` type coverage |
 | `@busirocket/quality-config/lefthook`           | `createLefthookConfig` — shared git hook pipeline           |
 
-Each entry resolves to **TypeScript source** (`*.ts`) published in the package.
-Consumers load it with **ESM** and a TypeScript-aware runner (for example `jiti`
-or your bundler) as shown in the package README.
+## Stable executables (semver)
+
+| Binary              | Purpose                                                    |
+| ------------------- | ---------------------------------------------------------- |
+| `baseline-env-init` | Seed a gitignored `.env` from the committed `.env.example` |
+
+`baseline-env-init` takes no arguments and always exits 0. It copies
+`.env.example` to `.env` in the current working directory, does nothing when
+`.env` already exists, and does nothing when there is no `.env.example`. Wire it
+into `prepare` so a freshly cloned project boots with the documented example
+values instead of failing its startup env validation.
+
+Each export entry resolves to **TypeScript source** (`*.ts`) published in the
+package. Consumers load it with **ESM** and a TypeScript-aware runner (for
+example `jiti` or your bundler) as shown in the package README.
 
 ## Implementation detail
 

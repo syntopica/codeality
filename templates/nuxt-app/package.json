@@ -5,7 +5,7 @@
   "type": "module",
   "packageManager": "pnpm@11.18.0",
   "scripts": {
-    "prepare": "lefthook install",
+    "prepare": "lefthook install && baseline-env-init",
     "dev": "nuxt dev",
     "build": "nuxt build",
     "preview": "nuxt preview",
@@ -26,7 +26,7 @@
     "knip": "knip",
     "check:all": "pnpm type-check && pnpm lint && pnpm format:check && pnpm dupes",
     "check:ci": "pnpm type-check && pnpm lint && pnpm format:check && pnpm test && pnpm dupes && pnpm knip",
-    "perf:check": "pnpm build && lhci autorun --config=.lighthouserc.json"
+    "perf:check": "baseline-env-init && pnpm build && lhci autorun --config=.lighthouserc.json"
   },
   "dependencies": {
     "h3": "^1.15.11",

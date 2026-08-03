@@ -4,6 +4,40 @@ Closed work from `TODO.md`, grouped by year and month.
 
 ## 2026-08
 
+- [x] Lighthouse `NO_FCP` on `templates/vite-react-app` and
+      `templates/tauri-app`. The earlier reading - "a property of those two
+      templates" that headless Chrome could not measure - was wrong on both
+      counts. Root cause: every template validates its environment at module
+      load (`envSchema.parse(import.meta.env)` in `src/env.ts`), Vite inlines
+      `VITE_*` at **build** time, and `.gitignore` ships only `.env.example`
+      (`.env` and `.env.*` are ignored). So a build with no `.env` embedded
+      `undefined`, `env.ts` threw before `createRoot`/`mountApp` ran, and the
+      bundle painted nothing. Reproduced in a real browser (Playwright over a
+      static server on `dist`): empty accessibility snapshot plus
+      `ZodError: [{"expected":"string","path":["VITE_API_BASE_URL"]}]`. The same
+      failure was present in `templates/vue-app`, which the old entry claimed
+      measured correctly; `astro-site`, `nextjs-app` and `nuxt-app` painted only
+      because they ship server-rendered markup, not because their env was valid.
+      Fixed at the source rather than around the gate: new `baseline-env-init`
+      bin in `@busirocket/quality-config` copies `.env.example` to `.env` when
+      `.env` is absent (idempotent, no-op without an example, cross-platform),
+      wired into `prepare` and `perf:check` for the six templates that ship an
+      `.env.example`. Nothing new is committed - `.env` stays gitignored in
+      every template, verified with `git check-ignore`. Deliberately not done:
+      no `.env*` file was committed and no template `.gitignore` was relaxed,
+      since a template's `.gitignore` is copied into every downstream project
+      and un-ignoring an env file there would silently invite consumers to
+      commit real API URLs in a public repo. Surfaced and fixed one adjacent
+      gap: `.lighthouseci/` report output broke `my-nuxt-app#lint` (it lints
+      `.`), so `**/.lighthouseci/**` joined the shared `globalIgnores` in
+      `@busirocket/eslint-config`'s base config. `Performance budget` re-added
+      to the `verify` job in `.github/workflows/ci.yml`. Verified:
+      `pnpm perf:check` exit 0 with 14/14 turbo tasks (all six measurable
+      templates, including the two that could not be measured before),
+      `pnpm check:ci` exit 0, `pnpm check:quality` exit 0,
+      `pnpm workflows:check` exit 0, and a post-fix browser snapshot of
+      `vite-react-app`'s `dist` showing the real rendered content with zero
+      console errors.
 - [x] Root `pnpm knip` vs per-template `pnpm knip` disagreed about
       `vitest-environment-nuxt` (`templates/nuxt-app`). Task 8 declared the
       dependency in `templates/nuxt-app/package.json` because
