@@ -53,13 +53,16 @@ verified complete - `[-]` obsolete or superseded.
 
 ## Consumer findings
 
-- [ ] `@busirocket/quality-config@0.4.0` is committed but not released: no tag,
-      no npm publish, so `BusiRocket/busirocket` still resolves 0.3.0 and still
-      carries the local patches the fix was written to delete. Cut the release,
-      then upgrade that repo and remove the patches from its `knip.config.ts`
-      and `.dependency-cruiser.cjs` - that deletion is the acceptance test, and
-      it was already run against a working copy: both gates pass on busirocket
-      with the patches removed and the new factory in place.
+- [!] `@busirocket/quality-config@0.4.0` is committed and tagged
+  (`quality-config@0.4.0`, annotated, pushed) but **not published**: the npm
+  token in `~/.npmrc` is rejected with
+  `401 Unauthorized - GET https://registry.npmjs.org/-/whoami`, so `npm publish`
+  cannot run. Blocked on `npm login`; nothing else is outstanding. Once it is on
+  the registry, upgrade `BusiRocket/busirocket` to `^0.4.0` and delete the local
+  patches from its `knip.config.ts` and `.dependency-cruiser.cjs` - that
+  deletion is the acceptance test, and it has already been run against a working
+  copy: both gates pass there with the patches removed and this factory in
+  place.
 
 ## Repo hygiene
 
