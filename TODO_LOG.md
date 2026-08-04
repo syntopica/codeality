@@ -4,6 +4,118 @@ Closed work from `TODO.md`, grouped by year and month.
 
 ## 2026-08
 
+- [x] 2026-08-04 — **release:** cut `eslint-config@0.6.0`,
+      `quality-config@0.3.0` and `create-baseline@0.3.2` up to the tag. Both
+      minors are behavior changes rather than patches: the React presets now
+      report a concrete `settings.react.version` and accept a `reactVersion`
+      option, and the knip Next.js preset changes what a `src/app` project sees.
+      `eslint-config` also carried one patch that had been unreleased since
+      `0.5.0` - the `.lighthouseci/` ignore from `cb20628`. `create-baseline`
+      follows because `baseline-versions.json` pins the two bumped packages, the
+      same pairing as the `0.3.1` release.
+  - Result: three tags on `ac7b511`. `release-check` reports `ok` for
+    `prettier-config`, `tsconfig` and `eslint-plugin-code-policy`, and
+    `npm has no <version>` for the three just tagged - the expected state
+    between tag and publish. The publish itself is a manual `workflow_dispatch`
+    and stays in `TODO.md`.
+  - Evidence: `pnpm run check:ci`, `check:quality` and `check:security` all exit
+    `0` before the tag; `sync-versions --check` reports derived files in sync.
+  - Files: `packages/{eslint-config,quality-config,create-baseline}/`
+    `package.json` and `CHANGELOG.md`,
+    `packages/create-baseline/baseline-versions.json`.
+
+- [x] 2026-08-04 — **security:** three newly published `high` advisories broke
+      `pnpm audit:check`, and the gate is green again. They were not caused by
+      any change in this repo: audit resolves against the live advisory
+      database, and the same three appear on the untouched lockfile at `HEAD`.
+      `ip-address@<10.3.1` (GHSA-mwp4-54f8-5fhr, via
+      `@lhci/cli > proxy-agent > socks`) and `brace-expansion` on two majors
+      (GHSA-rgw5-rvv9-x895, via `nuxt > @nuxt/nitro-server` and via
+      `eslint > @eslint/config-array > minimatch`). All three survived
+      `pnpm dedupe`, so they took the documented route: scoped entries in the
+      `overrides:` block. The `brace-expansion` entries are lower-bounded
+      (`>=2.0.0 <2.1.4`, `>=5.0.0 <5.0.9`) rather than the obvious
+      `brace-expansion@<2.1.4`, which would also capture the installed `1.1.18`
+      edge - an edge the advisory does not flag - and drag it across two majors.
+      The `ip-address` pin to `^10.3.1` also cleared the two `moderate`
+      `ip-address` findings, which were patched at `10.2.1` and `10.2.2`.
+      Separately, `@vitest/eslint-plugin` went `1.6.25 -> 1.6.26` across the
+      nine workspaces that declare it, which removed one of the paths feeding
+      the low `esbuild` advisory.
+  - Result: `pnpm audit` goes from `1 low | 3 moderate | 3 high` to
+    `1 low | 1 moderate`; `pnpm audit --audit-level=high` exit `0`.
+  - Evidence: `pnpm run check:security` exit `0` (gitleaks `no leaks found`,
+    audit, actionlint); `pnpm run check:ci` exit `0`; `pnpm run check:quality`
+    exit `0`.
+  - Files: `pnpm-workspace.yaml`, `pnpm-lock.yaml`, nine `package.json` files
+    under `packages/` and `templates/`.
+
+- [x] 2026-08-04 — **eslint-config:** the React presets no longer depend on
+      `eslint-plugin-react`'s own version detection, which is broken on
+      ESLint 10. `settings.react.version` was `'detect'`, and detection calls
+      `context.getFilename()`, removed in ESLint 10, so a consumer on
+      `eslint@10` fails every file with
+      `contextOrFilename.getFilename is not a function` before a rule runs. This
+      repo could not see it: `patches/eslint-plugin-react.patch` fixes
+      `resolveBasedir` locally, so the templates lint green while external
+      consumers crash - the patch is what made this a report from
+      `capture-service` rather than a failing gate here. `createNextjsConfig` and
+      `createViteReactConfig` now resolve the React installed beside the linted
+      project (`resolveReactVersion`, `require.resolve('react/package.json')`
+      from `process.cwd()`) and hand the plugin a concrete version, with a new
+      `reactVersion` option to override and `'detect'` only as the last
+      fallback. The settings live in an unscoped config object because the two
+      `eslint-plugin-react` flat configs carry no `files` key, so a file outside
+      `**/*.{js,jsx,ts,tsx}` would otherwise re-enter detection.
+      `createViteReactConfig` was fixed alongside `createNextjsConfig`: the
+      report named only the Next.js preset, but `vite-react.ts` had the
+      identical `'detect'` setting.
+  - Evidence: probe from `templates/nextjs-app` returns `[{"version":"19.2.8"}]`
+    (one settings entry, no `detect`) and
+    `createNextjsConfig({ reactVersion: '18.3.1' })` returns
+    `[{"version":"18.3.1"}]`; `eslint src --max-warnings 0` and `tsc --noEmit`
+    clean for the package; `turbo run type-check lint` 24/24 successful.
+  - Files: `packages/eslint-config/src/react-version.ts` (new),
+    `packages/eslint-config/src/nextjs.ts`,
+    `packages/eslint-config/src/vite-react.ts`.
+
+- [x] 2026-08-04 — **quality-config:** the knip Next.js preset now covers the
+      `src/app` layout. Entry globs were rooted at `app/`, so a project using
+      `src/app/` matched none of them. The reported symptom (knip exits 0 having
+      inspected nothing) did not reproduce; the measured behavior is worse in a
+      different way: with no entry matching, knip reports the application's own
+      route files as **unused files** and never checks their exports. Probe on a
+      `src/app` fixture, old patterns: `Unused files (2)` naming both
+      `src/app/y/page.tsx` and `src/lib/orphan.ts`, and the dead export in
+      `page.tsx` is not reported. New patterns: only the real orphan is flagged
+      and `deadEntryExport` surfaces as an unused export. Fixed by carrying both
+      roots in one pattern - `{,src/}app/**/{page,layout,...}.{ts,tsx}` and
+      `{,src/}middleware.ts` - rather than adding a `srcDir` option: verified
+      with knip's own glob engine (`tinyglobby`) that `{,src/}` matches both
+      layouts, so neither produces a `Refine entry pattern (no matches)` hint.
+      `next.config.*` stays root-only, where Next.js requires it.
+  - Evidence: knip probe above; `pnpm knip` and `pnpm knip:templates` both exit
+    `0` with no new hint for the `templates/nextjs-app` entry patterns.
+  - Files: `packages/quality-config/src/knip-framework.ts`.
+
+- [x] 2026-08-04 — **docs:** the peer packages each `@busirocket/eslint-config`
+      subpath needs are now listed per subpath. The reported gap -
+      `createCodeQualityConfig` failing a consumer's `tsc --noEmit` with
+      `Cannot find module 'eslint-plugin-testing-library'` - was documentation,
+      not the manifest: the plugin was already an optional peer, and the
+      manifest is right, because the plugin is only mandatory for the subpaths
+      that reach `./testing`. The README `Stacks` table gained an
+      `Install alongside` column covering all twelve subpaths, plus the reason
+      the list is longer than `peerDependencies` suggests: the package ships raw
+      `.ts`, so its imports resolve from the consumer and pnpm's isolated
+      `node_modules` requires a direct declaration even for the config's own
+      `dependencies`. `docs/adoption/existing-repo.md` points at that table and
+      calls out the two easy misses (`/code-quality` needing the testing
+      plugins, `/nextjs` and `/vite-react` needing `eslint-plugin-boundaries`)
+      and the ESLint 10 React-version note.
+  - Evidence: `pnpm format:check` clean; `pnpm knip` exit `0`.
+  - Files: `packages/eslint-config/README.md`, `docs/adoption/existing-repo.md`.
+
 - [x] `type-coverage` is not incompatible with the `@typescript/typescript6`
       alias. The blocker was misattributed and the gate now runs. Every failing
       run had been invoked through `npx`, which installs `type-coverage` into
