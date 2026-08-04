@@ -45,7 +45,7 @@
     "@tailwindcss/vite": "^4.3.3",
     "@testing-library/jest-dom": "^7.0.0",
     "@vitest/coverage-v8": "^4.1.10",
-    "@vitest/eslint-plugin": "^1.6.25",
+    "@vitest/eslint-plugin": "^1.6.26",
     "@vue/test-utils": "^2.4.11",
     "eslint": "^10.8.0",
     "eslint-config-prettier": "^10.1.8",

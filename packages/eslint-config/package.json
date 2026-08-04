@@ -144,7 +144,7 @@
     "@arethetypeswrong/cli": "^0.18.5",
     "@next/eslint-plugin-next": "^16.2.12",
     "@types/node": "^26.1.2",
-    "@vitest/eslint-plugin": "^1.6.25",
+    "@vitest/eslint-plugin": "^1.6.26",
     "eslint": "^10.8.0",
     "eslint-plugin-astro": "^3.0.1",
     "eslint-plugin-boundaries": "^7.1.0",
