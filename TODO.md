@@ -51,19 +51,6 @@ verified complete - `[-]` obsolete or superseded.
       `pnpm exec turbo run publish:check --force` from a cleared cache and
       capture which task fails, rather than the aggregate exit code.
 
-## Consumer findings
-
-- [!] `@busirocket/quality-config@0.4.0` is committed and tagged
-  (`quality-config@0.4.0`, annotated, pushed) but **not published**: the npm
-  token in `~/.npmrc` is rejected with
-  `401 Unauthorized - GET https://registry.npmjs.org/-/whoami`, so `npm publish`
-  cannot run. Blocked on `npm login`; nothing else is outstanding. Once it is on
-  the registry, upgrade `BusiRocket/busirocket` to `^0.4.0` and delete the local
-  patches from its `knip.config.ts` and `.dependency-cruiser.cjs` - that
-  deletion is the acceptance test, and it has already been run against a working
-  copy: both gates pass there with the patches removed and this factory in
-  place.
-
 ## Repo hygiene
 
 - [ ] The three tags cut on 2026-08-04 (`eslint-config@0.6.0`,

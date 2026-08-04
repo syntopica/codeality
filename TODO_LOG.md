@@ -28,6 +28,13 @@ Closed work from `TODO.md`, grouped by year and month.
     than patched: the preset's ESLint peer list is redundant in the one layout
     where knip resolves the real caller and load-bearing in every other, and a
     consumer-side filter would drift the moment the list changes.
+  - Released as `quality-config@0.4.0` through the `publish.yml` workflow
+    (tokenless OIDC trusted publishing - there is no local npm credential to
+    have, which is what the 401 from `npm whoami` was really saying), on an
+    annotated tag. `pnpm release:check` reports all six packages fully released.
+    `BusiRocket/busirocket` is on `^0.4.0` with its local patches deleted and
+    both gates green, which is the acceptance test passing for real rather than
+    against a working copy.
   - Evidence: the new patterns were unit-checked against 13 real busirocket
     paths (route files, nested routes, metadata routes, `src/proxy.ts`, and the
     near-misses `app/blog/mypage.tsx` and `src/lib/route.ts`),
