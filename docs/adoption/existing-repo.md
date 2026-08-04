@@ -20,8 +20,28 @@
 pnpm add -D @busirocket/eslint-config@^0.1.0 @busirocket/prettier-config@^0.1.0 @busirocket/tsconfig@^0.1.0
 ```
 
-Install peer dependencies for the ESLint subpaths you will use (React, Next.js,
-Astro, Tailwind, and so on).
+Install the packages each ESLint subpath needs. `@busirocket/eslint-config`
+ships TypeScript source rather than a build, so its `import` statements resolve
+from your project: a plugin missing there fails `tsc --noEmit` with
+`Cannot find module '<plugin>'` before ESLint runs, even when the plugin is a
+`dependencies` entry of the config package. The per-subpath list is in the
+[package README](https://github.com/BusiRocket/engineering-baseline/tree/main/packages/eslint-config#stacks).
+
+Two that are easy to miss:
+
+- `/code-quality` composes the testing layer unconditionally, so it needs
+  `eslint-plugin-testing-library` and `@vitest/eslint-plugin` even in a repo
+  with no tests.
+- `/nextjs` and `/vite-react` need `eslint-plugin-boundaries`, pulled in by the
+  frontend-boundaries layer they compose.
+
+On **ESLint 10**, also check the React version the config reports. The newest
+published `eslint-plugin-react` (7.37.5) crashes during its own version
+detection with `contextOrFilename.getFilename is not a function`, so every file
+fails before a rule runs. `createNextjsConfig` and `createViteReactConfig` avoid
+that by resolving the React installed beside your project and handing the plugin
+a concrete version; pass `reactVersion: '19.2.0'` explicitly if your React lives
+somewhere their resolution cannot reach.
 
 ## 4. Migrate ESLint
 
