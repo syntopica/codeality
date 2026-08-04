@@ -51,6 +51,82 @@ verified complete - `[-]` obsolete or superseded.
       `pnpm exec turbo run publish:check --force` from a cleared cache and
       capture which task fails, rather than the aggregate exit code.
 
+## Adoption findings (consumer-y, 2026-08-04)
+
+Found while adopting eslint-config 0.6.0 + quality-config 0.3.0 in an existing
+Next.js + drizzle + zod monorepo (3.291 TypeScript files, six workspaces).
+
+- [ ] **knip reports a drizzle schema aggregator's exports as dead, and acting
+      on the report emits `DROP TABLE`.** `drizzle.config.ts` names one file as
+      THE schema (`schema: './src/schema/schema.ts'`); every export there is a
+      live table, and most are not imported by any TypeScript file, so knip
+      flags them. Deleting one makes the next generated migration drop the
+      table. This is the highest-consequence false positive the gate can produce
+      and `quality-gates.md` does not mention it. Smallest fix: document it in
+      the knip section, and consider having `createKnipConfig` accept the
+      drizzle schema path and ignore it.
+
+- [ ] **The atomic-file rules fight the standard zod idiom, and the fight is
+      unwinnable per file.** `export const fooSchema = z.object(...)` plus
+      `export type Foo = z.infer<typeof fooSchema>` trips BOTH
+      `code-policy/one-primary-unit` and
+      `code-policy/no-inline-types-in-runtime-files`. In consumer-y that was
+      **158 of 296** atomic-file findings, and the whole `contracts` package
+      (116 findings) is exactly this shape. The type cannot move to its own file
+      without importing the schema back, so splitting produces a two-line file
+      per schema and no separation at all. Same for a drizzle table and the row
+      types derived from it. Smallest fix: exempt a type alias whose initializer
+      is `z.infer<typeof X>` (or drizzle's `$inferSelect` / `$inferInsert`)
+      where `X` is declared in the same file - the type is the schema's
+      signature, not a second unit. Until then every zod codebase writes the
+      same `files:`/`rules:` override by hand.
+
+- [ ] **A delivered-but-unconsumed package reads as 100% dead code.**
+      `createKnipConfig` sets `includeEntryExports: true`, so a package no app
+      imports yet (consumer-y's VERI*FACTU core: finished, not wired) reports
+      its entire public API as unused exports. Per-workspace
+      `includeEntryExports: false` is the fix and it works, but nothing in the
+      README or `quality-gates.md` says so, and the obvious reading of the
+      report is "delete this package".
+
+- [ ] **knip's drizzle plugin makes the gate need a live database.** It loads
+      `drizzle.config.ts`, which by design throws when `DATABASE_URL` is unset,
+      so `pnpm knip` fails in CI with
+      `ERROR: Error loading packages/db/drizzle.config.ts`. Adding the file to
+      the workspace's `ignore` does NOT stop the plugin - only `drizzle: false`
+      does. Worth a line in the knip section.
+
+- [ ] **`ignoreBinaries: ['turbo', 'lhci']` is wrong for a consumer that depends
+      on turbo.** The preset ships it, and knip then emits
+      `turbo ... Remove from ignoreBinaries` as a configuration hint on a clean
+      repo. A consumer either lives with a permanent hint or restates the whole
+      option. Consider dropping both from the shared preset and keeping them in
+      the templates that need them.
+
+- [ ] **`createDepCruiserConfig` at repo scope is unusable in a monorepo with no
+      root `tsconfig.json`.** Each workspace resolves `@/*` through its own
+      config, so a repo-wide cruise cannot resolve any alias and `no-orphans`
+      reports whatever it could not follow. The baseline solves this in its own
+      repo with `scripts/deps-graph-aliased.mjs`, which is NOT part of
+      `quality-config` - so every consumer has to rewrite it. Ship it, or ship a
+      `baseline-deps-graph` bin that cruises each workspace with its own
+      tsconfig. consumer-y skipped dependency-cruiser entirely for this reason;
+      `import/no-cycle` at full depth plus knip's `files` rule already cover its
+      two useful rules.
+
+- [ ] **`type-coverage` has no runner either.** `quality-config` exports the
+      threshold constant and nothing else, so each consumer writes its own
+      per-workspace loop (consumer-y copied `scripts/type-coverage.mjs` from
+      this repo and edited the workspace globs). Same fix as above: a bin.
+
+- [ ] **The adoption guide understates the cost for a repo with partial
+      coverage.** `docs/adoption/existing-repo.md` assumes one ESLint entry
+      point. consumer-y had a config in `apps/web` only, so five workspaces
+      (3.291 files total, ~800 of them unlinted) had never been linted at all;
+      turning the baseline on there produced 1.118 findings that no
+      `--suppress-all` decision had ever been taken about. Worth naming as its
+      own step: inventory which workspaces have NO config before estimating.
+
 ## Repo hygiene
 
 - [ ] The three tags cut on 2026-08-04 (`eslint-config@0.6.0`,
