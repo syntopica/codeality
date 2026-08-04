@@ -51,17 +51,12 @@ verified complete - `[-]` obsolete or superseded.
       `pnpm exec turbo run publish:check --force` from a cleared cache and
       capture which task fails, rather than the aggregate exit code.
 
-## Release
+## Repo hygiene
 
-- [~] `eslint-config@0.6.0`, `quality-config@0.3.0` and `create-baseline@0.3.2`
-  are bumped, changelogged and tagged locally on `ac7b511`, but not pushed and
-  not published. `pnpm release:check` therefore reports all three as
-  `npm has no <version>`, which is the expected state between the tag and the
-  publish, not a defect. Publishing is a manual `workflow_dispatch` on
-  `.github/workflows/publish.yml`, one run per package, tokenless through npm
-  Trusted Publishing (OIDC). Remaining steps, in order:
-  `git push --follow-tags`, then
-  `gh workflow run publish.yml -f package=eslint-config`, the same for
-  `quality-config`, and `create-baseline` last so it never pins a version npm
-  does not yet serve. Confirm with `pnpm release:check` reporting `ok` for all
-  six packages.
+- [ ] The three tags cut on 2026-08-04 (`eslint-config@0.6.0`,
+      `quality-config@0.3.0`, `create-baseline@0.3.2`) are **lightweight**,
+      while every tag before them is annotated (`git cat-file -t` returns `tag`
+      for `eslint-config@0.5.0` and `commit` for these). They are already
+      pushed, and a release tag is immutable, so they stay as they are. The
+      thing to fix is the next release: create tags with `git tag -a -m`, or
+      have `brp-release` do it, so the history stops mixing both kinds.

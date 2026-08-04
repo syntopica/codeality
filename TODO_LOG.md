@@ -13,13 +13,17 @@ Closed work from `TODO.md`, grouped by year and month.
       `0.5.0` - the `.lighthouseci/` ignore from `cb20628`. `create-baseline`
       follows because `baseline-versions.json` pins the two bumped packages, the
       same pairing as the `0.3.1` release.
-  - Result: three tags on `ac7b511`. `release-check` reports `ok` for
-    `prettier-config`, `tsconfig` and `eslint-plugin-code-policy`, and
-    `npm has no <version>` for the three just tagged - the expected state
-    between tag and publish. The publish itself is a manual `workflow_dispatch`
-    and stays in `TODO.md`.
+  - Result: three tags on `ac7b511`, pushed, and all three published to npm
+    through the manual `publish.yml` `workflow_dispatch` (tokenless OIDC),
+    `create-baseline` last so it never pinned a version npm did not yet serve.
+    `pnpm release:check` -> `6 packages fully released.`
   - Evidence: `pnpm run check:ci`, `check:quality` and `check:security` all exit
-    `0` before the tag; `sync-versions --check` reports derived files in sync.
+    `0` before the tag; `sync-versions --check` reports derived files in sync;
+    workflow runs `30902237324`, `30902305336`, `30902401887` all successful;
+    `npm view` returns `0.6.0` / `0.3.0` / `0.3.2`.
+  - Note: these three tags were created lightweight while every earlier release
+    tag is annotated. They are pushed and immutable, so the fix belongs to the
+    next release - tracked in `TODO.md`.
   - Files: `packages/{eslint-config,quality-config,create-baseline}/`
     `package.json` and `CHANGELOG.md`,
     `packages/create-baseline/baseline-versions.json`.
