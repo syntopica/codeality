@@ -1,5 +1,25 @@
 # @busirocket/quality-config
 
+## 0.3.0
+
+### Minor Changes
+
+- fix: cover the `src/app` layout in the knip Next.js preset. (`361dbf3`)
+
+  `createKnipConfig({ framework: 'nextjs' })` rooted its entry globs at `app/`,
+  so a project using `src/app/` matched none of them. The consequence is not a
+  quiet pass: with no entry matching, knip reports the application's own route
+  files as **unused files** and never checks their exports.
+
+  The globs now carry both roots in one pattern
+  (`{,src/}app/**/{page,layout,...}.{ts,tsx}`, `{,src/}middleware.ts`), which
+  also means neither layout produces a `Refine entry pattern (no matches)` hint.
+  `next.config.*` stays root-only, where Next.js requires it.
+
+  A `src/app` project on 0.2.0 that adopts this will see its knip output
+  change - the false "unused files" disappear and real dead exports start
+  failing the gate - so this is a behavior change, not a patch.
+
 ## 0.2.0
 
 ### Minor Changes

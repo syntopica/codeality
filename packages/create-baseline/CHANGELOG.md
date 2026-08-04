@@ -1,5 +1,14 @@
 # @busirocket/create-baseline
 
+## 0.3.2
+
+### Patch Changes
+
+- chore: refresh the pins in `baseline-versions.json`.
+
+  `@busirocket/eslint-config` to `^0.6.0` and `@busirocket/quality-config` to
+  `^0.3.0`. No check was added or removed.
+
 ## 0.3.1
 
 ### Patch Changes

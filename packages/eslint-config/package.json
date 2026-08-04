@@ -1,6 +1,6 @@
 {
   "name": "@busirocket/eslint-config",
-  "version": "0.5.0",
+  "version": "0.6.0",
   "private": false,
   "packageManager": "pnpm@11.18.0",
   "license": "MIT",

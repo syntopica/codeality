@@ -3,6 +3,38 @@
 > Reconstructed from this repository's git history, which starts at the monorepo
 > migration. Each entry names the commit that introduced the version.
 
+## 0.6.0
+
+### Minor Changes
+
+- feat: resolve the React version instead of detecting it. (`1beb68d`)
+
+  `createNextjsConfig` and `createViteReactConfig` set `settings.react.version`
+  to the version of the React installed beside the linted project, and accept a
+  `reactVersion` option to override it. `'detect'` survives only as the fallback
+  when resolution fails.
+
+  This is a fix for consumers on **ESLint 10**, where the previous `'detect'`
+  made `eslint-plugin-react` crash in its own version detection with
+  `contextOrFilename.getFilename is not a function` before a single rule ran. It
+  is a minor rather than a patch because the presets now expose a new option and
+  report a different `settings.react.version` to every rule that branches on it.
+
+### Patch Changes
+
+- fix: ignore `.lighthouseci/` in the base config. (`cb20628`)
+
+  Lighthouse CI report output otherwise fails a lint run that covers the whole
+  project directory.
+
+- docs: list the peer packages each export subpath needs. (`648bbe2`)
+
+  The README `Stacks` table gained an `Install alongside` column for all twelve
+  subpaths. `/code-quality` composes the testing layer unconditionally, so it
+  requires `eslint-plugin-testing-library` and `@vitest/eslint-plugin` even in a
+  project with no tests - previously only discoverable by hitting
+  `Cannot find module` from `tsc --noEmit`.
+
 ## 0.5.0
 
 ### Minor Changes
