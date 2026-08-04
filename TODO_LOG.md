@@ -4,6 +4,36 @@ Closed work from `TODO.md`, grouped by year and month.
 
 ## 2026-08
 
+- [x] 2026-08-04 - **Consumer findings:** Fix the five gaps that adopting the
+      standard in `BusiRocket/busirocket` (Next.js 16, ESLint 10.8) exposed.
+  - Result: `quality-config` 0.4.0. The knip Next.js preset named
+    `middleware.ts`, renamed `proxy.ts` in Next 16, so the proxy read as an
+    unused file; it now matches either in one pattern, and the App Router
+    metadata routes plus `global-error` joined the entry alternation. The
+    dependency-cruiser `no-orphans` exemptions covered only `sitemap` and
+    `robots`, so a normal App Router reported one orphan per route file; every
+    convention is exempt now, at any depth, and so is `middleware`/`proxy`.
+  - The exemptions are two patterns rather than one with `(.*/)?` on purpose:
+    dependency-cruiser runs every `pathNot` entry through safe-regex and
+    **abandons the whole rule** when one is rejected, so a nested quantifier
+    turns the orphan check off instead of narrowing it. Verified directly -
+    `safe-regex` rejects `(^|/)app/(.*/)?(page)\.tsx?$` and accepts both new
+    forms - and documented in the factory and in `quality-gates.md`.
+  - The adoption guide now says to delete any inherited
+    `settings: { react: { version: 'detect' } }` override: it reinstates the
+    detection `createNextjsConfig` exists to avoid, and on ESLint 10 that is not
+    a warning but every file failing at
+    `Error while loading rule 'react/display-name'`.
+  - The `Remove from ignoreDependencies` hints are documented as expected rather
+    than patched: the preset's ESLint peer list is redundant in the one layout
+    where knip resolves the real caller and load-bearing in every other, and a
+    consumer-side filter would drift the moment the list changes.
+  - Evidence: the new patterns were unit-checked against 13 real busirocket
+    paths (route files, nested routes, metadata routes, `src/proxy.ts`, and the
+    near-misses `app/blog/mypage.tsx` and `src/lib/route.ts`),
+    `pnpm check:quality` passes here, and busirocket passes `knip` and
+    `deps:graph` with its local patches deleted and this factory in place.
+
 - [x] 2026-08-04 — **release:** cut `eslint-config@0.6.0`,
       `quality-config@0.3.0` and `create-baseline@0.3.2` up to the tag. Both
       minors are behavior changes rather than patches: the React presets now

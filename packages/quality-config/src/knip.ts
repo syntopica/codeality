@@ -10,6 +10,14 @@ import { FRAMEWORK_ENTRIES, type KnipFramework } from './knip-framework'
 // '@busirocket/eslint-config/*'), so knip can't see the real caller and
 // reports them as unused. Mirrors the same list and rationale in the
 // repo-root knip.config.ts for the `templates/*` workspace.
+//
+// In a consumer where knip's own ESLint plugin does resolve the real caller,
+// the matching entry becomes unnecessary and knip says so:
+// `<package>  knip.config.ts  Remove from ignoreDependencies`. That is a hint,
+// not a gate failure, and it is expected - the entry is redundant in that one
+// layout and load-bearing in every other. Do not filter the list consumer-side
+// to silence it: the filter would drift the moment this list changes, and the
+// cost of being wrong is a dependency that silently stops being checked.
 const ESLINT_PEER_DEPENDENCIES = [
   '@eslint/js',
   '@vitest/eslint-plugin',

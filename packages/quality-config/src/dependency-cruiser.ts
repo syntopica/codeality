@@ -1,8 +1,24 @@
 import type { IConfiguration, IForbiddenRuleType } from 'dependency-cruiser'
 
+// Next.js App Router file conventions. Next loads each of these by filename at
+// build or request time, so nothing imports them and having no importer is
+// their normal state rather than a defect.
+const NEXT_FILE_CONVENTIONS =
+  'page|layout|loading|error|global-error|not-found|template|default|route|sitemap|robots|manifest|icon|apple-icon|opengraph-image|twitter-image'
+
 // Orphan exemptions that hold at either scope. Every pattern is anchored on a
 // path segment rather than the repo root, so it matches whether the cruise runs
 // from the repo root or from inside a single workspace.
+//
+// **Every pattern here goes through safe-regex, and a single rejection disables
+// the whole rule.** dependency-cruiser reports
+// `rule ... has an unsafe regular expression. Bailing out.` and stops checking
+// orphans altogether - it does not skip the offending pattern and keep the
+// rest, so a careless addition turns the gate off while still exiting 0 on a
+// clean tree. Nested quantifiers are what trip it: `(^|/)app/(.*/)?(page)\.tsx$`
+// is rejected for the `(.*/)?` group, which is why the two Next patterns below
+// are split into a direct-child form and a nested form instead of using one
+// optional-directory group.
 const ORPHAN_EXEMPTIONS = [
   '(^|/)\\.[^/]+\\.(js|cjs|mjs|ts|json)$',
   '\\.d\\.ts$',
@@ -11,10 +27,15 @@ const ORPHAN_EXEMPTIONS = [
   // runtime, never imported by application code. Being an orphan in the module
   // graph is their normal state, not a defect.
   '(^|/)(babel|webpack|vite|vitest|eslint|knip|prettier|tsup|astro|next|nuxt)\\.config\\.(js|cjs|mjs|ts)$',
-  // Next.js App Router special files (sitemap, robots, ...) are loaded
-  // directly by Next's build process by filename convention, never imported by
-  // application code.
-  '(^|/)app/(sitemap|robots)\\.tsx?$',
+  // Next.js App Router file conventions, in two forms: directly under `app/`,
+  // and nested at any depth below it. The nested one requires the trailing
+  // slash so that `app/blog/mypage.tsx` is not read as a `page.tsx`.
+  `(^|/)app/(${NEXT_FILE_CONVENTIONS})\\.tsx?$`,
+  `(^|/)app/.*/(${NEXT_FILE_CONVENTIONS})\\.tsx?$`,
+  // Next 16 renamed `middleware.ts` to `proxy.ts`; both are loaded by the same
+  // filename convention, and a project has one or the other. The `(^|/)` prefix
+  // covers `src/proxy.ts` as well as a root-level one.
+  '(^|/)(middleware|proxy)\\.ts$',
   // Nuxt file-convention entry points: app.vue is the framework's root
   // component and everything under pages/ is resolved by Nuxt's file-based
   // router. Both are loaded directly by Nuxt's build/runtime, not by any

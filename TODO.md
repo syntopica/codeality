@@ -53,61 +53,13 @@ verified complete - `[-]` obsolete or superseded.
 
 ## Consumer findings
 
-Five findings from adopting the current standard in `BusiRocket/busirocket`
-(Next.js 16, ESLint 10.8) on 2026-08-04. Each is patched locally in that repo,
-so the local patch is the acceptance test: the fix here is right when busirocket
-can delete it and stay green.
-
-- [ ] `createKnipConfig({ framework: 'nextjs' })` lists `{,src/}middleware.ts`
-      as an entry, and Next 16 renamed that file to `proxy.ts`. In a repo that
-      followed the rename, the proxy and everything it imports are reachable
-      from no entry point at all, so knip reports them as unused files while
-      also emitting a "Refine entry pattern (no matches)" hint for the pattern
-      that no longer matches anything. `FRAMEWORK_ENTRIES.nextjs` in
-      `packages/quality-config/src/knip-framework.ts` should carry both names -
-      `middleware.ts` still exists in Next 15 consumers - and the App Router
-      metadata files (`sitemap`, `robots`, `manifest`, `icon`, `apple-icon`,
-      `opengraph-image`, `twitter-image`) belong in the same entry list for the
-      same reason.
-
-- [ ] `createDepCruiserConfig`'s built-in `no-orphans` exemptions cover
-      `app/(sitemap|robots).tsx?` and nothing else of the App Router. Every
-      other file convention - `page`, `layout`, `route`, `loading`, `error`,
-      `not-found`, `template`, `default`, `icon`, `opengraph-image`,
-      `manifest` - is loaded by Next by filename and imported by nothing, so a
-      consumer with a normal App Router gets one orphan error per route. The
-      exemption list in `packages/quality-config/src/dependency-cruiser.ts`
-      should name them.
-
-- [ ] Any `no-orphans` exemption added there must avoid nested quantifiers.
-      dependency-cruiser runs every `pathNot` entry through safe-regex and, when
-      one trips it, abandons the **whole rule** with
-      `has an unsafe regular expression. Bailing out.` rather than skipping the
-      offending pattern - so a single bad entry silently turns the orphan check
-      off. `(^|/)app/(.*/)?(page|layout|...)\.(ts|tsx)$` is enough to trigger
-      it; an anchored `^src/app/.*(page|layout|...)\.(ts|tsx)$` is not. Worth a
-      comment in the factory next to the list, because the failure names the
-      rule and not the pattern.
-
-- [ ] `createNextjsConfig` resolves the React version itself now (1beb68d), and
-      a consumer carrying the older `settings: { react: { version: 'detect' } }`
-      override reinstates the detection that fix removed. On ESLint 10 that is
-      not a warning: `eslint-plugin-react` 7.37.5 crashes in its own version
-      detection with `contextOrFilename.getFilename is not a function`, and
-      every file fails before a rule runs. The adoption guide
-      (`docs/adoption/existing-repo.md`) already describes the crash but not the
-      override that causes it - it should say to delete any local
-      `react.version` setting, since that is what an ESLint 9 era config will
-      have.
-
-- [ ] `createKnipConfig`'s `ESLINT_PEER_DEPENDENCIES` list is written for a
-      template that inherits those plugins transitively. A consumer that
-      declares them directly gets a "Remove from ignoreDependencies" hint for
-      each one it declares (`@vitest/eslint-plugin` and
-      `eslint-plugin-testing-library` in busirocket's case). Hints do not fail
-      the gate, and filtering them consumer-side would drift from the preset, so
-      the question is whether the ignore list should be conditional on what the
-      consumer declares or simply documented as expected noise.
+- [ ] `@busirocket/quality-config@0.4.0` is committed but not released: no tag,
+      no npm publish, so `BusiRocket/busirocket` still resolves 0.3.0 and still
+      carries the local patches the fix was written to delete. Cut the release,
+      then upgrade that repo and remove the patches from its `knip.config.ts`
+      and `.dependency-cruiser.cjs` - that deletion is the acceptance test, and
+      it was already run against a working copy: both gates pass on busirocket
+      with the patches removed and the new factory in place.
 
 ## Repo hygiene
 

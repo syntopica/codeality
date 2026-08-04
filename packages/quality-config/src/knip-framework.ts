@@ -21,18 +21,24 @@ export const FRAMEWORK_ENTRIES: Record<
     entry: ['src/main.ts', 'src/**/*.module.ts'],
     project: ['src/**/*.ts'],
   },
-  // The App Router lives at either `app/` or `src/app/`, and `middleware`
-  // follows it. `{,src/}` matches both in one pattern, so neither layout
-  // produces a "Refine entry pattern (no matches)" hint. Root-only entries
-  // silently misread a `src/app` project: every route file falls outside the
-  // entry set and knip reports the whole app as unused files while never
-  // checking a single export. `next.config.*` stays root-only - Next.js
-  // requires it there.
+  // The App Router lives at either `app/` or `src/app/`, and the proxy follows
+  // it. `{,src/}` matches both in one pattern, so neither layout produces a
+  // "Refine entry pattern (no matches)" hint. Root-only entries silently
+  // misread a `src/app` project: every route file falls outside the entry set
+  // and knip reports the whole app as unused files while never checking a
+  // single export. `next.config.*` stays root-only - Next.js requires it there.
+  //
+  // Every file convention belongs in the one brace alternation rather than in a
+  // pattern of its own, including the metadata routes (`sitemap`, `robots`,
+  // `manifest`, the image generators): a pattern matching nothing is a hint, and
+  // no project uses all of them. `middleware` and `proxy` share a pattern for
+  // the same reason - Next 16 renamed the file, and a project has one or the
+  // other, never both.
   nextjs: {
     entry: [
-      '{,src/}app/**/{page,layout,loading,error,not-found,route,template,default}.{ts,tsx}',
+      '{,src/}app/**/{page,layout,loading,error,global-error,not-found,route,template,default,sitemap,robots,manifest,icon,apple-icon,opengraph-image,twitter-image}.{ts,tsx}',
       'next.config.*',
-      '{,src/}middleware.ts',
+      '{,src/}{middleware,proxy}.ts',
     ],
     project: ['{,src/}app/**/*.{ts,tsx}', 'src/**/*.{ts,tsx}'],
   },

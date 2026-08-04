@@ -116,6 +116,22 @@ consumer (a template's ESLint peer dependencies, imported by
 comment explaining why knip can't see the real caller. Do not disable the
 `dependencies`/`unlisted` rule to silence it.
 
+**Expected hints, not failures.** `Remove from ignoreDependencies` and
+`Refine entry pattern (no matches)` are hints: knip still exits 0 and the gate
+still passes. Both are normal in a consumer, because the shared preset is
+written for every layout at once - a project with no `sitemap.ts` has an entry
+pattern matching nothing, and a project where knip resolves an ESLint peer
+itself has an ignore entry it does not need. Neither is worth patching
+consumer-side; a local filter drifts from the preset the moment the preset
+changes, and the cost of getting it wrong is a dependency that stops being
+checked without anyone noticing.
+
+**Next.js consumers:** `FRAMEWORK_ENTRIES.nextjs` covers the App Router file
+conventions, the metadata routes, and both `middleware.ts` and its Next 16 name
+`proxy.ts`. If a project puts an entry point anywhere else - a hand-run script
+under `scripts/`, for instance - it has to add it, or knip reports that file and
+everything only it imports as unused.
+
 ## dependency-cruiser
 
 **Detects:** graph-level architecture violations that ESLint's per-file
@@ -179,7 +195,20 @@ is not an option here: it is not in dependency-cruiser's config schema
 import (a framework config file, a Next.js special file, a Nuxt
 `app.vue`/`pages/` file, an ESLint rule-tester fixture) is excluded with a
 `pathNot` regex on the `no-orphans` rule, with a comment recording how it was
-verified (`depcruise --output-type json`) - never by turning the rule off.
+verified (`depcruise --output-type json`) - never by turning the rule off. The
+App Router conventions, the metadata routes and `middleware`/`proxy` are already
+in `createDepCruiserConfig`'s built-in list, so a Next.js consumer should not
+need to restate them.
+
+**Every `pathNot` entry goes through safe-regex, and one rejection disables the
+whole rule.** dependency-cruiser prints
+`rule {...} has an unsafe regular expression. Bailing out.` and stops checking
+orphans entirely - it does not skip the bad pattern and keep the others, so an
+addition that trips it turns the gate off rather than narrowing it. Nested
+quantifiers are the trigger: `(^|/)app/(.*/)?(page)\.tsx?$` is rejected for its
+`(.*/)?` group, while the equivalent written as two patterns - one for the
+direct child, one with `.*/` for the nested case - is accepted. Read the error
+carefully: it names the rule, never the pattern that caused it.
 
 ## type-coverage
 

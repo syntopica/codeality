@@ -1,5 +1,42 @@
 # @busirocket/quality-config
 
+## 0.4.0
+
+### Minor Changes
+
+- fix: complete the Next.js file conventions in both knip and
+  dependency-cruiser.
+
+  Adopting the standard in a real Next.js 16 project surfaced two presets that
+  had fallen behind the framework.
+
+  `createKnipConfig({ framework: 'nextjs' })` listed `middleware.ts`, which Next
+  16 renamed to `proxy.ts`. In a project that followed the rename, the proxy was
+  reachable from no entry point, so knip reported it and everything only it
+  imports as **unused files** while the pattern that no longer matched anything
+  produced a `Refine entry pattern (no matches)` hint. The entry now reads
+  `{,src/}{middleware,proxy}.ts` - one pattern, because a project has one file
+  or the other - and the App Router metadata routes (`sitemap`, `robots`,
+  `manifest`, `icon`, `apple-icon`, `opengraph-image`, `twitter-image`) plus
+  `global-error` join the existing brace alternation for the same reason.
+
+  `createDepCruiserConfig`'s `no-orphans` exemptions covered `sitemap` and
+  `robots` and nothing else of the App Router, so a normal project reported one
+  orphan error per route file. Every convention is exempt now, at any depth
+  below `app/`, and so is `middleware`/`proxy`.
+
+  The exemptions are written as two patterns - a direct-child form and a nested
+  `.*/` form - rather than one with an optional `(.*/)?` directory group,
+  because dependency-cruiser runs every `pathNot` entry through safe-regex and
+  **abandons the entire rule** when one is rejected, rather than skipping that
+  pattern. A nested quantifier there does not narrow the orphan check, it turns
+  it off. That trap is now documented in the factory and in
+  `docs/standards/quality-gates.md`.
+
+  A Next.js consumer on 0.3.0 that had patched around either gap can delete
+  those local patches; a consumer that had not will see false findings
+  disappear, so this is a behavior change rather than a patch.
+
 ## 0.3.0
 
 ### Minor Changes

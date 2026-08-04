@@ -43,6 +43,13 @@ that by resolving the React installed beside your project and handing the plugin
 a concrete version; pass `reactVersion: '19.2.0'` explicitly if your React lives
 somewhere their resolution cannot reach.
 
+**Delete any local `settings: { react: { version: 'detect' } }` block while you
+are there.** An ESLint 9 era config almost certainly has one - it was the
+standard way to configure the plugin - and it reinstates the detection the
+factories exist to avoid, so the crash comes back on a config that looks
+correctly migrated. The symptom is the whole run failing at the first file with
+`Error while loading rule 'react/display-name'`, not a rule reporting anything.
+
 ## 4. Migrate ESLint
 
 1. Add a new `eslint.config.ts` that imports from `@busirocket/eslint-config`
