@@ -2,23 +2,40 @@ import reactHooks from 'eslint-plugin-react-hooks'
 import reactRefresh from 'eslint-plugin-react-refresh'
 
 import { createFrontendBoundariesConfig } from './frontend-boundaries'
+import { resolveReactVersion } from './react-version'
 // eslint-disable-next-line @typescript-eslint/no-require-imports
 const react = require('eslint-plugin-react') as {
   configs: { flat: { recommended: unknown; 'jsx-runtime': unknown } }
 }
 
-export const createViteReactConfig = () => [
+export type ViteReactConfigOptions = {
+  /**
+   * React version handed to `eslint-plugin-react`. Defaults to the version of
+   * the React installed beside the project, and only falls back to `'detect'`
+   * when that cannot be resolved - see `resolveReactVersion`.
+   */
+  reactVersion?: string
+}
+
+export const createViteReactConfig = (options: ViteReactConfigOptions = {}) => [
   // Core React correctness rules + automatic JSX transform (React 17+)
   react.configs.flat.recommended,
   react.configs.flat['jsx-runtime'],
+  // Unscoped on purpose: the two configs above carry no `files` key, so their
+  // rules can run on any linted file and each one would otherwise re-enter
+  // version detection.
+  {
+    settings: {
+      react: {
+        version: options.reactVersion ?? resolveReactVersion() ?? 'detect',
+      },
+    },
+  },
   {
     files: ['**/*.{ts,tsx,js,jsx}'],
     plugins: {
       'react-hooks': reactHooks,
       'react-refresh': reactRefresh,
-    },
-    settings: {
-      react: { version: 'detect' },
     },
     rules: {
       // hooks rules

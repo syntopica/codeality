@@ -3,12 +3,19 @@ import reactHooks from 'eslint-plugin-react-hooks'
 import { globalIgnores } from 'eslint/config'
 
 import { createFrontendBoundariesConfig } from './frontend-boundaries'
+import { resolveReactVersion } from './react-version'
 // eslint-disable-next-line @typescript-eslint/no-require-imports
 const react = require('eslint-plugin-react') as {
   configs: { flat: { recommended: unknown; 'jsx-runtime': unknown } }
 }
 
 export type NextjsConfigOptions = {
+  /**
+   * React version handed to `eslint-plugin-react`. Defaults to the version of
+   * the React installed beside the project, and only falls back to `'detect'`
+   * when that cannot be resolved - see `resolveReactVersion`.
+   */
+  reactVersion?: string
   tsconfigRootDir?: string
 }
 
@@ -23,7 +30,7 @@ const nextRules = {
   ...nextPlugin.configs['core-web-vitals'].rules,
 }
 
-export const createNextjsConfig = (_options: NextjsConfigOptions = {}) => {
+export const createNextjsConfig = (options: NextjsConfigOptions = {}) => {
   return [
     globalIgnores([
       '.next/**',
@@ -38,14 +45,22 @@ export const createNextjsConfig = (_options: NextjsConfigOptions = {}) => {
     react.configs.flat.recommended,
     react.configs.flat['jsx-runtime'],
 
+    // Unscoped on purpose: the two configs above carry no `files` key, so their
+    // rules can run on any linted file and each one would otherwise re-enter
+    // version detection.
+    {
+      settings: {
+        react: {
+          version: options.reactVersion ?? resolveReactVersion() ?? 'detect',
+        },
+      },
+    },
+
     {
       files: ['**/*.{js,jsx,ts,tsx}'],
       plugins: {
         '@next/next': nextPlugin,
         'react-hooks': reactHooks,
-      },
-      settings: {
-        react: { version: 'detect' },
       },
       rules: {
         ...nextRules,
