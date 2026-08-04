@@ -21,13 +21,20 @@ export const FRAMEWORK_ENTRIES: Record<
     entry: ['src/main.ts', 'src/**/*.module.ts'],
     project: ['src/**/*.ts'],
   },
+  // The App Router lives at either `app/` or `src/app/`, and `middleware`
+  // follows it. `{,src/}` matches both in one pattern, so neither layout
+  // produces a "Refine entry pattern (no matches)" hint. Root-only entries
+  // silently misread a `src/app` project: every route file falls outside the
+  // entry set and knip reports the whole app as unused files while never
+  // checking a single export. `next.config.*` stays root-only - Next.js
+  // requires it there.
   nextjs: {
     entry: [
-      'app/**/{page,layout,loading,error,not-found,route,template,default}.{ts,tsx}',
+      '{,src/}app/**/{page,layout,loading,error,not-found,route,template,default}.{ts,tsx}',
       'next.config.*',
-      'middleware.ts',
+      '{,src/}middleware.ts',
     ],
-    project: ['app/**/*.{ts,tsx}', 'src/**/*.{ts,tsx}'],
+    project: ['{,src/}app/**/*.{ts,tsx}', 'src/**/*.{ts,tsx}'],
   },
   nuxt: {
     entry: ['app/**/*.vue', 'server/**/*.ts', 'nuxt.config.*'],
