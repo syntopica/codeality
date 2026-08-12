@@ -24,6 +24,21 @@ export type SharedConfigOptions = {
   tsconfigRootDir?: string
 }
 
+// Root-level config files (eslint.config.ts, knip.config.ts, and any other
+// *.config.{ts,mjs,js}) sit outside a template tsconfig's `include: ["src"]`,
+// so the project service rejects them with "was not found by the project
+// service" the moment lefthook lints a staged file that touches one.
+// Reused below for both `allowDefaultProject` (so these globs get linted at
+// all) and `disableTypeChecked` (so they get linted with rules that don't
+// need real type information - see the comment at that block for why).
+const DEFAULT_PROJECT_FILE_GLOBS = [
+  '*.config.ts',
+  '*.config.mjs',
+  '*.config.js',
+  'eslint.config.ts',
+  'knip.config.ts',
+]
+
 export const createBaseConfig = (options: SharedConfigOptions = {}) => {
   const tsconfigRootDir = options.tsconfigRootDir ?? process.cwd()
 
@@ -50,7 +65,13 @@ export const createBaseConfig = (options: SharedConfigOptions = {}) => {
         ecmaVersion: 2024,
         sourceType: 'module',
         parserOptions: {
-          projectService: true,
+          // allowDefaultProject lints DEFAULT_PROJECT_FILE_GLOBS with the
+          // default compiler options instead of a real tsconfig project.
+          // Entries must not contain `**` and are capped at 8 matched files
+          // by typescript-eslint - both satisfied by these root-level globs.
+          projectService: {
+            allowDefaultProject: DEFAULT_PROJECT_FILE_GLOBS,
+          },
           tsconfigRootDir,
         },
       },
@@ -70,6 +91,21 @@ export const createBaseConfig = (options: SharedConfigOptions = {}) => {
         '@typescript-eslint/prefer-readonly': 'error',
         'no-unused-vars': 'off',
       },
+    },
+    {
+      // The default compiler options behind allowDefaultProject don't carry
+      // the real tsconfig's module resolution and lib settings, so ordinary
+      // imports here (even Node builtins like `node:path`) come back as
+      // unresolved "error" types rather than their real types. Every rule
+      // above that needs real type information (no-floating-promises,
+      // no-misused-promises, switch-exhaustiveness-check, prefer-readonly,
+      // and the strictTypeChecked rules from the block above this one) would
+      // otherwise misfire on every import in these files. disableTypeChecked
+      // only turns off rules that require type information; the purely
+      // syntactic ones (no-explicit-any, consistent-type-imports, ...) still
+      // apply.
+      files: DEFAULT_PROJECT_FILE_GLOBS,
+      ...tseslint.configs.disableTypeChecked,
     },
     {
       files: ['**/*.{js,jsx,ts,tsx,mjs,cjs}'],

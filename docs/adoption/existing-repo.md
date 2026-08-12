@@ -111,3 +111,36 @@ Two commands must never end up inside `lint` itself:
   flag always sees a freshly emptied file and passes silently, every time.
   Putting it on the gate disables the gate. Keep it on `lint:prune`, run by a
   human after fixing debt, never on `lint`.
+
+### The suppressions ratchet does not cover warn-level debt
+
+`--suppress-all` only freezes rules reported at `error` severity. The baseline
+ships several rules at `warn` on purpose - they are useful signal without being
+blocking by default - but `lint` runs plain `eslint --max-warnings 0`, so every
+warn-level violation still fails the gate on day one, suppressions file or not.
+An adopting repo with existing warn-level debt has two options: fix every
+warning up front, or promote the rules it cares about to `error` in its own
+config, which both clears the immediate blocker and folds those rules into the
+same suppress/prune ratchet as everything else (recommended - it also makes new
+violations on those rules fail loud instead of silently piling up as warnings).
+
+Rules an adopting repo typically needs to promote:
+
+- `code-policy/view-logic-separation`
+- `max-lines-per-function`
+- `max-params`
+- `max-depth`
+- `complexity`
+- `promise/prefer-await-to-then`
+- `promise/prefer-await-to-callbacks`
+- `react-refresh/only-export-components`
+- `react/no-array-index-key`
+- `sonarjs/no-duplicate-string`
+
+`tailwindcss/classnames-order` used to belong on this list too: it fought
+`prettier-plugin-tailwindcss` (the class sorter in
+`@busirocket/prettier-config/frontend`), so a repo running both `lint` and
+`format:check` could never pass both at once regardless of severity. The factory
+now disables that rule in `createTailwindConfig` - Prettier owns class
+ordering - so this is historical, not a promotion an adopting repo needs to make
+itself.

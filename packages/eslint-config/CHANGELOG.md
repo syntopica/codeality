@@ -3,6 +3,34 @@
 > Reconstructed from this repository's git history, which starts at the monorepo
 > migration. Each entry names the commit that introduced the version.
 
+## Unreleased
+
+### Patch Changes
+
+- fix: disable `tailwindcss/classnames-order` in `createTailwindConfig`.
+
+  It fought `prettier-plugin-tailwindcss` (the class sorter in
+  `@busirocket/prettier-config/frontend`): the two disagree on ordering, so a
+  project running both `eslint --fix` and `prettier --write` could never pass
+  `lint` and `format:check` at the same time. Prettier is the class sorter of
+  record; the rule stays off. Found adopting the baseline in `consumer-t` (111
+  order warnings reappeared after every prettier pass).
+
+- fix: give root-level config files (`eslint.config.ts`, `knip.config.ts`, and
+  any other `*.config.{ts,mjs,js}`) a real project to lint against.
+
+  `createBaseConfig` set `projectService: true` with no `allowDefaultProject`,
+  and template tsconfigs only `include: ["src"]`, so committing a change to a
+  root config file died with "was not found by the project service" - the
+  lefthook pre-commit hook, not a rule, failing. `allowDefaultProject` now
+  covers those globs (capped well under typescript-eslint's 8-file match limit,
+  no `**` entries). Type-aware rules are turned back off for that same file set
+  via `disableTypeChecked`: the default compiler options behind
+  `allowDefaultProject` don't carry the real tsconfig's module resolution, so
+  every import in a config file - even `node:path` - came back as an unresolved
+  "error" type and `no-unsafe-*` misfired on all of them. Also found adopting
+  the baseline in `consumer-t`.
+
 ## 0.6.0
 
 ### Minor Changes

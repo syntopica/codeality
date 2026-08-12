@@ -13,5 +13,13 @@
     "types": ["node"],
     "allowImportingTsExtensions": true
   },
-  "include": ["eslint.config.ts"]
+  // Empty on purpose: createBaseConfig's projectService.allowDefaultProject
+  // now covers eslint.config.ts and knip.config.ts directly, the same way it
+  // does for every template. Explicitly including eslint.config.ts here (as
+  // this file used to) would make the project service find it through both
+  // paths at once, which typescript-eslint rejects as a config conflict
+  // ("was included by allowDefaultProject but also was found in the project
+  // service"). The compilerOptions above are still what the default-project
+  // fallback resolves against.
+  "include": []
 }

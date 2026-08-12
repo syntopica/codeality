@@ -484,3 +484,56 @@ Closed work from `TODO.md`, grouped by year and month.
       satisfy the template's own one-exported-unit-per-file convention, not to
       be consumed by an in-repo caller. No source change needed; documented in
       `TODO.md`'s `includeEntryExports` entry.
+
+- [x] 2026-08-12 — **Adoption findings (consumer-t):** fixed the three gaps
+      consumer-t's adoption surfaced.
+  - `tailwindcss/classnames-order` fought `prettier-plugin-tailwindcss`:
+    `createTailwindConfig` now turns the rule off, with a comment explaining
+    Prettier owns class ordering (same rationale style as the neighboring
+    `no-custom-classname` comment).
+  - Root-level config files failed the lefthook pre-commit lint with "was not
+    found by the project service": `createBaseConfig` now sets
+    `projectService: { allowDefaultProject: [...] }` covering
+    `*.config.{ts,mjs,js}`, `eslint.config.ts` and `knip.config.ts` (globs
+    capped well under typescript-eslint's 8-file match limit, none containing
+    `**`). That alone traded one failure for another: the default compiler
+    options behind `allowDefaultProject` don't carry the real tsconfig's module
+    resolution, so a plain `import path from 'node:path'` in a config file came
+    back an unresolved "error" type and `no-unsafe-*` misfired on every import —
+    reproduced with a minimal probe file before touching the fix, confirming it
+    wasn't specific to `@busirocket/eslint-config`'s own subpath exports. Fixed
+    by adding a second config block scoped to the same globs that spreads
+    `tseslint.configs.disableTypeChecked` after the typed rules block, which
+    only turns off rules that require real type information. This repo's own
+    root `eslint.config.ts` needed a second, repo-specific fix: `tsconfig.json`
+    used to `include: ["eslint.config.ts"]` as an ad hoc workaround for this
+    exact problem (added in `897675d`, before `allowDefaultProject` existed
+    here), which now made the project service find the file through both paths
+    at once — typescript-eslint rejects that outright ("was included by
+    allowDefaultProject but also was found in the project service"). Emptied
+    that `include` array with a comment pointing at the factory fix that
+    replaces it.
+  - The suppressions ratchet only freezes error-level violations while `lint`
+    runs `--max-warnings 0`, so an adopting repo with warn-level debt can't go
+    green without fixing all warnings up front or promoting rules to error.
+    Documented in `docs/adoption/existing-repo.md` under a new subsection, with
+    the concrete rule list consumer-t had to promote
+    (`code-policy/view-logic-separation`, `max-lines-per-function`,
+    `max-params`, `max-depth`, `complexity`, `promise/prefer-await-to-then`,
+    `promise/prefer-await-to-callbacks`, `react-refresh/only-export-components`,
+    `react/no-array-index-key`, `sonarjs/no-duplicate-string`) and a note that
+    the `tailwindcss/classnames-order` removal above makes that particular
+    promotion historical.
+  - Evidence: `packages/eslint-config` lints and type-checks clean; root
+    `eslint.config.ts`/`knip.config.ts` and every template's
+    `eslint.config.ts`/`knip.config.ts` lint with 0 errors (all previously
+    failed with "was not found by the project service" on `knip.config.ts`, or
+    would have on `eslint.config.ts` once this file's own root-tsconfig
+    workaround was removed); `turbo run type-check lint:fix` across the whole
+    monorepo shows only the pre-existing `tsc: command not found` failures from
+    this environment's `@typescript/typescript6` alias (confirmed identical on
+    an untouched `main` via `git stash`, so not a regression);
+    `pnpm format:check` and `pnpm dupes` pass. `@busirocket/eslint-config`
+    CHANGELOG gained an `Unreleased` entry for both fixes; no version bump (this
+    repo bumps versions at release time, in a dedicated `chore(release)` commit,
+    not alongside the fix).
