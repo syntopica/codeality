@@ -5,6 +5,32 @@ Active backlog for the `baseline` repo. Closed items move to `TODO_LOG.md`.
 States: `[ ]` pending - `[~]` partial or unverified - `[!]` blocked - `[x]`
 verified complete - `[-]` obsolete or superseded.
 
+## Adoption findings (consumer-t, 2026-08-12)
+
+- [ ] `tailwindcss/classnames-order` (createTailwindConfig) fights the
+      `prettier-plugin-tailwindcss` sorter shipped in
+      `@busirocket/prettier-config/frontend`: eslint --fix orders classes one
+      way, prettier --write reorders them the other, so a repo running both can
+      never pass `lint` and `format:check` together. Verified on consumer-t (111
+      order warnings reappeared after each prettier pass). Pick one owner -
+      likely disable the eslint rule in the factory since the prettier plugin is
+      the official sorter.
+
+- [ ] Root config files (`eslint.config.ts`, `knip.config.ts`) fail the lefthook
+      pre-commit lint: `createBaseConfig` sets `projectService: true` with no
+      `allowDefaultProject`, and template tsconfigs include only `src`, so any
+      commit touching them dies with "was not found by the project service".
+      consumer-t worked around it by ignoring `*.config.{ts,mjs,js}` in its
+      eslint ignores.
+
+- [ ] The suppressions ratchet only freezes error-level violations, but the
+      baseline ships several rules at warn severity while `lint` runs
+      `--max-warnings 0`. An adopting repo with existing warn-level debt can
+      never go green without either fixing all warnings up front or promoting
+      those rules to error (what consumer-t did). Either change the factory
+      severities or document the promotion step in
+      docs/adoption/existing-repo.md.
+
 ## Quality gates
 
 - [!] Three `pnpm-workspace.yaml` security overrides remain load-bearing and are
