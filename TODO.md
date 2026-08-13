@@ -53,6 +53,23 @@ verified complete - `[-]` obsolete or superseded.
 
 ## Adoption findings (consumer-t, 2026-08-13)
 
+- [ ] **`cargo-baseline` does not recognize file-level test modules, only inline
+      `#[cfg(test)] mod x { ... }` blocks and `tests/` path components.** A
+      module declared as `#[cfg(test)] mod tests;` in a parent `mod.rs` (content
+      in `tests.rs`), or a file using the `#![cfg(test)]` inner attribute, is
+      scanned as production code: `no-inline-sql` flags test-fixture SQL and
+      `max-file-lines` counts the file (its exemption is the `tests` path
+      component; `no-inline-sql` has no path exemption at all). This forces
+      consumers into the `tests/mod.rs` + inner wrapper module layout — which
+      clippy's `module_inception` then flags when the wrapper is also named
+      `tests` (consumer-t worked around it by naming the wrapper `suite`). Fix in
+      the engine: treat `#![cfg(test)]` files and cfg-test outer `mod`
+      declarations as test scope (e.g. in `is_cfg_test_item` callers /
+      `FileContext`), or give `no-inline-sql` the same `tests`-path exemption.
+      Evidence: consumer-t clippy burn-down session 2026-08-13,
+      `pnpm lint:rust:baseline` runs against `src-tauri/src/db/queries/tests.rs`
+      (19 errors flattened, 0 after restoring the wrapper layout).
+
 - [ ] **`createKnipConfig` ships stale ignore entries that knip itself flags as
       configuration hints.** In consumer-t (tauri framework), `pnpm knip` prints
       six persistent hints against the factory's own config:
