@@ -51,6 +51,20 @@ verified complete - `[-]` obsolete or superseded.
       `pnpm exec turbo run publish:check --force` from a cleared cache and
       capture which task fails, rather than the aggregate exit code.
 
+## Adoption findings (consumer-t, 2026-08-13)
+
+- [ ] **`createKnipConfig` ships stale ignore entries that knip itself flags as
+      configuration hints.** In consumer-t (tauri framework), `pnpm knip` prints
+      six persistent hints against the factory's own config:
+      `@vitest/eslint-plugin`, `eslint-config-prettier`, and
+      `eslint-plugin-testing-library` ("Remove from ignoreDependencies"),
+      `turbo` and `lhci` ("Remove from ignoreBinaries"), plus an informational
+      `.css` compiled-extension note. The first five live in
+      `@busirocket/quality-config`'s knip factory (`src/knip.ts`) and should be
+      pruned or made per-framework there; consumers cannot silence them without
+      overriding the factory. Evidence: consumer-t `pnpm knip` output, 2026-08-13
+      (gate passes; hints only).
+
 ## Adoption findings (consumer-y, 2026-08-04)
 
 Found while adopting eslint-config 0.6.0 + quality-config 0.3.0 in an existing
