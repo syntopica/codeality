@@ -167,3 +167,11 @@ Next.js + drizzle + zod monorepo (3.291 TypeScript files, six workspaces).
       pushed, and a release tag is immutable, so they stay as they are. The
       thing to fix is the next release: create tags with `git tag -a -m`, or
       have `brp-release` do it, so the history stops mixing both kinds.
+
+## CI (from the 2026-08-17 mailbox pass)
+
+- [ ] `CI` has been red on `main` since at least 2026-08-12: the three most
+      recent runs all failed (`gh run list -R BusiRocket/baseline --limit 3`,
+      checked 2026-08-17; newest 2026-08-13T11:24Z), and four "Run failed"
+      notices in the mailbox name the security gates as the failing step.
+      Source: `~/p/TODO.md`, 2026-08-17 mailbox pass.
