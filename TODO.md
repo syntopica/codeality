@@ -7,6 +7,22 @@ verified complete - `[-]` obsolete or superseded.
 
 ## Quality gates
 
+- [ ] cargo-baseline rule: flag sync `#[tauri::command]` functions (2026-08-20,
+      found in consumer-t). Tauri runs non-async commands on the main thread, so
+      any disk/DB work in them freezes the whole UI - in consumer-t a 397ms SQL
+      aggregation and an 85ms versions query each froze the app on every click,
+      and a sleeping external drive blocks even `stat` for seconds. consumer-t
+      now enforces this with a grep gate (`check:no-sync-commands`:
+      `rg '^pub fn ' src-tauri/src/commands` with an allowlist) plus a
+      `commands::run_blocking` helper (`spawn_blocking` + join-error mapping)
+      every command routes through. Proposed shape: cargo-baseline detects
+      `#[tauri::command]` attached to a non-async `fn` and errors (allowlist
+      attribute or config for genuinely in-memory commands); a deeper variant
+      would flag blocking calls (rusqlite, `std::fs`, `std::net`) reachable from
+      async command bodies outside `spawn_blocking`. If cargo-baseline is too
+      coarse a home, a `dylint` custom lint crate is the heavier alternative;
+      clippy has no native lint for this.
+
 - [!] Three `pnpm-workspace.yaml` security overrides remain load-bearing and are
   still stopgaps: `tmp@<0.2.6` (`@lhci/cli`), `sharp@<0.35.0` and
   `postcss@<8.5.18` (both `next`). Verified 2026-08-03 by removing all five
