@@ -85,21 +85,14 @@ mod tests {
     #[test]
     fn root_src_violation_is_detected_when_root_is_also_a_package() {
         let (root, member) = workspace_root_with_member("bl-select-roots-root-violation");
-        std::fs::write(
-            root.join("src/store.rs"),
-            "pub fn a() {}\npub fn b() {}\n",
-        )
-        .unwrap();
+        std::fs::write(root.join("src/store.rs"), "pub fn a() {}\npub fn b() {}\n").unwrap();
         std::fs::write(member.join("src/lib.rs"), "pub fn only() {}\n").unwrap();
 
         let info = CrateInfo::load(&root).unwrap();
         let roots = select_crate_roots(&info);
         let cfg = BaselineConfig::default();
 
-        let diagnostics: Vec<_> = roots
-            .iter()
-            .flat_map(|r| check_crate(r, &cfg))
-            .collect();
+        let diagnostics: Vec<_> = roots.iter().flat_map(|r| check_crate(r, &cfg)).collect();
 
         assert!(
             diagnostics

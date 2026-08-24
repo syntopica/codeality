@@ -50,14 +50,18 @@ impl Rule for OnePrimaryUnit {
 mod tests {
     use super::*;
     use crate::config::BaselineConfig;
-    use crate::engine::rule::Rule;
     use crate::engine::parse_dummy_file::parse_dummy_file;
+    use crate::engine::rule::Rule;
 
     #[test]
     fn struct_plus_impls_is_one_unit() {
         let src = "pub struct A; impl A { pub fn f(&self) {} } impl std::fmt::Debug for A { fn fmt(&self, _: &mut std::fmt::Formatter<'_>) -> std::fmt::Result { Ok(()) } }";
         let ctx = parse_dummy_file(src);
-        assert!(OnePrimaryUnit.check(&ctx, &BaselineConfig::default()).is_empty());
+        assert!(
+            OnePrimaryUnit
+                .check(&ctx, &BaselineConfig::default())
+                .is_empty()
+        );
     }
 
     #[test]
@@ -73,6 +77,10 @@ mod tests {
     fn cfg_test_mod_is_exempt() {
         let src = "pub fn a() {} #[cfg(test)] mod tests { fn b() {} }";
         let ctx = parse_dummy_file(src);
-        assert!(OnePrimaryUnit.check(&ctx, &BaselineConfig::default()).is_empty());
+        assert!(
+            OnePrimaryUnit
+                .check(&ctx, &BaselineConfig::default())
+                .is_empty()
+        );
     }
 }

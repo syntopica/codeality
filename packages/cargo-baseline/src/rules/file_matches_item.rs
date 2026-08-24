@@ -1,3 +1,4 @@
+use super::to_snake_case::to_snake_case;
 use crate::config::BaselineConfig;
 use crate::engine::diagnostic::Diagnostic;
 use crate::engine::file_context::FileContext;
@@ -5,7 +6,6 @@ use crate::engine::is_cfg_test_item::is_cfg_test_item;
 use crate::engine::named_item::named_item;
 use crate::engine::rule::Rule;
 use crate::engine::severity::Severity;
-use super::to_snake_case::to_snake_case;
 
 pub struct FileMatchesItem;
 
@@ -16,11 +16,7 @@ impl Rule for FileMatchesItem {
 
     fn check(&self, ctx: &FileContext, _cfg: &BaselineConfig) -> Vec<Diagnostic> {
         // Get file stem (without .rs extension)
-        let stem = ctx
-            .path
-            .file_stem()
-            .and_then(|s| s.to_str())
-            .unwrap_or("");
+        let stem = ctx.path.file_stem().and_then(|s| s.to_str()).unwrap_or("");
 
         // Skip special files
         if matches!(stem, "mod" | "lib" | "main" | "build") {
@@ -34,7 +30,9 @@ impl Rule for FileMatchesItem {
                 line: 1,
                 rule: self.name(),
                 severity: Severity::Error,
-                message: format!("grab-bag file name `{stem}.rs` - name files after their single unit"),
+                message: format!(
+                    "grab-bag file name `{stem}.rs` - name files after their single unit"
+                ),
             }];
         }
 

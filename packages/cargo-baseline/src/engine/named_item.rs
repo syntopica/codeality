@@ -13,7 +13,10 @@ pub fn named_item(item: &syn::Item) -> Option<(String, &[syn::Attribute], proc_m
         syn::Item::Type(i) => (i.ident.to_string(), i.attrs.as_slice(), i.span()),
         syn::Item::Union(i) => (i.ident.to_string(), i.attrs.as_slice(), i.span()),
         syn::Item::Macro(i) => (
-            i.ident.as_ref().map(ToString::to_string).unwrap_or_default(),
+            i.ident
+                .as_ref()
+                .map(ToString::to_string)
+                .unwrap_or_default(),
             i.attrs.as_slice(),
             i.span(),
         ),

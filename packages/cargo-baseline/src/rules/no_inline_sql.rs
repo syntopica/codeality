@@ -33,8 +33,8 @@ impl Rule for NoInlineSql {
 mod tests {
     use super::*;
     use crate::config::BaselineConfig;
-    use crate::engine::rule::Rule;
     use crate::engine::parse_dummy_file::parse_dummy_file;
+    use crate::engine::rule::Rule;
 
     fn check(src: &str) -> usize {
         let ctx = parse_dummy_file(src);
@@ -43,32 +43,53 @@ mod tests {
 
     #[test]
     fn flags_select_literal() {
-        assert_eq!(check(r#"pub fn q() -> &'static str { "SELECT id FROM users WHERE x = ?1" }"#), 1);
+        assert_eq!(
+            check(r#"pub fn q() -> &'static str { "SELECT id FROM users WHERE x = ?1" }"#),
+            1
+        );
     }
 
     #[test]
     fn flags_multiline_create_table() {
-        assert_eq!(check("pub const S: &str = \"CREATE TABLE t (\n id INTEGER\n);\";"), 1);
+        assert_eq!(
+            check("pub const S: &str = \"CREATE TABLE t (\n id INTEGER\n);\";"),
+            1
+        );
     }
 
     #[test]
     fn ignores_plain_strings_and_include_str() {
-        assert_eq!(check(r#"pub fn m() -> &'static str { "hello select something" }"#), 0);
-        assert_eq!(check(r#"pub const Q: &str = include_str!("sql/get_user.sql");"#), 0);
+        assert_eq!(
+            check(r#"pub fn m() -> &'static str { "hello select something" }"#),
+            0
+        );
+        assert_eq!(
+            check(r#"pub const Q: &str = include_str!("sql/get_user.sql");"#),
+            0
+        );
     }
 
     #[test]
     fn flags_sql_inside_format_macro() {
-        assert_eq!(check(r#"pub fn q(t: &str) -> String { format!("SELECT id FROM {t} WHERE x = ?1") }"#), 1);
+        assert_eq!(
+            check(r#"pub fn q(t: &str) -> String { format!("SELECT id FROM {t} WHERE x = ?1") }"#),
+            1
+        );
     }
 
     #[test]
     fn flags_sql_inside_query_macro() {
-        assert_eq!(check(r#"pub fn q() { let _ = my_sql::query!("DELETE FROM users WHERE id = ?1"); }"#), 1);
+        assert_eq!(
+            check(r#"pub fn q() { let _ = my_sql::query!("DELETE FROM users WHERE id = ?1"); }"#),
+            1
+        );
     }
 
     #[test]
     fn include_str_macro_still_ignored() {
-        assert_eq!(check(r#"pub const Q: &str = include_str!("sql/select_from_users.sql");"#), 0);
+        assert_eq!(
+            check(r#"pub const Q: &str = include_str!("sql/select_from_users.sql");"#),
+            0
+        );
     }
 }

@@ -21,11 +21,26 @@ fn init_creates_assets_with_ci() {
     assert!(out.status.success(), "init command should succeed");
 
     // Check that all asset files exist
-    assert!(temp_dir.join("baseline.toml").exists(), "baseline.toml should exist");
-    assert!(temp_dir.join("clippy.toml").exists(), "clippy.toml should exist");
-    assert!(temp_dir.join("rustfmt.toml").exists(), "rustfmt.toml should exist");
-    assert!(temp_dir.join("deny.toml").exists(), "deny.toml should exist");
-    assert!(temp_dir.join("rust-toolchain.toml").exists(), "rust-toolchain.toml should exist");
+    assert!(
+        temp_dir.join("baseline.toml").exists(),
+        "baseline.toml should exist"
+    );
+    assert!(
+        temp_dir.join("clippy.toml").exists(),
+        "clippy.toml should exist"
+    );
+    assert!(
+        temp_dir.join("rustfmt.toml").exists(),
+        "rustfmt.toml should exist"
+    );
+    assert!(
+        temp_dir.join("deny.toml").exists(),
+        "deny.toml should exist"
+    );
+    assert!(
+        temp_dir.join("rust-toolchain.toml").exists(),
+        "rust-toolchain.toml should exist"
+    );
     assert!(
         temp_dir.join("workspace-lints.toml").exists(),
         "workspace-lints.toml should exist"

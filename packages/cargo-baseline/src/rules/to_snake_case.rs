@@ -4,10 +4,13 @@ pub fn to_snake_case(name: &str) -> String {
 
     for (i, &ch) in chars.iter().enumerate() {
         if ch.is_uppercase() {
-            let prev_is_lowercase_or_digit = i > 0 && (chars[i - 1].is_lowercase() || chars[i - 1].is_numeric());
+            let prev_is_lowercase_or_digit =
+                i > 0 && (chars[i - 1].is_lowercase() || chars[i - 1].is_numeric());
             let next_is_lowercase = i + 1 < chars.len() && chars[i + 1].is_lowercase();
 
-            if prev_is_lowercase_or_digit || (i > 0 && chars[i - 1].is_uppercase() && next_is_lowercase) {
+            if prev_is_lowercase_or_digit
+                || (i > 0 && chars[i - 1].is_uppercase() && next_is_lowercase)
+            {
                 result.push('_');
             }
 

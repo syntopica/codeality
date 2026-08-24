@@ -2,7 +2,10 @@ use std::fs;
 use std::path::Path;
 
 const ASSETS: &[(&str, &str)] = &[
-    ("baseline.toml", include_str!("../../../assets/baseline.toml")),
+    (
+        "baseline.toml",
+        include_str!("../../../assets/baseline.toml"),
+    ),
     ("clippy.toml", include_str!("../../../assets/clippy.toml")),
     ("rustfmt.toml", include_str!("../../../assets/rustfmt.toml")),
     ("deny.toml", include_str!("../../../assets/deny.toml")),

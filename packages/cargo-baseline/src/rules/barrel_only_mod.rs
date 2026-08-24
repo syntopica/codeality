@@ -68,7 +68,13 @@ mod tests {
 
     #[test]
     fn clean_barrel_passes() {
-        assert_eq!(check("src/store/mod.rs", "mod sqlite_store; pub use sqlite_store::SqliteStore;"), 0);
+        assert_eq!(
+            check(
+                "src/store/mod.rs",
+                "mod sqlite_store; pub use sqlite_store::SqliteStore;"
+            ),
+            0
+        );
     }
 
     #[test]

@@ -44,9 +44,9 @@ impl<'ast> Visit<'ast> for SqlVisitor {
                             stack.push(group.stream());
                         }
                         proc_macro2::TokenTree::Literal(lit) => {
-                            if let Ok(lit_str) =
-                                syn::parse2::<syn::LitStr>(std::iter::once(proc_macro2::TokenTree::Literal(lit)).collect())
-                            {
+                            if let Ok(lit_str) = syn::parse2::<syn::LitStr>(
+                                std::iter::once(proc_macro2::TokenTree::Literal(lit)).collect(),
+                            ) {
                                 if SQL.is_match(&lit_str.value()) {
                                     self.hits.push(lit_str.span().start().line);
                                 }

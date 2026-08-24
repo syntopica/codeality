@@ -66,6 +66,10 @@ mod tests {
     fn allows_small_trait() {
         let src = "pub trait Id { fn id(&self) -> u64; }";
         let ctx = FileContext::parse(std::path::Path::new("src/id.rs"), src.into()).unwrap();
-        assert!(MaxTraitMethods.check(&ctx, &BaselineConfig::default()).is_empty());
+        assert!(
+            MaxTraitMethods
+                .check(&ctx, &BaselineConfig::default())
+                .is_empty()
+        );
     }
 }

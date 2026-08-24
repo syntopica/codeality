@@ -10,7 +10,11 @@ use crate::rules::no_inline_sql::NoInlineSql;
 use crate::rules::one_primary_unit::OnePrimaryUnit;
 use crate::rules::tauri_command_placement::TauriCommandPlacement;
 
-pub(super) fn run_rules(files: &[FileContext], cfg: &BaselineConfig, diagnostics: &mut Vec<Diagnostic>) {
+pub(super) fn run_rules(
+    files: &[FileContext],
+    cfg: &BaselineConfig,
+    diagnostics: &mut Vec<Diagnostic>,
+) {
     let rules: Vec<Box<dyn Rule>> = vec![
         Box::new(MaxFileLines),
         Box::new(OnePrimaryUnit),

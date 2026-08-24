@@ -29,7 +29,12 @@ impl Rule for TauriCommandPlacement {
                 }
 
                 let has_tauri_command = f.attrs.iter().any(|a| {
-                    let segs: Vec<_> = a.path().segments.iter().map(|s| s.ident.to_string()).collect();
+                    let segs: Vec<_> = a
+                        .path()
+                        .segments
+                        .iter()
+                        .map(|s| s.ident.to_string())
+                        .collect();
                     segs == ["tauri", "command"]
                 });
 
@@ -59,16 +64,27 @@ mod tests {
 
     fn check(path: &str, src: &str) -> usize {
         let ctx = FileContext::parse(std::path::Path::new(path), src.into()).unwrap();
-        TauriCommandPlacement.check(&ctx, &BaselineConfig::default()).len()
+        TauriCommandPlacement
+            .check(&ctx, &BaselineConfig::default())
+            .len()
     }
 
     #[test]
     fn command_outside_commands_dir_flagged() {
-        assert_eq!(check("src/lib.rs", "#[tauri::command] pub fn greet() {}"), 1);
+        assert_eq!(
+            check("src/lib.rs", "#[tauri::command] pub fn greet() {}"),
+            1
+        );
     }
 
     #[test]
     fn command_inside_commands_dir_ok() {
-        assert_eq!(check("src/commands/greet.rs", "#[tauri::command] pub fn greet() {}"), 0);
+        assert_eq!(
+            check(
+                "src/commands/greet.rs",
+                "#[tauri::command] pub fn greet() {}"
+            ),
+            0
+        );
     }
 }
