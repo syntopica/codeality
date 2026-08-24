@@ -50,7 +50,9 @@ Closed work from `TODO.md`, grouped by year and month.
     branches, 100% functions, 96.61% lines over 127 tests.
   - Evidence: `pnpm check:ci` exit 0, `pnpm knip` exit 0,
     `pnpm audit --audit-level=high` exit 0, `cargo test --workspace` 63 passed,
-    `cargo fmt -- --check` clean, and `actionlint` clean.
+    `cargo fmt -- --check` clean, `actionlint` clean, and CI run 32775048272
+    green on all four jobs - Verify, Quality gates, Rust tests and Security
+    gates - which is the first fully green `main` since 2026-08-12.
 
 - [x] 2026-08-24 - **Testing gaps:** close the five items the test-policy audit
       opened the same day.
