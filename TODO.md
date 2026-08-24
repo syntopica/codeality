@@ -67,6 +67,72 @@ verified complete - `[-]` obsolete or superseded.
       `pnpm exec turbo run publish:check --force` from a cleared cache and
       capture which task fails, rather than the aggregate exit code.
 
+## Testing gaps (2026-08-24)
+
+Found auditing why test files obeyed no norm. The lint side is fixed (test files
+now carry a 200-line budget and `file-kind-placement`); these are the rest.
+
+- [ ] **Every template declares 80% coverage thresholds that are never
+      measured.** The seven `vitest.config.ts` files with
+      `thresholds: { lines: 80, functions: 80, branches: 80, statements: 80 }`
+      are dead configuration: the script is `test: "vitest run"` with no
+      `--coverage`, and `check:ci` calls `pnpm test`. `turbo.json` even declares
+      `outputs: ["coverage/**"]` for the `test` task, and CI logs
+      `no output files found for task ...#test` because nothing produces it.
+      `templates/nestjs-app` and `packages/eslint-plugin-code-policy` declare no
+      thresholds at all. Smallest step: decide whether coverage is a gate, then
+      either add `--coverage` to the `test` script in every template or delete
+      the thresholds and the turbo `outputs` key.
+- [ ] **`cargo test` never runs in CI.** `packages/cargo-baseline` has no
+      `package.json`, so it is not a pnpm workspace member and `turbo run test`
+      skips it; `.github/workflows/ci.yml` has no cargo step either. That leaves
+      ~2.100 lines of Rust with inline `#[cfg(test)]` suites unexecuted on every
+      push. Smallest step: add a cargo job to `ci.yml` running
+      `cargo test --workspace`.
+- [ ] **Rust and TypeScript disagree on whether tests cost file budget.**
+      `max_file_lines` (`packages/cargo-baseline/src/rules/max_file_lines.rs`)
+      exempts only the `tests` path component and counts the lines of an inline
+      `#[cfg(test)] mod tests` block against the file's budget, while a TS test
+      file now gets its own 200-line budget. A Rust file pays for its tests; a
+      TS one does not. Decide which is intended and align. Related to the
+      consumer-t file-level test-module finding below.
+- [ ] **`jscpd` misses short duplicated test scaffolding.** `minTokens: 70` in
+      `.jscpd.json` is tuned for production code; a `beforeEach` or fixture
+      block copied across suites is typically well under 70 tokens and never
+      reported. Test duplication is otherwise gated (tests are scanned on
+      purpose, currently 0% across 46 TS files). Smallest step: measure what a
+      second jscpd pass scoped to test globs with a lower `minTokens` would
+      report before deciding whether the noise is worth it.
+- [ ] **`packages/eslint-plugin-code-policy` still casts its rules to hand them
+      to `RuleTester`.** `tests/rule-testers/runRuleTest.ts` absorbs the cast
+      once (it used to be repeated in all ten suites), but the cast exists only
+      because ESLint core's `RuleTester` types its rule parameter as the untyped
+      `RuleDefinition` shape. `@typescript-eslint/rule-tester` is the
+      maintained, flat-config-native tester typed for the `RuleModule` shape
+      `createRule()` produces, and would remove it. Smallest step: swap the
+      devDependency and delete the two cast type aliases.
+
+## Adoption findings (consumer-x, 2026-08-19)
+
+- [ ] **Fresh adoption of the nextjs-app template breaks on `next build`: the
+      template's `next` range `^16.2.12` resolves to 16.3.1 outside the monorepo
+      lockfile, and Next 16.3.1 rejects the aliased `typescript` package**
+      (`npm:@typescript/typescript6`) — build dies with "It looks like you're
+      trying to use TypeScript but do not have the required package(s)
+      installed" even though `require.resolve('typescript')` works. Reproduced
+      and worked around in `pixel-potion/consumer-x` by pinning `next`,
+      `eslint-config-next` and `@next/eslint-plugin-next` to exactly 16.2.12.
+      Smallest step: pin the template's Next deps exactly (or test the alias
+      against 16.3.x and record the supported ceiling).
+- [ ] **`docs/adoption/new-repo.md` never mentions the pnpm 11 build-script
+      allowlist.** A fresh repo fails `pnpm install` with
+      `ERR_PNPM_IGNORED_BUILDS` (lefthook, unrs-resolver, sharp), and the
+      `pnpm.onlyBuiltDependencies` package.json field the error suggests is
+      ignored by pnpm 11 — the working form is `allowBuilds:` in
+      `pnpm-workspace.yaml`, as this monorepo already uses. Add the snippet to
+      the adoption doc (observed bootstrapping `pixel-potion/consumer-x`,
+      2026-08-19).
+
 ## Adoption findings (consumer-t, 2026-08-13)
 
 - [ ] **`cargo-baseline` does not recognize file-level test modules, only inline
