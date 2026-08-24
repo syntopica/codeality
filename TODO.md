@@ -95,6 +95,31 @@ work surfaced and did not fix:
       81.17% branch coverage and its rules' real state. Decide whether they are
       deprecated (drop them, in a major) or supported (test them properly).
 
+- [ ] **The workspace carries two physical copies of `eslint-plugin-boundaries`,
+      and that is what broke CI on 2026-08-24.** pnpm keys a package by its
+      resolved peers, so bumping `@typescript-eslint/utils` to `^8.67.0` in
+      `eslint-plugin-code-policy` while `@busirocket/eslint-config` still
+      resolves the 8.65.0 parser split the plugin in two. `templates/nextjs-app`
+      then loaded a different object than the shared config did and ESLint
+      refused the whole config with `Cannot redefine plugin "boundaries"`. The
+      trigger is fixed (the template no longer re-registers a plugin the shared
+      config already registers), but the split remains:
+      `ls node_modules/.pnpm | grep eslint-plugin-boundaries` shows four
+      entries. Any other plugin registered on both sides can hit the same
+      failure. Smallest step: align the `typescript-eslint` version across
+      packages so one peer context exists, and confirm with that same command.
+- [ ] **`templates/nextjs-app/eslint.architecture.ts` quietly relaxes the file
+      size standard for the whole template.** Its first config object has no
+      `files` key, so its `'max-lines': ['warn', { max: 200 }]` applies to every
+      linted file, and it is spread last in `eslint.config.ts` - after
+      `createCodeQualityConfig()`. A Next.js project scaffolded from this
+      template therefore gets a 200-line warning where the standard says error
+      at 100, and 300 for components. `--max-warnings 0` still blocks, so
+      nothing passes silently, but the documented budget is not the effective
+      one. Decide whether this is the intended Next.js exception (then document
+      it in `code-quality.md` next to the App Router override) or a leftover
+      (then delete it).
+
 ## Adoption findings (consumer-x, 2026-08-19)
 
 - [ ] **Fresh adoption of the nextjs-app template breaks on `next build`: the
