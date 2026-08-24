@@ -69,56 +69,22 @@ verified complete - `[-]` obsolete or superseded.
 
 ## Testing gaps (2026-08-24)
 
-The five items opened here on 2026-08-24 are closed; see `TODO_LOG.md`. What the
-work surfaced and did not fix:
+Everything opened here is closed; see `TODO_LOG.md`. One residual:
 
-- [ ] **`one-primary-unit` counts a destructured export as a single unit.**
-      `export const { first, second } = source` is one `VariableDeclaration`
-      with one declarator whose `id` is an `ObjectPattern`, so the rule
-      increments its counter once however many names the pattern binds - a file
-      exporting two symbols passes. Found writing coverage cases for the rule;
-      `tests/rules/one-primary-unit.test.ts` now pins the behaviour as valid
-      with a comment pointing here, so changing it means changing that case too.
-      Decide whether the Atomic File Rule should count bindings rather than
-      declarators.
-- [ ] **`cargo fmt` is not gated and the crate has drifted.**
-      `cargo fmt -- --check` reports deviations at 29 places across
-      `packages/cargo-baseline` (`no_inline_sql.rs`,
-      `tauri_command_placement.rs` and `file_matches_item.rs` worst). Nothing
-      enforces it: the new `rust` CI job runs `cargo test --workspace` only.
-      Smallest step: run `cargo fmt` once as its own commit, then add
-      `cargo fmt -- --check` to that job.
-- [ ] **Two code-policy rules that ship disabled drag its coverage down.**
-      `atomic-file.ts` (71.66% branches) and `no-inline-types.ts` (68.75%) are
-      both `'off'` in `configs/recommended.ts` - superseded by the newer rules -
-      yet still counted, and they are most of the gap between the package's
-      81.17% branch coverage and its rules' real state. Decide whether they are
-      deprecated (drop them, in a major) or supported (test them properly).
-
-- [ ] **The workspace carries two physical copies of `eslint-plugin-boundaries`,
-      and that is what broke CI on 2026-08-24.** pnpm keys a package by its
-      resolved peers, so bumping `@typescript-eslint/utils` to `^8.67.0` in
-      `eslint-plugin-code-policy` while `@busirocket/eslint-config` still
-      resolves the 8.65.0 parser split the plugin in two. `templates/nextjs-app`
-      then loaded a different object than the shared config did and ESLint
-      refused the whole config with `Cannot redefine plugin "boundaries"`. The
-      trigger is fixed (the template no longer re-registers a plugin the shared
-      config already registers), but the split remains:
-      `ls node_modules/.pnpm | grep eslint-plugin-boundaries` shows four
-      entries. Any other plugin registered on both sides can hit the same
-      failure. Smallest step: align the `typescript-eslint` version across
-      packages so one peer context exists, and confirm with that same command.
-- [ ] **`templates/nextjs-app/eslint.architecture.ts` quietly relaxes the file
-      size standard for the whole template.** Its first config object has no
-      `files` key, so its `'max-lines': ['warn', { max: 200 }]` applies to every
-      linted file, and it is spread last in `eslint.config.ts` - after
-      `createCodeQualityConfig()`. A Next.js project scaffolded from this
-      template therefore gets a 200-line warning where the standard says error
-      at 100, and 300 for components. `--max-warnings 0` still blocks, so
-      nothing passes silently, but the documented budget is not the effective
-      one. Decide whether this is the intended Next.js exception (then document
-      it in `code-quality.md` next to the App Router override) or a leftover
-      (then delete it).
+- [ ] **`eslint-plugin-boundaries` still resolves to two physical copies, now
+      because of the TypeScript alias rather than a version skew.** After
+      aligning every package to `typescript-eslint@^8.67.0` the lockfile holds
+      two peer contexts: one where the parser sees `@typescript/typescript6`
+      (the TS7 native-compiler trial alias) and one where it sees real
+      `typescript@6.0.3`. `eslint-config`, `nextjs-app` and `astro-site` land on
+      the first; `vue-app` and `nuxt-app` on the second, because `vue-tsc` needs
+      the real package. ESLint accepts a repeated `plugins` key only for the
+      same object, so any config layer that re-registers a plugin already
+      registered by the shared config fails there - the failure mode that broke
+      CI on 2026-08-24. Nothing re-registers today. Smallest step: check whether
+      `vue-tsc` works against the alias (which would collapse both contexts),
+      and until then keep template configs free of `plugins:` keys. Verify with
+      `grep -E "^  eslint-plugin-boundaries@" pnpm-lock.yaml`.
 
 ## Adoption findings (consumer-x, 2026-08-19)
 
@@ -257,11 +223,3 @@ Next.js + drizzle + zod monorepo (3.291 TypeScript files, six workspaces).
       pushed, and a release tag is immutable, so they stay as they are. The
       thing to fix is the next release: create tags with `git tag -a -m`, or
       have `brp-release` do it, so the history stops mixing both kinds.
-
-## CI (from the 2026-08-17 mailbox pass)
-
-- [ ] `CI` has been red on `main` since at least 2026-08-12: the three most
-      recent runs all failed (`gh run list -R BusiRocket/baseline --limit 3`,
-      checked 2026-08-17; newest 2026-08-13T11:24Z), and four "Run failed"
-      notices in the mailbox name the security gates as the failing step.
-      Source: `~/p/TODO.md`, 2026-08-17 mailbox pass.

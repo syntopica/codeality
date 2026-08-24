@@ -4,6 +4,54 @@ Closed work from `TODO.md`, grouped by year and month.
 
 ## 2026-08
 
+- [x] 2026-08-24 - **CI green on `main` for the first time since 2026-08-12**,
+      plus the four follow-ups the testing-gap work left behind.
+  - **The security gate is fixed, not silenced.**
+    `pnpm audit --audit-level=high` reported four high advisories. Three took
+    ordinary overrides: GHSA-5p4m-2wfm-xmqj in js-yaml (one entry per live
+    major, since a single `<4.3.1` range would drag the 3.x line across a major)
+    and GHSA-2v37-7h3g-55p8 in nanoid, via
+    `prettier-plugin-css-order > postcss`. The fourth, GHSA-jmr9-qjv8-65gv in
+    extract-zip, has **no patched release** - npm's latest is the vulnerable
+    2.0.1, and pnpm refuses the override with "The latest release of extract-zip
+    is 2.0.1". Fixed by moving the consumer instead: `@puppeteer/browsers@3.2.1`
+    dropped extract-zip entirely for `modern-tar`, so an override to `^3.2.1`
+    removes the edge. Verified the browser download still works by running
+    `perf:check` end to end on `astro-site` (`Healthcheck passed!`, exit 0), not
+    just by re-reading the audit. `pnpm audit --audit-level=high` now exits 0
+    with 2 remaining findings, both below the gate.
+  - **`typescript-eslint` aligned to `^8.67.0` across all nine packages**, which
+    was the version skew that split `eslint-plugin-boundaries` and broke the
+    config on 2026-08-24. The lockfile went from three plugin keys to two; the
+    remaining split is the TypeScript alias, recorded as still open.
+  - **`cargo fmt` applied and gated.** The crate had drifted at 29 places across
+    14 files; `cargo fmt --all` fixed it and the `rust` CI job now runs
+    `cargo fmt -- --check` before the tests. 63 tests still pass and
+    `cargo run -- baseline check` still reports 0 errors on the crate itself.
+  - **`templates/nextjs-app` no longer relaxes the size standard.** Its
+    `eslint.architecture.ts` set `max-lines` to a 200-line warning for every
+    file and 300 for components, and being spread last it beat
+    `createCodeQualityConfig()`'s error at 100. Deleted after checking that no
+    file in the template exceeds the real budget; the template lints clean at
+    error-100. The legitimate App Router exception already lives in
+    `code-quality.ts`.
+  - **`one-primary-unit` now counts bound names rather than declarators.**
+    `export const { first, second } = source` is one declarator, so a file
+    exporting two symbols used to pass. Both it and
+    `no-hidden-top-level-declarations` now share one binding-pattern walk
+    (`utils/bound-identifier-names.ts`, five unit tests) instead of each
+    carrying its own, so the two cannot drift on what a pattern binds. The
+    Next.js route exemption is applied per name.
+  - **`atomic-file` and `no-inline-types` are marked deprecated** with
+    `replacedBy`, rather than removed - both have been `'off'` in the
+    recommended config since the narrower rules replaced them, and a consumer
+    who enabled them directly stays working. Excluding them from the coverage
+    gate as unsupported surface puts the package at 95.29% statements, 85.35%
+    branches, 100% functions, 96.61% lines over 127 tests.
+  - Evidence: `pnpm check:ci` exit 0, `pnpm knip` exit 0,
+    `pnpm audit --audit-level=high` exit 0, `cargo test --workspace` 63 passed,
+    `cargo fmt -- --check` clean, and `actionlint` clean.
+
 - [x] 2026-08-24 - **Testing gaps:** close the five items the test-policy audit
       opened the same day.
   - **Coverage was declared but never measured.** Seven templates carried
