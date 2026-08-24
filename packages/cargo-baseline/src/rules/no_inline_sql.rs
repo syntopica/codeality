@@ -1,9 +1,11 @@
 use syn::visit::Visit;
 
 use crate::config::BaselineConfig;
+use crate::engine::cfg_test_line_ranges::cfg_test_line_ranges;
 use crate::engine::diagnostic::Diagnostic;
 use crate::engine::diagnostics_for_lines::diagnostics_for_lines;
 use crate::engine::file_context::FileContext;
+use crate::engine::is_test_scope_file::is_test_scope_file;
 use crate::engine::rule::Rule;
 use crate::engine::severity::Severity;
 use crate::rules::sql_visitor::SqlVisitor;
@@ -16,6 +18,14 @@ impl Rule for NoInlineSql {
     }
 
     fn check(&self, ctx: &FileContext, _cfg: &BaselineConfig) -> Vec<Diagnostic> {
+        // Test fixtures are the reason to write SQL inline, so test scope is
+        // exempt: a `tests` directory or a `#![cfg(test)]` file wholesale, and
+        // an inline `#[cfg(test)] mod` block by line range.
+        if is_test_scope_file(ctx) {
+            return Vec::new();
+        }
+        let test_ranges = cfg_test_line_ranges(&ctx.ast);
+
         let mut v = SqlVisitor { hits: Vec::new() };
         v.visit_file(&ctx.ast);
         let message = "SQL literal in .rs - move to sql/*.sql and load with include_str!";
@@ -23,7 +33,10 @@ impl Rule for NoInlineSql {
             &ctx.path,
             self.name(),
             Severity::Error,
-            v.hits.into_iter().map(|line| (line, message.to_string())),
+            v.hits
+                .into_iter()
+                .filter(|line| !test_ranges.iter().any(|&(a, b)| *line >= a && *line <= b))
+                .map(|line| (line, message.to_string())),
         )
     }
 }
@@ -90,6 +103,32 @@ mod tests {
         assert_eq!(
             check(r#"pub const Q: &str = include_str!("sql/select_from_users.sql");"#),
             0
+        );
+    }
+
+    #[test]
+    fn sql_inside_an_inline_test_module_is_ignored() {
+        assert_eq!(
+            check("#[cfg(test)]\nmod tests {\n    const Q: &str = \"SELECT id FROM users\";\n}\n"),
+            0
+        );
+    }
+
+    #[test]
+    fn a_cfg_test_file_is_ignored_wholesale() {
+        assert_eq!(
+            check("#![cfg(test)]\nconst Q: &str = \"SELECT id FROM users\";\n"),
+            0
+        );
+    }
+
+    #[test]
+    fn production_sql_beside_a_test_module_still_reports() {
+        assert_eq!(
+            check(
+                "const Q: &str = \"SELECT id FROM users\";\n#[cfg(test)]\nmod tests {\n    fn t() {}\n}\n"
+            ),
+            1
         );
     }
 }

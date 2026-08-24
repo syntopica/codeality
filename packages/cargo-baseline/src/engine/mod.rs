@@ -5,6 +5,7 @@ pub mod diagnostic;
 pub mod diagnostics_for_lines;
 pub mod file_context;
 pub mod is_cfg_test_item;
+pub mod is_test_scope_file;
 pub mod named_item;
 pub(crate) mod parse_dummy_file;
 pub(crate) mod parse_file_ctx;

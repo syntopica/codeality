@@ -104,7 +104,33 @@ Bring clippy in gradually rather than blocking CI on day one:
    (the `baseline.yml` workflow from `init` already runs
    `cargo clippy --workspace --all-targets -D warnings`).
 
-## 6. Cross-file duplication (jscpd)
+## 6. Test scope
+
+`cargo baseline check` walks `<crate>/src` only, so files under a cargo `tests/`
+directory are never linted. Inside `src`, three forms count as test scope and
+are skipped by the structural rules:
+
+- an inline `#[cfg(test)] mod tests { ... }` block - its lines do not count
+  against `max-file-lines`, and SQL inside it is not reported;
+- a `tests` directory under `src` (`src/db/tests/mod.rs`);
+- a file carrying the `#![cfg(test)]` inner attribute.
+
+That third form is what a module declared as `#[cfg(test)] mod tests;` needs.
+Without the attribute the file is scanned as production code: `no-inline-sql`
+flags test-fixture SQL and `max-file-lines` charges the crate's budget for it.
+Add the attribute to the module file rather than reshaping the layout:
+
+```rust
+// src/db/queries/tests.rs
+#![cfg(test)]
+
+use super::*;
+```
+
+The alternative - a `tests/mod.rs` with an inner wrapper module - runs into
+clippy's `module_inception` when the wrapper is also called `tests`.
+
+## 7. Cross-file duplication (jscpd)
 
 `cargo-baseline` doesn't gate cross-file duplication itself, but the same jscpd
 gate the rest of the baseline uses is installable without Node:

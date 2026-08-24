@@ -2,6 +2,7 @@ use crate::config::BaselineConfig;
 use crate::engine::cfg_test_line_ranges::cfg_test_line_ranges;
 use crate::engine::diagnostic::Diagnostic;
 use crate::engine::file_context::FileContext;
+use crate::engine::is_test_scope_file::is_test_scope_file;
 use crate::engine::rule::Rule;
 use crate::engine::severity::Severity;
 
@@ -13,8 +14,8 @@ impl Rule for MaxFileLines {
     }
 
     fn check(&self, ctx: &FileContext, cfg: &BaselineConfig) -> Vec<Diagnostic> {
-        // Skip files under a `tests` directory (exact path component, not substring)
-        if ctx.path.components().any(|c| c.as_os_str() == "tests") {
+        // Whole-file test scope: a `tests` directory or a `#![cfg(test)]` file.
+        if is_test_scope_file(ctx) {
             return Vec::new();
         }
 
@@ -117,6 +118,13 @@ mod tests {
         let d = MaxFileLines.check(&ctx(&body), &cfg);
         assert_eq!(d.len(), 1);
         assert_eq!(d[0].rule, "max-file-lines");
+    }
+
+    #[test]
+    fn inner_cfg_test_attribute_exempts_the_whole_file() {
+        let body = format!("#![cfg(test)]\n{}", "fn a() {}\n".repeat(200));
+        let cfg = BaselineConfig::default();
+        assert!(MaxFileLines.check(&ctx(&body), &cfg).is_empty());
     }
 
     #[test]
