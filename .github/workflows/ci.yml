@@ -71,6 +71,9 @@ jobs:
       # `turbo run test` never reaches it. Without this job its suites do not
       # run in CI at all. GitHub's ubuntu runners ship a stable Rust
       # toolchain, so no toolchain action is needed.
+      - name: cargo fmt
+        run: cargo fmt -- --check
+
       - name: cargo test
         run: cargo test --workspace
 
