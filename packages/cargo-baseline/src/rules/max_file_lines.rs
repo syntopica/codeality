@@ -1,4 +1,5 @@
 use crate::config::BaselineConfig;
+use crate::engine::cfg_test_line_ranges::cfg_test_line_ranges;
 use crate::engine::diagnostic::Diagnostic;
 use crate::engine::file_context::FileContext;
 use crate::engine::rule::Rule;
@@ -17,11 +18,21 @@ impl Rule for MaxFileLines {
             return Vec::new();
         }
 
+        // Inline `#[cfg(test)] mod { .. }` blocks are the file's own unit
+        // tests. Rust keeps them beside the code they test, so counting them
+        // charges production code for its tests - the same reason files under
+        // a `tests` directory are skipped above.
+        let test_ranges = cfg_test_line_ranges(&ctx.ast);
+
         // Count code lines: blank lines, comment-only lines, and block comment lines don't count
         let mut count = 0;
         let mut in_block_comment = false;
 
-        for line in ctx.source.lines() {
+        for (index, line) in ctx.source.lines().enumerate() {
+            let number = index + 1;
+            if test_ranges.iter().any(|&(a, b)| number >= a && number <= b) {
+                continue;
+            }
             let t = line.trim();
 
             if in_block_comment {
@@ -83,6 +94,29 @@ mod tests {
         let body = format!("{}{}", "// c\n\n".repeat(200), "fn a() {}\n");
         let cfg = BaselineConfig::default();
         assert!(MaxFileLines.check(&ctx(&body), &cfg).is_empty());
+    }
+
+    #[test]
+    fn inline_cfg_test_module_does_not_count_against_the_budget() {
+        let body = format!(
+            "{}#[cfg(test)]\nmod tests {{\n{}}}\n",
+            "fn a() {}\n".repeat(100),
+            "    fn t() {}\n".repeat(100)
+        );
+        let cfg = BaselineConfig::default();
+        assert!(MaxFileLines.check(&ctx(&body), &cfg).is_empty());
+    }
+
+    #[test]
+    fn production_lines_still_count_when_a_test_module_is_present() {
+        let body = format!(
+            "{}#[cfg(test)]\nmod tests {{\n    fn t() {{}}\n}}\n",
+            "fn a() {}\n".repeat(200)
+        );
+        let cfg = BaselineConfig::default();
+        let d = MaxFileLines.check(&ctx(&body), &cfg);
+        assert_eq!(d.len(), 1);
+        assert_eq!(d[0].rule, "max-file-lines");
     }
 
     #[test]

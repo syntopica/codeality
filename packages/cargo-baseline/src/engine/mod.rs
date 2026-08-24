@@ -1,3 +1,4 @@
+pub mod cfg_test_line_ranges;
 pub mod collect_rust_files;
 pub mod crate_info;
 pub mod diagnostic;
