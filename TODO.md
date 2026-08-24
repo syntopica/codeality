@@ -69,48 +69,31 @@ verified complete - `[-]` obsolete or superseded.
 
 ## Testing gaps (2026-08-24)
 
-Found auditing why test files obeyed no norm. The lint side is fixed (test files
-now carry a 200-line budget and `file-kind-placement`); these are the rest.
+The five items opened here on 2026-08-24 are closed; see `TODO_LOG.md`. What the
+work surfaced and did not fix:
 
-- [ ] **Every template declares 80% coverage thresholds that are never
-      measured.** The seven `vitest.config.ts` files with
-      `thresholds: { lines: 80, functions: 80, branches: 80, statements: 80 }`
-      are dead configuration: the script is `test: "vitest run"` with no
-      `--coverage`, and `check:ci` calls `pnpm test`. `turbo.json` even declares
-      `outputs: ["coverage/**"]` for the `test` task, and CI logs
-      `no output files found for task ...#test` because nothing produces it.
-      `templates/nestjs-app` and `packages/eslint-plugin-code-policy` declare no
-      thresholds at all. Smallest step: decide whether coverage is a gate, then
-      either add `--coverage` to the `test` script in every template or delete
-      the thresholds and the turbo `outputs` key.
-- [ ] **`cargo test` never runs in CI.** `packages/cargo-baseline` has no
-      `package.json`, so it is not a pnpm workspace member and `turbo run test`
-      skips it; `.github/workflows/ci.yml` has no cargo step either. That leaves
-      ~2.100 lines of Rust with inline `#[cfg(test)]` suites unexecuted on every
-      push. Smallest step: add a cargo job to `ci.yml` running
-      `cargo test --workspace`.
-- [ ] **Rust and TypeScript disagree on whether tests cost file budget.**
-      `max_file_lines` (`packages/cargo-baseline/src/rules/max_file_lines.rs`)
-      exempts only the `tests` path component and counts the lines of an inline
-      `#[cfg(test)] mod tests` block against the file's budget, while a TS test
-      file now gets its own 200-line budget. A Rust file pays for its tests; a
-      TS one does not. Decide which is intended and align. Related to the
-      consumer-t file-level test-module finding below.
-- [ ] **`jscpd` misses short duplicated test scaffolding.** `minTokens: 70` in
-      `.jscpd.json` is tuned for production code; a `beforeEach` or fixture
-      block copied across suites is typically well under 70 tokens and never
-      reported. Test duplication is otherwise gated (tests are scanned on
-      purpose, currently 0% across 46 TS files). Smallest step: measure what a
-      second jscpd pass scoped to test globs with a lower `minTokens` would
-      report before deciding whether the noise is worth it.
-- [ ] **`packages/eslint-plugin-code-policy` still casts its rules to hand them
-      to `RuleTester`.** `tests/rule-testers/runRuleTest.ts` absorbs the cast
-      once (it used to be repeated in all ten suites), but the cast exists only
-      because ESLint core's `RuleTester` types its rule parameter as the untyped
-      `RuleDefinition` shape. `@typescript-eslint/rule-tester` is the
-      maintained, flat-config-native tester typed for the `RuleModule` shape
-      `createRule()` produces, and would remove it. Smallest step: swap the
-      devDependency and delete the two cast type aliases.
+- [ ] **`one-primary-unit` counts a destructured export as a single unit.**
+      `export const { first, second } = source` is one `VariableDeclaration`
+      with one declarator whose `id` is an `ObjectPattern`, so the rule
+      increments its counter once however many names the pattern binds - a file
+      exporting two symbols passes. Found writing coverage cases for the rule;
+      `tests/rules/one-primary-unit.test.ts` now pins the behaviour as valid
+      with a comment pointing here, so changing it means changing that case too.
+      Decide whether the Atomic File Rule should count bindings rather than
+      declarators.
+- [ ] **`cargo fmt` is not gated and the crate has drifted.**
+      `cargo fmt -- --check` reports deviations at 29 places across
+      `packages/cargo-baseline` (`no_inline_sql.rs`,
+      `tauri_command_placement.rs` and `file_matches_item.rs` worst). Nothing
+      enforces it: the new `rust` CI job runs `cargo test --workspace` only.
+      Smallest step: run `cargo fmt` once as its own commit, then add
+      `cargo fmt -- --check` to that job.
+- [ ] **Two code-policy rules that ship disabled drag its coverage down.**
+      `atomic-file.ts` (71.66% branches) and `no-inline-types.ts` (68.75%) are
+      both `'off'` in `configs/recommended.ts` - superseded by the newer rules -
+      yet still counted, and they are most of the gap between the package's
+      81.17% branch coverage and its rules' real state. Decide whether they are
+      deprecated (drop them, in a major) or supported (test them properly).
 
 ## Adoption findings (consumer-x, 2026-08-19)
 

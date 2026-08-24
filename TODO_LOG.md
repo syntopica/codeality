@@ -4,6 +4,66 @@ Closed work from `TODO.md`, grouped by year and month.
 
 ## 2026-08
 
+- [x] 2026-08-24 - **Testing gaps:** close the five items the test-policy audit
+      opened the same day.
+  - **Coverage was declared but never measured.** Seven templates carried
+    `thresholds: { lines/functions/branches/statements: 80 }` while their script
+    was a bare `vitest run`, so the gate never ran and turbo's
+    `outputs: ["coverage/**"]` produced the `no output files found` warning on
+    every CI run. Measured first, then enabled: all seven report 100% on every
+    metric, so `--coverage` was free to turn on. `nestjs-app` had no thresholds
+    at all and sat at 23% - `main.ts` and `app.module.ts` are now excluded as
+    bootstrap/DI wiring, a missing `app.controller.spec.ts` was added, and it
+    reports 100% statements/functions/lines. It carries no `branches` threshold
+    on purpose: Nest's class decorators compile to code v8 attributes to the
+    decorated line, so `@Controller()` alone reports an unreachable uncovered
+    branch (50%, 1/2).
+  - **`packages/eslint-plugin-code-policy` had no thresholds either**, and
+    measuring it found real holes rather than phantom ones: 84.4% statements and
+    73.64% branches. Rather than lower the bar, the two least-covered paths got
+    tests - `no-hidden-top-level-declarations` (47.61% statements: export
+    specifier lists, `export default` identifier and HOC unwrapping,
+    object/array/rest destructuring) and `one-primary-unit` (51.85% branches:
+    specifier-list exports and the Next.js route exemption reached through one).
+    107 tests became 120, and the package now reports 93.27%/81.17%/ 100%/94.78%
+    against an 80% gate, with the barrel, version constant and shipped presets
+    excluded as declarative wiring.
+  - **`cargo test` never ran in CI.** `packages/cargo-baseline` has no
+    `package.json`, so it is not a pnpm workspace member and `turbo run test`
+    skipped it; no workflow step covered it either. A `rust` job now runs
+    `cargo test --workspace` (GitHub's ubuntu runners ship a stable toolchain,
+    so no third-party toolchain action was added). 63 tests, green.
+  - **Rust and TypeScript disagreed on whether tests cost file budget.**
+    `max-file-lines` counted the lines of an inline `#[cfg(test)] mod tests`
+    block against the file, while a TS test file now gets its own budget. A new
+    `engine/cfg_test_line_ranges.rs` returns the inclusive line ranges of those
+    blocks and the rule skips them, so the budget measures production code on
+    both sides. Spans are read off single tokens (`#` of the first attribute,
+    the closing brace of the block) because proc-macro2 cannot join spans on
+    stable and an item-level `span()` collapses to its first token. Verified by
+    two new rule tests plus three for the helper, and
+    `cargo run -- baseline check` still reports 0 errors against the crate
+    itself.
+  - **jscpd's `minTokens: 70` was left alone, deliberately.** Measured at 30
+    over test globs: 12 clones, 9.55%. Ten of them are the same starter file in
+    different templates (`tauri-app` vs `vite-react-app` vs `vue-app`), which is
+    what templates are for, and the rest are import + `afterEach` headers whose
+    extraction would make the tests worse. Per template the signal is one clone
+    in `vue-app` (a 6-line fetch stub) and one in `astro-site` (an import
+    header); nextjs-app has none. The percentages only look alarming because the
+    denominators are 44-82 lines. No change to the gate.
+  - **The rule tester no longer casts.** `@typescript-eslint/rule-tester`
+    replaced ESLint core's `RuleTester`; it is generic over the same
+    `RuleModule` shape `createRule()` produces, so both cast type aliases are
+    gone and no suite carries `as any`. This required aligning
+    `@typescript-eslint/utils` to `^8.67.0`: the tester pulled its own copy and
+    two versions of the same types are structurally incompatible under
+    `exactOptionalPropertyTypes`. The undeclared `@typescript-eslint/parser`
+    that the old helper reached through hoisting is gone with it - the tester
+    defaults to that parser.
+  - Evidence: `pnpm check:ci` exit 0 (39 turbo tasks), `pnpm knip` exit 0,
+    `pnpm dupes` exit 0, `cargo test --workspace` 63 passed, `actionlint` clean.
+
 - [x] 2026-08-04 - **Consumer findings:** Fix the five gaps that adopting the
       standard in `BusiRocket/busirocket` (Next.js 16, ESLint 10.8) exposed.
   - Result: `quality-config` 0.4.0. The knip Next.js preset named
