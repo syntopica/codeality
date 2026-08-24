@@ -60,6 +60,20 @@ jobs:
       - name: check:quality
         run: pnpm run check:quality
 
+  rust:
+    name: Rust tests
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+
+      # packages/cargo-baseline is a cargo workspace member but has no
+      # package.json, so it is not a pnpm workspace member either and
+      # `turbo run test` never reaches it. Without this job its suites do not
+      # run in CI at all. GitHub's ubuntu runners ship a stable Rust
+      # toolchain, so no toolchain action is needed.
+      - name: cargo test
+        run: cargo test --workspace
+
   security:
     name: Security gates
     runs-on: ubuntu-latest
