@@ -3,6 +3,8 @@ import type { TSESTree } from '@typescript-eslint/utils'
 import { boundIdentifierNames } from '@/utils/bound-identifier-names.js'
 import { createRule } from '@/utils/create-rule.js'
 import { isExemptEntryFilename } from '@/utils/is-exempt-entry-filename.js'
+import { isSchemaDerivedType } from '@/utils/is-schema-derived-type.js'
+import { localValueNames } from '@/utils/local-value-names.js'
 import { NEXT_RESERVED_EXPORTS } from '@/utils/next-reserved-exports.js'
 import { ROUTE_METHODS } from '@/utils/route-methods.js'
 
@@ -44,6 +46,7 @@ export default createRule<Options, MessageIds>({
       Program(node: TSESTree.Program) {
         let exportCount = 0
         const exportedEntities: TSESTree.Node[] = []
+        const valueNames = localValueNames(node)
 
         for (const statement of node.body) {
           if (statement.type === 'ExportNamedDeclaration') {
@@ -85,6 +88,9 @@ export default createRule<Options, MessageIds>({
                   ) {
                     continue
                   }
+                  // A type derived from a schema declared in this same file is
+                  // that schema's signature, not a second unit.
+                  if (isSchemaDerivedType(declaration, valueNames)) continue
                   exportCount += 1
                   exportedEntities.push(declaration)
                 }

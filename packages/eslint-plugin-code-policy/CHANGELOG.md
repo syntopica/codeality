@@ -16,6 +16,21 @@
   destructuring; the Next.js route exemption is applied per name, so a route
   file destructuring reserved exports is still exempt.
 
+- feat: a schema and the types derived from it count as one unit.
+
+  `export const fooSchema = z.object(...)` plus
+  `export type Foo = z.infer<typeof fooSchema>` tripped both `one-primary-unit`
+  and `no-inline-types-in-runtime-files`. Adopting the baseline in one real
+  repo, that shape was **158 of 296** atomic-file findings, and one whole
+  package was nothing else. The fight was unwinnable per file: the type cannot
+  move out without importing the schema straight back, so splitting buys a
+  two-line file and no separation.
+
+  `z.infer`, `z.input`, `z.output`, `z.TypeOf` and drizzle's `$inferSelect` /
+  `$inferInsert` are now exempt in both rules when the value they read is
+  declared in the same file. Derived from an import, the type is an ordinary
+  second unit and still reports.
+
 - feat: deprecate `atomic-file` and `no-inline-types`.
 
   Both have been `'off'` in the recommended config since the rules that replaced

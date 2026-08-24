@@ -51,6 +51,16 @@ runRuleTest('one-primary-unit', rule, {
       code: `export const { only } = source`,
       filename: RUNTIME_FILE,
     },
+    // A schema and the types derived from it are one unit. The type cannot
+    // live elsewhere without importing the schema straight back.
+    {
+      code: `export const fooSchema = z.object({})\nexport type Foo = z.infer<typeof fooSchema>`,
+      filename: '/src/schemas/fooSchema.ts',
+    },
+    {
+      code: `export const users = pgTable('users', {})\nexport type User = typeof users.$inferSelect\nexport type NewUser = typeof users.$inferInsert`,
+      filename: '/src/schema/users.ts',
+    },
   ],
   invalid: [
     // Two functions in one runtime file.
@@ -81,6 +91,12 @@ runRuleTest('one-primary-unit', rule, {
     },
     {
       code: `export const [head, ...tail] = source`,
+      filename: RUNTIME_FILE,
+      errors: [{ messageId: 'multiplePrimaryUnits' }],
+    },
+    // Derived from an imported schema, the type is a unit of its own again.
+    {
+      code: `import { fooSchema } from './fooSchema'\nexport function parse() {}\nexport type Foo = z.infer<typeof fooSchema>`,
       filename: RUNTIME_FILE,
       errors: [{ messageId: 'multiplePrimaryUnits' }],
     },

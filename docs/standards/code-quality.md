@@ -44,7 +44,12 @@ Add the required devDependencies:
 
 ## Rules
 
-### `code-policy/atomic-file` — one declaration per file (error)
+### `code-policy/one-primary-unit` — one declaration per file (error)
+
+> Replaced `code-policy/atomic-file`, which is deprecated and off by default.
+> The same intent, split into an export-count check (`one-primary-unit`) and a
+> hidden-declaration check (`no-hidden-top-level-declarations`) with precise
+> exemptions.
 
 Each file exports exactly one top-level declaration. This is the primary driver
 of the "millions of small reusable files" architecture.
@@ -72,9 +77,32 @@ export function formatCurrency(n: number) { ... }
 `error.tsx`, `route.ts`), and entry-point bootstraps (`main.tsx`, `main.ts` —
 disabled via override in `eslint.config.ts`).
 
+**A schema and the types derived from it are one unit.** `z.infer`, `z.input`,
+`z.output`, `z.TypeOf` and drizzle's `$inferSelect` / `$inferInsert` are exempt
+when the value they read is declared in the same file:
+
+```ts
+// schemas/fooSchema.ts — one unit, not two
+export const fooSchema = z.object({ id: z.string() })
+export type Foo = z.infer<typeof fooSchema>
+```
+
+The type is the schema's signature. Extracting it would import the schema
+straight back, producing a two-line file and no separation at all. The base has
+to be local: a type derived from an imported schema is an ordinary second unit
+and still reports.
+
+**A destructured export counts every name it binds.**
+`export const { first, second } = source` is two units, not one, even though it
+is a single declarator.
+
 ---
 
-### `code-policy/no-inline-types` — types in dedicated files (error)
+### `code-policy/no-inline-types-in-runtime-files` — types in dedicated files (error)
+
+> Replaced `code-policy/no-inline-types`, which is deprecated and off by
+> default. The new rule draws the same line but only inside runtime files, so a
+> pure type module is not reported.
 
 `interface` and `type` alias declarations must live in dedicated type files, not
 alongside the code that uses them.
@@ -102,6 +130,9 @@ export function UserCard({ name, avatar }: UserCardProps) { ... }
 **Exception:** Simple one-off inline object types in function signatures are
 allowed (e.g., `{ children: ReactNode }`) because they don't define a named,
 reusable contract.
+
+**Exception:** a type derived from a schema declared in the same file, exactly
+as under `one-primary-unit` above.
 
 ---
 

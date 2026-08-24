@@ -1,6 +1,8 @@
 import type { TSESTree } from '@typescript-eslint/utils'
 
 import { createRule } from '@/utils/create-rule.js'
+import { isSchemaDerivedType } from '@/utils/is-schema-derived-type.js'
+import { localValueNames } from '@/utils/local-value-names.js'
 
 type Options = []
 
@@ -38,6 +40,7 @@ export default createRule<Options, MessageIds>({
     return {
       Program(node: TSESTree.Program) {
         let hasRuntimeCode = false
+        const valueNames = localValueNames(node)
 
         const types: Array<{
           node:
@@ -59,7 +62,12 @@ export default createRule<Options, MessageIds>({
             decl.type === 'TSTypeAliasDeclaration' ||
             decl.type === 'TSInterfaceDeclaration'
           ) {
-            types.push({ node: decl, name: decl.id?.name ?? 'unknown' })
+            // `type Foo = z.infer<typeof fooSchema>` beside its schema is the
+            // schema's signature, not a second unit: moving it out would
+            // import the schema straight back.
+            if (!isSchemaDerivedType(decl, valueNames)) {
+              types.push({ node: decl, name: decl.id?.name ?? 'unknown' })
+            }
           } else if (
             stmt.type !== 'ImportDeclaration' &&
             stmt.type !== 'ExportAllDeclaration' &&
