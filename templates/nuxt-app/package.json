@@ -19,7 +19,7 @@
     "format": "prettier --write . --list-different",
     "format:check": "prettier --check .",
     "type-check": "nuxt prepare && vue-tsc --noEmit",
-    "test": "vitest run",
+    "test": "vitest run --coverage",
     "test:watch": "vitest",
     "test:a11y": "vitest run",
     "dupes": "jscpd .",

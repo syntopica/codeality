@@ -16,7 +16,7 @@
     "format": "prettier --write . --list-different",
     "format:check": "prettier --check .",
     "type-check": "node node_modules/@typescript/native/bin/tsc --noEmit",
-    "test": "vitest run",
+    "test": "vitest run --coverage",
     "test:watch": "vitest",
     "dupes": "jscpd .",
     "knip": "knip",

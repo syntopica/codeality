@@ -1,23 +1,21 @@
-import parser from '@typescript-eslint/parser'
+import { RuleTester } from '@typescript-eslint/rule-tester'
 import type { TSESLint } from '@typescript-eslint/utils'
-import { RuleTester } from 'eslint'
 import { afterAll, describe, it } from 'vitest'
 
 // RuleTester drives its cases through the host test runner, which it reads
-// from these statics. They are supported at runtime but absent from the
-// public type signature, hence the narrow structural view rather than `any`.
-const runnerHooks = RuleTester as unknown as {
-  afterAll: typeof afterAll
-  describe: typeof describe
-  it: typeof it
-}
-runnerHooks.afterAll = afterAll
-runnerHooks.describe = describe
-runnerHooks.it = it
+// from these statics. Assigning them once here is what lets every suite call
+// a ready-made entry point instead of repeating the wiring.
+RuleTester.afterAll = afterAll
+RuleTester.describe = describe
+RuleTester.it = it
 
+// typescript-eslint's tester, not ESLint core's: it is generic over the same
+// RuleModule shape createRule() produces, so a rule passes straight through.
+// Core's types its rule parameter as the untyped RuleDefinition shape, which
+// is what used to force an `as any` cast in every suite. It also defaults to
+// @typescript-eslint/parser, so no parser has to be resolved by hand.
 const ruleTester = new RuleTester({
   languageOptions: {
-    parser,
     parserOptions: {
       ecmaVersion: 'latest',
       sourceType: 'module',
@@ -27,24 +25,14 @@ const ruleTester = new RuleTester({
   },
 })
 
-type RuleTestCases = Parameters<RuleTester['run']>[2]
-type UntypedRule = Parameters<RuleTester['run']>[1]
-
-/**
- * Runs one rule's suite against the shared tester.
- *
- * Core's RuleTester types its rule parameter as the untyped RuleDefinition
- * shape, while createRule() produces a typed TSESLint RuleModule. They are the
- * same object at runtime, so the mismatch is a typing gap, not a real one -
- * this function is where it is absorbed, once, instead of in every suite.
- */
+/** Runs one rule's suite against the shared tester. */
 export function runRuleTest<
   MessageIds extends string,
   Options extends readonly unknown[],
 >(
   name: string,
   rule: TSESLint.RuleModule<MessageIds, Options>,
-  tests: RuleTestCases,
+  tests: Parameters<typeof ruleTester.run<MessageIds, Options>>[2],
 ): void {
-  ruleTester.run(name, rule as unknown as UntypedRule, tests)
+  ruleTester.run(name, rule, tests)
 }

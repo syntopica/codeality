@@ -28,6 +28,28 @@ runRuleTest('one-primary-unit', rule, {
       code: `export function GET() {}\nexport function POST() {}`,
       filename: '/src/app/api/items/route.ts',
     },
+    // The same exemption through a specifier list rather than inline exports.
+    {
+      code: `function GET() {}\nfunction POST() {}\nexport { GET, POST }`,
+      filename: '/src/app/api/items/route.ts',
+    },
+    // A single unit exported through a specifier list is still one unit.
+    {
+      code: `function doThing() {}\nexport { doThing }`,
+      filename: '/src/doThing.ts',
+    },
+    // A route file's reserved const exports are exempt too.
+    {
+      code: `export const dynamic = 'force-dynamic'\nexport function GET() {}`,
+      filename: '/src/app/api/items/route.ts',
+    },
+    // Documents current behaviour, not an endorsement: a destructured export
+    // is one declarator, so it counts as one unit however many names it
+    // binds. See the gap recorded in TODO.md.
+    {
+      code: `export const { first, second } = source`,
+      filename: '/src/widgets.ts',
+    },
   ],
   invalid: [
     // Two functions in one runtime file.
@@ -40,6 +62,13 @@ runRuleTest('one-primary-unit', rule, {
     {
       code: `export function Card() {}\nexport const cardVariants = {}`,
       filename: '/src/components/Card.tsx',
+      errors: [{ messageId: 'multiplePrimaryUnits' }],
+    },
+    // Two units exported through a specifier list count the same as two
+    // inline exports.
+    {
+      code: `function a() {}\nfunction b() {}\nexport { a, b }`,
+      filename: '/src/widgets.ts',
       errors: [{ messageId: 'multiplePrimaryUnits' }],
     },
   ],

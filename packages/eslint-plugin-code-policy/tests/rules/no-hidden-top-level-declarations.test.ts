@@ -29,6 +29,34 @@ runRuleTest('no-hidden-top-level-declarations', rule, {
       `,
       filename: '/components/FilterButton.vue',
     },
+    // Declared first, exported through a specifier list further down.
+    {
+      code: `
+        function helper() {}
+        export { helper }
+      `,
+    },
+    // Declared first, then sent out as the default export.
+    {
+      code: `
+        function Component() {}
+        export default Component
+      `,
+    },
+    // The same, wrapped in a HOC - the identifier is still what is exported.
+    {
+      code: `
+        function Component() {}
+        export default memo(Component)
+      `,
+    },
+    // Nested wrappers unwrap all the way down to the identifier.
+    {
+      code: `
+        function Component() {}
+        export default memo(forwardRef(Component))
+      `,
+    },
   ],
   invalid: [
     {
@@ -41,6 +69,37 @@ runRuleTest('no-hidden-top-level-declarations', rule, {
     },
     {
       code: `interface Internal {}`,
+      errors: [{ messageId: 'hiddenDeclaration' }],
+    },
+    // Destructuring hides names just as effectively as a plain identifier.
+    {
+      code: `const { a, b } = source`,
+      errors: [
+        { messageId: 'hiddenDeclaration' },
+        { messageId: 'hiddenDeclaration' },
+      ],
+    },
+    {
+      code: `const { a, ...rest } = source`,
+      errors: [
+        { messageId: 'hiddenDeclaration' },
+        { messageId: 'hiddenDeclaration' },
+      ],
+    },
+    {
+      code: `const [first, ...others] = source`,
+      errors: [
+        { messageId: 'hiddenDeclaration' },
+        { messageId: 'hiddenDeclaration' },
+      ],
+    },
+    // A wrapper call that does not resolve to a single identifier exports
+    // nothing by name, so the declaration above it is still hidden.
+    {
+      code: `
+        function Component() {}
+        export default memo(Component, areEqual)
+      `,
       errors: [{ messageId: 'hiddenDeclaration' }],
     },
   ],

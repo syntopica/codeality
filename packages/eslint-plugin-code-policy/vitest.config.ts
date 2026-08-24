@@ -10,6 +10,18 @@ export default defineConfig({
     environment: 'node',
     globals: true,
     include: ['tests/**/*.{test,spec}.ts'],
+    coverage: {
+      provider: 'v8',
+      include: ['src/**/*.ts'],
+      exclude: [
+        // Declarative wiring with no branches of its own: the public barrel,
+        // the version constant, and the shipped flat-config presets.
+        'src/index.ts',
+        'src/version.ts',
+        'src/configs/**',
+      ],
+      thresholds: { lines: 80, functions: 80, branches: 80, statements: 80 },
+    },
   },
   resolve: {
     alias: [
