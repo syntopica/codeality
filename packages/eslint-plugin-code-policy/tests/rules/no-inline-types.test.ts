@@ -1,5 +1,5 @@
 import rule from '@/rules/no-inline-types.js'
-import { ruleTester } from '@tests/utils/rule-tester.js'
+import { runRuleTest } from '@tests/rule-testers/runRuleTest.js'
 
 /**
  * no-inline-types: enforces one top-level declaration per file
@@ -7,7 +7,7 @@ import { ruleTester } from '@tests/utils/rule-tester.js'
  * Exemptions: .d.ts files; route.ts HTTP methods; Next.js reserved exports
  */
 
-ruleTester.run('no-inline-types', rule as any, {
+runRuleTest('no-inline-types', rule, {
   valid: [
     // single function — OK
     {

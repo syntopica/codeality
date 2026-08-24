@@ -5,6 +5,43 @@
 
 ## Unreleased
 
+### Minor Changes
+
+- feat: give test files a real size budget instead of an exemption.
+
+  `max-lines` was `off` for `*.{test,spec}` and `__tests__/`, so a test file
+  could grow without limit while production code errored at 100. It is now an
+  **error at 200** (same counting: blank lines and comments skipped). The rule
+  that did fire was the wrong one: `max-lines-per-function` measures the
+  top-level `describe` callback, not complexity - a file with 20 trivial `it`
+  cases already reported a 62-line arrow, and templates lint with
+  `--max-warnings 0`, so it blocked. It is now off for test files; `max-lines`
+  governs file size instead.
+
+  `code-policy/file-kind-placement` is re-enabled for test files. It costs no
+  extra code (detection is camelCase-prefix based, so a test colocated with its
+  subject inherits the subject's folder) and it forbids the `tests/utils/` and
+  `tests/helpers/` junk drawers that shared fixtures collect in.
+  `one-primary-unit`, `no-hidden-top-level-declarations` and
+  `no-inline-types-in-runtime-files` stay off: enforcing those would mean
+  exporting or extracting every local builder, which is twice the code for the
+  same tests.
+
+  The override globs now also cover `tests/` and `test/`, matching
+  `createTestingConfig`'s. Previously a helper under `tests/` that was not
+  itself named `*.test.ts` was judged by the full production policy and got none
+  of the vitest rules.
+
+  **Breaking for existing adopters**: a repo with test files over 200 lines, or
+  with shared test helpers under `utils/`/`helpers/`, will go red on upgrade.
+  Split by behaviour and rename the folder semantically; see
+  `docs/standards/testing.md#test-file-discipline`.
+
+- feat: ignore test fixtures repo-wide (`tests/fixtures/**`, `__fixtures__/**`).
+
+  A rule that reads the filesystem needs deliberately malformed sample files on
+  disk. Linting them reports the very violations they exist to reproduce.
+
 ### Patch Changes
 
 - fix: disable `tailwindcss/classnames-order` in `createTailwindConfig`.

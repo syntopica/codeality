@@ -52,6 +52,11 @@ export const createBaseConfig = (options: SharedConfigOptions = {}) => {
       '**/.astro/**',
       '**/.lighthouseci/**',
       '**/out/**',
+      // Test fixtures are inputs, not code: a rule that reads the filesystem
+      // needs deliberately malformed sample files on disk, and linting them
+      // reports the very violations they exist to reproduce.
+      '**/tests/fixtures/**',
+      '**/__fixtures__/**',
     ]),
     js.configs.recommended,
     ...tseslint.configs.strictTypeChecked.map((config) => ({

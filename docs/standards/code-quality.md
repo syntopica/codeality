@@ -206,6 +206,12 @@ Overrides apply to `*.config.*`, test files, and Next.js App Router special
 files (see
 [`code-quality.ts` in eslint-config](https://github.com/BusiRocket/eslint-config/blob/main/src/code-quality.ts)).
 
+Test files are not exempt, they have their own budget: `max-lines` is an **error
+at 200**, `max-lines-per-function` is off (it measures the `describe` wrapper,
+not complexity), and of the code-policy rules only `file-kind-placement` stays
+on. The full table and the reasoning are in
+[the testing standard](./testing.md#test-file-discipline).
+
 Warnings do not block CI unless your pipeline treats warnings as errors. Errors
 (`max-lines`, code-policy, boundaries) block by default.
 

@@ -1,7 +1,7 @@
 import rule from '@/rules/one-primary-unit.js'
-import { ruleTester } from '@tests/utils/rule-tester.js'
+import { runRuleTest } from '@tests/rule-testers/runRuleTest.js'
 
-ruleTester.run('one-primary-unit', rule as any, {
+runRuleTest('one-primary-unit', rule, {
   valid: [
     // Single exported function — the canonical atomic file.
     {

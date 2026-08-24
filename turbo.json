@@ -12,6 +12,9 @@
       "dependsOn": ["build", "^build"]
     },
     "lint:fix": {},
+    "eslint-plugin-code-policy#lint:fix": {
+      "dependsOn": ["build", "^build"]
+    },
     "lint:suppress": {
       "dependsOn": ["^build"],
       "cache": false

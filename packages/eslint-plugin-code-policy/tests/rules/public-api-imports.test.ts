@@ -1,7 +1,7 @@
 import rule from '@/rules/public-api-imports.js'
-import { ruleTester } from '@tests/utils/rule-tester.js'
+import { runRuleTest } from '@tests/rule-testers/runRuleTest.js'
 
-ruleTester.run('public-api-imports', rule as any, {
+runRuleTest('public-api-imports', rule, {
   valid: [
     {
       code: `

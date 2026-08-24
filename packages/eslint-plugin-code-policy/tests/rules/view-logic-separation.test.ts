@@ -1,5 +1,5 @@
 import rule from '@/rules/view-logic-separation.js'
-import { ruleTester } from '@tests/utils/rule-tester.js'
+import { runRuleTest } from '@tests/rule-testers/runRuleTest.js'
 
 /**
  * view-logic-separation:
@@ -9,7 +9,7 @@ import { ruleTester } from '@tests/utils/rule-tester.js'
  * - Does NOT fire on .ts files or bare arrow expressions in JSX props
  */
 
-ruleTester.run('view-logic-separation', rule as any, {
+runRuleTest('view-logic-separation', rule, {
   valid: [
     // Hooks in a .ts file (custom hook) — ignored
     {

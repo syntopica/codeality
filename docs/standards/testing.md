@@ -86,6 +86,45 @@ export default defineConfig({
 })
 ```
 
+## Test file discipline
+
+Test files are held to a policy of their own, not exempted from policy. The
+overrides live in `code-quality.ts` in eslint-config and apply to
+`*.{test,spec}.{ts,tsx}`, `__tests__/`, `tests/` and `test/`.
+
+| Rule                                           | Test files       | Production   | Why the difference                                                                                                                                                                    |
+| ---------------------------------------------- | ---------------- | ------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `max-lines`                                    | **error at 200** | error at 100 | A test file carries arrange scaffolding its subject does not. Past 200 lines it is covering more than one behaviour.                                                                  |
+| `max-lines-per-function`                       | off              | warn at 50   | In a test file the longest function is the top-level `describe` callback, so the rule measures the wrapper, not complexity. Twenty trivial `it` cases already report a 62-line arrow. |
+| `code-policy/file-kind-placement`              | error            | error        | Costs no extra code and is what keeps a shared fixture findable.                                                                                                                      |
+| `code-policy/one-primary-unit`                 | off              | error        | A suite is not an exported unit.                                                                                                                                                      |
+| `code-policy/no-hidden-top-level-declarations` | off              | error        | Local builders and fixtures belong next to the cases that use them.                                                                                                                   |
+| `code-policy/no-inline-types-in-runtime-files` | off              | error        | Inline fixture types are idiomatic in tests.                                                                                                                                          |
+
+The three rules that stay off are the ones that would mean writing twice the
+code for the same tests: each would force a local builder to be exported or
+extracted. The two that stay on are the ones that cost nothing to satisfy.
+
+### Splitting past the budget
+
+Split by behaviour, not by line count. One file per behaviour under test is also
+what makes a failure easy to locate: the failing file names the thing that
+broke. When several suites need the same fixture, extract it to a semantically
+named folder - `fixtures/`, `builders/`, `rule-testers/` - never `utils/` or
+`helpers/`, which `file-kind-placement` rejects.
+
+### Fixtures are not linted
+
+`tests/fixtures/**` and `__fixtures__/**` are in the shared ESLint ignore list.
+A rule that reads the filesystem needs deliberately malformed sample files on
+disk, and linting them reports the very violations they exist to reproduce.
+
+### Duplication
+
+`jscpd` scans test files on purpose (`minTokens: 70`, 1% threshold). Copy-pasted
+test scaffolding is duplication that has to be maintained like any other, so it
+is gated the same way. See `docs/standards/quality-gates.md`.
+
 ## Runtime accessibility tests
 
 For React-based projects, add a smoke-level accessibility test using

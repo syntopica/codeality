@@ -39,6 +39,20 @@ const config: KnipConfig = {
       entry: ['src/index.ts', 'src/*.ts', 'bin/*.mjs'],
       project: ['src/**/*.ts'],
     },
+    'packages/eslint-plugin-code-policy': {
+      // A workspace-specific key replaces rather than merges with the
+      // `packages/*` wildcard, so entry/project are repeated here.
+      entry: ['src/index.ts', 'src/*.ts'],
+      // This is the one package whose tests live outside `src`. They are in
+      // scope so the dependencies only they pull in (the parser the rule
+      // tester runs on) count as used instead of being reported as unused
+      // devDependencies; knip's vitest plugin supplies the test files
+      // themselves as entry points.
+      project: ['src/**/*.ts', 'tests/**/*.ts'],
+      // Fixtures are read from disk by path, never imported, so knip cannot
+      // see a consumer and reports every one of them as an unused file.
+      ignore: ['tests/fixtures/**'],
+    },
     'templates/*': {
       entry: TEMPLATE_GLOB,
       project: TEMPLATE_GLOB,

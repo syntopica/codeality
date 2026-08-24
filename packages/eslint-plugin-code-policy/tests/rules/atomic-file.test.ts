@@ -1,7 +1,7 @@
 import rule from '@/rules/atomic-file.js'
-import { ruleTester } from '@tests/utils/rule-tester.js'
+import { runRuleTest } from '@tests/rule-testers/runRuleTest.js'
 
-ruleTester.run('atomic-file', rule as any, {
+runRuleTest('atomic-file', rule, {
   valid: [
     {
       code: `

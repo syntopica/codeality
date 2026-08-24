@@ -2,7 +2,7 @@ import { dirname, join } from 'node:path'
 import { fileURLToPath } from 'node:url'
 
 import rule from '@/rules/file-kind-placement.js'
-import { ruleTester } from '@tests/utils/rule-tester.js'
+import { runRuleTest } from '@tests/rule-testers/runRuleTest.js'
 
 // Colocation detection reads the real directory of the linted file, so these
 // cases point at on-disk fixtures under tests/fixtures/colocation/.
@@ -10,7 +10,7 @@ const fixtures = join(dirname(fileURLToPath(import.meta.url)), '../fixtures')
 const colocation = (...segments: string[]) =>
   join(fixtures, 'colocation', ...segments)
 
-ruleTester.run('file-kind-placement', rule as any, {
+runRuleTest('file-kind-placement', rule, {
   valid: [
     // allowColocation: a hook next to its component (PascalCase .tsx anchor).
     {

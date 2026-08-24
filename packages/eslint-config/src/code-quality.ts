@@ -47,17 +47,46 @@ export const createCodeQualityConfig = () => [
     },
   },
   {
-    files: ['**/*.{test,spec}.{ts,tsx}', '**/__tests__/**/*.{ts,tsx}'],
+    // Globs match createTestingConfig()'s: a helper under `tests/` or `test/`
+    // that is not itself named `*.test.ts` is still test scaffolding and must
+    // be judged by the same policy, not by the production one.
+    files: [
+      '**/*.{test,spec}.{ts,tsx}',
+      '**/__tests__/**/*.{ts,tsx}',
+      '**/tests/**/*.{ts,tsx}',
+      '**/test/**/*.{ts,tsx}',
+    ],
     rules: {
-      'max-lines': 'off',
-      'max-lines-per-function': 'warn',
+      // Tests get a real budget, not an exemption. 200 is deliberately looser
+      // than production's 100 - a test file carries arrange scaffolding its
+      // subject does not - but it is still a budget: past 200 lines a test
+      // file is covering more than one behaviour and should be split by
+      // behaviour, which is also what makes a failure easy to locate.
+      'max-lines': [
+        'error',
+        { max: 200, skipBlankLines: true, skipComments: true },
+      ],
+      // Off, not relaxed. In a test file the longest "function" is the
+      // top-level `describe` callback, so this rule measures the wrapper
+      // rather than any real complexity: 20 trivial `it` cases already report
+      // a 62-line arrow. Leaving it on would contradict the 200-line budget
+      // above and push authors to split `describe` blocks for no reason.
+      // File size is governed by max-lines; per-case size by review.
+      'max-lines-per-function': 'off',
+      // Placement stays enforced: it costs no extra code and it is what keeps
+      // a shared fixture findable. Detection is camelCase-prefix based
+      // (`useX`, `formatX`, `mapX`, ...), so a test colocated with its
+      // subject inherits the subject's folder and passes; what this actually
+      // forbids is the `tests/utils/` + `tests/helpers/` junk drawer.
+      'code-policy/file-kind-placement': 'error',
       // Test files legitimately colocate inline fixture types, builders, and
       // local helpers next to the cases that use them; the atomic-file/one-unit
       // discipline targets production architecture, not test scaffolding.
+      // Enforcing these three would mean writing twice the code for the same
+      // tests - every local builder would have to be exported or extracted.
       'code-policy/no-inline-types-in-runtime-files': 'off',
       'code-policy/no-hidden-top-level-declarations': 'off',
       'code-policy/one-primary-unit': 'off',
-      'code-policy/file-kind-placement': 'off',
     },
   },
   // Next.js App Router special files often coordinate wiring and metadata.

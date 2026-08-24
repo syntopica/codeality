@@ -1,7 +1,10 @@
 import rule from '@/rules/no-mixed-barrel.js'
-import { ruleTester } from '@tests/utils/rule-tester.js'
+import { runRuleTest } from '@tests/rule-testers/runRuleTest.js'
 
-ruleTester.run('no-mixed-barrel', rule as any, {
+// Reused by four cases that all describe the same barrel under test.
+const DIAGNOSTICS_BARREL = '/src/diagnostics/index.ts'
+
+runRuleTest('no-mixed-barrel', rule, {
   valid: [
     // Pure barrel — only re-exports from other modules
     {
@@ -9,7 +12,7 @@ ruleTester.run('no-mixed-barrel', rule as any, {
         export type { UseDiagnosticsViewReturn } from './UseDiagnosticsViewReturn'
         export type { DiagnosticStats } from './DiagnosticStats'
       `,
-      filename: '/src/diagnostics/index.ts',
+      filename: DIAGNOSTICS_BARREL,
     },
     // Pure barrel — export * from
     {
@@ -27,7 +30,7 @@ ruleTester.run('no-mixed-barrel', rule as any, {
           failedEvents: number
         }
       `,
-      filename: '/src/diagnostics/index.ts',
+      filename: DIAGNOSTICS_BARREL,
     },
     // Non-index file — rule does not apply
     {
@@ -57,7 +60,7 @@ ruleTester.run('no-mixed-barrel', rule as any, {
           failedEvents: number
         }
       `,
-      filename: '/src/diagnostics/index.ts',
+      filename: DIAGNOSTICS_BARREL,
       errors: [{ messageId: 'mixedBarrel' }],
     },
     // Mixed: export * + inline type
@@ -85,7 +88,7 @@ ruleTester.run('no-mixed-barrel', rule as any, {
         export type DiagnosticStats = { totalEvents: number }
         export type DkimRecord = { selector: string }
       `,
-      filename: '/src/diagnostics/index.ts',
+      filename: DIAGNOSTICS_BARREL,
       errors: [{ messageId: 'mixedBarrel' }, { messageId: 'mixedBarrel' }],
     },
     // Mixed: remote re-export + inline value export
