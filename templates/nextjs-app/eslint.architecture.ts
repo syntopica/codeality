@@ -67,19 +67,6 @@ export default [
           ],
         },
       ],
-      'max-lines': [
-        'warn',
-        { max: 200, skipBlankLines: true, skipComments: true },
-      ],
-    },
-  },
-  {
-    files: ['src/components/**/*.tsx', 'app/**/*.tsx'],
-    rules: {
-      'max-lines': [
-        'warn',
-        { max: 300, skipBlankLines: true, skipComments: true },
-      ],
     },
   },
 ]
