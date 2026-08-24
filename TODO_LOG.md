@@ -4,6 +4,71 @@ Closed work from `TODO.md`, grouped by year and month.
 
 ## 2026-08
 
+- [x] 2026-08-24 - **Adoption backlog cleared:** the twelve findings that three
+      real adoptions (consumer-y, consumer-t, consumer-x) left open.
+  - **`createKnipConfig` is configurable instead of a fixed preset.** Four
+    findings reduced to that. A drizzle schema aggregator reported every table
+    as a dead export - `drizzle.config.ts` is its only consumer - and acting on
+    that report makes the next migration emit `DROP TABLE`; `ignore` excludes
+    it. knip's drizzle plugin loads `drizzle.config.ts`, which throws without
+    `DATABASE_URL`, so the gate needed a live database; only `drizzle: false`
+    stops it, not `ignore`. A finished-but-unwired package reported its whole
+    public API as dead under `includeEntryExports: true`; it is per workspace
+    now. And `ignoreBinaries` no longer defaults to `['turbo', 'lhci']` - both
+    resolve in every template that has them, so the entries only ever produced a
+    hint no consumer could silence. `@vitest/eslint-plugin` and
+    `eslint-plugin-testing-library` left the shared ignore list for the same
+    reason, measured across all eight templates. Hints: 21 to 5.
+  - **The zod idiom no longer fights the atomic-file rules.**
+    `export const fooSchema = z.object(...)` plus
+    `export type Foo = z.infer<typeof fooSchema>` tripped both
+    `one-primary-unit` and `no-inline-types-in-runtime-files` - 158 of 296
+    findings in one repo, and one whole package was nothing else. Unwinnable per
+    file: the type cannot move without importing the schema back. `z.infer` /
+    `input` / `output` / `TypeOf` and drizzle's `$inferSelect` / `$inferInsert`
+    are exempt when the value is declared in the same file; derived from an
+    import it is still a second unit, which the tests pin.
+  - **Both missing runners now ship.** `baseline-type-coverage` runs
+    `type-coverage --strict` per workspace, reading the threshold from the
+    package's own constant so the two cannot drift; this repo deleted
+    `scripts/type-coverage.mjs` and runs the bin (11 workspaces, same result).
+    `baseline-deps-graph` cruises each workspace with its own tsconfig, which is
+    what a repo-wide cruise cannot do with one `tsConfig` - the reason one
+    adopter dropped dependency-cruiser rather than work around it.
+  - **`cargo-baseline` recognises file-level test modules.** A
+    `#[cfg(test)] mod tests;` body, or any `#![cfg(test)]` file, was scanned as
+    production code. `engine/is_test_scope_file` answers it once for both rules;
+    `no-inline-sql` had no path exemption at all before and now also skips SQL
+    inside an inline `#[cfg(test)] mod` block by line range. The `tests` path
+    component is only honoured after the last `src`, because a crate can itself
+    live under `tests/` - this crate's fixtures do, and the integration test
+    caught the over-broad first attempt.
+  - **New rule: `sync-tauri-command`.** Tauri runs a non-async command on the
+    main thread, so disk, DB or network work in one freezes the UI. Opt out per
+    command with `// baseline:allow sync-tauri-command`, or per crate through
+    `disabled_rules`. Dogfooding found the template's own `greet` (now marked,
+    with a comment saying why) and a `one-primary-unit` violation in the rule's
+    own file, which moved the `#[tauri::command]` detection into
+    `engine/has_tauri_command_attribute` and removed the duplicate closure in
+    `tauri-command-placement`.
+  - **The last TypeScript peer context is gone.** `vue-app` and `nuxt-app`
+    declared plain `typescript` because vue-tsc was assumed to need it; both
+    type-check unchanged against the `npm:@typescript/typescript6` alias. That
+    was what still split `eslint-plugin-boundaries` in two - the lockfile now
+    holds one peer-resolved key and all five consumers resolve the same copy.
+  - **Adoption docs name the two steps that ambushed people:** pnpm 11's
+    `allowBuilds` (the `pnpm.onlyBuiltDependencies` field the error suggests is
+    ignored), and counting the workspaces with no ESLint config at all before
+    estimating - one repo had five, ~800 files, 1,118 findings. The Next
+    dependencies in `templates/nextjs-app` are pinned exactly, because Next
+    16.3.x rejects the TypeScript alias and a caret range handed fresh adopters
+    a broken `next build`.
+  - Evidence: `pnpm check:ci` exit 0 (39 tasks), `pnpm check:quality` exit 0,
+    `pnpm knip` and `pnpm knip:templates` exit 0, `pnpm perf:check` exit 0 (6
+    lighthouse templates), `pnpm dupes` 0.39%, `cargo test --workspace` 81
+    passed, `cargo fmt -- --check` clean, and `cargo baseline check` reporting 0
+    errors against the crate itself.
+
 - [x] 2026-08-24 - **CI green on `main` for the first time since 2026-08-12**,
       plus the four follow-ups the testing-gap work left behind.
   - **The security gate is fixed, not silenced.**
