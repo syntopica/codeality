@@ -19,6 +19,12 @@ export default defineConfig({
         'src/index.ts',
         'src/version.ts',
         'src/configs/**',
+        // Deprecated and off in the recommended config: both are superseded by
+        // narrower rules and are kept only so a consumer who enabled them
+        // directly is not broken. Gating coverage on them would measure code
+        // that is no longer the supported surface.
+        'src/rules/atomic-file.ts',
+        'src/rules/no-inline-types.ts',
       ],
       thresholds: { lines: 80, functions: 80, branches: 80, statements: 80 },
     },

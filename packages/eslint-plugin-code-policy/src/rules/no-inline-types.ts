@@ -34,6 +34,12 @@ export default createRule<Options, MessageIds>({
       description:
         'Enforce that type aliases and interfaces live in dedicated files, not inline with implementation code.',
     },
+    // Superseded by no-inline-types-in-runtime-files, which draws the same
+    // line but only inside runtime files, so a pure type module is not
+    // reported. Off in the recommended config since that rule landed; this
+    // marks it for consumers who enabled it directly.
+    deprecated: true,
+    replacedBy: ['code-policy/no-inline-types-in-runtime-files'],
     schema: [],
     messages: {
       singleDeclaration:

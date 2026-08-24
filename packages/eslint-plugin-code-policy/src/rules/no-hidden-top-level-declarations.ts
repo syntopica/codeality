@@ -1,5 +1,6 @@
 import type { TSESTree } from '@typescript-eslint/utils'
 
+import { boundIdentifierNames } from '@/utils/bound-identifier-names.js'
 import { createRule } from '@/utils/create-rule.js'
 
 type Options = []
@@ -73,34 +74,15 @@ export default createRule<Options, MessageIds>({
         for (const stmt of node.body) {
           if (stmt.type === 'VariableDeclaration') {
             for (const decl of stmt.declarations) {
-              const checkPattern = (
-                pattern: TSESTree.DestructuringPattern | null,
-              ) => {
-                if (!pattern) return
-                if (pattern.type === 'Identifier') {
-                  if (!exportedNames.has(pattern.name)) {
-                    context.report({
-                      node: decl,
-                      messageId: 'hiddenDeclaration',
-                      data: { name: pattern.name },
-                    })
-                  }
-                } else if (pattern.type === 'ObjectPattern') {
-                  for (const prop of pattern.properties) {
-                    if (prop.type === 'Property')
-                      checkPattern(prop.value as TSESTree.DestructuringPattern)
-                    else if (prop.type === 'RestElement')
-                      checkPattern(prop.argument)
-                  }
-                } else if (pattern.type === 'ArrayPattern') {
-                  for (const elem of pattern.elements) {
-                    if (elem?.type === 'RestElement')
-                      checkPattern(elem.argument)
-                    else checkPattern(elem)
-                  }
+              for (const name of boundIdentifierNames(decl.id)) {
+                if (!exportedNames.has(name)) {
+                  context.report({
+                    node: decl,
+                    messageId: 'hiddenDeclaration',
+                    data: { name },
+                  })
                 }
               }
-              checkPattern(decl.id)
             }
           } else if (
             (stmt.type === 'FunctionDeclaration' ||

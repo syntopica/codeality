@@ -1,5 +1,36 @@
 # eslint-plugin-code-policy
 
+## Unreleased
+
+### Minor Changes
+
+- feat: `one-primary-unit` counts bound names, not declarators.
+
+  `export const { first, second } = source` is one `VariableDeclaration` with
+  one declarator whose `id` is an `ObjectPattern`, so the rule counted it once
+  and a file exporting two symbols passed. It now counts every name a pattern
+  binds, which is what the Atomic File Rule is about. Array patterns, rest
+  elements, defaults and nesting all count the same way.
+
+  Breaking for a file that exports more than one name from a single
+  destructuring; the Next.js route exemption is applied per name, so a route
+  file destructuring reserved exports is still exempt.
+
+- feat: deprecate `atomic-file` and `no-inline-types`.
+
+  Both have been `'off'` in the recommended config since the rules that replaced
+  them landed - `one-primary-unit` plus `no-hidden-top-level-declarations` for
+  the first, and `no-inline-types-in-runtime-files` for the second. They stay
+  exported so a consumer who enabled them directly is not broken, but they now
+  carry `meta.deprecated` and `replacedBy`, and are excluded from the package's
+  coverage gate as unsupported surface.
+
+### Patch Changes
+
+- refactor: `one-primary-unit` and `no-hidden-top-level-declarations` share one
+  binding-pattern walk (`boundIdentifierNames`) instead of each carrying their
+  own, so the two rules cannot drift on what a pattern binds.
+
 ## 0.6.0
 
 ### Minor Changes

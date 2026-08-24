@@ -1,5 +1,6 @@
 import type { TSESTree } from '@typescript-eslint/utils'
 
+import { boundIdentifierNames } from '@/utils/bound-identifier-names.js'
 import { createRule } from '@/utils/create-rule.js'
 import { isExemptEntryFilename } from '@/utils/is-exempt-entry-filename.js'
 import { NEXT_RESERVED_EXPORTS } from '@/utils/next-reserved-exports.js'
@@ -49,17 +50,20 @@ export default createRule<Options, MessageIds>({
             if (statement.declaration) {
               if (statement.declaration.type === 'VariableDeclaration') {
                 for (const decl of statement.declaration.declarations) {
-                  const name =
-                    decl.id.type === 'Identifier' ? decl.id.name : null
-                  if (
-                    name &&
-                    isNextJsRouterFile &&
-                    (NEXT_RESERVED_EXPORTS.has(name) || ROUTE_METHODS.has(name))
-                  ) {
-                    continue
+                  // One declarator can bind several names:
+                  // `export const { a, b } = source` exports two units, and
+                  // counting the declarator instead would let it pass.
+                  for (const name of boundIdentifierNames(decl.id)) {
+                    if (
+                      isNextJsRouterFile &&
+                      (NEXT_RESERVED_EXPORTS.has(name) ||
+                        ROUTE_METHODS.has(name))
+                    ) {
+                      continue
+                    }
+                    exportCount += 1
+                    exportedEntities.push(decl)
                   }
-                  exportCount += 1
-                  exportedEntities.push(decl)
                 }
               } else {
                 const declaration = statement.declaration

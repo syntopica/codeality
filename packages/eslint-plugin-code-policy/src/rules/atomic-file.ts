@@ -16,6 +16,15 @@ export default createRule<Options, MessageIds>({
       description:
         'Enforce atomic file structure (exactly one top-level unit per file)',
     },
+    // Superseded by the pair below, which split the same intent into an
+    // export-count check and a hidden-declaration check with precise
+    // exemptions. Off in the recommended config since that split landed;
+    // this marks it for consumers who enabled it directly.
+    deprecated: true,
+    replacedBy: [
+      'code-policy/one-primary-unit',
+      'code-policy/no-hidden-top-level-declarations',
+    ],
     schema: [],
     messages: {
       multipleDeclarations:

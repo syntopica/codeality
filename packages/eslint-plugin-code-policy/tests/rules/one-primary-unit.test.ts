@@ -1,6 +1,9 @@
 import rule from '@/rules/one-primary-unit.js'
 import { runRuleTest } from '@tests/rule-testers/runRuleTest.js'
 
+// Reused by every case that is not exercising a path exemption.
+const RUNTIME_FILE = '/src/widgets.ts'
+
 runRuleTest('one-primary-unit', rule, {
   valid: [
     // Single exported function — the canonical atomic file.
@@ -43,19 +46,17 @@ runRuleTest('one-primary-unit', rule, {
       code: `export const dynamic = 'force-dynamic'\nexport function GET() {}`,
       filename: '/src/app/api/items/route.ts',
     },
-    // Documents current behaviour, not an endorsement: a destructured export
-    // is one declarator, so it counts as one unit however many names it
-    // binds. See the gap recorded in TODO.md.
+    // A destructured export that binds one name is still one unit.
     {
-      code: `export const { first, second } = source`,
-      filename: '/src/widgets.ts',
+      code: `export const { only } = source`,
+      filename: RUNTIME_FILE,
     },
   ],
   invalid: [
     // Two functions in one runtime file.
     {
       code: `export function a() {}\nexport function b() {}`,
-      filename: '/src/widgets.ts',
+      filename: RUNTIME_FILE,
       errors: [{ messageId: 'multiplePrimaryUnits' }],
     },
     // A component plus an extra exported constant.
@@ -68,7 +69,19 @@ runRuleTest('one-primary-unit', rule, {
     // inline exports.
     {
       code: `function a() {}\nfunction b() {}\nexport { a, b }`,
-      filename: '/src/widgets.ts',
+      filename: RUNTIME_FILE,
+      errors: [{ messageId: 'multiplePrimaryUnits' }],
+    },
+    // A destructured export binds one name per property, so one declarator
+    // can still exceed the budget.
+    {
+      code: `export const { first, second } = source`,
+      filename: RUNTIME_FILE,
+      errors: [{ messageId: 'multiplePrimaryUnits' }],
+    },
+    {
+      code: `export const [head, ...tail] = source`,
+      filename: RUNTIME_FILE,
       errors: [{ messageId: 'multiplePrimaryUnits' }],
     },
   ],
