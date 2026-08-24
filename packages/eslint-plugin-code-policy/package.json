@@ -127,6 +127,7 @@
     "@busirocket/tsconfig": "workspace:*",
     "@types/node": "^26.1.2",
     "@vitest/coverage-v8": "^4.1.10",
+    "@typescript-eslint/parser": "^8.67.0",
     "@typescript-eslint/rule-tester": "^8.67.0",
     "eslint": "^10.8.0",
     "publint": "^0.3.22",

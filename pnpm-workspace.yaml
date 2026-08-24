@@ -46,3 +46,13 @@ overrides:
   # it across two majors.
   'brace-expansion@>=2.0.0 <2.1.4': ^2.1.4 # via nuxt>@nuxt/nitro-server
   'brace-expansion@>=5.0.0 <5.0.9': ^5.0.9 # via eslint>@eslint/config-array>minimatch
+  # GHSA-5p4m-2wfm-xmqj is patched in both live majors, so one entry each -
+  # a single `js-yaml@<4.3.1` would drag the 3.x line across a major.
+  'js-yaml@>=3.0.0 <3.15.1': ^3.15.1 # via @lhci/cli>@lhci/utils
+  'js-yaml@>=4.0.0 <4.3.1': ^4.3.1 # via @lhci/cli and astro
+  'nanoid@<3.3.18': ^3.3.18 # GHSA-2v37-7h3g-55p8, via prettier-plugin-css-order>postcss
+  # GHSA-jmr9-qjv8-65gv has no patched release: extract-zip's latest is the
+  # vulnerable 2.0.1. @puppeteer/browsers 3.x dropped the dependency entirely
+  # (modern-tar replaced it), so the fix is to move the consumer forward rather
+  # than the vulnerable package.
+  '@puppeteer/browsers@<3.2.1': ^3.2.1 # via @lhci/cli>lighthouse>puppeteer-core
