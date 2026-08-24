@@ -28,6 +28,20 @@
     in every template that has them, so the entries only ever produced a
     `Remove from ignoreBinaries` hint a consumer could not silence.
 
+- feat: ship the two runners consumers were copying by hand.
+
+  `baseline-type-coverage` runs `type-coverage --strict` in every workspace with
+  a `tsconfig.json`, reading the threshold from the package's own
+  `TYPE_COVERAGE_THRESHOLD` so the constant and the gate cannot drift. The
+  package exported that number and nothing else, so each consumer wrote its own
+  per-workspace loop.
+
+  `baseline-deps-graph` cruises each workspace with that workspace's own
+  tsconfig. A single repo-wide cruise takes one `tsConfig`, so in a monorepo it
+  resolves at most one `@/*` mapping and `no-orphans` then reports everything it
+  could not follow - which is why one adopter dropped dependency-cruiser
+  entirely.
+
 ### Patch Changes
 
 - fix: drop `@vitest/eslint-plugin` and `eslint-plugin-testing-library` from the

@@ -12,7 +12,7 @@
     "format": "prettier --write . --list-different",
     "format:check": "prettier --check .",
     "release:check": "node scripts/release-check.mjs",
-    "type-coverage": "node scripts/type-coverage.mjs",
+    "type-coverage": "baseline-type-coverage packages templates",
     "sync-versions": "node scripts/sync-versions.mjs",
     "sync-versions:check": "node scripts/sync-versions.mjs --check",
     "dupes": "jscpd packages scripts",

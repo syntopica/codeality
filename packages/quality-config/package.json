@@ -22,7 +22,9 @@
     "node": ">=22"
   },
   "bin": {
-    "baseline-env-init": "bin/baseline-env-init.mjs"
+    "baseline-deps-graph": "bin/baseline-deps-graph.mjs",
+    "baseline-env-init": "bin/baseline-env-init.mjs",
+    "baseline-type-coverage": "bin/baseline-type-coverage.mjs"
   },
   "files": [
     "LICENSE",

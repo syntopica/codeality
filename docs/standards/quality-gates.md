@@ -209,6 +209,23 @@ then known to be affected. That approach silently exempted any _new_ dead file
 added to the same directories; whole-workspace exclusion plus a real
 per-workspace check does not.
 
+**Consumers get the per-workspace pass as a bin.** `baseline-deps-graph`, from
+`@busirocket/quality-config`, cruises every workspace that has a `tsconfig.json`
+with that workspace's own config:
+
+```sh
+baseline-deps-graph                        # src, app, server, lib
+baseline-deps-graph --config .dependency-cruiser.cjs src
+```
+
+That covers the ordinary monorepo case, where a repo-wide cruise resolves at
+most one workspace's `@/*` and reports everything it could not follow as an
+orphan - the reason one adopter dropped dependency-cruiser entirely. This repo
+keeps `scripts/deps-graph-aliased.mjs` on top of it for one case the bin does
+not handle: Nuxt declares its aliases in the generated `.nuxt/tsconfig.json`,
+written relative to `.nuxt/`, and dependency-cruiser resolves relative `paths`
+against the working directory, so those need rebasing before a cruise sees them.
+
 `scripts/aliasedWorkspaces.mjs` is the single source for which workspaces those
 are. `.dependency-cruiser.cjs` turns it into the repo-wide run's
 `orphanExemptions` option, and `scripts/deps-graph-aliased.mjs` cruises the same
@@ -255,11 +272,21 @@ carefully: it names the rule, never the pattern that caused it.
 **Detects:** expressions whose type is `any`, including an `any` that arrives
 through a generic argument (`--strict`). The threshold is 99% per workspace.
 
-**Runs:** `pnpm type-coverage` (`scripts/type-coverage.mjs`), and inside
-`pnpm check:quality`. One run per workspace that has its own `tsconfig.json`;
-the threshold comes from `@busirocket/quality-config/type-coverage`
-(`TYPE_COVERAGE_THRESHOLD`) through jiti rather than being restated in the
-script, so the published constant and the gate cannot drift.
+**Runs:** `pnpm type-coverage`, which is the `baseline-type-coverage` bin
+shipped by `@busirocket/quality-config`, and inside `pnpm check:quality`. One
+run per workspace that has its own `tsconfig.json`, discovered by walking the
+directories given as arguments (or the working directory when none are). The
+threshold is read from `TYPE_COVERAGE_THRESHOLD` in the package's own source
+rather than restated in the runner, so the published constant and the gate
+cannot drift.
+
+```sh
+baseline-type-coverage            # every workspace under the cwd
+baseline-type-coverage packages   # only under these directories
+```
+
+A consumer used to have to copy this repo's script and edit its globs. It is
+part of the package now.
 
 **Excluded, and only these:** framework build output (`.next/`, `.nuxt/`), whose
 `any`s belong to the generator, and tests, where casting a rule or a mock to
