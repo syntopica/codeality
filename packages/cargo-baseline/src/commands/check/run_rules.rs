@@ -8,6 +8,7 @@ use crate::rules::max_file_lines::MaxFileLines;
 use crate::rules::max_trait_methods::MaxTraitMethods;
 use crate::rules::no_inline_sql::NoInlineSql;
 use crate::rules::one_primary_unit::OnePrimaryUnit;
+use crate::rules::sync_tauri_command::SyncTauriCommand;
 use crate::rules::tauri_command_placement::TauriCommandPlacement;
 
 pub(super) fn run_rules(
@@ -22,6 +23,7 @@ pub(super) fn run_rules(
         Box::new(MaxTraitMethods),
         Box::new(BarrelOnlyMod),
         Box::new(TauriCommandPlacement),
+        Box::new(SyncTauriCommand),
         Box::new(FileMatchesItem),
     ];
 

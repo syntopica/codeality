@@ -104,7 +104,39 @@ Bring clippy in gradually rather than blocking CI on day one:
    (the `baseline.yml` workflow from `init` already runs
    `cargo clippy --workspace --all-targets -D warnings`).
 
-## 6. Test scope
+## 6. Tauri commands must be async
+
+`#[tauri::command]` on a non-async `fn` is an error. Tauri runs a sync command
+on the main thread, so any disk, DB or network work inside it freezes the whole
+UI - a 397ms SQL aggregation and an 85ms versions query each froze an app on
+every click, and a sleeping external drive blocks even a `stat` for seconds.
+
+Make the command `async` and push the blocking work into `spawn_blocking`:
+
+```rust
+#[tauri::command]
+pub async fn list_versions(state: State<'_, Db>) -> Result<Vec<Version>, Error> {
+    let db = state.clone();
+    tokio::task::spawn_blocking(move || db.versions()).await?
+}
+```
+
+A command that is genuinely in-memory opts out on the line above it, with a
+comment saying why:
+
+```rust
+// Pure string formatting with no IO.
+// baseline:allow sync-tauri-command
+#[tauri::command]
+pub fn greet(name: &str) -> String {
+    format!("Hello, {name}!")
+}
+```
+
+The marker covers only the command directly below it. To turn the rule off for a
+whole crate, add `sync-tauri-command` to `disabled_rules` in `baseline.toml`.
+
+## 7. Test scope
 
 `cargo baseline check` walks `<crate>/src` only, so files under a cargo `tests/`
 directory are never linted. Inside `src`, three forms count as test scope and
@@ -130,7 +162,7 @@ use super::*;
 The alternative - a `tests/mod.rs` with an inner wrapper module - runs into
 clippy's `module_inception` when the wrapper is also called `tests`.
 
-## 7. Cross-file duplication (jscpd)
+## 8. Cross-file duplication (jscpd)
 
 `cargo-baseline` doesn't gate cross-file duplication itself, but the same jscpd
 gate the rest of the baseline uses is installable without Node:

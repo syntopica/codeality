@@ -6,5 +6,6 @@ pub mod max_trait_methods;
 pub mod no_inline_sql;
 pub mod one_primary_unit;
 pub mod sql_visitor;
+pub mod sync_tauri_command;
 pub mod tauri_command_placement;
 pub mod to_snake_case;

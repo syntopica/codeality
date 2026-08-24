@@ -4,6 +4,7 @@ pub mod crate_info;
 pub mod diagnostic;
 pub mod diagnostics_for_lines;
 pub mod file_context;
+pub mod has_tauri_command_attribute;
 pub mod is_cfg_test_item;
 pub mod is_test_scope_file;
 pub mod named_item;

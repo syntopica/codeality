@@ -3,6 +3,7 @@ use syn::spanned::Spanned;
 use crate::config::BaselineConfig;
 use crate::engine::diagnostic::Diagnostic;
 use crate::engine::file_context::FileContext;
+use crate::engine::has_tauri_command_attribute::has_tauri_command_attribute;
 use crate::engine::is_cfg_test_item::is_cfg_test_item;
 use crate::engine::rule::Rule;
 use crate::engine::severity::Severity;
@@ -28,17 +29,7 @@ impl Rule for TauriCommandPlacement {
                     continue;
                 }
 
-                let has_tauri_command = f.attrs.iter().any(|a| {
-                    let segs: Vec<_> = a
-                        .path()
-                        .segments
-                        .iter()
-                        .map(|s| s.ident.to_string())
-                        .collect();
-                    segs == ["tauri", "command"]
-                });
-
-                if has_tauri_command {
+                if has_tauri_command_attribute(&f.attrs) {
                     diagnostics.push(Diagnostic {
                         path: ctx.path.clone(),
                         line: f.span().start().line,
