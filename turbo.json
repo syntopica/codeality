@@ -36,6 +36,9 @@
     "type-check": {
       "dependsOn": ["^build"]
     },
+    "my-nextjs-app#type-check": {
+      "dependsOn": ["build", "^build"]
+    },
     "test": {
       "dependsOn": ["^build"],
       "outputs": ["coverage/**"]
