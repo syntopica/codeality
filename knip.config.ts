@@ -14,11 +14,9 @@ const TEMPLATE_GLOB = ['**/*.{ts,tsx,vue,astro}']
 // reports them as unused.
 const TEMPLATE_ESLINT_PEER_DEPENDENCIES = [
   '@eslint/js',
-  '@vitest/eslint-plugin',
   'eslint-config-prettier',
   'eslint-plugin-promise',
   'eslint-plugin-security',
-  'eslint-plugin-testing-library',
   'eslint-plugin-unused-imports',
   'typescript-eslint',
 ]

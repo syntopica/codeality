@@ -94,19 +94,46 @@ findings are unambiguous - a dead export or an undeclared import is never
 correct. `binaries`/`unresolved` have a structural false-positive source (Turbo
 task graphs, pnpm's nested `node_modules`) that would make the gate cry wolf.
 
-**Known gap - entry-file exports are not checked.** `includeEntryExports` is
-deliberately off. `packages/*` publish one file per advertised sub-export
-(`eslint-config/src/base.ts`, `quality-config/src/knip.ts`, and so on) rather
-than a single barrel, so every top-level file in a package's `src/` is treated
-as an entry point; knip does not flag exports of entry files as dead by default.
-This is correct for a published library's public API (nothing inside this
-monorepo consumes `createKnipConfig` the same way an external project will), but
-it means a genuinely dead export added to one of those files will not be caught;
-only additions to non-entry files (e.g. `src/rules/`, `src/utils/` inside
-`eslint-plugin-code-policy`) are covered. See `TODO.md` for the investigation
-into turning `includeEntryExports` on and why it isn't yet (it also flags real,
-not-yet-consumed public API, and surfaces a `vue-app` template false positive
-that needs a template-source fix first).
+**Entry-file exports are checked.** `createKnipConfig` sets
+`includeEntryExports: true`, so a dead export added to `src/index.ts` or
+`src/main.ts` fails the gate rather than passing unseen. Coverage is real but
+partial: a file a knip framework plugin registers as an entry of its own
+(`app/page.tsx`, `src/main.tsx`) is still outside the option's reach.
+
+Set it to `false` for one case: **a package that is finished but not wired up
+yet.** With the default, a delivered-but-unconsumed package reports its entire
+public API as unused exports, and the obvious reading of that report is "delete
+this package".
+
+```ts
+export default createKnipConfig({
+  framework: 'ts-package',
+  // Consumed by the host app, which does not import it yet.
+  includeEntryExports: false,
+})
+```
+
+**drizzle consumers need two settings, and one of them is not obvious.**
+
+The schema aggregator is the highest-consequence false positive this gate can
+produce. `drizzle.config.ts` names one file as THE schema, so every table it
+exports is live even though no TypeScript file imports it - knip reports them as
+dead, and deleting one makes the next generated migration emit `DROP TABLE`.
+Exclude the file from analysis:
+
+```ts
+export default createKnipConfig({
+  framework: 'nextjs',
+  // Every export here is a live table; drizzle.config.ts is the consumer.
+  ignore: ['src/schema/schema.ts'],
+  // knip's drizzle plugin loads drizzle.config.ts, which throws by design when
+  // DATABASE_URL is unset - without this the gate needs a live database in CI.
+  drizzle: false,
+})
+```
+
+Adding `drizzle.config.ts` to `ignore` does **not** stop the plugin loading it.
+Only `drizzle: false` does.
 
 **False positive:** a dependency imported only through a dynamic string
 (`jiti('@busirocket/quality-config/dependency-cruiser')`) or only by a peer
@@ -121,10 +148,23 @@ comment explaining why knip can't see the real caller. Do not disable the
 still passes. Both are normal in a consumer, because the shared preset is
 written for every layout at once - a project with no `sitemap.ts` has an entry
 pattern matching nothing, and a project where knip resolves an ESLint peer
-itself has an ignore entry it does not need. Neither is worth patching
-consumer-side; a local filter drifts from the preset the moment the preset
-changes, and the cost of getting it wrong is a dependency that stops being
-checked without anyone noticing.
+itself has an ignore entry it does not need. Do not patch them out consumer-side
+by restating the whole option: a local filter drifts from the preset the moment
+the preset changes, and the cost of getting it wrong is a dependency that stops
+being checked without anyone noticing.
+
+The preset only carries an entry that is load-bearing in at least one layout.
+Nothing is ignored by default under `ignoreBinaries` for that reason - a
+consumer that really cannot resolve a binary passes its own:
+
+```ts
+export default createKnipConfig({
+  framework: 'nextjs',
+  ignoreBinaries: ['some-binary-behind-a-pnpm-script'],
+  // Merged with the preset's ESLint peer list, never replacing it.
+  ignoreDependencies: ['a-peer-this-layout-hides'],
+})
+```
 
 **Next.js consumers:** `FRAMEWORK_ENTRIES.nextjs` covers the App Router file
 conventions, the metadata routes, and both `middleware.ts` and its Next 16 name

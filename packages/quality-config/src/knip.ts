@@ -11,20 +11,25 @@ import { FRAMEWORK_ENTRIES, type KnipFramework } from './knip-framework'
 // reports them as unused. Mirrors the same list and rationale in the
 // repo-root knip.config.ts for the `templates/*` workspace.
 //
-// In a consumer where knip's own ESLint plugin does resolve the real caller,
-// the matching entry becomes unnecessary and knip says so:
+// Two packages that used to sit here - `@vitest/eslint-plugin` and
+// `eslint-plugin-testing-library` - were removed on 2026-08-24: knip resolved
+// the real caller in all eight templates, so the entries were redundant
+// everywhere and produced a hint no consumer could silence. The rest stay:
+// `eslint-config-prettier` is redundant in four of the eight and load-bearing
+// in the other four, which is exactly the case the list exists for. A consumer
+// whose layout hides a caller can add its own entries through
+// `ignoreDependencies`, which merges with this list rather than replacing it.
+//
+// Where an entry here IS redundant, knip says so:
 // `<package>  knip.config.ts  Remove from ignoreDependencies`. That is a hint,
-// not a gate failure, and it is expected - the entry is redundant in that one
-// layout and load-bearing in every other. Do not filter the list consumer-side
-// to silence it: the filter would drift the moment this list changes, and the
-// cost of being wrong is a dependency that silently stops being checked.
+// not a gate failure. Do not filter the list consumer-side to silence it: the
+// filter would drift the moment this list changes, and the cost of being wrong
+// is a dependency that silently stops being checked.
 const ESLINT_PEER_DEPENDENCIES = [
   '@eslint/js',
-  '@vitest/eslint-plugin',
   'eslint-config-prettier',
   'eslint-plugin-promise',
   'eslint-plugin-security',
-  'eslint-plugin-testing-library',
   'eslint-plugin-unused-imports',
   'typescript-eslint',
 ]
@@ -41,12 +46,43 @@ const ESLINT_PEER_DEPENDENCIES = [
  */
 export const createKnipConfig = (options: {
   framework: KnipFramework
+  /**
+   * Binaries knip cannot resolve. Nothing is ignored by default: an entry for
+   * a binary knip *can* resolve becomes a permanent `Remove from
+   * ignoreBinaries` hint the consumer has no way to silence.
+   */
+  ignoreBinaries?: string[]
+  /** Merged with the ESLint peer list, never replacing it. */
+  ignoreDependencies?: string[]
+  /**
+   * Files knip must not analyse at all. The standing case is a drizzle schema
+   * aggregator: `drizzle.config.ts` names one file as THE schema, so every
+   * table it exports is live even though no TypeScript file imports it, and
+   * acting on the resulting "unused export" report makes the next generated
+   * migration emit `DROP TABLE`.
+   */
+  ignore?: string[]
+  /**
+   * Set `false` for a package that is finished but not wired up yet. With the
+   * default `true` its entire public API reports as unused exports, and the
+   * obvious reading of that report is "delete this package".
+   */
+  includeEntryExports?: boolean
+  /**
+   * Set `false` to stop knip loading `drizzle.config.ts`. That file throws by
+   * design when `DATABASE_URL` is unset, so the gate otherwise needs a live
+   * database in CI. Adding the file to `ignore` does not stop the plugin -
+   * only this does.
+   */
+  drizzle?: false
 }): KnipConfig => {
   const { entry, project } = FRAMEWORK_ENTRIES[options.framework]
 
   return {
     entry,
     project,
+    ...(options.ignore ? { ignore: options.ignore } : {}),
+    ...(options.drizzle === false ? { drizzle: false } : {}),
     // Without this, exports of entry files are never checked, so a dead export
     // added to main.ts / index.ts would pass the gate. Coverage is real but
     // partial: verified with a probe export that it now fails `nestjs-app`
@@ -54,7 +90,7 @@ export const createKnipConfig = (options: {
     // fail `nextjs-app` (app/page.tsx), `vite-react-app` (src/main.tsx) or
     // `vue-app` (src/main.ts) - files a knip framework plugin registers as an
     // entry of its own, which the option does not reach.
-    includeEntryExports: true,
+    includeEntryExports: options.includeEntryExports ?? true,
     // The Primary Unit Rule (code-policy/no-hidden-top-level-declarations)
     // forbids a hidden top-level declaration, so a helper an entry file uses
     // only itself still has to be exported - NestJS's `bootstrap`, called by
@@ -65,8 +101,11 @@ export const createKnipConfig = (options: {
     // boolean. It only hides an export that its own file already uses: an
     // export nothing references at all still fails the gate.
     ignoreExportsUsedInFile: true,
-    ignoreBinaries: ['turbo', 'lhci'],
-    ignoreDependencies: ESLINT_PEER_DEPENDENCIES,
+    ignoreBinaries: options.ignoreBinaries ?? [],
+    ignoreDependencies: [
+      ...ESLINT_PEER_DEPENDENCIES,
+      ...(options.ignoreDependencies ?? []),
+    ],
     rules: {
       files: 'error',
       dependencies: 'error',

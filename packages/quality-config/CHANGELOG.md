@@ -1,5 +1,44 @@
 # @busirocket/quality-config
 
+## Unreleased
+
+### Minor Changes
+
+- feat: `createKnipConfig` takes options instead of forcing every consumer to
+  restate the preset.
+
+  `ignoreBinaries`, `ignoreDependencies`, `ignore`, `includeEntryExports` and
+  `drizzle` are now settable. `ignoreDependencies` merges with the ESLint peer
+  list rather than replacing it, so a consumer whose layout hides a caller adds
+  one entry instead of copying the whole array.
+
+  The four cases that drove this, all found adopting the baseline in real repos:
+
+  - A **drizzle schema aggregator** reports every table as a dead export,
+    because `drizzle.config.ts` is the only consumer. Acting on that report
+    makes the next generated migration emit `DROP TABLE`. `ignore` excludes the
+    file.
+  - knip's **drizzle plugin loads `drizzle.config.ts`**, which throws by design
+    without `DATABASE_URL`, so the gate needed a live database in CI. Adding the
+    file to `ignore` does not stop the plugin; `drizzle: false` does.
+  - A **package that is finished but not wired up** reports its entire public
+    API as unused under `includeEntryExports: true`, and the obvious reading is
+    "delete this package". It can now be set per workspace.
+  - `ignoreBinaries` **no longer defaults to `['turbo', 'lhci']`**. Both resolve
+    in every template that has them, so the entries only ever produced a
+    `Remove from ignoreBinaries` hint a consumer could not silence.
+
+### Patch Changes
+
+- fix: drop `@vitest/eslint-plugin` and `eslint-plugin-testing-library` from the
+  shared `ignoreDependencies` list.
+
+  knip resolved the real caller for both in all eight templates, so the entries
+  were redundant everywhere while still printing a hint.
+  `eslint-config-prettier` and the rest stay: they are redundant in four of the
+  eight layouts and load-bearing in the other four, which is what the list is
+  for. Template hints went from 21 to 5.
+
 ## 0.4.0
 
 ### Minor Changes
