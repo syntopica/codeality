@@ -4,6 +4,22 @@
 
 - List current ESLint entrypoints (`.eslintrc.*`, `eslint.config.*`,
   FlatCompat).
+- **Count the workspaces that have NO config at all**, and how many files they
+  hold. This is the number that decides the size of the job, and it is easy to
+  miss: one adoption had a config in `apps/web` only, so five workspaces - about
+  800 of 3,291 files - had never been linted by anything. Turning the baseline
+  on there produced 1,118 findings that no `--suppress-all` decision had ever
+  been taken about, on code nobody had reviewed against any rule.
+
+  ```bash
+  # Workspaces with no ESLint config of their own
+  pnpm -r exec sh -c 'ls eslint.config.* .eslintrc.* >/dev/null 2>&1 || pwd'
+  ```
+
+  Budget those separately from the workspaces that are merely changing rule
+  sets. A workspace moving from one config to another produces a diff; a
+  workspace moving from nothing produces a backlog.
+
 - Note Prettier version and plugins.
 - Note TypeScript version and `tsconfig` extends chain.
 

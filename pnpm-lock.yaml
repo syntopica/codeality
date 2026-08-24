@@ -533,7 +533,7 @@ importers:
   templates/nextjs-app:
     dependencies:
       next:
-        specifier: ^16.2.12
+        specifier: 16.2.12
         version: 16.2.12(@babel/core@7.29.7(supports-color@10.2.2))(@types/node@26.1.2)(react-dom@19.2.8(react@19.2.8))(react@19.2.8)
       react:
         specifier: ^19.2.8
@@ -564,7 +564,7 @@ importers:
         specifier: ^0.15.1
         version: 0.15.1(supports-color@10.2.2)(yauzl@2.10.0)
       '@next/eslint-plugin-next':
-        specifier: ^16.2.12
+        specifier: 16.2.12
         version: 16.2.12
       '@testing-library/jest-dom':
         specifier: ^7.0.0
@@ -597,7 +597,7 @@ importers:
         specifier: ^10.8.0
         version: 10.8.0(jiti@2.7.0)(supports-color@10.2.2)
       eslint-config-next:
-        specifier: ^16.2.12
+        specifier: 16.2.12
         version: 16.2.12(@typescript-eslint/parser@8.67.0(@typescript/typescript6@6.0.2)(eslint@10.8.0(jiti@2.7.0)(supports-color@10.2.2))(supports-color@10.2.2))(@typescript/typescript6@6.0.2)(eslint-plugin-import-x@4.17.1(@typescript-eslint/utils@8.67.0(@typescript/typescript6@6.0.2)(eslint@10.8.0(jiti@2.7.0)(supports-color@10.2.2))(supports-color@10.2.2))(eslint-import-resolver-node@0.3.10(supports-color@10.2.2))(eslint@10.8.0(jiti@2.7.0)(supports-color@10.2.2))(supports-color@10.2.2))(eslint@10.8.0(jiti@2.7.0)(supports-color@10.2.2))(supports-color@10.2.2)
       eslint-config-prettier:
         specifier: ^10.1.8
