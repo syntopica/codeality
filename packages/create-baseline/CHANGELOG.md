@@ -1,5 +1,30 @@
 # @busirocket/create-baseline
 
+## 0.4.0
+
+### Minor Changes
+
+- feat: `create-baseline --write` scaffolds the wiring instead of describing it.
+
+  The tool could tell you `lefthook.yml` was missing and never write it, so
+  every adopting repo hand-wrote the same four files and the same ten scripts.
+  Measured across seven real adoptions in one sitting: the only thing that
+  varied was the knip preset, which is read off the project's dependencies, and
+  which directories to exempt from `no-orphans`.
+
+  `--write` creates `knip.config.ts`, `lefthook.yml`, `renovate.json` and
+  `.dependency-cruiser.cjs` when absent, and adds the baseline scripts
+  `package.json` does not already define. Nothing that exists is overwritten and
+  re-running is a no-op, so it is safe on a half-adopted repo.
+
+- chore: `baseline-versions.json` now pins `dependency-cruiser`, `jiti` and
+  `type-coverage`.
+
+  `--write` generates a `.dependency-cruiser.cjs` that reaches the shared
+  factory through jiti, and a `type-coverage` script behind
+  `baseline-type-coverage`. Without these three on the install line the
+  generated wiring fails on its first run.
+
 ## 0.3.9
 
 ### Patch Changes
