@@ -47,6 +47,21 @@ Two things the generated wiring cannot know and you should review before
 committing: `deps:graph` scopes itself to `src`, and a project with e2e specs or
 hand-run scripts needs those declared as knip entry points.
 
+### ESLint peer verification
+
+Every mode also reports the ESLint peers your config actually reaches for:
+missing ones, and installed ones at a version the config cannot use. The
+subpaths are read from your `eslint.config.*`, so a project that never composes
+`/tailwind` is never told about `eslint-plugin-tailwindcss`.
+
+`@busirocket/eslint-config` ships TypeScript source rather than a build, so
+these resolve from your project. pnpm reports a mismatch as one line among
+hundreds on install; the consequence shows up much later as a crash from inside
+ESLint that names neither the baseline nor the peer. Adopting consumer-u hit
+three of them in a row - one absent, one on a prerelease whose config was still
+eslintrc-format, one a major behind the schema the config emits - and each took
+a separate diagnosis.
+
 Recommended baseline package versions are defined in `baseline-versions.json`
 shipped with this package; update that file when releasing aligned semver bumps.
 

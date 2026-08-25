@@ -4,6 +4,7 @@ import { dirname, resolve } from 'node:path'
 import { cwd, exit } from 'node:process'
 import { fileURLToPath } from 'node:url'
 
+import { checkPeers } from './scaffold/checkPeers.mjs'
 import { writeMissing } from './scaffold/writeMissing.mjs'
 
 const __dirname = dirname(fileURLToPath(import.meta.url))
@@ -161,6 +162,32 @@ async function main() {
 
   const deps = collectDeps(manifest)
 
+  // The ESLint peers the project's own config reaches for. pnpm reports a
+  // mismatch as one line on install; the consequence surfaces much later as a
+  // crash from inside ESLint that names neither the baseline nor the peer.
+  const reportPeers = async () => {
+    const peers = await checkPeers(root)
+    if (!peers) return
+    const { missing, mismatched } = peers
+    if (!missing.length && !mismatched.length) return
+    console.log("\nESLint peers this project's config needs:\n")
+    for (const { name, range } of missing) {
+      console.log(`  missing   ${name} (${range})`)
+    }
+    for (const { name, range, version } of mismatched) {
+      console.log(`  too old   ${name} ${version} (needs ${range})`)
+    }
+    const spec = [...missing, ...mismatched]
+      .map(({ name, range }) => `${name}@${range.replace(/^>=/, '^')}`)
+      .join(' ')
+    console.log(`\n  pnpm add -D ${spec}`)
+    console.log(
+      '\n@busirocket/eslint-config ships TypeScript source rather than a ' +
+        'build, so these resolve from your project. A missing or too-old one ' +
+        'fails ESLint before any rule runs.',
+    )
+  }
+
   // --write scaffolds the wiring rather than describing it. Every adopting
   // repo was hand-writing the same four files and the same ten scripts; the
   // only thing that varied was the knip preset, which is read off the
@@ -178,6 +205,7 @@ async function main() {
       console.log('\nStill missing from package.json:\n')
       printInstall(missingDeps)
     }
+    await reportPeers()
     console.log(
       '\nReview the generated files before committing: deps:graph scopes ' +
         'itself to `src`, and a project with e2e specs or hand-run scripts ' +
@@ -220,6 +248,8 @@ async function main() {
       )
     }
   }
+
+  await reportPeers()
 
   if (flags.check || flags.hard) {
     let failed = false
