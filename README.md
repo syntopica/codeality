@@ -56,10 +56,15 @@ this monorepo:
 
 ### Maintainers: npm publish
 
-We use GitHub Actions to publish all packages from this monorepo. Configure the
-**`NPM_TOKEN`** repository secret on GitHub (Settings > Secrets and variables >
-Actions). When a new release tag is pushed, the corresponding packages will be
-built and published to the npm registry.
+Publishing is a **manual** GitHub Actions run, one package at a time - pushing a
+tag does not publish anything. Trigger it from the Actions tab or with
+`gh workflow run publish.yml -f package=<name>`; it publishes the version
+currently in that package's `package.json`.
+
+There is no `NPM_TOKEN`. Auth is tokenless via npm Trusted Publishing (OIDC):
+npmjs.com lists this repo and `publish.yml` as a trusted publisher for each
+package, pnpm exchanges the GitHub OIDC id-token for a short-lived credential,
+and provenance is generated automatically because the repository is public.
 
 Cut release tags **annotated**, with
 `git tag -a <name>@<version> -m "<message>"`. A lightweight tag records no
