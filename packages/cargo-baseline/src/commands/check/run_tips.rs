@@ -23,7 +23,7 @@ pub(super) fn run_tips(
     );
     push_tip(
         "unwrap-density",
-        unwrap_density_tip(info, files, cfg),
+        unwrap_density_tip(files, cfg),
         cfg,
         diagnostics,
     );

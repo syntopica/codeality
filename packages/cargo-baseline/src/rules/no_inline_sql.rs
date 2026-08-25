@@ -5,7 +5,6 @@ use crate::engine::cfg_test_line_ranges::cfg_test_line_ranges;
 use crate::engine::diagnostic::Diagnostic;
 use crate::engine::diagnostics_for_lines::diagnostics_for_lines;
 use crate::engine::file_context::FileContext;
-use crate::engine::is_test_scope_file::is_test_scope_file;
 use crate::engine::rule::Rule;
 use crate::engine::severity::Severity;
 use crate::rules::sql_visitor::SqlVisitor;
@@ -17,13 +16,16 @@ impl Rule for NoInlineSql {
         "no-inline-sql"
     }
 
+    fn applies_to_test_scope(&self) -> bool {
+        true
+    }
+
     fn check(&self, ctx: &FileContext, _cfg: &BaselineConfig) -> Vec<Diagnostic> {
-        // Test fixtures are the reason to write SQL inline, so test scope is
-        // exempt: a `tests` directory or a `#![cfg(test)]` file wholesale, and
-        // an inline `#[cfg(test)] mod` block by line range.
-        if is_test_scope_file(ctx) {
-            return Vec::new();
-        }
+        // An inline `#[cfg(test)] mod` block is the assertion's own data -
+        // a table-driven test spells its rows out - so those line ranges stay
+        // exempt. A dedicated test file is not: a 1,000-line fixture reads
+        // and diffs better as `sql/*.sql` behind `include_str!`, which is why
+        // this rule opts into test scope below.
         let test_ranges = cfg_test_line_ranges(&ctx.ast);
 
         let mut v = SqlVisitor { hits: Vec::new() };
@@ -115,10 +117,13 @@ mod tests {
     }
 
     #[test]
-    fn a_cfg_test_file_is_ignored_wholesale() {
+    fn a_dedicated_test_file_still_reports() {
+        // A whole test file is where a large fixture lands, and it can hold
+        // `include_str!` as easily as production code can. Only the inline
+        // `#[cfg(test)] mod` case above stays exempt.
         assert_eq!(
             check("#![cfg(test)]\nconst Q: &str = \"SELECT id FROM users\";\n"),
-            0
+            1
         );
     }
 

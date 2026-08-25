@@ -104,11 +104,24 @@ This works with rusqlite as-is and matches sqlx's `query_file!` convention.
 
 ## Test exemptions
 
-Inline `#[cfg(test)]` test modules are exempt from `one-primary-unit` and
-`file-matches-item`. `max-file-lines` additionally skips any file under a
-`tests` path component (e.g. `src/tests/foo.rs`), not just files with "tests" in
-the name. Integration tests under a top-level `tests/` directory are never
-scanned: `check` only walks `src/`.
+`check` walks `<crate>/src` and `<crate>/tests`, skipping any nested crate (a
+directory with its own `Cargo.toml`).
+
+A file is _test scope_ when it is a cargo integration test under
+`<crate>/tests`, sits under a `tests` directory inside `src`
+(`src/db/tests/mod.rs`), or carries the `#![cfg(test)]` inner attribute. Every
+rule skips test-scope files except `no-inline-sql`: a large fixture reads and
+diffs better as `sql/*.sql` behind `include_str!` wherever it lives.
+
+An inline `#[cfg(test)] mod { ... }` block inside a production file is narrower.
+It is exempt from `one-primary-unit` and `file-matches-item`, its lines do not
+count against `max-file-lines`, SQL inside it is not reported, and its
+`.unwrap()`/`.expect()` calls do not count toward `unwrap-density` - the
+assertion's own data is not a defect.
+
+Compound predicates count: `#[cfg(all(test, feature = "x"))]` and
+`#[cfg(any(test, debug_assertions))]` are test scope, `#[cfg(not(test))]` is
+not.
 
 ## Existing project?
 

@@ -138,19 +138,28 @@ whole crate, add `sync-tauri-command` to `disabled_rules` in `baseline.toml`.
 
 ## 7. Test scope
 
-`cargo baseline check` walks `<crate>/src` only, so files under a cargo `tests/`
-directory are never linted. Inside `src`, three forms count as test scope and
-are skipped by the structural rules:
+`cargo baseline check` walks `<crate>/src` and `<crate>/tests`, skipping any
+nested crate it finds on the way (a directory with its own `Cargo.toml`, such as
+a fixture project). Three forms count as whole-file test scope:
 
-- an inline `#[cfg(test)] mod tests { ... }` block - its lines do not count
-  against `max-file-lines`, and SQL inside it is not reported;
+- a cargo integration test under `<crate>/tests`;
 - a `tests` directory under `src` (`src/db/tests/mod.rs`);
 - a file carrying the `#![cfg(test)]` inner attribute.
 
-That third form is what a module declared as `#[cfg(test)] mod tests;` needs.
-Without the attribute the file is scanned as production code: `no-inline-sql`
-flags test-fixture SQL and `max-file-lines` charges the crate's budget for it.
-Add the attribute to the module file rather than reshaping the layout:
+The structural rules skip all three. `no-inline-sql` does not: a fixture query
+is still a query, and a large one reads and diffs better as `sql/*.sql` behind
+`include_str!`. If a crate genuinely wants inline SQL in its tests, disable the
+rule crate-wide in `baseline.toml` rather than reshaping the fixtures.
+
+An inline `#[cfg(test)] mod tests { ... }` block inside a production file is the
+narrow case and stays fully exempt: its lines do not count against
+`max-file-lines`, its `.unwrap()`/`.expect()` calls do not count toward
+`unwrap-density`, and SQL inside it is not reported.
+
+The `#![cfg(test)]` form is what a module declared as `#[cfg(test)] mod tests;`
+needs. Without the attribute the file is scanned as production code and
+`max-file-lines` charges the crate's budget for it. Add the attribute to the
+module file rather than reshaping the layout:
 
 ```rust
 // src/db/queries/tests.rs
@@ -171,9 +180,15 @@ gate the rest of the baseline uses is installable without Node:
 cargo install jscpd
 ```
 
-Run it from the crate root: `jscpd .` honors the committed `.jscpd.json` the
-same way the Node-based install does - keep that canonical config rather than
-writing a separate one.
+Run it from the crate root against the baseline's own config rather than writing
+a separate one:
+
+```bash
+jscpd . --config node_modules/@busirocket/quality-config/jscpd.json
+```
+
+A crate with no Node install can copy that file once; it is the same config
+`baseline-dupes` passes for every template.
 
 `cargo-dupes` (AST-normalized clone detection, cargo subcommand) and
 `similarity-rs` (AST-based semantic similarity) are optional audit tools worth

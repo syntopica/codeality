@@ -61,7 +61,7 @@ jobs:
         run: pnpm run check:quality
 
   rust:
-    name: Rust tests
+    name: Rust
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v6
@@ -76,6 +76,13 @@ jobs:
 
       - name: cargo test
         run: cargo test --workspace
+
+      # packages/cargo-baseline declares `unwrap_used`/`expect_used`/`panic`
+      # as `deny` under [lints.clippy]. Nothing enforced them: this job ran
+      # fmt and test only, and the crate is outside the pnpm workspace so
+      # `turbo run lint` never reaches it either.
+      - name: cargo clippy
+        run: cargo clippy --workspace --all-targets -- -D warnings
 
   security:
     name: Security gates

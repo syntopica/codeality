@@ -3,7 +3,7 @@ use crate::engine::is_cfg_test_item::is_cfg_test_item;
 
 /// Whether the whole file is test scope, so structural rules should skip it.
 ///
-/// Two forms count. A `tests` directory *inside the crate's own `src`* is a
+/// Three forms count. A `tests` directory *inside the crate's own `src`* is a
 /// test module tree; the component is only honoured after the last `src`
 /// because `check` walks `<crate>/src` and a crate can itself live under a
 /// `tests/` directory - this crate's own fixtures do, and matching on the
@@ -13,6 +13,11 @@ use crate::engine::is_cfg_test_item::is_cfg_test_item;
 /// `#[cfg(test)] mod tests;` declares itself: the compiler only builds it
 /// under test, and without this it was scanned as production code - SQL
 /// fixtures flagged, its length charged to the crate's budget.
+///
+/// A `<crate>/tests` directory - cargo's integration tests - is the third:
+/// `check` walks it as a second root, and it is recognised by the *absence*
+/// of any `src` component, which is what separates it from a fixture crate
+/// parked under a `tests/` path.
 pub fn is_test_scope_file(ctx: &FileContext) -> bool {
     if is_cfg_test_item(&ctx.ast.attrs) {
         return true;
@@ -23,7 +28,7 @@ pub fn is_test_scope_file(ctx: &FileContext) -> bool {
         .map(|c| c.as_os_str().to_string_lossy().into_owned())
         .collect();
     let Some(src_index) = components.iter().rposition(|c| c == "src") else {
-        return false;
+        return components.iter().any(|c| c == "tests");
     };
     components[src_index..].iter().any(|c| c == "tests")
 }
@@ -62,6 +67,15 @@ mod tests {
     #[test]
     fn file_named_attests_is_not_a_tests_dir() {
         assert!(!is_test_scope_file(&ctx("src/attests.rs", "fn a() {}\n")));
+    }
+
+    #[test]
+    fn detects_a_cargo_integration_test() {
+        assert!(is_test_scope_file(&ctx("tests/check_integration.rs", "")));
+        assert!(is_test_scope_file(&ctx(
+            "/w/packages/cargo-baseline/tests/init_integration.rs",
+            ""
+        )));
     }
 
     #[test]

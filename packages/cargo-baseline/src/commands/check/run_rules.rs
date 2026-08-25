@@ -1,6 +1,7 @@
 use crate::config::BaselineConfig;
 use crate::engine::diagnostic::Diagnostic;
 use crate::engine::file_context::FileContext;
+use crate::engine::is_test_scope_file::is_test_scope_file;
 use crate::engine::rule::Rule;
 use crate::rules::barrel_only_mod::BarrelOnlyMod;
 use crate::rules::file_matches_item::FileMatchesItem;
@@ -32,6 +33,9 @@ pub(super) fn run_rules(
             continue;
         }
         for ctx in files {
+            if !rule.applies_to_test_scope() && is_test_scope_file(ctx) {
+                continue;
+            }
             diagnostics.extend(rule.check(ctx, cfg));
         }
     }

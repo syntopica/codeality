@@ -1,3 +1,4 @@
+pub mod cfg_meta_mentions_test;
 pub mod cfg_test_line_ranges;
 pub mod collect_rust_files;
 pub mod crate_info;
@@ -10,6 +11,7 @@ pub mod is_test_scope_file;
 pub mod named_item;
 pub(crate) mod parse_dummy_file;
 pub(crate) mod parse_file_ctx;
+pub mod production_unwrap_lines;
 pub mod rule;
 pub mod severity;
 pub(crate) mod temp_crate_info;

@@ -5,7 +5,6 @@ use crate::engine::diagnostic::Diagnostic;
 use crate::engine::file_context::FileContext;
 use crate::engine::has_tauri_command_attribute::has_tauri_command_attribute;
 use crate::engine::is_cfg_test_item::is_cfg_test_item;
-use crate::engine::is_test_scope_file::is_test_scope_file;
 use crate::engine::rule::Rule;
 use crate::engine::severity::Severity;
 
@@ -20,10 +19,6 @@ impl Rule for SyncTauriCommand {
     }
 
     fn check(&self, ctx: &FileContext, _cfg: &BaselineConfig) -> Vec<Diagnostic> {
-        if is_test_scope_file(ctx) {
-            return Vec::new();
-        }
-
         let lines: Vec<&str> = ctx.source.lines().collect();
         let mut diagnostics = Vec::new();
 

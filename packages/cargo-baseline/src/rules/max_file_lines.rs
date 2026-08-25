@@ -2,7 +2,6 @@ use crate::config::BaselineConfig;
 use crate::engine::cfg_test_line_ranges::cfg_test_line_ranges;
 use crate::engine::diagnostic::Diagnostic;
 use crate::engine::file_context::FileContext;
-use crate::engine::is_test_scope_file::is_test_scope_file;
 use crate::engine::rule::Rule;
 use crate::engine::severity::Severity;
 
@@ -14,15 +13,10 @@ impl Rule for MaxFileLines {
     }
 
     fn check(&self, ctx: &FileContext, cfg: &BaselineConfig) -> Vec<Diagnostic> {
-        // Whole-file test scope: a `tests` directory or a `#![cfg(test)]` file.
-        if is_test_scope_file(ctx) {
-            return Vec::new();
-        }
-
         // Inline `#[cfg(test)] mod { .. }` blocks are the file's own unit
         // tests. Rust keeps them beside the code they test, so counting them
-        // charges production code for its tests - the same reason files under
-        // a `tests` directory are skipped above.
+        // charges production code for its tests. Whole test-scope files never
+        // reach this rule at all - `run_rules` filters them out.
         let test_ranges = cfg_test_line_ranges(&ctx.ast);
 
         // Count code lines: blank lines, comment-only lines, and block comment lines don't count
@@ -116,23 +110,6 @@ mod tests {
         );
         let cfg = BaselineConfig::default();
         let d = MaxFileLines.check(&ctx(&body), &cfg);
-        assert_eq!(d.len(), 1);
-        assert_eq!(d[0].rule, "max-file-lines");
-    }
-
-    #[test]
-    fn inner_cfg_test_attribute_exempts_the_whole_file() {
-        let body = format!("#![cfg(test)]\n{}", "fn a() {}\n".repeat(200));
-        let cfg = BaselineConfig::default();
-        assert!(MaxFileLines.check(&ctx(&body), &cfg).is_empty());
-    }
-
-    #[test]
-    fn file_named_attests_is_not_treated_as_a_tests_dir() {
-        let body = "fn a() {}\n".repeat(200);
-        let ctx = FileContext::parse(std::path::Path::new("src/attests.rs"), body).unwrap();
-        let cfg = BaselineConfig::default();
-        let d = MaxFileLines.check(&ctx, &cfg);
         assert_eq!(d.len(), 1);
         assert_eq!(d[0].rule, "max-file-lines");
     }
