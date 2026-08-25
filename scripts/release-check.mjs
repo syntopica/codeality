@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 // A release is not done when the version is bumped. This checks that every
 // publishable package's package.json "version" is actually released:
-//   - a git tag `<unscoped-name>@<version>` exists
+//   - a git tag `<unscoped-name>@<version>` exists, and is annotated
 //   - that exact version exists on the npm registry
 //   - CHANGELOG.md documents it (a `## <version>` heading)
 //
@@ -56,6 +56,22 @@ function tagFor({ name, version }) {
 async function readGitTags() {
   const { stdout } = await run('git', ['tag', '--list'], { cwd: REPO_ROOT })
   return new Set(stdout.split('\n').filter(Boolean))
+}
+
+// A release tag should carry its own message and tagger. `git cat-file -t`
+// answers `tag` for an annotated one and `commit` for a lightweight one,
+// which is just a moving branch-like pointer with no record of who cut it.
+// This is a warning, not a failure: the three lightweight tags cut on
+// 2026-08-04 are already pushed, and a release tag is immutable.
+async function readLightweightTags(tags) {
+  const lightweight = []
+  for (const tag of tags) {
+    const { stdout } = await run('git', ['cat-file', '-t', tag], {
+      cwd: REPO_ROOT,
+    })
+    if (stdout.trim() !== 'tag') lightweight.push(tag)
+  }
+  return lightweight.sort()
 }
 
 async function readNpmVersions(name) {
@@ -139,6 +155,21 @@ async function main() {
     )
     exit(1)
   }
+  // Every tag in this repo is a release tag, and the point of the warning is
+  // the next one, so this looks at the whole history rather than only the
+  // versions currently declared in package.json.
+  const lightweight = await readLightweightTags(tags)
+  if (lightweight.length) {
+    console.warn(
+      `\nrelease-check: ${lightweight.length} release tag(s) are lightweight, ` +
+        'not annotated - they carry no message and no tagger:\n' +
+        lightweight.map((tag) => `  - ${tag}`).join('\n') +
+        '\n\nThese are already pushed and a release tag is immutable, so they ' +
+        'stay as they are.\nCut the next one with `git tag -a <tag> -m "<message>"` ' +
+        'so the history stops mixing both kinds.',
+    )
+  }
+
   console.log(
     `release-check: ${packages.length} packages fully released${
       checkNpm ? '' : ' (npm check skipped)'

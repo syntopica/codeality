@@ -61,6 +61,12 @@ We use GitHub Actions to publish all packages from this monorepo. Configure the
 Actions). When a new release tag is pushed, the corresponding packages will be
 built and published to the npm registry.
 
+Cut release tags **annotated**, with
+`git tag -a <name>@<version> -m "<message>"`. A lightweight tag records no
+message and no tagger. `pnpm release:check` warns about every lightweight tag it
+finds so the history stops mixing both kinds; it does not fail on them, because
+a pushed release tag is immutable.
+
 ## Turborepo & Check Pipeline
 
 The repository uses **Turborepo** to orchestrate pipelines via `pnpm check:all`.
