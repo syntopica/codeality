@@ -118,6 +118,12 @@ runRuleTest('file-kind-placement', rule, {
       code: `export const formatted = ''`,
       filename: '/src/state/formatted.ts',
     },
+    // Extension stripping does not invent kinds: the correctly placed `.tsx`
+    // twin is as valid as the `.ts` one.
+    {
+      code: `export function orderMapper() {}`,
+      filename: '/src/mappers/orderMapper.tsx',
+    },
   ],
   invalid: [
     // `use*` outside any accepted folder.
@@ -137,6 +143,24 @@ runRuleTest('file-kind-placement', rule, {
     {
       code: `export function mapEntry() {}`,
       filename: '/src/services/mapEntry.ts',
+      errors: [{ messageId: 'invalidPlacement' }],
+    },
+    // Suffix detection is extension-agnostic: the `.tsx` twin of a `Mapper.ts`
+    // used to escape placement entirely, which in a React codebase is where
+    // mappers and formatters actually get written.
+    {
+      code: `export function orderMapper() {}`,
+      filename: '/src/services/orderMapper.tsx',
+      errors: [{ messageId: 'invalidPlacement' }],
+    },
+    {
+      code: `export function priceFormatter() {}`,
+      filename: '/src/services/priceFormatter.jsx',
+      errors: [{ messageId: 'invalidPlacement' }],
+    },
+    {
+      code: `export function inputValidator() {}`,
+      filename: '/src/services/inputValidator.mts',
       errors: [{ messageId: 'invalidPlacement' }],
     },
     // Generic grouping folders are banned by default.

@@ -4,6 +4,18 @@
 
 ### Minor Changes
 
+- fix: `file-kind-placement` detects kinds by suffix on every extension.
+
+  `endsWith('Mapper.ts')`, `'Formatter.ts'`, `'Validator.ts'`,
+  `'Transformer.ts'` and `'Selector.ts'` anchored detection on `.ts`, so the
+  `.tsx` twin of every one of them escaped placement entirely - in a React
+  codebase, exactly where mappers and formatters get written. The extension is
+  now stripped before the comparison, covering `.tsx`, `.js`, `.jsx` and the
+  `.mts`/`.cts`/`.mjs`/`.cjs` variants.
+
+  Breaking for a repo that kept a `*Mapper.tsx` outside `mappers/` and was
+  passing only because the rule could not see it.
+
 - feat: `one-primary-unit` counts bound names, not declarators.
 
   `export const { first, second } = source` is one `VariableDeclaration` with
