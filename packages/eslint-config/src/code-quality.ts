@@ -47,15 +47,6 @@ export const createCodeQualityConfig = () => [
     },
   },
   {
-    // dependency-cruiser loads CommonJS config only, while the shared factory
-    // is TypeScript, so every adopting repo's `.dependency-cruiser.cjs`
-    // reaches it through jiti - a destructuring at module scope that the
-    // Primary Unit Rule reads as a hidden internal helper. createBaseConfig
-    // supplies the CommonJS globals; this is the other half.
-    files: ['**/.dependency-cruiser.cjs'],
-    rules: { 'code-policy/no-hidden-top-level-declarations': 'off' },
-  },
-  {
     // Globs match createTestingConfig()'s: a helper under `tests/` or `test/`
     // that is not itself named `*.test.ts` is still test scaffolding and must
     // be judged by the same policy, not by the production one.

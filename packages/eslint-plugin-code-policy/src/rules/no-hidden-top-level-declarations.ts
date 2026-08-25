@@ -31,6 +31,15 @@ export default createRule<Options, MessageIds>({
       filename.endsWith('.config.mjs') ||
       filename.endsWith('.config.cjs') ||
       filename.endsWith('.d.ts') ||
+      // dependency-cruiser loads CommonJS config only, while the shared
+      // factory is TypeScript, so every adopting repo reaches it through jiti:
+      // a destructuring at module scope that this rule reads as a hidden
+      // helper. The file's shape is dictated by the tool, not by the author.
+      // The exemption lives here rather than in a shared flat-config block
+      // because a repo that composes eslint-plugin-code-policy's own preset
+      // after @busirocket/eslint-config re-enables the rule and defeats it --
+      // measured in consumer-p, whose config does exactly that.
+      filename.endsWith('.dependency-cruiser.cjs') ||
       filename.endsWith('.vue') || // SFC <script setup> bindings are reactive state, never exported
       filename.endsWith('proxy.ts') // Exempt explicit configuration or typings
     ) {

@@ -192,9 +192,8 @@ export const createBaseConfig = (options: SharedConfigOptions = {}) => {
     // shared factory is TypeScript, so the file is CJS in an otherwise ESM
     // project and reaches the factory through jiti. Without this it fails on
     // `__filename`/`require`/`module` as undefined globals. The matching
-    // rule relaxation lives in createCodeQualityConfig, which is where the
-    // code-policy plugin is registered. Every adopter was otherwise copying
-    // both blocks into its own config.
+    // rule relaxation lives in the code-policy rule itself, so no order of
+    // config composition can defeat it.
     {
       files: ['**/.dependency-cruiser.cjs'],
       languageOptions: {

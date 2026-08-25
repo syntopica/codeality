@@ -57,6 +57,14 @@ runRuleTest('no-hidden-top-level-declarations', rule, {
         export default memo(forwardRef(Component))
       `,
     },
+    // dependency-cruiser loads CommonJS config only and the shared factory is
+    // TypeScript, so every adopting repo reaches it through a jiti
+    // destructuring at module scope. The file's shape is the tool's, not the
+    // author's.
+    {
+      code: `const { createJiti } = require('jiti')\nconst jiti = createJiti(__filename)\nmodule.exports = jiti('x')`,
+      filename: '/repo/.dependency-cruiser.cjs',
+    },
   ],
   invalid: [
     {
