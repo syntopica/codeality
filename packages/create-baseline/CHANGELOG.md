@@ -1,5 +1,13 @@
 # @busirocket/create-baseline
 
+## 0.3.5
+
+### Patch Changes
+
+- chore: refresh the `eslint-plugin-code-policy` pin to `^0.7.2`, which stops
+  `file-kind-placement` firing on test files. Derived from the workspace by
+  `pnpm sync-versions`; no check was added or removed.
+
 ## 0.3.4
 
 ### Patch Changes

@@ -1,5 +1,24 @@
 # eslint-plugin-code-policy
 
+## 0.7.2
+
+### Patch Changes
+
+- fix: `file-kind-placement` does not fire on test files.
+
+  A test is named after the unit it covers, so reading that name as a kind
+  demanded the test move into `selectors/`, away from the code it tests. Found
+  in consumer-i the moment it took `@busirocket/eslint-config@0.7.0`, which
+  gives test files real rules instead of a blanket exemption:
+  `tests/plans/selectSpacePlans.test.ts` and its sibling started reporting
+  `code-policy/file-kind-placement`.
+
+  `is-test-filename` matches the same shape eslint-config scopes its testing
+  rules to - `*.test.*` / `*.spec.*`, and anything under `__tests__/`, `tests/`
+  or `test/`. The plugin's own colocation fixtures moved from `tests/fixtures/`
+  to `fixtures/` for the same reason: under the old path every one of them would
+  have been exempt, passing its case for the wrong reason.
+
 ## 0.7.1
 
 ### Patch Changes
