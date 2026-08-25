@@ -4,6 +4,47 @@ Closed work from `TODO.md`, grouped by year and month.
 
 ## 2026-08
 
+- [x] 2026-08-25 - **Ran 0.7.0 / 0.5.0 against the estate before either reached
+      npm, and it found three defects.** 22 repos adopt
+      `eslint-plugin-code-policy`, four carry a Rust crate, nine commit a
+      `.jscpd.json`. Nothing had been published yet, so every one of these was
+      caught before a consumer saw it.
+  - **`file-kind-placement` flagged 45 React components.** 0.7.0 stripped the
+    extension before the suffix check, which is right for `orderMapper.tsx` and
+    wrong for `MarketSelector.tsx`. Enumerated across `~/p`: all 45 files newly
+    matching a kind suffix on a `.tsx` extension were PascalCase components,
+    zero were misplaced units. Reproduced in consumer-r, 0 errors
+    to 11. `is-component-filename` now holds the one definition of "component
+    file", shared with the colocation anchor that had it inline.
+  - **`one-primary-unit` flagged two idioms that cannot be split.**
+    `export const { handlers, auth, signIn, signOut } = NextAuth(config)`
+    (consumer-p, 3 errors) and
+    `export const { Link, redirect, usePathname, useRouter, getPathname } = createNavigation(routing)`
+    (busirocket, 4 errors), both verbatim from their official setup guides. The
+    factory returns one object; splitting means calling it twice. A declarator
+    whose init is a call or `new` now counts once, and
+    `export const { first, second } = source` still counts as two.
+  - **`baseline-dupes` could not express what five of nine repos need.** jscpd's
+    `--ignore` replaces the config's list rather than merging - measured, 61
+    files / 1 clone became 109 files / 4 clones - so a repo with one generated
+    directory to exclude (Supabase types, migrations, a cpanel build) would have
+    restated every shared pattern in its own script. `--also-ignore` merges
+    through a generated config. The runner was also splitting arguments into
+    paths and flags on a leading dash, which handed `120` to jscpd as a
+    directory and silently dropped the flag after a `--config`; arguments are
+    now forwarded untouched.
+  - **What held up.** `cargo baseline check` matched the published binary's
+    error counts on all four crates (project-after 0, consumer-t 20, consumer-f 22,
+    Midia 0) while correcting the unwrap-density tips: project-after 906 calls blamed on
+    one arbitrary file became 11 real ones, consumer-t 475 became 45. project-after's file
+    count went 523 to 538 with `tests/` read, no new errors. The canonical jscpd
+    config reproduced project-after's own result exactly (1866 files, 61 clones).
+  - Evidence: A/B lint sweep across all 21 adopting repos with the plugin
+    installed, before and after, **0 deltas**; every repo restored and verified
+    byte-identical afterwards. 146 plugin tests, `check:ci` / `check:quality` /
+    `check:security` exit 0, `cargo test` 94 pass, clippy clean. Shipped as
+    code-policy 0.7.1, quality-config 0.6.0, create-baseline 0.3.4.
+
 - [x] 2026-08-25 - **`check:quality` names the gate that fails.** It was
       `pnpm knip && pnpm knip:templates && ...`, six gates behind one exit
       code - the reason a cold-run failure got recorded as "check:quality
