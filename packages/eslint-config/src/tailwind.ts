@@ -31,16 +31,34 @@ const tailwindcss = require('eslint-plugin-tailwindcss') as {
  * Requires `tailwindcss` to be installed in the consuming project.
  * Only add this to projects that use Tailwind CSS.
  */
-export const createTailwindConfig = (options: { cssConfigPath: string }) => [
-  tailwindcss.configs.recommended,
-  {
-    files: ['**/*.{js,jsx,ts,tsx,vue,astro,html}'],
-    settings: {
-      tailwindcss: { cssConfigPath: options.cssConfigPath },
+export const createTailwindConfig = (options: { cssConfigPath: string }) => {
+  // eslint.config.ts is loaded by jiti at runtime, which does not type-check
+  // the call, so a missing option surfaces as a bare
+  // "Cannot read properties of undefined" thrown from inside ESLint with no
+  // hint about which factory asked for what. Say it plainly instead.
+  // The type says `options` is required, and for a TypeScript caller it is.
+  // At runtime it is whatever the config file passed, so the check is real.
+  const given = options as { cssConfigPath?: string } | undefined
+  if (!given?.cssConfigPath) {
+    throw new Error(
+      'createTailwindConfig requires { cssConfigPath }. ' +
+        'eslint-plugin-tailwindcss v4 resolves the design system from your ' +
+        'Tailwind CSS entry file - the one with `@import "tailwindcss"` - so ' +
+        "pass it: createTailwindConfig({ cssConfigPath: './src/styles.css' }).",
+    )
+  }
+
+  return [
+    tailwindcss.configs.recommended,
+    {
+      files: ['**/*.{js,jsx,ts,tsx,vue,astro,html}'],
+      settings: {
+        tailwindcss: { cssConfigPath: options.cssConfigPath },
+      },
+      rules: {
+        'tailwindcss/no-custom-classname': 'off',
+        'tailwindcss/classnames-order': 'off',
+      },
     },
-    rules: {
-      'tailwindcss/no-custom-classname': 'off',
-      'tailwindcss/classnames-order': 'off',
-    },
-  },
-]
+  ]
+}
