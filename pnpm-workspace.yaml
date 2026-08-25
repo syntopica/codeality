@@ -37,8 +37,6 @@ patchedDependencies:
 # Re-run that check when the upstream named in the comment moves its own floor.
 overrides:
   'tmp@<0.2.6': ^0.2.6 # GHSA-ph9p-34f9-6g65, via @lhci/cli>inquirer>external-editor
-  'sharp@<0.35.0': ^0.35.3 # GHSA-f88m-g3jw-g9cj, via templates/nextjs-app's next
-  'postcss@<8.5.18': ^8.5.24 # GHSA-6g55-p6wh-862q / GHSA-r28c-9q8g-f849, via next
   'ip-address@<10.3.1': ^10.3.1 # GHSA-mwp4-54f8-5fhr, via @lhci/cli>proxy-agent>socks
   # GHSA-rgw5-rvv9-x895 patched each major separately, so one entry per affected
   # line. The ranges are lower-bounded on purpose: `brace-expansion@<2.1.4`

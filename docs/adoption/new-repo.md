@@ -36,19 +36,39 @@ Everything not listed stays blocked, which is the point: no dependency runs a
 postinstall you did not decide about. CI needs this too - pnpm errors on
 un-decided build scripts under `--frozen-lockfile`.
 
-### Next.js: the version is pinned, not ranged
+### Next.js 16.3+ with the TypeScript alias needs one config flag
 
-`templates/nextjs-app` pins `next`, `eslint-config-next` and
-`@next/eslint-plugin-next` to an exact version rather than a caret range. This
-repo aliases `typescript` to `npm:@typescript/typescript6` (the TS7 native
-compiler trial), and Next 16.3.x rejects that alias: `next build` dies with "It
-looks like you're trying to use TypeScript but do not have the required
-package(s) installed" even though `require.resolve('typescript')` resolves fine.
-Inside this monorepo the lockfile held Next at 16.2.12 and hid it; a fresh
-adopter with a caret range got 16.3.x and the broken build.
+This repo aliases `typescript` to `npm:@typescript/typescript6` (the TS7 native
+compiler trial). Next 16.3 flipped type checking to the `tsc` CLI by default and
+locates that CLI through the resolved `typescript` package's own `bin.tsc`
+entry - which the alias does not declare; its only bin is `tsc6`. So
+`next build` dies with "It looks like you're trying to use TypeScript but do not
+have the required package(s) installed" even though
+`require.resolve('typescript')` resolves fine, and it runs
+`pnpm install --save-dev typescript` over your alias on the way out.
 
-If you are not using the TypeScript alias, the range is safe and you can widen
-it. The ceiling above 16.2.12 has not been tested with the alias.
+`templates/nextjs-app` used to pin `next`, `eslint-config-next` and
+`@next/eslint-plugin-next` to an exact 16.2.x for this reason. It no longer
+does. Setting `experimental.useTypeScriptCli: false` in `next.config.ts` sends
+Next back to the compiler API entry (`lib/typescript.js`), which resolves
+through the alias normally and type-checks exactly as 16.2.x did:
+
+```typescript
+const nextConfig: NextConfig = {
+  experimental: {
+    useTypeScriptCli: false,
+  },
+}
+```
+
+Measured on 16.3.2: the build fails without the flag and succeeds with it, and
+moving off 16.2.12 removed two `pnpm audit` high findings that previously needed
+`overrides` entries (`sharp` GHSA-f88m-g3jw-g9cj and PostCSS GHSA-6g55-p6wh-862q
+/ GHSA-r28c-9q8g-f849).
+
+Drop the flag once the alias ships a `tsc` bin, or once you move to a real
+`typescript` package. If you are not using the alias at all, you never needed
+it.
 
 ## 3. Wire Prettier
 
