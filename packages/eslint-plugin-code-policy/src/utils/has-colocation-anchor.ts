@@ -1,6 +1,7 @@
 import { readdirSync } from 'node:fs'
 
 import { detectFileKind } from '@/utils/detect-file-kind.js'
+import { isComponentFilename } from '@/utils/is-component-filename.js'
 
 // A placement-checked unit (hook, mapper, formatter, ...) is "colocated" when
 // it sits next to the unit that consumes it, rather than orphaned in a purely
@@ -40,7 +41,7 @@ export function hasColocationAnchor(
     if (/^index\.(?:tsx?|jsx?)$/.test(name)) return true
 
     // A component file (PascalCase .tsx/.jsx) anchors the folder as a feature.
-    if (/^[A-Z].*\.(?:tsx|jsx)$/.test(name)) return true
+    if (isComponentFilename(name)) return true
 
     // A neighbouring code file that is not itself a placement-checked kind is
     // the consumer the unit is colocated with.

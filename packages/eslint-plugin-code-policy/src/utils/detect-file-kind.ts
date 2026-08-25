@@ -1,3 +1,4 @@
+import { isComponentFilename } from '@/utils/is-component-filename.js'
 import { startsWithCamelPrefix } from '@/utils/starts-with-camel-prefix.js'
 import { stripCodeExtension } from '@/utils/strip-code-extension.js'
 
@@ -5,11 +6,20 @@ import { stripCodeExtension } from '@/utils/strip-code-extension.js'
 // folder that kind is expected to live in. Detection is camelCase-boundary
 // aware (see startsWithCamelPrefix), so `userCache`/`mapping`/`selected` are
 // not mistaken for `use`/`map`/`select` kinds. The extension is stripped
-// first, so `.tsx`, `.jsx` and the `.mts`/`.cts` variants are read the same
-// way as `.ts`. Returns null when the file is not a placement-checked kind.
+// before the suffix comparison, so `.tsx`, `.jsx` and the `.mts`/`.cts`
+// variants are read the same way as `.ts`.
+//
+// A PascalCase `.tsx`/`.jsx` file is exempt: it is a React component, and
+// `MarketSelector.tsx` / `DateRangeFormatter.tsx` are components whose names
+// end in a kind word, not units that belong in `selectors/` or `formatters/`.
+// A `.ts` file is unaffected - it carries no JSX, so `UserMapper.ts` is still
+// a mapper.
+//
+// Returns null when the file is not a placement-checked kind.
 export function detectFileKind(
   filename: string,
 ): { kind: string; expectedFolder: string } | null {
+  if (isComponentFilename(filename)) return null
   const basename = stripCodeExtension(filename)
   if (startsWithCamelPrefix(basename, 'use')) {
     return { kind: 'hook or composable', expectedFolder: 'hooks' }

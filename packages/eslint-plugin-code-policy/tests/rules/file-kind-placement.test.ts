@@ -124,6 +124,22 @@ runRuleTest('file-kind-placement', rule, {
       code: `export function orderMapper() {}`,
       filename: '/src/mappers/orderMapper.tsx',
     },
+    // A PascalCase .tsx/.jsx file is a React component, even when its name
+    // ends in a kind word. Measured across 22 adopting repos: every file
+    // matching a kind suffix on a .tsx extension was one of these, so
+    // detecting them flagged 45 components that belong exactly where they are.
+    {
+      code: `export function MarketSelector() { return null }`,
+      filename: '/src/components/MarketSelector.tsx',
+    },
+    {
+      code: `export function DateRangeFormatter() { return null }`,
+      filename: '/src/components/DateRangeFormatter.jsx',
+    },
+    {
+      code: `export function ContentTypeSelector() { return null }`,
+      filename: '/src/components/ContentTypeSelector/ContentTypeSelector.tsx',
+    },
   ],
   invalid: [
     // `use*` outside any accepted folder.
@@ -161,6 +177,13 @@ runRuleTest('file-kind-placement', rule, {
     {
       code: `export function inputValidator() {}`,
       filename: '/src/services/inputValidator.mts',
+      errors: [{ messageId: 'invalidPlacement' }],
+    },
+    // The component exemption is PascalCase-and-JSX only: a PascalCase `.ts`
+    // file carries no JSX and is still a placement-checked unit.
+    {
+      code: `export function UserMapper() {}`,
+      filename: '/src/services/UserMapper.ts',
       errors: [{ messageId: 'invalidPlacement' }],
     },
     // Generic grouping folders are banned by default.
