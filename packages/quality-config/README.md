@@ -54,6 +54,32 @@ Idempotent: an existing `.env` is never overwritten, and a project with no
 `.env.example` is a no-op. It never writes a value into version control - `.env`
 stays gitignored, `.env.example` stays the only committed copy.
 
+### `baseline-dupes`
+
+Runs the cross-file duplication gate against this package's canonical
+`jscpd.json`, so no project has to commit a copy of it.
+
+```json
+{
+  "scripts": {
+    "dupes": "baseline-dupes ."
+  }
+}
+```
+
+Takes the paths to scan (default `.`); any further flag goes straight to jscpd
+and wins over the config file, so `baseline-dupes . --min-tokens 120` works.
+List-valued flags **replace** the config's list rather than merging into it -
+`--ignore` hands jscpd a whole new ignore set - but `gitignore: true` is on, so
+a project's own ignored directories stay out either way. jscpd 5.x is a Rust
+binary that reads JSON only - it has no JS config loader - which is why this
+gate ships as a config file plus a runner rather than as a factory like
+`createKnipConfig`. Point another tool at the same file through
+`@busirocket/quality-config/jscpd`.
+
+`jscpd` itself stays a devDependency of the consuming project: the runner
+invokes it, it does not vendor it.
+
 ## Related
 
 - **Lint / TS configs:** `@busirocket/eslint-config`, `@busirocket/tsconfig`.

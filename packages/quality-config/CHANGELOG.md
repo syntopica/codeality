@@ -4,6 +4,23 @@
 
 ### Minor Changes
 
+- feat: the jscpd gate ships from here, as `jscpd.json` plus a `baseline-dupes`
+  runner.
+
+  `.jscpd.json` was copied byte for byte into the repo root and all eight
+  templates, and every adopting project had to copy it again - the only quality
+  gate in the set that was hand-maintained duplication rather than shared
+  config. It is now one file in this package, read in place.
+
+  jscpd 5.x is a Rust binary that reads JSON only, with no JS config loader, so
+  this gate cannot be a factory the way `createKnipConfig` is. `baseline-dupes`
+  points jscpd at the packaged config and forwards any extra flag, which wins
+  over the file. The config is also resolvable directly, as
+  `@busirocket/quality-config/jscpd`.
+
+  `jscpd` stays a devDependency of the consuming project; the runner invokes it
+  rather than vendoring it.
+
 - feat: `createKnipConfig` takes options instead of forcing every consumer to
   restate the preset.
 

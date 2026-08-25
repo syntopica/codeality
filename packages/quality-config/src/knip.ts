@@ -25,6 +25,12 @@ import { FRAMEWORK_ENTRIES, type KnipFramework } from './knip-framework'
 // not a gate failure. Do not filter the list consumer-side to silence it: the
 // filter would drift the moment this list changes, and the cost of being wrong
 // is a dependency that silently stops being checked.
+// `jscpd` is invoked by this package's own `baseline-dupes` runner, through
+// `pnpm exec`, so the template that declares it never names it anywhere knip
+// can see. The dependency is real - the runner spawns the binary, it does not
+// vendor it - which is exactly the case `ignoreDependencies` exists for.
+const BASELINE_RUNNER_DEPENDENCIES = ['jscpd']
+
 const ESLINT_PEER_DEPENDENCIES = [
   '@eslint/js',
   'eslint-config-prettier',
@@ -52,7 +58,7 @@ export const createKnipConfig = (options: {
    * ignoreBinaries` hint the consumer has no way to silence.
    */
   ignoreBinaries?: string[]
-  /** Merged with the ESLint peer list, never replacing it. */
+  /** Merged with the built-in lists, never replacing them. */
   ignoreDependencies?: string[]
   /**
    * Files knip must not analyse at all. The standing case is a drizzle schema
@@ -103,6 +109,7 @@ export const createKnipConfig = (options: {
     ignoreExportsUsedInFile: true,
     ignoreBinaries: options.ignoreBinaries ?? [],
     ignoreDependencies: [
+      ...BASELINE_RUNNER_DEPENDENCIES,
       ...ESLINT_PEER_DEPENDENCIES,
       ...(options.ignoreDependencies ?? []),
     ],

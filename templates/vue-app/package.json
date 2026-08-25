@@ -18,7 +18,7 @@
     "type-check": "vue-tsc --noEmit",
     "test": "vitest run --coverage",
     "test:watch": "vitest",
-    "dupes": "jscpd .",
+    "dupes": "baseline-dupes .",
     "knip": "knip",
     "check:all": "pnpm type-check && pnpm lint && pnpm format:check && pnpm dupes",
     "check:ci": "pnpm type-check && pnpm lint && pnpm format:check && pnpm test && pnpm dupes && pnpm knip",

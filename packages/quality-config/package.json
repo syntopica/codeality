@@ -4,7 +4,7 @@
   "private": false,
   "packageManager": "pnpm@11.18.0",
   "license": "MIT",
-  "description": "Shared configuration for cross-file quality gates: knip, dependency-cruiser, type-coverage, lefthook",
+  "description": "Shared configuration for cross-file quality gates: knip, dependency-cruiser, type-coverage, jscpd, lefthook",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/BusiRocket/baseline.git",
@@ -23,23 +23,26 @@
   },
   "bin": {
     "baseline-deps-graph": "bin/baseline-deps-graph.mjs",
+    "baseline-dupes": "bin/baseline-dupes.mjs",
     "baseline-env-init": "bin/baseline-env-init.mjs",
     "baseline-type-coverage": "bin/baseline-type-coverage.mjs"
   },
   "files": [
     "LICENSE",
+    "PUBLIC_API.md",
     "README.md",
     "bin",
+    "jscpd.json",
     "src",
-    "tsconfig.json",
-    "PUBLIC_API.md"
+    "tsconfig.json"
   ],
   "exports": {
     ".": "./src/index.ts",
     "./knip": "./src/knip.ts",
     "./dependency-cruiser": "./src/dependency-cruiser.ts",
     "./type-coverage": "./src/type-coverage.ts",
-    "./lefthook": "./src/lefthook.ts"
+    "./lefthook": "./src/lefthook.ts",
+    "./jscpd": "./jscpd.json"
   },
   "scripts": {
     "fix": "pnpm run lint:fix",

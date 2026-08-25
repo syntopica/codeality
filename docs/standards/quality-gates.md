@@ -53,14 +53,14 @@ different files. This is different from ESLint's `sonarjs/no-duplicate-string`,
 which flags a repeated string literal inside a single file; jscpd looks across
 the whole tree.
 
-**Runs:** `pnpm dupes` (`jscpd packages scripts` at the engineering-baseline
-root; `jscpd .` in templates, over the whole generated project). Part of
-`check:ci`; **not** run per-workspace through Turbo - the per-package `dupes`
-task was deliberately dropped from `check:ci` because the root run is the only
-one that is a genuine cross-file gate.
+**Runs:** `pnpm dupes` (`baseline-dupes packages scripts` at the
+engineering-baseline root; `baseline-dupes .` in templates, over the whole
+generated project). Part of `check:ci`; **not** run per-workspace through
+Turbo - the per-package `dupes` task was deliberately dropped from `check:ci`
+because the root run is the only one that is a genuine cross-file gate.
 
 **Threshold:** `threshold: 1` (max 1% duplicated lines), configured in
-`.jscpd.json`.
+`@busirocket/quality-config`'s `jscpd.json`.
 
 **Why 1%:** strict by design. Templates start at 0% duplication; the budget
 exists for edge cases (near-duplicate boilerplate that isn't worth abstracting

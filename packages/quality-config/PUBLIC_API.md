@@ -12,6 +12,7 @@ are **private** and may change without a major bump.
 | `@busirocket/quality-config/dependency-cruiser` | `createDepCruiserConfig` — module boundary and cycle gate   |
 | `@busirocket/quality-config/type-coverage`      | `TYPE_COVERAGE_THRESHOLD` — minimum non-`any` type coverage |
 | `@busirocket/quality-config/lefthook`           | `createLefthookConfig` — shared git hook pipeline           |
+| `@busirocket/quality-config/jscpd`              | `jscpd.json` — cross-file duplication gate config           |
 
 ### `createDepCruiserConfig(options)`
 
@@ -40,6 +41,7 @@ then cruise separately with `scope: 'workspace'`.
 | Binary              | Purpose                                                    |
 | ------------------- | ---------------------------------------------------------- |
 | `baseline-env-init` | Seed a gitignored `.env` from the committed `.env.example` |
+| `baseline-dupes`    | Run jscpd against this package's canonical `jscpd.json`    |
 
 `baseline-env-init` takes no arguments and always exits 0. It copies
 `.env.example` to `.env` in the current working directory, does nothing when
@@ -47,9 +49,16 @@ then cruise separately with `scope: 'workspace'`.
 into `prepare` so a freshly cloned project boots with the documented example
 values instead of failing its startup env validation.
 
-Each export entry resolves to **TypeScript source** (`*.ts`) published in the
-package. Consumers load it with **ESM** and a TypeScript-aware runner (for
-example `jiti` or your bundler) as shown in the package README.
+`baseline-dupes` takes the paths to scan (default `.`) and forwards any further
+flag to jscpd, where it wins over the config file. jscpd 5.x is a Rust binary
+with no JS config loader, which is why this gate ships as a JSON file plus a
+runner rather than as a factory: the config is read in place, never copied into
+the consuming repo.
+
+Every export entry except `./jscpd` resolves to **TypeScript source** (`*.ts`)
+published in the package, loaded with **ESM** and a TypeScript-aware runner (for
+example `jiti` or your bundler) as shown in the package README. `./jscpd`
+resolves to the JSON file jscpd itself reads.
 
 ## Implementation detail
 

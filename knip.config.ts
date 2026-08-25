@@ -21,6 +21,14 @@ const TEMPLATE_ESLINT_PEER_DEPENDENCIES = [
   'typescript-eslint',
 ]
 
+// `jscpd` is invoked by `baseline-dupes`, the runner in
+// @busirocket/quality-config, through `pnpm exec`. The template declares the
+// dependency because the runner spawns the binary rather than vendoring it,
+// but nothing in the template names it where knip can see. Mirrors
+// BASELINE_RUNNER_DEPENDENCIES in that package's own knip factory, which
+// covers the per-template gate a scaffolded project runs.
+const TEMPLATE_RUNNER_DEPENDENCIES = ['jscpd']
+
 const config: KnipConfig = {
   workspaces: {
     '.': {
@@ -54,7 +62,10 @@ const config: KnipConfig = {
     'templates/*': {
       entry: TEMPLATE_GLOB,
       project: TEMPLATE_GLOB,
-      ignoreDependencies: TEMPLATE_ESLINT_PEER_DEPENDENCIES,
+      ignoreDependencies: [
+        ...TEMPLATE_RUNNER_DEPENDENCIES,
+        ...TEMPLATE_ESLINT_PEER_DEPENDENCIES,
+      ],
     },
     'templates/nuxt-app': {
       // A workspace-specific key replaces rather than merges with the
@@ -63,6 +74,7 @@ const config: KnipConfig = {
       entry: TEMPLATE_GLOB,
       project: TEMPLATE_GLOB,
       ignoreDependencies: [
+        ...TEMPLATE_RUNNER_DEPENDENCIES,
         ...TEMPLATE_ESLINT_PEER_DEPENDENCIES,
         // vitest-environment-nuxt is a real dependency, not a false
         // positive: templates/nuxt-app/knip.config.ts (the per-template

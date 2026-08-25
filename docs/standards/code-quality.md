@@ -277,8 +277,13 @@ reimplements logic that already exists elsewhere instead of importing it) is the
 dominant AI failure mode, and needs a whole-repo pass to catch.
 
 [jscpd](https://github.com/kucherenko/jscpd) v5 (token-based, Rust engine)
-provides that pass. Config lives in the committed `.jscpd.json` at the project
-root, run it with `pnpm dupes`, and it is wired into `check:ci`.
+provides that pass. jscpd 5.x is a Rust binary that reads JSON only, so this
+gate cannot ship as a factory the way knip, dependency-cruiser and lefthook do.
+It ships as `jscpd.json` inside `@busirocket/quality-config` plus the
+`baseline-dupes` runner that points jscpd at it - one file, read in place, never
+copied into the consuming repo. Run it with `pnpm dupes`; it is wired into
+`check:ci`. To read the config directly, resolve
+`@busirocket/quality-config/jscpd`.
 
 **The knobs and their rationale:**
 

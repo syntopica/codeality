@@ -15,7 +15,7 @@
     "type-coverage": "baseline-type-coverage packages templates",
     "sync-versions": "node scripts/sync-versions.mjs",
     "sync-versions:check": "node scripts/sync-versions.mjs --check",
-    "dupes": "jscpd packages scripts",
+    "dupes": "baseline-dupes packages scripts",
     "knip": "knip",
     "knip:templates": "pnpm -r --filter \"./templates/*\" knip",
     "deps:graph": "depcruise packages templates scripts",

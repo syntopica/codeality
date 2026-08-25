@@ -21,9 +21,11 @@ are allowed but cannot replace these.
 | `check:ci`          | Run type-check + lint + format:check + test (CI gate)   |
 | `dupes`             | Cross-file duplication gate (jscpd), part of `check:ci` |
 
-`dupes` runs jscpd against the committed `.jscpd.json`: `jscpd .` in templates
-(scans the whole generated project), `jscpd packages scripts` at the
-engineering-baseline root (workspace packages only, not the templates).
+`dupes` runs `baseline-dupes`, the runner from `@busirocket/quality-config` that
+points jscpd at that package's canonical `jscpd.json`: `baseline-dupes .` in
+templates (scans the whole generated project), `baseline-dupes packages scripts`
+at the engineering-baseline root (workspace packages only, not the templates).
+Extra flags are passed straight through and win over the config file.
 
 ## Optional: `fix` / `fix:all` (monorepo baseline)
 
