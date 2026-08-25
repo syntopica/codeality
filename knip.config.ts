@@ -21,13 +21,14 @@ const TEMPLATE_ESLINT_PEER_DEPENDENCIES = [
   'typescript-eslint',
 ]
 
-// `jscpd` is invoked by `baseline-dupes`, the runner in
-// @busirocket/quality-config, through `pnpm exec`. The template declares the
-// dependency because the runner spawns the binary rather than vendoring it,
-// but nothing in the template names it where knip can see. Mirrors
-// BASELINE_RUNNER_DEPENDENCIES in that package's own knip factory, which
-// covers the per-template gate a scaffolded project runs.
-const TEMPLATE_RUNNER_DEPENDENCIES = ['jscpd']
+// The tools @busirocket/quality-config's runners spawn through `pnpm exec`:
+// `baseline-dupes` spawns `jscpd`, `baseline-type-coverage` spawns
+// `type-coverage`. A template declares the dependency because the runner
+// spawns the binary rather than vendoring it, but nothing in the template
+// names it where knip can see. Mirrors BASELINE_RUNNER_DEPENDENCIES in that
+// package's own knip factory, which covers the per-template gate a scaffolded
+// project runs.
+const TEMPLATE_RUNNER_DEPENDENCIES = ['jscpd', 'type-coverage']
 
 const config: KnipConfig = {
   workspaces: {

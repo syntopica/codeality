@@ -25,11 +25,23 @@ import { FRAMEWORK_ENTRIES, type KnipFramework } from './knip-framework'
 // not a gate failure. Do not filter the list consumer-side to silence it: the
 // filter would drift the moment this list changes, and the cost of being wrong
 // is a dependency that silently stops being checked.
-// `jscpd` is invoked by this package's own `baseline-dupes` runner, through
-// `pnpm exec`, so the template that declares it never names it anywhere knip
-// can see. The dependency is real - the runner spawns the binary, it does not
-// vendor it - which is exactly the case `ignoreDependencies` exists for.
-const BASELINE_RUNNER_DEPENDENCIES = ['jscpd']
+// The tools this package's own runners spawn through `pnpm exec`:
+// `baseline-dupes` spawns `jscpd`, `baseline-type-coverage` spawns
+// `type-coverage`, `baseline-deps-graph` spawns `depcruise`. A project that
+// wires the runner into its scripts never names the underlying tool anywhere
+// knip can see, so knip reports a real dependency as unused. Found in
+// busirocket the moment its `type-coverage` script became
+// `baseline-type-coverage`.
+//
+// `dependency-cruiser` is on the list even though a project calling
+// `depcruise` directly resolves it fine: there knip emits a `Remove from
+// ignoreDependencies` hint, which is a hint and not a gate failure, and the
+// cost of leaving it off is a real dependency silently reported as dead.
+const BASELINE_RUNNER_DEPENDENCIES = [
+  'jscpd',
+  'type-coverage',
+  'dependency-cruiser',
+]
 
 const ESLINT_PEER_DEPENDENCIES = [
   '@eslint/js',
