@@ -3,6 +3,7 @@ import type { TSESTree } from '@typescript-eslint/utils'
 import { boundIdentifierNames } from '@/utils/bound-identifier-names.js'
 import { createRule } from '@/utils/create-rule.js'
 import { isExemptEntryFilename } from '@/utils/is-exempt-entry-filename.js'
+import { isFactoryDestructuring } from '@/utils/is-factory-destructuring.js'
 import { isSchemaDerivedType } from '@/utils/is-schema-derived-type.js'
 import { localValueNames } from '@/utils/local-value-names.js'
 import { NEXT_RESERVED_EXPORTS } from '@/utils/next-reserved-exports.js'
@@ -56,14 +57,20 @@ export default createRule<Options, MessageIds>({
                   // One declarator can bind several names:
                   // `export const { a, b } = source` exports two units, and
                   // counting the declarator instead would let it pass.
-                  for (const name of boundIdentifierNames(decl.id)) {
-                    if (
-                      isNextJsRouterFile &&
-                      (NEXT_RESERVED_EXPORTS.has(name) ||
-                        ROUTE_METHODS.has(name))
-                    ) {
-                      continue
-                    }
+                  const names = boundIdentifierNames(decl.id).filter(
+                    (name) =>
+                      !(
+                        isNextJsRouterFile &&
+                        (NEXT_RESERVED_EXPORTS.has(name) ||
+                          ROUTE_METHODS.has(name))
+                      ),
+                  )
+                  if (!names.length) continue
+                  // Destructuring one call's result is one unit, not one per
+                  // name: the factory returns a single object and the names
+                  // are how it hands the pieces over.
+                  const units = isFactoryDestructuring(decl) ? 1 : names.length
+                  for (let index = 0; index < units; index += 1) {
                     exportCount += 1
                     exportedEntities.push(decl)
                   }

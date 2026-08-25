@@ -61,8 +61,29 @@ runRuleTest('one-primary-unit', rule, {
       code: `export const users = pgTable('users', {})\nexport type User = typeof users.$inferSelect\nexport type NewUser = typeof users.$inferInsert`,
       filename: '/src/schema/users.ts',
     },
+    // Destructuring one call's result is one unit: the library returns a
+    // single object and the names are how it hands the pieces over. Both of
+    // these are verbatim from their official setup guides, and both were
+    // flagged in real repos before the exemption.
+    {
+      code: `export const { handlers, auth, signIn, signOut } = NextAuth(config)`,
+      filename: '/src/auth.ts',
+    },
+    {
+      code: `export const { Link, redirect, usePathname, useRouter, getPathname } = createNavigation(routing)`,
+      filename: '/src/i18n/navigation.ts',
+    },
+    {
+      code: `export const [client, dispose] = await connect()`,
+      filename: '/src/db/client.ts',
+    },
   ],
   invalid: [
+    {
+      code: `export const { first, second } = source`,
+      filename: '/src/state/pair.ts',
+      errors: [{ messageId: 'multiplePrimaryUnits' }],
+    },
     // Two functions in one runtime file.
     {
       code: `export function a() {}\nexport function b() {}`,
