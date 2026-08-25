@@ -1,5 +1,29 @@
 # @busirocket/create-baseline
 
+## 0.5.0
+
+### Minor Changes
+
+- feat: every mode reports the ESLint peers your config needs and does not have.
+
+  `@busirocket/eslint-config` ships TypeScript source rather than a build, so
+  its imports resolve from the consuming project. pnpm reports a peer mismatch
+  as one line among hundreds on install, and the consequence surfaces much later
+  as a crash from inside ESLint naming neither the baseline nor the peer.
+
+  Adopting consumer-u hit three in a row: `@vitest/eslint-plugin` absent,
+  `eslint-plugin-tailwindcss` on a prerelease whose `configs.recommended` is
+  still eslintrc-format, and `eslint-plugin-boundaries` a major behind the
+  schema the shared layer emits. Each took its own diagnosis from an opaque
+  stack trace.
+
+  The subpaths are read from the project's own `eslint.config.*`, so a project
+  that never composes `/tailwind` is never told about a Tailwind plugin.
+  Manifests are read out of `node_modules` rather than through
+  `require.resolve`, because these packages define `exports` without a root or
+  `./package.json` entry and resolving either throws while the package is
+  installed and working.
+
 ## 0.4.1
 
 ### Patch Changes
