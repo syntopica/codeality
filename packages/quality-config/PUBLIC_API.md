@@ -49,11 +49,16 @@ then cruise separately with `scope: 'workspace'`.
 into `prepare` so a freshly cloned project boots with the documented example
 values instead of failing its startup env validation.
 
-`baseline-dupes` takes the paths to scan (default `.`) and forwards any further
-flag to jscpd, where it wins over the config file. jscpd 5.x is a Rust binary
-with no JS config loader, which is why this gate ships as a JSON file plus a
-runner rather than as a factory: the config is read in place, never copied into
-the consuming repo.
+`baseline-dupes` takes the paths to scan (a bare call scans `.`) and forwards
+every other argument to jscpd, where it wins over the config file. jscpd 5.x is
+a Rust binary with no JS config loader, which is why this gate ships as a JSON
+file plus a runner rather than as a factory: the config is read in place, never
+copied into the consuming repo.
+
+`--also-ignore <patterns>` adds ignore patterns **on top of** the shared list.
+jscpd's own `--ignore` replaces that list instead, so without this a project
+with one generated directory to exclude would have to restate every shared
+pattern in its own script.
 
 Every export entry except `./jscpd` resolves to **TypeScript source** (`*.ts`)
 published in the package, loaded with **ESM** and a TypeScript-aware runner (for

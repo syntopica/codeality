@@ -67,15 +67,32 @@ Runs the cross-file duplication gate against this package's canonical
 }
 ```
 
-Takes the paths to scan (default `.`); any further flag goes straight to jscpd
-and wins over the config file, so `baseline-dupes . --min-tokens 120` works.
-List-valued flags **replace** the config's list rather than merging into it -
-`--ignore` hands jscpd a whole new ignore set - but `gitignore: true` is on, so
-a project's own ignored directories stay out either way. jscpd 5.x is a Rust
-binary that reads JSON only - it has no JS config loader - which is why this
-gate ships as a config file plus a runner rather than as a factory like
-`createKnipConfig`. Point another tool at the same file through
-`@busirocket/quality-config/jscpd`.
+Takes the paths to scan (a bare `baseline-dupes` scans `.`); every other
+argument is forwarded to jscpd in the order given and wins over the config file,
+so `baseline-dupes . --min-tokens 120` works. Pass the path explicitly when you
+pass flags - the runner does not try to tell a path from a flag's value.
+
+To keep the shared ignores and add your own, use `--also-ignore`:
+
+```json
+{
+  "scripts": {
+    "dupes": "baseline-dupes . --also-ignore \"**/src/types/supabase/**\""
+  }
+}
+```
+
+jscpd's own `--ignore` **replaces** the config's list rather than merging into
+it (measured: a config that also ignored `**/cargo-baseline/**` scanned 61 files
+and found 1 clone; adding an unrelated `--ignore` took it to 109 files and 4
+clones). Without `--also-ignore`, a project with one generated directory to
+exclude would have to restate every shared pattern in its own script, which is
+the duplication this runner exists to remove. `--also-ignore` merges through a
+generated config that is deleted again on the way out; it extends your own
+`--config` when you pass one. jscpd 5.x is a Rust binary that reads JSON only -
+it has no JS config loader - which is why this gate ships as a config file plus
+a runner rather than as a factory like `createKnipConfig`. Point another tool at
+the same file through `@busirocket/quality-config/jscpd`.
 
 `jscpd` itself stays a devDependency of the consuming project: the runner
 invokes it, it does not vendor it.
