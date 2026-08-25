@@ -186,6 +186,26 @@ export const createBaseConfig = (options: SharedConfigOptions = {}) => {
         // with normal bracket-notation array/object access
       },
     },
+    // ── dependency-cruiser's CommonJS config ────────────────────────────────
+    // Every repo adopting the baseline's quality gates writes a
+    // `.dependency-cruiser.cjs`: the tool loads CommonJS only, while the
+    // shared factory is TypeScript, so the file is CJS in an otherwise ESM
+    // project and reaches the factory through jiti. Without this it fails on
+    // `__filename`/`require`/`module` as undefined globals. The matching
+    // rule relaxation lives in createCodeQualityConfig, which is where the
+    // code-policy plugin is registered. Every adopter was otherwise copying
+    // both blocks into its own config.
+    {
+      files: ['**/.dependency-cruiser.cjs'],
+      languageOptions: {
+        globals: {
+          __filename: 'readonly',
+          __dirname: 'readonly',
+          module: 'writable',
+          require: 'readonly',
+        },
+      },
+    },
     prettier,
   ]
 }

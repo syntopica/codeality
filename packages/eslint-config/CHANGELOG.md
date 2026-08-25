@@ -3,6 +3,23 @@
 > Reconstructed from this repository's git history, which starts at the monorepo
 > migration. Each entry names the commit that introduced the version.
 
+## 0.7.1
+
+### Patch Changes
+
+- fix: the CommonJS `.dependency-cruiser.cjs` every adopter writes now lints
+  clean out of the box.
+
+  dependency-cruiser loads CommonJS config only, while the shared factory is
+  TypeScript, so the file every adopting repo creates is CJS in an otherwise ESM
+  project and reaches the factory through jiti. It failed on `__filename`,
+  `require` and `module` as undefined globals, and the jiti destructuring read
+  as a hidden top-level declaration under the Primary Unit Rule - so every
+  adopter was copying the same two relaxations into its own config.
+  `createBaseConfig` supplies the CommonJS globals and
+  `createCodeQualityConfig`, where the code-policy plugin is registered, turns
+  off the one rule.
+
 ## 0.7.0
 
 ### Minor Changes

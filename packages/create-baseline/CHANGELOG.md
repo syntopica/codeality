@@ -1,5 +1,12 @@
 # @busirocket/create-baseline
 
+## 0.3.7
+
+### Patch Changes
+
+- chore: refresh the `@busirocket/eslint-config` pin to `^0.7.1`. Derived from
+  the workspace by `pnpm sync-versions`; no check was added or removed.
+
 ## 0.3.6
 
 ### Patch Changes
