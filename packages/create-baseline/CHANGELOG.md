@@ -1,5 +1,20 @@
 # @busirocket/create-baseline
 
+## 0.5.1
+
+### Patch Changes
+
+- fix: `--write` adds `prepare: lefthook install` alongside the lefthook config.
+
+  Without it the generated `lefthook.yml` is inert: the hooks only reach
+  `.git/hooks` when `lefthook install` runs. Three repos in a row adopted the
+  gates with the file in place and no hook installed, and knip caught it by
+  reporting `lefthook` as an unused dependency.
+
+  The closing note also mentions `ERR_PNPM_IGNORED_BUILDS`, which is how pnpm
+  reports the other half of the same problem: lefthook's install script has to
+  be allowed for the hooks to be written.
+
 ## 0.5.0
 
 ### Minor Changes
