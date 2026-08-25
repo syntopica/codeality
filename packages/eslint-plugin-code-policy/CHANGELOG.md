@@ -1,6 +1,6 @@
 # eslint-plugin-code-policy
 
-## Unreleased
+## 0.7.0
 
 ### Minor Changes
 

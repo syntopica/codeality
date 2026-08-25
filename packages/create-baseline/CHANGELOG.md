@@ -1,5 +1,16 @@
 # @busirocket/create-baseline
 
+## 0.3.3
+
+### Patch Changes
+
+- chore: refresh the pins injected into scaffolded projects.
+
+  `@busirocket/eslint-config` `^0.6.0` -> `^0.7.0`, `eslint-plugin-code-policy`
+  `^0.6.0` -> `^0.7.0`, and `@busirocket/quality-config` `^0.4.0` -> `^0.5.0`.
+  Derived from the workspace by `pnpm sync-versions`; no check was added or
+  removed.
+
 ## 0.3.2
 
 ### Patch Changes
