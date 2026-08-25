@@ -4,6 +4,158 @@ Closed work from `TODO.md`, grouped by year and month.
 
 ## 2026-08
 
+- [x] 2026-08-25 - **`check:quality` names the gate that fails.** It was
+      `pnpm knip && pnpm knip:templates && ...`, six gates behind one exit
+      code - the reason a cold-run failure got recorded as "check:quality
+      failed" and could never be acted on. `scripts/check-quality.mjs` keeps the
+      chain's semantics (in order, first failure stops) and prints
+      `check:quality: FAIL     <step> (exit <code>)` plus the `pnpm run <step>`
+      to re-run. Verified both directions: the real run prints all six `running`
+      lines and `6 gates passed`, exit 0; a probe copy with an injected bad step
+      prints `check:quality: FAIL     definitely-not-a-script (exit 1)` and
+      exits 1. `docs/standards/quality-gates.md` documents it, along with the
+      pnpm bin-relink trap that produced one such failure locally.
+
+- [x] 2026-08-25 - **Next 16.3.2, two security overrides gone, and one flag that
+      explains why.** Closes the `[!]` that had held since 2026-08-04.
+  - **The alias is not rejected by Next 16.3 - its `tsc` bin is.** Next 16.3
+    flipped `experimental.useTypeScriptCli` to default-on, and that path locates
+    the compiler through the resolved `typescript` package's own `bin.tsc`.
+    `@typescript/typescript6@6.0.2` declares `bin.tsc6` and nothing else, so
+    `getTypeScriptPackageInfo` returns `tscPath: undefined` and `next build`
+    aborts with "It looks like you're trying to use TypeScript but do not have
+    the required package(s) installed" - having first run
+    `pnpm install --save-dev typescript` over the alias. Everything the check
+    actually resolves is fine: probed `hasNecessaryDependencies` from the
+    template directory with Next's own module and it returns `missing: []`.
+  - **`experimental.useTypeScriptCli: false` fixes it.** That sends Next back to
+    the compiler API entry (`lib/typescript.js`), which resolves through the
+    alias normally. Measured on 16.3.2: build fails without the flag, succeeds
+    with it, type-checks in 1.5s. The flag is experimental and the template
+    carries a comment saying exactly what removes it - the alias shipping a
+    `tsc` bin, or a move to a real `typescript` package.
+  - **Two of the three load-bearing overrides are now dead.** Deleted
+    `sharp@<0.35.0` (GHSA-f88m-g3jw-g9cj) and `postcss@<8.5.18`
+    (GHSA-6g55-p6wh-862q / GHSA-r28c-9q8g-f849) from `pnpm-workspace.yaml` and
+    reinstalled: `pnpm audit --audit-level=high` exits 0, total findings still 2
+    (1 low, 1 moderate - the pair deliberately left below the gate). `tmp`
+    stays: `@lhci/cli` is still 0.15.1 and has no newer floor.
+  - **The pins are ranges again.** `next`, `eslint-config-next` and
+    `@next/eslint-plugin-next` go from an exact `16.2.12` to `^16.3.2`, and
+    `docs/adoption/new-repo.md` no longer tells adopters the ceiling is
+    untested - it gives them the flag and the measurement.
+  - Evidence: `pnpm check:ci` 39/39 exit 0, `pnpm check:quality` exit 0,
+    `pnpm check:security` exit 0 (gitleaks clean, audit clean at `high`,
+    actionlint clean), `pnpm perf:check` exit 0, `pnpm sync-versions:check` in
+    sync.
+
+- [x] 2026-08-25 - **Release tags: the convention is now checked, not
+      remembered.** `scripts/release-check.mjs` reads `git cat-file -t` for
+      every tag and warns on each lightweight one, naming it and the
+      `git tag -a <tag> -m "<message>"` form that avoids the next. It warns
+      rather than fails, because a pushed release tag is immutable and nine of
+      them already exist. README's publish section states the convention.
+  - **The backlog entry undercounted.** It said three lightweight tags, all cut
+    2026-08-04, with everything before them annotated. The check reports nine of
+    twenty: `create-baseline@0.2.0`, `0.2.1`, `0.3.2`, `eslint-config@0.4.1`,
+    `0.4.2`, `0.6.0`, `eslint-plugin-code-policy@0.5.1`, `0.5.2` and
+    `quality-config@0.3.0`. The habit predates the date the entry blamed.
+  - Evidence: `pnpm release:check --no-npm` exits 0 with the warning block and
+    six packages reported fully released; `eslint scripts --max-warnings 0`
+    clean.
+
+- [x] 2026-08-25 - **Two gates that were quietly not gating.**
+  - **`file-kind-placement` was blind to every `.tsx` file.**
+    `endsWith('Mapper.ts')` and its four siblings anchored kind detection on
+    `.ts`, so `orderMapper.tsx` reported nothing while `userMapper.ts` beside it
+    reported `code-policy/file-kind-placement` - and in a React codebase the
+    `.tsx` half is where mappers and formatters actually get written.
+    `utils/strip-code-extension` removes the extension first, covering `.tsx`,
+    `.js`, `.jsx` and the `.mts`/`.cts`/`.mjs`/`.cjs` variants. Probed across
+    all eight templates before shipping: zero new findings, so the fix widens
+    coverage without moving any existing file.
+  - **The jscpd config stopped being nine copies.** `.jscpd.json` sat byte for
+    byte in the repo root and all eight templates, and every adopting project
+    had to copy it again - the only gate in the set that was hand-maintained
+    duplication rather than shared config. It now lives once, as `jscpd.json`
+    inside `@busirocket/quality-config`, with a `baseline-dupes` runner that
+    points jscpd at it and forwards any extra flag. The nine files are deleted;
+    `dupes` is `baseline-dupes .` in templates and
+    `baseline-dupes packages scripts` at the root.
+  - **The factory the TODO asked for is not possible, and that is the finding.**
+    jscpd 5.x is a Rust binary that reads JSON only - no JS config loader - so
+    `createJscpdConfig` could only have generated a file each consumer still
+    committed, which is the duplication being removed. A JSON file read in place
+    plus a runner is the equivalent that actually removes it; the config is also
+    resolvable directly as `@busirocket/quality-config/jscpd`.
+  - **knip needed telling, twice.** With the script no longer naming `jscpd`,
+    knip reported it as an unused devDependency in all eight templates - the
+    dependency is real, the runner spawns the binary rather than vendoring it.
+    Added to `ignoreDependencies` in both places that judge a template: the root
+    `knip.config.ts` (`pnpm knip`) and `createKnipConfig`
+    (`pnpm knip:templates`, and the gate a scaffolded project runs). Declaring
+    `jscpd` an optional peer of `quality-config` instead was tried and rejected:
+    it trades eight errors for one, `Referenced optional peerDependencies`, and
+    knip scores that at error level too.
+  - Evidence: `pnpm check:ci` 39/39 tasks, exit 0; `pnpm check:quality` exit 0;
+    `pnpm knip` and `pnpm knip:templates` exit 0 (both were exit 1 mid-change,
+    measured); `turbo run dupes --force` 8/8 templates, 0 clones each; root
+    `pnpm dupes` 4 clones at 0.48% tokens, under the 1% threshold, unchanged
+    from before; `eslint-plugin-code-policy` 138 tests pass. CHANGELOG
+    `Unreleased` entries added to both packages; no version bumps.
+
+- [x] 2026-08-25 - **cargo-baseline: test scope answered once, and clippy
+      actually runs.** Four backlog items that all turned on the same question -
+      what counts as test code.
+  - **`check` now walks `<crate>/tests`, not just `<crate>/src`.** Cargo
+    integration tests were outside every rule, never read rather than
+    deliberately exempted. `parse_source_files` takes both roots, and
+    `collect_rust_files` skips any directory with its own `Cargo.toml` - without
+    that, this crate's deliberately-broken fixture at
+    `tests/fixtures/bad-crate/src/store.rs` reported its three planted errors
+    against cargo-baseline itself (measured: `baseline check .` went from clean
+    to 3 errors before the guard was added).
+  - **Which rules speak in test scope is now one decision, not five.**
+    `Rule::applies_to_test_scope` defaults to `false` and `run_rules` filters;
+    `max-file-lines` and `sync-tauri-command` dropped their private copies of
+    the guard. `no-inline-sql` is the one opt-in: a fixture query is still a
+    query, and a large one diffs better as `sql/*.sql` behind `include_str!`. An
+    inline `#[cfg(test)] mod` block inside a production file stays exempt - a
+    table-driven test spells its rows out. Pinned by
+    `check_reads_cargo_integration_tests_for_sql_only`, which asserts
+    `tests/integration.rs` reports `no-inline-sql` and does _not_ report
+    `one-primary-unit` on its second `#[test]` fn.
+  - **`is_cfg_test_item` reads the whole predicate.** It parsed the attribute
+    args as a single `syn::Ident`, so `#[cfg(all(test, feature = "x"))]` and
+    `#[cfg(any(test, debug_assertions))]` both returned `false` and every rule
+    downstream scanned those modules as production code.
+    `engine/cfg_meta_mentions_test` walks `all(..)`/`any(..)` recursively and
+    deliberately does not descend into `not(..)`, so `#[cfg(not(test))]` stays
+    production.
+  - **`unwrap-density` counts production calls and points at the worst file.**
+    The tip read `./src/baseline_command.rs:1: 54 unwrap()/expect() calls`
+    against a 20-line file - the crate total pinned to whichever file parsed
+    first. `engine/production_unwrap_lines` returns one entry per call outside
+    test scope and outside comment lines (the scan is textual, so prose naming
+    the calls counted itself), and the tip anchors to the file contributing the
+    most, at its first call. Re-measured on the crate itself: 54 against a wrong
+    file became no tip at all - 13 production calls, then 9 once comment lines
+    stopped counting, under the threshold of 10.
+  - **clippy runs in CI.** `Cargo.toml` has declared `unwrap_used`,
+    `expect_used` and `panic` as `deny` since the crate landed, and the `rust`
+    job ran `fmt` and `test` only; the crate has no `package.json` so
+    `turbo run lint` never reached it either. Added
+    `cargo clippy --workspace --all-targets -- -D warnings`, and the job is now
+    named `Rust` rather than `Rust tests`. It reports nothing today, which is
+    the point: the deny list was already satisfied and unguarded.
+  - Evidence: `cargo test --workspace` 94 passed / 0 failed (90 unit + 4
+    integration, up from 87);
+    `cargo clippy --workspace --all-targets -D warnings` clean;
+    `cargo fmt -- --check` clean; `cargo run -- baseline check .` reports 0
+    errors 0 tips; same on `templates/tauri-app/src-tauri`; `actionlint` clean.
+    README and `docs/guides/rust-baseline-adoption.md` rewritten for the new
+    scope rules.
+
 - [x] 2026-08-24 - **Adoption backlog cleared:** the twelve findings that three
       real adoptions (consumer-y, consumer-t, consumer-x) left open.
   - **`createKnipConfig` is configurable instead of a fixed preset.** Four
