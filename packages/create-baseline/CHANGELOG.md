@@ -1,5 +1,11 @@
 # @busirocket/create-baseline
 
+## 0.4.1
+
+### Patch Changes
+
+- chore: refresh the `@busirocket/eslint-config` pin to `^0.7.3`.
+
 ## 0.4.0
 
 ### Minor Changes

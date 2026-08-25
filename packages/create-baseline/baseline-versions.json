@@ -1,5 +1,5 @@
 {
-  "@busirocket/eslint-config": "^0.7.2",
+  "@busirocket/eslint-config": "^0.7.3",
   "@busirocket/prettier-config": "^0.1.2",
   "@busirocket/tsconfig": "^0.2.1",
   "@busirocket/quality-config": "^0.7.0",

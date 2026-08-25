@@ -3,6 +3,24 @@
 > Reconstructed from this repository's git history, which starts at the monorepo
 > migration. Each entry names the commit that introduced the version.
 
+## 0.7.3
+
+### Patch Changes
+
+- fix: `createTailwindConfig()` without options says what is missing.
+
+  `cssConfigPath` is genuinely mandatory - eslint-plugin-tailwindcss v4 resolves
+  the design system from the Tailwind entry file - but calling the factory with
+  no arguments produced a bare
+  `TypeError: Cannot read properties of undefined (reading 'cssConfigPath')`
+  thrown from inside ESLint, naming neither the factory nor the option.
+  `eslint.config.ts` is loaded by jiti, which does not type-check the call, so
+  the type signature never catches it: hit adopting consumer-u, whose config
+  predates the option.
+
+  The factory now throws a named error with the fix in it. The type stays
+  required, so a TypeScript caller is still checked at compile time.
+
 ## 0.7.2
 
 ### Patch Changes
