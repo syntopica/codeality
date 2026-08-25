@@ -2,7 +2,7 @@
   "@busirocket/eslint-config": "^0.7.2",
   "@busirocket/prettier-config": "^0.1.2",
   "@busirocket/tsconfig": "^0.2.1",
-  "@busirocket/quality-config": "^0.6.1",
+  "@busirocket/quality-config": "^0.7.0",
   "eslint-plugin-code-policy": "^0.7.3",
   "jscpd": "^5.0.14",
   "knip": "^6.31.0",

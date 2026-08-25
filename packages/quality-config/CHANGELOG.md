@@ -1,5 +1,22 @@
 # @busirocket/quality-config
 
+## 0.7.0
+
+### Minor Changes
+
+- feat: `baseline-type-coverage --at-least <n>` freezes a repo below the shared
+  threshold.
+
+  The bar is 99% and the runner had no way to say otherwise, so a codebase that
+  measures 96.93% could not wire this gate at all: the choice was an unenforced
+  gate or none. Found adopting capture-service, whose 25 uncovered expressions sit
+  almost entirely in one database row mapper -- a real boundary, not sloppiness.
+
+  Freezing at the measured value makes coverage a ratchet: it cannot fall, and
+  the number in `package.json` is the debt, visible in every diff that changes
+  it. The flag refuses a value above the shared threshold, so it can only ever
+  lower the bar for a project that needs it, never restate or raise it.
+
 ## 0.6.1
 
 ### Patch Changes
