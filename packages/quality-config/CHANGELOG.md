@@ -1,5 +1,24 @@
 # @busirocket/quality-config
 
+## 0.6.1
+
+### Patch Changes
+
+- fix: `createKnipConfig` ignores every tool this package's runners spawn.
+
+  `baseline-dupes` spawns `jscpd`, `baseline-type-coverage` spawns
+  `type-coverage`, `baseline-deps-graph` spawns `depcruise` - all through
+  `pnpm exec`, so a project that wires the runner into its scripts never names
+  the underlying tool anywhere knip can see and knip reports a real dependency
+  as unused. Only `jscpd` was on the list; found in busirocket the moment its
+  `type-coverage` script became `baseline-type-coverage` and `pnpm knip` went
+  red on a dependency it uses on every run.
+
+  `dependency-cruiser` is included even though a project calling `depcruise`
+  directly resolves it fine: there knip emits a `Remove from ignoreDependencies`
+  hint, which is a hint and not a gate failure, and the cost of leaving it off
+  is a real dependency silently reported as dead.
+
 ## 0.6.0
 
 ### Minor Changes

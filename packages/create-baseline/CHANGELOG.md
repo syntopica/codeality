@@ -1,5 +1,12 @@
 # @busirocket/create-baseline
 
+## 0.3.6
+
+### Patch Changes
+
+- chore: refresh the `@busirocket/quality-config` pin to `^0.6.1`. Derived from
+  the workspace by `pnpm sync-versions`; no check was added or removed.
+
 ## 0.3.5
 
 ### Patch Changes

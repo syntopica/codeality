@@ -1,6 +1,6 @@
 {
   "name": "@busirocket/quality-config",
-  "version": "0.6.0",
+  "version": "0.6.1",
   "private": false,
   "packageManager": "pnpm@11.18.0",
   "license": "MIT",
