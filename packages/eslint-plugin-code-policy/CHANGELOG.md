@@ -1,5 +1,39 @@
 # eslint-plugin-code-policy
 
+## 0.7.1
+
+### Patch Changes
+
+- fix: a PascalCase `.tsx`/`.jsx` file is a component, not a placement-checked
+  kind.
+
+  0.7.0 made `file-kind-placement` strip the extension before its suffix check,
+  which was right for `orderMapper.tsx` and wrong for every React component
+  whose name ends in a kind word. Surveyed across 22 adopting repos: all 45
+  files newly matching a kind suffix on a `.tsx` extension were PascalCase
+  components - `MarketSelector.tsx`, `DateRangeSelector.tsx`,
+  `CategorySelector.tsx` - and none were units that belonged in `selectors/`.
+  Reproduced in consumer-r: 0 errors became 11, all false.
+
+  `.ts` is unaffected, since it carries no JSX: `UserMapper.ts` is still a
+  mapper. The rule now shares one definition of "component file" with the
+  colocation anchor that already had it.
+
+- fix: destructuring one call's result counts as one unit.
+
+  0.7.0 made `one-primary-unit` count every name a pattern binds, which flagged
+  two library idioms that cannot be split because the factory returns a single
+  object: NextAuth v5's
+  `export const { handlers, auth, signIn, signOut } = NextAuth(config)` and
+  next-intl's
+  `export const { Link, redirect, usePathname, useRouter, getPathname } = createNavigation(routing)`.
+  Both are verbatim from their official setup guides, and both were found in
+  real repos (consumer-p, busirocket).
+
+  A declarator whose init is a call or `new` expression now counts once. The
+  case the change targeted is unaffected, because its init is a plain reference:
+  `export const { first, second } = source` still counts as two.
+
 ## 0.7.0
 
 ### Minor Changes

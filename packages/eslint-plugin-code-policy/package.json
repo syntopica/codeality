@@ -1,6 +1,6 @@
 {
   "name": "eslint-plugin-code-policy",
-  "version": "0.7.0",
+  "version": "0.7.1",
   "description": "Architectural linting for TypeScript \u00b7 enforce atomic files, explicit public APIs, clean runtime boundaries, and view/logic separation.",
   "engines": {
     "node": ">=20"

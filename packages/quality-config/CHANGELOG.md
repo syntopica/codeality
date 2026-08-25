@@ -1,5 +1,36 @@
 # @busirocket/quality-config
 
+## 0.6.0
+
+### Minor Changes
+
+- feat: `baseline-dupes --also-ignore` adds ignore patterns on top of the shared
+  list.
+
+  jscpd's own `--ignore` replaces the config's list rather than merging into it.
+  Measured on this repo: a config that also ignored `**/cargo-baseline/**`
+  scanned 61 files and found 1 clone; adding an unrelated `--ignore` took it to
+  109 files and 4 clones, the shared patterns gone.
+
+  That left a project with one generated directory to exclude - committed
+  Supabase types, a migrations folder, a cpanel build - restating every shared
+  pattern in its own `package.json`, which is the duplication this runner exists
+  to remove. Five of the nine repos surveyed carried exactly such an entry.
+  `--also-ignore` merges through a generated config that is deleted again on the
+  way out, and extends a caller-supplied `--config` when there is one.
+
+### Patch Changes
+
+- fix: `baseline-dupes` no longer mistakes a flag's value for a scan path.
+
+  It split arguments into paths and flags on a leading `-`, which cannot work:
+  `--min-tokens 120` and `--config x.json` carry a value that looks like
+  neither, so `120` was handed to jscpd as a directory to scan and a `--config`
+  value shifted the flag list, silently dropping the flag after it. Arguments
+  are now forwarded in the order given, untouched apart from `--also-ignore`;
+  the only argument the runner adds is `--config`, and only when the caller did
+  not pass one.
+
 ## 0.5.0
 
 ### Minor Changes
