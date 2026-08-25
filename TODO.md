@@ -51,3 +51,19 @@ verified complete - `[-]` obsolete or superseded.
       in `docs/standards/quality-gates.md`; CI installs from scratch and never
       sees it). Close this when a cold run fails again and names its step, or
       when enough cold runs pass to call it gone.
+
+## cargo-baseline
+
+- [ ] **`is_test_scope_file` no ve el `#[cfg(test)] mod X;` del padre**, asi que
+      pide una anotacion cuyo unico proposito es contentar a la herramienta.
+      `check` analiza cada fichero por separado: un modulo declarado en `mod.rs`
+      como `#[cfg(test)] mod hash_cache_tests;` se escanea como produccion salvo
+      que el fichero repita `#![cfg(test)]` dentro. Medido en `~/p/consumer-t` el
+      2026-08-25, contaba 23 `unwrap()` de test como produccion y clavaba el
+      total del crate (68) en ese fichero; con el atributo aadido el tip cae al
+      sitio real, `src/ops/clean_name.rs` con 45.
+      `docs/guides/rust-baseline-adoption.md` ya documenta el atributo como
+      remedio, pero es un impuesto que paga cada adopter por una limitacion
+      nuestra: `parse_source_files` ya parsea todos los ficheros del crate y
+      puede recolectar los `mod` declarados bajo `#[cfg(test)]` en cualquier
+      padre, tratando esos ficheros como test scope sin pedir nada.
