@@ -7,6 +7,10 @@
 // directly, so the shared config is read in place instead of copied.
 export function baselineScripts() {
   return {
+    // Without this the generated lefthook.yml is inert: the hooks are only
+    // written into .git/hooks when `lefthook install` runs. Three repos in a
+    // row adopted the gates with the file in place and no hook installed.
+    prepare: 'lefthook install',
     'lint:suppress': 'eslint . --suppress-all',
     'lint:prune': 'eslint . --prune-suppressions',
     dupes: 'baseline-dupes .',
