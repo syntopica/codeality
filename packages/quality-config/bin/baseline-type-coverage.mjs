@@ -12,9 +12,17 @@
 // to `any` is the point. `--strict` is on, so an `any` reached through a
 // generic argument counts as uncovered.
 //
+// `--at-least <n>` lowers the bar for one repo. It exists for adoption: a
+// codebase below the shared threshold cannot wire this gate at all otherwise,
+// so the choice is an unenforced gate or none. Freezing at the measured value
+// makes coverage a ratchet - it cannot fall - and the number in package.json
+// is the debt, visible in every diff that changes it. Raise it as the `any`s
+// go; never lower it to get green.
+//
 // Usage:
-//   baseline-type-coverage            # every workspace under the cwd
-//   baseline-type-coverage packages   # only under these directories
+//   baseline-type-coverage                  # every workspace under the cwd
+//   baseline-type-coverage packages         # only under these directories
+//   baseline-type-coverage --at-least 97    # freeze below the shared bar
 import { spawnSync } from 'node:child_process'
 import { existsSync, readdirSync, readFileSync } from 'node:fs'
 import { relative, resolve } from 'node:path'
@@ -51,7 +59,23 @@ if (!declared?.[1]) {
   )
   exit(1)
 }
-const threshold = declared[1]
+// A repo-local floor, when the project is still climbing toward the shared one.
+const atLeastIndex = argv.indexOf('--at-least')
+const override = atLeastIndex === -1 ? undefined : argv[atLeastIndex + 1]
+if (atLeastIndex !== -1 && !/^\d+(\.\d+)?$/.test(override ?? '')) {
+  console.error(
+    'baseline-type-coverage: --at-least needs a number, e.g. `--at-least 97`.',
+  )
+  exit(1)
+}
+if (override !== undefined && Number(override) > Number(declared[1])) {
+  console.error(
+    `baseline-type-coverage: --at-least ${override} is above the shared ` +
+      `threshold of ${declared[1]}. Drop the flag rather than restating it.`,
+  )
+  exit(1)
+}
+const threshold = override ?? declared[1]
 
 // Every path below is derived from the invoking project's own tree, which is
 // the point of this tool - not untrusted input.
@@ -69,7 +93,13 @@ function findWorkspaces(root, depth = 0) {
 }
 /* eslint-enable security/detect-non-literal-fs-filename */
 
-const roots = argv.slice(2).map((argument) => resolve(cwd(), argument))
+const roots = argv
+  .slice(2)
+  .filter((argument, index, all) => {
+    if (argument === '--at-least') return false
+    return all[index - 1] !== '--at-least'
+  })
+  .map((argument) => resolve(cwd(), argument))
 const workspaces = (roots.length ? roots : [cwd()]).flatMap((root) =>
   findWorkspaces(root),
 )
@@ -111,7 +141,10 @@ for (const workspace of workspaces) {
 
 if (failed) {
   console.error(
-    `\nEvery workspace must reach ${threshold}% non-\`any\` coverage.\n` +
+    `\nEvery workspace must reach ${threshold}% non-\`any\` coverage` +
+      (override === undefined
+        ? '.\n'
+        : ` (this project's own floor; the shared bar is ${declared[1]}%).\n`) +
       'Run `pnpm exec type-coverage --strict --detail` in the failing workspace to see where.',
   )
   exit(1)

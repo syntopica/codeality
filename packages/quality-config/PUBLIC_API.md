@@ -55,6 +55,11 @@ a Rust binary with no JS config loader, which is why this gate ships as a JSON
 file plus a runner rather than as a factory: the config is read in place, never
 copied into the consuming repo.
 
+`baseline-type-coverage` takes the directories to search and `--at-least <n>`, a
+repo-local floor for a project still climbing toward the shared threshold. It
+refuses a value above that threshold, so it can only lower the bar where one is
+needed, never raise or restate it.
+
 `--also-ignore <patterns>` adds ignore patterns **on top of** the shared list.
 jscpd's own `--ignore` replaces that list instead, so without this a project
 with one generated directory to exclude would have to restate every shared
