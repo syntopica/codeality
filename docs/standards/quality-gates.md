@@ -582,3 +582,24 @@ new above-the-fold image, a required third-party script) is fixed by updating
 the specific `.lighthouserc.json` budget in the same PR as the change that
 caused it, with the reason in the commit message - not by dropping `perf:check`
 from CI.
+
+## `check:quality` names the step that fails
+
+`pnpm check:quality` runs `scripts/check-quality.mjs`, which drives its six
+gates in order and prints `check:quality: FAIL     <step> (exit <code>)` before
+exiting with that step's code. Same semantics as the `pnpm a && pnpm b && ...`
+chain it replaces - first failure stops the run - but the failing gate is named
+rather than left to be recovered from the log. Re-run just that gate with
+`pnpm run <step>`.
+
+**A cold-run failure that is not a gate failure:** pnpm does not relink a
+workspace package's binaries when only that package's `bin` map changes. A
+`node_modules` installed before `@busirocket/quality-config` gained
+`baseline-type-coverage` still has no symlink for it, and `pnpm type-coverage`
+
+- a step of `check:quality` - dies with
+  `sh: baseline-type-coverage: command not found`. `pnpm install` reports
+  "Already up to date" and does not fix it, `--force` included. Deleting
+  `node_modules/.pnpm-workspace-state-v1.json` and
+  `node_modules/.package-map.json` and reinstalling does. CI installs from
+  scratch and never sees this.

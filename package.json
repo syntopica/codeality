@@ -28,7 +28,7 @@
     "audit:check": "pnpm audit --audit-level=high",
     "workflows:check": "actionlint",
     "publish:check": "turbo run publish:check",
-    "check:quality": "pnpm knip && pnpm knip:templates && pnpm deps:graph && pnpm deps:graph:aliased && pnpm type-coverage && pnpm publish:check",
+    "check:quality": "node scripts/check-quality.mjs",
     "check:security": "pnpm secrets:check && pnpm audit:check && pnpm workflows:check"
   },
   "devDependencies": {

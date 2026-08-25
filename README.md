@@ -82,7 +82,9 @@ is documented in
   CI-only, see the reference doc for why it isn't part of `check:ci`).
 - **`quality`** - `pnpm check:quality`: `knip` (dead files/exports/deps),
   `dependency-cruiser` (import cycles, orphan modules, package/template
-  boundary), and `publint`/`attw` (published package `exports` correctness).
+  boundary), `type-coverage`, and `publint`/`attw` (published package `exports`
+  correctness). It names the gate that fails rather than reporting only an
+  aggregate exit code.
 - **`security`** - three discrete CI steps, not the `check:security` script: a
   pinned `gitleaks` binary running `pnpm run secrets:check` (committed secrets,
   full git history - `gitleaks/gitleaks-action@v2` needs a paid license for
