@@ -5,6 +5,7 @@ import type { TSESTree } from '@typescript-eslint/utils'
 import { createRule } from '@/utils/create-rule.js'
 import { detectFileKind } from '@/utils/detect-file-kind.js'
 import { hasColocationAnchor } from '@/utils/has-colocation-anchor.js'
+import { isTestFilename } from '@/utils/is-test-filename.js'
 import { startsWithCamelPrefix } from '@/utils/starts-with-camel-prefix.js'
 import { stripFolderPrivacyPrefix } from '@/utils/strip-folder-privacy-prefix.js'
 
@@ -56,6 +57,10 @@ export default createRule<Options, MessageIds>({
     const allowGenericFolders = options?.allowGenericFolders ?? false
     const allowColocation = options?.allowColocation ?? false
     const filename = context.filename || context.physicalFilename || ''
+
+    // A test is named after the unit it covers, so reading its name as a kind
+    // would move it away from the code it tests.
+    if (isTestFilename(filename)) return {}
 
     if (
       filename.endsWith('.config.ts') ||

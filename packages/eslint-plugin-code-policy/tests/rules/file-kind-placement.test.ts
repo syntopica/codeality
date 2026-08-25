@@ -5,8 +5,13 @@ import rule from '@/rules/file-kind-placement.js'
 import { runRuleTest } from '@tests/rule-testers/runRuleTest.js'
 
 // Colocation detection reads the real directory of the linted file, so these
-// cases point at on-disk fixtures under tests/fixtures/colocation/.
-const fixtures = join(dirname(fileURLToPath(import.meta.url)), '../fixtures')
+// cases point at on-disk fixtures under fixtures/colocation/.
+//
+// They sit at the package root rather than under tests/, because the rule now
+// exempts anything under a `tests/` path component as test scope - which is
+// right for a consumer and would have made every fixture below silently
+// exempt, passing these cases for the wrong reason.
+const fixtures = join(dirname(fileURLToPath(import.meta.url)), '../../fixtures')
 const colocation = (...segments: string[]) =>
   join(fixtures, 'colocation', ...segments)
 
@@ -139,6 +144,22 @@ runRuleTest('file-kind-placement', rule, {
     {
       code: `export function ContentTypeSelector() { return null }`,
       filename: '/src/components/ContentTypeSelector/ContentTypeSelector.tsx',
+    },
+    // A test is named after the unit it covers. Reading that name as a kind
+    // demands the test move into `selectors/`, away from the code it tests.
+    // Found in consumer-i, whose tests/plans/selectSpacePlans.test.ts began
+    // reporting once eslint-config 0.7.0 gave test files real rules.
+    {
+      code: `export function selectSpacePlans() {}`,
+      filename: '/tests/plans/selectSpacePlans.test.ts',
+    },
+    {
+      code: `export function mapOrder() {}`,
+      filename: '/src/services/mapOrder.spec.tsx',
+    },
+    {
+      code: `export function formatDate() {}`,
+      filename: '/src/__tests__/formatDate.ts',
     },
   ],
   invalid: [

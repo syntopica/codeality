@@ -40,5 +40,11 @@ export default [
       'max-depth': 'off',
     },
   },
-  { ignores: ['dist/**'] },
+  {
+    // Colocation fixtures are sample trees the rule tester reads off disk by
+    // path, deliberately shaped to trip or satisfy placement rules. They are
+    // not source, are outside this package's tsconfig, and linting them only
+    // produces "was not found by the project service" on a staged-file run.
+    ignores: ['dist/**', 'fixtures/**'],
+  },
 ]

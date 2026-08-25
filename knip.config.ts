@@ -56,8 +56,10 @@ const config: KnipConfig = {
       // themselves as entry points.
       project: ['src/**/*.ts', 'tests/**/*.ts'],
       // Fixtures are read from disk by path, never imported, so knip cannot
-      // see a consumer and reports every one of them as an unused file.
-      ignore: ['tests/fixtures/**'],
+      // see a consumer and reports every one of them as an unused file. They
+      // live at the package root, not under tests/, because file-kind-placement
+      // exempts test scope and would otherwise exempt every fixture.
+      ignore: ['fixtures/**'],
     },
     'templates/*': {
       entry: TEMPLATE_GLOB,
