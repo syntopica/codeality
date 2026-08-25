@@ -1,5 +1,23 @@
 # eslint-plugin-code-policy
 
+## 0.7.3
+
+### Patch Changes
+
+- fix: `no-hidden-top-level-declarations` exempts `.dependency-cruiser.cjs`.
+
+  dependency-cruiser loads CommonJS config only while the shared factory is
+  TypeScript, so every adopting repo reaches it through a jiti destructuring at
+  module scope - a shape the tool dictates, not the author. eslint-config 0.7.1
+  turned the rule off for that file through a flat-config block, which is
+  defeated the moment a repo composes `eslint-plugin-code-policy/configs/*`
+  after `@busirocket/eslint-config`: the preset re-enables the rule and the
+  later block wins. Measured in consumer-p, whose config does exactly that.
+
+  The exemption now lives in the rule, beside the `*.config.*` ones, where no
+  order of composition can defeat it. eslint-config keeps supplying the CommonJS
+  globals and drops its now-redundant rule block.
+
 ## 0.7.2
 
 ### Patch Changes

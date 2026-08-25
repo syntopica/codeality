@@ -1,5 +1,12 @@
 # @busirocket/create-baseline
 
+## 0.3.8
+
+### Patch Changes
+
+- chore: refresh the `eslint-plugin-code-policy` and `@busirocket/eslint-config`
+  pins. Derived from the workspace by `pnpm sync-versions`.
+
 ## 0.3.7
 
 ### Patch Changes

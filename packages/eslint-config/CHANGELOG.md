@@ -3,6 +3,17 @@
 > Reconstructed from this repository's git history, which starts at the monorepo
 > migration. Each entry names the commit that introduced the version.
 
+## 0.7.2
+
+### Patch Changes
+
+- refactor: drop the `.dependency-cruiser.cjs` rule block, keep its globals.
+
+  `eslint-plugin-code-policy` 0.7.3 exempts that file inside the rule itself,
+  which is the only place a repo composing the plugin's own preset after this
+  config cannot override. `createBaseConfig` still supplies the CommonJS
+  globals, which no rule can provide.
+
 ## 0.7.1
 
 ### Patch Changes
