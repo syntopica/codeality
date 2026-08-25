@@ -28,6 +28,24 @@ pnpm dlx @busirocket/create-baseline@^0.1.0 --soft
 | `--soft`  | Print recommended `pnpm` / `npm` install lines (default if no other flag); also advises on missing config files         |
 | `--check` | Exit non-zero if baseline packages are missing from `package.json`                                                      |
 | `--hard`  | Like `--check`, and require `eslint.config.*` plus `knip.config.ts`/`.js`, `lefthook.yml`, and `renovate.json` to exist |
+| `--write` | Scaffold the quality-gate wiring this project is missing, then print what is still to install                           |
+
+### `--write`
+
+Writes `knip.config.ts`, `lefthook.yml`, `renovate.json` and
+`.dependency-cruiser.cjs` when they are absent, and adds the baseline scripts
+`package.json` does not already define. The knip preset is read off the
+project's dependencies, so a Tauri app gets `tauri` and a Nest service gets
+`nestjs`.
+
+**Nothing that exists is overwritten.** A file already in the repo is the
+project's, however it got there, and a tuned knip config is exactly what an
+adopter spends time on; the same goes for a `lint` script scoped to `src`.
+Re-running is a no-op.
+
+Two things the generated wiring cannot know and you should review before
+committing: `deps:graph` scopes itself to `src`, and a project with e2e specs or
+hand-run scripts needs those declared as knip entry points.
 
 Recommended baseline package versions are defined in `baseline-versions.json`
 shipped with this package; update that file when releasing aligned semver bumps.

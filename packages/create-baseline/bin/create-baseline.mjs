@@ -4,6 +4,8 @@ import { dirname, resolve } from 'node:path'
 import { cwd, exit } from 'node:process'
 import { fileURLToPath } from 'node:url'
 
+import { writeMissing } from './scaffold/writeMissing.mjs'
+
 const __dirname = dirname(fileURLToPath(import.meta.url))
 const PACKAGE_ROOT = resolve(__dirname, '..')
 
@@ -14,13 +16,14 @@ async function loadBaselineVersions() {
 }
 
 function parseArgs(argv) {
-  const flags = { check: false, soft: false, hard: false }
+  const flags = { check: false, soft: false, hard: false, write: false }
   for (const a of argv) {
     if (a === '--check') flags.check = true
     if (a === '--soft') flags.soft = true
     if (a === '--hard') flags.hard = true
+    if (a === '--write') flags.write = true
   }
-  if (!flags.check && !flags.soft && !flags.hard) {
+  if (!flags.check && !flags.soft && !flags.hard && !flags.write) {
     flags.soft = true
   }
   return flags
@@ -157,6 +160,32 @@ async function main() {
   }
 
   const deps = collectDeps(manifest)
+
+  // --write scaffolds the wiring rather than describing it. Every adopting
+  // repo was hand-writing the same four files and the same ten scripts; the
+  // only thing that varied was the knip preset, which is read off the
+  // dependencies. Nothing that already exists is touched.
+  if (flags.write) {
+    const { framework, written, scripts } = await writeMissing(root, deps)
+    console.log(`create-baseline: detected framework \`${framework}\`.`)
+    if (written.length) console.log(`  wrote: ${written.join(', ')}`)
+    if (scripts.length) console.log(`  added scripts: ${scripts.join(', ')}`)
+    if (!written.length && !scripts.length) {
+      console.log('  nothing to write; the wiring is already in place.')
+    }
+    const missingDeps = missingBaseline(deps, names)
+    if (missingDeps.length) {
+      console.log('\nStill missing from package.json:\n')
+      printInstall(missingDeps)
+    }
+    console.log(
+      '\nReview the generated files before committing: deps:graph scopes ' +
+        'itself to `src`, and a project with e2e specs or hand-run scripts ' +
+        'needs those declared as knip entry points.',
+    )
+    return
+  }
+
   const generatedTsConfig = await extendsGeneratedTsConfig(root)
   const required = generatedTsConfig
     ? names.filter((name) => name !== TSCONFIG_PACKAGE)

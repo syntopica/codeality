@@ -30,9 +30,17 @@ const BASELINE_CONSUMER_PACKAGES = [
 // packages/* - bump deliberately, in lockstep with the version used by the
 // templates.
 const THIRD_PARTY_PINS = {
+  // `create-baseline --write` generates a `.dependency-cruiser.cjs` that
+  // reaches the shared TypeScript factory through jiti, and a `type-coverage`
+  // script behind `baseline-type-coverage`. Both tools have to be installable
+  // from the same line that installs the config, or the generated wiring
+  // fails on first run.
+  'dependency-cruiser': '^18.1.1',
+  jiti: '^2.7.0',
   jscpd: '^5.0.14',
   knip: '^6.31.0',
   lefthook: '^2.1.10',
+  'type-coverage': '^2.30.1',
 }
 
 async function readWorkspaceVersions() {
