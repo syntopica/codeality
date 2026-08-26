@@ -1,5 +1,13 @@
 # @busirocket/create-baseline
 
+## 0.6.1
+
+### Patch Changes
+
+- fix: only mention the Next tsconfig's JSX trap to a Next project. 0.6.0
+  printed it to every adopter, including Vite and Nuxt ones the advice cannot
+  apply to.
+
 ## 0.6.0
 
 ### Minor Changes

@@ -231,12 +231,15 @@ async function main() {
       '\nReview the generated files before committing: deps:graph scopes ' +
         'itself to `src`, and a project with e2e specs or hand-run scripts ' +
         'needs those declared as knip entry points.\n\n' +
-        'If you also switch tsconfig.json to @busirocket/tsconfig/nextjs, it ' +
-        'sets `jsx: preserve` the way Next documents - SWC does the transform ' +
-        'at build time. Vitest does not go through SWC, so every .tsx test ' +
-        'fails to parse until its config names the runtime itself: `oxc: { ' +
-        "jsx: { runtime: 'automatic' } }` on Vite 8, which ignores the older " +
-        '`esbuild` block entirely.\n\n' +
+        (framework === 'nextjs'
+          ? 'If you also switch tsconfig.json to ' +
+            '@busirocket/tsconfig/nextjs, it sets `jsx: preserve` the way ' +
+            'Next documents - SWC does the transform at build time. Vitest ' +
+            'does not go through SWC, so every .tsx test fails to parse ' +
+            'until its config names the runtime itself: `oxc: { jsx: { ' +
+            "runtime: 'automatic' } }` on Vite 8, which ignores the older " +
+            '`esbuild` block entirely.\n\n'
+          : '') +
         'If pnpm reports ERR_PNPM_IGNORED_BUILDS for lefthook, allow its ' +
         'install script - `lefthook: true` under `allowBuilds:` in ' +
         'pnpm-workspace.yaml - or the hooks never reach .git/hooks.',
