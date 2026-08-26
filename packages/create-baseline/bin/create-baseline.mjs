@@ -1,10 +1,11 @@
 #!/usr/bin/env node
 import { access, readFile } from 'node:fs/promises'
-import { dirname, resolve } from 'node:path'
+import { dirname, relative, resolve } from 'node:path'
 import { cwd, exit } from 'node:process'
 import { fileURLToPath } from 'node:url'
 
 import { checkPeers } from './scaffold/checkPeers.mjs'
+import { workspaceRoots } from './scaffold/workspaceRoots.mjs'
 import { writeMissing } from './scaffold/writeMissing.mjs'
 
 const __dirname = dirname(fileURLToPath(import.meta.url))
@@ -44,6 +45,23 @@ function collectDeps(manifest) {
   const d = manifest.dependencies ?? {}
   const dev = manifest.devDependencies ?? {}
   return { ...d, ...dev }
+}
+
+// In a monorepo the per-workspace packages - eslint-config, tsconfig,
+// code-policy - are declared by each workspace, not by the root. Reading the
+// root manifest alone reports every one of them missing and tells the adopter
+// to install packages it already has, which is how consumer-y, a repo running
+// the whole toolchain, was told it had none of it.
+async function collectWorkspaceDeps(root) {
+  const deps = {}
+  for (const workspace of await workspaceRoots(root)) {
+    try {
+      Object.assign(deps, collectDeps(await readPackageJson(workspace)))
+    } catch {
+      /* a directory without a manifest is not a workspace */
+    }
+  }
+  return deps
 }
 
 function missingBaseline(deps, names) {
@@ -160,7 +178,12 @@ async function main() {
     exit(2)
   }
 
-  const deps = collectDeps(manifest)
+  // Workspace manifests first, so the root's own entry wins on a version clash
+  // and the report names the version the repo installs at its top level.
+  const deps = {
+    ...(await collectWorkspaceDeps(root)),
+    ...collectDeps(manifest),
+  }
 
   // The ESLint peers the project's own config reaches for. pnpm reports a
   // mismatch as one line on install; the consequence surfaces much later as a
@@ -168,6 +191,16 @@ async function main() {
   const reportPeers = async () => {
     const peers = await checkPeers(root)
     if (!peers) {
+      // A monorepo installs the config per workspace, not at the root, so each
+      // one carries its own peers and is checked on its own terms.
+      let checked = false
+      for (const workspace of await workspaceRoots(root)) {
+        const workspacePeers = await checkPeers(workspace)
+        if (!workspacePeers) continue
+        checked = true
+        printPeers(workspacePeers, relative(root, workspace))
+      }
+      if (checked) return
       // The config is not installed yet, so there is nothing to compare
       // against. Say so: silence here reads as "peers are fine", and the
       // consequence is an opaque ESLint crash on the first lint run.
@@ -178,9 +211,15 @@ async function main() {
       )
       return
     }
-    const { missing, mismatched } = peers
+    printPeers(peers)
+  }
+
+  // One report per config location: the root in a single-package repo, each
+  // workspace in a monorepo. `where` labels which.
+  function printPeers({ missing, mismatched }, where) {
     if (!missing.length && !mismatched.length) return
-    console.log("\nESLint peers this project's config needs:\n")
+    const scope = where ? ` in ${where}` : ''
+    console.log(`\nESLint peers this project's config needs${scope}:\n`)
     for (const { name, range } of missing) {
       console.log(`  missing   ${name} (${range})`)
     }
@@ -190,7 +229,7 @@ async function main() {
     const spec = [...missing, ...mismatched]
       .map(({ name, range }) => `${name}@${range.replace(/^>=/, '^')}`)
       .join(' ')
-    console.log(`\n  pnpm add -D ${spec}`)
+    console.log(`\n  pnpm add -D ${spec}${where ? ` --filter ${where}` : ''}`)
     console.log(
       '\n@busirocket/eslint-config ships TypeScript source rather than a ' +
         'build, so these resolve from your project. A missing or too-old one ' +

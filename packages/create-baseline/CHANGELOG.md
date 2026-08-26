@@ -1,5 +1,21 @@
 # @busirocket/create-baseline
 
+## 0.8.0
+
+### Minor Changes
+
+- feat: read a monorepo's workspace manifests, not just the root one.
+
+  In a pnpm or npm workspace the per-package dependencies -- eslint-config,
+  tsconfig, code-policy -- are declared by each workspace. Reading only the root
+  manifest reported every one of them missing: consumer-y, a repo already
+  running the whole toolchain across six workspaces, was told it had none of it,
+  and the peer check reported "not verified -- not installed here yet" about
+  packages that were installed and working.
+
+  Both now walk the workspaces the repo itself declares, and the peer report
+  labels each workspace and suggests `--filter` for it.
+
 ## 0.7.0
 
 ### Minor Changes
