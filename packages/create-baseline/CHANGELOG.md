@@ -1,5 +1,33 @@
 # @busirocket/create-baseline
 
+## 0.6.0
+
+### Minor Changes
+
+- feat: recognise every filename a gate tool would load, and say so instead of
+  writing a file the tool ignores.
+
+  consumer-m carried a `knip.json` that set `project` to
+  `["tsconfig.json"]`, so knip scanned almost nothing: 34 live dependencies
+  reported as unused and 23 genuinely dead files never found. `--write` checked
+  for `knip.config.ts` and `knip.config.js`, saw neither, and wrote the shared
+  factory next to it. Knip went on loading the json. The gate stayed broken
+  while looking configured.
+
+  Each entry now lists every filename its tool actually resolves -- knip's
+  seven, lefthook's three, renovate's six, dependency-cruiser's five -- and a
+  shadowed config is named in the output with what to do about it, rather than
+  skipped in silence.
+
+- feat: `--write` names the vitest trap that comes with the shared Next
+  tsconfig.
+
+  `@busirocket/tsconfig/nextjs` sets `jsx: preserve`, which is what Next
+  documents: SWC does the transform at build time. Vitest does not go through
+  SWC, so every `.tsx` test fails to parse until its own config names the
+  runtime -- and on Vite 8 the older `esbuild` block is ignored, so a config
+  that used to work silently stops.
+
 ## 0.5.2
 
 ### Patch Changes
