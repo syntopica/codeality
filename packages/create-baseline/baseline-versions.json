@@ -2,7 +2,7 @@
   "@busirocket/eslint-config": "^0.7.3",
   "@busirocket/prettier-config": "^0.2.0",
   "@busirocket/tsconfig": "^0.2.1",
-  "@busirocket/quality-config": "^0.8.1",
+  "@busirocket/quality-config": "^0.9.0",
   "eslint-plugin-code-policy": "^0.7.3",
   "dependency-cruiser": "^18.1.1",
   "jiti": "^2.7.0",

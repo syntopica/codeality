@@ -1,5 +1,14 @@
 # @busirocket/create-baseline
 
+## 0.7.0
+
+### Minor Changes
+
+- feat: detect TanStack Start and pick its knip preset.
+
+  A Start app carries both react and vite, so it was detected as `vite-react`
+  and scaffolded with entry globs that match nothing in it.
+
 ## 0.6.1
 
 ### Patch Changes

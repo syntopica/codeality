@@ -1,5 +1,17 @@
 # @busirocket/quality-config
 
+## 0.9.0
+
+### Minor Changes
+
+- feat: `tanstack-start` knip preset.
+
+  TanStack Start has no `index.html` and no `src/main.tsx`: the router is the
+  root of the graph and the framework generates `routeTree.gen.ts` from
+  file-based routes. Adopting consumer-h under the `vite-react` preset left two
+  permanent "Refine entry pattern (no matches)" hints and reached the graph only
+  by accident.
+
 ## 0.8.1
 
 ### Patch Changes

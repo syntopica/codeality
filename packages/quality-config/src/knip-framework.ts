@@ -4,6 +4,7 @@ export type KnipFramework =
   | 'nestjs'
   | 'nextjs'
   | 'nuxt'
+  | 'tanstack-start'
   | 'tauri'
   | 'ts-package'
   | 'vite-react'
@@ -45,6 +46,21 @@ export const FRAMEWORK_ENTRIES: Record<
   nuxt: {
     entry: ['app/**/*.vue', 'server/**/*.ts', 'nuxt.config.*'],
     project: ['app/**/*.{ts,vue}', 'server/**/*.ts'],
+  },
+  // TanStack Start has no index.html and no src/main.tsx: the router is the
+  // root of the graph and the framework generates routeTree.gen.ts from the
+  // file-based routes. `src/{server,start,client}.{ts,tsx}` covers the
+  // server entry across the versions that renamed it - a project has one or
+  // two of them, and the brace alternation keeps the ones it lacks from
+  // becoming "Refine entry pattern" hints.
+  'tanstack-start': {
+    entry: [
+      'src/router.{ts,tsx}',
+      'src/routes/**/*.{ts,tsx}',
+      'src/{server,start,client}.{ts,tsx}',
+      'vite.config.*',
+    ],
+    project: ['src/**/*.{ts,tsx}'],
   },
   tauri: {
     // The scaffolded tauri-app frontend is React, so its entry is

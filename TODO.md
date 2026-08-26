@@ -67,3 +67,23 @@ verified complete - `[-]` obsolete or superseded.
       nuestra: `parse_source_files` ya parsea todos los ficheros del crate y
       puede recolectar los `mod` declarados bajo `#[cfg(test)]` en cualquier
       padre, tratando esos ficheros como test scope sin pedir nada.
+
+## quality-config
+
+- [ ] **`baseline-type-coverage` measures nothing on a solution-style
+      `tsconfig.json`, and says `ok`.** Measured in `~/p/consumer-g` on
+      2026-08-26, where the root `tsconfig.json` is
+      `{"files": [], "references": [tsconfig.app.json, tsconfig.node.json,     tsconfig.next.json]}`:
+      the runner answered `type-coverage: ok    .  0 / 0` and exited 0, so a
+      repository that wires this gate as published gets a green gate over zero
+      identifiers. The project's own `scripts/type-coverage.ts`, which passes
+      `-p` per referenced project, measures 310,327 identifiers at 99.48% and
+      41,361 at 99.51% on the same tree. `findWorkspaces` stops at the presence
+      of a `tsconfig.json` and the spawn passes no `-p`, and no flag can aim it
+      at a referenced project, so that adopter had to keep its own script.
+      Second defect in the same run: discovery ignored `.gitignore` and
+      descended into `artifacts/bamboobox-findings`, a gitignored vendored tree
+      that repository had deliberately excluded from its root quality scans,
+      reporting it as a checked workspace. Two fixes worth making together —
+      follow `references` when a discovered `tsconfig.json` contributes no files
+      of its own, and skip gitignored directories during discovery.
