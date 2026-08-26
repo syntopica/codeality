@@ -1,5 +1,6 @@
 use crate::config::BaselineConfig;
 use crate::engine::diagnostic::Diagnostic;
+use crate::engine::cfg_test_module_paths::cfg_test_module_paths;
 use crate::engine::file_context::FileContext;
 use crate::engine::production_unwrap_lines::production_unwrap_lines;
 use crate::engine::severity::Severity;
@@ -12,9 +13,12 @@ use crate::engine::severity::Severity;
 /// against whichever file happened to be parsed first sent readers to a
 /// 20-line module and blamed it for the whole crate.
 pub fn unwrap_density_tip(files: &[FileContext], cfg: &BaselineConfig) -> Vec<Diagnostic> {
+    // Resolved once for the crate: which file is test scope depends on what
+    // some *other* file declares, so it cannot be read per file.
+    let declared_test_scope = cfg_test_module_paths(files);
     let per_file: Vec<(&FileContext, Vec<usize>)> = files
         .iter()
-        .map(|ctx| (ctx, production_unwrap_lines(ctx)))
+        .map(|ctx| (ctx, production_unwrap_lines(ctx, &declared_test_scope)))
         .filter(|(_, lines)| !lines.is_empty())
         .collect();
 

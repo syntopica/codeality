@@ -4,6 +4,19 @@ Closed work from `TODO.md`, grouped by year and month.
 
 ## 2026-08
 
+- [x] 2026-08-26 - **cargo-baseline reads the declaring `mod`, so a
+      `#[cfg(test)] mod name;` file is test scope without an inner attribute.**
+      New `engine/cfg_test_module_paths.rs` resolves those declarations across
+      the crate's parsed files (2018-edition module resolution, both `name.rs`
+      and `name/mod.rs`, test scope inherited through plain child modules), and
+      `is_test_scope_file` takes the resulting set. Verified against a fixture
+      reproducing the consumer-t shape: before, 23 test `unwrap()` calls counted
+      as production plus a spurious `file-matches-item` error; after, zero of
+      each. `~/p/consumer-t/src-tauri` now anchors the tip at
+      `src/ops/clean_name.rs` with the correct crate total of 45. 100 tests
+      pass. `docs/guides/rust-baseline-adoption.md` no longer asks adopters to
+      add `#![cfg(test)]` for this tool's sake.
+
 - [x] 2026-08-25 - **Ran 0.7.0 / 0.5.0 against the estate before either reached
       npm, and it found three defects.** 22 repos adopt
       `eslint-plugin-code-policy`, four carry a Rust crate, nine commit a

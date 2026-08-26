@@ -1,3 +1,6 @@
+use std::collections::HashSet;
+use std::path::PathBuf;
+
 use crate::engine::cfg_test_line_ranges::cfg_test_line_ranges;
 use crate::engine::file_context::FileContext;
 use crate::engine::is_test_scope_file::is_test_scope_file;
@@ -11,8 +14,11 @@ use crate::engine::is_test_scope_file::is_test_scope_file;
 /// inline `#[cfg(test)] mod` ranges do too - the same asymmetry
 /// `max-file-lines` already corrects. Comment lines are skipped as well: the
 /// scan is textual, so prose naming the calls it counts would count itself.
-pub fn production_unwrap_lines(ctx: &FileContext) -> Vec<usize> {
-    if is_test_scope_file(ctx) {
+pub fn production_unwrap_lines(
+    ctx: &FileContext,
+    declared_test_scope: &HashSet<PathBuf>,
+) -> Vec<usize> {
+    if is_test_scope_file(ctx, declared_test_scope) {
         return Vec::new();
     }
     let test_ranges = cfg_test_line_ranges(&ctx.ast);
@@ -33,6 +39,10 @@ pub fn production_unwrap_lines(ctx: &FileContext) -> Vec<usize> {
 #[allow(clippy::unwrap_used)]
 mod tests {
     use super::*;
+
+    fn production_unwrap_lines(ctx: &FileContext) -> Vec<usize> {
+        super::production_unwrap_lines(ctx, &HashSet::new())
+    }
     use crate::engine::parse_file_ctx::parse_file_ctx;
 
     #[test]

@@ -140,14 +140,15 @@ whole crate, add `sync-tauri-command` to `disabled_rules` in `baseline.toml`.
 
 `cargo baseline check` walks `<crate>/src` and `<crate>/tests`, skipping any
 nested crate it finds on the way (a directory with its own `Cargo.toml`, such as
-a fixture project). Three forms count as whole-file test scope:
+a fixture project). Four forms count as whole-file test scope:
 
 - a cargo integration test under `<crate>/tests`;
 - a `tests` directory under `src` (`src/db/tests/mod.rs`);
+- a file another module declares as `#[cfg(test)] mod name;`;
 - a file carrying the `#![cfg(test)]` inner attribute.
 
-The structural rules skip all three. `no-inline-sql` does not: a fixture query
-is still a query, and a large one reads and diffs better as `sql/*.sql` behind
+The structural rules skip all four. `no-inline-sql` does not: a fixture query is
+still a query, and a large one reads and diffs better as `sql/*.sql` behind
 `include_str!`. If a crate genuinely wants inline SQL in its tests, disable the
 rule crate-wide in `baseline.toml` rather than reshaping the fixtures.
 
@@ -156,20 +157,16 @@ narrow case and stays fully exempt: its lines do not count against
 `max-file-lines`, its `.unwrap()`/`.expect()` calls do not count toward
 `unwrap-density`, and SQL inside it is not reported.
 
-The `#![cfg(test)]` form is what a module declared as `#[cfg(test)] mod tests;`
-needs. Without the attribute the file is scanned as production code and
-`max-file-lines` charges the crate's budget for it. Add the attribute to the
-module file rather than reshaping the layout:
+A file reached only through `#[cfg(test)] mod name;` needs nothing added to it.
+The declaring `mod` is read too, so the file is recognised as test scope from
+the declaration alone, and test scope is inherited: a plain `mod deeper;` inside
+such a file is test scope as well.
 
-```rust
-// src/db/queries/tests.rs
-#![cfg(test)]
-
-use super::*;
-```
-
-The alternative - a `tests/mod.rs` with an inner wrapper module - runs into
-clippy's `module_inception` when the wrapper is also called `tests`.
+This used to require an `#![cfg(test)]` inner attribute in each such file,
+because only that file was read. Measured in a real crate, the omission counted
+23 test `.unwrap()` calls as production and pinned the crate's whole total on
+the test file. The attribute is still honoured and still valid Rust - there is
+just no longer any reason to add one for this tool's sake.
 
 ## 8. Cross-file duplication (jscpd)
 

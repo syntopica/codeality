@@ -1,3 +1,6 @@
+use std::collections::HashSet;
+use std::path::PathBuf;
+
 use crate::engine::file_context::FileContext;
 use crate::engine::is_cfg_test_item::is_cfg_test_item;
 
@@ -18,8 +21,13 @@ use crate::engine::is_cfg_test_item::is_cfg_test_item;
 /// `check` walks it as a second root, and it is recognised by the *absence*
 /// of any `src` component, which is what separates it from a fixture crate
 /// parked under a `tests/` path.
-pub fn is_test_scope_file(ctx: &FileContext) -> bool {
-    if is_cfg_test_item(&ctx.ast.attrs) {
+///
+/// The fourth is `declared_test_scope`, the files some other file in the crate
+/// reaches through `#[cfg(test)] mod name;`. Nothing inside such a file says
+/// so, which is why it needed the declaring module to be read too - see
+/// `cfg_test_module_paths`.
+pub fn is_test_scope_file(ctx: &FileContext, declared_test_scope: &HashSet<PathBuf>) -> bool {
+    if is_cfg_test_item(&ctx.ast.attrs) || declared_test_scope.contains(&ctx.path) {
         return true;
     }
     let components: Vec<_> = ctx
@@ -41,6 +49,10 @@ mod tests {
 
     fn ctx(path: &str, src: &str) -> FileContext {
         FileContext::parse(Path::new(path), src.into()).unwrap()
+    }
+
+    fn is_test_scope_file(ctx: &FileContext) -> bool {
+        super::is_test_scope_file(ctx, &HashSet::new())
     }
 
     #[test]
@@ -76,6 +88,15 @@ mod tests {
             "/w/packages/cargo-baseline/tests/init_integration.rs",
             ""
         )));
+    }
+
+    #[test]
+    fn honours_a_file_declared_under_cfg_test_elsewhere() {
+        let declared: HashSet<PathBuf> =
+            [PathBuf::from("src/ops/hash_cache_tests.rs")].into();
+        let file = ctx("src/ops/hash_cache_tests.rs", "fn a() {}\n");
+        assert!(super::is_test_scope_file(&file, &declared));
+        assert!(!super::is_test_scope_file(&file, &HashSet::new()));
     }
 
     #[test]
