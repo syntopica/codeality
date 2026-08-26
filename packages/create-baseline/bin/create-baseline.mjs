@@ -346,7 +346,10 @@ async function main() {
       failed = true
     }
     if (failed) {
-      printInstall(required)
+      // Only what is actually missing. Printing the full baseline reads as
+      // "you have none of this" to a project that has all but one of it, and
+      // pasting the line re-pins ten packages nobody asked to touch.
+      printInstall(missing.length ? missing : required)
       exit(1)
     }
     console.log('create-baseline: baseline packages and checks OK.')

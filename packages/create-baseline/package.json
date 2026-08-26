@@ -1,6 +1,6 @@
 {
   "name": "@busirocket/create-baseline",
-  "version": "0.8.0",
+  "version": "0.8.1",
   "private": false,
   "packageManager": "pnpm@11.18.0",
   "license": "MIT",

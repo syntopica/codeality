@@ -1,5 +1,15 @@
 # @busirocket/create-baseline
 
+## 0.8.1
+
+### Patch Changes
+
+- fix: `--check` prints only the packages that are missing.
+
+  A project missing one package was handed the full eleven-package install line,
+  which reads as "you have none of this" and, pasted, re-pins ten packages
+  nobody asked to touch.
+
 ## 0.8.0
 
 ### Minor Changes
