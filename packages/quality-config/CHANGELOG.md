@@ -1,5 +1,34 @@
 # @busirocket/quality-config
 
+## 0.10.0
+
+### Minor Changes
+
+- fix: `baseline-type-coverage` measured nothing on a solution-style
+  `tsconfig.json` and reported `ok`.
+
+  A root `{"files": [], "references": [...]}` contributes no source of its own,
+  so type-coverage measured 0 identifiers and exited 0 -- a green gate over an
+  entire repository. consumer-g reported `ok  .  0 / 0` and had to keep a
+  hand-written runner. Solution configs now contribute their referenced projects
+  instead, each measured with `-p`: the same tree reports 194,942 / 195,652,
+  41,214 / 41,415 and 184,008 / 184,671.
+
+- fix: discovery descended into gitignored directories.
+
+  consumer-g's `artifacts/bamboobox-findings`, a vendored tree deliberately
+  excluded from its root quality scans, was reported as a checked workspace.
+  Candidate directories are now put to `git check-ignore` in one pass; a repo
+  without git excludes nothing, as before.
+
+- feat: `--ignore-files <glob>`, repeatable, merged with the two built-in
+  exclusions.
+
+  For generated or vendored code a project already excludes elsewhere -- a
+  migrations directory is the standing case, and it is why consumer-y kept its
+  own runner. Not a way to hide `any`s: it adds to the built-in list and cannot
+  replace it.
+
 ## 0.9.0
 
 ### Minor Changes
