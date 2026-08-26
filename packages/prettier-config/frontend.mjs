@@ -10,5 +10,9 @@ import base from './base.mjs'
 /** @type {import('prettier').Config} */
 export default {
   ...base,
-  plugins: [...(base.plugins ?? []), 'prettier-plugin-tailwindcss'],
+  plugins: [
+    ...(base.plugins ?? []),
+    'prettier-plugin-css-order',
+    'prettier-plugin-tailwindcss',
+  ],
 }

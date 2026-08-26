@@ -12,6 +12,7 @@ export default {
   ...base,
   plugins: [
     ...(base.plugins ?? []),
+    'prettier-plugin-css-order',
     'prettier-plugin-astro',
     'prettier-plugin-tailwindcss',
   ],
