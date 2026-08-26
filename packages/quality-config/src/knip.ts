@@ -1,4 +1,9 @@
-import type { KnipConfig } from 'knip'
+// `KnipConfiguration`, not `KnipConfig`: the latter is a union that also
+// admits a function, so a consumer spreading this factory's result to override
+// one rule gets "Property 'rules' does not exist on type
+// 'RawConfigurationOrFn'". Returning the object shape lets a project extend the
+// config without casting it first.
+import type { KnipConfiguration } from 'knip'
 
 import { FRAMEWORK_ENTRIES, type KnipFramework } from './knip-framework'
 
@@ -110,7 +115,7 @@ export const createKnipConfig = (options: {
    * only this does.
    */
   drizzle?: false
-}): KnipConfig => {
+}): KnipConfiguration => {
   const { entry, project } = FRAMEWORK_ENTRIES[options.framework]
 
   return {

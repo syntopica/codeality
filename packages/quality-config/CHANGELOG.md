@@ -1,5 +1,18 @@
 # @busirocket/quality-config
 
+## 0.8.1
+
+### Patch Changes
+
+- fix: `createKnipConfig` returns `KnipConfiguration`, not `KnipConfig`.
+
+  `KnipConfig` is a union that also admits a function, so a project spreading
+  the factory's result to override one rule got
+  `Property 'rules' does not exist on type 'RawConfigurationOrFn'` and had to
+  cast the value first. Consumer-ab and consumer-m both hit it.
+  Returning the object shape makes extending the config the ordinary thing it
+  looks like.
+
 ## 0.8.0
 
 ### Minor Changes
