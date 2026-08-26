@@ -1,5 +1,23 @@
 # @busirocket/quality-config
 
+## 0.8.0
+
+### Minor Changes
+
+- feat: `createKnipConfig` accepts `project` and `entry` globs, merged with the
+  framework preset.
+
+  Every preset assumes the framework's own layout -- for Next.js, `src/` and
+  `app/`. consumer-m predates that convention: `actions/`,
+  `components/`, `hooks/`, `services/`, `types/` and six more sit at the repo
+  root, so knip saw only `app/` and reported 34 live dependencies as unused. The
+  factory had no override, so a repo in that shape could either delete the gate
+  or carry a permanent 34-line false report.
+
+  Both options merge rather than replace: a project can tell knip where its
+  extra code lives, but cannot silently stop it scanning the directories the
+  framework does own.
+
 ## 0.7.0
 
 ### Minor Changes

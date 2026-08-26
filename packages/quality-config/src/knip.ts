@@ -81,6 +81,23 @@ export const createKnipConfig = (options: {
    */
   ignore?: string[]
   /**
+   * Extra source globs, merged with the framework preset's `project`.
+   *
+   * Every preset assumes the framework's own layout - for Next.js, `src/` and
+   * `app/`. An app whose code sits at the repo root (`components/`, `hooks/`,
+   * `services/`, ...) is invisible to knip under that preset, and every
+   * dependency reached only from there reports as unused. This is a merge, not
+   * a replacement: the preset's globs stay, so a project cannot silently opt
+   * out of scanning the directories the framework does own.
+   */
+  project?: string[]
+  /**
+   * Extra entry globs, merged with the framework preset's `entry`. Same
+   * reasoning as `project`, for a root nobody's plugin registers - a worker,
+   * a CLI, a script the app spawns.
+   */
+  entry?: string[]
+  /**
    * Set `false` for a package that is finished but not wired up yet. With the
    * default `true` its entire public API reports as unused exports, and the
    * obvious reading of that report is "delete this package".
@@ -97,8 +114,8 @@ export const createKnipConfig = (options: {
   const { entry, project } = FRAMEWORK_ENTRIES[options.framework]
 
   return {
-    entry,
-    project,
+    entry: [...entry, ...(options.entry ?? [])],
+    project: [...project, ...(options.project ?? [])],
     ...(options.ignore ? { ignore: options.ignore } : {}),
     ...(options.drizzle === false ? { drizzle: false } : {}),
     // Without this, exports of entry files are never checked, so a dead export
