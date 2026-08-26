@@ -1,5 +1,11 @@
 # @busirocket/create-baseline
 
+## 0.5.2
+
+### Patch Changes
+
+- chore: refresh the `@busirocket/prettier-config` pin to `^0.2.0`.
+
 ## 0.5.1
 
 ### Patch Changes

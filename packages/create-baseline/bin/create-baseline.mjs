@@ -167,7 +167,17 @@ async function main() {
   // crash from inside ESLint that names neither the baseline nor the peer.
   const reportPeers = async () => {
     const peers = await checkPeers(root)
-    if (!peers) return
+    if (!peers) {
+      // The config is not installed yet, so there is nothing to compare
+      // against. Say so: silence here reads as "peers are fine", and the
+      // consequence is an opaque ESLint crash on the first lint run.
+      console.log(
+        '\nESLint peers: not verified. @busirocket/eslint-config is not ' +
+          'installed here yet -- run the install above, then re-run this ' +
+          'command to check them.',
+      )
+      return
+    }
     const { missing, mismatched } = peers
     if (!missing.length && !mismatched.length) return
     console.log("\nESLint peers this project's config needs:\n")
