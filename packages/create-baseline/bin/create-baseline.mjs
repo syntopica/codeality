@@ -4,7 +4,12 @@ import { dirname, relative, resolve } from 'node:path'
 import { cwd, exit } from 'node:process'
 import { fileURLToPath } from 'node:url'
 
+import { applyFixes } from './conformance/applyFixes.mjs'
+import { formatFindings } from './conformance/formatFindings.mjs'
+import { runConformance } from './conformance/runConformance.mjs'
 import { checkPeers } from './scaffold/checkPeers.mjs'
+import { collectDeps } from './scaffold/collectDeps.mjs'
+import { readManifest } from './scaffold/readManifest.mjs'
 import { workspaceRoots } from './scaffold/workspaceRoots.mjs'
 import { writeMissing } from './scaffold/writeMissing.mjs'
 
@@ -18,33 +23,27 @@ async function loadBaselineVersions() {
 }
 
 function parseArgs(argv) {
-  const flags = { check: false, soft: false, hard: false, write: false }
+  const flags = {
+    check: false,
+    soft: false,
+    hard: false,
+    write: false,
+    fix: false,
+  }
   for (const a of argv) {
     if (a === '--check') flags.check = true
     if (a === '--soft') flags.soft = true
     if (a === '--hard') flags.hard = true
     if (a === '--write') flags.write = true
+    if (a === '--fix') flags.fix = true
   }
+  // --fix is --check that also repairs what it can, so it implies it. Without
+  // this a bare `--fix` would fall through to the default and report nothing.
+  if (flags.fix) flags.check = true
   if (!flags.check && !flags.soft && !flags.hard && !flags.write) {
     flags.soft = true
   }
   return flags
-}
-
-async function readPackageJson(root) {
-  const path = resolve(root, 'package.json')
-  // `root` is the directory this CLI was invoked against (cwd, or the target
-  // project it is checking) — reading its manifest is the tool's job, not
-  // untrusted input.
-  // eslint-disable-next-line security/detect-non-literal-fs-filename
-  const raw = await readFile(path, 'utf8')
-  return JSON.parse(raw)
-}
-
-function collectDeps(manifest) {
-  const d = manifest.dependencies ?? {}
-  const dev = manifest.devDependencies ?? {}
-  return { ...d, ...dev }
 }
 
 // In a monorepo the per-workspace packages - eslint-config, tsconfig,
@@ -56,7 +55,7 @@ async function collectWorkspaceDeps(root) {
   const deps = {}
   for (const workspace of await workspaceRoots(root)) {
     try {
-      Object.assign(deps, collectDeps(await readPackageJson(workspace)))
+      Object.assign(deps, collectDeps(await readManifest(workspace)))
     } catch {
       /* a directory without a manifest is not a workspace */
     }
@@ -77,7 +76,7 @@ const TSCONFIG_PACKAGE = '@busirocket/tsconfig'
 
 // A tsconfig inside a dot-directory is build output its framework regenerates,
 // never a file anyone authored and never one that could extend a shared preset.
-const GENERATED_TSCONFIG_PATH = /(^|\/)\.[^/]+\//
+const GENERATED_TSCONFIG_PATH = /(?:^|\/)\.[^/]+\//
 
 async function extendsGeneratedTsConfig(root) {
   let raw
@@ -164,7 +163,7 @@ async function main() {
 
   let manifest = null
   try {
-    manifest = await readPackageJson(root)
+    manifest = await readManifest(root)
   } catch {
     if (flags.soft) {
       console.log('@busirocket baseline — add these devDependencies:\n')
@@ -242,10 +241,8 @@ async function main() {
   // only thing that varied was the knip preset, which is read off the
   // dependencies. Nothing that already exists is touched.
   if (flags.write) {
-    const { framework, written, shadowed, scripts } = await writeMissing(
-      root,
-      deps,
-    )
+    const { framework, written, shadowed, scripts, workflow } =
+      await writeMissing(root, deps)
     console.log(`create-baseline: detected framework \`${framework}\`.`)
     if (written.length) console.log(`  wrote: ${written.join(', ')}`)
     if (scripts.length) console.log(`  added scripts: ${scripts.join(', ')}`)
@@ -255,6 +252,21 @@ async function main() {
           `written.\n  The tool loads ${found} and would ignore ${name} ` +
           'even if both existed. Port it to the shared factory and delete ' +
           `${found}.`,
+      )
+    }
+    if (workflow.existing) {
+      console.log(
+        `\n  ${workflow.existing} already runs the baseline entrypoints, so ` +
+          'no CI workflow was written.',
+      )
+    }
+    if (workflow.partial) {
+      console.log(
+        `\n  ${workflow.partial.join(', ')} exist but none of them runs ` +
+          '`pnpm run check:ci`, so the gates have no trigger. No workflow was ' +
+          'written: adding a second pipeline beside a working one would run ' +
+          'every build twice. Add the three check:* steps to the existing ' +
+          'workflow instead.',
       )
     }
     if (!written.length && !scripts.length && !shadowed.length) {
@@ -352,8 +364,55 @@ async function main() {
       printInstall(missing.length ? missing : required)
       exit(1)
     }
-    console.log('create-baseline: baseline packages and checks OK.')
+
+    // Presence was never the interesting question. This command reported
+    // "checks OK" for a repository with no CI, a `lint` that ignored warnings
+    // and a `check:ci` that skipped four gates, because all it ever asserted
+    // was that four packages appeared in package.json. Everything below
+    // asserts that the gates those packages provide are actually invoked.
+    const report = await runConformance(root, versions, today())
+
+    if (flags.fix) {
+      const applied = await applyFixes(root, report.findings)
+      if (applied.length) {
+        console.log('create-baseline --fix applied:')
+        for (const change of applied) console.log(`  ${change}`)
+        console.log(
+          '\nRe-run `create-baseline --check` to see what is left. Anything ' +
+            'still reported needs a decision this tool does not have.',
+        )
+      } else {
+        console.log('create-baseline --fix: nothing was mechanically fixable.')
+      }
+      // The report was computed before the edits, so it describes the state
+      // that has just been changed. Exiting on it would fail a run that has
+      // repaired everything it was asked to.
+      return
+    }
+
+    const errors = report.findings.filter((f) => f.level === 'error')
+    if (report.findings.length) {
+      console.log(
+        `\ncreate-baseline --check: ${errors.length} error(s), ` +
+          `${report.findings.length - errors.length} warning(s).\n`,
+      )
+      console.log(formatFindings(report))
+      console.log(
+        '\nWaive a finding by id in baseline.exceptions.json, with a reason ' +
+          'and optionally an `expires` date:\n' +
+          '  { "gate:knip": { "reason": "...", "expires": "2026-12-31" } }',
+      )
+    }
+    if (errors.length) exit(1)
+    console.log('create-baseline: baseline packages and wiring OK.')
   }
+}
+
+// Injected rather than read inside the exception loader so the whole
+// conformance suite stays a pure function of its inputs, which is what makes
+// it testable without freezing a clock.
+function today() {
+  return new Date().toISOString().slice(0, 10)
 }
 
 try {

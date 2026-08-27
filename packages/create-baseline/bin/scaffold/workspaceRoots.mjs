@@ -46,12 +46,44 @@ async function workspaceGlobs(root) {
   try {
     // eslint-disable-next-line security/detect-non-literal-fs-filename
     const raw = await readFile(resolve(root, 'pnpm-workspace.yaml'), 'utf8')
-    const packages = /^packages:\n((?:\s*-.*\n?)+)/m.exec(raw)
-    if (!packages) return []
-    return [...packages[1].matchAll(/-\s*['"]?([^'"\n]+?)['"]?\s*$/gm)].map(
-      (match) => match[1],
-    )
+    return pnpmPackages(raw)
   } catch {
     return []
   }
+}
+
+// One list item under `packages:`. Anchored at both ends and with a capture
+// that admits no whitespace, so no quantifier here can exchange characters
+// with its neighbour.
+const LIST_ITEM = /^[ \t]*-[ \t]*['"]?([^'"\s]+)['"]?[ \t]*$/
+
+// The `packages:` block of a pnpm workspace file, read line by line rather
+// than matched as one block.
+//
+// The block regex this replaces was `/^packages:\n((?:\s*-.*\n?)+)/m`, whose
+// `\s*` and `.*` can exchange characters - exponential backtracking on a file
+// this tool reads in every repository it visits. Rewriting it to be linear is
+// possible but delicate; a loop over lines has no backtracking to reason
+// about at all, and says what it does.
+function pnpmPackages(raw) {
+  const globs = []
+  let inBlock = false
+
+  for (const line of raw.split('\n')) {
+    if (!inBlock) {
+      if (line.trimEnd() === 'packages:') inBlock = true
+      continue
+    }
+    const item = LIST_ITEM.exec(line)
+    if (item) {
+      globs.push(item[1])
+      continue
+    }
+    // A blank line or a comment sits inside the block; anything else is the
+    // next top-level key and ends it.
+    if (line.trim() === '' || line.trimStart().startsWith('#')) continue
+    break
+  }
+
+  return globs
 }

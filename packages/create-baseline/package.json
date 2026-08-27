@@ -1,6 +1,6 @@
 {
   "name": "@busirocket/create-baseline",
-  "version": "0.8.1",
+  "version": "0.9.0",
   "private": false,
   "packageManager": "pnpm@11.18.0",
   "license": "MIT",
@@ -22,7 +22,8 @@
     "node": ">=20"
   },
   "bin": {
-    "create-baseline": "bin/create-baseline.mjs"
+    "create-baseline": "bin/create-baseline.mjs",
+    "baseline-estate": "bin/baseline-estate.mjs"
   },
   "files": [
     "LICENSE",
@@ -32,7 +33,12 @@
   ],
   "scripts": {
     "check:self": "node ./bin/create-baseline.mjs --check",
-    "publish:check": "publint --strict && attw --pack . --profile node16"
+    "lint": "eslint bin tests --max-warnings 0",
+    "lint:fix": "eslint bin tests --fix",
+    "lint:suppress": "eslint bin tests --suppress-all",
+    "lint:prune": "eslint bin tests --prune-suppressions",
+    "test": "vitest run --coverage",
+    "publish:check": "baseline-licenses && publint --strict && attw --pack . --profile node16"
   },
   "keywords": [
     "eslint",
@@ -42,6 +48,11 @@
   ],
   "devDependencies": {
     "@arethetypeswrong/cli": "^0.18.5",
-    "publint": "^0.3.22"
+    "@busirocket/eslint-config": "workspace:*",
+    "@vitest/coverage-v8": "^4.1.10",
+    "eslint": "^10.8.0",
+    "eslint-plugin-regexp": "^2.10.0",
+    "publint": "^0.3.22",
+    "vitest": "^4.1.10"
   }
 }

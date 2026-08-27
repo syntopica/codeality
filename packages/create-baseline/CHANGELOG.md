@@ -1,5 +1,62 @@
 # @busirocket/create-baseline
 
+## 0.9.0
+
+### Minor Changes
+
+- feat: `--check` asserts the gates are wired, not merely installed.
+
+  It used to assert that four packages appeared in `package.json`, which it did
+  happily for a repository with no CI, a `lint` script that ignored warnings,
+  and a `check:ci` that skipped knip, jscpd, dependency-cruiser and
+  type-coverage. Adoption was measured by presence, so drift in enforcement was
+  invisible by construction.
+
+  Seven checks now run: the `--max-warnings 0` flag (and a numeric budget
+  reported separately, because it is a ratchet rather than an oversight), every
+  gate reachable from what CI actually runs, a workflow that fires on push,
+  actions pinned to commit SHAs, coverage thresholds that are produced and
+  enforced, lefthook installed into `.git/hooks`, and dependency ranges able to
+  resolve the pinned baseline.
+
+  Findings can be waived by id in `baseline.exceptions.json` with a required
+  `reason` and an optional, enforced `expires`.
+
+- feat: `--fix` repairs the mechanical half.
+
+  Rewrites the lint flag, appends missing gates to the right `check:*` entry,
+  widens a stuck dependency range, writes the CI workflow, and inserts a
+  `thresholds` block with `autoUpdate: true` and a floor of zero - vitest's own
+  ratchet, so an existing repository enters at the level its suite actually
+  reaches instead of turning red on a flat 80.
+
+- feat: `create-baseline --write` writes `.github/workflows/ci.yml`.
+
+  No template shipped one and this tool never wrote one, so every adopter
+  hand-rolled CI or skipped it; eight of seventeen had no workflow at all while
+  carrying the full gate set as scripts. Four jobs, three commands, every action
+  pinned to a commit SHA with the tag kept as a comment. Nothing is written over
+  a workflow that already runs the gates, and a repository with unrelated
+  workflows is reported rather than given a second pipeline.
+
+- feat: `baseline-estate <dir>` - the conformance check over every consumer.
+
+  One row per repository, one column per class of gate. Formalises the manual
+  pre-publish sweep that already caught three defects the templates and the unit
+  tests both missed. Exits non-zero when any consumer fails, so it can gate a
+  release.
+
+- feat: `.oxlintrc.json` and a `lint:fast` script are part of the scaffolded
+  wiring, and the generated `lefthook.yml` gains a `commit-msg` hook.
+
+### Patch Changes
+
+- fix: the pnpm workspace parser no longer backtracks exponentially.
+
+  `/^packages:\n((?:\s*-.*\n?)+)/m` lets `\s*` and `.*` exchange characters.
+  Replaced with a line loop, which has no backtracking to reason about and says
+  what it does. Found by `eslint-plugin-regexp`, newly part of the base config.
+
 ## 0.8.1
 
 ### Patch Changes

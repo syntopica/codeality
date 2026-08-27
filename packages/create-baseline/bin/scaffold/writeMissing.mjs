@@ -6,7 +6,9 @@ import { depCruiserConfig } from './depCruiserConfig.mjs'
 import { detectFramework } from './detectFramework.mjs'
 import { knipConfig } from './knipConfig.mjs'
 import { lefthookConfig } from './lefthookConfig.mjs'
+import { oxlintConfig } from './oxlintConfig.mjs'
 import { renovateConfig } from './renovateConfig.mjs'
+import { writeCiWorkflow } from './writeCiWorkflow.mjs'
 
 // Writes the quality-gate wiring a project is missing and returns what it did.
 //
@@ -41,6 +43,7 @@ export async function writeMissing(root, deps) {
       ],
     ],
     ['lefthook.yml', lefthookConfig, ['lefthook.yaml', '.lefthook.yml']],
+    ['.oxlintrc.json', oxlintConfig, ['oxlint.json', '.oxlintrc']],
     [
       'renovate.json',
       renovateConfig,
@@ -101,5 +104,13 @@ export async function writeMissing(root, deps) {
     await writeFile(manifestPath, `${JSON.stringify(manifest, null, 2)}\n`)
   }
 
-  return { framework, written, shadowed, scripts: added }
+  // Last, and after the scripts: the workflow it writes calls `check:ci`,
+  // `check:quality` and `check:security`, so writing it before those exist
+  // would produce a pipeline whose first run fails on a missing script.
+  const workflow = await writeCiWorkflow(root, {
+    hasBuild: Boolean(manifest.scripts.build),
+  })
+  if (workflow.written) written.push(workflow.written)
+
+  return { framework, written, shadowed, scripts: added, workflow }
 }

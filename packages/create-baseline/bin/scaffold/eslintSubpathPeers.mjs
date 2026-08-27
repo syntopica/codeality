@@ -41,6 +41,11 @@ export const ESLINT_SUBPATH_PEERS = {
     'eslint-plugin-boundaries',
   ],
   node: ['eslint-plugin-unicorn', 'globals'],
+  'data-files': [
+    '@eslint/markdown',
+    'eslint-plugin-jsonc',
+    'eslint-plugin-yml',
+  ],
   nestjs: ['eslint-plugin-unicorn', 'globals'],
   'code-quality': [
     'eslint-plugin-code-policy',
