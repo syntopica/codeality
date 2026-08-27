@@ -3,6 +3,63 @@
 > Reconstructed from this repository's git history, which starts at the monorepo
 > migration. Each entry names the commit that introduced the version.
 
+## 0.8.0
+
+### Minor Changes
+
+- feat: `eslint-plugin-regexp` in the base config.
+
+  `security/detect-non-literal-regexp` only notices that a pattern came from a
+  variable. This reads the pattern: catastrophic backtracking (ReDoS) written as
+  a literal, always-true assertions, character classes that do not match what
+  they look like. It found exponential backtracking in this repository's own
+  `pnpm-workspace.yaml` parser, which runs against every repo the estate tool
+  visits. Requires `eslint-plugin-regexp` as a peer.
+
+- feat: `eqeqeq`, `no-console` and `@typescript-eslint/promise-function-async`.
+
+  None of the three is in `eslint:recommended` or in `strictTypeChecked`.
+  `no-console` allows `warn` and `error` - the ones meant to ship - and is off
+  under `bin/` and `scripts/` via `createNodeConfig()`, where stdout is the
+  product rather than a leftover debugging statement.
+
+- feat: `sonarjs/cognitive-complexity` at 15.
+
+  Cyclomatic `complexity` counts branches; this counts how hard the branching is
+  to hold in your head, so nesting costs more than a flat sequence of guards.
+  Set to `error`, not `warn`: every lint script runs with `--max-warnings 0` so
+  a warning fails anyway, and ESLint's bulk suppressions only apply to errors -
+  existing debt has to be expressible as an `eslint-suppressions.json` that
+  `lint:prune` can shrink, rather than as a raised threshold.
+
+  **Migration.** Run `pnpm lint:suppress` once. The violations move into
+  `eslint-suppressions.json` where review can see them.
+
+- feat: `createAccessibilityConfig()` uses `jsx-a11y`'s `strict` preset.
+
+  `recommended` relaxes exactly the rules that catch what a sighted mouse user
+  never hits: an interactive handler on a `div` with no keyboard equivalent, a
+  redundant `role`, a label adjacent to its control rather than associated with
+  it.
+
+- feat: new `/data-files` subpath - JSON, YAML and Markdown.
+
+  Prettier makes those files consistent; nothing made them correct. A duplicate
+  JSON key, a YAML value that reads as a boolean because it is spelled `no`, a
+  Markdown heading that jumps two levels. Formatting rules are deliberately
+  absent - Prettier owns layout. Peers (`@eslint/markdown`,
+  `eslint-plugin-jsonc`, `eslint-plugin-yml`) are optional; compose the subpath
+  only if you want them.
+
+### Patch Changes
+
+- fix: `js.configs.recommended` is scoped to JavaScript and TypeScript.
+
+  Unscoped, ESLint's core recommendations applied to every file a config
+  touched. With the new `/data-files` subpath that meant a core rule reaching
+  for `sourceCode.getAllComments()` on a Markdown file, which throws rather than
+  reporting and takes the whole lint run down with a stack trace.
+
 ## 0.7.3
 
 ### Patch Changes

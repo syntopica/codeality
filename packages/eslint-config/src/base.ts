@@ -11,6 +11,15 @@ const promisePlugin = require('eslint-plugin-promise') as Record<
   unknown
 >
 // eslint-disable-next-line @typescript-eslint/no-require-imports
+const regexp = require('eslint-plugin-regexp') as {
+  configs: {
+    'flat/recommended': {
+      plugins: Record<string, unknown>
+      rules: Record<string, unknown>
+    }
+  }
+}
+// eslint-disable-next-line @typescript-eslint/no-require-imports
 const security = require('eslint-plugin-security') as {
   configs: {
     recommended: {
@@ -48,6 +57,9 @@ export const createBaseConfig = (options: SharedConfigOptions = {}) => {
       '**/dist/**',
       '**/build/**',
       '**/coverage/**',
+      // Stryker's mutant sandbox: a copy of src with instrumentation woven
+      // through it. Linting it reports the instrumentation, not the code.
+      '**/.stryker-tmp/**',
       '**/.next/**',
       '**/.astro/**',
       '**/.lighthouseci/**',
@@ -58,7 +70,12 @@ export const createBaseConfig = (options: SharedConfigOptions = {}) => {
       '**/tests/fixtures/**',
       '**/__fixtures__/**',
     ]),
-    js.configs.recommended,
+    // Scoped to JavaScript and TypeScript. Unscoped, ESLint's core
+    // recommendations apply to every file a config touches, including the
+    // Markdown, JSON and YAML that `data-files` adds - where a core rule that
+    // reaches for `sourceCode.getAllComments()` throws rather than reporting,
+    // taking the whole lint run down with a stack trace.
+    { ...js.configs.recommended, files: ['**/*.{js,jsx,ts,tsx,mjs,cjs}'] },
     ...tseslint.configs.strictTypeChecked.map((config) => ({
       ...config,
       files: ['**/*.{ts,tsx}'],
@@ -94,6 +111,10 @@ export const createBaseConfig = (options: SharedConfigOptions = {}) => {
         '@typescript-eslint/consistent-type-definitions': ['error', 'type'],
         // Class properties that are never reassigned should be readonly
         '@typescript-eslint/prefer-readonly': 'error',
+        // A function that returns a promise on one path and a value on
+        // another is awaited correctly by accident. Marking it `async`
+        // makes both paths a promise, which is what every caller assumes.
+        '@typescript-eslint/promise-function-async': 'error',
         'no-unused-vars': 'off',
       },
     },
@@ -129,6 +150,13 @@ export const createBaseConfig = (options: SharedConfigOptions = {}) => {
         'import/extensions': ['.js', '.jsx', '.mjs', '.cjs', '.ts', '.tsx'],
       },
       rules: {
+        // Neither is in eslint:recommended, and neither is in
+        // strictTypeChecked: `==` against anything but null is a coercion
+        // nobody wrote on purpose, and a console.log is a debugging statement
+        // that reached production. `warn` and `error` stay allowed - they are
+        // the ones that are meant to ship.
+        eqeqeq: ['error', 'smart'],
+        'no-console': ['error', { allow: ['warn', 'error'] }],
         'import/first': 'error',
         'import/newline-after-import': 'error',
         'import/no-duplicates': 'error',
@@ -166,6 +194,20 @@ export const createBaseConfig = (options: SharedConfigOptions = {}) => {
         // resolve/reject param naming convention
         'promise/param-names': 'error',
       },
+    },
+    // ── Regular expressions ─────────────────────────────────────────────────
+    // `security/detect-non-literal-regexp` below only notices that a pattern
+    // came from a variable. This reads the pattern itself: catastrophic
+    // backtracking (ReDoS) written as a literal, an always-true assertion, a
+    // character class that does not match what it looks like, a useless flag.
+    // A real security class, statically decidable, and with a low enough
+    // false-positive rate that the recommended set is adopted as-is.
+    {
+      files: ['**/*.{js,jsx,ts,tsx,mjs,cjs}'],
+      plugins: {
+        regexp: regexp.configs['flat/recommended'].plugins['regexp'],
+      },
+      rules: { ...regexp.configs['flat/recommended'].rules },
     },
     // ── Security best practices ─────────────────────────────────────────────
     {
