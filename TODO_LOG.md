@@ -4,6 +4,20 @@ Closed work from `TODO.md`, grouped by year and month.
 
 ## 2026-08
 
+- [x] 2026-08-28 - **The per-rule mutation pass is complete: all ten rules
+      tightened, package 60.80% → 89.38%, floor ratcheted to 89.** Fourth and
+      final wave (delegated to Codex CLI, verified independently) took
+      `no-cross-module-deep-imports.ts` 68.52% → 94.44% and
+      `no-hidden-top-level-declarations.ts` 78.29% → 94.08%; package 85.98% →
+      89.38% (998 killed, 105 survived, 0 errors). Every rule now sits between
+      80.47% and 94.44%. The 105 remaining survivors are the long tail
+      (equivalent mutants and cosmetic message variants) - judged diminishing
+      returns, so the item closes rather than chasing 100%. Evidence: own re-run
+      of `pnpm run mutation` exits 0 - "Final mutation score of 89.38 is greater
+      than or equal to break threshold 85" - and `pnpm vitest run` passes 251
+      tests. `thresholds.break` raised to 89; any rule-logic change that weakens
+      the suites now breaks the on-demand gate.
+
 - [x] 2026-08-28 - **Third wave of the per-rule mutation pass: four more rules
       tightened, package floor ratcheted 77 → 85.** Delegated to Codex CLI with
       the 123 surviving-mutant diffs from a fresh run, verified independently.
