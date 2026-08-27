@@ -38,20 +38,22 @@ verified complete - `[-]` obsolete or superseded.
 
 ## Test strength
 
-- [ ] `packages/eslint-plugin-code-policy` scores **67.68%** on mutation testing
-      (was 60.80%): 755 killed, **321 survived**. The rule suites execute every
+- [ ] `packages/eslint-plugin-code-policy` scores **77.05%** on mutation testing
+      (was 67.68%): 860 killed, **234 survived**. The rule suites execute every
       branch and assert loosely - a changed `messageId`, a report moved to a
       different node, or an inverted boundary condition usually survives.
       Coverage cannot see this, which is the whole reason the gate was added.
       Run it with `pnpm --filter eslint-plugin-code-policy run mutation`.
 
-  `thresholds.break` is 67 in `stryker.config.mjs`, just under the measured
+  `thresholds.break` is 77 in `stryker.config.mjs`, just under the measured
   score, so the number can only ratchet upward. The work is per rule and
   independent: take one file from the table, read its surviving mutants, tighten
-  the assertions that let them live, then raise `break` to the new floor.
-  `atomic-file.ts` is done (92.74%, 2026-08-27). Worst remaining:
-  `no-mixed-barrel.ts` 52.00%, `no-inline-types-in-runtime-files.ts` 54.40%,
-  `no-inline-types.ts` 56.25%.
+  the assertions that let them live, then raise `break` to the new floor. Done:
+  `atomic-file.ts` 92.74% (2026-08-27); `no-mixed-barrel.ts` 87.00%,
+  `no-inline-types-in-runtime-files.ts` 85.60%, `no-inline-types.ts` 80.47%
+  (2026-08-28). Worst remaining: `view-logic-separation.ts` 62.65%,
+  `one-primary-unit.ts` 62.84%, `file-kind-placement.ts` 65.22%,
+  `public-api-imports.ts` 66.67%.
 
 ## Estate
 

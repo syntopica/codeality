@@ -4,6 +4,20 @@ Closed work from `TODO.md`, grouped by year and month.
 
 ## 2026-08
 
+- [x] 2026-08-28 - **Second wave of the per-rule mutation pass: three worst
+      rules tightened, package floor ratcheted 67 → 77.** Delegated to Codex CLI
+      with the 136 surviving-mutant diffs extracted from a fresh run, verified
+      independently. `no-mixed-barrel.ts` 52.00% → 87.00%,
+      `no-inline-types-in-runtime-files.ts` 54.40% → 85.60%,
+      `no-inline-types.ts` 56.25% → 80.47%; package 67.68% → 77.05% (860 killed,
+      234 survived); every other rule unchanged. 26 RuleTester cases added
+      across the three test files; existing invalid cases now assert exact
+      `messageId`, `data`, line and column. Evidence: own re-run of
+      `pnpm run mutation` exits 0 - "Final mutation score of 77.05 is greater
+      than or equal to break threshold 67" - and `pnpm vitest run` passes 199
+      tests. `thresholds.break` raised to 77. Remaining per-rule work stays in
+      TODO.md with the updated table.
+
 - [x] 2026-08-28 - **Stryker no longer copies `coverage/` and `dist/` into its
       sandbox.** `ignorePatterns: ['coverage', 'dist']` added to
       `packages/eslint-plugin-code-policy/stryker.config.mjs` with a comment
