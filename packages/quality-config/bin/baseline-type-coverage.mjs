@@ -67,7 +67,7 @@ if (!declared?.[1]) {
 // A repo-local floor, when the project is still climbing toward the shared one.
 const atLeastIndex = argv.indexOf('--at-least')
 const override = atLeastIndex === -1 ? undefined : argv[atLeastIndex + 1]
-if (atLeastIndex !== -1 && !/^\d+(\.\d+)?$/.test(override ?? '')) {
+if (atLeastIndex !== -1 && !/^\d+(?:\.\d+)?$/.test(override ?? '')) {
   console.error(
     'baseline-type-coverage: --at-least needs a number, e.g. `--at-least 97`.',
   )

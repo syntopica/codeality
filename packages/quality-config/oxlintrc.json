@@ -1,0 +1,19 @@
+{
+  "$schema": "https://raw.githubusercontent.com/oxc-project/oxc/main/npm/oxlint/configuration_schema.json",
+  "categories": {
+    "correctness": "deny"
+  },
+  "ignorePatterns": [
+    "**/node_modules/**",
+    "**/dist/**",
+    "**/build/**",
+    "**/coverage/**",
+    "**/.next/**",
+    "**/.astro/**",
+    "**/.nuxt/**",
+    "**/.output/**",
+    "**/out/**",
+    "**/.stryker-tmp/**",
+    "**/reports/**"
+  ]
+}

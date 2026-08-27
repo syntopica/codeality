@@ -1,6 +1,6 @@
 {
   "name": "@busirocket/quality-config",
-  "version": "0.10.0",
+  "version": "0.11.0",
   "private": false,
   "packageManager": "pnpm@11.18.0",
   "license": "MIT",
@@ -22,9 +22,11 @@
     "node": ">=22"
   },
   "bin": {
+    "baseline-audit": "bin/baseline-audit.mjs",
     "baseline-deps-graph": "bin/baseline-deps-graph.mjs",
     "baseline-dupes": "bin/baseline-dupes.mjs",
     "baseline-env-init": "bin/baseline-env-init.mjs",
+    "baseline-licenses": "bin/baseline-licenses.mjs",
     "baseline-type-coverage": "bin/baseline-type-coverage.mjs"
   },
   "files": [
@@ -33,6 +35,7 @@
     "README.md",
     "bin",
     "jscpd.json",
+    "oxlintrc.json",
     "src",
     "tsconfig.json"
   ],
@@ -42,7 +45,9 @@
     "./dependency-cruiser": "./src/dependency-cruiser.ts",
     "./type-coverage": "./src/type-coverage.ts",
     "./lefthook": "./src/lefthook.ts",
-    "./jscpd": "./jscpd.json"
+    "./jscpd": "./jscpd.json",
+    "./commitlint": "./src/commitlint.ts",
+    "./oxlint": "./oxlintrc.json"
   },
   "scripts": {
     "fix": "pnpm run lint:fix",
@@ -51,11 +56,13 @@
     "lint:suppress": "eslint src bin --suppress-all",
     "lint:prune": "eslint src bin --prune-suppressions",
     "type-check": "tsc --noEmit -p tsconfig.json",
-    "publish:check": "publint --strict && attw --pack . --profile node16 --ignore-rules cjs-resolves-to-esm internal-resolution-error"
+    "publish:check": "baseline-licenses && publint --strict && attw --pack . --profile node16 --ignore-rules cjs-resolves-to-esm internal-resolution-error"
   },
   "peerDependencies": {
+    "@commitlint/config-conventional": ">=21.0.0",
     "dependency-cruiser": ">=18.0.0",
     "knip": ">=6.0.0",
+    "oxlint": ">=1.0.0",
     "typescript": ">=5.4.0"
   },
   "peerDependenciesMeta": {
@@ -63,6 +70,12 @@
       "optional": true
     },
     "knip": {
+      "optional": true
+    },
+    "@commitlint/config-conventional": {
+      "optional": true
+    },
+    "oxlint": {
       "optional": true
     }
   },
@@ -72,6 +85,7 @@
     "@types/node": "^26.1.2",
     "dependency-cruiser": "^18.1.0",
     "eslint": "^10.8.0",
+    "eslint-plugin-regexp": "^2.10.0",
     "knip": "^6.31.0",
     "publint": "^0.3.22",
     "typescript": "npm:@typescript/typescript6@^6.0.2"

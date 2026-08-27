@@ -1,3 +1,4 @@
+export { createCommitlintConfig } from './commitlint'
 export { createDepCruiserConfig } from './dependency-cruiser'
 export { createKnipConfig } from './knip'
 export { createLefthookConfig } from './lefthook'

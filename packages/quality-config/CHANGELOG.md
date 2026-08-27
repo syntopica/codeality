@@ -1,5 +1,50 @@
 # @busirocket/quality-config
 
+## 0.11.0
+
+### Minor Changes
+
+- feat: `baseline-audit` - advisory waivers that expire.
+
+  `pnpm audit --audit-level=high` has one lever, and silencing a judged finding
+  means raising it for everything. `baseline-audit` reads
+  `.baseline-advisories.json`, keyed by GitHub advisory id, where each entry
+  carries a required `reason` and a required `expires`. An expired waiver fails
+  the build; an entry missing either field is rejected rather than honoured.
+  Because a judged finding now has somewhere to live, the default gate is
+  `moderate` rather than `high` - strictly stricter than before.
+
+- feat: `baseline-licenses` - a licence gate for published packages.
+
+  Walks one package's _production_ closure and asserts every licence is
+  permissive, with the same `reason`/`expires` allowlist shape. Dev dependencies
+  are excluded on purpose: a copyleft test runner is not distributed, a copyleft
+  transitive runtime dependency of an MIT package is. `pnpm licenses list` is
+  not usable here - inside a workspace it reports the whole store, 986 packages
+  for a config package with eight direct dependencies.
+
+- feat: `/commitlint` - conventional-commit rules for the `commit-msg` hook.
+
+  The release tooling already derived the semver bump and the changelog from
+  commit subjects, so a subject typed `feature:` instead of `feat:` silently
+  dropped a change out of the release notes. Nothing verified it. Two rules from
+  the conventional preset are off because they fight how commits are written
+  here: `body-max-line-length` rejects a pasted stack trace, `subject-case`
+  rejects a subject starting with `TypeScript` or `GitHub`.
+
+- feat: `/oxlint` - a pre-filter config, one category wide.
+
+  `correctness` only. That is the set whose findings ESLint would also reject,
+  so oxlint can fail a build in seconds without introducing a second opinion.
+  Measured on this repository: `correctness` reported nothing, `suspicious` and
+  `pedantic` reported 19 findings, none of which ESLint considers a problem. See
+  `OXLINT.md` for why the scope is not wider.
+
+- feat: `createLefthookConfig()` gains a `commit-msg` hook and a `lint:fast`
+  pre-commit command.
+
+  The typed lint stays the authority; the two-second pass runs first.
+
 ## 0.10.0
 
 ### Minor Changes

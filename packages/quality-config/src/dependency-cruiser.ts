@@ -26,7 +26,7 @@ const ORPHAN_EXEMPTIONS = [
   // Framework/tooling config files: loaded directly by that tool's own
   // runtime, never imported by application code. Being an orphan in the module
   // graph is their normal state, not a defect.
-  '(^|/)(babel|webpack|vite|vitest|eslint|knip|prettier|tsup|astro|next|nuxt)\\.config\\.(js|cjs|mjs|ts)$',
+  '(^|/)(babel|webpack|vite|vitest|eslint|knip|prettier|tsup|astro|next|nuxt|commitlint|stryker|lighthouse)\\.config\\.(js|cjs|mjs|ts)$',
   // Next.js App Router file conventions, in two forms: directly under `app/`,
   // and nested at any depth below it. The nested one requires the trailing
   // slash so that `app/blog/mypage.tsx` is not read as a `page.tsx`.
