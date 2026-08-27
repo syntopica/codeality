@@ -54,6 +54,7 @@ export async function loadContext(root, versions) {
     deps,
     versions,
     runners: await readRunners(root, scripts),
+    tsconfigs: await readTsconfigs(root),
     workflows: await readWorkflows(root),
     testConfig: await findTestConfig(root),
     hooks: { installed: await hooksInstalled(root) },
@@ -99,6 +100,55 @@ async function readRunners(root, scripts) {
     }
   }
   return runners
+}
+
+// tsconfig permits comments and trailing commas; strip both before parsing.
+// A file this cannot parse contributes `null`, never a guess.
+async function parseTsconfig(path) {
+  try {
+    // eslint-disable-next-line security/detect-non-literal-fs-filename
+    const raw = (await readFile(path, 'utf8'))
+      .replaceAll(/\/\*[\s\S]*?\*\//g, '')
+      .replaceAll(/(^|[^:])\/\/.*$/gm, '$1')
+      .replaceAll(/,(\s*[}\]])/g, '$1')
+    return JSON.parse(raw)
+  } catch {
+    return null
+  }
+}
+
+// The root tsconfig and, when it is solution-style, the projects it
+// references. Each leaf carries the reference as the root spells it (what a
+// `type-check` script would name) and the config file it resolves to - `tsc`
+// accepts either a directory holding a tsconfig.json or the file itself.
+async function readTsconfigs(root) {
+  const parsed = await parseTsconfig(resolve(root, 'tsconfig.json'))
+  if (!parsed) return null
+
+  const solution =
+    Array.isArray(parsed.files) &&
+    parsed.files.length === 0 &&
+    parsed.include === undefined &&
+    Array.isArray(parsed.references)
+
+  const leaves = []
+  if (solution) {
+    for (const entry of parsed.references) {
+      if (typeof entry?.path !== 'string') continue
+      const reference = entry.path.replace(/^\.\//, '')
+      const viaDirectory = await exists(
+        resolve(root, reference, 'tsconfig.json'),
+      )
+      const config = viaDirectory ? `${reference}/tsconfig.json` : reference
+      leaves.push({
+        reference,
+        config,
+        parsed: await parseTsconfig(resolve(root, config)),
+      })
+    }
+  }
+
+  return { root: parsed, solution, leaves }
 }
 
 async function readWorkflows(root) {

@@ -4,6 +4,8 @@ import { checkCoverageThresholds } from './checkCoverageThresholds.mjs'
 import { checkGateCoverage } from './checkGateCoverage.mjs'
 import { checkHooksInstalled } from './checkHooksInstalled.mjs'
 import { checkLintFlag } from './checkLintFlag.mjs'
+import { checkTsconfigPresets } from './checkTsconfigPresets.mjs'
+import { checkTsconfigProjects } from './checkTsconfigProjects.mjs'
 import { checkVersionRanges } from './checkVersionRanges.mjs'
 import { loadContext } from './loadContext.mjs'
 import { loadExceptions } from './loadExceptions.mjs'
@@ -11,6 +13,8 @@ import { loadExceptions } from './loadExceptions.mjs'
 const CHECKS = [
   checkLintFlag,
   checkGateCoverage,
+  checkTsconfigProjects,
+  checkTsconfigPresets,
   checkCiWorkflow,
   checkActionPins,
   checkCoverageThresholds,

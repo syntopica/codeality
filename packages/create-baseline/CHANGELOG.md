@@ -1,5 +1,26 @@
 # @busirocket/create-baseline
 
+## Unreleased
+
+### Minor Changes
+
+- feat: two tsconfig conformance checks, and a `tscfg` column in the estate
+  matrix.
+
+  The defect they catch is the expensive kind: a gate that exits 0 while reading
+  almost nothing. consumer-g's root `tsconfig.json` referenced three projects
+  and its `type-check` script named only two, so `app/`, `proxy.ts` and
+  `instrumentation.ts` - the largest surface in the repo - reached `check:ci`
+  unchecked for months while the estate report called the repository conformant.
+
+  `--check` now asserts, first, that every project a solution-style root
+  references is reachable from `type-check` (a bare `tsc -b`/`vue-tsc -b`
+  passes; a project-scoped one covers only the projects it names), and second,
+  that each project tsconfig extends an `@busirocket/tsconfig` preset - judged
+  per shape: a single-project root extends a preset directly, a solution root
+  must not, because `baseline-type-coverage` walks its `references` and a root
+  that extends instead of referencing hides every project behind one.
+
 ## 0.9.0
 
 ### Minor Changes
