@@ -78,7 +78,38 @@ correctly migrated. The symptom is the whole run failing at the first file with
 
 Switch `prettier.config.*` to `@busirocket/prettier-config` variants. Update
 `tsconfig.json` to extend `@busirocket/tsconfig/*` and resolve duplicate
-compiler options.
+compiler options. A multi-project repository keeps a solution-style root and
+puts the presets on the leaves - the two shapes and the gate that depends on
+them are documented in the
+[`@busirocket/tsconfig` README](../../packages/tsconfig/README.md).
+
+### What turning the strictness on actually costs
+
+The honest number is reassuring, and its shape is predictable. Composing
+`node.json` and `nextjs.json` onto a mid-sized production repository
+(consumer-g, 2026-08) surfaced 33 pre-existing findings: 26 type errors from
+`noUncheckedIndexedAccess`, and 7 ESLint errors the same narrowing exposed
+(`restrict-template-expressions`, `no-unnecessary-condition`,
+`no-unsafe-argument`). Every one of them was in `scripts/` and `e2e/`; `src/`
+and `app/` came through clean. Application code that already passed review tends
+to be fine - the debt pools in the tooling nobody reviews.
+
+Two of the 33 were real bugs rather than missing narrowing, both the same shape:
+`name in obj` used to validate a key. `in` accepts inherited prototype keys, so
+`--arms=toString` passed an unknown-arm check. The fix is
+`Object.hasOwn(obj, name)`, and the pattern is everywhere in CLI argument
+handling - grep for `in ` guards over user input while you are there.
+
+Two notes that follow:
+
+- **The lint wave arrives WITH the tsconfig change, not after it.** The narrowed
+  types are what expose the new ESLint findings, so adopt
+  `@busirocket/eslint-config` and `@busirocket/tsconfig` in one pass rather than
+  two - sequencing them separately just splits one red build into two.
+- **Fix at the source, not at the report.** A verification script that falls
+  back to `''` instead of failing loudly turns a real failure into a false pass,
+  which is worse than the unchecked access was. When a finding points at a weak
+  spot, strengthen the spot; do not append `?? ''` until the checker goes quiet.
 
 ## 6. CI
 
