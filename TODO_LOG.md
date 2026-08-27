@@ -4,6 +4,19 @@ Closed work from `TODO.md`, grouped by year and month.
 
 ## 2026-08
 
+- [x] 2026-08-28 - **The `check:quality` cold-run flake is closed as gone.**
+      Fourth consecutive clean cold run
+      (`rm -rf node_modules/.cache/turbo .turbo && pnpm check:quality`: 14/14
+      tasks uncached, 6 gates, exit 0), the second on a distinct later day,
+      which meets the item's own closing criterion. The original single failure
+      was never reproduced; two concrete instances of its class were found and
+      fixed along the way (`my-nextjs-app#type-check` depending on `^build`
+      instead of its own `build`, 2026-08-24; pnpm not relinking a workspace bin
+      when only the `bin` map changes, 2026-08-25, documented in
+      `docs/standards/quality-gates.md`). The reporting half - the
+      `scripts/check-quality.mjs` runner that names the failing step - stays, so
+      any recurrence names itself.
+
 - [x] 2026-08-28 - **Second wave of the per-rule mutation pass: three worst
       rules tightened, package floor ratcheted 67 → 77.** Delegated to Codex CLI
       with the 136 surviving-mutant diffs extracted from a fresh run, verified
