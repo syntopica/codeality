@@ -1,8 +1,41 @@
+/* eslint-disable max-lines -- Keep one rule's mutation boundary matrix in its RuleTester suite. */
 import { dirname, join } from 'node:path'
 import { fileURLToPath } from 'node:url'
 
 import rule from '@/rules/file-kind-placement.js'
 import { runRuleTest } from '@tests/rule-testers/runRuleTest.js'
+import { describe, expect, it } from 'vitest'
+
+describe('file-kind-placement metadata', () => {
+  it('declares the exact rule contract', () => {
+    expect(rule.name).toBe('file-kind-placement')
+    expect(Reflect.get(rule, 'defaultOptions')).toEqual([{}])
+    expect(rule.meta).toEqual({
+      type: 'problem',
+      docs: {
+        description:
+          'Enforce that atomic units are placed within their corresponding feature-local semantic folders.',
+        url: 'https://github.com/VibraComet/eslint-plugin-code-policy/blob/main/packages/eslint-plugin-code-policy/docs/rules/file-kind-placement.md',
+      },
+      schema: [
+        {
+          type: 'object',
+          properties: {
+            allowGenericFolders: { type: 'boolean' },
+            allowColocation: { type: 'boolean' },
+          },
+          additionalProperties: false,
+        },
+      ],
+      messages: {
+        invalidPlacement:
+          'The file "{{basename}}" appears to be a {{kind}}, but it is not located in a "{{expectedFolder}}/" folder. Please respect placement boundaries.',
+        invalidGenericFolder:
+          'Generic grouping folders like "utils" or "helpers" are forbidden. Use semantic folders (e.g., formatters, validators, mappers, extractors), or enable the "allowGenericFolders" option.',
+      },
+    })
+  })
+})
 
 // Colocation detection reads the real directory of the linted file, so these
 // cases point at on-disk fixtures under fixtures/colocation/.
@@ -12,10 +45,30 @@ import { runRuleTest } from '@tests/rule-testers/runRuleTest.js'
 // right for a consumer and would have made every fixture below silently
 // exempt, passing these cases for the wrong reason.
 const fixtures = join(dirname(fileURLToPath(import.meta.url)), '../../fixtures')
+const USE_THING_FILENAME = 'useThing.ts'
+const HOOK_KIND = 'hook or composable'
 const colocation = (...segments: string[]) =>
   join(fixtures, 'colocation', ...segments)
+const placementError = (
+  basename: string,
+  kind: string,
+  expectedFolder: string,
+) => ({
+  messageId: 'invalidPlacement' as const,
+  data: { basename, kind, expectedFolder },
+  line: 1,
+  column: 1,
+})
+const genericFolderError = {
+  messageId: 'invalidGenericFolder' as const,
+  line: 1,
+  column: 1,
+}
 
 runRuleTest('file-kind-placement', rule, {
+  assertionOptions: {
+    requireData: true,
+  },
   valid: [
     // allowColocation: a hook next to its component (PascalCase .tsx anchor).
     {
@@ -67,7 +120,23 @@ runRuleTest('file-kind-placement', rule, {
     // Config/typing files are exempt.
     {
       code: `export function useThing() {}`,
-      filename: '/src/use.config.ts',
+      filename: '/src/useThing.config.ts',
+    },
+    {
+      code: `export function useThing() {}`,
+      filename: '/src/useThing.config.js',
+    },
+    {
+      code: `export function useThing() {}`,
+      filename: '/src/useThing.config.mjs',
+    },
+    {
+      code: `export function useThing() {}`,
+      filename: '/src/useThing.config.cjs',
+    },
+    {
+      code: `export function useThing() {}`,
+      filename: '/src/useThing.d.ts',
     },
     // Next.js private folder `_hooks/` is recognized as `hooks/`.
     {
@@ -92,6 +161,17 @@ runRuleTest('file-kind-placement', rule, {
       code: `export function doThing() {}`,
       filename: '/src/app/_utils/doThing.ts',
       options: [{ allowGenericFolders: true }],
+    },
+    // The second supported generic ancestor has its own option boundary.
+    {
+      code: `export function doThing() {}`,
+      filename: '/src/helpers/doThing.ts',
+      options: [{ allowGenericFolders: true }],
+    },
+    // A path without a parent directory is outside placement analysis.
+    {
+      code: `export function useThing() {}`,
+      filename: USE_THING_FILENAME,
     },
     // A kind prefix must form a camelCase word boundary (uppercase next char),
     // so `user*`/`users*` are NOT hooks, `mapping*` is NOT a mapper, etc.
@@ -167,20 +247,20 @@ runRuleTest('file-kind-placement', rule, {
     {
       code: `export function useThing() {}`,
       filename: '/src/widgets/useThing.ts',
-      errors: [{ messageId: 'invalidPlacement' }],
+      errors: [placementError(USE_THING_FILENAME, HOOK_KIND, 'hooks')],
     },
     // Formatter outside formatters/.
     {
       code: `export function formatDate() {}`,
       filename: '/src/widgets/formatDate.ts',
-      errors: [{ messageId: 'invalidPlacement' }],
+      errors: [placementError('formatDate.ts', 'formatter', 'formatters')],
     },
     // Genuine mapper (camelCase boundary) outside mappers/ still flags, even
     // though `mapping.ts` (no boundary) is now valid.
     {
       code: `export function mapEntry() {}`,
       filename: '/src/services/mapEntry.ts',
-      errors: [{ messageId: 'invalidPlacement' }],
+      errors: [placementError('mapEntry.ts', 'mapper', 'mappers')],
     },
     // Suffix detection is extension-agnostic: the `.tsx` twin of a `Mapper.ts`
     // used to escape placement entirely, which in a React codebase is where
@@ -188,50 +268,75 @@ runRuleTest('file-kind-placement', rule, {
     {
       code: `export function orderMapper() {}`,
       filename: '/src/services/orderMapper.tsx',
-      errors: [{ messageId: 'invalidPlacement' }],
+      errors: [placementError('orderMapper.tsx', 'mapper', 'mappers')],
     },
     {
       code: `export function priceFormatter() {}`,
       filename: '/src/services/priceFormatter.jsx',
-      errors: [{ messageId: 'invalidPlacement' }],
+      errors: [placementError('priceFormatter.jsx', 'formatter', 'formatters')],
     },
     {
       code: `export function inputValidator() {}`,
       filename: '/src/services/inputValidator.mts',
-      errors: [{ messageId: 'invalidPlacement' }],
+      errors: [placementError('inputValidator.mts', 'validator', 'validators')],
     },
     // The component exemption is PascalCase-and-JSX only: a PascalCase `.ts`
     // file carries no JSX and is still a placement-checked unit.
     {
       code: `export function UserMapper() {}`,
       filename: '/src/services/UserMapper.ts',
-      errors: [{ messageId: 'invalidPlacement' }],
+      errors: [placementError('UserMapper.ts', 'mapper', 'mappers')],
     },
     // Generic grouping folders are banned by default.
     {
       code: `export function doThing() {}`,
       filename: '/src/utils/doThing.ts',
-      errors: [{ messageId: 'invalidGenericFolder' }],
+      errors: [genericFolderError],
     },
     // `_`-private generic folder is banned by default too.
     {
       code: `export function doThing() {}`,
       filename: '/src/app/_utils/doThing.ts',
-      errors: [{ messageId: 'invalidGenericFolder' }],
+      errors: [genericFolderError],
+    },
+    // Helpers are banned by the same default parent-folder boundary as utils.
+    {
+      code: `export function doThing() {}`,
+      filename: '/src/helpers/doThing.ts',
+      errors: [genericFolderError],
+    },
+    // Generic-folder permission does not exempt unrelated directories.
+    {
+      code: `export function useThing() {}`,
+      filename: '/src/widgets/useThing.ts',
+      options: [{ allowGenericFolders: true }],
+      errors: [placementError(USE_THING_FILENAME, HOOK_KIND, 'hooks')],
+    },
+    // Two path parts are sufficient to apply placement analysis.
+    {
+      code: `export function useThing() {}`,
+      filename: '/useThing.ts',
+      errors: [placementError(USE_THING_FILENAME, HOOK_KIND, 'hooks')],
+    },
+    // Windows separators are normalized before folder and basename checks.
+    {
+      code: `export function useThing() {}`,
+      filename: 'C:\\src\\widgets\\useThing.ts',
+      errors: [placementError(USE_THING_FILENAME, HOOK_KIND, 'hooks')],
     },
     // allowColocation: an orphaned hook with no anchor in its folder still flags.
     {
       code: `export function useOrphan() {}`,
       filename: colocation('orphan', 'useOrphan.ts'),
       options: [{ allowColocation: true }],
-      errors: [{ messageId: 'invalidPlacement' }],
+      errors: [placementError('useOrphan.ts', HOOK_KIND, 'hooks')],
     },
     // Without allowColocation, a colocated hook is still flagged (strict default
     // is preserved): the WithComponent fixture has an anchor but the option off.
     {
       code: `export function useWithComponent() {}`,
       filename: colocation('WithComponent', 'useWithComponent.ts'),
-      errors: [{ messageId: 'invalidPlacement' }],
+      errors: [placementError('useWithComponent.ts', HOOK_KIND, 'hooks')],
     },
   ],
 })

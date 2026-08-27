@@ -4,6 +4,20 @@ Closed work from `TODO.md`, grouped by year and month.
 
 ## 2026-08
 
+- [x] 2026-08-28 - **Third wave of the per-rule mutation pass: four more rules
+      tightened, package floor ratcheted 77 → 85.** Delegated to Codex CLI with
+      the 123 surviving-mutant diffs from a fresh run, verified independently.
+      `file-kind-placement.ts` 65.22% → 93.04%, `one-primary-unit.ts` 62.84% →
+      88.51%, `public-api-imports.ts` 66.67% → 94.44%,
+      `view-logic-separation.ts` 62.65% → 86.75%; package 77.05% → 85.98% (960
+      killed, 143 survived); every other rule unchanged. 36 RuleTester cases
+      added across the four test files. Evidence: own re-run of
+      `pnpm run mutation` exits 0 - "Final mutation score of 85.98 is greater
+      than or equal to break threshold 77" - and `pnpm vitest run` passes 235
+      tests. `thresholds.break` raised to 85. Only
+      `no-cross-module-deep-imports.ts` (68.52%) and
+      `no-hidden-top-level-declarations.ts` (78.29%) remain below 80.
+
 - [x] 2026-08-28 - **The `check:quality` cold-run flake is closed as gone.**
       Fourth consecutive clean cold run
       (`rm -rf node_modules/.cache/turbo .turbo && pnpm check:quality`: 14/14

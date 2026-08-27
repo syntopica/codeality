@@ -36,7 +36,7 @@ export default {
   //
   // `break` tracks the latest measured package floor, rounded down, so the
   // gate can only ratchet upward without making the current suite red.
-  thresholds: { high: 85, low: 70, break: 77 },
+  thresholds: { high: 85, low: 70, break: 85 },
   timeoutMS: 60000,
   // The sandbox is a copy of `src` with instrumentation woven through it, and
   // a left-behind copy is linted by every gate that globs the repository -
