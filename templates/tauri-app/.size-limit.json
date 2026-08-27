@@ -1,0 +1,7 @@
+[
+  {
+    "name": "shipped bundle (brotli)",
+    "path": "dist/assets/*.js",
+    "limit": "72 KB"
+  }
+]

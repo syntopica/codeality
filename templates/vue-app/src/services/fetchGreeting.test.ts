@@ -11,7 +11,7 @@ it('returns the validated greeting', async () => {
     'fetch',
     vi.fn().mockResolvedValue({
       ok: true,
-      json: () => Promise.resolve({ message: 'hello' }),
+      json: async () => Promise.resolve({ message: 'hello' }),
     }),
   )
   await expect(fetchGreeting('/api/greeting')).resolves.toEqual({
@@ -24,7 +24,7 @@ it('throws when the payload fails validation', async () => {
     'fetch',
     vi.fn().mockResolvedValue({
       ok: true,
-      json: () => Promise.resolve({ message: '' }),
+      json: async () => Promise.resolve({ message: '' }),
     }),
   )
   await expect(fetchGreeting('/api/greeting')).rejects.toThrow()

@@ -1,0 +1,7 @@
+[
+  {
+    "name": "shipped bundle (brotli)",
+    "path": ".next/static/chunks/**/*.js",
+    "limit": "172 KB"
+  }
+]

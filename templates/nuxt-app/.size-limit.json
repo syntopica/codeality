@@ -1,0 +1,7 @@
+[
+  {
+    "name": "shipped bundle (brotli)",
+    "path": ".output/public/_nuxt/*.js",
+    "limit": "85 KB"
+  }
+]

@@ -9,7 +9,7 @@
     "assert": {
       "assertions": {
         "categories:accessibility": [
-          "warn",
+          "error",
           {
             "minScore": 0.9
           }
