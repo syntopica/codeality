@@ -54,3 +54,8 @@ overrides:
   # (modern-tar replaced it), so the fix is to move the consumer forward rather
   # than the vulnerable package.
   '@puppeteer/browsers@<3.2.1': ^3.2.1 # via @lhci/cli>lighthouse>puppeteer-core
+  # GHSA-q8mj-m7cp-5q26, via @stryker-mutator/core>typed-rest-client>qs. Bounded
+  # on both sides because the advisory is: the 6.10 line and anything past
+  # 6.15.1 are unaffected, and an open lower bound would drag the older line
+  # forward for no gate benefit.
+  'qs@>=6.11.1 <=6.15.1': ^6.15.2

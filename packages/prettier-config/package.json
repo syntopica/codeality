@@ -30,7 +30,7 @@
   "scripts": {
     "fix": "prettier --write \"*.mjs\" --list-different",
     "format:check": "prettier --check \"*.mjs\"",
-    "publish:check": "publint --strict && attw --pack . --profile node16"
+    "publish:check": "baseline-licenses && publint --strict && attw --pack . --profile node16"
   },
   "devDependencies": {
     "@arethetypeswrong/cli": "^0.18.5",

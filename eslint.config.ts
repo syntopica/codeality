@@ -1,4 +1,5 @@
 import { createBaseConfig } from '@busirocket/eslint-config/base'
+import { createDataFilesConfig } from '@busirocket/eslint-config/data-files'
 import { createNodeConfig } from '@busirocket/eslint-config/node'
 
 // Fallback config for plain Node scripts that have no closer eslint.config
@@ -10,4 +11,5 @@ import { createNodeConfig } from '@busirocket/eslint-config/node'
 export default [
   ...createBaseConfig({ tsconfigRootDir: import.meta.dirname }),
   ...createNodeConfig(),
+  ...createDataFilesConfig(),
 ]

@@ -1,0 +1,10 @@
+{
+  "GHSA-w5hq-g745-h8pq": {
+    "reason": "uuid <11.1.1 (moderate), reached only through @lhci/cli > uuid and resolved at 8.3.2. @lhci/cli is at 0.15.1 with no newer release at all, so no resolution inside its range can reach the patched line. Lighthouse runs in CI against our own built templates, never against untrusted input.",
+    "expires": "2026-11-30"
+  },
+  "GHSA-g7r4-m6w7-qqqr": {
+    "reason": "esbuild >=0.27.3 <0.28.1 (low), reached through eslint-plugin-code-policy's own tsup and vitest toolchains. tsup 8.5.1 declares esbuild ^0.27.0, so no resolution inside that range can reach the patched 0.28.1. Build-time only, never shipped. Unblock: tsup publishing a release that widens past ^0.27.0.",
+    "expires": "2026-11-30"
+  }
+}

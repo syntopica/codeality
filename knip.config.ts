@@ -61,6 +61,11 @@ const config: KnipConfig = {
       // live at the package root, not under tests/, because file-kind-placement
       // exempts test scope and would otherwise exempt every fixture.
       ignore: ['fixtures/**'],
+      // @busirocket/eslint-config ships TypeScript source, so the plugins its
+      // base config `require()`s resolve from whichever package composes it -
+      // this one included. knip sees the import in eslint-config and the
+      // dependency here, and cannot connect them.
+      ignoreDependencies: ['eslint-plugin-regexp'],
     },
     'templates/*': {
       entry: TEMPLATE_GLOB,

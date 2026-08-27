@@ -14,3 +14,7 @@ pnpm-lock.yaml
 .codegraph/
 .serena/
 .superpowers/
+
+# Stryker's mutant sandbox and HTML report
+.stryker-tmp/
+reports/mutation/

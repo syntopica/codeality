@@ -41,6 +41,13 @@ const THIRD_PARTY_PINS = {
   knip: '^6.31.0',
   lefthook: '^2.1.10',
   'type-coverage': '^2.30.1',
+  // The pre-filter `create-baseline --write` wires into `lint:fast` and the
+  // pre-commit hook, and the commit-msg gate the generated lefthook.yml runs.
+  // Both are named in generated files, so a project that installs the config
+  // without them gets wiring that fails on first use.
+  oxlint: '^1.80.0',
+  '@commitlint/cli': '^21.2.2',
+  '@commitlint/config-conventional': '^21.2.2',
 }
 
 async function readWorkspaceVersions() {
