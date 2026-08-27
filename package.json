@@ -39,6 +39,7 @@
     "@busirocket/eslint-config": "workspace:*",
     "@busirocket/prettier-config": "workspace:*",
     "@busirocket/quality-config": "workspace:*",
+    "@busirocket/tsconfig": "workspace:*",
     "@commitlint/cli": "^21.2.2",
     "@commitlint/config-conventional": "^21.2.2",
     "@eslint/markdown": "^8.0.3",
