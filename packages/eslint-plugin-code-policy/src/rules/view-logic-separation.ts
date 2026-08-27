@@ -71,7 +71,7 @@ export default createRule<Options, MessageIds>({
         if (node.callee.type === 'Identifier') {
           const name = node.callee.name
           if (
-            /^use(State|Effect|Reducer|Callback|Memo|Ref|ImperativeHandle|LayoutEffect|DebugValue|DeferredValue|Transition|Id|SyncExternalStore|InsertionEffect|Query|Mutation)$/.test(
+            /^use(?:State|Effect|Reducer|Callback|Memo|Ref|ImperativeHandle|LayoutEffect|DebugValue|DeferredValue|Transition|Id|SyncExternalStore|InsertionEffect|Query|Mutation)$/.test(
               name,
             )
           ) {

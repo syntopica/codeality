@@ -1,5 +1,26 @@
 # eslint-plugin-code-policy
 
+## 0.7.4
+
+### Patch Changes
+
+- fix: two internal regexes used capturing groups they never read.
+
+  No behaviour change; `regexp/no-unused-capturing-group` is newly enforced by
+  `@busirocket/eslint-config@0.8.0`.
+
+- chore: `eslint-suppressions.json` records six `sonarjs/cognitive-complexity`
+  findings in the rule visitors, newly reported at 0.8.0. Debt in a file review
+  can see, rather than a raised threshold.
+
+- chore: mutation testing is available on demand (`pnpm run mutation`).
+
+  The first run scored 60.80% against a suite with ~100% line coverage - 374
+  mutants survived, so the tests execute every branch and assert loosely. Not a
+  CI gate: a run takes over a minute and a surviving mutant is a question for a
+  human. `thresholds.break` is set at the measured floor so the number can only
+  ratchet upward; raising it is tracked in TODO.md.
+
 ## 0.7.3
 
 ### Patch Changes

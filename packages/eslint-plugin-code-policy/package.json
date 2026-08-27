@@ -1,7 +1,7 @@
 {
   "name": "eslint-plugin-code-policy",
-  "version": "0.7.3",
-  "description": "Architectural linting for TypeScript \u00b7 enforce atomic files, explicit public APIs, clean runtime boundaries, and view/logic separation.",
+  "version": "0.7.4",
+  "description": "Architectural linting for TypeScript · enforce atomic files, explicit public APIs, clean runtime boundaries, and view/logic separation.",
   "engines": {
     "node": ">=20"
   },
@@ -75,7 +75,8 @@
     "lint:prune": "eslint src tests --prune-suppressions",
     "type-check": "tsc --noEmit -p tsconfig.json",
     "test": "vitest run --coverage",
-    "publish:check": "publint --strict && attw --pack . --profile node16"
+    "publish:check": "baseline-licenses && publint --strict && attw --pack . --profile node16",
+    "mutation": "stryker run"
   },
   "keywords": [
     "eslint",
@@ -125,11 +126,14 @@
   "devDependencies": {
     "@arethetypeswrong/cli": "^0.18.5",
     "@busirocket/tsconfig": "workspace:*",
+    "@stryker-mutator/core": "^10.0.0",
+    "@stryker-mutator/vitest-runner": "^10.0.0",
     "@types/node": "^26.1.2",
-    "@vitest/coverage-v8": "^4.1.10",
     "@typescript-eslint/parser": "^8.67.0",
     "@typescript-eslint/rule-tester": "^8.67.0",
+    "@vitest/coverage-v8": "^4.1.10",
     "eslint": "^10.8.0",
+    "eslint-plugin-regexp": "^2.10.0",
     "publint": "^0.3.22",
     "tsc-alias": "^1.9.1",
     "tsup": "^8.5.1",

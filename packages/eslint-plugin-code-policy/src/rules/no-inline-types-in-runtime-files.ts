@@ -89,7 +89,7 @@ export default createRule<Options, MessageIds>({
               node: t.node,
               messageId: 'inlineTypeInRuntimeFile',
               data: {
-                name: t.name.replace(/(Props|State|Type|Interface)$/i, ''),
+                name: t.name.replace(/(?:Props|State|Type|Interface)$/i, ''),
               },
             })
           }
