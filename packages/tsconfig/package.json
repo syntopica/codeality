@@ -1,6 +1,6 @@
 {
   "name": "@busirocket/tsconfig",
-  "version": "0.2.1",
+  "version": "0.3.0",
   "private": false,
   "packageManager": "pnpm@11.18.0",
   "license": "MIT",
@@ -38,7 +38,7 @@
   "scripts": {
     "fix": "prettier --write \"*.json\" --list-different",
     "format:check": "prettier --check \"*.json\"",
-    "publish:check": "publint --strict && attw --pack . --profile node16"
+    "publish:check": "baseline-licenses && publint --strict && attw --pack . --profile node16"
   },
   "devDependencies": {
     "@arethetypeswrong/cli": "^0.18.5",

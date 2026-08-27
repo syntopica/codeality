@@ -19,6 +19,12 @@
     "skipLibCheck": true,
 
     "noUncheckedIndexedAccess": true,
+    "noImplicitReturns": true,
+    "noFallthroughCasesInSwitch": true,
+    "allowUnreachableCode": false,
+    "verbatimModuleSyntax": true,
+    "noPropertyAccessFromIndexSignature": true,
+    "erasableSyntaxOnly": true,
     "exactOptionalPropertyTypes": true,
     "noImplicitOverride": true,
     "useUnknownInCatchVariables": true,

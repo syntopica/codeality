@@ -1,12 +1,14 @@
 {
   "$schema": "https://json.schemastore.org/tsconfig",
-  "_comment": "NestJS service — Node runtime + decorator metadata (experimentalDecorators, emitDecoratorMetadata) required by @nestjs/* decorators and class-validator.",
+  "_comment": "NestJS service — Node runtime + decorator metadata (experimentalDecorators, emitDecoratorMetadata) required by @nestjs/* decorators and class-validator. verbatimModuleSyntax is off here, and only here: `nest build` emits CommonJS, and under verbatimModuleSyntax every `import`/`export` in a file TypeScript resolves as CJS is TS1287/TS1295. erasableSyntaxOnly is off for the same reason: constructor parameter properties are how @nestjs/* does dependency injection, and they are not erasable syntax. The rest of base.json still applies.",
   "extends": "./base.json",
   "compilerOptions": {
     "lib": ["ES2024"],
     "types": ["node"],
     "experimentalDecorators": true,
-    "emitDecoratorMetadata": true
+    "emitDecoratorMetadata": true,
+    "verbatimModuleSyntax": false,
+    "erasableSyntaxOnly": false
   },
   "exclude": ["node_modules", "dist"]
 }
