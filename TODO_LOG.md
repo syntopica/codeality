@@ -4,6 +4,61 @@ Closed work from `TODO.md`, grouped by year and month.
 
 ## 2026-08
 
+- [x] 2026-08-27 - **`atomic-file.ts` mutation score 49.72% → 92.74%; package
+      floor ratcheted 60 → 67.** First rule of the per-rule tightening pass
+      (delegated to Codex CLI, verified independently). Survivors in
+      `atomic-file.ts` fell 65 → 12; package score 60.80% → 67.68% (755 killed,
+      321 survived); every other rule's score unchanged. Tests now assert exact
+      `meta`, `messageId`, line/column, report count, and filename/AST
+      boundaries instead of bare `messageId`. `stryker.config.mjs`
+      `thresholds.break` raised to 67 with the ratchet comment updated.
+      Evidence: own re-run of
+      `pnpm --filter eslint-plugin-code-policy run mutation` exits 0 - "Final
+      mutation score of 67.68 is greater than or equal to break threshold 67";
+      package test suite 173 tests pass; eslint `--max-warnings 0` and
+      `prettier --check` clean on both changed files. Remaining per-rule work
+      stays in TODO.md with the new table.
+
+- [x] 2026-08-27 - **The tsconfig lessons from consumer-g are documented where
+      the next adopter will look.** `packages/tsconfig/README.md` gained "The
+      two root shapes" (single-project root extends a preset; multi-project root
+      stays `{"files": [], "references": [...]}` with presets on the leaves, and
+      why: `baseline-type-coverage` walks references, and the wrong shape once
+      produced `type-coverage: ok . 0 / 0` over a whole repository) and "Next.js
+      notes" (never include `.next/dev/types` - `TS1434` on a gitignored dev
+      artifact reads as unfixable and gets the Next project dropped from
+      `type-check`; and Next does not rewrite a tsconfig the preset completed,
+      so it can leave `.prettierignore`). `docs/adoption/existing-repo.md`
+      section 5 gained "What turning the strictness on actually costs": 33
+      pre-existing findings on consumer-g, all in `scripts/` and `e2e/`, two
+      real bugs of the `name in obj` shape fixed with `Object.hasOwn`; plus the
+      two adoption notes - the lint wave arrives WITH the tsconfig change (adopt
+      eslint-config and tsconfig in one pass), and fixes belong at the source,
+      never `?? ''` fallbacks. Evidence:
+      `pnpm exec eslint <both files> --max-warnings 0` and `prettier --check`
+      pass. Closes five TODO items in one pass.
+
+- [x] 2026-08-27 - **Conformance grew a tsconfig column: solution references
+      must reach `type-check`, and every project config must extend a preset.**
+      Two new checks in `create-baseline` (`checkTsconfigProjects.mjs`,
+      `checkTsconfigPresets.mjs`), `loadContext` now parses the root tsconfig
+      (JSONC tolerated) and resolves a solution root's references, and the
+      estate matrix gained a `tscfg` column. The first check diffs a solution
+      root's `references` against the expanded `type-check` text (bare
+      `tsc -b`/`vue-tsc -b` covers everything; a project-scoped `tsc -b x`
+      covers only what it names); the second judges by shape - leaves must
+      extend `@busirocket/tsconfig`, a solution root must not, a single-project
+      root must. Verified: 162 tests pass (17 new); a scratch fixture
+      reproducing the consumer-g defect (three references, two type-checked, one
+      hand-written leaf) yields exactly `tsconfig-project:tsconfig.app.json` and
+      `tsconfig-preset:tsconfig.node.json`; the repaired consumer-g passes both
+      checks legitimately; `pnpm estate ~/p` prints the column. Dogfooding
+      caught the first offender: this repo's own root `tsconfig.json` was
+      hand-written - it now extends `base.json` with `@busirocket/tsconfig`
+      added as a root devDependency, and `create-baseline --check` here reports
+      wiring OK. CHANGELOG carries an Unreleased entry; no version bump
+      (release-time policy).
+
 - [x] 2026-08-27 - **Advisory exceptions are machine-checked and expire.** Two
       advisories sat below the `--audit-level=high` gate, documented as prose in
       TODO.md that nothing re-checked and nothing expired. Replaced by
