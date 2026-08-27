@@ -29,11 +29,9 @@ export default {
   // the tests execute the rules thoroughly and assert on them loosely - a
   // changed message id or a moved report location usually goes unnoticed.
   //
-  // `break` sits just under that number so the gate can only ratchet upward.
-  // Setting it at 70 because 70 sounds right would have made the very first
-  // run red, and a gate that starts red gets deleted rather than met. Raising
-  // it is tracked in TODO.md.
-  thresholds: { high: 85, low: 70, break: 60 },
+  // `break` tracks the latest measured package floor, rounded down, so the
+  // gate can only ratchet upward without making the current suite red.
+  thresholds: { high: 85, low: 70, break: 67 },
   timeoutMS: 60000,
   // The sandbox is a copy of `src` with instrumentation woven through it, and
   // a left-behind copy is linted by every gate that globs the repository -
