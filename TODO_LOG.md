@@ -4,6 +4,15 @@ Closed work from `TODO.md`, grouped by year and month.
 
 ## 2026-08
 
+- [x] 2026-08-28 - **Stryker no longer copies `coverage/` and `dist/` into its
+      sandbox.** `ignorePatterns: ['coverage', 'dist']` added to
+      `packages/eslint-plugin-code-policy/stryker.config.mjs` with a comment
+      recording the `ENOENT ... copyfile ... coverage/base.css` crash that a
+      concurrent `test` run caused mid-copy (observed 2026-08-27). Evidence:
+      `pnpm run mutation` after the change exits 0 in 47s with the identical
+      score - "Final mutation score of 67.68 is greater than or equal to break
+      threshold 67" (755 killed, 321 survived, 0 errors).
+
 - [x] 2026-08-27 - **`atomic-file.ts` mutation score 49.72% → 92.74%; package
       floor ratcheted 60 → 67.** First rule of the per-rule tightening pass
       (delegated to Codex CLI, verified independently). Survivors in

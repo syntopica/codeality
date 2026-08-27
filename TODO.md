@@ -53,14 +53,6 @@ verified complete - `[-]` obsolete or superseded.
   `no-mixed-barrel.ts` 52.00%, `no-inline-types-in-runtime-files.ts` 54.40%,
   `no-inline-types.ts` 56.25%.
 
-- [ ] Stryker copies the package's `coverage/` directory into its sandbox: pure
-      waste, and a mutation run crashes with
-      `ENOENT ... copyfile ... coverage/base.css` if anything rewrites
-      `coverage/` mid-copy (observed 2026-08-27 running `test` and `mutation`
-      concurrently). Add `ignorePatterns: ['coverage']` (and likely `dist`) to
-      `stryker.config.mjs`. Smallest step: add the pattern, run mutation,
-      confirm same score and shorter sandbox setup.
-
 ## Estate
 
 - [ ] Bring the rest of the estate up to the wiring the conformance check now

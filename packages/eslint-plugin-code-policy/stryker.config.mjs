@@ -24,6 +24,11 @@ export default {
   reporters: ['progress', 'clear-text'],
   coverageAnalysis: 'perTest',
   mutate: ['src/rules/**/*.ts'],
+  // Keep build and coverage output out of the sandbox copy. Neither is an
+  // input to a mutation run, and copying `coverage/` races anything that
+  // rewrites it mid-copy - a concurrent `pnpm test` run crashed the sandbox
+  // setup with `ENOENT ... copyfile ... coverage/base.css`.
+  ignorePatterns: ['coverage', 'dist'],
   // Entered at the measured floor, not at an aspiration. The first run scored
   // 60.80% against a suite with ~100% line coverage: 374 mutants survived, so
   // the tests execute the rules thoroughly and assert on them loosely - a
