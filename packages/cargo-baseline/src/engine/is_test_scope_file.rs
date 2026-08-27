@@ -92,8 +92,7 @@ mod tests {
 
     #[test]
     fn honours_a_file_declared_under_cfg_test_elsewhere() {
-        let declared: HashSet<PathBuf> =
-            [PathBuf::from("src/ops/hash_cache_tests.rs")].into();
+        let declared: HashSet<PathBuf> = [PathBuf::from("src/ops/hash_cache_tests.rs")].into();
         let file = ctx("src/ops/hash_cache_tests.rs", "fn a() {}\n");
         assert!(super::is_test_scope_file(&file, &declared));
         assert!(!super::is_test_scope_file(&file, &HashSet::new()));

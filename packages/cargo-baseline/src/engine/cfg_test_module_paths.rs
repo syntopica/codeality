@@ -54,7 +54,9 @@ fn child_paths(declaring: &Path, name: &str) -> Vec<PathBuf> {
     let Some(parent) = declaring.parent() else {
         return Vec::new();
     };
-    let stem = declaring.file_stem().map(|s| s.to_string_lossy().into_owned());
+    let stem = declaring
+        .file_stem()
+        .map(|s| s.to_string_lossy().into_owned());
     let directory = match stem.as_deref() {
         Some("mod" | "lib" | "main") | None => parent.to_path_buf(),
         Some(stem) => parent.join(stem),

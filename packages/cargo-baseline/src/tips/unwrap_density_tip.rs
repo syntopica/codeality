@@ -1,6 +1,6 @@
 use crate::config::BaselineConfig;
-use crate::engine::diagnostic::Diagnostic;
 use crate::engine::cfg_test_module_paths::cfg_test_module_paths;
+use crate::engine::diagnostic::Diagnostic;
 use crate::engine::file_context::FileContext;
 use crate::engine::production_unwrap_lines::production_unwrap_lines;
 use crate::engine::severity::Severity;

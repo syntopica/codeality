@@ -1,6 +1,6 @@
 pub mod cfg_meta_mentions_test;
-pub mod cfg_test_module_paths;
 pub mod cfg_test_line_ranges;
+pub mod cfg_test_module_paths;
 pub mod collect_rust_files;
 pub mod crate_info;
 pub mod diagnostic;

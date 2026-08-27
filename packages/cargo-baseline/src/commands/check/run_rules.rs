@@ -1,7 +1,7 @@
 use crate::config::BaselineConfig;
+use crate::engine::cfg_test_module_paths::cfg_test_module_paths;
 use crate::engine::diagnostic::Diagnostic;
 use crate::engine::file_context::FileContext;
-use crate::engine::cfg_test_module_paths::cfg_test_module_paths;
 use crate::engine::is_test_scope_file::is_test_scope_file;
 use crate::engine::rule::Rule;
 use crate::rules::barrel_only_mod::BarrelOnlyMod;
