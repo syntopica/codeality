@@ -26,6 +26,14 @@ is worth having, it is worth failing the build on.
 `files`/`ignores` override in the relevant `eslint.config.ts` layer, with a
 comment explaining why. Do not drop `--max-warnings 0`.
 
+**A numeric budget is worse than no flag.** One repository in the estate ran
+`--max-warnings 399` against exactly 399 warnings: a ratchet frozen at the day's
+debt that can only ever be raised, and that reads as configured.
+`create-baseline --check` reports it separately and more loudly than a missing
+flag for that reason. The fix is `pnpm lint:suppress`, which every baseline
+project already has - the debt moves into `eslint-suppressions.json`, where
+`lint:prune` shrinks it and review can see it.
+
 ## `import/no-cycle`
 
 **Detects:** circular imports between modules, at full depth (no `maxDepth`
@@ -415,35 +423,204 @@ fixture that looks like a token) goes into `[allowlist] paths` in
 or `target/` wholesale to the allowlist - that's exactly the built-output class
 the config deliberately does not exempt.
 
-## `pnpm audit`
+## `baseline-audit` (advisories with an expiry)
 
-**Detects:** known vulnerabilities in resolved dependencies (direct and
-transitive), against the npm advisory database.
+**Detects:** known vulnerabilities in resolved dependencies, against the npm
+advisory database - and, separately, waivers that have gone stale.
 
-**Runs:** `pnpm audit --audit-level=high` (`audit:check` script), in the
+**Runs:** `baseline-audit --level moderate` (`audit:check` script), in the
 `security` CI job.
 
-**Threshold:** `--audit-level=high` - fails only on high and critical
-advisories. A moderate advisory in a devDependency does not block the team.
+**Threshold:** `moderate` and above. Stricter than the `high` it replaced.
 
-**Why:** high/critical is the bar where "known, exploitable, unresolved" is
-worth stopping a merge over; moderate-and-below findings in transitive
-devDependencies are common enough, and often already accepted-risk enough, that
-gating on them produces alert fatigue rather than action.
+**Why the level could drop.** `pnpm audit --audit-level=high` has exactly one
+lever, so silencing a finding that has already been judged means raising the bar
+for everything. Two advisories sat below that line here, documented as prose in
+`TODO.md` that nothing re-checked and nothing expired. `baseline-audit` reads
+`.baseline-advisories.json`, keyed by GitHub advisory id, where each entry
+carries a **required** `reason` and a **required** `expires`. An expired waiver
+fails the build. An entry missing either field is rejected rather than honoured,
+because a silent waiver and a missing gate look identical from outside. Once a
+judged finding has somewhere to live, moderate findings stop being noise and the
+gate can sit lower.
 
-**False positive / stopgap handling:** when `pnpm dedupe` doesn't clear a
-finding because the fix requires a transitive bump the parent package hasn't
-shipped yet, pin the range forward with a scoped `pnpm-workspace.yaml`
-`overrides` entry - never a blanket downgrade of the audit level. This repo
-currently carries five such overrides (`tmp`, `fast-uri`, `sharp`, `postcss`,
-`brace-expansion`), each commented with its advisory ID and the upstream
-dependency chain, and tracked in `TODO.md` as removable once that chain's own
-floor moves past the patched version.
+**False positive:** there is no such thing here - only a decision. Either the
+finding is reachable, in which case pin the range forward with a scoped
+`pnpm-workspace.yaml` `overrides` entry, or it is not, in which case write the
+argument into `.baseline-advisories.json` with a date on it. Never raise
+`--level` to silence one finding.
 
-## actionlint
+## `baseline-licenses`
 
-**Detects:** invalid GitHub Actions workflow syntax - bad `runs-on` values,
-undefined expression contexts, shellcheck-style issues inside `run:` blocks.
+**Detects:** a non-permissive licence anywhere in a published package's
+production dependency closure.
+
+**Runs:** `baseline-licenses` as the first step of each package's
+`publish:check`.
+
+**Threshold:** every licence in the closure must be permissive (MIT, ISC,
+Apache-2.0, the BSD family, 0BSD, CC0, Unlicense, Zlib, BlueOak, Python-2.0), or
+waived in `.baseline-licenses.json` with a `reason` and an `expires`. SPDX
+expressions are evaluated properly: `MIT OR Apache-2.0` passes on either term,
+`A AND B` needs both.
+
+**Why:** six packages here publish under MIT and nothing verified that a
+transitive dependency had not introduced copyleft into that tree. It had not -
+the four copyleft packages in the workspace (`sharp-libvips`, `axe-core`,
+`lightningcss`, `node-forge`) are all reached through templates and dev
+tooling - and nothing would have noticed if that changed.
+
+**Why not `pnpm licenses list`:** inside a workspace it reports the whole store.
+For a config package with eight direct dependencies it returns 986 packages,
+which cannot answer the only question that matters. The gate walks the closure
+from the manifest instead, resolving through pnpm's symlinks (`realpath`) so it
+lands in `.pnpm/<hash>/node_modules/` where a package's own dependencies
+actually live.
+
+**False positive:** a dev-only dependency will never appear - the walk follows
+`dependencies` only, on purpose. A copyleft test runner is not distributed; a
+copyleft transitive runtime dependency of an MIT package is.
+
+## oxlint (pre-filter)
+
+**Detects:** the correctness-level breaks that need no type information.
+
+**Runs:** `lint:fast` (`oxlint --deny-warnings .`), as the first step of
+`check:ci` and the first pre-commit command.
+
+**Threshold:** the `correctness` category, denied. One category, deliberately.
+
+**Why:** typed linting over a few thousand files takes minutes, and on the
+largest repository in the estate it needed `--max-old-space-size=6144` and a
+35-minute timeout before it stopped dying at `exit 134`. A gate that slow is one
+people learn to skip. oxlint covers the same files in about two seconds.
+
+**Why not wider:** `correctness` is the set whose findings ESLint would also
+reject, so the pre-filter never disagrees with the authority. Measured here,
+`correctness` reported nothing while `suspicious` and `pedantic` reported 19
+findings - `Array#sort` versus `Array#toSorted`, a dangling underscore in
+`__dirname` - none of which ESLint considers a problem. A pre-filter with its
+own opinion is a second linter, and the fast gate becomes the one people argue
+with. See `packages/quality-config/OXLINT.md`.
+
+**It does not replace ESLint.** No type information means no
+`no-floating-promises`, no `no-unnecessary-condition`, nothing from
+`strictTypeChecked` - which is most of what the baseline actually enforces.
+`checkGateCoverage` will not accept oxlint as satisfying the `lint` gate.
+
+## commitlint
+
+**Detects:** a commit subject that does not parse as a conventional commit, or
+whose type is not in the allowed set.
+
+**Runs:** the `commit-msg` lefthook hook (`pnpm exec commitlint --edit {1}`).
+
+**Threshold:** `type-enum` is an error; `subject-case`, `body-max-line-length`
+and `footer-max-line-length` are off.
+
+**Why:** the release tooling derives the semver bump and the changelog from
+commit subjects, so a subject typed `feature:` instead of `feat:` silently drops
+a change out of the release notes and can turn a minor into a patch. This hook
+is the only place it can be caught - by the time the tag is cut the message is
+already history.
+
+**Why three rules are off:** `body-max-line-length` at 100 rejects a pasted
+stack trace or a URL, which is exactly the context worth keeping in a body.
+`subject-case` rejects a subject that starts with an identifier capitalised in
+the code (`TypeScript`, `ESLint`, `GitHub`).
+
+## size-limit (bundle budget)
+
+**Detects:** a dependency or a refactor that grows the shipped bundle.
+
+**Runs:** `size` (`size-limit`), appended to each client template's
+`perf:check`.
+
+**Threshold:** per template, set from the measured brotli size with roughly 15%
+headroom - 72 KB for vite-react and tauri, 50 KB for vue, 172 KB for Next, 85 KB
+for Nuxt. Astro's budget covers `dist/**/*.{js,css,html}` at 10 KB against a
+measured 262 B, because Astro ships no JavaScript unless an island asks for it
+and a JS-only glob would have no files to measure.
+
+**Why:** Lighthouse measures the rendered page; it does not tell you that a
+dependency added 400 KB of JavaScript. For the widget templates in particular -
+they ship into someone else's page - this is the gate with the most direct user
+impact, and there was none.
+
+**False positive:** a budget that is genuinely too tight is raised in the same
+commit as the change that needs it, with the new measured number in the message.
+Never raised to make an unexplained jump green.
+
+## Mutation testing (`eslint-plugin-code-policy` only)
+
+**Detects:** a test that executes a line without asserting anything that would
+notice if the line were wrong.
+
+**Runs:** `pnpm --filter eslint-plugin-code-policy run mutation`, on demand.
+**Not a CI gate.**
+
+**Threshold:** `thresholds.break` at 60, which is where the first run measured.
+
+**Why here and nowhere else:** a rule that silently stops reporting stops
+protecting every repository that installs the plugin, and every one of them
+still shows a green build. Coverage cannot see that distinction. The first run
+scored 60.80% against a suite with ~100% line coverage: 678 mutants killed, 374
+survived.
+
+**Why not a gate:** a run takes over a minute and a surviving mutant is a
+question for a human ("is this branch worth a test?") rather than a build
+failure. The threshold is set at the measured floor so the number can only
+ratchet upward; raising it is tracked in `TODO.md`.
+
+## `create-baseline --check` (conformance)
+
+**Detects:** gates that are installed but not invoked.
+
+**Runs:** `conformance` at this repo's root, in the `quality` CI job; and in
+each adopting repository's own CI.
+
+**Threshold:** seven checks, all errors except hooks: `--max-warnings 0` present
+and not a numeric budget; every gate reachable from what CI actually runs; a
+workflow that fires on push or pull request; every action pinned to a commit
+SHA; coverage produced and thresacme; lefthook installed into `.git/hooks`
+(warning); dependency ranges able to resolve the pinned baseline.
+
+**Why:** the previous `--check` asserted that four packages appeared in
+`package.json`. It reported "checks OK" for a repository with no CI, a `lint`
+script that ignored warnings, and a `check:ci` that skipped four gates. Adoption
+was measured by presence, so drift in enforcement was invisible by
+construction - which is where every finding in the estate sweep traced back to.
+
+**Measured from CI, not from a name.** The entrypoints are whatever scripts the
+workflows invoke. Asserting that a workflow says `check:ci` was the wrong
+question: the best-wired repository in the estate runs every gate as its own
+step and never uses that word.
+
+**False positive:** waive by finding id in `baseline.exceptions.json`, with a
+required `reason` and an optional `expires` that is enforced. A monorepo root
+whose `lint` and `test` delegate to workspaces is reported as informational
+rather than failing, and should be checked inside each workspace.
+
+## `baseline-estate` (the whole estate at once)
+
+**Detects:** the same seven checks, across every directory under a root that
+depends on a `@busirocket/*` package.
+
+**Runs:** `pnpm estate ~/p`, on demand and before a release.
+
+**Threshold:** exits non-zero when any consumer has an error-level finding.
+
+**Why:** every release of these packages was already being A/B'd by hand against
+the repositories that consume them, and that routine caught three defects the
+templates and the unit tests both missed. This is that routine as one command.
+The estate is the release's blast radius; publishing into a red one is the
+mistake it exists to prevent.
+
+## actionlint and zizmor
+
+**actionlint detects:** invalid GitHub Actions workflow syntax - bad `runs-on`
+values, undefined expression contexts, shellcheck-style issues inside `run:`
+blocks.
 
 **Runs:** `actionlint` (`workflows:check` script) locally, repo root only -
 workflows only exist at the root of a repo, never per package. In CI, the
@@ -461,6 +638,22 @@ before it reaches a real run.
 input; pin the action version precisely and, if the false positive persists,
 suppress the specific line with an actionlint `# actionlint-ignore` comment
 naming the rule, not by removing the check from CI.
+
+**zizmor detects:** what actionlint does not - workflow _security_ rather than
+workflow syntax. Template injection through `${{ github.event.* }}`, actions
+pinned to a movable tag, over-broad `GITHUB_TOKEN` permissions, dangerous
+`pull_request_target` triggers. Neither tool subsumes the other, and both run in
+the `security` job.
+
+**Actions are pinned to commit SHAs, not tags.** A tag is mutable: whoever
+controls the action repository can move `v6` to any commit at any time, and
+every workflow referencing it runs the new code on the next push with no diff
+anywhere in this repo to review. This is the shape of the tj-actions compromise.
+The tag name stays as a trailing comment so Renovate can still offer the upgrade
+and a reader can still tell the version. `create-baseline --check` enforces it;
+resolve a SHA with `gh api repos/<owner>/<repo>/git/ref/tags/<tag>`,
+dereferencing a second time through `git/tags/<sha>` when it reports an
+annotated tag.
 
 ## publint / attw
 

@@ -82,9 +82,32 @@ compiler options.
 
 ## 6. CI
 
-Ensure CI runs `eslint`, `prettier --check`, and `tsc --noEmit`. Use
-`create-baseline --hard` in CI if you want a strict guard that `eslint.config.*`
-exists and baseline packages are listed.
+Do not hand-roll it. `create-baseline --write` writes
+`.github/workflows/ci.yml`: four jobs, three commands (`check:ci`,
+`check:quality`, `check:security`), every action pinned to a commit SHA. It
+writes nothing if a workflow already runs `pnpm run check:ci`, and it refuses to
+add a second pipeline beside unrelated workflows - it reports those instead, so
+you add the three steps to the pipeline you have.
+
+This is the step that was missing everywhere. Across seventeen adopting
+repositories, eight had no workflow at all while carrying the full gate set as
+npm scripts: pre-commit lints staged files and pre-push scans for secrets, so
+type-check, tests, knip, jscpd, dependency-cruiser and type-coverage had no
+automatic trigger anywhere.
+
+Then make drift a failing build rather than a discovery:
+
+```bash
+pnpm exec create-baseline --check   # in CI
+pnpm exec create-baseline --fix     # locally, to repair the mechanical half
+```
+
+`--check` asserts the gates are **wired**, not merely installed: the
+`--max-warnings 0` flag, every gate reachable from what CI actually runs, a
+workflow that fires on push, actions pinned to SHAs, coverage produced and
+thresacme, lefthook installed into `.git/hooks`, and dependency ranges able to
+resolve the pinned baseline. Waive a finding by id in `baseline.exceptions.json`
+with a `reason` and an optional, enforced `expires`.
 
 ## 7. Yarn
 
@@ -93,10 +116,19 @@ pnpm or npm.
 
 ## 8. Quality gates (knip, dependency-cruiser, lefthook, Renovate, gitleaks)
 
-Add these after ESLint/Prettier/TypeScript are stable. Each gate, its threshold,
-and how to handle a false positive are documented in
-[quality-gates.md](../standards/quality-gates.md) - read that before tuning any
-of them.
+Add these after ESLint/Prettier/TypeScript are stable. `create-baseline --write`
+generates the wiring - `knip.config.ts`, `.dependency-cruiser.cjs`,
+`lefthook.yml`, `renovate.json`, `.oxlintrc.json`, the CI workflow, and the
+`check:*` scripts. Each gate, its threshold, and how to handle a false positive
+are documented in [quality-gates.md](../standards/quality-gates.md) - read that
+before tuning any of them.
+
+**The gates that get dropped are the ones worth most.** Of seventeen adopters,
+knip ran in seven, jscpd in six, dependency-cruiser in two and type-coverage in
+two - while type-check, lint, format and test ran nearly everywhere. Those four
+are exactly the findings a reviewer cannot see in a diff, and every one of them
+was written into `package.json` by this tool with nothing calling it. That is
+what `--check` now refuses to pass.
 
 ## Adopting on a codebase with existing violations
 

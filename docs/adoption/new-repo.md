@@ -130,12 +130,43 @@ a single-package repo can skip `deps:graph` until it becomes a monorepo. Every
 gate's threshold and rationale is in
 [quality-gates.md](../standards/quality-gates.md).
 
-## 8. Optional CLI check
+## 8. Conformance check
 
 ```bash
-pnpm dlx @busirocket/create-baseline@^0.1.0 --check
+pnpm dlx @busirocket/create-baseline --check
 ```
 
+`--check` asserts the gates are **wired**, not merely installed: `lint` fails on
+warnings, every gate is reachable from what CI actually runs, a workflow fires
+on push, actions are pinned to commit SHAs, coverage is produced and
+thresacme, lefthook reached `.git/hooks`, and the installed ranges can resolve
+the pinned baseline. Run it in CI; run `--fix` locally to repair the mechanical
+half.
+
+Waive a finding by id in `baseline.exceptions.json`:
+
+```json
+{
+  "gate:dupes": {
+    "reason": "generated client, excluded from the duplication budget",
+    "expires": "2026-12-31"
+  }
+}
+```
+
+`reason` is required - a silent waiver and a missing gate are the same thing
+from outside. `expires` is optional and enforced: a stale waiver becomes a
+finding of its own, which is the difference between this and prose in a TODO.
+
 Use `--soft` to print install hints without failing, or `--hard` to also require
-an `eslint.config.*` and the quality-gate config files (`knip.config.ts`/`.js`,
-`lefthook.yml`, `renovate.json`) to exist.
+an `eslint.config.*` and the quality-gate config files to exist.
+
+## 9. The whole estate
+
+```bash
+pnpm dlx @busirocket/create-baseline exec baseline-estate ~/p
+```
+
+One row per repository that depends on a `@busirocket/*` package, one column per
+class of gate. Run it before publishing a change to these packages: the estate
+is the release's blast radius.

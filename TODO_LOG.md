@@ -4,6 +4,19 @@ Closed work from `TODO.md`, grouped by year and month.
 
 ## 2026-08
 
+- [x] 2026-08-27 - **Advisory exceptions are machine-checked and expire.** Two
+      advisories sat below the `--audit-level=high` gate, documented as prose in
+      TODO.md that nothing re-checked and nothing expired. Replaced by
+      `baseline-audit` (`@busirocket/quality-config`), which reads
+      `.baseline-advisories.json`: a waiver needs both a `reason` and an
+      `expires`, an expired waiver fails the build, and an entry missing either
+      field is rejected rather than honoured. Because a judged finding now has
+      somewhere to live, the gate moved from `high` to `moderate` - strictly
+      stricter than before. Verified all three paths: current state exits 0 with
+      one waived moderate finding, an entry back-dated to 2020-01-01 exits 1 as
+      EXPIRED, and running with no allowlist exits 1. Both live entries expire
+      2026-11-30.
+
 - [x] 2026-08-26 - **cargo-baseline reads the declaring `mod`, so a
       `#[cfg(test)] mod name;` file is test scope without an inner attribute.**
       New `engine/cfg_test_module_paths.rs` resolves those declarations across

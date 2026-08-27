@@ -7,26 +7,6 @@ verified complete - `[-]` obsolete or superseded.
 
 ## Quality gates
 
-- [!] Two advisories sit below the `--audit-level=high` gate and are
-  deliberately not overridden: `uuid@<11.1.1` (moderate, GHSA-w5hq-g745-h8pq,
-  via `@lhci/cli > uuid`, resolved at 8.3.2) and `esbuild >=0.27.3 <0.28.1`
-  (low, GHSA-g7r4-m6w7-qqqr, via `eslint-plugin-code-policy`'s own tsup and
-  vitest toolchains, resolved at 0.27.7). The `overrides:` block is scoped by
-  its own comment to `high` findings, so forcing these would contradict the
-  stated policy and pin two more transitive edges for no gate benefit.
-  Re-measured 2026-08-25 after the Next 16.3.2 move removed the two `next`
-  overrides: unaffected, still 1 low + 1 moderate,
-  `pnpm audit --audit-level=high` exit 0.
-
-      **Not waiting on Renovate.** Both consumers are already at their latest
-      published release: `@lhci/cli` is 0.15.1 with no newer version at all, and
-      `tsup` is 8.5.1 whose own dependency range is `esbuild ^0.27.0`, so no
-      resolution inside that range can reach the patched 0.28.1. A vitest bump
-      does not help either - 4.1.10 and 4.1.11 declare the same
-      `vite ^6 || ^7 || ^8`. Unblock: `tsup` publishing a release that widens
-      past `esbuild ^0.27.0`, or `@lhci/cli` publishing past 0.15.1. Revisit
-      only on that, or if either advisory is re-scored `high`.
-
 - [~] `pnpm check:quality` failed once on a cold run and passed on every run
   after. **The reporting half is fixed; the original failure is still not
   reproduced.** `check:quality` was a `pnpm a && pnpm b && ...` chain, so the
@@ -51,3 +31,32 @@ verified complete - `[-]` obsolete or superseded.
       in `docs/standards/quality-gates.md`; CI installs from scratch and never
       sees it). Close this when a cold run fails again and names its step, or
       when enough cold runs pass to call it gone.
+
+## Test strength
+
+- [ ] `packages/eslint-plugin-code-policy` scores **60.80%** on mutation testing
+      against a suite with ~100% line coverage: 678 mutants killed, **374
+      survived**. The rule suites execute every branch and assert loosely - a
+      changed `messageId`, a report moved to a different node, or an inverted
+      boundary condition usually survives. Coverage cannot see this, which is
+      the whole reason the gate was added. Run it with
+      `pnpm --filter eslint-plugin-code-policy run mutation`.
+
+  `thresholds.break` is 60 in `stryker.config.mjs`, just under the measured
+  score, so the number can only ratchet upward. The work is per rule and
+  independent: take one file from the table (`atomic-file.ts` is worst at
+  49.72%), read its surviving mutants, tighten the assertions that let them
+  live, then raise `break` to the new floor.
+
+## Estate
+
+- [ ] Bring the rest of the estate up to the wiring the conformance check now
+      asserts. `pnpm estate ~/p` prints the matrix; 22 of 23 consumers fail at
+      least one column.
+
+  `create-baseline --fix` repairs the mechanical half - the `--max-warnings 0`
+  flag, gates missing from `check:*`, coverage thresholds, the CI workflow,
+  stuck version ranges. The rest needs a decision per repository. The four
+  `client-widgets-*` widgets are the largest gap: they predate
+  `@busirocket/quality-config` entirely and sit four minors behind on
+  `eslint-config`.
