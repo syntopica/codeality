@@ -4,6 +4,35 @@ Closed work from `TODO.md`, grouped by year and month.
 
 ## 2026-08
 
+- [~] 2026-08-28 - **Estate sweep, first execution pass: 19 consumers fixed
+  mechanically, matrix from ~77 to ~39 red cells, and the sweep surfaced three
+  defects in `create-baseline` itself, all fixed with tests.** Ran
+  `--check`/install/`--fix` across every failing consumer except the four
+  excluded `client-widgets-*` widgets (delegated in four parallel batches, all
+  changes left uncommitted per repo). Tool defects found and fixed in
+  `packages/create-baseline`: (1) `checkGateCoverage`'s fix appended gates to
+  `check:quality`/`check:security` even when CI never reaches them, so the gate
+  stayed red and every `--fix` pass appended another copy - `entryFor` now
+  targets only a reachable check-style entrypoint and falls back to the
+  conventional name (leaving the finding standing) rather than polluting
+  whatever CI runs first, which had put `type-coverage` inside consumer-h's
+  `lint:prune` and consumer-l's `build`; (2) `applyFixes`' `append-to-script`
+  was not idempotent - it now skips a command the entrypoint already runs; (3)
+  the missing-packages install hint lacked `-w` for pnpm workspace roots
+  (consumer-y failed with `ERR_PNPM_ADDING_TO_ROOT`). Duplicated segments the
+  old behaviour left in consumer-ab, consumer-h, consumer-l, project-after and consumer-t were
+  deduped back; consumer-h's `lint:prune` and consumer-l's `build` restored to their
+  HEAD values. Evidence: `pnpm vitest run` in create-baseline passes 165 tests
+  (two new: reachable-entrypoint routing, no-check-entrypoint fallback; one new
+  idempotent-append test), `eslint bin tests --max-warnings 0` clean, second
+  `--fix` pass converges ("nothing was mechanically fixable"), `pnpm estate ~/p`
+  shows 2 fully wired and the residue listed in `TODO.md`. Item stays `[~]`
+  there: 13 lockfile syncs and three repos' installs are blocked on the
+  unreleased package versions (new `[!]` release item), and the rest is per-repo
+  decisions. Delegation caveat logged: the batch agent claimed
+  consumer-q was fixed but no change existed on disk - redone by the
+  coordinator and verified.
+
 - [x] 2026-08-28 - **The per-rule mutation pass is complete: all ten rules
       tightened, package 60.80% → 89.38%, floor ratcheted to 89.** Fourth and
       final wave (delegated to Codex CLI, verified independently) took
