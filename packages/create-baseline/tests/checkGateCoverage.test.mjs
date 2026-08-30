@@ -76,4 +76,29 @@ describe('checkGateCoverage', () => {
     const [finding] = checkGateCoverage({ scripts: { lint: 'eslint .' } })
     expect(finding.id).toBe('check-entrypoints')
   })
+
+  // The consumer-t regression: CI runs only check:ci, check:quality exists but
+  // nothing reaches it. Appending there leaves the gate red and every --fix
+  // pass appends again; the fix must target an entrypoint CI actually runs.
+  it('routes the fix to a reachable entrypoint when the preferred one is dead', () => {
+    const scripts = { ...WIRED, 'check:ci': 'pnpm type-check && pnpm lint' }
+    const workflows = [{ name: 'ci.yml', text: '- run: pnpm run check:ci\n' }]
+    const findings = checkGateCoverage({ scripts, workflows })
+    const quality = findings.find((f) => f.id === 'gate:deps:graph')
+    const security = findings.find((f) => f.id === 'gate:secrets')
+    expect(quality.fix.name).toBe('check:ci')
+    expect(security.fix.name).toBe('check:ci')
+  })
+
+  // When CI reaches no check script at all, appending to whatever it does run
+  // put gates inside one repo's `build`. Keep the conventional target instead
+  // and let the finding stand until a human wires the pipeline.
+  it('keeps the conventional target when CI reaches no check entrypoint', () => {
+    const scripts = { ...WIRED, build: 'vite build' }
+    const workflows = [{ name: 'ci.yml', text: '- run: pnpm run build\n' }]
+    const finding = checkGateCoverage({ scripts, workflows }).find(
+      (f) => f.id === 'gate:deps:graph',
+    )
+    expect(finding.fix.name).toBe('check:quality')
+  })
 })

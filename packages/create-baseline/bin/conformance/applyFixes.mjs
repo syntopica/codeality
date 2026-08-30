@@ -48,6 +48,10 @@ export async function applyFixes(root, findings) {
     if (fix.kind === 'append-to-script') {
       manifest.scripts ??= {}
       const current = manifest.scripts[fix.name]
+      // Appending the same command twice never helps: when a fix re-fires
+      // (two findings sharing a target, or a re-run before the gate goes
+      // green) the entrypoint must not accumulate duplicates.
+      if (current?.split(' && ').includes(fix.value)) continue
       manifest.scripts[fix.name] = current
         ? `${current} && ${fix.value}`
         : fix.value

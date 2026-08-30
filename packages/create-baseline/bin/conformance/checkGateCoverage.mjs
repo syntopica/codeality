@@ -76,6 +76,7 @@ export function checkGateCoverage({ scripts, workflows = [], runners = {} }) {
   }
 
   const { names, text } = expandScripts(scripts, entries, runners)
+  const present = entries.filter((name) => Object.hasOwn(scripts, name))
   const findings = []
 
   for (const gate of GATES) {
@@ -90,7 +91,7 @@ export function checkGateCoverage({ scripts, workflows = [], runners = {} }) {
       fix: scripts[gate.script]
         ? {
             kind: 'append-to-script',
-            name: entryFor(gate.id),
+            name: entryFor(gate.id, present),
             value: `pnpm ${gate.script}`,
           }
         : undefined,
@@ -103,8 +104,25 @@ export function checkGateCoverage({ scripts, workflows = [], runners = {} }) {
 // Where a missing gate is appended when `--fix` runs: the fast path for the
 // gates a developer expects before pushing, the slower whole-tree pass for the
 // ones that walk the graph, the full-clone job for the ones that need it.
-function entryFor(id) {
-  if (id === 'secrets' || id === 'audit') return 'check:security'
-  if (id === 'deps:graph' || id === 'type-coverage') return 'check:quality'
-  return 'check:ci'
+// Constrained to the entrypoints the pipeline actually reaches: appending to
+// a conventional script CI never invokes recreates the dead-configuration
+// failure this check exists to catch, and `--fix` never converges.
+function entryFor(id, present) {
+  const preferred =
+    id === 'secrets' || id === 'audit'
+      ? 'check:security'
+      : id === 'deps:graph' || id === 'type-coverage'
+        ? 'check:quality'
+        : 'check:ci'
+  if (present.includes(preferred)) return preferred
+  // Only an aggregate check script is a sane host for a gate. Appending to
+  // whatever CI happens to run first put `type-coverage` inside one repo's
+  // `build` and another's `lint:prune`; when no check entrypoint is
+  // reachable, keep the conventional name and leave the finding standing for
+  // a human to wire the pipeline.
+  const aggregate = present.find(
+    (name) =>
+      name === 'check:ci' || name === 'check' || name.startsWith('check:'),
+  )
+  return aggregate ?? preferred
 }

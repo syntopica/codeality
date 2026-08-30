@@ -51,6 +51,32 @@ describe('applyFixes', () => {
     )
   })
 
+  it('does not append a command the entrypoint already runs', async () => {
+    await manifest({
+      scripts: { 'check:quality': 'pnpm deps:graph && pnpm type-coverage' },
+    })
+    const applied = await applyFixes(root, [
+      {
+        fix: {
+          kind: 'append-to-script',
+          name: 'check:quality',
+          value: 'pnpm type-coverage',
+        },
+      },
+      {
+        fix: {
+          kind: 'append-to-script',
+          name: 'check:quality',
+          value: 'pnpm type-coverage',
+        },
+      },
+    ])
+    expect(applied).toEqual([])
+    expect((await readManifest()).scripts['check:quality']).toBe(
+      'pnpm deps:graph && pnpm type-coverage',
+    )
+  })
+
   it('creates the entrypoint when appending to one that does not exist', async () => {
     await manifest({ scripts: {} })
     await applyFixes(root, [

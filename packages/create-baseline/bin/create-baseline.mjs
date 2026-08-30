@@ -153,10 +153,19 @@ async function main() {
   const flags = parseArgs(process.argv.slice(2))
   const root = cwd()
 
+  // pnpm refuses to add to a workspace root without -w (ERR_PNPM_ADDING_TO_ROOT),
+  // so a workspace repository must be handed a command that actually runs.
+  const isWorkspaceRoot = await access(
+    resolve(root, 'pnpm-workspace.yaml'),
+  ).then(
+    () => true,
+    () => false,
+  )
+
   const printInstall = (required = names) => {
     const spec = required.map((p) => `${p}@${versions[p]}`).join(' ')
     console.log('pnpm (recommended):')
-    console.log(`  pnpm add -D ${spec}`)
+    console.log(`  pnpm add${isWorkspaceRoot ? ' -w' : ''} -D ${spec}`)
     console.log('npm:')
     console.log(`  npm install -D ${spec}`)
   }
