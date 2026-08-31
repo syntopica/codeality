@@ -31,3 +31,11 @@ target/
 # Stryker's mutant sandbox and HTML report
 .stryker-tmp/
 reports/mutation/
+
+# Python (packages/baseline-py, templates/python-package)
+**/.venv/
+**/__pycache__/
+**/.pytest_cache/
+**/.mypy_cache/
+**/.ruff_cache/
+**/*.egg-info/
