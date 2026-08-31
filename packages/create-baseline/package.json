@@ -2,7 +2,7 @@
   "name": "@busirocket/create-baseline",
   "version": "0.9.0",
   "private": false,
-  "packageManager": "pnpm@11.18.0",
+  "packageManager": "pnpm@11.25.0",
   "license": "MIT",
   "description": "CLI to verify and adopt @busirocket baseline config packages",
   "repository": {
@@ -49,10 +49,10 @@
   "devDependencies": {
     "@arethetypeswrong/cli": "^0.18.5",
     "@busirocket/eslint-config": "workspace:*",
-    "@vitest/coverage-v8": "^4.1.10",
-    "eslint": "^10.8.0",
+    "@vitest/coverage-v8": "^4.1.11",
+    "eslint": "^10.9.1",
     "eslint-plugin-regexp": "^2.10.0",
-    "publint": "^0.3.22",
-    "vitest": "^4.1.10"
+    "publint": "^0.3.24",
+    "vitest": "^4.1.11"
   }
 }

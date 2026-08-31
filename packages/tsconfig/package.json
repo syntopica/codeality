@@ -2,7 +2,7 @@
   "name": "@busirocket/tsconfig",
   "version": "0.3.0",
   "private": false,
-  "packageManager": "pnpm@11.18.0",
+  "packageManager": "pnpm@11.25.0",
   "license": "MIT",
   "description": "Shared TypeScript configuration baseline",
   "repository": {
@@ -43,6 +43,6 @@
   "devDependencies": {
     "@arethetypeswrong/cli": "^0.18.5",
     "prettier": "^3.9.6",
-    "publint": "^0.3.22"
+    "publint": "^0.3.24"
   }
 }

@@ -2,7 +2,7 @@
   "name": "@busirocket/prettier-config",
   "version": "0.2.0",
   "private": false,
-  "packageManager": "pnpm@11.18.0",
+  "packageManager": "pnpm@11.25.0",
   "license": "MIT",
   "description": "Shared Prettier configuration",
   "repository": {
@@ -35,7 +35,7 @@
   "devDependencies": {
     "@arethetypeswrong/cli": "^0.18.5",
     "prettier": "^3.9.6",
-    "publint": "^0.3.22"
+    "publint": "^0.3.24"
   },
   "files": [
     "LICENSE",
