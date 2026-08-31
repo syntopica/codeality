@@ -26,6 +26,43 @@ verified complete - `[-]` obsolete or superseded.
   with provenance, which is not the threat the policy exists to catch. Worth
   deciding deliberately rather than by default next release.
 
+  Pushed 2026-08-31: baseline, capture-service, busirocket, inbox-tool,
+  consumer-i, consumer-n, consumer-l (its codex branch), plus project-after and
+  consumer-p, which a concurrent session had already pushed. Six could not
+  be, each for its own reason, and none of them is "run push again":
+
+  - [!] **consumer-f: three secrets in the published history.** Its
+    `pre-push` gitleaks hook blocks the push - `backend/.env` carries an
+    `openai-api-key` and two `generic-api-key` matches in commits `ac4dc81a` and
+    `17f0831a`, both dated 2025-04-08 and both already ancestors of
+    `origin/main`, so they have been public for ~16 months. The file is
+    untracked now and `.env*` is ignored, but history keeps it. Rotate all three
+    keys first and treat them as compromised; purging history is worthless
+    before that and optional after. The hook was not bypassed.
+  - [!] **Consumer-u: 38 gitleaks findings**, every one a `gcp-api-key` in
+    `src/service-calculator.js`, `src/classes/gmap.js` and the built `dist/`
+    output, spanning 2023-03 to 2025-11. A Maps JS key ships to the browser by
+    design, so the control is HTTP-referrer and API restrictions rather than
+    secrecy - verify those are set in GCP, and if they are, waive the finding
+    deliberately rather than leaving the push blocked.
+  - [!] **consumer-g: 1352 type errors**, 1347 of them TS4111 plus 5 TS1294.
+    Caused by this session: syncing the lockfile moved `@busirocket/tsconfig`
+    0.2.1 to 0.3.0, whose `base.json` turns on
+    `noPropertyAccessFromIndexSignature`. The commit is sound and stays local;
+    the adoption is a real task, mostly mechanical (dot to bracket access), not
+    a drive-by fix. Same shape as project-after's 156-error cargo-baseline adoption.
+  - [!] **consumer-ab is archived on GitHub** and refuses every push:
+    `ERROR: This repository was archived so it is read-only.` The conformance
+    commit can never ship. It should probably leave the estate matrix entirely
+    rather than sit there permanently green-able but unpushable.
+  - consumer-t and consumer-h: local `main` is 150 and 81 commits behind origin
+    respectively, and both repos take work through PRs. Rebasing consumer-t
+    conflicts on `b3ebdb3`, an older local commit from another session, so
+    resolving it is not this task's call. Both need a branch and a PR.
+
+  Two remotes were on HTTPS and failed with 403 / "Repository not found" while
+  every SSH remote worked; consumer-i and consumer-g now point at SSH.
+
   What remains:
 
   - Lockfile sync: **done 2026-08-31.** 12 repos were stale (capture-service,
