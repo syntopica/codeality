@@ -4,6 +4,17 @@ All notable changes to `busirocket-baseline-py` are documented here. The format
 follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/) and the project
 adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## 0.1.1
+
+### Fixed
+
+- Glob patterns now mean what they do everywhere else: `*` stops at a directory
+  separator and `**` crosses it. They were matched with `fnmatch`, whose `*`
+  crosses separators, so a role or override written for the scripts in a
+  repository root silently claimed every file in the tree. Found while adopting
+  the baseline in consumer-a, where `entrypoint = ["*.py"]` matched all 106
+  files instead of the 40 at the root and hid 25 real `BPY002` findings.
+
 ## 0.1.0
 
 Initial release.
