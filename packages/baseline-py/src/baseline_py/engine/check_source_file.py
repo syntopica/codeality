@@ -4,6 +4,7 @@ from pathlib import Path
 
 from baseline_py.config.baseline_config import BaselineConfig
 from baseline_py.config.module_role import ModuleRole
+from baseline_py.engine.fingerprint_findings import fingerprint_findings
 from baseline_py.engine.rule_registry import RULE_REGISTRY
 from baseline_py.model.finding import Finding
 from baseline_py.parsing.parse_source_file import parse_source_file
@@ -21,4 +22,4 @@ def check_source_file(
     raw = tuple(finding for rule in RULE_REGISTRY for finding in rule(source, config))
     suppressions, warnings = parse_suppressions(source.text)
     kept, unused = apply_suppressions(raw, suppressions, config.overrides)
-    return kept, (*warnings, *unused)
+    return fingerprint_findings(kept, relative_path), (*warnings, *unused)

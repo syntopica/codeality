@@ -17,6 +17,7 @@ data = [
   "src/baseline_py/config/default_generated_globs.py",
   "src/baseline_py/engine/rule_registry.py",
   "src/baseline_py/init/managed_asset_files.py",
+  "src/baseline_py/commands/project_option.py",
 ]
 entrypoint = ["src/baseline_py/cli.py"]
 
