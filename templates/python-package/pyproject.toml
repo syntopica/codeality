@@ -1,0 +1,46 @@
+[build-system]
+requires = ["hatchling>=1.27,<2"]
+build-backend = "hatchling.build"
+
+[project]
+name = "greeting-service"
+version = "0.1.0"
+description = "A Python package on the BusiRocket baseline"
+readme = "README.md"
+requires-python = ">=3.12"
+license = { text = "MIT" }
+authors = [{ name = "Cristian Deluxe" }]
+dependencies = []
+
+[project.scripts]
+greeting-service = "greeting_service.cli:cli"
+
+[dependency-groups]
+quality = [
+  "busirocket-baseline-py>=0.1,<1",
+  "deptry>=0.20,<1",
+  "mypy>=1.11,<2",
+  "pip-audit>=2.7,<3",
+  "pytest>=8,<10",
+  "pytest-cov>=5,<8",
+  "ruff>=0.15,<1",
+]
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/greeting_service"]
+
+# Without known_first_party, deptry reports every internal import as DEP003.
+[tool.deptry]
+known_first_party = ["greeting_service"]
+
+[tool.pytest.ini_options]
+addopts = "-ra"
+testpaths = ["tests"]
+
+[tool.coverage.run]
+branch = true
+
+[tool.coverage.report]
+show_missing = true
+skip_covered = true
+fail_under = 80

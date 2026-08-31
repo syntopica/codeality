@@ -1,0 +1,49 @@
+name: Publish (Python)
+
+on:
+  workflow_dispatch:
+    inputs:
+      package:
+        description: Python package to publish
+        required: true
+        type: choice
+        options:
+          - baseline-py
+
+permissions:
+  contents: read
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    environment: pypi
+    permissions:
+      contents: read
+      # Trusted publishing: no token, no twine credentials, no local login.
+      id-token: write
+    steps:
+      - uses: actions/checkout@v5
+
+      - name: Install uv
+        uses: astral-sh/setup-uv@v7
+        with:
+          enable-cache: true
+
+      - name: Check the lockfile is current
+        run: uv lock --check
+        working-directory: packages/${{ inputs.package }}
+
+      - name: Run the quality gate
+        run: |
+          uv sync --locked
+          uv run baseline-py gate
+        working-directory: packages/${{ inputs.package }}
+
+      - name: Build the distributions
+        run: uv build
+        working-directory: packages/${{ inputs.package }}
+
+      - name: Publish to PyPI
+        uses: pypa/gh-action-pypi-publish@release/v1
+        with:
+          packages-dir: packages/${{ inputs.package }}/dist

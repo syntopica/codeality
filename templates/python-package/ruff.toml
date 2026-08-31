@@ -1,0 +1,49 @@
+# Managed by baseline-py. Rules are listed explicitly: ALL expands silently on
+# every ruff upgrade, turning a dependency bump into a lint failure.
+line-length = 100
+target-version = "py311"
+
+[lint]
+select = [
+  "E",    # pycodestyle errors
+  "W",    # pycodestyle warnings
+  "F",    # pyflakes
+  "I",    # import sorting
+  "N",    # pep8-naming
+  "UP",   # pyupgrade
+  "B",    # bugbear
+  "A",    # builtin shadowing
+  "C4",   # comprehensions
+  "DTZ",  # naive datetimes
+  "T20",  # print in library code
+  "SIM",  # simplifiable code
+  "RET",  # return control flow
+  "ARG",  # unused arguments
+  "PTH",  # pathlib over os.path
+  "ERA",  # commented-out code
+  "PL",   # pylint: complexity, branches, statements
+  "RUF",  # ruff-specific
+  "D",    # docstrings; replaces interrogate
+  # bandit, curated: the full S set is intentionally noisy in tests and in
+  # subprocess-heavy code.
+  "S102", "S103", "S104", "S105", "S106", "S107", "S108",
+  "S301", "S302", "S303", "S304", "S305", "S306",
+  "S324", "S501", "S506", "S508", "S509",
+  "S608", "S609", "S612",
+]
+ignore = [
+  # Conflicts with the formatter; keeping these on fights ruff format forever.
+  "E501", "W191", "E111", "E114", "E117", "D206", "D300", "COM812", "ISC001",
+  "D203",  # incompatible with D211
+  "D213",  # incompatible with D212
+]
+
+[lint.per-file-ignores]
+"tests/**" = ["D", "S101", "ARG", "PLR2004"]
+"**/conftest.py" = ["D"]
+
+[lint.pydocstyle]
+convention = "google"
+
+[format]
+docstring-code-format = true

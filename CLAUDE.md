@@ -24,6 +24,24 @@ If the publish step fails on auth, the trusted-publisher entry is missing on
 npmjs.com for that package: organization `BusiRocket`, repository `baseline`,
 workflow `publish.yml`, allowed action `npm publish`, no environment.
 
+## The Python package publishes to PyPI, also without a token
+
+`packages/baseline-py` is a uv project, outside the pnpm workspace. It publishes
+through **PyPI Trusted Publishing (OIDC)** from
+`.github/workflows/publish-python.yml`, the same shape as the npm flow: no
+token, no `twine`, no local login.
+
+    gh workflow run publish-python.yml -f package=baseline-py
+
+If the publish step fails on auth, the trusted-publisher entry is missing on
+pypi.org: organization `BusiRocket`, repository `baseline`, workflow
+`publish-python.yml`, environment `pypi`.
+
+Its own checks run through uv, not pnpm:
+
+    uv run --project packages/baseline-py pytest
+    uv run --project packages/baseline-py baseline-py gate --project packages/baseline-py
+
 ## Dependency updates
 
 Update to the **latest** versions, majors included — never `--target minor`:

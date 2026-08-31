@@ -1,7 +1,7 @@
 # Templates
 
 These folders are **validated starters** for Next.js, Vite + React, Vite + Vue,
-Nuxt 4, Astro, Tauri, and a generic TypeScript package.
+Nuxt 4, Astro, Tauri, a generic TypeScript package, and a Python package.
 
 ## Published dependencies
 
@@ -20,3 +20,16 @@ for example:
 
 Then run `pnpm install` or `npm install`. See
 [docs/migration.md](../docs/migration.md).
+
+## python-package
+
+`python-package` is the odd one out: it is a **uv** project, not a pnpm one, and
+its quality chain is `baseline-py gate` rather than `pnpm check:ci`. It depends
+on `busirocket-baseline-py` from PyPI, so its lockfile only resolves once that
+package is published; see the repository [CLAUDE.md](../CLAUDE.md) for the
+publish path.
+
+```bash
+uv sync --group quality
+uv run baseline-py gate
+```
