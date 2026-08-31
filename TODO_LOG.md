@@ -4,6 +4,42 @@ Closed work from `TODO.md`, grouped by year and month.
 
 ## 2026-08
 
+- [x] 2026-08-31 - **The five bumped-but-unpublished packages are released, and
+      the estate's lockfile blocker is gone.** `eslint-plugin-code-policy`
+      0.7.4, `tsconfig` 0.3.0, `quality-config` 0.11.0, `eslint-config` 0.8.0
+      and `create-baseline` 0.9.0 are tagged, pushed and on npm;
+      `pnpm release:check` reports "6 packages fully released". No `npm login`
+      at any point: publishing is
+      `gh workflow run publish.yml -f package=<name>`, tokenless over OIDC, and
+      `npm whoami` returning 401 on this machine is the normal state rather than
+      a blocker. That premise had been recorded backwards in `TODO.md`, which is
+      why the release sat blocked; it is now corrected there, in the project
+      memory and in a new `CLAUDE.md`. Each package was dispatched once but
+      GitHub recorded two `workflow_dispatch` runs per package (ten runs, five
+      successes and five failures). The duplicate always lost the race and
+      failed with
+      `E403 ... cannot publish over the previously published versions`, which is
+      npm refusing to overwrite an immutable version - harmless, but the
+      doubling itself is unexplained and worth watching on the next release.
+      Evidence: `curl registry.npmjs.org/<pkg>` shows every version live with a
+      2026-08-31 timestamp, and `pnpm release:check` exits 0.
+
+- [x] 2026-08-31 - **Every workspace dependency taken to its latest release,
+      majors included.** Two passes over the root, the seven packages and the
+      eight templates: patch/minor first (`9e73a4b`), then the majors it left
+      behind (`4c20c50`) - eslint-plugin-regexp 2 to 3, eslint-plugin-unicorn
+      57/72 to 74, globals to 17.11, NestJS 11 to 12,
+      eslint-plugin-react-refresh to 0.5.5. None needed a config change. Two
+      things worth keeping: `ncu` strips the integrity hash from
+      `packageManager`, so `corepack use pnpm@<version>` has to follow every
+      run; and `h3` cannot go to 2.x while the template is on Nuxt 4.5, which
+      ships Nitro 2 and requires `h3@^1.15.11` - with `h3@2` present,
+      `@nuxt/test-utils` selects its Nitro-3 adapter and the tests die on
+      `Could not resolve "h3-next/generic"`. That is now encoded in
+      `.ncurc.json` (`reject: ["h3"]`, plus `deep`, so `ncu -u` alone is the
+      whole procedure) and explained in `CLAUDE.md`. Evidence: `pnpm check:ci`
+      exits 0 with all 41 turbo tasks green.
+
 - [~] 2026-08-28 - **Estate sweep, first execution pass: 19 consumers fixed
   mechanically, matrix from ~77 to ~39 red cells, and the sweep surfaced three
   defects in `create-baseline` itself, all fixed with tests.** Ran
