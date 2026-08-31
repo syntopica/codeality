@@ -7,18 +7,18 @@ verified complete - `[-]` obsolete or superseded.
 
 ## Release
 
-- [!] Release the five packages whose versions are bumped but never published:
-  `create-baseline` 0.9.0, `eslint-config` 0.8.0, `quality-config` 0.11.0,
-  `tsconfig` 0.3.0, `eslint-plugin-code-policy` 0.7.4. `pnpm release:check`
-  lists all five (no tag, not on npm). This now blocks the whole estate: every
-  consumer's `--fix` writes these ranges into package.json, so every lockfile
-  sync fails with `ERR_PNPM_NO_MATCHING_VERSION`, and brain, rocket-agents and
-  consumer-m cannot even install. Smallest unblock: dispatch
-  `publish.yml` once per package
-  (`gh workflow run publish.yml -f package=<name>`), which publishes tokenless
-  over OIDC - no `npm login` is involved at any point. After publishing, re-run
-  `pnpm install` in the 13 repos left with unsynced lockfiles and
-  `pnpm run prepare` in consumer-h.
+- [x] Release the five packages whose versions were bumped but never published
+      -- done 2026-08-31. `eslint-plugin-code-policy` 0.7.4, `tsconfig` 0.3.0,
+      `quality-config` 0.11.0, `eslint-config` 0.8.0 and `create-baseline` 0.9.0
+      are on npm, and `pnpm release:check` now reports "6 packages fully
+      released". No `npm login` was involved: `publish.yml` publishes tokenless
+      over OIDC, which is what made this doable at all -- the token in
+      `~/.npmrc` is expired and `npm whoami` returns 401. One dispatch reported
+      failure with
+      `E403 ... cannot publish over the previously published versions: 0.3.0`; a
+      duplicate run had already published tsconfig, so the version is live and
+      the failure is cosmetic. Next: re-run `pnpm install` in the 13 repos left
+      with unsynced lockfiles and `pnpm run prepare` in consumer-h.
 
 ## Estate
 
