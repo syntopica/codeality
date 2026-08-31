@@ -1,0 +1,18 @@
+# baseline-py configuration - https://github.com/BusiRocket/baseline
+schema-version = 1
+source-roots = ["src"]
+test-roots = ["tests"]
+respect-gitignore = true
+
+[limits]
+max-file-lines = 150
+test-max-file-lines = 300
+
+# A role states what a file is. Prefer a role over a suppression: it explains
+# the file instead of silencing an alarm.
+[roles]
+data = []
+registry = []
+entrypoint = []
+generated = []
+namespace-init = []

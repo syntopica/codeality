@@ -1,0 +1,48 @@
+name: Quality
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  gate:
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        python-version: ['3.11', '3.13']
+    steps:
+      - uses: actions/checkout@v5
+
+      - name: Install uv
+        uses: astral-sh/setup-uv@v7
+        with:
+          enable-cache: true
+
+      - name: Check the lockfile is current
+        run: uv lock --check
+
+      - name: Install from the lockfile
+        run: uv sync --locked --group quality
+        env:
+          UV_PYTHON: ${{ matrix.python-version }}
+
+      - name: Run the quality gate
+        run: uv run baseline-py gate --json
+
+      - name: Type-check with pyrefly, without blocking
+        continue-on-error: true
+        run: |
+          uv run --with pyrefly pyrefly check --output-format json > pyrefly.json || true
+
+      - name: Upload the pyrefly shadow report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: pyrefly-shadow-${{ matrix.python-version }}
+          path: pyrefly.json
+          retention-days: 90
