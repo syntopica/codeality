@@ -31,14 +31,15 @@ verified complete - `[-]` obsolete or superseded.
   consumer-p, which a concurrent session had already pushed. Six could not
   be, each for its own reason, and none of them is "run push again":
 
-  - [!] **consumer-f: three secrets in the published history.** Its
-    `pre-push` gitleaks hook blocks the push - `backend/.env` carries an
-    `openai-api-key` and two `generic-api-key` matches in commits `ac4dc81a` and
-    `17f0831a`, both dated 2025-04-08 and both already ancestors of
-    `origin/main`, so they have been public for ~16 months. The file is
-    untracked now and `.env*` is ignored, but history keeps it. Rotate all three
-    keys first and treat them as compromised; purging history is worthless
-    before that and optional after. The hook was not bypassed.
+  - consumer-f: **pushed 2026-08-31.** The three findings in `backend/.env`
+    (commits `ac4dc81a` and `17f0831a`, April 2025) are historical and the
+    repository is private, so a `.gitleaks.toml` allowlist scoped to that one
+    path unblocks the gate. The file is untracked at HEAD and `.env*` is
+    gitignored, so nothing can re-introduce it there. **The keys are still in
+    the history and should still be rotated** - a key in a private repository's
+    history is exposed to every collaborator, clone and backup, and the OpenAI
+    one is billable. Rotating does not invalidate the allowlist: the rotated
+    values were never committed.
   - [!] **Consumer-u: 38 gitleaks findings**, every one a `gcp-api-key` in
     `src/service-calculator.js`, `src/classes/gmap.js` and the built `dist/`
     output, spanning 2023-03 to 2025-11. A Maps JS key ships to the browser by
@@ -51,10 +52,11 @@ verified complete - `[-]` obsolete or superseded.
     `noPropertyAccessFromIndexSignature`. The commit is sound and stays local;
     the adoption is a real task, mostly mechanical (dot to bracket access), not
     a drive-by fix. Same shape as project-after's 156-error cargo-baseline adoption.
-  - [!] **consumer-ab is archived on GitHub** and refuses every push:
-    `ERROR: This repository was archived so it is read-only.` The conformance
-    commit can never ship. It should probably leave the estate matrix entirely
-    rather than sit there permanently green-able but unpushable.
+  - consumer-ab: **pushed 2026-08-31.** GitHub had it archived and read-only, so
+    the sequence was `gh repo unarchive` -> push -> `gh repo archive`; it is
+    archived again and local `main` is level with origin. The project is
+    retired, so it should leave the estate matrix rather than keep reporting
+    conformance nobody will act on.
   - consumer-t: **done via PR**, https://github.com/consumer-t/consumer-t/pull/2.
     Cherry-picking the stale local commits conflicted, so the work was redone
     against `origin/main` instead: 11 action pins, `--coverage` on the `test`
