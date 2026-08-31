@@ -55,10 +55,19 @@ verified complete - `[-]` obsolete or superseded.
     `ERROR: This repository was archived so it is read-only.` The conformance
     commit can never ship. It should probably leave the estate matrix entirely
     rather than sit there permanently green-able but unpushable.
-  - consumer-t and consumer-h: local `main` is 150 and 81 commits behind origin
-    respectively, and both repos take work through PRs. Rebasing consumer-t
-    conflicts on `b3ebdb3`, an older local commit from another session, so
-    resolving it is not this task's call. Both need a branch and a PR.
+  - consumer-t: **done via PR**, https://github.com/consumer-t/consumer-t/pull/2.
+    Cherry-picking the stale local commits conflicted, so the work was redone
+    against `origin/main` instead: 11 action pins, `--coverage` on the `test`
+    script with the provider declared, and the thresholds block (lines 80.06,
+    101 test files pass). The local `main` there is still 150 behind with three
+    unmerged commits from earlier sessions - untouched, still needing a
+    decision.
+  - [!] consumer-h: **left alone deliberately.** Its `origin/main` is a _bun_ repo
+    (`bun.lock`, `bun run` scripts, no `check:*` entrypoints), while the local
+    `main` carries an unmerged pnpm adoption. Landing a coverage tweak on the
+    bun side would collide with whoever finishes that migration, and the two
+    have to be reconciled first. The `gates` finding here was already logged as
+    a human call.
 
   Two remotes were on HTTPS and failed with 403 / "Repository not found" while
   every SSH remote worked; consumer-i and consumer-g now point at SSH.
