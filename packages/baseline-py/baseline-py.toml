@@ -1,0 +1,24 @@
+# baseline-py configuration - https://github.com/BusiRocket/baseline
+schema-version = 1
+source-roots = ["src"]
+test-roots = ["tests"]
+import-package = "baseline_py"
+
+[limits]
+max-file-lines = 150
+test-max-file-lines = 300
+
+[roles]
+data = [
+  "src/baseline_py/traversal/default_excludes.py",
+  "src/baseline_py/rules/grab_bag_names.py",
+  "src/baseline_py/roles/test_file_patterns.py",
+  "src/baseline_py/config/default_generated_globs.py",
+  "src/baseline_py/engine/rule_registry.py",
+]
+entrypoint = ["src/baseline_py/cli.py"]
+
+[[overrides]]
+paths = ["tests/rules/test_no_inline_sql.py"]
+disable = ["BPY006"]
+reason = "The SQL detector's own fixtures are queries by definition"

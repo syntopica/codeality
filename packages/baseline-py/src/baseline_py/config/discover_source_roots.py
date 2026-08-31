@@ -17,6 +17,8 @@ def discover_source_roots(project_root: Path) -> tuple[str, ...]:
     packages = sorted(
         entry.name
         for entry in project_root.iterdir()
-        if entry.is_dir() and entry.name not in _SKIPPED and (entry / "__init__.py").is_file()
+        if entry.is_dir()
+        and entry.name not in _SKIPPED
+        and (entry / "__init__.py").is_file()
     )
     return tuple(packages) if packages else (".",)

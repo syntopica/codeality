@@ -36,7 +36,9 @@ def test_an_fstring_query_is_reported(make_source, config) -> None:
     assert no_inline_sql(make_source(body), config)
 
 
-def test_implicitly_concatenated_parts_are_joined_before_matching(make_source, config) -> None:
+def test_implicitly_concatenated_parts_are_joined_before_matching(
+    make_source, config
+) -> None:
     body = 'QUERY = (\n    "SELECT id "\n    "FROM users"\n)\n'
     assert no_inline_sql(make_source(body), config)
 

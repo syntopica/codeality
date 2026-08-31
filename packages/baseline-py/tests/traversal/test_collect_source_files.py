@@ -50,7 +50,9 @@ def test_symlinked_directory_escaping_the_root_is_not_followed(tmp_path: Path) -
     assert _relative(tmp_path, found) == ["src/unit.py"]
 
 
-def test_gitignored_file_is_skipped_when_respect_gitignore_is_true(tmp_path: Path) -> None:
+def test_gitignored_file_is_skipped_when_respect_gitignore_is_true(
+    tmp_path: Path,
+) -> None:
     (tmp_path / "src").mkdir()
     (tmp_path / "src" / "unit.py").write_text("", encoding="utf-8")
     (tmp_path / "src" / "scratch.py").write_text("", encoding="utf-8")

@@ -5,7 +5,8 @@ from typing import Any
 
 from baseline_py.config.config_error import ConfigError
 from baseline_py.config.override import Override
-from baseline_py.model.rule_code import RuleCode
+from baseline_py.config.parse_rule_codes import parse_rule_codes
+from baseline_py.config.reject_unknown_keys import reject_unknown_keys
 
 _KEYS = {"paths", "disable", "reason"}
 
@@ -16,23 +17,16 @@ def parse_overrides(entries: Sequence[Any]) -> tuple[Override, ...]:
     for entry in entries:
         if not isinstance(entry, dict):
             raise ConfigError("each [[overrides]] entry must be a table")
-        unknown = sorted(set(entry) - _KEYS)
-        if unknown:
-            raise ConfigError(f"unknown key in [[overrides]]: {', '.join(unknown)}")
+        reject_unknown_keys(entry, _KEYS, "[[overrides]]")
         paths = tuple(entry.get("paths", ()))
-        reason = str(entry.get("reason", ""))
-        codes = _parse_codes(entry.get("disable", ()))
+        reason = str(entry.get("reason", "")).strip()
         if any("**" in path for path in paths) and not reason:
             raise ConfigError("a [[overrides]] entry matching ** requires a reason")
-        overrides.append(Override(paths=paths, disable=codes, reason=reason))
+        overrides.append(
+            Override(
+                paths=paths,
+                disable=parse_rule_codes(entry.get("disable", ())),
+                reason=reason,
+            )
+        )
     return tuple(overrides)
-
-
-def _parse_codes(raw: Any) -> tuple[RuleCode, ...]:
-    codes: list[RuleCode] = []
-    for value in raw:
-        try:
-            codes.append(RuleCode(value))
-        except ValueError as error:
-            raise ConfigError(f"unknown rule code in [[overrides]]: {value}") from error
-    return tuple(codes)

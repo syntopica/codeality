@@ -4,12 +4,16 @@ from baseline_py.config.module_role import ModuleRole
 from baseline_py.rules.one_primary_unit import one_primary_unit
 
 
-def _clean(make_source, config, body: str, role: ModuleRole = ModuleRole.ORDINARY) -> bool:
+def _clean(
+    make_source, config, body: str, role: ModuleRole = ModuleRole.ORDINARY
+) -> bool:
     return one_primary_unit(make_source(body, "src/pkg/unit.py", role), config) == ()
 
 
 def test_one_public_class_is_clean(make_source, config) -> None:
-    assert _clean(make_source, config, "class Parser:\n    def run(self) -> None: ...\n")
+    assert _clean(
+        make_source, config, "class Parser:\n    def run(self) -> None: ...\n"
+    )
 
 
 def test_one_public_function_is_clean(make_source, config) -> None:
@@ -17,7 +21,9 @@ def test_one_public_function_is_clean(make_source, config) -> None:
 
 
 def test_two_public_classes_are_reported(make_source, config) -> None:
-    findings = one_primary_unit(make_source("class A:\n    pass\n\n\nclass B:\n    pass\n"), config)
+    findings = one_primary_unit(
+        make_source("class A:\n    pass\n\n\nclass B:\n    pass\n"), config
+    )
     assert len(findings) == 1
     assert findings[0].subject == "A"
     assert findings[0].related[0].line == 5
@@ -102,7 +108,9 @@ def test_an_overload_family_counts_once(make_source, config) -> None:
     assert _clean(make_source, config, body)
 
 
-def test_a_local_singledispatch_with_private_handlers_counts_once(make_source, config) -> None:
+def test_a_local_singledispatch_with_private_handlers_counts_once(
+    make_source, config
+) -> None:
     body = (
         "from functools import singledispatch\n\n\n@singledispatch\n"
         "def render(value: object) -> str:\n    return str(value)\n\n\n"
@@ -144,7 +152,9 @@ def test_a_registry_role_allows_many_decorated_functions(make_source, config) ->
     assert _clean(make_source, config, body, ModuleRole.REGISTRY)
 
 
-def test_a_private_helper_beside_a_public_class_is_reported(make_source, config) -> None:
+def test_a_private_helper_beside_a_public_class_is_reported(
+    make_source, config
+) -> None:
     body = "class Parser:\n    pass\n\n\ndef _normalise(value: str) -> str:\n    return value\n"
     assert not _clean(make_source, config, body)
 
@@ -162,12 +172,16 @@ def test_a_type_checking_import_block_does_not_count(make_source, config) -> Non
     assert _clean(make_source, config, body)
 
 
-def test_a_main_guard_calling_the_entry_function_does_not_count(make_source, config) -> None:
+def test_a_main_guard_calling_the_entry_function_does_not_count(
+    make_source, config
+) -> None:
     body = "def main() -> None:\n    return None\n\n\nif __name__ == '__main__':\n    main()\n"
     assert _clean(make_source, config, body)
 
 
-def test_a_declaration_hidden_under_a_top_level_if_is_still_counted(make_source, config) -> None:
+def test_a_declaration_hidden_under_a_top_level_if_is_still_counted(
+    make_source, config
+) -> None:
     body = (
         "import sys\n\n\nclass Parser:\n    pass\n\n\nif sys.platform == 'darwin':\n"
         "    class MacParser:\n        pass\n"
@@ -191,5 +205,10 @@ def test_a_data_role_module_may_not_declare_a_class(make_source, config) -> None
 
 def test_test_stub_generated_and_barrel_roles_are_exempt(make_source, config) -> None:
     body = "class A:\n    pass\n\n\nclass B:\n    pass\n"
-    for role in (ModuleRole.TEST, ModuleRole.STUB, ModuleRole.GENERATED, ModuleRole.BARREL):
+    for role in (
+        ModuleRole.TEST,
+        ModuleRole.STUB,
+        ModuleRole.GENERATED,
+        ModuleRole.BARREL,
+    ):
         assert _clean(make_source, config, body, role)

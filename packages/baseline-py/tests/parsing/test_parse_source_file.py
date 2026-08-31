@@ -17,13 +17,17 @@ def _write(tmp_path: Path, body: str) -> Path:
 
 
 def test_a_parsed_file_exposes_its_module_tree(tmp_path: Path) -> None:
-    source = parse_source_file(_write(tmp_path, "x = 1\n"), "unit.py", ModuleRole.ORDINARY)
+    source = parse_source_file(
+        _write(tmp_path, "x = 1\n"), "unit.py", ModuleRole.ORDINARY
+    )
     assert source.tree is not None
     assert source.parse_error is None
 
 
 def test_a_syntax_error_becomes_a_bpy000_finding(tmp_path: Path) -> None:
-    source = parse_source_file(_write(tmp_path, "def broken(\n"), "unit.py", ModuleRole.ORDINARY)
+    source = parse_source_file(
+        _write(tmp_path, "def broken(\n"), "unit.py", ModuleRole.ORDINARY
+    )
     assert source.tree is None
     assert source.parse_error is not None
     assert source.parse_error.code is RuleCode.BPY000

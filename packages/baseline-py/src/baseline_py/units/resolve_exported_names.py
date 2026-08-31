@@ -2,6 +2,8 @@
 
 import ast
 
+from baseline_py.units.literal_string_names import literal_string_names
+
 
 def resolve_exported_names(tree: ast.Module) -> frozenset[str] | None:
     """Return the names in a static literal ``__all__``, else None.
@@ -16,16 +18,5 @@ def resolve_exported_names(tree: ast.Module) -> frozenset[str] | None:
         target = statement.targets[0]
         if not isinstance(target, ast.Name) or target.id != "__all__":
             continue
-        return _literal_names(statement.value)
+        return literal_string_names(statement.value)
     return None
-
-
-def _literal_names(value: ast.expr) -> frozenset[str] | None:
-    if not isinstance(value, (ast.List, ast.Tuple)):
-        return None
-    names: list[str] = []
-    for item in value.elts:
-        if not isinstance(item, ast.Constant) or not isinstance(item.value, str):
-            return None
-        names.append(item.value)
-    return frozenset(names)

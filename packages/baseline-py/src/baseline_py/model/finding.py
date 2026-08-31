@@ -1,6 +1,6 @@
 """One reported rule violation."""
 
-from dataclasses import dataclass, field
+from dataclasses import dataclass
 
 from baseline_py.model.location import Location
 from baseline_py.model.rule_code import RuleCode
@@ -22,7 +22,12 @@ class Finding:
 
     def sort_key(self) -> tuple[str, int, int, str]:
         """Return the deterministic ordering key used by every renderer."""
-        return (self.location.path, self.location.line, self.location.column, self.code.value)
+        return (
+            self.location.path,
+            self.location.line,
+            self.location.column,
+            self.code.value,
+        )
 
     def __lt__(self, other: "Finding") -> bool:
         """Order findings by path, then position, then rule code."""

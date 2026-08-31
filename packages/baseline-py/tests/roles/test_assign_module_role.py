@@ -8,7 +8,9 @@ from baseline_py.roles.assign_module_role import assign_module_role
 
 
 def _config(**roles: tuple[str, ...]) -> BaselineConfig:
-    mapped = {ModuleRole(name.replace("_", "-")): value for name, value in roles.items()}
+    mapped = {
+        ModuleRole(name.replace("_", "-")): value for name, value in roles.items()
+    }
     mapped.setdefault(ModuleRole.GENERATED, ("**/*_pb2.py", "**/migrations/*.py"))
     return BaselineConfig(project_root=Path("/project"), roles=mapped)
 
@@ -49,7 +51,9 @@ def test_init_is_a_barrel() -> None:
 
 def test_namespace_init_beats_barrel() -> None:
     config = _config(namespace_init=("src/pkg/__init__.py",))
-    assert assign_module_role("src/pkg/__init__.py", config) is ModuleRole.NAMESPACE_INIT
+    assert (
+        assign_module_role("src/pkg/__init__.py", config) is ModuleRole.NAMESPACE_INIT
+    )
 
 
 def test_configured_data_role_beats_ordinary() -> None:
@@ -58,7 +62,9 @@ def test_configured_data_role_beats_ordinary() -> None:
 
 
 def test_configured_registry_and_entrypoint_roles_apply() -> None:
-    config = _config(registry=("src/pkg/routes/*.py",), entrypoint=("src/pkg/__main__.py",))
+    config = _config(
+        registry=("src/pkg/routes/*.py",), entrypoint=("src/pkg/__main__.py",)
+    )
     assert assign_module_role("src/pkg/routes/users.py", config) is ModuleRole.REGISTRY
     assert assign_module_role("src/pkg/__main__.py", config) is ModuleRole.ENTRYPOINT
 

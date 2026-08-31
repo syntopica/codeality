@@ -18,7 +18,9 @@ def test_a_mismatched_name_is_reported(make_source, config) -> None:
 
 
 def test_a_function_module_matches_its_function(make_source, config) -> None:
-    source = make_source("def parse_date() -> None:\n    return None\n", "src/pkg/parse_date.py")
+    source = make_source(
+        "def parse_date() -> None:\n    return None\n", "src/pkg/parse_date.py"
+    )
     assert file_matches_unit(source, config) == ()
 
 
@@ -27,7 +29,9 @@ def test_a_multi_declaration_module_is_left_to_bpy001(make_source, config) -> No
     assert file_matches_unit(make_source(body, "src/pkg/things.py"), config) == ()
 
 
-def test_entrypoint_barrel_test_and_generated_roles_are_exempt(make_source, config) -> None:
+def test_entrypoint_barrel_test_and_generated_roles_are_exempt(
+    make_source, config
+) -> None:
     for role in (
         ModuleRole.ENTRYPOINT,
         ModuleRole.BARREL,

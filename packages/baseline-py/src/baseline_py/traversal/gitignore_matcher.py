@@ -20,7 +20,13 @@ class GitignoreMatcher:
         if not path.is_file():
             return cls(())
         lines = path.read_text(encoding="utf-8", errors="replace").splitlines()
-        return cls(tuple(line.strip() for line in lines if line.strip() and not line.startswith("#")))
+        return cls(
+            tuple(
+                line.strip()
+                for line in lines
+                if line.strip() and not line.startswith("#")
+            )
+        )
 
     def is_ignored(self, relative_path: str) -> bool:
         """Return whether git would ignore this path, honouring negation."""
@@ -37,6 +43,8 @@ class GitignoreMatcher:
         if pattern.startswith("/"):
             return fnmatch(relative_path, pattern.lstrip("/"))
         if "/" in pattern:
-            return fnmatch(relative_path, pattern) or fnmatch(relative_path, f"**/{pattern}")
+            return fnmatch(relative_path, pattern) or fnmatch(
+                relative_path, f"**/{pattern}"
+            )
         segments = relative_path.split("/")
         return any(fnmatch(segment, pattern) for segment in segments)
