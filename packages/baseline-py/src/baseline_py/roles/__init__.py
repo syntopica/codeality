@@ -1,0 +1,1 @@
+"""Module role assignment."""
