@@ -40,12 +40,32 @@ verified complete - `[-]` obsolete or superseded.
     history is exposed to every collaborator, clone and backup, and the OpenAI
     one is billable. Rotating does not invalidate the allowlist: the rotated
     values were never committed.
-  - [!] **Consumer-u: 38 gitleaks findings**, every one a `gcp-api-key` in
-    `src/service-calculator.js`, `src/classes/gmap.js` and the built `dist/`
-    output, spanning 2023-03 to 2025-11. A Maps JS key ships to the browser by
-    design, so the control is HTTP-referrer and API restrictions rather than
-    secrecy - verify those are set in GCP, and if they are, waive the finding
-    deliberately rather than leaving the push blocked.
+  - [!] **Consumer-u: the Maps key is confirmed unrestricted.** Investigated to
+    a conclusion 2026-08-31. The 38 gitleaks hits are all historical - nothing
+    at HEAD carries a key except the tracked `dist/the-client.html` - and the
+    open question, whether the key was referrer-restricted, now has an answer:
+    it is not. A page served from `http://127.0.0.1:8731`, an origin unrelated
+    to <client-domain>, loads the Maps JS API with that key and renders the map:
+    `PROBE_RESULT map constructed`, no `gm_authFailure`, no
+    `RefererNotAllowedMapError`, 7 tile requests served. It does carry an API
+    restriction (Static Maps answers
+    `This API is not activated on your API project`), so the scope is map
+    rendering rather than Geocoding or Places, but rendering bills.
+
+    It cannot be fixed from here: the key is in no GCP project that
+    the personal account (6 projects) or the work account (44) can
+    enumerate - every "Maps Platform API Key" found was fingerprint-compared and
+    none matches - so it belongs to a third-party project, presumably
+    the client's. Next step needs a person: have the project owner rotate it and
+    issue one restricted to `https://<client-domain>/*`, then update
+    `VITE_GOOGLE_MAPS_API_KEY` and rebuild `dist/`. Only then does allowlisting
+    the historical finding make sense. The gate stays red, correctly.
+
+    A second unrestricted Maps key, in BusiRocket's own `project-28baa0cb`, was
+    chased and **discarded**: that project is a "My First Project" from
+    2026-02-12 with `billingEnabled: false`, and Maps Platform requires billing,
+    so it cannot be charged. Housekeeping, not a finding.
+
   - [!] **consumer-g: 1352 type errors**, 1347 of them TS4111 plus 5 TS1294.
     Caused by this session: syncing the lockfile moved `@busirocket/tsconfig`
     0.2.1 to 0.3.0, whose `base.json` turns on
