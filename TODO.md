@@ -12,8 +12,21 @@ verified complete - `[-]` obsolete or superseded.
   went from 23-of-24 repos failing (~77 red cells) to ~39 red cells, 2 fully
   wired. The 2026-08-31 pass took it to **10 of 24 fully wired** and ~25 red
   cells outside the four excluded `client-widgets-*` widgets, and the `pins` column
-  is green estate-wide. All changes are left uncommitted in each repo, as the
-  2026-08-28 sweep left its own, for a per-repo review. What remains:
+  is green estate-wide. Every repo's changes are now **committed** (2026-08-31,
+  14 repos, all worktrees clean, all hooks green), unpushed. consumer-l's
+  landed on `codex/discord-catchup-todo` because that is the branch its worktree
+  is on; switching branches would have disturbed that session's work.
+
+  One correction to what this file said earlier: the plan was to avoid adding
+  per-repo exclusions to the release-age gate, and pnpm added them anyway during
+  the installs - `minimumReleaseAgeExclude` entries for the freshly published
+  @busirocket versions now sit in busirocket, consumer-t, consumer-l, consumer-h and
+  consumer-g. They were kept rather than reverted: each names one exact version
+  of a first-party package published minutes earlier by our own OIDC workflow
+  with provenance, which is not the threat the policy exists to catch. Worth
+  deciding deliberately rather than by default next release.
+
+  What remains:
 
   - Lockfile sync: **done 2026-08-31.** 12 repos were stale (capture-service,
     busirocket, consumer-ab, consumer-t, inbox-tool, consumer-f,
