@@ -10,8 +10,10 @@ verified complete - `[-]` obsolete or superseded.
 - [~] Bring the rest of the estate up to the wiring the conformance check
   asserts. 2026-08-28 sweep ran `--fix` + installs across 19 consumers: matrix
   went from 23-of-24 repos failing (~77 red cells) to ~39 red cells, 2 fully
-  wired (baseline, consumer-u). What remains needs a per-repo decision, except
-  the lockfiles, which the 2026-08-31 release unblocked:
+  wired. The 2026-08-31 pass took it to **10 of 24 fully wired** and ~25 red
+  cells outside the four excluded `client-widgets-*` widgets, and the `pins` column
+  is green estate-wide. All changes are left uncommitted in each repo, as the
+  2026-08-28 sweep left its own, for a per-repo review. What remains:
 
   - Lockfile sync: **done 2026-08-31.** 12 repos were stale (capture-service,
     busirocket, consumer-ab, consumer-t, inbox-tool, consumer-f,
@@ -28,12 +30,34 @@ verified complete - `[-]` obsolete or superseded.
     consumer-q, rocket-agents, consumer-p, project-after,
     consumer-m) until the cutoff passes rather than adding per-repo
     exclusions to a supply-chain gate.
-  - Action pins (`pins` column): tag-pinned actions in busirocket, consumer-ab,
-    consumer-t, consumer-l, project-after - repin to commit SHAs, per repo.
-  - Coverage (`cov` column): vitest configs without a `coverage:` block the
-    auto-fix can patch (capture-service, busirocket, consumer-t, inbox-tool,
-    consumer-f, consumer-l, consumer-i, consumer-h, consumer-p, consumer-g);
-    project-after and consumer-m have no `test` script at all.
+  - Action pins (`pins` column): **done 2026-08-31.** 54 tag pins across
+    busirocket, consumer-ab, consumer-t, consumer-l and project-after now carry commit SHAs
+    with the tag kept as a trailing comment. Two of them were never tags at all:
+    `denoland/setup-deno@v2` and `dtolnay/rust-toolchain@stable` are moving
+    _branches_, so `git/ref/tags/<tag>` 404s and they have to be resolved
+    through `git/ref/heads/<name>`. `actionlint` is clean in all five.
+  - Coverage (`cov` column): **done in 8 repos 2026-08-31**, and it was not
+    `--fix` material - `create-baseline --fix` reports "nothing was mechanically
+    fixable" when the config has no `coverage:` key at all, which was the case
+    everywhere. The block was added by hand (provider v8, `autoUpdate: true`,
+    every floor at 0) to capture-service, busirocket, consumer-t, inbox-tool,
+    consumer-f, consumer-i, consumer-p and consumer-g; the first run
+    then ratcheted each floor to what the suite actually reaches (38.39 in
+    consumer-f, 89.79 in busirocket). Two remain: consumer-l has no `test`
+    block in `vite.config.ts` at all, and consumer-h's install is held by the
+    release-age quarantine above.
+  - [!] **8 repos' `test` script was broken and nobody noticed**: capture-service,
+    busirocket, consumer-t, inbox-tool, consumer-f, consumer-i, consumer-h
+    and consumer-g all run `vitest run --coverage` without depending on
+    `@vitest/coverage-v8`, so the script died on
+    `MISSING DEPENDENCY  Cannot find dependency '@vitest/coverage-v8'` before
+    running a single test. It predates this session - reproducible with the
+    coverage config reverted. Fixed by adding the dependency in seven of them,
+    all now green (55, 91, 79, 15, 27, 1027 and 142 test files). consumer-h is the
+    eighth and waits on the quarantine. Worth a conformance rule: a `test`
+    script that passes `--coverage` should assert the provider is a dependency.
+  - Coverage, still open: project-after and consumer-m have no `test` script
+    at all.
   - CI wiring (`gates`): consumer-h and consumer-q CI reaches no `check:*`
     entrypoint, so six gates sit dead; wiring the workflow is a human call.
   - consumer-y: hooks run through husky (`.husky/pre-commit`,
