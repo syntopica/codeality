@@ -4,6 +4,25 @@ Closed work from `TODO.md`, grouped by year and month.
 
 ## 2026-08
 
+### 2026-08-31 - busirocket-baseline-py 0.1.0 published to PyPI
+
+The Python baseline shipped. PyPI had no BusiRocket account at all, so the
+account was created (`busirocket`, me@cristiandeluxe.dev), its email verified by
+reading the message straight from the mailbox on server-a with `<mail-tool>`, recovery
+codes generated and 2FA enabled with TOTP. Credentials, the TOTP seed and the
+remaining recovery codes are in the password manager, vault BusiRocket, item "PyPI -
+BusiRocket".
+
+The trusted-publisher entry is registered as a pending publisher: owner
+`BusiRocket`, repository `baseline`, workflow `publish-python.yml`, environment
+`pypi` (the GitHub environment had to be created first; it did not exist).
+
+Evidence: run 33443267597 green end to end,
+`uv run --isolated --with busirocket-baseline-py baseline-py --version` reports
+0.1.0 from a clean environment, and `templates/python-package` now locks, syncs
+and passes `baseline-py gate` against the published package. Its `uv.lock` is
+committed.
+
 - [x] 2026-08-31 - **The five bumped-but-unpublished packages are released, and
       the estate's lockfile blocker is gone.** `eslint-plugin-code-policy`
       0.7.4, `tsconfig` 0.3.0, `quality-config` 0.11.0, `eslint-config` 0.8.0

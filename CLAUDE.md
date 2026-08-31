@@ -33,9 +33,12 @@ token, no `twine`, no local login.
 
     gh workflow run publish-python.yml -f package=baseline-py
 
-If the publish step fails on auth, the trusted-publisher entry is missing on
-pypi.org: organization `BusiRocket`, repository `baseline`, workflow
-`publish-python.yml`, environment `pypi`.
+The trusted publisher was registered on 2026-08-31 under the PyPI account
+`busirocket` (me@cristiandeluxe.dev; credentials and TOTP in the password manager, vault
+BusiRocket): owner `BusiRocket`, repository `baseline`, workflow
+`publish-python.yml`, environment `pypi`. The GitHub `pypi` environment has to
+exist for the job to run - it did not, and was created with
+`gh api -X PUT repos/BusiRocket/baseline/environments/pypi`.
 
 Its own checks run through uv, not pnpm:
 

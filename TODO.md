@@ -7,12 +7,6 @@ verified complete - `[-]` obsolete or superseded.
 
 ## Python baseline
 
-- [!] Publish `busirocket-baseline-py` 0.1.0. Blocked on one manual step only:
-  create the trusted-publisher entry on pypi.org - organization `BusiRocket`,
-  repository `baseline`, workflow `publish-python.yml`, environment `pypi`. Then
-  `gh workflow run publish-python.yml -f package=baseline-py`. Until it is
-  published, `templates/python-package`'s lockfile cannot resolve, because its
-  quality group depends on the package.
 - [ ] Adopt the baseline per repository, in the order the estate report argues:
       `atrium` (59 findings), then `consumer-w` and `consumer-c` (declare
       `source-roots = ["host/src"]` first), then `consumer-b`, then

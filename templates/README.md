@@ -25,9 +25,7 @@ Then run `pnpm install` or `npm install`. See
 
 `python-package` is the odd one out: it is a **uv** project, not a pnpm one, and
 its quality chain is `baseline-py gate` rather than `pnpm check:ci`. It depends
-on `busirocket-baseline-py` from PyPI, so its lockfile only resolves once that
-package is published; see the repository [CLAUDE.md](../CLAUDE.md) for the
-publish path.
+on `busirocket-baseline-py` from PyPI and ships a committed `uv.lock`.
 
 ```bash
 uv sync --group quality
