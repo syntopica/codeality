@@ -53,6 +53,7 @@ this monorepo:
 | `eslint-plugin-code-policy`   | `packages/eslint-plugin-code-policy` | Custom strict ESLint rules for code boundaries, architecture, and type safety         |
 | `@busirocket/quality-config`  | `packages/quality-config`            | Factories for cross-file quality gates - knip, dependency-cruiser, lefthook configs   |
 | `cargo-baseline`              | `packages/cargo-baseline`            | Rust structural linter and config scaffolder - atomic files, placement, no inline SQL |
+| `busirocket-baseline-py`      | `packages/baseline-py`               | Python structural linter and config scaffolder - same rules, plus an aggregated gate  |
 
 ### Maintainers: npm publish
 
