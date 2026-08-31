@@ -13,8 +13,10 @@ verified complete - `[-]` obsolete or superseded.
   lists all five (no tag, not on npm). This now blocks the whole estate: every
   consumer's `--fix` writes these ranges into package.json, so every lockfile
   sync fails with `ERR_PNPM_NO_MATCHING_VERSION`, and brain, rocket-agents and
-  consumer-m cannot even install. Smallest unblock: run
-  `brp-release` (needs npm publish authority). After publishing, re-run
+  consumer-m cannot even install. Smallest unblock: dispatch
+  `publish.yml` once per package
+  (`gh workflow run publish.yml -f package=<name>`), which publishes tokenless
+  over OIDC - no `npm login` is involved at any point. After publishing, re-run
   `pnpm install` in the 13 repos left with unsynced lockfiles and
   `pnpm run prepare` in consumer-h.
 

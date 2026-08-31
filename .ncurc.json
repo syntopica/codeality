@@ -1,0 +1,4 @@
+{
+  "deep": true,
+  "reject": ["h3"]
+}

@@ -133,7 +133,7 @@
     "@typescript-eslint/rule-tester": "^8.68.0",
     "@vitest/coverage-v8": "^4.1.11",
     "eslint": "^10.9.1",
-    "eslint-plugin-regexp": "^2.10.0",
+    "eslint-plugin-regexp": "^3.2.0",
     "publint": "^0.3.24",
     "tsc-alias": "^1.9.2",
     "tsup": "^8.5.1",
