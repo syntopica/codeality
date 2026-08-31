@@ -5,6 +5,7 @@ from importlib.metadata import version
 import click
 
 from baseline_py.commands.check_command import check_command
+from baseline_py.commands.gate_command import gate_command
 from baseline_py.commands.init_command import init_command
 
 
@@ -15,4 +16,5 @@ def cli() -> None:
 
 
 cli.add_command(check_command)
+cli.add_command(gate_command)
 cli.add_command(init_command)

@@ -3,6 +3,7 @@ schema-version = 1
 source-roots = ["src"]
 test-roots = ["tests"]
 import-package = "baseline_py"
+coverage-threshold = 80
 
 [limits]
 max-file-lines = 150

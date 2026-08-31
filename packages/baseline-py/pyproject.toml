@@ -30,10 +30,20 @@ Homepage = "https://github.com/BusiRocket/baseline"
 Issues = "https://github.com/BusiRocket/baseline/issues"
 
 [dependency-groups]
-dev = ["mypy>=1.11", "pytest>=8", "pytest-cov>=5", "ruff>=0.15"]
+dev = [
+  "deptry>=0.20,<1",
+  "mypy>=1.11,<2",
+  "pip-audit>=2.7,<3",
+  "pytest>=8,<10",
+  "pytest-cov>=5,<8",
+  "ruff>=0.15,<1",
+]
 
 [tool.hatch.build.targets.wheel]
 packages = ["src/baseline_py"]
+
+[tool.deptry]
+known_first_party = ["baseline_py"]
 
 [tool.pytest.ini_options]
 addopts = "-ra"

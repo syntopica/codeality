@@ -1,8 +1,9 @@
 # Sections baseline-py merges into an existing pyproject.toml. It owns these
 # tables and nothing else; comments and key order elsewhere are preserved.
 
+# Without known_first_party, deptry reports every internal import as DEP003.
 [tool.deptry]
-known_first_party = []
+known_first_party = ["CHANGE_ME"]
 
 [tool.deptry.per_rule_ignores]
 DEP002 = []

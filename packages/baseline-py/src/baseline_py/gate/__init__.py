@@ -1,0 +1,1 @@
+"""The aggregated quality gate."""
