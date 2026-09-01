@@ -3,6 +3,7 @@ schema-version = 1
 source-roots = ["src"]
 test-roots = ["tests"]
 respect-gitignore = true
+coverage-threshold = 80
 
 [limits]
 max-file-lines = 150

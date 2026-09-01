@@ -131,3 +131,30 @@ def test_the_app_profile_scaffolds_an_import_linter_contract(tmp_path: Path) -> 
     )
     plan = plan_init(tmp_path, "app", with_ci=False)
     assert ".importlinter" in _dispositions(plan)
+
+
+def test_merging_brings_the_test_ignores_and_docstring_convention(
+    tmp_path: Path,
+) -> None:
+    (tmp_path / "pyproject.toml").write_text(_PYPROJECT_WITH_RUFF, encoding="utf-8")
+    merged = next(
+        managed.content
+        for managed in plan_init(tmp_path, "lib", with_ci=False)
+        if managed.path.name == "pyproject.toml"
+    )
+    assert '"tests/**"' in merged
+    assert "[tool.ruff.lint.pydocstyle]" in merged
+
+
+def test_merging_keeps_the_project_s_own_per_file_ignores(tmp_path: Path) -> None:
+    own = (
+        _PYPROJECT_WITH_RUFF
+        + '\n[tool.ruff.lint.per-file-ignores]\n"tests/**" = ["D"]\n'
+    )
+    (tmp_path / "pyproject.toml").write_text(own, encoding="utf-8")
+    merged = next(
+        managed.content
+        for managed in plan_init(tmp_path, "lib", with_ci=False)
+        if managed.path.name == "pyproject.toml"
+    )
+    assert '"tests/**" = ["D"]' in merged

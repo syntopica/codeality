@@ -29,3 +29,16 @@ def test_pyrefly_is_a_shadow_stage() -> None:
     config = BaselineConfig(project_root=Path("/p"))
     shadow = [stage for stage in gate_stages(config) if stage.kind.value == "shadow"]
     assert [stage.name for stage in shadow] == ["pyrefly"]
+
+
+def test_a_recorded_baseline_is_honored_by_the_structural_stage(
+    tmp_path: Path,
+) -> None:
+    (tmp_path / ".baseline-py-baseline.json").write_text("{}", encoding="utf-8")
+    config = BaselineConfig(project_root=tmp_path)
+    assert _commands(config)["baseline-py"] == ("baseline-py", "baseline", "check")
+
+
+def test_without_a_baseline_the_structural_stage_runs_check(tmp_path: Path) -> None:
+    config = BaselineConfig(project_root=tmp_path)
+    assert _commands(config)["baseline-py"] == ("baseline-py", "check")

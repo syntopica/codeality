@@ -19,4 +19,10 @@ def merge_ruff_config(pyproject_text: str) -> str:
     lint = ruff.setdefault("lint", tomlkit.table())
     lint["select"] = union_of_rule_lists(lint.get("select"), asset["lint"]["select"])
     lint["ignore"] = union_of_rule_lists(lint.get("ignore"), asset["lint"]["ignore"])
+    per_file = lint.setdefault("per-file-ignores", tomlkit.table())
+    for pattern, codes in asset["lint"]["per-file-ignores"].items():
+        if pattern not in per_file:
+            per_file[pattern] = codes
+    if "pydocstyle" not in lint:
+        lint["pydocstyle"] = asset["lint"]["pydocstyle"]
     return tomlkit.dumps(document)

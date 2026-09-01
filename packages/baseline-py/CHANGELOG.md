@@ -4,6 +4,22 @@ All notable changes to `busirocket-baseline-py` are documented here. The format
 follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/) and the project
 adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## 0.1.4
+
+### Fixed
+
+- The gate's structural stage now honors a recorded baseline: when
+  `.baseline-py-baseline.json` exists it runs `baseline-py baseline check`
+  instead of the bare `check`, so recording debt can actually turn the gate
+  green. Found adopting the baseline in `atrium`, where 61 recorded findings
+  still failed the gate.
+- Merging into an existing `[tool.ruff]` no longer drops the per-file test
+  ignores and the pydocstyle convention the standalone `ruff.toml` always
+  carried. A project that already had a ruff table was held to docstring rules
+  in its tests that a fresh project was not.
+- The shipped `baseline-py.toml` now carries `coverage-threshold = 80`, which
+  the dogfooded config always had and the asset silently lacked.
+
 ## 0.1.3
 
 ### Changed
