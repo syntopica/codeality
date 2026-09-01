@@ -51,6 +51,22 @@ dropping its `chunk_size` argument, and `RenamedFile` declaring `name` while
 every caller used `new`. The gate exits 0 there now, with ratchets at 35 modules
 for mypy, 35% for coverage and a dated per-family ruff list.
 
+parent-repo followed, at the owner's request: `tools/nested-tool`, 191 modules and
+41 test modules that generate a lighting show a real venue runs. The gate exits
+0 there too, and the pass found five things worth the trip. `speed_dial`
+annotated `Sequence["DialFunction"]` without importing the name, so any
+annotation resolution broke; `movement_efx` shadowed its `fixture_ids` parameter
+with the per-part loop variable; `test_stage_layout` was reading
+`POINTS_OF_VIEW` through an accidental re-export rather than from
+`monitor_node`. `lxml-stubs` cleared 67 of 303 mypy errors outright - the stubs
+existed, nobody had installed them. And the venv had been created with
+`--system-site-packages`, so it saw every Homebrew package on the Mac: the tests
+could have been passing on something absent from the lockfile, and pip-audit was
+auditing the whole machine. Rebuilt without it, 352 tests still pass. One
+process lesson: `ruff check --fix` must exclude F401 in a codebase with
+deliberate re-exports - the first attempt removed the import that
+`test_stage_layout` depended on and broke collection.
+
 Evidence: adoption commits dda386d (atrium, two commits), 9b4ca75 (consumer-c),
 9e1b4d6 (consumer-b), 98b0a0f (consumer-d), cd45b84 (consumer-a, five
 commits), all pushed; publish runs for 0.1.5/0.1.6/0.1.7 green;
