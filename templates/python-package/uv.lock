@@ -17,15 +17,15 @@ wheels = [
 
 [[package]]
 name = "busirocket-baseline-py"
-version = "0.1.0"
+version = "0.1.9"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "click" },
     { name = "tomlkit" },
 ]
-sdist = { url = "https://files.pythonhosted.org/packages/77/db/20e2241c9168a55927e563bf4e9507e054ff95ff18f68b7886278bcd124c/busirocket_baseline_py-0.1.0.tar.gz", hash = "sha256:8d5d8b99602f9e2e1b43db87e39d41873830af7441d3c3d05e9f606411781970", size = 112316, upload-time = "2026-08-31T21:49:52.108Z" }
+sdist = { url = "https://files.pythonhosted.org/packages/2a/cd/7449695722d14a28247b6543e479d3009d277f38383e99fe6b5c175be4b1/busirocket_baseline_py-0.1.9.tar.gz", hash = "sha256:7c986ca25b1a390ec3e308a11e6c6806c1e36a788e68e801cf548fce583eaf80", size = 124008, upload-time = "2026-09-01T18:29:20.4Z" }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/60/8b/6dc0679cb8bb4ce9fdf8c23c3bc88d9daab9d444c0bb29ccf51cf6343a26/busirocket_baseline_py-0.1.0-py3-none-any.whl", hash = "sha256:8d54e135f06af3b6d91f36a641cffc167a137b5504295bf37f6df4e0d91bef7c", size = 81959, upload-time = "2026-08-31T21:49:50.875Z" },
+    { url = "https://files.pythonhosted.org/packages/66/99/94f67bf3e9cd7b4cf04aaf9f3cecbacf6f98c5c6a7e48670ba0db45be262/busirocket_baseline_py-0.1.9-py3-none-any.whl", hash = "sha256:24de6f833e5573fbc3d3d6484f8adfcb7c99fc2feac44b619b04aceebafeabde", size = 90995, upload-time = "2026-09-01T18:29:19.026Z" },
 ]
 
 [[package]]

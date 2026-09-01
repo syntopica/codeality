@@ -6,7 +6,10 @@ import { fileURLToPath } from 'node:url'
 
 import { runConformance } from './conformance/runConformance.mjs'
 import { findConsumers } from './estate/findConsumers.mjs'
+import { findPythonConsumers } from './estate/findPythonConsumers.mjs'
 import { formatEstate } from './estate/formatEstate.mjs'
+import { formatPythonEstate } from './estate/formatPythonEstate.mjs'
+import { runPythonConformance } from './python/runPythonConformance.mjs'
 
 // Formalises the manual pre-publish sweep. Every release of these packages was
 // already being A/B'd by hand against the repositories that consume them -
@@ -22,7 +25,8 @@ async function main() {
   const today = new Date().toISOString().slice(0, 10)
 
   const consumers = await findConsumers(root)
-  if (!consumers.length) {
+  const pythonConsumers = await findPythonConsumers(root)
+  if (!consumers.length && !pythonConsumers.length) {
     console.log(`baseline-estate: no @busirocket consumers under ${root}.`)
     return
   }
@@ -39,9 +43,26 @@ async function main() {
     }
   }
 
-  console.log(formatEstate(rows))
+  if (rows.length) console.log(formatEstate(rows))
 
-  const failing = rows.filter(
+  // The Python projects are a second table with their own columns: the
+  // audit that added them found nine gates green on one laptop and running
+  // nowhere else, which the JavaScript table could not see at all.
+  const pythonRows = []
+  for (const consumer of pythonConsumers) {
+    try {
+      const { findings } = await runPythonConformance(consumer.path, versions)
+      pythonRows.push({ name: consumer.name, findings })
+    } catch (error) {
+      pythonRows.push({ name: consumer.name, error: String(error.message) })
+    }
+  }
+  if (pythonRows.length) {
+    if (rows.length) console.log('')
+    console.log(formatPythonEstate(pythonRows))
+  }
+
+  const failing = [...rows, ...pythonRows].filter(
     (row) => row.error || row.findings.some((f) => f.level === 'error'),
   )
   // Exit non-zero so this can gate a release the same way any other check

@@ -4,6 +4,18 @@
 
 ### Minor Changes
 
+- feat: the estate report covers the Python projects.
+
+  `baseline-estate` prints a second table for every project whose pyproject.toml
+  depends on `busirocket-baseline-py`, found up to three levels deep because the
+  adoption sweep proved Python lives nested inside repositories about something
+  else. Four columns: the quality group is declared, a workflow runs
+  `baseline-py gate` on push, its actions are pinned by commit, and uv.lock pins
+  the current release. The audit that added it found ten gates green on one
+  laptop and zero running anywhere else, which the JavaScript table could not
+  see. `baseline-versions.json` now carries the Python release for the lock
+  check.
+
 - feat: two tsconfig conformance checks, and a `tscfg` column in the estate
   matrix.
 

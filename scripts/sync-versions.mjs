@@ -50,9 +50,23 @@ const THIRD_PARTY_PINS = {
   '@commitlint/config-conventional': '^21.2.2',
 }
 
+// The Python package has no package.json; its version lives in pyproject.toml
+// and travels to consumers as the exact release their uv.lock should pin.
+const PYTHON_PACKAGE = 'busirocket-baseline-py'
+
+async function readPythonVersion() {
+  const text = await readFile(
+    resolve(PACKAGES_DIR, 'baseline-py/pyproject.toml'),
+    'utf8',
+  )
+  const match = /^version = "([^"]+)"/m.exec(text)
+  if (!match) throw new Error('sync-versions: baseline-py version not found')
+  return match[1]
+}
+
 async function readWorkspaceVersions() {
   const entries = await readdir(PACKAGES_DIR, { withFileTypes: true })
-  const versions = {}
+  const versions = { [PYTHON_PACKAGE]: await readPythonVersion() }
   for (const entry of entries) {
     if (!entry.isDirectory()) continue
     const manifestPath = resolve(PACKAGES_DIR, entry.name, 'package.json')
@@ -87,6 +101,7 @@ function renderBaselineVersions(versions) {
     pins[name] = `^${version}`
   }
   Object.assign(pins, THIRD_PARTY_PINS)
+  pins[PYTHON_PACKAGE] = versions[PYTHON_PACKAGE]
   return `${JSON.stringify(pins, null, 2)}\n`
 }
 

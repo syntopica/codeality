@@ -1,9 +1,10 @@
-import { access, readdir, readFile } from 'node:fs/promises'
+import { access, readFile } from 'node:fs/promises'
 import { resolve } from 'node:path'
 
 import { collectDeps } from '../scaffold/collectDeps.mjs'
 import { readManifest } from '../scaffold/readManifest.mjs'
 import { workspaceRoots } from '../scaffold/workspaceRoots.mjs'
+import { readWorkflows } from './readWorkflows.mjs'
 
 const TEST_CONFIGS = [
   'vitest.config.ts',
@@ -149,27 +150,6 @@ async function readTsconfigs(root) {
   }
 
   return { root: parsed, solution, leaves }
-}
-
-async function readWorkflows(root) {
-  const dir = resolve(root, '.github/workflows')
-  let names
-  try {
-    // eslint-disable-next-line security/detect-non-literal-fs-filename
-    names = (await readdir(dir)).filter((name) => /\.ya?ml$/.test(name))
-  } catch {
-    return []
-  }
-  const workflows = []
-  for (const name of names) {
-    try {
-      // eslint-disable-next-line security/detect-non-literal-fs-filename
-      workflows.push({ name, text: await readFile(resolve(dir, name), 'utf8') })
-    } catch {
-      /* unreadable file is not a workflow */
-    }
-  }
-  return workflows
 }
 
 async function findTestConfig(root) {
