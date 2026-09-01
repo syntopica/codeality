@@ -4,6 +4,26 @@ All notable changes to `busirocket-baseline-py` are documented here. The format
 follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/) and the project
 adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## 0.1.5
+
+### Changed
+
+- Root discovery now reads the layout a `pyproject.toml` already declares -
+  pytest's `pythonpath` and `testpaths`, hatch's wheel `packages` - before
+  guessing from directories. Found adopting the baseline in `consumer-c`, a
+  firmware host whose Python lives under `host/src` where directory scanning
+  sees nothing.
+- The test per-file-ignores pattern is `**/tests/**`, so it also reaches nested
+  test roots such as `host/tests`.
+- `D107` joined the ignore list: an `__init__` that stores its arguments has
+  nothing to add to the class docstring.
+
+### Fixed
+
+- The package now passes its own `init`-scaffolded configuration - it had been
+  gating itself with ruff's and mypy's defaults instead of the strict config it
+  ships, because no `ruff.toml` or `mypy.ini` existed in the repository.
+
 ## 0.1.4
 
 ### Fixed

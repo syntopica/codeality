@@ -15,15 +15,11 @@ from baseline_py.report.exit_code import ExitCode
 
 @click.command(name="check")
 @PROJECT_OPTION
-@click.option(
-    "--check-stale", is_flag=True, help="Also fail on entries nothing reports any more."
-)
+@click.option("--check-stale", is_flag=True, help="Also fail on entries nothing reports any more.")
 def baseline_check_command(project: Path, check_stale: bool) -> None:
     """Fail on new findings, and on stale debt when asked."""
     root, result = checked_project(project)
-    classified = classify_findings(
-        result.findings, read_baseline(root / BASELINE_FILENAME)
-    )
+    classified = classify_findings(result.findings, read_baseline(root / BASELINE_FILENAME))
     click.echo(
         f"{len(classified.new)} new, {len(classified.known)} known, "
         f"{len(classified.resolved)} resolved"

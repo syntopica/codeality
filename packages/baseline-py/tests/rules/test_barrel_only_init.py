@@ -47,13 +47,13 @@ def test_a_dynamic_all_is_reported(make_source, config) -> None:
 
 
 def test_type_checking_block_with_imports_only_is_allowed(make_source, config) -> None:
-    body = "from typing import TYPE_CHECKING\n\nif TYPE_CHECKING:\n    from pkg.parser import Parser\n"
+    body = (
+        "from typing import TYPE_CHECKING\n\nif TYPE_CHECKING:\n    from pkg.parser import Parser\n"
+    )
     assert barrel_only_init(_barrel(make_source, body), config) == ()
 
 
-def test_type_checking_block_containing_a_class_is_reported(
-    make_source, config
-) -> None:
+def test_type_checking_block_containing_a_class_is_reported(make_source, config) -> None:
     body = "from typing import TYPE_CHECKING\n\nif TYPE_CHECKING:\n    class Alias:\n        pass\n"
     assert barrel_only_init(_barrel(make_source, body), config)
 
@@ -64,8 +64,6 @@ def test_namespace_init_role_is_exempt(make_source, config) -> None:
     assert barrel_only_init(source, config) == ()
 
 
-def test_an_ordinary_module_is_not_subject_to_the_barrel_grammar(
-    make_source, config
-) -> None:
+def test_an_ordinary_module_is_not_subject_to_the_barrel_grammar(make_source, config) -> None:
     source = make_source("def run() -> None:\n    return None\n", "src/pkg/run.py")
     assert barrel_only_init(source, config) == ()

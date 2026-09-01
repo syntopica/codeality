@@ -13,6 +13,4 @@ def read_source_text(path: Path, relative_path: str) -> str:
             encoding, _ = tokenize.detect_encoding(handle.readline)
         return path.read_text(encoding=encoding)
     except (OSError, SyntaxError, UnicodeDecodeError, LookupError) as error:
-        raise InfrastructureError(
-            f"{relative_path} could not be read: {error}"
-        ) from error
+        raise InfrastructureError(f"{relative_path} could not be read: {error}") from error

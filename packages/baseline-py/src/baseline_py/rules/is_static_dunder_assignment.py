@@ -20,6 +20,5 @@ def is_static_dunder_assignment(node: ast.stmt) -> bool:
     if not isinstance(value, (ast.List, ast.Tuple)):
         return False
     return all(
-        isinstance(item, ast.Constant) and isinstance(item.value, str)
-        for item in value.elts
+        isinstance(item, ast.Constant) and isinstance(item.value, str) for item in value.elts
     )

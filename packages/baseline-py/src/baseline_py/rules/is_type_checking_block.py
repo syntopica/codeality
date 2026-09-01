@@ -12,6 +12,4 @@ def is_type_checking_block(node: ast.stmt) -> bool:
     attributed = isinstance(test, ast.Attribute) and test.attr == "TYPE_CHECKING"
     if not (named or attributed) or node.orelse:
         return False
-    return all(
-        isinstance(statement, (ast.Import, ast.ImportFrom)) for statement in node.body
-    )
+    return all(isinstance(statement, (ast.Import, ast.ImportFrom)) for statement in node.body)

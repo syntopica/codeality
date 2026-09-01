@@ -11,9 +11,7 @@ _FILE_WIDE = re.compile(
 )
 
 
-def parse_suppression_line(
-    line: str, number: int
-) -> tuple[Suppression | None, str | None]:
+def parse_suppression_line(line: str, number: int) -> tuple[Suppression | None, str | None]:
     """Return the suppression on this line, or a warning explaining why not."""
     file_wide = _FILE_WIDE.search(line)
     if file_wide is not None:

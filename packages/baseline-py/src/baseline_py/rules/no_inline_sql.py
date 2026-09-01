@@ -35,7 +35,5 @@ def no_inline_sql(source: SourceFile, config: BaselineConfig) -> tuple[Finding, 
             subject=sql_subject(node),
         )
         for node in ast.walk(source.tree)
-        if isinstance(node, _LITERALS)
-        and is_sql_literal(node)
-        and node.lineno not in docstrings
+        if isinstance(node, _LITERALS) and is_sql_literal(node) and node.lineno not in docstrings
     )

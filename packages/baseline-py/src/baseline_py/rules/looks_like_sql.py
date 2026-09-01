@@ -12,9 +12,7 @@ _OTHER_SHAPES = (
     re.compile(r"\bdelete\s+from\b\s+[\w.\"`\[]+"),
     re.compile(r"\b(create|alter|drop)\s+(table|index|view|trigger)\b"),
 )
-_CLAUSES = re.compile(
-    r"\b(where|join|group\s+by|order\s+by|having|limit|union|returning)\b"
-)
+_CLAUSES = re.compile(r"\b(where|join|group\s+by|order\s+by|having|limit|union|returning)\b")
 
 
 def looks_like_sql(text: str) -> bool:
@@ -30,6 +28,4 @@ def looks_like_sql(text: str) -> bool:
     match = _SELECT.search(normalised)
     if match is None:
         return False
-    return _CLAUSES.search(normalised) is not None or is_column_list(
-        match.group("columns")
-    )
+    return _CLAUSES.search(normalised) is not None or is_column_list(match.group("columns"))

@@ -18,9 +18,7 @@ from baseline_py.model.severity import Severity
 _TEXT = 'QUERY_A = "SELECT id FROM users"\nQUERY_B = "SELECT name FROM albums"\n'
 
 
-def _finding(
-    code: RuleCode, line: int, subject: str | None, path: str = "src/a.py"
-) -> Finding:
+def _finding(code: RuleCode, line: int, subject: str | None, path: str = "src/a.py") -> Finding:
     return Finding(
         code=code,
         severity=Severity.ERROR,
@@ -97,9 +95,7 @@ def test_a_baseline_entry_without_a_current_finding_is_resolved() -> None:
 
 def test_a_baseline_round_trips(tmp_path: Path) -> None:
     path = tmp_path / "baseline.json"
-    write_baseline(
-        path, BaselineFile(entries=frozenset({"b", "a"}), tool_version="0.1.1")
-    )
+    write_baseline(path, BaselineFile(entries=frozenset({"b", "a"}), tool_version="0.1.1"))
     assert read_baseline(path).entries == frozenset({"a", "b"})
     assert '"a",\n    "b"' in path.read_text(encoding="utf-8")
 

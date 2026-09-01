@@ -13,13 +13,9 @@ from baseline_py.init.plan_pyproject import plan_pyproject
 from baseline_py.init.plan_ruff import plan_ruff
 
 
-def plan_init(
-    project_root: Path, profile: str, with_ci: bool
-) -> tuple[ManagedFile, ...]:
+def plan_init(project_root: Path, profile: str, with_ci: bool) -> tuple[ManagedFile, ...]:
     """Return the plan. This function reads; it never writes."""
-    planned = [
-        plan_asset_file(project_root, name, target) for name, target in ASSET_TARGETS
-    ]
+    planned = [plan_asset_file(project_root, name, target) for name, target in ASSET_TARGETS]
     standalone_ruff = plan_ruff(project_root)
     if standalone_ruff is not None:
         planned.append(standalone_ruff)

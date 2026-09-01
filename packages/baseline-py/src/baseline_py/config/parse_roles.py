@@ -25,9 +25,7 @@ def parse_roles(table: Mapping[str, Any]) -> dict[ModuleRole, tuple[str, ...]]:
     roles: dict[ModuleRole, tuple[str, ...]] = {}
     for role in _CONFIGURABLE:
         patterns = table.get(role.value, [])
-        if not isinstance(patterns, list) or any(
-            not isinstance(item, str) for item in patterns
-        ):
+        if not isinstance(patterns, list) or any(not isinstance(item, str) for item in patterns):
             raise ConfigError(f"[roles] {role.value} must be a list of glob strings")
         roles[role] = tuple(patterns)
     reject_duplicate_role_claims(roles)

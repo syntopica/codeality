@@ -32,23 +32,17 @@ def test_a_missing_required_tool_is_failed_to_run(tmp_path: Path) -> None:
 
 
 def test_a_missing_required_tool_exits_3_not_0() -> None:
-    result = GateResult(
-        stages=(_stage_result(StageKind.REQUIRED, StageStatus.FAILED_TO_RUN),)
-    )
+    result = GateResult(stages=(_stage_result(StageKind.REQUIRED, StageStatus.FAILED_TO_RUN),))
     assert result.exit_code() is ExitCode.INFRASTRUCTURE
 
 
 def test_a_missing_shadow_tool_does_not_fail_the_gate() -> None:
-    result = GateResult(
-        stages=(_stage_result(StageKind.SHADOW, StageStatus.FAILED_TO_RUN),)
-    )
+    result = GateResult(stages=(_stage_result(StageKind.SHADOW, StageStatus.FAILED_TO_RUN),))
     assert result.exit_code() is ExitCode.OK
 
 
 def test_findings_in_a_required_stage_exit_1() -> None:
-    result = GateResult(
-        stages=(_stage_result(StageKind.REQUIRED, StageStatus.FINDINGS),)
-    )
+    result = GateResult(stages=(_stage_result(StageKind.REQUIRED, StageStatus.FINDINGS),))
     assert result.exit_code() is ExitCode.FINDINGS
 
 

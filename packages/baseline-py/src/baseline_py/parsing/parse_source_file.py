@@ -28,7 +28,5 @@ def parse_source_file(path: Path, relative_path: str, role: ModuleRole) -> Sourc
             parse_error=syntax_error_finding(relative_path, error),
         )
     except (RecursionError, ValueError, MemoryError) as error:
-        raise InfrastructureError(
-            f"{relative_path} could not be parsed: {error}"
-        ) from error
+        raise InfrastructureError(f"{relative_path} could not be parsed: {error}") from error
     return SourceFile(relative_path=relative_path, role=role, text=text, tree=tree)

@@ -12,7 +12,5 @@ def syntax_error_finding(relative_path: str, error: SyntaxError) -> Finding:
         code=RuleCode.BPY000,
         severity=Severity.ERROR,
         message=f"file does not parse: {error.msg}",
-        location=Location(
-            path=relative_path, line=error.lineno or 1, column=error.offset or 1
-        ),
+        location=Location(path=relative_path, line=error.lineno or 1, column=error.offset or 1),
     )

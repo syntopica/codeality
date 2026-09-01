@@ -18,7 +18,5 @@ def overload_family_length(declarations: tuple[Declaration, ...], start: int) ->
         if declarations[cursor].name != name:
             return 1
         cursor += 1
-    implementation_follows = (
-        cursor < len(declarations) and declarations[cursor].name == name
-    )
+    implementation_follows = cursor < len(declarations) and declarations[cursor].name == name
     return cursor - start + 1 if implementation_follows else 1

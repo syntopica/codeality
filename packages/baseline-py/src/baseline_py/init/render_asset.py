@@ -3,6 +3,7 @@
 from pathlib import Path
 
 from baseline_py.config.discover_source_roots import discover_source_roots
+from baseline_py.config.discover_test_roots import discover_test_roots
 from baseline_py.init.first_party_packages import first_party_packages
 
 
@@ -14,6 +15,8 @@ def render_asset(content: str, project_root: Path) -> str:
     """
     roots = ", ".join(f'"{root}"' for root in discover_source_roots(project_root))
     rendered = content.replace('source-roots = ["src"]', f"source-roots = [{roots}]")
+    tests = ", ".join(f'"{root}"' for root in discover_test_roots(project_root))
+    rendered = rendered.replace('test-roots = ["tests"]', f"test-roots = [{tests}]")
     packages = first_party_packages(project_root)
     if packages:
         rendered = rendered.replace("CHANGE_ME", packages[0])

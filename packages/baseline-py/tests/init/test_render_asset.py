@@ -8,9 +8,7 @@ from baseline_py.init.render_asset import render_asset
 
 
 def _flat_package_project(tmp_path: Path, name: str) -> Path:
-    (tmp_path / "pyproject.toml").write_text(
-        f'[project]\nname = "{name}"\n', encoding="utf-8"
-    )
+    (tmp_path / "pyproject.toml").write_text(f'[project]\nname = "{name}"\n', encoding="utf-8")
     package = tmp_path / name
     package.mkdir()
     (package / "__init__.py").write_text("", encoding="utf-8")

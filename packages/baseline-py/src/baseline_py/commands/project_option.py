@@ -7,6 +7,6 @@ import click
 PROJECT_OPTION = click.option(
     "--project",
     type=click.Path(file_okay=False, exists=True, path_type=Path),
-    default=Path("."),
+    default=Path(),
     help="Project root. Defaults to the working directory.",
 )

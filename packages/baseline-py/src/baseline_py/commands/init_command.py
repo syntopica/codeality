@@ -15,12 +15,10 @@ from baseline_py.report.exit_code import ExitCode
 @click.option(
     "--project",
     type=click.Path(file_okay=False, exists=True, path_type=Path),
-    default=Path("."),
+    default=Path(),
     help="Project root to scaffold. Defaults to the working directory.",
 )
-@click.option(
-    "--check", "check_only", is_flag=True, help="Plan only; exit 2 on any conflict."
-)
+@click.option("--check", "check_only", is_flag=True, help="Plan only; exit 2 on any conflict.")
 @click.option("--apply", "should_apply", is_flag=True, help="Write creates and merges.")
 @click.option("--force", is_flag=True, help="Also replace conflicting managed files.")
 @click.option("--ci", "with_ci", is_flag=True, help="Also scaffold the CI workflow.")
@@ -30,7 +28,7 @@ from baseline_py.report.exit_code import ExitCode
     default="lib",
     help="app additionally scaffolds an import-linter contract.",
 )
-def init_command(
+def init_command(  # noqa: PLR0913, PLR0917 - one parameter per click option
     project: Path,
     check_only: bool,
     should_apply: bool,

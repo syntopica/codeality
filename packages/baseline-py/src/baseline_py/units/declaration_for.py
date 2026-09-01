@@ -24,16 +24,10 @@ def declaration_for(statement: ast.stmt, relative_path: str) -> Declaration | No
     )
     if isinstance(statement, ast.ClassDef):
         kind = DeclarationKind.CLASS
-        return named_declaration(
-            statement.name, kind, location, decorator_names(statement)
-        )
+        return named_declaration(statement.name, kind, location, decorator_names(statement))
     if isinstance(statement, _FUNCTIONS):
         kind = DeclarationKind.FUNCTION
-        return named_declaration(
-            statement.name, kind, location, decorator_names(statement)
-        )
+        return named_declaration(statement.name, kind, location, decorator_names(statement))
     if isinstance(statement, _TYPE_ALIASES) and isinstance(statement.name, ast.Name):
-        return named_declaration(
-            statement.name.id, DeclarationKind.TYPE_ALIAS, location
-        )
+        return named_declaration(statement.name.id, DeclarationKind.TYPE_ALIAS, location)
     return legacy_type_alias(statement, location)

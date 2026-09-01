@@ -11,8 +11,7 @@ _TRANSLATIONS = {"**/": "(?:[^/]+/)*", "**": ".*", "*": "[^/]*", "?": "[^/]"}
 def compile_glob(pattern: str) -> re.Pattern[str]:
     """Return the compiled matcher for one glob pattern."""
     parts = [
-        _TRANSLATIONS.get(token)
-        or (token if token.startswith("[") else re.escape(token))
+        _TRANSLATIONS.get(token) or (token if token.startswith("[") else re.escape(token))
         for token in _TOKENS.findall(pattern)
     ]
     return re.compile(f"^{''.join(parts)}$")

@@ -10,9 +10,7 @@ from baseline_py.units.count_primary_declarations import count_primary_declarati
 from baseline_py.units.to_snake_case import to_snake_case
 
 
-def file_matches_unit(
-    source: SourceFile, config: BaselineConfig
-) -> tuple[Finding, ...]:
+def file_matches_unit(source: SourceFile, config: BaselineConfig) -> tuple[Finding, ...]:
     """Report an ordinary module whose name does not name its declaration."""
     del config
     if source.role is not ModuleRole.ORDINARY or source.tree is None:

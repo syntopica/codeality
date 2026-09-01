@@ -16,9 +16,7 @@ def coalesce_singledispatch(
     dispatchers = frozenset(
         declaration.name
         for declaration in declarations
-        if any(
-            name.split(".")[-1] == "singledispatch" for name in declaration.decorators
-        )
+        if any(name.split(".")[-1] == "singledispatch" for name in declaration.decorators)
     )
     return tuple(
         declaration

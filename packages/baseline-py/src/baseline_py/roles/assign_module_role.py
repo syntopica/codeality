@@ -8,7 +8,9 @@ from baseline_py.roles.test_file_patterns import TEST_FILE_PATTERNS
 _CONFIGURED_LATE = (ModuleRole.ENTRYPOINT, ModuleRole.DATA, ModuleRole.REGISTRY)
 
 
-def assign_module_role(relative_path: str, config: BaselineConfig) -> ModuleRole:
+def assign_module_role(  # noqa: PLR0911 - a decision table returns once per row
+    relative_path: str, config: BaselineConfig
+) -> ModuleRole:
     """Return the single role for this path.
 
     Precedence is fixed: excluded, generated, stub, test, namespace-init,

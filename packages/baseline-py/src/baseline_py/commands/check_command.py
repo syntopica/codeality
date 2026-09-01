@@ -19,7 +19,7 @@ from baseline_py.report.render_text_report import render_text_report
     "--project",
     "project",
     type=click.Path(file_okay=False, exists=True, path_type=Path),
-    default=Path("."),
+    default=Path(),
     help="Project root to check. Defaults to the working directory.",
 )
 @click.option(
@@ -40,10 +40,6 @@ def check_command(project: Path, output_format: str) -> None:
     except InfrastructureError as error:
         click.echo(f"infrastructure error: {error}", err=True)
         sys.exit(ExitCode.INFRASTRUCTURE)
-    rendered = (
-        render_json_report(result)
-        if output_format == "json"
-        else render_text_report(result)
-    )
+    rendered = render_json_report(result) if output_format == "json" else render_text_report(result)
     click.echo(rendered)
     sys.exit(ExitCode.FINDINGS if result.findings else ExitCode.OK)

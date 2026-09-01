@@ -16,13 +16,11 @@ from baseline_py.report.render_gate_report import render_gate_report
 @click.option(
     "--project",
     type=click.Path(file_okay=False, exists=True, path_type=Path),
-    default=Path("."),
+    default=Path(),
     help="Project root to gate. Defaults to the working directory.",
 )
 @click.option("--fail-fast", is_flag=True, help="Stop at the first blocking failure.")
-@click.option(
-    "--json", "as_json", is_flag=True, help="Emit the machine-readable summary."
-)
+@click.option("--json", "as_json", is_flag=True, help="Emit the machine-readable summary.")
 def gate_command(project: Path, fail_fast: bool, as_json: bool) -> None:
     """Run ruff, mypy, the structural rules, deptry, pip-audit and pytest."""
     try:

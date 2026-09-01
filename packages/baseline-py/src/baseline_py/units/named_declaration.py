@@ -12,9 +12,7 @@ def named_declaration(
     decorators: tuple[str, ...] = (),
 ) -> Declaration:
     """Return the declaration, its visibility read from the underscore rule."""
-    is_overload = any(
-        decorator.split(".")[-1] == "overload" for decorator in decorators
-    )
+    is_overload = any(decorator.split(".")[-1] == "overload" for decorator in decorators)
     return Declaration(
         name=name,
         kind=kind,

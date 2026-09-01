@@ -13,6 +13,4 @@ def check_schema_version(document: dict[str, Any]) -> None:
         return
     version = document.get("schema-version")
     if version != SUPPORTED_SCHEMA_VERSION:
-        raise ConfigError(
-            f"schema-version must be {SUPPORTED_SCHEMA_VERSION}, found {version!r}"
-        )
+        raise ConfigError(f"schema-version must be {SUPPORTED_SCHEMA_VERSION}, found {version!r}")

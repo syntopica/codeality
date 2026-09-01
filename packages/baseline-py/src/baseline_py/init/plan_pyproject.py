@@ -18,9 +18,7 @@ def plan_pyproject(project_root: Path) -> ManagedFile:
     """
     pyproject = project_root / "pyproject.toml"
     if not pyproject.is_file():
-        return ManagedFile(
-            pyproject, PlanDisposition.CONFLICT, "no pyproject.toml to merge into"
-        )
+        return ManagedFile(pyproject, PlanDisposition.CONFLICT, "no pyproject.toml to merge into")
     original = pyproject.read_text(encoding="utf-8")
     merged = original
     details: list[str] = []

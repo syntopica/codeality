@@ -11,9 +11,7 @@ def _commands(config: BaselineConfig) -> dict[str, tuple[str, ...]]:
 
 
 def test_coverage_is_collected_not_merely_configured() -> None:
-    config = BaselineConfig(
-        project_root=Path("/p"), import_package="demo", coverage_threshold=80
-    )
+    config = BaselineConfig(project_root=Path("/p"), import_package="demo", coverage_threshold=80)
     pytest_command = _commands(config)["pytest"]
     assert "--cov=demo" in pytest_command
     assert "--cov-fail-under=80" in pytest_command

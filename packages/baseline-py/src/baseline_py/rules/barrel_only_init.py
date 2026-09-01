@@ -9,7 +9,9 @@ from baseline_py.model.severity import Severity
 from baseline_py.parsing.source_file import SourceFile
 from baseline_py.rules.is_allowed_barrel_statement import is_allowed_barrel_statement
 
-_MESSAGE = "a barrel holds a docstring, imports, re-exports and __all__; move this into its own module"
+_MESSAGE = (
+    "a barrel holds a docstring, imports, re-exports and __all__; move this into its own module"
+)
 
 
 def barrel_only_init(source: SourceFile, config: BaselineConfig) -> tuple[Finding, ...]:

@@ -17,9 +17,7 @@ def legacy_type_alias(statement: ast.stmt, location: Location) -> Declaration | 
     if isinstance(statement, ast.AnnAssign) and isinstance(statement.target, ast.Name):
         annotation = statement.annotation
         if isinstance(annotation, ast.Name) and annotation.id == "TypeAlias":
-            return named_declaration(
-                statement.target.id, DeclarationKind.TYPE_ALIAS, location
-            )
+            return named_declaration(statement.target.id, DeclarationKind.TYPE_ALIAS, location)
         return None
     if not isinstance(statement, ast.Assign) or len(statement.targets) != 1:
         return None

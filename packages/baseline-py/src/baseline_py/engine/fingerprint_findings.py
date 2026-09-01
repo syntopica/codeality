@@ -5,9 +5,7 @@ from baseline_py.baseline.fingerprint_context import fingerprint_context
 from baseline_py.model.finding import Finding
 
 
-def fingerprint_findings(
-    findings: tuple[Finding, ...], text: str
-) -> tuple[Finding, ...]:
+def fingerprint_findings(findings: tuple[Finding, ...], text: str) -> tuple[Finding, ...]:
     """Return the findings with their fingerprint filled in.
 
     Two violations of the same rule in one file must not collapse into one

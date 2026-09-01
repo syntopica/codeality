@@ -12,7 +12,5 @@ def render_text_report(result: CheckResult) -> str:
     ]
     lines.extend(f"warning: {warning}" for warning in result.warnings)
     roots = ", ".join(result.scanned_roots)
-    lines.append(
-        f"{len(result.findings)} findings in {result.scanned_files} files under {roots}"
-    )
+    lines.append(f"{len(result.findings)} findings in {result.scanned_files} files under {roots}")
     return "\n".join(lines)

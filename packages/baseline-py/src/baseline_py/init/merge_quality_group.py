@@ -3,9 +3,7 @@
 import tomlkit
 
 
-def merge_quality_group(
-    document: tomlkit.TOMLDocument, asset: tomlkit.TOMLDocument
-) -> None:
+def merge_quality_group(document: tomlkit.TOMLDocument, asset: tomlkit.TOMLDocument) -> None:
     """Add ``[dependency-groups] quality`` in place, if it is absent.
 
     Config alone cannot make mypy, deptry, pytest-cov or pip-audit available,
