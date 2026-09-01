@@ -23,6 +23,14 @@ verified complete - `[-]` obsolete or superseded.
 - [-] Decide what to do about `memstore`'s 402 inline-SQL findings. Superseded
   2026-09-01: memstore is kept for reference only, it is not ours, so it gets
   no baseline adoption at all.
+- [!] Finish the `consumer-y` adoption. Its four baseline files sit untracked
+  in the worktree because the repository's pre-commit hook runs the whole
+  monorepo check and it is red for an unrelated reason: the `packageManager`
+  field pins `pnpm@11.17.0` while the installed corepack pnpm is 11.25.0, so
+  `@consumer-y/core#test` refuses to run and every commit in that repo is
+  blocked, not just mine. Smallest unblock: align the pin with the installed
+  version (or the reverse), then commit the four files. A concurrent session
+  also has staged TypeScript work there, so the commit must stay path-limited.
 - [ ] Wire `vulture` and `jscpd` into the gate as advisory stages, then decide
       from measurement whether either can block. Both were deliberately left out
       of v1: vulture's false positives on decorators and registries are

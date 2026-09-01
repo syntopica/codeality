@@ -67,6 +67,21 @@ process lesson: `ruff check --fix` must exclude F401 in a codebase with
 deliberate re-exports - the first attempt removed the import that
 `test_stage_layout` depended on and broke collection.
 
+A full sweep for `.py` files under `~/p` closed the question of what is left,
+after parent-repo proved that scanning for `pyproject.toml` at repository roots
+misses Python nested in `tools/`. Three more of ours adopted at check level -
+`brain` (89 findings; `tools/` is the source root, `sources/vault` is archived
+material), `consumer-e` (8) and `consumer-y` (6, blocked on its own
+pre-commit hook). Deliberately not adopted, with the reason recorded:
+`rocket-agents-library`'s 537 files are vendored skills whose upstream source
+and hash `curation.json` tracks, `~/p/mcp` is third-party MCP servers and not
+even a repository, `seo-stack`'s four are vendored skill examples,
+`ai-job-search` and `marketing-tool` belong to other people, and the `_archivar`
+and `_backup-*` trees are archives. The `consumer-e` pass also found a
+tracked `admin_scripts/.env` holding a root WHM API token, filed in that
+repository's new TODO.md rather than changed, because untracking it silently
+would leave the scripts unconfigured wherever else it is cloned.
+
 Evidence: adoption commits dda386d (atrium, two commits), 9b4ca75 (consumer-c),
 9e1b4d6 (consumer-b), 98b0a0f (consumer-d), cd45b84 (consumer-a, five
 commits), all pushed; publish runs for 0.1.5/0.1.6/0.1.7 green;
