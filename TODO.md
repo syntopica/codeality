@@ -7,21 +7,17 @@ verified complete - `[-]` obsolete or superseded.
 
 ## Python baseline
 
-- [!] Push the consumer-a adoption. Committed locally as `e1dff6d`
-  (baseline-py.toml, ruff.toml, mypy.ini, and a baseline of 155 findings), but
-  the repo is 44 commits behind `origin/main` and `git pull` aborts:
-  `.gitignore` and `activate_env.sh` carry uncommitted local edits and the
-  incoming commits touch those same two files. Smallest unblock: decide what
-  happens to those two files, then pull and push.
 - [ ] Give consumer-a a `pyproject.toml` so the whole gate applies. It has
       only `requirements.txt` today, so deptry, pytest and coverage are not
       wired and `baseline-py check` is the only stage that runs.
-- [ ] Adopt the baseline in the remaining repositories, in the order the estate
-      report argues: `atrium` (59 findings), then `consumer-w` and `consumer-c`
-      (declare `source-roots = ["host/src"]` first), then `consumer-b`. Each
-      is its own reviewed change; see
-      `docs/reports/2026-08-31-python-estate-baseline.md`. `memstore` is out:
-      it is kept for reference only and is not ours to migrate (2026-09-01).
+- [ ] Work down the adoption debt the 2026-09-01 sweep recorded: atrium's 19
+      structural findings plus its ruff/mypy fixes (in the atrium-57 session's
+      hands), consumer-c's nine-module mypy `ignore_errors` ratchet and its
+      coverage 78-to-80 gap, and the five accepted starlette advisories that
+      fall away when platformio 7 lands.
+- [ ] Raise `consumer-b` to `requires-python >=3.11` (the Pi target
+      permitting) so the quality group and the full gate can run there; today it
+      gates at check level only.
 - [-] consumer-z. Its checkout is a clone of upstream `mcallegari/consumer-z`, not a
   fork, and its only Python is one 675-line fixture tool. The config and its
   baseline live there untracked so `baseline-py check` works locally; nothing

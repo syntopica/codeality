@@ -2,6 +2,44 @@
 
 Closed work from `TODO.md`, grouped by year and month.
 
+## 2026-09
+
+### 2026-09-01 - Python baseline adopted across the estate; baseline-py 0.1.3 through 0.1.7
+
+The adoption sweep the estate report ordered is done, and every repository that
+is actually ours now gates. atrium (BPY baseline 19 after a reasoned BPY006
+override - it is a SQLite index engine and inline SQL is its style; coverage
+ratchet 54, PLC0415/T201 as project decisions, dev extra folded into the quality
+group; ruff and strict-mypy debt handed to the atrium-57 session working that
+repo). consumer-c (the first fully green gate, exit 0: 61 structural findings
+baselined, entrypoint roles, mechanical ruff fixes plus reasoned noqa, a
+nine-module mypy ignore_errors ratchet, coverage 78, deptry clean, five
+starlette advisories accepted with platformio 6.x as the recorded root cause).
+consumer-b (check-level: requires-python >=3.8 cannot host the quality
+group; source-roots "." because the app lives in top-level scripts; 63 findings
+baselined). consumer-d (check-level, no pyproject; 28 findings baselined). Not
+ours, so not adopted: memstore (reference only, per Cristian), consumer-w
+(prabhavalabs upstream), toolkit (alfem upstream), consumer-z (already recorded).
+consumer-a's blocked push resolved itself: the repo is level with origin,
+another session reconciled the two conflicted files, and the leftover
+TODO-repository-sync.md note was removed.
+
+Each wall the sweep hit became a released fix the same day - 0.1.3 (Python 3.11
+support, init discovers roots and first-party instead of writing CHANGE_ME),
+0.1.5 (the gate honors a recorded baseline; init reads declared layouts from
+pytest/hatch config; the package finally dogfoods its own strict config, which
+found 8 findings and 53 unformatted files in itself), 0.1.6 ([audit]
+ignore-vulns reaches pip-audit; import-package recorded for coverage; tests get
+S105/S106/S108 and the PLR family ignored), 0.1.7 (a missing shadow tool is a
+skip, not an alarm; init refuses to declare the quality group below the 3.11
+floor). 0.1.4 never reached PyPI - its publish failed on a stale uv.lock, relock
+now precedes every release.
+
+Evidence: adoption commits dda386d (atrium, two commits), 9b4ca75 (consumer-c),
+9e1b4d6 (consumer-b), 98b0a0f (consumer-d), all pushed; publish runs for
+0.1.5/0.1.6/0.1.7 green; `uv run baseline-py gate` exits 0 in consumer-c and in
+packages/baseline-py itself.
+
 ## 2026-08
 
 ### 2026-08-31 - busirocket-baseline-py 0.1.0 published to PyPI
