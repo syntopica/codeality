@@ -37,8 +37,8 @@ verified complete - `[-]` obsolete or superseded.
       pyrefly shadow stage reported `skipped-not-applicable` in every local run,
       so the quarter of artifacts the pyrefly item below waits for cannot
       accumulate. No repository has a lefthook or pre-commit hook either.
-      `init --with-ci` exists and nobody used it. Fix the two asset defects
-      below first, then `baseline-py init --with-ci --apply` per repository.
+      `init --ci` exists and nobody used it. Fix the two asset defects below
+      first, then `baseline-py init --ci --apply` per repository.
 - [ ] `init` hard-codes the CI matrix (`'3.11', '3.13'`) and ruff
       `target-version = "py311"` instead of reading `requires-python`
       (`render_asset.py` substitutes roots and packages only). consumer-a

@@ -4,6 +4,32 @@ All notable changes to `busirocket-baseline-py` are documented here. The format
 follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/) and the project
 adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## 0.1.9
+
+### Fixed
+
+- `init` no longer rewrites a consumer's `[tool.ruff.lint]` `select` and
+  `ignore` arrays when merging. The old merge rebuilt each array as a sorted
+  set, which kept every code and dropped every comment - and a consumer's ignore
+  list is usually a dated ledger of adoption debt, one family per line with the
+  count found. The arrays are now extended in place: missing codes land on one
+  new line, marked, and nothing else moves. A project with nothing missing is
+  reported `unchanged`.
+- The scaffolded CI matrix and ruff `target-version` follow the project's
+  `requires-python` floor instead of a hard-coded 3.11. A matrix cell below the
+  floor failed on `uv sync` before the gate ran; a ruff target below it let
+  pyupgrade stop short of the syntax the project may already use.
+
+### Changed
+
+- The scaffolded workflow installs with
+  `uv sync --locked --all-extras --all-groups`, so CI audits and tests the same
+  environment a local `uv run baseline-py gate` does; a group-only install left
+  out the extras the tests import. Its actions are pinned by commit SHA.
+- The shipped `mypy.ini` no longer carries a `[mypy-tests.*]` section. The
+  gate's mypy stage checks source roots only, so the section relaxed nothing;
+  configuration should not promise what the gate does not do.
+
 ## 0.1.8
 
 ### Added

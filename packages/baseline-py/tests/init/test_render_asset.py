@@ -50,3 +50,33 @@ def test_the_import_package_is_recorded_for_coverage(tmp_path: Path) -> None:
     project = _flat_package_project(tmp_path, "atrium")
     rendered = render_asset(read_asset("baseline-py.toml"), project)
     assert 'import-package = "atrium"' in rendered
+
+
+def _project_with_floor(tmp_path: Path, floor: str) -> Path:
+    (tmp_path / "pyproject.toml").write_text(
+        f'[project]\nname = "demo"\nrequires-python = "{floor}"\n', encoding="utf-8"
+    )
+    return tmp_path
+
+
+def test_the_ci_matrix_starts_at_the_requires_python_floor(tmp_path: Path) -> None:
+    project = _project_with_floor(tmp_path, ">=3.12")
+    rendered = render_asset(read_asset("baseline-py-ci.yml"), project)
+    assert "python-version: ['3.12', '3.13']" in rendered
+
+
+def test_the_ci_matrix_defaults_to_the_lowest_supported_interpreter(tmp_path: Path) -> None:
+    rendered = render_asset(read_asset("baseline-py-ci.yml"), tmp_path)
+    assert "python-version: ['3.11', '3.13']" in rendered
+
+
+def test_a_floor_below_the_tool_is_raised_to_the_tool(tmp_path: Path) -> None:
+    project = _project_with_floor(tmp_path, ">=3.9")
+    rendered = render_asset(read_asset("baseline-py-ci.yml"), project)
+    assert "python-version: ['3.11', '3.13']" in rendered
+
+
+def test_ruff_targets_the_requires_python_floor(tmp_path: Path) -> None:
+    project = _project_with_floor(tmp_path, ">=3.12")
+    rendered = render_asset(read_asset("ruff.toml"), project)
+    assert 'target-version = "py312"' in rendered

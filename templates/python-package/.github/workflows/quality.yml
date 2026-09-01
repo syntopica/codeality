@@ -14,20 +14,23 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        python-version: ['3.11', '3.13']
+        python-version: ['3.12', '3.13']
     steps:
-      - uses: actions/checkout@v5
+      - uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6
 
       - name: Install uv
-        uses: astral-sh/setup-uv@v7
+        uses: astral-sh/setup-uv@37802adc94f370d6bfd71619e3f0bf239e1f3b78 # v7.6.0
         with:
           enable-cache: true
 
       - name: Check the lockfile is current
         run: uv lock --check
 
+      # Every extra and every group: the gate audits and tests the environment
+      # it runs in, and a group-only install leaves out the extras the tests
+      # import.
       - name: Install from the lockfile
-        run: uv sync --locked --group quality
+        run: uv sync --locked --all-extras --all-groups
         env:
           UV_PYTHON: ${{ matrix.python-version }}
 
@@ -41,7 +44,7 @@ jobs:
 
       - name: Upload the pyrefly shadow report
         if: always()
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7
         with:
           name: pyrefly-shadow-${{ matrix.python-version }}
           path: pyrefly.json
