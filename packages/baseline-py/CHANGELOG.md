@@ -4,6 +4,13 @@ All notable changes to `busirocket-baseline-py` are documented here. The format
 follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/) and the project
 adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## Unreleased
+
+### Changed
+
+- The shipped deptry ignores gained `DEP004` defaults for the pytest family:
+  test tooling legitimately lives in a dev group and is imported only by tests.
+
 ## 0.1.7
 
 ### Changed
