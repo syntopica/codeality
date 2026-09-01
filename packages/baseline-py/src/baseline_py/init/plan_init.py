@@ -11,6 +11,7 @@ from baseline_py.init.managed_file import ManagedFile
 from baseline_py.init.plan_asset_file import plan_asset_file
 from baseline_py.init.plan_pyproject import plan_pyproject
 from baseline_py.init.plan_ruff import plan_ruff
+from baseline_py.init.plan_shadowed_ruff import plan_shadowed_ruff
 
 
 def plan_init(project_root: Path, profile: str, with_ci: bool) -> tuple[ManagedFile, ...]:
@@ -19,6 +20,9 @@ def plan_init(project_root: Path, profile: str, with_ci: bool) -> tuple[ManagedF
     standalone_ruff = plan_ruff(project_root)
     if standalone_ruff is not None:
         planned.append(standalone_ruff)
+    shadowed_ruff = plan_shadowed_ruff(project_root)
+    if shadowed_ruff is not None:
+        planned.append(shadowed_ruff)
     planned.append(plan_pyproject(project_root))
     if with_ci:
         planned.append(plan_asset_file(project_root, *CI_ASSET))

@@ -152,3 +152,21 @@ def test_a_project_below_python_311_gets_no_quality_group(tmp_path: Path) -> Non
     )
     assert "quality" not in merged
     assert "[tool.deptry]" in merged
+
+
+def test_a_ruff_toml_shadowing_a_ruff_table_is_reported(tmp_path: Path) -> None:
+    (tmp_path / "pyproject.toml").write_text(_PYPROJECT_WITH_RUFF, encoding="utf-8")
+    (tmp_path / "ruff.toml").write_text("line-length = 100\n", encoding="utf-8")
+    entry = next(
+        managed
+        for managed in plan_init(tmp_path, "lib", with_ci=False)
+        if managed.path.name == "ruff.toml"
+    )
+    assert entry.disposition is PlanDisposition.CONFLICT
+    assert "shadows" in entry.detail
+
+
+def test_a_ruff_toml_alone_is_not_a_conflict(tmp_path: Path) -> None:
+    (tmp_path / "pyproject.toml").write_text('[project]\nname = "demo"\n', encoding="utf-8")
+    dispositions = _dispositions(plan_init(tmp_path, "lib", with_ci=False))
+    assert dispositions["ruff.toml"] is PlanDisposition.CREATE

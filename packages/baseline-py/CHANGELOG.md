@@ -4,7 +4,16 @@ All notable changes to `busirocket-baseline-py` are documented here. The format
 follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/) and the project
 adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## Unreleased
+## 0.1.8
+
+### Added
+
+- `init` now reports a `ruff.toml` sitting beside a pyproject that also declares
+  `[tool.ruff]`. Ruff reads one configuration per directory, so the file wins
+  outright and the table is never read - silently. The pair builds itself over
+  time: init writes the file when no table exists, and a table arrives later.
+  Found in consumer-a, which spent a release linting against a config nobody
+  read; once the shadow was removed, 1707 findings resolved to 6 real ones.
 
 ### Changed
 
