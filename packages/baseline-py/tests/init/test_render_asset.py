@@ -44,3 +44,9 @@ def test_the_placeholder_survives_when_nothing_is_discoverable(
 ) -> None:
     rendered = render_asset(read_asset("importlinter.ini"), tmp_path)
     assert "CHANGE_ME" in rendered
+
+
+def test_the_import_package_is_recorded_for_coverage(tmp_path: Path) -> None:
+    project = _flat_package_project(tmp_path, "atrium")
+    rendered = render_asset(read_asset("baseline-py.toml"), project)
+    assert 'import-package = "atrium"' in rendered

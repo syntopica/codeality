@@ -24,3 +24,4 @@ class BaselineConfig:
     sql_resource_globs: tuple[str, ...] = ("sql/**/*.sql",)
     import_package: str | None = None
     coverage_threshold: int = 0
+    audit_ignore_vulns: tuple[str, ...] = ()

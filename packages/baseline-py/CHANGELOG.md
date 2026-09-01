@@ -4,6 +4,24 @@ All notable changes to `busirocket-baseline-py` are documented here. The format
 follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/) and the project
 adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## 0.1.6
+
+### Added
+
+- `[audit] ignore-vulns` in `baseline-py.toml`: accepted advisories, each
+  expected to carry a written reason, reach pip-audit as `--ignore-vuln` flags.
+  Found adopting the baseline in `consumer-c`, where platformio 6.x pins
+  starlette below the patched release and the gate had no way to accept the
+  documented risk.
+- `init` records the discovered `import-package`, so coverage measures the
+  package instead of a source directory path.
+
+### Changed
+
+- Tests' per-file-ignores grew `S105`, `S106`, `S108` (fixtures hold dummy
+  tokens and /tmp sockets) and now ignore the whole `PLR` family (a test factory
+  with seven keywords is a fixture, not a design smell).
+
 ## 0.1.5
 
 ### Changed

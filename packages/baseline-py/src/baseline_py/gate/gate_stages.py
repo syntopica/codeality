@@ -28,7 +28,14 @@ def gate_stages(config: BaselineConfig) -> tuple[Stage, ...]:
         Stage("mypy", StageKind.REQUIRED, ("mypy", *config.source_roots)),
         Stage("baseline-py", StageKind.REQUIRED, structural),
         Stage("deptry", StageKind.REQUIRED, ("deptry", ".")),
-        Stage("pip-audit", StageKind.REQUIRED, ("pip-audit",)),
+        Stage(
+            "pip-audit",
+            StageKind.REQUIRED,
+            (
+                "pip-audit",
+                *(part for vuln in config.audit_ignore_vulns for part in ("--ignore-vuln", vuln)),
+            ),
+        ),
         Stage(
             "pytest",
             StageKind.REQUIRED,

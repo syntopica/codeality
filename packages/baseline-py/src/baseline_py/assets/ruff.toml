@@ -41,7 +41,7 @@ ignore = [
 
 [lint.per-file-ignores]
 # **/ so the pattern also reaches nested test roots such as host/tests.
-"**/tests/**" = ["D", "S101", "ARG", "PLR2004"]
+"**/tests/**" = ["D", "S101", "S105", "S106", "S108", "ARG", "PLR"]
 "**/conftest.py" = ["D"]
 
 [lint.pydocstyle]

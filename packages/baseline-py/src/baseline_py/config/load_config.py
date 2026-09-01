@@ -26,10 +26,12 @@ _TOP_LEVEL_KEYS = {
     "import-package",
     "coverage-threshold",
     "limits",
+    "audit",
     "roles",
     "overrides",
 }
 _LIMIT_KEYS = {"max-file-lines", "test-max-file-lines"}
+_AUDIT_KEYS = {"ignore-vulns"}
 
 
 def load_config(project_root: Path) -> BaselineConfig:
@@ -40,6 +42,8 @@ def load_config(project_root: Path) -> BaselineConfig:
 
     limits = document.get("limits", {})
     reject_unknown_keys(limits, _LIMIT_KEYS, "[limits]")
+    audit = document.get("audit", {})
+    reject_unknown_keys(audit, _AUDIT_KEYS, "[audit]")
     source_roots = tuple(document.get("source-roots", ())) or discover_source_roots(project_root)
     return BaselineConfig(
         project_root=project_root,
@@ -56,4 +60,5 @@ def load_config(project_root: Path) -> BaselineConfig:
         sql_resource_globs=tuple(document.get("sql-resource-globs", ("sql/**/*.sql",))),
         import_package=document.get("import-package"),
         coverage_threshold=int(document.get("coverage-threshold", 0)),
+        audit_ignore_vulns=tuple(audit.get("ignore-vulns", ())),
     )

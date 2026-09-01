@@ -40,3 +40,12 @@ def test_a_recorded_baseline_is_honored_by_the_structural_stage(
 def test_without_a_baseline_the_structural_stage_runs_check(tmp_path: Path) -> None:
     config = BaselineConfig(project_root=tmp_path)
     assert _commands(config)["baseline-py"] == ("baseline-py", "check")
+
+
+def test_accepted_advisories_reach_pip_audit(tmp_path: Path) -> None:
+    config = BaselineConfig(project_root=tmp_path, audit_ignore_vulns=("PYSEC-2026-2280",))
+    assert _commands(config)["pip-audit"] == (
+        "pip-audit",
+        "--ignore-vuln",
+        "PYSEC-2026-2280",
+    )

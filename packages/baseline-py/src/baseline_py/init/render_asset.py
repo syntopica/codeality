@@ -20,4 +20,9 @@ def render_asset(content: str, project_root: Path) -> str:
     packages = first_party_packages(project_root)
     if packages:
         rendered = rendered.replace("CHANGE_ME", packages[0])
+        rendered = rendered.replace(
+            "respect-gitignore",
+            f'import-package = "{packages[0]}"\nrespect-gitignore',
+            1,
+        )
     return rendered
