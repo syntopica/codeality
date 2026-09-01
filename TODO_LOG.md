@@ -110,6 +110,25 @@ is the entire interface; order the ratchet before the fixes. And
 left untracked - it happened twice in brain with the same file - so a
 path-limited `git commit -- <paths>` is the only safe form.
 
+A third pass the same day cleared the findings the second one had left for a
+decision. `admin_scripts/.env` is out of Git in ServerTools, with a `.gitignore`
+rule for any `.env` and the two missing keys added to `env.example`; the values
+still need rotating, which only the owner can do. `Converter.to_int` reads the
+first number instead of joining every digit, so a track written "1/12" is 1
+rather than 112. ServerTools' two database scripts were renamed to importable
+names, wrapped in `main()` - both connected to MySQL at import, which is why
+they had no tests - and typed, which surfaced a real defect: the connector
+answers bytes for some columns, and those values were being formatted into
+`ALTER TABLE` statements as `b'wp_posts'`. Eight tests cover that decoding and
+took coverage from 18% to 25%.
+
+The hyphenated-filename problem got two answers rather than one. Where the
+references were few the file was renamed; where renaming meant rewriting about
+150 references across brain's own prose, the file carries
+`# mypy: ignore-errors` with four lines saying how to remove it. No repository
+excludes files from type checking by name pattern now, and brain type-checks 68
+files where it checked 47.
+
 Evidence: adoption commits dda386d (atrium, two commits), 9b4ca75 (consumer-c),
 9e1b4d6 (consumer-b), 98b0a0f (consumer-d), cd45b84 (consumer-a, five
 commits), all pushed; publish runs for 0.1.5/0.1.6/0.1.7 green;
