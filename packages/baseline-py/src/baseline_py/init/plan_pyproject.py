@@ -27,7 +27,7 @@ def plan_pyproject(project_root: Path) -> ManagedFile:
     if has_ruff_table(pyproject):
         merged = merge_ruff_config(merged)
         details.append("extends the existing [tool.ruff]")
-    merged = merge_pyproject_sections(merged)
+    merged = merge_pyproject_sections(merged, project_root)
     details.append("adds deptry, pytest, coverage and the quality group")
     if merged == original:
         return ManagedFile(pyproject, PlanDisposition.UNCHANGED, "already current")

@@ -10,6 +10,8 @@ from baseline_py.units.legacy_type_alias import legacy_type_alias
 from baseline_py.units.named_declaration import named_declaration
 
 _FUNCTIONS = (ast.FunctionDef, ast.AsyncFunctionDef)
+# ast.TypeAlias arrives in 3.12; on 3.11 the PEP 695 syntax cannot parse at all.
+_TYPE_ALIASES = (ast.TypeAlias,) if hasattr(ast, "TypeAlias") else ()
 
 
 def declaration_for(statement: ast.stmt, relative_path: str) -> Declaration | None:
@@ -30,7 +32,7 @@ def declaration_for(statement: ast.stmt, relative_path: str) -> Declaration | No
         return named_declaration(
             statement.name, kind, location, decorator_names(statement)
         )
-    if isinstance(statement, ast.TypeAlias) and isinstance(statement.name, ast.Name):
+    if isinstance(statement, _TYPE_ALIASES) and isinstance(statement.name, ast.Name):
         return named_declaration(
             statement.name.id, DeclarationKind.TYPE_ALIAS, location
         )

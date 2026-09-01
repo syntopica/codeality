@@ -4,6 +4,20 @@ All notable changes to `busirocket-baseline-py` are documented here. The format
 follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/) and the project
 adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## 0.1.3
+
+### Changed
+
+- Python 3.11 is now supported. `ast.TypeAlias` handling degrades gracefully: on
+  3.11 the PEP 695 syntax cannot parse at all, so nothing is lost. Found
+  adopting the baseline in `atrium`, whose `requires-python = ">=3.11"` made the
+  quality group unresolvable.
+- `init` now discovers what it used to ask for: `source-roots` in
+  `baseline-py.toml`, `known_first_party` for deptry, and the import-linter root
+  package are filled from the project's real layout instead of `src` and
+  `CHANGE_ME` placeholders. The placeholder survives only when nothing is
+  discoverable.
+
 ## 0.1.2
 
 ### Fixed

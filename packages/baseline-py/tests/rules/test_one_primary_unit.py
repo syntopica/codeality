@@ -1,5 +1,9 @@
 """BPY001 implements the spec's symbol decision table, row by row."""
 
+import ast
+
+import pytest
+
 from baseline_py.config.module_role import ModuleRole
 from baseline_py.rules.one_primary_unit import one_primary_unit
 
@@ -55,6 +59,9 @@ def test_a_typed_dict_beside_a_function_is_reported(make_source, config) -> None
     assert not _clean(make_source, config, body)
 
 
+@pytest.mark.skipif(
+    not hasattr(ast, "TypeAlias"), reason="PEP 695 syntax needs Python 3.12"
+)
 def test_a_pep_695_type_alias_counts(make_source, config) -> None:
     body = "type Rows = list[dict[str, str]]\n\n\ndef load() -> Rows:\n    return []\n"
     assert not _clean(make_source, config, body)
