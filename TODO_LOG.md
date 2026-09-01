@@ -82,6 +82,34 @@ tracked `admin_scripts/.env` holding a root WHM API token, filed in that
 repository's new TODO.md rather than changed, because untracking it silently
 would leave the scripts unconfigured wherever else it is cloned.
 
+A second pass on 2026-09-01 closed the remaining backlog items and took four
+more repositories from check level to a green gate. `consumer-d` traded
+setup.py and requirements.txt for a pyproject and found three defects: an
+undeclared `pydantic_settings` that made browser-use unimportable on a clean
+install, a `BrowserContextConfig` built and passed nowhere - so the domain
+allowlist that keeps a credentialed session on the provider's own site never
+applied - and the placeholder password compared as a literal in four places
+instead of the constant that existed for it. `consumer-e` had the MySQL
+root password in plain text in two scripts, committed since 2025-12-02; it reads
+the environment now, and the value needs rotating. `consumer-b` raised its
+floor from >=3.8, which no install could honour once matplotlib requires 3.11,
+and lost a debug script that pytest ran at import against a hardcoded path plus
+two dead classes shadowing `NotImplemented`. `consumer-y` committed once its
+own pre-commit hook stopped failing on the pnpm version mismatch.
+
+Three repositories gained their first tests: 14 in consumer-d over credential
+masking and validation, 8 in consumer-e over the Cloudflare record
+conversion, 17 in consumer-b over the Converter. One of those records a
+behaviour rather than endorsing it - `to_int("1/12")` returns 112 - and is
+flagged in that repository's TODO rather than changed blind.
+
+Two process lessons worth keeping. Running ruff's unsafe fixes before T201 is in
+the ignore list deletes every print statement, which in an administration script
+is the entire interface; order the ratchet before the fixes. And
+`git add <directory>` in a shared worktree sweeps in whatever another session
+left untracked - it happened twice in brain with the same file - so a
+path-limited `git commit -- <paths>` is the only safe form.
+
 Evidence: adoption commits dda386d (atrium, two commits), 9b4ca75 (consumer-c),
 9e1b4d6 (consumer-b), 98b0a0f (consumer-d), cd45b84 (consumer-a, five
 commits), all pushed; publish runs for 0.1.5/0.1.6/0.1.7 green;

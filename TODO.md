@@ -7,14 +7,18 @@ verified complete - `[-]` obsolete or superseded.
 
 ## Python baseline
 
-- [ ] Work down the adoption debt the 2026-09-01 sweep recorded: atrium's 19
-      structural findings plus its ruff/mypy fixes (in the atrium-57 session's
-      hands), consumer-c's nine-module mypy `ignore_errors` ratchet and its
-      coverage 78-to-80 gap, and the five accepted starlette advisories that
-      fall away when platformio 7 lands.
-- [ ] Raise `consumer-b` to `requires-python >=3.11` (the Pi target
-      permitting) so the quality group and the full gate can run there; today it
-      gates at check level only.
+- [ ] Work down the adoption debt the 2026-09-01 sweep recorded across the seven
+      repositories now gating: the mypy `ignore_errors` ratchets (consumer-b
+      52 modules, consumer-a 35, brain 28, consumer-d 12, consumer-c 9),
+      the ruff families beside them, and the coverage floors (consumer-d 9%,
+      consumer-b 5%, brain 19%, consumer-e 19%, consumer-a 35%,
+      consumer-c 78%). Each floor was measured, and none may go down. Beside
+      them: atrium's 19 structural findings, and the five accepted starlette
+      advisories in consumer-c that fall away when platformio 7 lands.
+- [ ] Rename the Python files whose names carry a hyphen, in brain (19),
+      consumer-a and consumer-e (2 each). A file whose name is not an
+      identifier cannot be addressed by a `[mypy-...]` section, so those files
+      are excluded from type checking wholesale rather than ratcheted.
 - [-] consumer-z. Its checkout is a clone of upstream `mcallegari/consumer-z`, not a
   fork, and its only Python is one 675-line fixture tool. The config and its
   baseline live there untracked so `baseline-py check` works locally; nothing
@@ -23,14 +27,6 @@ verified complete - `[-]` obsolete or superseded.
 - [-] Decide what to do about `memstore`'s 402 inline-SQL findings. Superseded
   2026-09-01: memstore is kept for reference only, it is not ours, so it gets
   no baseline adoption at all.
-- [!] Finish the `consumer-y` adoption. Its four baseline files sit untracked
-  in the worktree because the repository's pre-commit hook runs the whole
-  monorepo check and it is red for an unrelated reason: the `packageManager`
-  field pins `pnpm@11.17.0` while the installed corepack pnpm is 11.25.0, so
-  `@consumer-y/core#test` refuses to run and every commit in that repo is
-  blocked, not just mine. Smallest unblock: align the pin with the installed
-  version (or the reverse), then commit the four files. A concurrent session
-  also has staged TypeScript work there, so the commit must stay path-limited.
 - [ ] Wire `vulture` and `jscpd` into the gate as advisory stages, then decide
       from measurement whether either can block. Both were deliberately left out
       of v1: vulture's false positives on decorators and registries are
