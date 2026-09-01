@@ -4,6 +4,18 @@ All notable changes to `busirocket-baseline-py` are documented here. The format
 follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/) and the project
 adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## 0.1.2
+
+### Fixed
+
+- Baseline fingerprints no longer collapse several violations of one rule in one
+  file into a single entry, which let a fixed finding pay for a new one.
+  Identity is now decided per rule: a file-level rule (`BPY001`, `BPY004`)
+  identifies itself, a naming rule (`BPY002`, `BPY003`) identifies its symbol,
+  and everything else uses the offending line's content plus an occurrence
+  counter, so it survives edits elsewhere in the file. Found adopting the
+  baseline in consumer-a, where 155 findings recorded as only 91 entries.
+
 ## 0.1.1
 
 ### Fixed

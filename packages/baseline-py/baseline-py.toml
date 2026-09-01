@@ -22,6 +22,6 @@ data = [
 entrypoint = ["src/baseline_py/cli.py"]
 
 [[overrides]]
-paths = ["tests/rules/test_no_inline_sql.py"]
+paths = ["tests/rules/test_no_inline_sql.py", "tests/baseline/test_classify_findings.py"]
 disable = ["BPY006"]
-reason = "The SQL detector's own fixtures are queries by definition"
+reason = "Fixtures for the SQL detector and for fingerprinting are queries by definition"

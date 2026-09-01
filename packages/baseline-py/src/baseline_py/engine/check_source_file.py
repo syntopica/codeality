@@ -22,4 +22,4 @@ def check_source_file(
     raw = tuple(finding for rule in RULE_REGISTRY for finding in rule(source, config))
     suppressions, warnings = parse_suppressions(source.text)
     kept, unused = apply_suppressions(raw, suppressions, config.overrides)
-    return fingerprint_findings(kept, relative_path), (*warnings, *unused)
+    return fingerprint_findings(kept, source.text), (*warnings, *unused)
