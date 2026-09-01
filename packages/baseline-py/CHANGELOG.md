@@ -4,6 +4,19 @@ All notable changes to `busirocket-baseline-py` are documented here. The format
 follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/) and the project
 adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## 0.1.7
+
+### Changed
+
+- A missing shadow-stage tool is now `skipped-not-applicable` instead of
+  `failed-to-run`. A required tool that cannot run is still a failure; an
+  advisory tool that was never installed is not an alarm.
+- `init` no longer adds the quality dependency group to a project whose
+  `requires-python` floor is below 3.11: the group carries
+  `busirocket-baseline-py`, and declaring it there makes every uv resolution
+  unsatisfiable. Found adopting the baseline in `consumer-b`, which declares
+  `>=3.8` for its Raspberry Pi target.
+
 ## 0.1.6
 
 ### Added

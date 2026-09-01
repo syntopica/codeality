@@ -139,3 +139,16 @@ def test_merging_keeps_the_project_s_own_per_file_ignores(tmp_path: Path) -> Non
         if managed.path.name == "pyproject.toml"
     )
     assert '"tests/**" = ["D"]' in merged
+
+
+def test_a_project_below_python_311_gets_no_quality_group(tmp_path: Path) -> None:
+    (tmp_path / "pyproject.toml").write_text(
+        '[project]\nname = "demo"\nrequires-python = ">=3.8"\n', encoding="utf-8"
+    )
+    merged = next(
+        managed.content
+        for managed in plan_init(tmp_path, "lib", with_ci=False)
+        if managed.path.name == "pyproject.toml"
+    )
+    assert "quality" not in merged
+    assert "[tool.deptry]" in merged

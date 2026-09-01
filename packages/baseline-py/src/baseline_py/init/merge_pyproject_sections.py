@@ -1,5 +1,6 @@
 """Merge the tables baseline-py owns into an existing pyproject.toml."""
 
+import re
 from pathlib import Path
 
 import tomlkit
@@ -9,6 +10,8 @@ from baseline_py.init.merge_quality_group import merge_quality_group
 from baseline_py.init.read_asset import read_asset
 
 OWNED_TABLES = ("deptry", "pytest", "coverage")
+# The quality group carries busirocket-baseline-py, which needs Python 3.11.
+MINIMUM_QUALITY_MINOR = 11
 
 
 def merge_pyproject_sections(pyproject_text: str, project_root: Path) -> str:
@@ -26,5 +29,7 @@ def merge_pyproject_sections(pyproject_text: str, project_root: Path) -> str:
     for name in OWNED_TABLES:
         if name not in tool and name in asset.get("tool", {}):
             tool[name] = asset["tool"][name]
-    merge_quality_group(document, asset)
+    floor = re.search(r">=\s*3\.(\d+)", str(document.get("project", {}).get("requires-python", "")))
+    if floor is None or int(floor.group(1)) >= MINIMUM_QUALITY_MINOR:
+        merge_quality_group(document, asset)
     return tomlkit.dumps(document)
