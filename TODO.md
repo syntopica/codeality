@@ -7,9 +7,6 @@ verified complete - `[-]` obsolete or superseded.
 
 ## Python baseline
 
-- [ ] Give consumer-a a `pyproject.toml` so the whole gate applies. It has
-      only `requirements.txt` today, so deptry, pytest and coverage are not
-      wired and `baseline-py check` is the only stage that runs.
 - [ ] Work down the adoption debt the 2026-09-01 sweep recorded: atrium's 19
       structural findings plus its ruff/mypy fixes (in the atrium-57 session's
       hands), consumer-c's nine-module mypy `ignore_errors` ratchet and its

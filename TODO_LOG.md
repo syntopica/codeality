@@ -35,10 +35,27 @@ skip, not an alarm; init refuses to declare the quality group below the 3.11
 floor). 0.1.4 never reached PyPI - its publish failed on a stale uv.lock, relock
 now precedes every release.
 
+consumer-a followed the same day and went further than planned. It had
+gained a `pyproject.toml`, so the whole gate could apply, and applying it
+exposed the defect worth remembering: the repository carried both a `ruff.toml`
+from the August adoption and a `[tool.ruff]` table added later. Ruff reads one
+configuration per directory, so the file won and the table was never read - the
+repository had spent a release linting against rules nobody applied. Deleting
+the file took the count from 1707 findings to 6 real ones, all fixed, and 0.1.8
+now reports the pair as a conflict during `init`. The same pass found two live
+credentials committed in plain text (an IMAP account password and an OVH FTP
+password), moved both to the environment, and filed their rotation as blocked on
+the owner. Also fixed: three scripts that exited during import when a credential
+was missing, a logging call with brace placeholders, `Hash.generate_from_file`
+dropping its `chunk_size` argument, and `RenamedFile` declaring `name` while
+every caller used `new`. The gate exits 0 there now, with ratchets at 35 modules
+for mypy, 35% for coverage and a dated per-family ruff list.
+
 Evidence: adoption commits dda386d (atrium, two commits), 9b4ca75 (consumer-c),
-9e1b4d6 (consumer-b), 98b0a0f (consumer-d), all pushed; publish runs for
-0.1.5/0.1.6/0.1.7 green; `uv run baseline-py gate` exits 0 in consumer-c and in
-packages/baseline-py itself.
+9e1b4d6 (consumer-b), 98b0a0f (consumer-d), cd45b84 (consumer-a, five
+commits), all pushed; publish runs for 0.1.5/0.1.6/0.1.7 green;
+`uv run baseline-py gate` exits 0 in consumer-c and in packages/baseline-py
+itself.
 
 ## 2026-08
 
