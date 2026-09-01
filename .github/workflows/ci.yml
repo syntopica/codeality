@@ -95,6 +95,38 @@ jobs:
       - name: cargo clippy
         run: cargo clippy --workspace --all-targets -- -D warnings
 
+  python:
+    name: Python
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6
+
+      # packages/baseline-py is a uv project outside the pnpm workspace, so
+      # `turbo run test` never reaches it, the same way it never reached
+      # cargo-baseline. Without this job its suite and its own gate run only
+      # on the machine that cut the release.
+      - uses: astral-sh/setup-uv@37802adc94f370d6bfd71619e3f0bf239e1f3b78 # v7.6.0
+        with:
+          enable-cache: true
+
+      - name: Lockfiles are current
+        run: |
+          uv lock --check --project packages/baseline-py
+          uv lock --check --project templates/python-package
+
+      - name: baseline-py gate on itself
+        run: |
+          uv sync --locked --all-groups --project packages/baseline-py
+          uv run --project packages/baseline-py baseline-py gate --project packages/baseline-py
+
+      # The template is what every new Python project starts from; it has to
+      # pass the gate against the published package, not the working tree.
+      - name: baseline-py gate on the template
+        working-directory: templates/python-package
+        run: |
+          uv sync --locked --all-extras --all-groups
+          uv run baseline-py gate
+
   security:
     name: Security gates
     runs-on: ubuntu-latest
