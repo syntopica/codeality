@@ -4,6 +4,25 @@ Closed work from `TODO.md`, grouped by year and month.
 
 ## 2026-09
 
+### 2026-09-01 - Python adoption audit: every gate green locally, none running anywhere else
+
+Audited the nine adopting repositories plus the package and the template against
+baseline-py 0.1.8. `uv run baseline-py gate` exits 0 in all ten (atrium,
+consumer-c, consumer-b, consumer-d, consumer-a, nested-tool, brain,
+consumer-e, packages/baseline-py, templates/python-package) and
+`baseline check` reports 0 new in consumer-y; every coverage floor in
+`baseline-py.toml` matches the `fail_under` beside it. What the audit found is
+recorded as seven new items under "Python baseline" in TODO.md, the largest
+being that no gate runs in CI - not the package's own, not the template's, not
+any consumer's - and that `init --apply` would erase the dated ruff ratchets the
+sweep wrote. One thing fixed on the spot: `packages/baseline-py/.coverage` had
+been tracked since af67ef4 and every gate run modified it; untracked and
+ignored.
+
+Evidence: gate JSON summaries for the ten runs, `init --check` in each
+repository, the merge diff on a copy of consumer-a's pyproject, and
+`grep -c python .github/workflows/ci.yml` returning 0.
+
 ### 2026-09-01 - Python baseline adopted across the estate; baseline-py 0.1.3 through 0.1.7
 
 The adoption sweep the estate report ordered is done, and every repository that

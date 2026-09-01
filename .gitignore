@@ -39,3 +39,6 @@ reports/mutation/
 **/.mypy_cache/
 **/.ruff_cache/
 **/*.egg-info/
+
+# coverage.py writes its SQLite database beside the tests it measured.
+.coverage
