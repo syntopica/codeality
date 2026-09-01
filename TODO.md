@@ -7,11 +7,25 @@ verified complete - `[-]` obsolete or superseded.
 
 ## Python baseline
 
-- [ ] Adopt the baseline per repository, in the order the estate report argues:
-      `atrium` (59 findings), then `consumer-w` and `consumer-c` (declare
-      `source-roots = ["host/src"]` first), then `consumer-b`, then
+- [!] Push the consumer-a adoption. Committed locally as `e1dff6d`
+  (baseline-py.toml, ruff.toml, mypy.ini, and a baseline of 155 findings), but
+  the repo is 44 commits behind `origin/main` and `git pull` aborts:
+  `.gitignore` and `activate_env.sh` carry uncommitted local edits and the
+  incoming commits touch those same two files. Smallest unblock: decide what
+  happens to those two files, then pull and push.
+- [ ] Give consumer-a a `pyproject.toml` so the whole gate applies. It has
+      only `requirements.txt` today, so deptry, pytest and coverage are not
+      wired and `baseline-py check` is the only stage that runs.
+- [ ] Adopt the baseline in the remaining repositories, in the order the estate
+      report argues: `atrium` (59 findings), then `consumer-w` and `consumer-c`
+      (declare `source-roots = ["host/src"]` first), then `consumer-b`, then
       `memstore` with a recorded baseline. Each is its own reviewed change; see
       `docs/reports/2026-08-31-python-estate-baseline.md`.
+- [-] consumer-z. Its checkout is a clone of upstream `mcallegari/consumer-z`, not a
+  fork, and its only Python is one 675-line fixture tool. The config and its
+  baseline live there untracked so `baseline-py check` works locally; nothing
+  was committed, because it could never be pushed and would conflict on every
+  pull.
 - [ ] Decide what to do about `memstore`'s 402 inline-SQL findings before
       touching them. Externalising the queries of a SQLite-backed memory palace
       is a project, not a cleanup; the alternatives are a reasoned
