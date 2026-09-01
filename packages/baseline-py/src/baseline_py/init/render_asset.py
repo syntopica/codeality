@@ -4,6 +4,7 @@ from pathlib import Path
 
 from baseline_py.config.discover_source_roots import discover_source_roots
 from baseline_py.config.discover_test_roots import discover_test_roots
+from baseline_py.init.current_branch import current_branch
 from baseline_py.init.first_party_packages import first_party_packages
 from baseline_py.init.python_floor_minor import python_floor_minor
 from baseline_py.init.read_requires_python import read_requires_python
@@ -20,7 +21,10 @@ def render_asset(content: str, project_root: Path) -> str:
     When nothing can be discovered, the CHANGE_ME placeholder stays: an honest
     placeholder beats a guessed package name. The CI matrix and ruff's
     target-version follow the project's requires-python floor: a matrix cell
-    below the floor fails on ``uv sync`` before the gate ever runs.
+    below the floor fails on ``uv sync`` before the gate ever runs. The
+    workflow listens on the branch the project is checked out on: two of the
+    first eight adopters lived on ``master`` and on a feature branch, and a
+    workflow watching ``main`` never ran for either.
     """
     roots = ", ".join(f'"{root}"' for root in discover_source_roots(project_root))
     rendered = content.replace('source-roots = ["src"]', f"source-roots = [{roots}]")
@@ -39,4 +43,8 @@ def render_asset(content: str, project_root: Path) -> str:
     minors = sorted({lowest, max(lowest, _NEWEST_MINOR)})
     matrix = ", ".join(f"'3.{minor}'" for minor in minors)
     rendered = rendered.replace("python-version: ['3.11', '3.13']", f"python-version: [{matrix}]")
-    return rendered.replace('target-version = "py311"', f'target-version = "py3{lowest}"')
+    rendered = rendered.replace('target-version = "py311"', f'target-version = "py3{lowest}"')
+    branch = current_branch(project_root)
+    if branch:
+        rendered = rendered.replace("branches: [main]", f"branches: [{branch}]")
+    return rendered

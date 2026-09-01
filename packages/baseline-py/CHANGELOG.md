@@ -4,6 +4,15 @@ All notable changes to `busirocket-baseline-py` are documented here. The format
 follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/) and the project
 adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## 0.1.10
+
+### Fixed
+
+- The scaffolded workflow listens on the branch the project is checked out on
+  instead of always `main`. Two of the first eight adopters lived on `master`
+  and on a feature branch, and a workflow watching `main` never ran for either;
+  a nested project reads the enclosing repository's branch.
+
 ## 0.1.9
 
 ### Fixed

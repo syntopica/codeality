@@ -80,3 +80,29 @@ def test_ruff_targets_the_requires_python_floor(tmp_path: Path) -> None:
     project = _project_with_floor(tmp_path, ">=3.12")
     rendered = render_asset(read_asset("ruff.toml"), project)
     assert 'target-version = "py312"' in rendered
+
+
+def _checked_out(root: Path, branch: str) -> None:
+    (root / ".git").mkdir()
+    (root / ".git" / "HEAD").write_text(f"ref: refs/heads/{branch}\n", encoding="utf-8")
+
+
+def test_the_workflow_listens_on_the_checked_out_branch(tmp_path: Path) -> None:
+    _checked_out(tmp_path, "master")
+    rendered = render_asset(read_asset("baseline-py-ci.yml"), tmp_path)
+    assert "branches: [master]" in rendered
+
+
+def test_a_nested_project_finds_the_enclosing_repository(tmp_path: Path) -> None:
+    _checked_out(tmp_path, "nested-tool")
+    nested = tmp_path / "tools" / "nested-tool"
+    nested.mkdir(parents=True)
+    rendered = render_asset(read_asset("baseline-py-ci.yml"), nested)
+    assert "branches: [nested-tool]" in rendered
+
+
+def test_a_detached_head_keeps_main(tmp_path: Path) -> None:
+    (tmp_path / ".git").mkdir()
+    (tmp_path / ".git" / "HEAD").write_text("0123abcd\n", encoding="utf-8")
+    rendered = render_asset(read_asset("baseline-py-ci.yml"), tmp_path)
+    assert "branches: [main]" in rendered
