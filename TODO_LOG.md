@@ -4,6 +4,13 @@ Closed work from `TODO.md`, grouped by year and month.
 
 ## 2026-09
 
+### 2026-09-02 - parent-repo' one new structural finding is split
+
+`nested-tool/install_plan.py` landed with three declarations (ff42d6c) and put the
+parent-repo gate on red; its two helpers are `install_state.py` and
+`gobo_folder.py` now, `baseline-py baseline check` reads `0 new, 170 known` and
+the gate is green again (parent-repo, branch `nested-tool`, 2026-09-02).
+
 ### 2026-09-02 - The Python gate runs in CI everywhere; baseline-py 0.1.9 through 0.1.12
 
 The audit's seven findings are closed. baseline-py shipped four releases in the

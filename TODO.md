@@ -20,11 +20,26 @@ verified complete - `[-]` obsolete or superseded.
       and consumer-e renamed theirs on 2026-09-01; brain's carry
       `# mypy: ignore-errors` in place because renaming means rewriting about
       150 references in the wiki's prose. Rename each when it is next touched.
-- [ ] `nested-tool/install_plan.py` carries three declarations and is the one new
-      structural finding in the estate; the parent-repo gate is red on it
-      (2026-09-02). It landed in ff42d6c from the session working that repo, so
-      it is theirs to split: `_item` and `_gobo_folder` into their own files, or
-      a reasoned override.
+- [ ] `baseline-py init --check` exits 2 on every adopted repository that
+      carries adoption debt, so it cannot serve as a drift gate. parent-repo on
+      2026-09-02: `baseline-py.toml`, `mypy.ini` and `ruff.toml` all report
+      `exists and differs; use --force to replace`, and every difference is a
+      section the adoption itself wrote - the dated mypy `ignore_errors`
+      ratchet, the ruff `ignore` ratchet, the `[[overrides]]` for the check-rule
+      naming convention, and `platform = darwin`. The README says init "merges
+      into existing configuration, or reports a conflict"; a sanctioned local
+      section is neither. Decide the contract: either `--check` compares only
+      the keys init owns and ignores the rest, or the rendered files carry a
+      marker that fences the local part. Until then no consumer can put
+      `init --check` in CI, and the 2026-09-02 note that it "stays idempotent"
+      in parent-repo was true of the workflow file only.
+- [ ] `mypy.ini` has no way to state the platform the code runs on.
+      parent-repo' `qlc_user_dir` branches on `sys.platform`, and mypy on the
+      Linux runner reported the macOS branch as unreachable; the fix was a
+      hand-written `platform = darwin` in the managed file (parent-repo
+      2240a2f), which the next `init --force` would erase. Add a `mypy-platform`
+      key (or a `[mypy]` passthrough table) to `baseline-py.toml` so init
+      renders it.
 - [ ] consumer-c's pre-adoption `ci.yml` still pins `actions/checkout@v7`,
       `setup-python@v7` and friends by tag, which is the one red cell left in
       the Python estate table, and its "Host application" job repeats what
