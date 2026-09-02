@@ -43,5 +43,10 @@ def run_stage(stage: Stage, project_root: Path) -> StageResult:
     )
     elapsed = time.monotonic() - started
     status = StageStatus.PASSED if completed.returncode == 0 else StageStatus.FINDINGS
-    detail = "" if completed.returncode == 0 else completed.stdout.strip()[-2000:]
+    # Both streams: deptry reports on stderr, and a failure whose detail is
+    # empty leaves the reader with nothing but an exit code.
+    output = "\n".join(
+        part.strip() for part in (completed.stdout, completed.stderr) if part.strip()
+    )
+    detail = "" if completed.returncode == 0 else output[-2000:]
     return build_stage_result(stage, status, completed.returncode, elapsed, detail)

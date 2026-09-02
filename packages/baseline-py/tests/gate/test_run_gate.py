@@ -72,3 +72,14 @@ def test_fail_fast_stops_at_the_first_blocking_failure(tmp_path: Path) -> None:
     config = BaselineConfig(project_root=tmp_path)
     result = run_gate(config, fail_fast=True)
     assert len(result.stages) < 8
+
+
+def test_a_failing_stage_keeps_what_it_wrote_to_stderr(tmp_path: Path) -> None:
+    script = tmp_path / "noisy.sh"
+    script.write_text("#!/bin/sh\necho found on stdout\necho found on stderr >&2\nexit 1\n")
+    script.chmod(0o755)
+    stage = Stage("noisy", StageKind.REQUIRED, (str(script),))
+    result = run_stage(stage, tmp_path)
+    assert result.status is StageStatus.FINDINGS
+    assert "found on stdout" in result.detail
+    assert "found on stderr" in result.detail

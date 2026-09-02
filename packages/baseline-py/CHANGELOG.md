@@ -4,6 +4,14 @@ All notable changes to `busirocket-baseline-py` are documented here. The format
 follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/) and the project
 adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## 0.1.12
+
+### Fixed
+
+- A failing stage's detail now carries its stderr as well as its stdout. deptry
+  reports on stderr, so a red deptry stage in CI showed an exit code and an
+  empty detail, and the reader had nothing to act on.
+
 ## 0.1.11
 
 ### Fixed
