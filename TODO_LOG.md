@@ -4,6 +4,51 @@ Closed work from `TODO.md`, grouped by year and month.
 
 ## 2026-09
 
+### 2026-09-02 - The Python gate runs in CI everywhere; baseline-py 0.1.9 through 0.1.12
+
+The audit's seven findings are closed. baseline-py shipped four releases in the
+process, each for a defect the wiring exposed: 0.1.9 extends a consumer's ruff
+`ignore` list in place instead of rewriting it (the dated ratchets survive a
+re-run now), renders the CI matrix and ruff target from `requires-python`,
+installs `--all-extras --all-groups` in CI, pins the scaffolded actions by
+commit and drops the dead `[mypy-tests.*]` section; 0.1.10 renders the
+checked-out branch, after consumer-b (master) and parent-repo (nested-tool)
+pushed workflows that watched `main` and never ran; 0.1.11 reports an f-string
+query once (its constant part's position differs between 3.11 and 3.12, so one
+baseline showed "1 new, 1 resolved" on the other interpreter) and writes a
+nested project's workflow at the repository root as `quality-<project>.yml`,
+since GitHub never read the one inside `tools/nested-tool`; 0.1.12 keeps a failing
+stage's stderr, because deptry reports there and a red deptry cell showed an
+empty detail.
+
+This repository's CI gained a `python` job (lockfiles, the package's own gate,
+the template's gate against the published release) and `publish-python.yml` is
+pinned by commit, which is what had been failing the Conformance step.
+`baseline-estate` prints a Python table now - quality group, gate in CI, action
+pins, lock on the current release - found three levels deep, and the Python
+release travels in `python-versions.json`, apart from the npm pins `--check`
+installs. The template workflow test skips templates without a package.json; it
+had failed on python-package since that template landed.
+
+Eight consumers run `baseline-py gate` on push and pull request on 0.1.12, and
+the runs found real defects on a clean Linux install that eight green laptops
+had not: atrium's embedder returned Any under 3.11's numpy stubs; consumer-c and
+nested-tool type-checked their macOS branches as unreachable on a Linux runner
+(`platform = darwin`); brain's `robust_merge` read a scratchpad path at import;
+consumer-a's `github_commits` fetched the GitHub events feed at import and
+both it and `process_text` exited on a missing credential (CI has no `.env`);
+consumer-b's lockfile builds dbus-python and imports PyQt6, which need
+system libraries and an offscreen Qt platform, and imports `evdev` directly
+while declaring it nowhere. Green as of the last run: atrium, consumer-c,
+consumer-d, consumer-a, brain, consumer-e; consumer-b and
+parent-repo re-running on their last fixes, parent-repo still red on
+`install_plan.py` from the session working that repo.
+
+Evidence: publish runs for 0.1.9 through 0.1.12 green; baseline CI 3defd35 green
+on every job but the pre-existing zizmor one; `baseline-estate ~/p` Python table
+8 of 9 wired, the ninth being consumer-c's old `ci.yml` tags; each consumer's
+`quality.yml` run listed in its repository.
+
 ### 2026-09-01 - Python adoption audit: every gate green locally, none running anywhere else
 
 Audited the nine adopting repositories plus the package and the template against

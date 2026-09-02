@@ -20,59 +20,31 @@ verified complete - `[-]` obsolete or superseded.
       and consumer-e renamed theirs on 2026-09-01; brain's carry
       `# mypy: ignore-errors` in place because renaming means rewriting about
       150 references in the wiki's prose. Rename each when it is next touched.
-- [ ] Run the Python package in this repository's own CI.
-      `.github/workflows/ci.yml` has no uv step: `packages/baseline-py` sits
-      outside the pnpm workspace, so `turbo run test` never reaches it and
-      neither does `check:ci`, the same gap the `rust` job closed for
-      cargo-baseline. Its 0.1.8 release shipped with its tests run only on this
-      machine. Smallest step: a `python` job with `astral-sh/setup-uv`, then
-      `uv run --project packages/baseline-py pytest` and
-      `uv run --project packages/baseline-py baseline-py gate --project packages/baseline-py`,
-      plus `uv run baseline-py gate` inside `templates/python-package`.
-- [ ] Wire the gate into the nine adopting repositories' CI. Audit 2026-09-01:
-      every gate exits 0 locally, and none runs anywhere else. Zero of nine has
-      `.github/workflows/quality.yml`; consumer-c's `ci.yml` still runs the
-      pre-adoption `pip install -e .[dev]`, ruff and pytest on 3.11, so mypy,
-      deptry, pip-audit and the structural rules never run for it in CI; the
-      pyrefly shadow stage reported `skipped-not-applicable` in every local run,
-      so the quarter of artifacts the pyrefly item below waits for cannot
-      accumulate. No repository has a lefthook or pre-commit hook either.
-      `init --ci` exists and nobody used it. Fix the two asset defects below
-      first, then `baseline-py init --ci --apply` per repository.
-- [ ] `init` hard-codes the CI matrix (`'3.11', '3.13'`) and ruff
-      `target-version = "py311"` instead of reading `requires-python`
-      (`render_asset.py` substitutes roots and packages only). consumer-a
-      and brain declare `>=3.12`, so the 3.11 cell would fail on `uv sync`
-      before the gate ran; brain's `ruff.toml` says py311 against a 3.12 floor.
-      `templates/python-package` has the same contradiction in its own files:
-      `requires-python = ">=3.12"` and a 3.11 matrix cell. Smallest step: derive
-      both from the floor in `render_asset`, and fix the template.
-- [ ] `init --apply` flattens a consumer's `[tool.ruff.lint] ignore` into one
-      line and drops every comment. Reproduced on a copy of consumer-a's
-      pyproject: the dated ratchet (`# 456 undocumented ...`,
-      `# 1707 findings total`) became a bare 45-code list; the union is correct,
-      the record is gone. `init --check` reports this as a plain `merge` for
-      atrium, consumer-c, consumer-b and consumer-a, so a re-run in any
-      of them erases the debt ledger. Smallest step: when the existing array
-      carries comments, report `conflict` instead of merging, or rebuild the
-      array with tomlkit preserving the comment items.
-- [ ] `templates/python-package/uv.lock` still pins busirocket-baseline-py
-      0.1.0; consumer-a's pins 0.1.7. `uv lock --check` passes on both
-      because the range allows it, which is why the sweep missed them.
-      `uv lock --upgrade-package busirocket-baseline-py` in each.
-- [ ] The estate conformance check (`create-baseline --check`) has no Python
-      awareness: zero mentions of `pyproject` or `baseline-py` in
-      `packages/create-baseline/bin`. The nine Python repositories are outside
-      the matrix the Estate section below reports on, so "fully wired" is
-      measured over the JavaScript estate only. Decide whether conformance grows
-      a Python column (quality group present, gate in CI, lock pins the current
-      release) or the Python side gets its own `release:check`-style script.
-- [ ] The gate's mypy stage covers source roots only, so the
-      `[mypy-tests.*] disallow_untyped_defs = False` section every consumer
-      carries is dead configuration. `mypy tests` today: atrium 413 errors,
-      nested-tool 959, consumer-c 314. Either add test roots to the stage under that
-      relaxed section, as the section implies, or delete the section from the
-      asset so the config stops promising what the gate does not do.
+- [ ] `nested-tool/install_plan.py` carries three declarations and is the one new
+      structural finding in the estate; the parent-repo gate is red on it
+      (2026-09-02). It landed in ff42d6c from the session working that repo, so
+      it is theirs to split: `_item` and `_gobo_folder` into their own files, or
+      a reasoned override.
+- [ ] consumer-c's pre-adoption `ci.yml` still pins `actions/checkout@v7`,
+      `setup-python@v7` and friends by tag, which is the one red cell left in
+      the Python estate table, and its "Host application" job repeats what
+      `quality.yml` now gates with pip instead of the lockfile. Pin by commit
+      and drop the job, minding `desktop/scripts/test-ci-workflow.sh`, which
+      asserts the workflow's shape.
+- [ ] This repository's Security gates job is red on zizmor: 117 findings, 29
+      high, across the templates' workflows (`artipacked`: checkout without
+      `persist-credentials: false`, and more). Pre-existing, failing on main
+      since before the Python audit; the Python work did not add any. Triage by
+      audit, fix the templates once, and re-render.
+- [ ] Wire `vulture` and `jscpd` into the gate as advisory stages, then decide
+      from measurement whether either can block. Both were deliberately left out
+      of v1: vulture's false positives on decorators and registries are
+      expensive, and jscpd's Python noise is uncalibrated.
+- [ ] Revisit the pyrefly shadow stage once a quarter of CI artifacts exists.
+      Every consumer's `quality.yml` now uploads `pyrefly-shadow-<python>` on
+      each push, so the artifacts accumulate from 2026-09-02. Promotion criteria
+      are crash rate, runtime and memory against mypy, and the disagreement
+      set - not a stability label.
 - [-] consumer-z. Its checkout is a clone of upstream `mcallegari/consumer-z`, not a
   fork, and its only Python is one 675-line fixture tool. The config and its
   baseline live there untracked so `baseline-py check` works locally; nothing
@@ -81,13 +53,6 @@ verified complete - `[-]` obsolete or superseded.
 - [-] Decide what to do about `memstore`'s 402 inline-SQL findings. Superseded
   2026-09-01: memstore is kept for reference only, it is not ours, so it gets
   no baseline adoption at all.
-- [ ] Wire `vulture` and `jscpd` into the gate as advisory stages, then decide
-      from measurement whether either can block. Both were deliberately left out
-      of v1: vulture's false positives on decorators and registries are
-      expensive, and jscpd's Python noise is uncalibrated.
-- [ ] Revisit the pyrefly shadow stage once a quarter of CI artifacts exists.
-      Promotion criteria are crash rate, runtime and memory against mypy, and
-      the disagreement set - not a stability label.
 
 ## Estate
 

@@ -151,6 +151,22 @@ describe('runPythonConformance', () => {
     expect(findings).toEqual([])
   })
 
+  it("reads a nested project's workflow from the repository root", async () => {
+    await mkdir(join(root, 'repo', '.git'), { recursive: true })
+    await project('repo', {
+      '.github/workflows/quality-nested-tool.yml': GATE_WORKFLOW,
+    })
+    await project('repo/tools/nested-tool', {
+      'pyproject.toml': PYPROJECT,
+      'uv.lock': LOCK,
+    })
+    const { findings } = await runPythonConformance(
+      join(root, 'repo', 'tools', 'nested-tool'),
+      VERSIONS,
+    )
+    expect(findings).toEqual([])
+  })
+
   it('reports an unpinned action through the shared check', async () => {
     await project('tagged', {
       'pyproject.toml': PYPROJECT,

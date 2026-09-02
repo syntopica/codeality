@@ -2,11 +2,13 @@ import { readFile } from 'node:fs/promises'
 import { resolve } from 'node:path'
 
 import { readWorkflows } from '../conformance/readWorkflows.mjs'
+import { repositoryRoot } from './repositoryRoot.mjs'
 
 /**
  * Everything the Python conformance checks read, gathered once.
  *
- * `pyproject` and `lock` are raw text: the checks look for one dependency
+ * Workflows are read from the enclosing repository, since a nested project's
+ * workflow lives at that root. `pyproject` and `lock` are raw text: the checks look for one dependency
  * name and one pinned version, and a TOML parser would be a dependency
  * carried for two string searches.
  */
@@ -16,7 +18,7 @@ export async function loadPythonContext(root, versions) {
     versions,
     pyproject: await readText(resolve(root, 'pyproject.toml')),
     lock: await readText(resolve(root, 'uv.lock')),
-    workflows: await readWorkflows(root),
+    workflows: await readWorkflows(await repositoryRoot(root)),
   }
 }
 
