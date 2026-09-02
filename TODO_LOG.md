@@ -40,9 +40,8 @@ both it and `process_text` exited on a missing credential (CI has no `.env`);
 consumer-b's lockfile builds dbus-python and imports PyQt6, which need
 system libraries and an offscreen Qt platform, and imports `evdev` directly
 while declaring it nowhere. Green as of the last run: atrium, consumer-c,
-consumer-d, consumer-a, brain, consumer-e; consumer-b and
-parent-repo re-running on their last fixes, parent-repo still red on
-`install_plan.py` from the session working that repo.
+consumer-d, consumer-a, brain, consumer-e, consumer-b;
+parent-repo red on `install_plan.py` alone, from the session working that repo.
 
 Evidence: publish runs for 0.1.9 through 0.1.12 green; baseline CI 3defd35 green
 on every job but the pre-existing zizmor one; `baseline-estate ~/p` Python table
