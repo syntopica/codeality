@@ -101,7 +101,6 @@ function renderBaselineVersions(versions) {
     pins[name] = `^${version}`
   }
   Object.assign(pins, THIRD_PARTY_PINS)
-  pins[PYTHON_PACKAGE] = versions[PYTHON_PACKAGE]
   return `${JSON.stringify(pins, null, 2)}\n`
 }
 
@@ -114,6 +113,12 @@ function buildTargets(versions) {
     {
       path: resolve(PACKAGES_DIR, 'create-baseline/baseline-versions.json'),
       content: renderBaselineVersions(versions),
+    },
+    // Kept apart from the npm pins: `create-baseline --check` treats every
+    // key of baseline-versions.json as a package the repository must install.
+    {
+      path: resolve(PACKAGES_DIR, 'create-baseline/python-versions.json'),
+      content: `${JSON.stringify({ [PYTHON_PACKAGE]: versions[PYTHON_PACKAGE] }, null, 2)}\n`,
     },
   ]
 }

@@ -4,6 +4,20 @@ All notable changes to `busirocket-baseline-py` are documented here. The format
 follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/) and the project
 adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## 0.1.11
+
+### Fixed
+
+- An f-string holding SQL is one `BPY006` finding, reported at the string. Its
+  constant parts were reported too, and their positions differ between Python
+  3.11 and 3.12, so the same query fingerprinted differently depending on the
+  interpreter: a baseline recorded on 3.13 reported one new and one resolved
+  finding on a 3.11 runner.
+- `init --ci` in a project nested inside a repository writes the workflow at the
+  repository root, named `quality-<project>.yml`, with every step running from
+  the project directory. GitHub reads workflows only from the root, so the file
+  scaffolded inside `tools/nested-tool` was never picked up.
+
 ## 0.1.10
 
 ### Fixed

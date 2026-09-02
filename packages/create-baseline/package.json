@@ -29,6 +29,7 @@
     "LICENSE",
     "README.md",
     "baseline-versions.json",
+    "python-versions.json",
     "bin"
   ],
   "scripts": {

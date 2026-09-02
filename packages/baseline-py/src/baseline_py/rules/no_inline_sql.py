@@ -24,6 +24,16 @@ def no_inline_sql(source: SourceFile, config: BaselineConfig) -> tuple[Finding, 
         return ()
     docstrings = docstring_line_spans(source.tree)
     globs = " or ".join(config.sql_resource_globs)
+    # An f-string is reported once, as the JoinedStr. Its constant parts are
+    # separate nodes whose positions differ between Python 3.11 and 3.12, so
+    # reporting them too made the finding's fingerprint depend on the
+    # interpreter that ran the check.
+    parts = {
+        id(value)
+        for node in ast.walk(source.tree)
+        if isinstance(node, ast.JoinedStr)
+        for value in node.values
+    }
     return tuple(
         Finding(
             code=RuleCode.BPY006,
@@ -35,5 +45,8 @@ def no_inline_sql(source: SourceFile, config: BaselineConfig) -> tuple[Finding, 
             subject=sql_subject(node),
         )
         for node in ast.walk(source.tree)
-        if isinstance(node, _LITERALS) and is_sql_literal(node) and node.lineno not in docstrings
+        if isinstance(node, _LITERALS)
+        and id(node) not in parts
+        and is_sql_literal(node)
+        and node.lineno not in docstrings
     )

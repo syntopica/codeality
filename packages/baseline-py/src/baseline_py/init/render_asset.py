@@ -1,6 +1,6 @@
 """Fill a shipped asset's project-dependent values in."""
 
-from pathlib import Path
+from pathlib import Path, PurePosixPath
 
 from baseline_py.config.discover_source_roots import discover_source_roots
 from baseline_py.config.discover_test_roots import discover_test_roots
@@ -8,6 +8,8 @@ from baseline_py.init.current_branch import current_branch
 from baseline_py.init.first_party_packages import first_party_packages
 from baseline_py.init.python_floor_minor import python_floor_minor
 from baseline_py.init.read_requires_python import read_requires_python
+from baseline_py.init.render_nested_workflow import render_nested_workflow
+from baseline_py.init.repository_root import repository_root
 
 # The lowest interpreter the quality group itself supports, and the newest one
 # the shipped matrix exercises.
@@ -47,4 +49,7 @@ def render_asset(content: str, project_root: Path) -> str:
     branch = current_branch(project_root)
     if branch:
         rendered = rendered.replace("branches: [main]", f"branches: [{branch}]")
+    relative = project_root.relative_to(repository_root(project_root))
+    if relative.parts and "runs-on: ubuntu-latest" in rendered:
+        rendered = render_nested_workflow(rendered, PurePosixPath(*relative.parts))
     return rendered

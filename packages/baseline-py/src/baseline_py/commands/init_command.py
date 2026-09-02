@@ -40,8 +40,10 @@ def init_command(  # noqa: PLR0913, PLR0917 - one parameter per click option
     root = project.resolve()
     plan = plan_init(root, profile, with_ci)
     for managed in plan:
-        relative = managed.path.relative_to(root)
-        click.echo(f"{managed.disposition.value:>9}  {relative}  ({managed.detail})")
+        # A nested project's workflow lives at the repository root, outside it.
+        path = managed.path.resolve()
+        shown = path.relative_to(root) if path.is_relative_to(root) else path
+        click.echo(f"{managed.disposition.value:>9}  {shown}  ({managed.detail})")
     if should_apply or force:
         written = apply_init(plan, force)
         click.echo(f"wrote {len(written)} files")

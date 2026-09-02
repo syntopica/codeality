@@ -22,6 +22,9 @@ async function main() {
   const versions = JSON.parse(
     await readFile(resolve(PACKAGE_ROOT, 'baseline-versions.json'), 'utf8'),
   )
+  const pythonVersions = JSON.parse(
+    await readFile(resolve(PACKAGE_ROOT, 'python-versions.json'), 'utf8'),
+  )
   const today = new Date().toISOString().slice(0, 10)
 
   const consumers = await findConsumers(root)
@@ -51,7 +54,10 @@ async function main() {
   const pythonRows = []
   for (const consumer of pythonConsumers) {
     try {
-      const { findings } = await runPythonConformance(consumer.path, versions)
+      const { findings } = await runPythonConformance(
+        consumer.path,
+        pythonVersions,
+      )
       pythonRows.push({ name: consumer.name, findings })
     } catch (error) {
       pythonRows.push({ name: consumer.name, error: String(error.message) })

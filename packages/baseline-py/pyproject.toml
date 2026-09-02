@@ -4,7 +4,7 @@ build-backend = "hatchling.build"
 
 [project]
 name = "busirocket-baseline-py"
-version = "0.1.10"
+version = "0.1.11"
 description = "Structural linter and config scaffolder for Python: atomic files, placement, size caps, no inline SQL"
 readme = "README.md"
 requires-python = ">=3.11"

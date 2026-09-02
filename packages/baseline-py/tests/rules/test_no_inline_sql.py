@@ -56,3 +56,16 @@ def test_tests_are_not_exempt(make_source, config) -> None:
     body = 'QUERY = "SELECT id FROM users"\n'
     source = make_source(body, "tests/test_store.py", ModuleRole.TEST)
     assert no_inline_sql(source, config)
+
+
+def test_a_multiline_fstring_query_is_one_finding(make_source, config) -> None:
+    body = (
+        "def run(table: str) -> str:\n"
+        '    return f"""\n'
+        "        SELECT id, name\n"
+        "        FROM {table}\n"
+        "        WHERE id > 0\n"
+        '    """\n'
+    )
+    findings = no_inline_sql(make_source(body), config)
+    assert [finding.location.line for finding in findings] == [2]
