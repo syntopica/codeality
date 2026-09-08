@@ -71,6 +71,16 @@ verified complete - `[-]` obsolete or superseded.
 
 ## Estate
 
+- [ ] `createNextjsConfig` enables `react/prop-types` through
+      `react.configs.flat.recommended`, and the rule cannot see through
+      `forwardRef`'s generic: every ref-forwarding primitive that destructures
+      its props (`TableCell`, `Input`, shadcn's whole `ui/` folder) reports
+      `'className' is missing in props validation`. In a TypeScript project the
+      prop types are the validation, so adopters turn the rule off for
+      `**/*.tsx` by hand (vexa-insight-dashboard, 2026-09-08). Smallest step:
+      the nextjs and vite-react layers set `react/prop-types: 'off'` for `.tsx`
+      files themselves.
+
 - [~] Bring the rest of the estate up to the wiring the conformance check
   asserts. 2026-08-28 sweep ran `--fix` + installs across 19 consumers: matrix
   went from 23-of-24 repos failing (~77 red cells) to ~39 red cells, 2 fully
