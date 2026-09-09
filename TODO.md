@@ -228,3 +228,26 @@ verified complete - `[-]` obsolete or superseded.
   - The four `staffbase-*` widgets: untouched, as excluded - they predate
     `@busirocket/quality-config` entirely; all nine baseline packages missing. A
     real migration, not `--fix` material.
+
+## Cross-project (filed 2026-09-09 from the nubenode-web and inbox-companion backlog runs)
+
+- [ ] **commitlint's `type-enum` rejects `todo:`**, the subject every repo here
+      uses for backlog commits (5 of nubenode-web's last 12). No sibling repo
+      has wired the `commit-msg` hook yet, so the day one does, the standard
+      blocks the convention estate-wide. Either add `todo` to the shared list or
+      state that backlog commits use `docs(todo):`. Evidence: nubenode-web run
+      2026-09-09, `@commitlint/cli` declared there with nothing running it (its
+      single knip finding).
+- [ ] **`@busirocket/eslint-config` pulls `@eslint/js@10.0.1`, whose peer is
+      `eslint ^10`, against the installed `eslint 9.39.5`.** Pre-existing in
+      nubenode-web's HEAD lockfile and warns on every install; decide whether
+      the config moves to ESLint 10 or pins `@eslint/js` 9.
+- [ ] **Adoption guide: the `vite-react` tsconfig's
+      `noPropertyAccessFromIndexSignature` and the quality-config lint rules
+      break `check:ci` on adoption in any repository written before them.**
+      inbox-companion needed three commits (12 TS4111 in `vite-plugins/db-api`,
+      41 lint errors, knip on the Homebrew `gitleaks` binary and an unused
+      `@commitlint/cli`) before a single backlog item could land; verticagtm's
+      1352-error case above is the same shape. Worth a documented first step
+      (bracket access sweep, `.prettierignore` for `.serena/`, knip ignores)
+      rather than a surprise per repo.
