@@ -231,6 +231,16 @@ verified complete - `[-]` obsolete or superseded.
 
 ## Cross-project (filed 2026-09-09 from the consumer-i and inbox-tool backlog runs)
 
+- [ ] **knip 6.35 reports the default export of `vite.config.ts` as unused when
+      the framework preset lists `vite.config.*` under `entry`.** The Vite
+      plugin already treats that file as an entry whose exports are ignored;
+      naming it again as a plain project entry now surfaces
+      `Unused exports: default vite.config.ts`. consumer-t hit it the day knip
+      moved 6.34 -> 6.35.1 (2026-09-12) and worked around it by overriding
+      `entry: ['src/main.{ts,tsx}']` in its `knip.config.ts`. Fix in
+      `knip-framework.ts`: drop `vite.config.*` from the `tauri`, `vite-react`,
+      `vite-vue` and TanStack presets, or mark it as an entry with exports
+      ignored, then re-run the affected repos' `pnpm knip`.
 - [ ] **commitlint's `type-enum` rejects `todo:`**, the subject every repo here
       uses for backlog commits (5 of consumer-i's last 12). No sibling repo
       has wired the `commit-msg` hook yet, so the day one does, the standard
