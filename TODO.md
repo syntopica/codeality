@@ -71,6 +71,18 @@ verified complete - `[-]` obsolete or superseded.
 
 ## Estate
 
+- [ ] `@busirocket/eslint-config` 0.8.0 declares `@vitest/eslint-plugin` and
+      `eslint-plugin-testing-library` as optional peers, but `code-quality.ts`
+      composes `testing.ts` unconditionally, so every `/code-quality` consumer
+      needs both or ESLint dies at config load with
+      `Cannot find module '@vitest/eslint-plugin'`. Hit in `brain` on 2026-09-12
+      by a routine dependency bump from 0.4.2: `pnpm install` was green, `lint`
+      was red in both workspaces, and `pnpm peers check` had nothing to say
+      because the peer is marked optional. The adoption guide already documents
+      the pair as "easy to miss"; the package should say it too. Smallest step:
+      drop `optional: true` for those two in `peerDependenciesMeta`, so the
+      install warns instead of the lint crashing.
+
 - [ ] `createNextjsConfig` enables `react/prop-types` through
       `react.configs.flat.recommended`, and the rule cannot see through
       `forwardRef`'s generic: every ref-forwarding primitive that destructures
