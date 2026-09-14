@@ -18,9 +18,9 @@ files, each doing one thing.
 Add the third layer to any project's `eslint.config.ts`:
 
 ```ts
-import { createBaseConfig } from '@busirocket/eslint-config/base'
-import { createCodeQualityConfig } from '@busirocket/eslint-config/code-quality'
-import { createNextjsConfig } from '@busirocket/eslint-config/nextjs'
+import { createBaseConfig } from '@syntopica/eslint-config/base'
+import { createCodeQualityConfig } from '@syntopica/eslint-config/code-quality'
+import { createNextjsConfig } from '@syntopica/eslint-config/nextjs'
 
 export default [
   ...createBaseConfig({ tsconfigRootDir: import.meta.dirname }),
@@ -279,11 +279,11 @@ dominant AI failure mode, and needs a whole-repo pass to catch.
 [jscpd](https://github.com/kucherenko/jscpd) v5 (token-based, Rust engine)
 provides that pass. jscpd 5.x is a Rust binary that reads JSON only, so this
 gate cannot ship as a factory the way knip, dependency-cruiser and lefthook do.
-It ships as `jscpd.json` inside `@busirocket/quality-config` plus the
+It ships as `jscpd.json` inside `@syntopica/quality-config` plus the
 `baseline-dupes` runner that points jscpd at it - one file, read in place, never
 copied into the consuming repo. Run it with `pnpm dupes`; it is wired into
 `check:ci`. To read the config directly, resolve
-`@busirocket/quality-config/jscpd`.
+`@syntopica/quality-config/jscpd`.
 
 **The knobs and their rationale:**
 
@@ -320,7 +320,7 @@ src/
 ```
 
 Layered imports (`components` → `shared` only; `shared` → `services`) are
-enforced by `@busirocket/eslint-config/frontend-boundaries` when you use
+enforced by `@syntopica/eslint-config/frontend-boundaries` when you use
 `createNextjsConfig`, `createViteReactConfig`, or `createAstroConfig`. See
 [typescript-frontend-architecture.md](./typescript-frontend-architecture.md).
 

@@ -41,7 +41,7 @@ jobs:
       # schema at module load and throw when a required variable is missing;
       # Vite inlines those values at build time, so a build with no `.env`
       # produced a bundle that threw before mounting and reported NO_FCP.
-      # `baseline-env-init` (from @busirocket/quality-config, wired into each
+      # `baseline-env-init` (from @syntopica/quality-config, wired into each
       # template's `prepare` and `perf:check`) seeds `.env` from the committed
       # `.env.example`, which is what makes this step measurable at all.
       - name: Performance budget

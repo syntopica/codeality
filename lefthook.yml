@@ -1,4 +1,4 @@
-# Mirrors createLefthookConfig() in @busirocket/quality-config/lefthook, which
+# Mirrors createLefthookConfig() in @syntopica/quality-config/lefthook, which
 # is what create-baseline uses to generate this file for new projects. The one
 # deliberate difference is the lint command: a single-project consumer can run
 # eslint from its root, this workspace cannot (see scripts/lint-staged.mjs).

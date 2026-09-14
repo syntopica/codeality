@@ -1,5 +1,5 @@
 {
-  "extends": "@busirocket/tsconfig/astro.json",
+  "extends": "@syntopica/tsconfig/astro.json",
   "compilerOptions": {
     "paths": {
       "@/*": ["./src/*"]

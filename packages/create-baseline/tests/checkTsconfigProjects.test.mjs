@@ -80,7 +80,7 @@ describe('checkTsconfigProjects', () => {
 
   it('ignores a single-project root', () => {
     const tsconfigs = {
-      root: { extends: '@busirocket/tsconfig/nextjs.json' },
+      root: { extends: '@syntopica/tsconfig/nextjs.json' },
       solution: false,
       leaves: [],
     }

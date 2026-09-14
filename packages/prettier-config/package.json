@@ -1,5 +1,5 @@
 {
-  "name": "@busirocket/prettier-config",
+  "name": "@syntopica/prettier-config",
   "version": "0.2.0",
   "private": false,
   "packageManager": "pnpm@11.25.0",

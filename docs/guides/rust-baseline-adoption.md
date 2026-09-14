@@ -181,7 +181,7 @@ Run it from the crate root against the baseline's own config rather than writing
 a separate one:
 
 ```bash
-jscpd . --config node_modules/@busirocket/quality-config/jscpd.json
+jscpd . --config node_modules/@syntopica/quality-config/jscpd.json
 ```
 
 A crate with no Node install can copy that file once; it is the same config

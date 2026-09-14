@@ -12,7 +12,7 @@ import { workspaceRoots } from '../bin/scaffold/workspaceRoots.mjs'
 import { writeCiWorkflow } from '../bin/scaffold/writeCiWorkflow.mjs'
 import { writeMissing } from '../bin/scaffold/writeMissing.mjs'
 
-const VERSIONS = { '@busirocket/prettier-config': '^0.2.0' }
+const VERSIONS = { '@syntopica/prettier-config': '^0.2.0' }
 const TODAY = '2026-08-27'
 
 let root
@@ -60,11 +60,11 @@ describe('loadContext', () => {
     await writeFile(
       join(root, 'packages/one/package.json'),
       JSON.stringify({
-        devDependencies: { '@busirocket/prettier-config': '^0.2.0' },
+        devDependencies: { '@syntopica/prettier-config': '^0.2.0' },
       }),
     )
     const context = await loadContext(root, VERSIONS)
-    expect(context.deps['@busirocket/prettier-config']).toBe('^0.2.0')
+    expect(context.deps['@syntopica/prettier-config']).toBe('^0.2.0')
   })
 
   it('treats a repository with no workflow directory as having none', async () => {
@@ -161,8 +161,8 @@ describe('composedSubpaths', () => {
   it('reads the subpaths a flat config actually imports', async () => {
     await writeFile(
       join(root, 'eslint.config.ts'),
-      "import { createBaseConfig } from '@busirocket/eslint-config/base'\n" +
-        "import { createNodeConfig } from '@busirocket/eslint-config/node'\n",
+      "import { createBaseConfig } from '@syntopica/eslint-config/base'\n" +
+        "import { createNodeConfig } from '@syntopica/eslint-config/node'\n",
     )
     expect((await composedSubpaths(root)).sort()).toEqual(['base', 'node'])
   })
@@ -219,7 +219,7 @@ describe('runConformance', () => {
         'check:security': 'pnpm secrets:check && pnpm audit:check',
       },
       devDependencies: {
-        '@busirocket/prettier-config': '^0.2.0',
+        '@syntopica/prettier-config': '^0.2.0',
         lefthook: '^2',
       },
     })

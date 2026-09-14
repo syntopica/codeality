@@ -1,4 +1,4 @@
-# Mirrors createLefthookConfig() in @busirocket/quality-config/lefthook.
+# Mirrors createLefthookConfig() in @syntopica/quality-config/lefthook.
 pre-commit:
   parallel: true
   commands:

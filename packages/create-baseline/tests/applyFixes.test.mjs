@@ -94,18 +94,18 @@ describe('applyFixes', () => {
   })
 
   it('widens a dependency range in the field it already lives in', async () => {
-    await manifest({ dependencies: { '@busirocket/tsconfig': '^0.2.0' } })
+    await manifest({ dependencies: { '@syntopica/tsconfig': '^0.2.0' } })
     await applyFixes(root, [
       {
         fix: {
           kind: 'set-dependency',
-          name: '@busirocket/tsconfig',
+          name: '@syntopica/tsconfig',
           value: '^0.2.1',
         },
       },
     ])
     const after = await readManifest()
-    expect(after.dependencies['@busirocket/tsconfig']).toBe('^0.2.1')
+    expect(after.dependencies['@syntopica/tsconfig']).toBe('^0.2.1')
     expect(after.devDependencies).toBeUndefined()
   })
 

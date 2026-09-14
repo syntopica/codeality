@@ -26,19 +26,19 @@
 ## 2. Upgrade tooling
 
 - Move to **ESLint 9+** and **flat config** before layering
-  `@busirocket/eslint-config`. This may be the largest step; treat it as its own
+  `@syntopica/eslint-config`. This may be the largest step; treat it as its own
   milestone.
 - Align TypeScript to **5.4+** if you are below that.
 
 ## 3. Install baseline packages
 
 ```bash
-pnpm add -D @busirocket/eslint-config@^0.1.0 @busirocket/prettier-config@^0.1.0 @busirocket/tsconfig@^0.1.0
+pnpm add -D @syntopica/eslint-config@^0.1.0 @syntopica/prettier-config@^0.1.0 @syntopica/tsconfig@^0.1.0
 ```
 
-Install the packages each ESLint subpath needs. `@busirocket/eslint-config`
-ships TypeScript source rather than a build, so its `import` statements resolve
-from your project: a plugin missing there fails `tsc --noEmit` with
+Install the packages each ESLint subpath needs. `@syntopica/eslint-config` ships
+TypeScript source rather than a build, so its `import` statements resolve from
+your project: a plugin missing there fails `tsc --noEmit` with
 `Cannot find module '<plugin>'` before ESLint runs, even when the plugin is a
 `dependencies` entry of the config package. The per-subpath list is in the
 [package README](https://github.com/BusiRocket/engineering-baseline/tree/main/packages/eslint-config#stacks).
@@ -68,20 +68,20 @@ correctly migrated. The symptom is the whole run failing at the first file with
 
 ## 4. Migrate ESLint
 
-1. Add a new `eslint.config.ts` that imports from `@busirocket/eslint-config`
-   and matches your stack.
+1. Add a new `eslint.config.ts` that imports from `@syntopica/eslint-config` and
+   matches your stack.
 2. Run `pnpm exec eslint .` and fix or suppress issues in batches.
 3. Remove old ESLint config files and `eslintConfig` fields from `package.json`
    when the new config is stable.
 
 ## 5. Prettier and TypeScript
 
-Switch `prettier.config.*` to `@busirocket/prettier-config` variants. Update
-`tsconfig.json` to extend `@busirocket/tsconfig/*` and resolve duplicate
-compiler options. A multi-project repository keeps a solution-style root and
-puts the presets on the leaves - the two shapes and the gate that depends on
-them are documented in the
-[`@busirocket/tsconfig` README](../../packages/tsconfig/README.md).
+Switch `prettier.config.*` to `@syntopica/prettier-config` variants. Update
+`tsconfig.json` to extend `@syntopica/tsconfig/*` and resolve duplicate compiler
+options. A multi-project repository keeps a solution-style root and puts the
+presets on the leaves - the two shapes and the gate that depends on them are
+documented in the
+[`@syntopica/tsconfig` README](../../packages/tsconfig/README.md).
 
 ### What turning the strictness on actually costs
 
@@ -104,7 +104,7 @@ Two notes that follow:
 
 - **The lint wave arrives WITH the tsconfig change, not after it.** The narrowed
   types are what expose the new ESLint findings, so adopt
-  `@busirocket/eslint-config` and `@busirocket/tsconfig` in one pass rather than
+  `@syntopica/eslint-config` and `@syntopica/tsconfig` in one pass rather than
   two - sequencing them separately just splits one red build into two.
 - **Fix at the source, not at the report.** A verification script that falls
   back to `''` instead of failing loudly turns a real failure into a false pass,
@@ -218,7 +218,7 @@ Rules an adopting repo typically needs to promote:
 
 `tailwindcss/classnames-order` used to belong on this list too: it fought
 `prettier-plugin-tailwindcss` (the class sorter in
-`@busirocket/prettier-config/frontend`), so a repo running both `lint` and
+`@syntopica/prettier-config/frontend`), so a repo running both `lint` and
 `format:check` could never pass both at once regardless of severity. The factory
 now disables that rule in `createTailwindConfig` - Prettier owns class
 ordering - so this is historical, not a promotion an adopting repo needs to make

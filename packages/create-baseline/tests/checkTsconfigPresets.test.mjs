@@ -2,7 +2,7 @@ import { describe, expect, it } from 'vitest'
 
 import { checkTsconfigPresets } from '../bin/conformance/checkTsconfigPresets.mjs'
 
-const DEPS = { '@busirocket/tsconfig': '^0.5.0' }
+const DEPS = { '@syntopica/tsconfig': '^0.5.0' }
 
 const solution = (leaves) => ({
   root: { files: [], references: leaves.map((l) => ({ path: l.config })) },
@@ -13,7 +13,7 @@ const solution = (leaves) => ({
 describe('checkTsconfigPresets', () => {
   it('passes a single-project root that extends a preset', () => {
     const tsconfigs = {
-      root: { extends: '@busirocket/tsconfig/nextjs.json' },
+      root: { extends: '@syntopica/tsconfig/nextjs.json' },
       solution: false,
       leaves: [],
     }
@@ -36,12 +36,12 @@ describe('checkTsconfigPresets', () => {
       {
         reference: 'tsconfig.app.json',
         config: 'tsconfig.app.json',
-        parsed: { extends: '@busirocket/tsconfig/vite-react.json' },
+        parsed: { extends: '@syntopica/tsconfig/vite-react.json' },
       },
       {
         reference: 'tsconfig.node.json',
         config: 'tsconfig.node.json',
-        parsed: { extends: '@busirocket/tsconfig/node.json' },
+        parsed: { extends: '@syntopica/tsconfig/node.json' },
       },
     ])
     expect(checkTsconfigPresets({ tsconfigs, deps: DEPS })).toEqual([])
@@ -54,7 +54,7 @@ describe('checkTsconfigPresets', () => {
       {
         reference: 'tsconfig.app.json',
         config: 'tsconfig.app.json',
-        parsed: { extends: '@busirocket/tsconfig/vite-react.json' },
+        parsed: { extends: '@syntopica/tsconfig/vite-react.json' },
       },
       {
         reference: 'tsconfig.node.json',
@@ -73,7 +73,7 @@ describe('checkTsconfigPresets', () => {
       {
         reference: 'tsconfig.app.json',
         config: 'tsconfig.app.json',
-        parsed: { extends: '@busirocket/tsconfig/vite-react.json' },
+        parsed: { extends: '@syntopica/tsconfig/vite-react.json' },
       },
     ])
     expect(checkTsconfigPresets({ tsconfigs, deps: DEPS })).toEqual([])
@@ -81,7 +81,7 @@ describe('checkTsconfigPresets', () => {
 
   it('accepts the array form of `extends`', () => {
     const tsconfigs = {
-      root: { extends: ['@busirocket/tsconfig/base.json', './paths.json'] },
+      root: { extends: ['@syntopica/tsconfig/base.json', './paths.json'] },
       solution: false,
       leaves: [],
     }
@@ -99,7 +99,7 @@ describe('checkTsconfigPresets', () => {
     expect(checkTsconfigPresets({ tsconfigs, deps: DEPS })).toEqual([])
   })
 
-  it('ignores a repository that does not depend on @busirocket/tsconfig', () => {
+  it('ignores a repository that does not depend on @syntopica/tsconfig', () => {
     const tsconfigs = {
       root: { compilerOptions: {} },
       solution: false,

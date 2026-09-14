@@ -4,7 +4,7 @@ import { resolve } from 'node:path'
 import { composedSubpaths } from './composedSubpaths.mjs'
 import { ESLINT_SUBPATH_PEERS } from './eslintSubpathPeers.mjs'
 
-const CONFIG_PACKAGE = '@busirocket/eslint-config'
+const CONFIG_PACKAGE = '@syntopica/eslint-config'
 
 // Reports the ESLint peers a project's config needs and does not have, and the
 // ones it has at a version the config cannot use.
@@ -47,7 +47,7 @@ export async function checkPeers(root) {
 // Not through require.resolve: these packages define `exports` without a root
 // entry or a `./package.json` entry, so resolving either throws
 // ERR_PACKAGE_PATH_NOT_EXPORTED while the package is installed and working.
-// @busirocket/eslint-config is one of them. The directory is what every
+// @syntopica/eslint-config is one of them. The directory is what every
 // layout - pnpm's symlink included - actually has.
 async function manifestOf(root, name) {
   try {

@@ -1,5 +1,5 @@
 {
-  "extends": "@busirocket/tsconfig/base.json",
+  "extends": "@syntopica/tsconfig/base.json",
   "compilerOptions": {
     "types": ["node"],
     "allowImportingTsExtensions": true

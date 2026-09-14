@@ -1,7 +1,7 @@
 import { readdir, readFile } from 'node:fs/promises'
 import { resolve } from 'node:path'
 
-// The `@busirocket/eslint-config` subpaths a project's flat config imports.
+// The `@syntopica/eslint-config` subpaths a project's flat config imports.
 //
 // Read from the file rather than inferred from dependencies: a repo can carry
 // Tailwind without composing `/tailwind`, and the peers that matter are the
@@ -30,12 +30,12 @@ export async function composedSubpaths(root) {
 
   const found = new Set()
   for (const match of source.matchAll(
-    /@busirocket\/eslint-config\/([a-z-]+)/g,
+    /@syntopica\/eslint-config\/([a-z-]+)/g,
   )) {
     found.add(match[1])
   }
-  // A bare `@busirocket/eslint-config` import is the barrel, which composes
+  // A bare `@syntopica/eslint-config` import is the barrel, which composes
   // the base layer.
-  if (/@busirocket\/eslint-config['"]/.test(source)) found.add('base')
+  if (/@syntopica\/eslint-config['"]/.test(source)) found.add('base')
   return [...found]
 }

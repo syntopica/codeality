@@ -8,11 +8,11 @@ on). Enable TypeScript and ESM where the template allows.
 ## 2. Add baseline packages
 
 ```bash
-pnpm add -D @busirocket/eslint-config@^0.1.0 @busirocket/prettier-config@^0.1.0 @busirocket/tsconfig@^0.1.0
+pnpm add -D @syntopica/eslint-config@^0.1.0 @syntopica/prettier-config@^0.1.0 @syntopica/tsconfig@^0.1.0
 ```
 
 Add framework peers as required by the ESLint layers you will import (see
-`@busirocket/eslint-config` README).
+`@syntopica/eslint-config` README).
 
 ### Allow the build scripts pnpm 11 blocks
 
@@ -75,10 +75,10 @@ it.
 Create `prettier.config.mjs`:
 
 ```javascript
-export { default } from '@busirocket/prettier-config'
+export { default } from '@syntopica/prettier-config'
 ```
 
-For a frontend app with Tailwind, use `@busirocket/prettier-config/frontend`
+For a frontend app with Tailwind, use `@syntopica/prettier-config/frontend`
 instead.
 
 ## 4. Wire TypeScript
@@ -88,13 +88,13 @@ example:
 
 ```json
 {
-  "extends": "@busirocket/tsconfig/nextjs.json"
+  "extends": "@syntopica/tsconfig/nextjs.json"
 }
 ```
 
 ## 5. Wire ESLint (flat config)
 
-Add `eslint.config.ts` and compose layers from `@busirocket/eslint-config` (for
+Add `eslint.config.ts` and compose layers from `@syntopica/eslint-config` (for
 example `base`, then `nextjs` or `vite-react`). Use `jiti` or your bundler to
 load TypeScript if needed.
 
@@ -105,16 +105,16 @@ Add scripts such as `"lint": "eslint ."`, `"format": "prettier --write ."`, and
 
 ## 7. Wire the quality gates
 
-Add `@busirocket/quality-config` and generate the per-project config files from
+Add `@syntopica/quality-config` and generate the per-project config files from
 its factories, instead of copying JSON by hand:
 
 ```bash
-pnpm add -D @busirocket/quality-config@^0.1.0 knip dependency-cruiser lefthook
+pnpm add -D @syntopica/quality-config@^0.1.0 knip dependency-cruiser lefthook
 ```
 
 ```ts
 // knip.config.ts
-import { createKnipConfig } from '@busirocket/quality-config/knip'
+import { createKnipConfig } from '@syntopica/quality-config/knip'
 
 export default createKnipConfig({ framework: 'nextjs' }) // or astro, nestjs, nuxt, tauri, ts-package, vite-react, vite-vue
 ```
@@ -122,7 +122,7 @@ export default createKnipConfig({ framework: 'nextjs' }) // or astro, nestjs, nu
 `lefthook.yml` and `renovate.json` are plain YAML/JSON, not TypeScript factories
 loaded at runtime - copy them from the closest matching template under
 `templates/*/lefthook.yml` and `templates/*/renovate.json` (or from
-`createLefthookConfig()` in `@busirocket/quality-config/lefthook` if generating
+`createLefthookConfig()` in `@syntopica/quality-config/lefthook` if generating
 them programmatically), then run `pnpm exec lefthook install`.
 
 `dependency-cruiser` only pays off once there is more than one package to graph;
@@ -133,7 +133,7 @@ gate's threshold and rationale is in
 ## 8. Conformance check
 
 ```bash
-pnpm dlx @busirocket/create-baseline --check
+pnpm dlx @syntopica/create-baseline --check
 ```
 
 `--check` asserts the gates are **wired**, not merely installed: `lint` fails on
@@ -164,9 +164,9 @@ an `eslint.config.*` and the quality-gate config files to exist.
 ## 9. The whole estate
 
 ```bash
-pnpm dlx @busirocket/create-baseline exec baseline-estate ~/p
+pnpm dlx @syntopica/create-baseline exec baseline-estate ~/p
 ```
 
-One row per repository that depends on a `@busirocket/*` package, one column per
+One row per repository that depends on a `@syntopica/*` package, one column per
 class of gate. Run it before publishing a change to these packages: the estate
 is the release's blast radius.

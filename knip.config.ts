@@ -6,11 +6,11 @@ import type { KnipConfig } from 'knip'
 const TEMPLATE_GLOB = ['**/*.{ts,tsx,vue,astro}']
 
 // Each template installs these as peer dependencies of
-// @busirocket/eslint-config: the config factories (base.ts and friends)
+// @syntopica/eslint-config: the config factories (base.ts and friends)
 // `import` them by bare specifier, and pnpm's isolated node_modules needs
 // each consumer to declare them directly for that import to resolve. No
 // template file ever imports these packages itself (they only import from
-// '@busirocket/eslint-config/*'), so knip can't see the real caller and
+// '@syntopica/eslint-config/*'), so knip can't see the real caller and
 // reports them as unused.
 const TEMPLATE_ESLINT_PEER_DEPENDENCIES = [
   '@eslint/js',
@@ -21,7 +21,7 @@ const TEMPLATE_ESLINT_PEER_DEPENDENCIES = [
   'typescript-eslint',
 ]
 
-// The tools @busirocket/quality-config's runners spawn through `pnpm exec`:
+// The tools @syntopica/quality-config's runners spawn through `pnpm exec`:
 // `baseline-dupes` spawns `jscpd`, `baseline-type-coverage` spawns
 // `type-coverage`. A template declares the dependency because the runner
 // spawns the binary rather than vendoring it, but nothing in the template
@@ -35,12 +35,12 @@ const config: KnipConfig = {
     '.': {
       entry: ['scripts/*.mjs'],
       project: ['scripts/*.mjs'],
-      // @busirocket/quality-config is a real dependency of the root
+      // @syntopica/quality-config is a real dependency of the root
       // .dependency-cruiser.cjs, but it's loaded through
-      // `jiti('@busirocket/quality-config/dependency-cruiser')` — a
+      // `jiti('@syntopica/quality-config/dependency-cruiser')` — a
       // dynamic string argument, not a static import/require knip's
       // analysis can trace back to the package.
-      ignoreDependencies: ['@busirocket/quality-config'],
+      ignoreDependencies: ['@syntopica/quality-config'],
     },
     'packages/*': {
       entry: ['src/index.ts', 'src/*.ts', 'bin/*.mjs'],
@@ -61,7 +61,7 @@ const config: KnipConfig = {
       // live at the package root, not under tests/, because file-kind-placement
       // exempts test scope and would otherwise exempt every fixture.
       ignore: ['fixtures/**'],
-      // @busirocket/eslint-config ships TypeScript source, so the plugins its
+      // @syntopica/eslint-config ships TypeScript source, so the plugins its
       // base config `require()`s resolve from whichever package composes it -
       // this one included. knip sees the import in eslint-config and the
       // dependency here, and cannot connect them.

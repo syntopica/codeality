@@ -1,4 +1,4 @@
-# @busirocket/quality-config
+# @syntopica/quality-config
 
 Shared configuration factories for cross-file quality gates: unused
 files/exports/dependencies (knip), module boundaries and dependency cycles
@@ -19,20 +19,20 @@ files/exports/dependencies (knip), module boundaries and dependency cycles
 ## Install
 
 ```bash
-pnpm add -D @busirocket/quality-config@^0.1.0 typescript
+pnpm add -D @syntopica/quality-config@^0.1.0 typescript
 ```
 
 Add `knip` and/or `dependency-cruiser` for the gates you use.
 
 ## Usage
 
-| Import subpath                                  | Use case                                  |
-| ----------------------------------------------- | ----------------------------------------- |
-| `@busirocket/quality-config`                    | All factories and constants, re-exported  |
-| `@busirocket/quality-config/knip`               | Unused files/exports/dependencies gate    |
-| `@busirocket/quality-config/dependency-cruiser` | Module boundary and dependency-cycle gate |
-| `@busirocket/quality-config/type-coverage`      | Minimum non-`any` type coverage threshold |
-| `@busirocket/quality-config/lefthook`           | Shared git hook pipeline                  |
+| Import subpath                                 | Use case                                  |
+| ---------------------------------------------- | ----------------------------------------- |
+| `@syntopica/quality-config`                    | All factories and constants, re-exported  |
+| `@syntopica/quality-config/knip`               | Unused files/exports/dependencies gate    |
+| `@syntopica/quality-config/dependency-cruiser` | Module boundary and dependency-cycle gate |
+| `@syntopica/quality-config/type-coverage`      | Minimum non-`any` type coverage threshold |
+| `@syntopica/quality-config/lefthook`           | Shared git hook pipeline                  |
 
 ### `baseline-env-init`
 
@@ -92,11 +92,11 @@ generated config that is deleted again on the way out; it extends your own
 `--config` when you pass one. jscpd 5.x is a Rust binary that reads JSON only -
 it has no JS config loader - which is why this gate ships as a config file plus
 a runner rather than as a factory like `createKnipConfig`. Point another tool at
-the same file through `@busirocket/quality-config/jscpd`.
+the same file through `@syntopica/quality-config/jscpd`.
 
 `jscpd` itself stays a devDependency of the consuming project: the runner
 invokes it, it does not vendor it.
 
 ## Related
 
-- **Lint / TS configs:** `@busirocket/eslint-config`, `@busirocket/tsconfig`.
+- **Lint / TS configs:** `@syntopica/eslint-config`, `@syntopica/tsconfig`.

@@ -1,9 +1,8 @@
-# Migrating to `@busirocket/*` baseline packages
+# Migrating to `@syntopica/*` baseline packages
 
 Use this guide when moving from ad-hoc ESLint / Prettier / TypeScript settings
-or from older `@repo/*` workspace names to published
-`@busirocket/eslint-config`, `@busirocket/prettier-config`, and
-`@busirocket/tsconfig`.
+or from older `@repo/*` workspace names to published `@syntopica/eslint-config`,
+`@syntopica/prettier-config`, and `@syntopica/tsconfig`.
 
 ## Prerequisites
 
@@ -14,7 +13,7 @@ or from older `@repo/*` workspace names to published
 ## 1. Install packages
 
 ```bash
-pnpm add -D @busirocket/eslint-config@^0.1.0 @busirocket/prettier-config@^0.1.0 @busirocket/tsconfig@^0.1.0
+pnpm add -D @syntopica/eslint-config@^0.1.0 @syntopica/prettier-config@^0.1.0 @syntopica/tsconfig@^0.1.0
 ```
 
 Use `npm install -D` with the same spec if you use npm.
@@ -22,7 +21,7 @@ Use `npm install -D` with the same spec if you use npm.
 ## 2. ESLint flat config
 
 Remove legacy `.eslintrc.*` and `FlatCompat` bridges. Add `eslint.config.ts` (or
-`.mjs`) that imports from `@busirocket/eslint-config/*` — see
+`.mjs`) that imports from `@syntopica/eslint-config/*` — see
 [eslint-config README](https://github.com/BusiRocket/eslint-config/blob/main/README.md)
 and [standards/eslint.md](./standards/eslint.md).
 
@@ -31,13 +30,13 @@ and so on). Run ESLint and fix new violations incrementally.
 
 ## 3. Prettier
 
-Point `prettier.config.mjs` at `@busirocket/prettier-config` (or `/frontend`,
+Point `prettier.config.mjs` at `@syntopica/prettier-config` (or `/frontend`,
 `/astro`). Install Prettier and optional plugins listed in that package's
 `peerDependencies`.
 
 ## 4. TypeScript
 
-Extend `@busirocket/tsconfig/*` from your `tsconfig.json` (for example
+Extend `@syntopica/tsconfig/*` from your `tsconfig.json` (for example
 `./base.json`, `./nextjs.json`).
 
 ## 5. Verify
@@ -46,10 +45,10 @@ Extend `@busirocket/tsconfig/*` from your `tsconfig.json` (for example
 pnpm exec create-baseline --check
 ```
 
-Or `npx @busirocket/create-baseline@^0.1.0 --check` outside this monorepo.
+Or `npx @syntopica/create-baseline@^0.1.0 --check` outside this monorepo.
 
 ## Naming note
 
-Templates in this repository use **semver** ranges for `@busirocket/*` on npm
+Templates in this repository use **semver** ranges for `@syntopica/*` on npm
 (for example `^0.1.0`). The root `package.json` may temporarily use
 `pnpm.overrides` to resolve those packages from GitHub until they are published.

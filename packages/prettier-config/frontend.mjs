@@ -1,5 +1,5 @@
 /**
- * @busirocket/prettier-config — Frontend (Tailwind)
+ * @syntopica/prettier-config — Frontend (Tailwind)
  *
  * Extends base with prettier-plugin-tailwindcss (must load last).
  * Use in any project that uses Tailwind CSS.

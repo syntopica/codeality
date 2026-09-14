@@ -1,6 +1,6 @@
-import { createBaseConfig } from '@busirocket/eslint-config/base'
-import { createDataFilesConfig } from '@busirocket/eslint-config/data-files'
-import { createNodeConfig } from '@busirocket/eslint-config/node'
+import { createBaseConfig } from '@syntopica/eslint-config/base'
+import { createDataFilesConfig } from '@syntopica/eslint-config/data-files'
+import { createNodeConfig } from '@syntopica/eslint-config/node'
 
 // Fallback config for plain Node scripts that have no closer eslint.config
 // of their own: scripts/*.mjs (repo tooling) and the .mjs files shipped by

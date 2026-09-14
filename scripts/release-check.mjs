@@ -48,7 +48,7 @@ async function readPublishablePackages() {
 }
 
 // Tag convention in this repo: the unscoped package name, e.g.
-// `@busirocket/quality-config@0.1.0` is tagged `quality-config@0.1.0`.
+// `@syntopica/quality-config@0.1.0` is tagged `quality-config@0.1.0`.
 function tagFor({ name, version }) {
   return `${name.replace(/^@[^/]+\//, '')}@${version}`
 }

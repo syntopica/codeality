@@ -5,13 +5,13 @@
 //
 // The aliased workspaces are excluded from `no-orphans` here rather than inside
 // the shared factory: those directory names belong to this repo, not to every
-// project that consumes @busirocket/quality-config. `pnpm deps:graph:aliased`
+// project that consumes @syntopica/quality-config. `pnpm deps:graph:aliased`
 // is what actually checks them, one cruise each with its own tsconfig.
 const { createJiti } = require('jiti')
 
 const jiti = createJiti(__filename)
 const { createDepCruiserConfig } = jiti(
-  '@busirocket/quality-config/dependency-cruiser',
+  '@syntopica/quality-config/dependency-cruiser',
 )
 const { ALIASED_WORKSPACES } = jiti('./scripts/aliasedWorkspaces.mjs')
 

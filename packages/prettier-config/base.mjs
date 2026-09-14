@@ -1,5 +1,5 @@
 /**
- * @busirocket/prettier-config — Base
+ * @syntopica/prettier-config — Base
  *
  * Universal formatting defaults plus import ordering, shared by every project.
  * No CSS, Tailwind or Astro plugins here — use /frontend or /astro.

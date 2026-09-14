@@ -4,7 +4,7 @@ import { resolve } from 'node:path'
 import { collectDeps } from '../scaffold/collectDeps.mjs'
 import { readManifest } from '../scaffold/readManifest.mjs'
 
-const BASELINE_SCOPE = '@busirocket/'
+const BASELINE_SCOPE = '@syntopica/'
 
 /**
  * Every directory under `root` that depends on a baseline package.

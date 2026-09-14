@@ -21,7 +21,7 @@ const repo = async (name, manifest) => {
 describe('findConsumers', () => {
   it('finds the directories that depend on a baseline package', async () => {
     await repo('adopter', {
-      devDependencies: { '@busirocket/tsconfig': '^0.2.1' },
+      devDependencies: { '@syntopica/tsconfig': '^0.2.1' },
     })
     await repo('unrelated', { dependencies: { react: '^19' } })
     const found = await findConsumers(root)
@@ -30,10 +30,10 @@ describe('findConsumers', () => {
 
   it('sorts by name so two runs of the report are diffable', async () => {
     await repo('zeta', {
-      dependencies: { '@busirocket/prettier-config': '^0.2.0' },
+      dependencies: { '@syntopica/prettier-config': '^0.2.0' },
     })
     await repo('alpha', {
-      dependencies: { '@busirocket/prettier-config': '^0.2.0' },
+      dependencies: { '@syntopica/prettier-config': '^0.2.0' },
     })
     expect((await findConsumers(root)).map((c) => c.name)).toEqual([
       'alpha',
@@ -44,7 +44,7 @@ describe('findConsumers', () => {
   it('skips directories with no manifest and dotfiles', async () => {
     await mkdir(join(root, 'notaproject'), { recursive: true })
     await repo('.hidden', {
-      dependencies: { '@busirocket/tsconfig': '^0.2.1' },
+      dependencies: { '@syntopica/tsconfig': '^0.2.1' },
     })
     expect(await findConsumers(root)).toEqual([])
   })

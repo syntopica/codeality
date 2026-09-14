@@ -1,5 +1,5 @@
 {
-  "extends": "@busirocket/tsconfig/vite-react.json",
+  "extends": "@syntopica/tsconfig/vite-react.json",
   "compilerOptions": {
     "paths": {
       "@/*": ["./src/*"]

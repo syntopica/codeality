@@ -21,7 +21,7 @@ are allowed but cannot replace these.
 | `check:ci`          | Run type-check + lint + format:check + test (CI gate)   |
 | `dupes`             | Cross-file duplication gate (jscpd), part of `check:ci` |
 
-`dupes` runs `baseline-dupes`, the runner from `@busirocket/quality-config` that
+`dupes` runs `baseline-dupes`, the runner from `@syntopica/quality-config` that
 points jscpd at that package's canonical `jscpd.json`: `baseline-dupes .` in
 templates (scans the whole generated project), `baseline-dupes packages scripts`
 at the engineering-baseline root (workspace packages only, not the templates).
@@ -59,7 +59,7 @@ workspace.
 
 ## Templates vs published packages
 
-Templates depend on **`@busirocket/*` packages** using **semver** ranges (for
+Templates depend on **`@syntopica/*` packages** using **semver** ranges (for
 example `^0.1.0`) from npm. The monorepo root may use **`pnpm.overrides`** to
 resolve those packages from GitHub until the first npm publish; see the root
 README.

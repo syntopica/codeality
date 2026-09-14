@@ -3,7 +3,7 @@
 // itself to `src` is the project's decision, not drift.
 //
 // `dupes` and `type-coverage` go through the runners in
-// @busirocket/quality-config rather than naming jscpd and type-coverage
+// @syntopica/quality-config rather than naming jscpd and type-coverage
 // directly, so the shared config is read in place instead of copied.
 //
 // The three `check:*` entrypoints are what CI invokes, one job each. They are

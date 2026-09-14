@@ -37,7 +37,7 @@ export default createRule<Options, MessageIds>({
       // helper. The file's shape is dictated by the tool, not by the author.
       // The exemption lives here rather than in a shared flat-config block
       // because a repo that composes eslint-plugin-code-policy's own preset
-      // after @busirocket/eslint-config re-enables the rule and defeats it --
+      // after @syntopica/eslint-config re-enables the rule and defeats it --
       // measured in tieneslavibra, whose config does exactly that.
       filename.endsWith('.dependency-cruiser.cjs') ||
       filename.endsWith('.vue') || // SFC <script setup> bindings are reactive state, never exported

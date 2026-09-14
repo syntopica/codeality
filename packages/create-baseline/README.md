@@ -1,4 +1,4 @@
-# @busirocket/create-baseline
+# @syntopica/create-baseline
 
 Small CLI to print install commands and verify that your project lists the
 `@busirocket` baseline config packages (`eslint-config`, `prettier-config`,
@@ -18,7 +18,7 @@ closest template under `templates/*`) provide the file.
 Use via `pnpm dlx` / `npx` (no need to add as a dependency for one-off checks):
 
 ```bash
-pnpm dlx @busirocket/create-baseline@^0.1.0 --soft
+pnpm dlx @syntopica/create-baseline@^0.1.0 --soft
 ```
 
 ## Usage
@@ -54,11 +54,11 @@ missing ones, and installed ones at a version the config cannot use. The
 subpaths are read from your `eslint.config.*`, so a project that never composes
 `/tailwind` is never told about `eslint-plugin-tailwindcss`.
 
-`@busirocket/eslint-config` ships TypeScript source rather than a build, so
-these resolve from your project. pnpm reports a mismatch as one line among
-hundreds on install; the consequence shows up much later as a crash from inside
-ESLint that names neither the baseline nor the peer. Adopting calculadora hit
-three of them in a row - one absent, one on a prerelease whose config was still
+`@syntopica/eslint-config` ships TypeScript source rather than a build, so these
+resolve from your project. pnpm reports a mismatch as one line among hundreds on
+install; the consequence shows up much later as a crash from inside ESLint that
+names neither the baseline nor the peer. Adopting calculadora hit three of them
+in a row - one absent, one on a prerelease whose config was still
 eslintrc-format, one a major behind the schema the config emits - and each took
 a separate diagnosis.
 
@@ -67,7 +67,7 @@ shipped with this package; update that file when releasing aligned semver bumps.
 
 ### Framework-generated TypeScript setups
 
-`@busirocket/tsconfig` is not required when the project's own `tsconfig.json`
+`@syntopica/tsconfig` is not required when the project's own `tsconfig.json`
 extends a config inside a dot-directory - build output its framework
 regenerates, such as Nuxt's `./.nuxt/tsconfig.json`. There the framework owns
 the compiler options end to end and the shared presets have no insertion point,
