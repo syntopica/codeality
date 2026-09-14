@@ -22,18 +22,6 @@ importers:
 
   .:
     devDependencies:
-      '@busirocket/eslint-config':
-        specifier: workspace:*
-        version: link:packages/eslint-config
-      '@busirocket/prettier-config':
-        specifier: workspace:*
-        version: link:packages/prettier-config
-      '@busirocket/quality-config':
-        specifier: workspace:*
-        version: link:packages/quality-config
-      '@busirocket/tsconfig':
-        specifier: workspace:*
-        version: link:packages/tsconfig
       '@commitlint/cli':
         specifier: ^21.2.2
         version: 21.2.2(@types/node@26.4.0)(@typescript/typescript6@6.0.2)(conventional-commits-parser@7.1.2)
@@ -46,6 +34,18 @@ importers:
       '@size-limit/file':
         specifier: ^13.0.3
         version: 13.0.3(size-limit@13.0.3)
+      '@syntopica/eslint-config':
+        specifier: workspace:*
+        version: link:packages/eslint-config
+      '@syntopica/prettier-config':
+        specifier: workspace:*
+        version: link:packages/prettier-config
+      '@syntopica/quality-config':
+        specifier: workspace:*
+        version: link:packages/quality-config
+      '@syntopica/tsconfig':
+        specifier: workspace:*
+        version: link:packages/tsconfig
       '@types/node':
         specifier: ^26.4.0
         version: 26.4.0
@@ -118,7 +118,7 @@ importers:
       '@arethetypeswrong/cli':
         specifier: ^0.18.5
         version: 0.18.5
-      '@busirocket/eslint-config':
+      '@syntopica/eslint-config':
         specifier: workspace:*
         version: link:../eslint-config
       '@vitest/coverage-v8':
@@ -258,15 +258,15 @@ importers:
       '@arethetypeswrong/cli':
         specifier: ^0.18.5
         version: 0.18.5
-      '@busirocket/tsconfig':
-        specifier: workspace:*
-        version: link:../tsconfig
       '@stryker-mutator/core':
         specifier: ^10.0.0
         version: 10.0.0(@types/node@26.4.0)
       '@stryker-mutator/vitest-runner':
         specifier: ^10.0.0
         version: 10.0.0(@stryker-mutator/core@10.0.0(@types/node@26.4.0))(vitest@4.1.11)
+      '@syntopica/tsconfig':
+        specifier: workspace:*
+        version: link:../tsconfig
       '@types/node':
         specifier: ^26.4.0
         version: 26.4.0
@@ -338,7 +338,7 @@ importers:
       '@arethetypeswrong/cli':
         specifier: ^0.18.5
         version: 0.18.5
-      '@busirocket/eslint-config':
+      '@syntopica/eslint-config':
         specifier: workspace:*
         version: link:../eslint-config
       '@types/node':
@@ -387,18 +387,6 @@ importers:
       '@astrojs/check':
         specifier: ^0.9.10
         version: 0.9.10(@typescript/typescript6@6.0.2)(prettier-plugin-astro@0.14.1)(prettier@3.9.6)
-      '@busirocket/eslint-config':
-        specifier: workspace:*
-        version: link:../../packages/eslint-config
-      '@busirocket/prettier-config':
-        specifier: workspace:*
-        version: link:../../packages/prettier-config
-      '@busirocket/quality-config':
-        specifier: workspace:*
-        version: link:../../packages/quality-config
-      '@busirocket/tsconfig':
-        specifier: workspace:*
-        version: link:../../packages/tsconfig
       '@commitlint/cli':
         specifier: ^21.2.2
         version: 21.2.2(@types/node@26.4.0)(@typescript/typescript6@6.0.2)(conventional-commits-parser@7.1.2)
@@ -414,6 +402,18 @@ importers:
       '@size-limit/file':
         specifier: ^13.0.3
         version: 13.0.3(size-limit@13.0.3)
+      '@syntopica/eslint-config':
+        specifier: workspace:*
+        version: link:../../packages/eslint-config
+      '@syntopica/prettier-config':
+        specifier: workspace:*
+        version: link:../../packages/prettier-config
+      '@syntopica/quality-config':
+        specifier: workspace:*
+        version: link:../../packages/quality-config
+      '@syntopica/tsconfig':
+        specifier: workspace:*
+        version: link:../../packages/tsconfig
       '@types/node':
         specifier: ^26.4.0
         version: 26.4.0
@@ -535,18 +535,6 @@ importers:
         specifier: ^7.8.2
         version: 7.8.2
     devDependencies:
-      '@busirocket/eslint-config':
-        specifier: workspace:*
-        version: link:../../packages/eslint-config
-      '@busirocket/prettier-config':
-        specifier: workspace:*
-        version: link:../../packages/prettier-config
-      '@busirocket/quality-config':
-        specifier: workspace:*
-        version: link:../../packages/quality-config
-      '@busirocket/tsconfig':
-        specifier: workspace:*
-        version: link:../../packages/tsconfig
       '@commitlint/cli':
         specifier: ^21.2.2
         version: 21.2.2(@types/node@26.4.0)(@typescript/typescript6@6.0.2)(conventional-commits-parser@7.1.2)
@@ -562,6 +550,18 @@ importers:
       '@nestjs/schematics':
         specifier: ^12.0.0
         version: 12.0.0(@typescript/typescript6@6.0.2)(chokidar@5.0.0)(prettier@3.9.6)
+      '@syntopica/eslint-config':
+        specifier: workspace:*
+        version: link:../../packages/eslint-config
+      '@syntopica/prettier-config':
+        specifier: workspace:*
+        version: link:../../packages/prettier-config
+      '@syntopica/quality-config':
+        specifier: workspace:*
+        version: link:../../packages/quality-config
+      '@syntopica/tsconfig':
+        specifier: workspace:*
+        version: link:../../packages/tsconfig
       '@types/node':
         specifier: ^26.4.0
         version: 26.4.0
@@ -668,18 +668,6 @@ importers:
         specifier: ^4.5.4
         version: 4.5.4
     devDependencies:
-      '@busirocket/eslint-config':
-        specifier: workspace:*
-        version: link:../../packages/eslint-config
-      '@busirocket/prettier-config':
-        specifier: workspace:*
-        version: link:../../packages/prettier-config
-      '@busirocket/quality-config':
-        specifier: workspace:*
-        version: link:../../packages/quality-config
-      '@busirocket/tsconfig':
-        specifier: workspace:*
-        version: link:../../packages/tsconfig
       '@commitlint/cli':
         specifier: ^21.2.2
         version: 21.2.2(@types/node@26.4.0)(@typescript/typescript6@6.0.2)(conventional-commits-parser@7.1.2)
@@ -698,6 +686,18 @@ importers:
       '@size-limit/file':
         specifier: ^13.0.3
         version: 13.0.3(size-limit@13.0.3)
+      '@syntopica/eslint-config':
+        specifier: workspace:*
+        version: link:../../packages/eslint-config
+      '@syntopica/prettier-config':
+        specifier: workspace:*
+        version: link:../../packages/prettier-config
+      '@syntopica/quality-config':
+        specifier: workspace:*
+        version: link:../../packages/quality-config
+      '@syntopica/tsconfig':
+        specifier: workspace:*
+        version: link:../../packages/tsconfig
       '@testing-library/jest-dom':
         specifier: ^7.0.1
         version: 7.0.1(@testing-library/dom@10.4.1)(vitest@4.1.11)
@@ -840,15 +840,6 @@ importers:
         specifier: ^4.5.4
         version: 4.5.4
     devDependencies:
-      '@busirocket/eslint-config':
-        specifier: workspace:*
-        version: link:../../packages/eslint-config
-      '@busirocket/prettier-config':
-        specifier: workspace:*
-        version: link:../../packages/prettier-config
-      '@busirocket/quality-config':
-        specifier: workspace:*
-        version: link:../../packages/quality-config
       '@commitlint/cli':
         specifier: ^21.2.2
         version: 21.2.2(@types/node@26.4.0)(@typescript/typescript6@6.0.2)(conventional-commits-parser@7.1.2)
@@ -870,6 +861,15 @@ importers:
       '@size-limit/file':
         specifier: ^13.0.3
         version: 13.0.3(size-limit@13.0.3)
+      '@syntopica/eslint-config':
+        specifier: workspace:*
+        version: link:../../packages/eslint-config
+      '@syntopica/prettier-config':
+        specifier: workspace:*
+        version: link:../../packages/prettier-config
+      '@syntopica/quality-config':
+        specifier: workspace:*
+        version: link:../../packages/quality-config
       '@tailwindcss/vite':
         specifier: ^4.3.3
         version: 4.3.3(vite@8.2.2(@types/node@26.4.0)(esbuild@0.28.1)(jiti@2.7.0)(terser@5.49.0)(yaml@2.9.0))
@@ -881,7 +881,7 @@ importers:
         version: 4.1.11(vitest@4.1.11)
       '@vitest/eslint-plugin':
         specifier: ^1.6.27
-        version: 1.6.27(@typescript-eslint/eslint-plugin@8.68.0(@typescript-eslint/parser@8.68.0(@typescript/typescript6@6.0.2)(eslint@10.9.1(jiti@2.7.0)(supports-color@10.2.2))(supports-color@10.2.2))(@typescript/typescript6@6.0.2)(eslint@10.9.1(jiti@2.7.0)(supports-color@10.2.2))(supports-color@10.2.2))(@typescript/typescript6@6.0.2)(eslint@10.9.1(jiti@2.7.0)(supports-color@10.2.2))(supports-color@10.2.2)(vitest@4.1.11)
+        version: 1.6.27(@typescript-eslint/eslint-plugin@8.68.0(@typescript-eslint/parser@8.67.0(@typescript/typescript6@6.0.2)(eslint@10.9.1(jiti@2.7.0)(supports-color@10.2.2))(supports-color@10.2.2))(@typescript/typescript6@6.0.2)(eslint@10.9.1(jiti@2.7.0)(supports-color@10.2.2))(supports-color@10.2.2))(@typescript/typescript6@6.0.2)(eslint@10.9.1(jiti@2.7.0)(supports-color@10.2.2))(supports-color@10.2.2)(vitest@4.1.11)
       '@vue/test-utils':
         specifier: ^2.5.0
         version: 2.5.0(@vue/compiler-dom@3.5.42)(@vue/server-renderer@3.5.42)(vue@3.5.42(@typescript/typescript6@6.0.2))
@@ -899,13 +899,13 @@ importers:
         version: 4.4.5(eslint-plugin-import-x@4.17.1(@typescript-eslint/utils@8.68.0(@typescript/typescript6@6.0.2)(eslint@10.9.1(jiti@2.7.0)(supports-color@10.2.2))(supports-color@10.2.2))(eslint-import-resolver-node@0.3.10(supports-color@10.2.2))(eslint@10.9.1(jiti@2.7.0)(supports-color@10.2.2))(supports-color@10.2.2))(eslint-plugin-import@2.32.0)(eslint@10.9.1(jiti@2.7.0)(supports-color@10.2.2))(supports-color@10.2.2)
       eslint-plugin-boundaries:
         specifier: ^7.2.0
-        version: 7.2.0(@typescript-eslint/parser@8.68.0(@typescript/typescript6@6.0.2)(eslint@10.9.1(jiti@2.7.0)(supports-color@10.2.2))(supports-color@10.2.2))(eslint-import-resolver-typescript@4.4.5)(eslint@10.9.1(jiti@2.7.0)(supports-color@10.2.2))(supports-color@10.2.2)
+        version: 7.2.0(@typescript-eslint/parser@8.67.0(@typescript/typescript6@6.0.2)(eslint@10.9.1(jiti@2.7.0)(supports-color@10.2.2))(supports-color@10.2.2))(eslint-import-resolver-typescript@4.4.5)(eslint@10.9.1(jiti@2.7.0)(supports-color@10.2.2))(supports-color@10.2.2)
       eslint-plugin-code-policy:
         specifier: workspace:*
         version: link:../../packages/eslint-plugin-code-policy
       eslint-plugin-import:
         specifier: ^2.32.0
-        version: 2.32.0(@typescript-eslint/parser@8.68.0(@typescript/typescript6@6.0.2)(eslint@10.9.1(jiti@2.7.0)(supports-color@10.2.2))(supports-color@10.2.2))(eslint-import-resolver-typescript@4.4.5)(eslint@10.9.1(jiti@2.7.0)(supports-color@10.2.2))(supports-color@10.2.2)
+        version: 2.32.0(@typescript-eslint/parser@8.67.0(@typescript/typescript6@6.0.2)(eslint@10.9.1(jiti@2.7.0)(supports-color@10.2.2))(supports-color@10.2.2))(eslint-import-resolver-typescript@4.4.5)(eslint@10.9.1(jiti@2.7.0)(supports-color@10.2.2))(supports-color@10.2.2)
       eslint-plugin-promise:
         specifier: ^7.3.0
         version: 7.3.0(eslint@10.9.1(jiti@2.7.0)(supports-color@10.2.2))
@@ -926,10 +926,10 @@ importers:
         version: 7.16.2(@typescript/typescript6@6.0.2)(eslint@10.9.1(jiti@2.7.0)(supports-color@10.2.2))(supports-color@10.2.2)
       eslint-plugin-unused-imports:
         specifier: ^4.4.1
-        version: 4.4.1(@typescript-eslint/eslint-plugin@8.68.0(@typescript-eslint/parser@8.68.0(@typescript/typescript6@6.0.2)(eslint@10.9.1(jiti@2.7.0)(supports-color@10.2.2))(supports-color@10.2.2))(@typescript/typescript6@6.0.2)(eslint@10.9.1(jiti@2.7.0)(supports-color@10.2.2))(supports-color@10.2.2))(eslint@10.9.1(jiti@2.7.0)(supports-color@10.2.2))
+        version: 4.4.1(@typescript-eslint/eslint-plugin@8.68.0(@typescript-eslint/parser@8.67.0(@typescript/typescript6@6.0.2)(eslint@10.9.1(jiti@2.7.0)(supports-color@10.2.2))(supports-color@10.2.2))(@typescript/typescript6@6.0.2)(eslint@10.9.1(jiti@2.7.0)(supports-color@10.2.2))(supports-color@10.2.2))(eslint@10.9.1(jiti@2.7.0)(supports-color@10.2.2))
       eslint-plugin-vue:
         specifier: ^10.10.0
-        version: 10.10.0(@stylistic/eslint-plugin@5.10.0(eslint@10.9.1(jiti@2.7.0)(supports-color@10.2.2)))(@typescript-eslint/parser@8.68.0(@typescript/typescript6@6.0.2)(eslint@10.9.1(jiti@2.7.0)(supports-color@10.2.2))(supports-color@10.2.2))(eslint@10.9.1(jiti@2.7.0)(supports-color@10.2.2))(vue-eslint-parser@10.4.1(eslint@10.9.1(jiti@2.7.0)(supports-color@10.2.2))(supports-color@10.2.2))
+        version: 10.10.0(@stylistic/eslint-plugin@5.10.0(eslint@10.9.1(jiti@2.7.0)(supports-color@10.2.2)))(@typescript-eslint/parser@8.67.0(@typescript/typescript6@6.0.2)(eslint@10.9.1(jiti@2.7.0)(supports-color@10.2.2))(supports-color@10.2.2))(eslint@10.9.1(jiti@2.7.0)(supports-color@10.2.2))(vue-eslint-parser@10.4.1(eslint@10.9.1(jiti@2.7.0)(supports-color@10.2.2))(supports-color@10.2.2))
       eslint-plugin-vuejs-accessibility:
         specifier: ^2.6.0
         version: 2.6.0(eslint@10.9.1(jiti@2.7.0)(supports-color@10.2.2))(globals@17.11.0)(supports-color@10.2.2)
@@ -1009,18 +1009,6 @@ importers:
         specifier: ^4.5.4
         version: 4.5.4
     devDependencies:
-      '@busirocket/eslint-config':
-        specifier: workspace:*
-        version: link:../../packages/eslint-config
-      '@busirocket/prettier-config':
-        specifier: workspace:*
-        version: link:../../packages/prettier-config
-      '@busirocket/quality-config':
-        specifier: workspace:*
-        version: link:../../packages/quality-config
-      '@busirocket/tsconfig':
-        specifier: workspace:*
-        version: link:../../packages/tsconfig
       '@commitlint/cli':
         specifier: ^21.2.2
         version: 21.2.2(@types/node@26.4.0)(@typescript/typescript6@6.0.2)(conventional-commits-parser@7.1.2)
@@ -1036,6 +1024,18 @@ importers:
       '@size-limit/file':
         specifier: ^13.0.3
         version: 13.0.3(size-limit@13.0.3)
+      '@syntopica/eslint-config':
+        specifier: workspace:*
+        version: link:../../packages/eslint-config
+      '@syntopica/prettier-config':
+        specifier: workspace:*
+        version: link:../../packages/prettier-config
+      '@syntopica/quality-config':
+        specifier: workspace:*
+        version: link:../../packages/quality-config
+      '@syntopica/tsconfig':
+        specifier: workspace:*
+        version: link:../../packages/tsconfig
       '@testing-library/jest-dom':
         specifier: ^7.0.1
         version: 7.0.1(@testing-library/dom@10.4.1)(vitest@4.1.11)
@@ -1168,18 +1168,6 @@ importers:
 
   templates/ts-package:
     devDependencies:
-      '@busirocket/eslint-config':
-        specifier: workspace:*
-        version: link:../../packages/eslint-config
-      '@busirocket/prettier-config':
-        specifier: workspace:*
-        version: link:../../packages/prettier-config
-      '@busirocket/quality-config':
-        specifier: workspace:*
-        version: link:../../packages/quality-config
-      '@busirocket/tsconfig':
-        specifier: workspace:*
-        version: link:../../packages/tsconfig
       '@commitlint/cli':
         specifier: ^21.2.2
         version: 21.2.2(@types/node@26.4.0)(@typescript/typescript6@6.0.2)(conventional-commits-parser@7.1.2)
@@ -1189,6 +1177,18 @@ importers:
       '@eslint/js':
         specifier: ^10.0.1
         version: 10.0.1(eslint@10.9.1(jiti@2.7.0)(supports-color@10.2.2))
+      '@syntopica/eslint-config':
+        specifier: workspace:*
+        version: link:../../packages/eslint-config
+      '@syntopica/prettier-config':
+        specifier: workspace:*
+        version: link:../../packages/prettier-config
+      '@syntopica/quality-config':
+        specifier: workspace:*
+        version: link:../../packages/quality-config
+      '@syntopica/tsconfig':
+        specifier: workspace:*
+        version: link:../../packages/tsconfig
       '@types/node':
         specifier: ^26.4.0
         version: 26.4.0
@@ -1295,18 +1295,6 @@ importers:
         specifier: ^4.5.4
         version: 4.5.4
     devDependencies:
-      '@busirocket/eslint-config':
-        specifier: workspace:*
-        version: link:../../packages/eslint-config
-      '@busirocket/prettier-config':
-        specifier: workspace:*
-        version: link:../../packages/prettier-config
-      '@busirocket/quality-config':
-        specifier: workspace:*
-        version: link:../../packages/quality-config
-      '@busirocket/tsconfig':
-        specifier: workspace:*
-        version: link:../../packages/tsconfig
       '@commitlint/cli':
         specifier: ^21.2.2
         version: 21.2.2(@types/node@26.4.0)(@typescript/typescript6@6.0.2)(conventional-commits-parser@7.1.2)
@@ -1322,6 +1310,18 @@ importers:
       '@size-limit/file':
         specifier: ^13.0.3
         version: 13.0.3(size-limit@13.0.3)
+      '@syntopica/eslint-config':
+        specifier: workspace:*
+        version: link:../../packages/eslint-config
+      '@syntopica/prettier-config':
+        specifier: workspace:*
+        version: link:../../packages/prettier-config
+      '@syntopica/quality-config':
+        specifier: workspace:*
+        version: link:../../packages/quality-config
+      '@syntopica/tsconfig':
+        specifier: workspace:*
+        version: link:../../packages/tsconfig
       '@testing-library/jest-dom':
         specifier: ^7.0.1
         version: 7.0.1(@testing-library/dom@10.4.1)(vitest@4.1.11)
@@ -1470,18 +1470,6 @@ importers:
         specifier: ^4.5.4
         version: 4.5.4
     devDependencies:
-      '@busirocket/eslint-config':
-        specifier: workspace:*
-        version: link:../../packages/eslint-config
-      '@busirocket/prettier-config':
-        specifier: workspace:*
-        version: link:../../packages/prettier-config
-      '@busirocket/quality-config':
-        specifier: workspace:*
-        version: link:../../packages/quality-config
-      '@busirocket/tsconfig':
-        specifier: workspace:*
-        version: link:../../packages/tsconfig
       '@commitlint/cli':
         specifier: ^21.2.2
         version: 21.2.2(@types/node@26.4.0)(@typescript/typescript6@6.0.2)(conventional-commits-parser@7.1.2)
@@ -1497,6 +1485,18 @@ importers:
       '@size-limit/file':
         specifier: ^13.0.3
         version: 13.0.3(size-limit@13.0.3)
+      '@syntopica/eslint-config':
+        specifier: workspace:*
+        version: link:../../packages/eslint-config
+      '@syntopica/prettier-config':
+        specifier: workspace:*
+        version: link:../../packages/prettier-config
+      '@syntopica/quality-config':
+        specifier: workspace:*
+        version: link:../../packages/quality-config
+      '@syntopica/tsconfig':
+        specifier: workspace:*
+        version: link:../../packages/tsconfig
       '@testing-library/jest-dom':
         specifier: ^7.0.1
         version: 7.0.1(@testing-library/dom@10.4.1)(vitest@4.1.11)
