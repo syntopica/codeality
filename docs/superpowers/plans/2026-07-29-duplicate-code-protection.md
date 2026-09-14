@@ -22,7 +22,7 @@ so the 1% threshold has real margin.
 
 ## Global Constraints
 
-- Repo root: `/Users/cristiandeluxe/p/baseline`. Commit directly to `main`.
+- Repo root: `/Users/cristiandeluxe/p/codeality`. Commit directly to `main`.
   English everywhere. No AI attribution in commits.
 - jscpd version: `"jscpd": "^5.0.14"` — identical string in every package.json
   that gets it (root + 8 templates). `sync-versions.mjs` does NOT manage
@@ -417,7 +417,7 @@ Run: `pnpm sync-versions && pnpm sync-versions:check` Expected: both exit 0;
 - [ ] **Step 3: Smoke-test create-baseline output**
 
 Run:
-`cd /tmp && node /Users/cristiandeluxe/p/baseline/packages/create-baseline/bin/create-baseline.mjs --soft; cd -`
+`cd /tmp && node /Users/cristiandeluxe/p/codeality/packages/create-baseline/bin/create-baseline.mjs --soft; cd -`
 Expected: the printed `pnpm add -D` line includes `jscpd@^5.0.14`.
 
 - [ ] **Step 4: Commit**

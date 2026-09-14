@@ -2109,8 +2109,8 @@ three CI jobs and name each new gate in one line, matching the existing tone.
 ```bash
 mkdir -p /tmp/baseline-cli-probe && cd /tmp/baseline-cli-probe
 printf '{"name":"probe","private":true}\n' > package.json
-node /Users/cristiandeluxe/p/baseline/packages/create-baseline/bin/create-baseline.mjs --soft
-node /Users/cristiandeluxe/p/baseline/packages/create-baseline/bin/create-baseline.mjs --hard; echo "exit=$?"
+node /Users/cristiandeluxe/p/codeality/packages/create-baseline/bin/create-baseline.mjs --soft
+node /Users/cristiandeluxe/p/codeality/packages/create-baseline/bin/create-baseline.mjs --hard; echo "exit=$?"
 ```
 
 Expected: `--soft` lists `knip.config.ts`, `lefthook.yml` and `renovate.json` as
@@ -2120,7 +2120,7 @@ Then confirm the inverse:
 
 ```bash
 touch knip.config.ts lefthook.yml renovate.json
-node /Users/cristiandeluxe/p/baseline/packages/create-baseline/bin/create-baseline.mjs --hard; echo "exit=$?"
+node /Users/cristiandeluxe/p/codeality/packages/create-baseline/bin/create-baseline.mjs --hard; echo "exit=$?"
 ```
 
 Expected: the config-file check no longer complains (the run still exits 1 on
@@ -2129,13 +2129,13 @@ missing baseline packages, which is correct for a bare project).
 - [ ] **Step 6: Clean up the probe**
 
 ```bash
-cd /Users/cristiandeluxe/p/baseline && rm -rf /tmp/baseline-cli-probe
+cd /Users/cristiandeluxe/p/codeality && rm -rf /tmp/baseline-cli-probe
 ```
 
 - [ ] **Step 7: Full pipeline run**
 
 ```bash
-cd /Users/cristiandeluxe/p/baseline
+cd /Users/cristiandeluxe/p/codeality
 pnpm check:all && pnpm check:quality && pnpm check:security
 ```
 
