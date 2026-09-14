@@ -1,4 +1,4 @@
-// Which packages each `@busirocket/eslint-config` subpath imports by bare
+// Which packages each `@syntopica/eslint-config` subpath imports by bare
 // specifier. The config ships TypeScript source rather than a build, so these
 // resolve from the consuming project: one missing here fails ESLint before a
 // rule runs, with a message that names neither the baseline nor the subpath

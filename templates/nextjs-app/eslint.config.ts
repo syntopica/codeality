@@ -1,7 +1,7 @@
-import { createAccessibilityConfig } from '@busirocket/eslint-config/accessibility'
-import { createBaseConfig } from '@busirocket/eslint-config/base'
-import { createCodeQualityConfig } from '@busirocket/eslint-config/code-quality'
-import { createNextjsConfig } from '@busirocket/eslint-config/nextjs'
+import { createAccessibilityConfig } from '@syntopica/eslint-config/accessibility'
+import { createBaseConfig } from '@syntopica/eslint-config/base'
+import { createCodeQualityConfig } from '@syntopica/eslint-config/code-quality'
+import { createNextjsConfig } from '@syntopica/eslint-config/nextjs'
 
 // Layer order: base → framework → code-quality → accessibility
 //

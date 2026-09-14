@@ -1,18 +1,18 @@
-# Public API (`@busirocket/quality-config`)
+# Public API (`@syntopica/quality-config`)
 
 Semver applies to **export subpaths** listed below. Import paths not listed here
 are **private** and may change without a major bump.
 
 ## Stable exports (semver)
 
-| Export subpath                                  | Purpose                                                     |
-| ----------------------------------------------- | ----------------------------------------------------------- |
-| `@busirocket/quality-config`                    | Barrel re-exporting every factory and constant below        |
-| `@busirocket/quality-config/knip`               | `createKnipConfig` — unused files/exports/deps gate         |
-| `@busirocket/quality-config/dependency-cruiser` | `createDepCruiserConfig` — module boundary and cycle gate   |
-| `@busirocket/quality-config/type-coverage`      | `TYPE_COVERAGE_THRESHOLD` — minimum non-`any` type coverage |
-| `@busirocket/quality-config/lefthook`           | `createLefthookConfig` — shared git hook pipeline           |
-| `@busirocket/quality-config/jscpd`              | `jscpd.json` — cross-file duplication gate config           |
+| Export subpath                                 | Purpose                                                     |
+| ---------------------------------------------- | ----------------------------------------------------------- |
+| `@syntopica/quality-config`                    | Barrel re-exporting every factory and constant below        |
+| `@syntopica/quality-config/knip`               | `createKnipConfig` — unused files/exports/deps gate         |
+| `@syntopica/quality-config/dependency-cruiser` | `createDepCruiserConfig` — module boundary and cycle gate   |
+| `@syntopica/quality-config/type-coverage`      | `TYPE_COVERAGE_THRESHOLD` — minimum non-`any` type coverage |
+| `@syntopica/quality-config/lefthook`           | `createLefthookConfig` — shared git hook pipeline           |
+| `@syntopica/quality-config/jscpd`              | `jscpd.json` — cross-file duplication gate config           |
 
 ### `createDepCruiserConfig(options)`
 

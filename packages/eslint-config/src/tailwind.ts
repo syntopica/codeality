@@ -21,7 +21,7 @@ const tailwindcss = require('eslint-plugin-tailwindcss') as {
  * allowlist (`settings.tailwindcss.whitelist`) if a project is utility-only.
  *
  * `classnames-order` is intentionally disabled too: `prettier-plugin-tailwindcss`
- * (shipped in `@busirocket/prettier-config/frontend`) is the class sorter of
+ * (shipped in `@syntopica/prettier-config/frontend`) is the class sorter of
  * record and orders classes differently from this rule. A project running
  * both `eslint --fix` and `prettier --write` would see each pass fight the
  * other's ordering, so `lint` and `format:check` could never agree at the

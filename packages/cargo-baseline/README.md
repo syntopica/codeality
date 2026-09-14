@@ -1,8 +1,8 @@
 # cargo-baseline
 
 Structural linter and config scaffolder for Rust: atomic files, placement, size
-caps, no inline SQL. Brings the same discipline as `@busirocket/eslint-config`
-to Rust/Tauri crates.
+caps, no inline SQL. Brings the same discipline as `@syntopica/eslint-config` to
+Rust/Tauri crates.
 
 - **Design spec:**
   [docs/superpowers/specs/2026-07-23-rust-baseline-design.md](https://github.com/BusiRocket/baseline/blob/main/docs/superpowers/specs/2026-07-23-rust-baseline-design.md).

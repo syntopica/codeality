@@ -1,5 +1,5 @@
 {
-  "name": "@busirocket/tsconfig",
+  "name": "@syntopica/tsconfig",
   "version": "0.3.0",
   "private": false,
   "packageManager": "pnpm@11.25.0",

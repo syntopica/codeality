@@ -2,7 +2,7 @@
 // the preset cannot know about - hand-run scripts, e2e specs - extends this
 // afterwards; starting from one line makes that diff readable.
 export function knipConfig(framework) {
-  return `import { createKnipConfig } from '@busirocket/quality-config/knip'
+  return `import { createKnipConfig } from '@syntopica/quality-config/knip'
 
 export default createKnipConfig({ framework: '${framework}' })
 `

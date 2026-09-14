@@ -1,8 +1,8 @@
 # Platform decisions (baseline packages)
 
 This document records the executable decisions for publishing
-`@busirocket/eslint-config`, `@busirocket/prettier-config`, and
-`@busirocket/tsconfig`. It is the counterpart to internal engineering standards
+`@syntopica/eslint-config`, `@syntopica/prettier-config`, and
+`@syntopica/tsconfig`. It is the counterpart to internal engineering standards
 under `docs/standards/`.
 
 ## Criterion (executive)
@@ -10,31 +10,31 @@ under `docs/standards/`.
 **Stabilize the public surface first; automate adoption second.**
 
 Publishing the three config packages and documenting manual adoption takes
-priority over a perfect CLI. The CLI (`@busirocket/create-baseline`) follows
-once the API and dependency model are stable.
+priority over a perfect CLI. The CLI (`@syntopica/create-baseline`) follows once
+the API and dependency model are stable.
 
 ## Decision 1 — Plugin stays narrow
 
 `eslint-plugin-code-policy` (separate repository) ships **custom rules and
 minimal presets only**. It does **not** ship the full ESLint ecosystem. The full
-baseline is composed in `@busirocket/eslint-config`.
+baseline is composed in `@syntopica/eslint-config`.
 
 ## Decision 2 — Official config entry point
 
-`@busirocket/eslint-config` is the **official** entry point for the shared
-ESLint baseline (flat config). It composes core plugins, TypeScript ESLint,
-import hygiene, optional framework plugins, and `eslint-plugin-code-policy`
-where enabled.
+`@syntopica/eslint-config` is the **official** entry point for the shared ESLint
+baseline (flat config). It composes core plugins, TypeScript ESLint, import
+hygiene, optional framework plugins, and `eslint-plugin-code-policy` where
+enabled.
 
 ## Decision 3 — Dedicated bootstrap
 
-`@busirocket/create-baseline` is the dedicated CLI for install, wiring, and
+`@syntopica/create-baseline` is the dedicated CLI for install, wiring, and
 migration. It is versioned independently and must not block the first npm
 release of the config packages.
 
 ## Decision 4 — Hybrid dependencies
 
-`@busirocket/eslint-config` uses:
+`@syntopica/eslint-config` uses:
 
 - **`dependencies`:** core stack shipped with the package — `@eslint/js`,
   `eslint-config-prettier`, `eslint-import-resolver-typescript`,
@@ -46,7 +46,7 @@ release of the config packages.
   and others as listed in `package.json`).
 - **`peerDependenciesMeta`:** `optional: true` for non-universal presets.
 
-`@busirocket/prettier-config` and `@busirocket/tsconfig` keep **peer-only**
+`@syntopica/prettier-config` and `@syntopica/tsconfig` keep **peer-only**
 Prettier / plugins / TypeScript as documented in each `package.json`.
 
 ## Decision 5 — the two ESLint packages must not declare a workspace cycle
@@ -60,7 +60,7 @@ other in both directions, and only one of those edges may exist in a
   and stays declared.
 - **Real, deliberately undeclared:**
   `eslint-plugin-code-policy/eslint.config.ts` lints its own source with
-  `@busirocket/eslint-config`'s presets. It imports them **by relative path**
+  `@syntopica/eslint-config`'s presets. It imports them **by relative path**
   (`../eslint-config/src/base.ts`, the same trick
   `eslint-config/eslint.config.ts` uses on itself), not by package specifier.
 
@@ -69,7 +69,7 @@ knip `unlisted dependency` finding suggests - makes turbo's build graph cyclic
 and `pnpm check:ci` fails outright with
 `Cyclic dependency detected: eslint-plugin-code-policy#build, @busirocket/eslint-config#build`.
 
-The trap is self-detecting: reintroducing a bare `@busirocket/eslint-config`
+The trap is self-detecting: reintroducing a bare `@syntopica/eslint-config`
 import in `eslint-plugin-code-policy` breaks the build with that exact message.
 Fix it by restoring the relative import, not by adding the dependency.
 
@@ -95,4 +95,4 @@ CommonJS-only consumers are **out of scope** unless explicitly documented later.
 - **This repo (`engineering-baseline`):** published config packages, templates,
   CLI, and product docs.
 - **`eslint-plugin-code-policy`:** plugin source, rule changes, and plugin
-  README (link to `@busirocket/eslint-config` for the full stack).
+  README (link to `@syntopica/eslint-config` for the full stack).

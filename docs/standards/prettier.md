@@ -2,10 +2,10 @@
 
 ## Canonical config
 
-The shared package `@busirocket/prettier-config` encodes non-negotiable
+The shared package `@syntopica/prettier-config` encodes non-negotiable
 formatting and the plugin stack used across this portfolio.
 
-### Base (`@busirocket/prettier-config`)
+### Base (`@syntopica/prettier-config`)
 
 - **Formatting:** `trailingComma: "all"`, `tabWidth: 2`, `useTabs: false`,
   `semi: false`, `singleQuote: true`, `printWidth: 100`.
@@ -17,28 +17,28 @@ formatting and the plugin stack used across this portfolio.
 Do not override the core formatting keys in new projects unless there is a
 documented exception (e.g. generated code, Liquid, legacy PHP).
 
-### Frontend (`@busirocket/prettier-config/frontend`)
+### Frontend (`@syntopica/prettier-config/frontend`)
 
 Everything in base, plus `prettier-plugin-tailwindcss` **last** (required by
 that plugin).
 
-### Astro (`@busirocket/prettier-config/astro`)
+### Astro (`@syntopica/prettier-config/astro`)
 
 Base plugins, then `prettier-plugin-astro`, then `prettier-plugin-tailwindcss`
 last. Includes an override so `*.astro` uses the `astro` parser.
 
 ## Which preset to use
 
-| Project type                 | Import                                 |
-| ---------------------------- | -------------------------------------- |
-| Node / tooling / no Tailwind | `@busirocket/prettier-config` (base)   |
-| Frontend with Tailwind       | `@busirocket/prettier-config/frontend` |
-| Astro + Tailwind             | `@busirocket/prettier-config/astro`    |
+| Project type                 | Import                                |
+| ---------------------------- | ------------------------------------- |
+| Node / tooling / no Tailwind | `@syntopica/prettier-config` (base)   |
+| Frontend with Tailwind       | `@syntopica/prettier-config/frontend` |
+| Astro + Tailwind             | `@syntopica/prettier-config/astro`    |
 
 ## Peer dependencies
 
 Install the plugins that match your preset (see
-`@busirocket/prettier-config/package.json` `peerDependencies`). Base requires
+`@syntopica/prettier-config/package.json` `peerDependencies`). Base requires
 Prettier plus `prettier-plugin-organize-imports` and
 `prettier-plugin-css-order`. Frontend and Astro add Tailwind and Astro plugins
 respectively.

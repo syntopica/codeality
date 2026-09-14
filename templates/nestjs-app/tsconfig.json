@@ -1,5 +1,5 @@
 {
-  "extends": "@busirocket/tsconfig/nestjs.json",
+  "extends": "@syntopica/tsconfig/nestjs.json",
   "compilerOptions": {
     "paths": {
       "@/*": ["./src/*"]

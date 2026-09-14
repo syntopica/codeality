@@ -1,4 +1,4 @@
-# @busirocket/eslint-config
+# @syntopica/eslint-config
 
 Flat ESLint configuration for JavaScript and TypeScript projects: shared
 **base** rules plus optional layers for Next.js, Vite + React, Astro, Node,
@@ -28,7 +28,7 @@ listed in `package.json` under `peerDependencies` / `peerDependenciesMeta`.
 ## Install
 
 ```bash
-pnpm add -D @busirocket/eslint-config@^0.1.0 eslint typescript
+pnpm add -D @syntopica/eslint-config@^0.1.0 eslint typescript
 ```
 
 Add peers for the stacks you use (React, Next.js, Astro, and so on). The
@@ -37,7 +37,7 @@ framework-specific plugins remain peers.
 
 ## New project
 
-1. Add `@busirocket/eslint-config` and peers for your stack.
+1. Add `@syntopica/eslint-config` and peers for your stack.
 2. Add `eslint.config.ts` (or `.mjs`) using `jiti` / `tsx` / Node 22+ TypeScript
    support as needed.
 3. Follow
@@ -46,13 +46,13 @@ framework-specific plugins remain peers.
 Minimal `eslint.config.ts` (Node / library):
 
 ```ts
-import { createBaseConfig } from '@busirocket/eslint-config/base'
+import { createBaseConfig } from '@syntopica/eslint-config/base'
 
 export default createBaseConfig({ tsconfigRootDir: import.meta.dirname })
 ```
 
 Next.js App Router: import `createNextjsConfig` from
-`@busirocket/eslint-config/nextjs` and compose with `createBaseConfig` as in the
+`@syntopica/eslint-config/nextjs` and compose with `createBaseConfig` as in the
 the Next.js template in
 [engineering-baseline](https://github.com/BusiRocket/engineering-baseline/tree/main/templates/nextjs-app).
 
@@ -62,7 +62,7 @@ See
 [docs/adoption/existing-repo.md](https://github.com/BusiRocket/engineering-baseline/blob/main/docs/adoption/existing-repo.md)
 and
 [docs/migration.md](https://github.com/BusiRocket/engineering-baseline/blob/main/docs/migration.md).
-Migrate to flat config first, then layer `@busirocket/eslint-config`.
+Migrate to flat config first, then layer `@syntopica/eslint-config`.
 
 ## Stacks
 
@@ -92,7 +92,7 @@ tests.
 ## CLI helper
 
 ```bash
-pnpm dlx @busirocket/create-baseline@^0.1.0 --check
+pnpm dlx @syntopica/create-baseline@^0.1.0 --check
 ```
 
 `--soft` prints install commands; `--hard` also requires `eslint.config.*` in
@@ -102,5 +102,5 @@ the repo root.
 
 - **Plugin (rules only):** `eslint-plugin-code-policy` — full baseline is
   composed here, not in the plugin.
-- **Prettier / TS configs:** `@busirocket/prettier-config`,
-  `@busirocket/tsconfig`.
+- **Prettier / TS configs:** `@syntopica/prettier-config`,
+  `@syntopica/tsconfig`.

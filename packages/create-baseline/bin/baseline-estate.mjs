@@ -30,7 +30,7 @@ async function main() {
   const consumers = await findConsumers(root)
   const pythonConsumers = await findPythonConsumers(root)
   if (!consumers.length && !pythonConsumers.length) {
-    console.log(`baseline-estate: no @busirocket consumers under ${root}.`)
+    console.log(`baseline-estate: no @syntopica consumers under ${root}.`)
     return
   }
 

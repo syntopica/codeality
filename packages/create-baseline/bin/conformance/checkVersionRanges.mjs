@@ -8,7 +8,7 @@ import { rangeFloor } from './rangeFloor.mjs'
  * and in CI.
  *
  * The failure this catches is quiet by design. Thirteen repositories sat on
- * `@busirocket/prettier-config@^0.1.2` against a published `0.2.0`, and
+ * `@syntopica/prettier-config@^0.1.2` against a published `0.2.0`, and
  * Renovate cannot close that gap on its own - a caret on a `0.x` line is
  * locked to the minor, so the range has to be widened by hand before any
  * update tool can see the new version at all. Nothing anywhere reported it.

@@ -1,8 +1,8 @@
 // The git hooks every baseline project runs: lint and format on the staged
 // files at commit, secret scan before push. Mirrors createLefthookConfig() in
-// @busirocket/quality-config/lefthook.
+// @syntopica/quality-config/lefthook.
 export function lefthookConfig() {
-  return `# Mirrors createLefthookConfig() in @busirocket/quality-config/lefthook.
+  return `# Mirrors createLefthookConfig() in @syntopica/quality-config/lefthook.
 pre-commit:
   parallel: true
   commands:

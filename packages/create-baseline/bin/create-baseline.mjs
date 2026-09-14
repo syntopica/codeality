@@ -72,7 +72,7 @@ function missingBaseline(deps, names) {
 // project's own tsconfig then extends) leaves this package no insertion point,
 // so requiring the dependency there would only add one nothing reads - which
 // the knip gate correctly reports as dead weight.
-const TSCONFIG_PACKAGE = '@busirocket/tsconfig'
+const TSCONFIG_PACKAGE = '@syntopica/tsconfig'
 
 // A tsconfig inside a dot-directory is build output its framework regenerates,
 // never a file anyone authored and never one that could extend a shared preset.
@@ -175,7 +175,7 @@ async function main() {
     manifest = await readManifest(root)
   } catch {
     if (flags.soft) {
-      console.log('@busirocket baseline — add these devDependencies:\n')
+      console.log('@syntopica baseline — add these devDependencies:\n')
       printInstall()
       console.log(
         '\n(No package.json in current directory; skipped dependency scan.)',
@@ -213,7 +213,7 @@ async function main() {
       // against. Say so: silence here reads as "peers are fine", and the
       // consequence is an opaque ESLint crash on the first lint run.
       console.log(
-        '\nESLint peers: not verified. @busirocket/eslint-config is not ' +
+        '\nESLint peers: not verified. @syntopica/eslint-config is not ' +
           'installed here yet -- run the install above, then re-run this ' +
           'command to check them.',
       )
@@ -239,7 +239,7 @@ async function main() {
       .join(' ')
     console.log(`\n  pnpm add -D ${spec}${where ? ` --filter ${where}` : ''}`)
     console.log(
-      '\n@busirocket/eslint-config ships TypeScript source rather than a ' +
+      '\n@syntopica/eslint-config ships TypeScript source rather than a ' +
         'build, so these resolve from your project. A missing or too-old one ' +
         'fails ESLint before any rule runs.',
     )
@@ -293,7 +293,7 @@ async function main() {
         'needs those declared as knip entry points.\n\n' +
         (framework === 'nextjs'
           ? 'If you also switch tsconfig.json to ' +
-            '@busirocket/tsconfig/nextjs, it sets `jsx: preserve` the way ' +
+            '@syntopica/tsconfig/nextjs, it sets `jsx: preserve` the way ' +
             'Next documents - SWC does the transform at build time. Vitest ' +
             'does not go through SWC, so every .tsx test fails to parse ' +
             'until its config names the runtime itself: `oxc: { jsx: { ' +
@@ -316,7 +316,7 @@ async function main() {
   const missingQuality = await missingQualityConfigs(root)
 
   if (flags.soft) {
-    console.log('@busirocket baseline — add these devDependencies:\n')
+    console.log('@syntopica baseline — add these devDependencies:\n')
     printInstall(required)
     if (generatedTsConfig) {
       console.log(
@@ -330,14 +330,14 @@ async function main() {
     }
     if (!eslintOk) {
       console.log(
-        '\nNo eslint.config.* found. Add a flat config that imports @busirocket/eslint-config (see https://github.com/BusiRocket/engineering-baseline/tree/main/docs/adoption).',
+        '\nNo eslint.config.* found. Add a flat config that imports @syntopica/eslint-config (see https://github.com/BusiRocket/engineering-baseline/tree/main/docs/adoption).',
       )
     }
     if (missingQuality.length) {
       console.log(
         '\nMissing quality-gate config:',
         missingQuality.join(', '),
-        '(see @busirocket/quality-config and docs/adoption/new-repo.md).',
+        '(see @syntopica/quality-config and docs/adoption/new-repo.md).',
       )
     }
   }

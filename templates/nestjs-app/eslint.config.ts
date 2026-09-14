@@ -1,6 +1,6 @@
-import { createBaseConfig } from '@busirocket/eslint-config/base'
-import { createCodeQualityConfig } from '@busirocket/eslint-config/code-quality'
-import { createNestjsConfig } from '@busirocket/eslint-config/nestjs'
+import { createBaseConfig } from '@syntopica/eslint-config/base'
+import { createCodeQualityConfig } from '@syntopica/eslint-config/code-quality'
+import { createNestjsConfig } from '@syntopica/eslint-config/nestjs'
 
 export default [
   ...createBaseConfig({ tsconfigRootDir: import.meta.dirname }),

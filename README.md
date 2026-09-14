@@ -8,20 +8,20 @@ This repository is the source of truth for:
   package)
 - Engineering standards documentation
 
-Shared **@busirocket/\*** packages (ESLint, Prettier, TypeScript configs, and
-the `create-baseline` CLI) live in the `packages/` directory of this very
-monorepo! They are managed using Turborepo and pnpm workspaces.
+Shared **@syntopica/\*** packages (ESLint, Prettier, TypeScript configs, and the
+`create-baseline` CLI) live in the `packages/` directory of this very monorepo!
+They are managed using Turborepo and pnpm workspaces.
 
 ## Quick start
 
 In this monorepo, the templates in `templates/` depend on the local
-**`@busirocket/*`** packages via the workspace. During local development, `pnpm`
+**`@syntopica/*`** packages via the workspace. During local development, `pnpm`
 will automatically resolve these packages directly from the `packages/` folder.
 
 For a real new project:
 
 1. Copy the relevant template from `templates/` into a new directory.
-2. Ensure you have the required versions of `@busirocket/*` packages (installing
+2. Ensure you have the required versions of `@syntopica/*` packages (installing
    them from npm if you are not developing inside this monorepo).
 3. Run `pnpm install`.
 4. Run `pnpm check:all` before the first commit.
@@ -29,7 +29,7 @@ For a real new project:
 In this monorepo, `pnpm fix:all` runs ESLint fixes and Prettier across all
 workspace packages and the repository root (docs, configs, templates).
 
-Published package scope is **`@busirocket/*`**. Use semver ranges from npm (for
+Published package scope is **`@syntopica/*`**. Use semver ranges from npm (for
 example `^0.1.0`).
 
 **Decisions and compatibility:**
@@ -44,16 +44,16 @@ example `^0.1.0`).
 All core packages are maintained together inside the `packages/` directory of
 this monorepo:
 
-| Package                       | Location                             | Description                                                                           |
-| ----------------------------- | ------------------------------------ | ------------------------------------------------------------------------------------- |
-| `@busirocket/eslint-config`   | `packages/eslint-config`             | Flat ESLint configs — base + nextjs / astro / vite-react / vite-vue / node            |
-| `@busirocket/tsconfig`        | `packages/tsconfig`                  | TypeScript configs — base + app / nextjs / astro / vite-react / vite-vue / node       |
-| `@busirocket/prettier-config` | `packages/prettier-config`           | Prettier — base (organize-imports, css-order, MD wrap) + frontend (Tailwind) + astro  |
-| `@busirocket/create-baseline` | `packages/create-baseline`           | CLI to scaffold baselines from templates                                              |
-| `eslint-plugin-code-policy`   | `packages/eslint-plugin-code-policy` | Custom strict ESLint rules for code boundaries, architecture, and type safety         |
-| `@busirocket/quality-config`  | `packages/quality-config`            | Factories for cross-file quality gates - knip, dependency-cruiser, lefthook configs   |
-| `cargo-baseline`              | `packages/cargo-baseline`            | Rust structural linter and config scaffolder - atomic files, placement, no inline SQL |
-| `busirocket-baseline-py`      | `packages/baseline-py`               | Python structural linter and config scaffolder - same rules, plus an aggregated gate  |
+| Package                      | Location                             | Description                                                                           |
+| ---------------------------- | ------------------------------------ | ------------------------------------------------------------------------------------- |
+| `@syntopica/eslint-config`   | `packages/eslint-config`             | Flat ESLint configs — base + nextjs / astro / vite-react / vite-vue / node            |
+| `@syntopica/tsconfig`        | `packages/tsconfig`                  | TypeScript configs — base + app / nextjs / astro / vite-react / vite-vue / node       |
+| `@syntopica/prettier-config` | `packages/prettier-config`           | Prettier — base (organize-imports, css-order, MD wrap) + frontend (Tailwind) + astro  |
+| `@syntopica/create-baseline` | `packages/create-baseline`           | CLI to scaffold baselines from templates                                              |
+| `eslint-plugin-code-policy`  | `packages/eslint-plugin-code-policy` | Custom strict ESLint rules for code boundaries, architecture, and type safety         |
+| `@syntopica/quality-config`  | `packages/quality-config`            | Factories for cross-file quality gates - knip, dependency-cruiser, lefthook configs   |
+| `cargo-baseline`             | `packages/cargo-baseline`            | Rust structural linter and config scaffolder - atomic files, placement, no inline SQL |
+| `busirocket-baseline-py`     | `packages/baseline-py`               | Python structural linter and config scaffolder - same rules, plus an aggregated gate  |
 
 ### Maintainers: npm publish
 

@@ -1,4 +1,4 @@
-// Mirrors createCommitlintConfig() in @busirocket/quality-config/commitlint.
+// Mirrors createCommitlintConfig() in @syntopica/quality-config/commitlint.
 // commitlint reads a config file, not a TypeScript factory, so this file is
 // the shape that factory produces - see it for the rationale behind each
 // deviation from the conventional preset.

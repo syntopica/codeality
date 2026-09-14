@@ -26,9 +26,9 @@ compiler is installed under a second alias used only for type-checking.
 | Type-check is plain `tsc --noEmit` (Next, Vite, NestJS, plain TS package) | Yes — dual alias below                                                    |
 | `vue-tsc` (Vue, Nuxt)                                                     | No — keep the REAL `typescript@^6.x` package (not the alias, see Gotchas) |
 | `astro check` + `tsc`                                                     | Yes — `astro check` uses the 6.x alias, `tsc` part goes native            |
-| tsconfig uses `baseUrl`, `target: es5`, AMD/UMD, `moduleResolution: node` | Fix config first (not an issue if extending `@busirocket/tsconfig`)       |
+| tsconfig uses `baseUrl`, `target: es5`, AMD/UMD, `moduleResolution: node` | Fix config first (not an issue if extending `@syntopica/tsconfig`)        |
 
-`@busirocket/tsconfig` is already TS 7-compatible (`Bundler` resolution,
+`@syntopica/tsconfig` is already TS 7-compatible (`Bundler` resolution,
 `ES2024`, `strict`, no `baseUrl`), so projects extending it need **no tsconfig
 changes**.
 

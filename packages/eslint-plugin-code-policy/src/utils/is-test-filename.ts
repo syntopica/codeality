@@ -1,4 +1,4 @@
-// Whether a path is test code, by the same shape `@busirocket/eslint-config`
+// Whether a path is test code, by the same shape `@syntopica/eslint-config`
 // uses to scope its testing rules: a `*.test.*` / `*.spec.*` file, or anything
 // under `__tests__/`, `tests/` or `test/`.
 //

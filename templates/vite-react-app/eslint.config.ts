@@ -1,10 +1,10 @@
 import path from 'node:path'
 
-import { createAccessibilityConfig } from '@busirocket/eslint-config/accessibility'
-import { createBaseConfig } from '@busirocket/eslint-config/base'
-import { createCodeQualityConfig } from '@busirocket/eslint-config/code-quality'
-import { createTailwindConfig } from '@busirocket/eslint-config/tailwind'
-import { createViteReactConfig } from '@busirocket/eslint-config/vite-react'
+import { createAccessibilityConfig } from '@syntopica/eslint-config/accessibility'
+import { createBaseConfig } from '@syntopica/eslint-config/base'
+import { createCodeQualityConfig } from '@syntopica/eslint-config/code-quality'
+import { createTailwindConfig } from '@syntopica/eslint-config/tailwind'
+import { createViteReactConfig } from '@syntopica/eslint-config/vite-react'
 import prettier from 'eslint-config-prettier'
 
 // Layer order: base → framework → code-quality → accessibility → tailwind

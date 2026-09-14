@@ -1,4 +1,4 @@
-# @busirocket/tsconfig
+# @syntopica/tsconfig
 
 Shared TypeScript `extends` presets for apps and libraries (Next.js, Astro,
 Vite + React, Node).
@@ -11,7 +11,7 @@ Vite + React, Node).
 ## Install
 
 ```bash
-pnpm add -D @busirocket/tsconfig@^0.1.0 typescript
+pnpm add -D @syntopica/tsconfig@^0.1.0 typescript
 ```
 
 ## Exports
@@ -28,7 +28,7 @@ pnpm add -D @busirocket/tsconfig@^0.1.0 typescript
 ## The two root shapes
 
 There are exactly two correct shapes, and they are opposites. Getting this wrong
-is not a style problem: `baseline-type-coverage` (`@busirocket/quality-config`
+is not a style problem: `baseline-type-coverage` (`@syntopica/quality-config`
 0.10.0+) walks a solution root's `references` to find the projects it measures,
 so a root that extends a preset instead of referencing hands the runner one
 project and hides the rest. That exact shape once made the runner answer
@@ -40,7 +40,7 @@ project and hides the rest. That exact shape once made the runner answer
 
 ```json
 {
-  "extends": "@busirocket/tsconfig/nextjs.json",
+  "extends": "@syntopica/tsconfig/nextjs.json",
   "compilerOptions": {
     "paths": { "@/*": ["./src/*"] }
   },

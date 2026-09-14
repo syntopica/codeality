@@ -19,10 +19,10 @@ const PACKAGES_DIR = resolve(REPO_ROOT, 'packages')
 
 // Packages whose published version create-baseline pins for the projects it sets up.
 const BASELINE_CONSUMER_PACKAGES = [
-  '@busirocket/eslint-config',
-  '@busirocket/prettier-config',
-  '@busirocket/tsconfig',
-  '@busirocket/quality-config',
+  '@syntopica/eslint-config',
+  '@syntopica/prettier-config',
+  '@syntopica/tsconfig',
+  '@syntopica/quality-config',
   'eslint-plugin-code-policy',
 ]
 

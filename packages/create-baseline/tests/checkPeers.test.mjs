@@ -23,12 +23,12 @@ const install = async (name, manifest) => {
 }
 
 const config = (peerDependencies) =>
-  install('@busirocket/eslint-config', { version: '0.7.3', peerDependencies })
+  install('@syntopica/eslint-config', { version: '0.7.3', peerDependencies })
 
 const flatConfig = (source) => writeFile(join(root, 'eslint.config.ts'), source)
 
 const BASE =
-  "import { createBaseConfig } from '@busirocket/eslint-config/base'\n"
+  "import { createBaseConfig } from '@syntopica/eslint-config/base'\n"
 
 describe('checkPeers', () => {
   it('returns null when the config is not installed', async () => {

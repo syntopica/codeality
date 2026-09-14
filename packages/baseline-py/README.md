@@ -2,7 +2,7 @@
 
 Structural linter and config scaffolder for Python: atomic files, placement,
 size caps, no inline SQL. Brings the same discipline as
-`@busirocket/eslint-config` and `cargo-baseline` to Python projects.
+`@syntopica/eslint-config` and `cargo-baseline` to Python projects.
 
 - **Design spec:**
   [docs/superpowers/specs/2026-08-31-python-baseline-design.md](https://github.com/BusiRocket/baseline/blob/main/docs/superpowers/specs/2026-08-31-python-baseline-design.md).

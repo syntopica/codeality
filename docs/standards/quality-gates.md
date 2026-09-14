@@ -68,7 +68,7 @@ Turbo - the per-package `dupes` task was deliberately dropped from `check:ci`
 because the root run is the only one that is a genuine cross-file gate.
 
 **Threshold:** `threshold: 1` (max 1% duplicated lines), configured in
-`@busirocket/quality-config`'s `jscpd.json`.
+`@syntopica/quality-config`'s `jscpd.json`.
 
 **Why 1%:** strict by design. Templates start at 0% duplication; the budget
 exists for edge cases (near-duplicate boilerplate that isn't worth abstracting
@@ -90,7 +90,7 @@ and imports of dependencies never declared in `package.json`.
 workspaces natively - dead code across `packages/*` is only visible with a
 global view), and `pnpm -r --filter "./templates/*" knip` per template (each
 template's own `knip.config.ts` imports `createKnipConfig` from
-`@busirocket/quality-config/knip` with its own framework/entry glob).
+`@syntopica/quality-config/knip` with its own framework/entry glob).
 
 **Threshold:** `error` for `files`, `dependencies`, `devDependencies`,
 `unlisted`, `exports`, `types`, `duplicates`; `warn` for `binaries` and
@@ -144,9 +144,9 @@ Adding `drizzle.config.ts` to `ignore` does **not** stop the plugin loading it.
 Only `drizzle: false` does.
 
 **False positive:** a dependency imported only through a dynamic string
-(`jiti('@busirocket/quality-config/dependency-cruiser')`) or only by a peer
+(`jiti('@syntopica/quality-config/dependency-cruiser')`) or only by a peer
 consumer (a template's ESLint peer dependencies, imported by
-`@busirocket/eslint-config` itself, never by the template's own source) needs
+`@syntopica/eslint-config` itself, never by the template's own source) needs
 `ignoreDependencies` in the relevant workspace's `knip.config.ts`, with a
 comment explaining why knip can't see the real caller. Do not disable the
 `dependencies`/`unlisted` rule to silence it.
@@ -218,7 +218,7 @@ added to the same directories; whole-workspace exclusion plus a real
 per-workspace check does not.
 
 **Consumers get the per-workspace pass as a bin.** `baseline-deps-graph`, from
-`@busirocket/quality-config`, cruises every workspace that has a `tsconfig.json`
+`@syntopica/quality-config`, cruises every workspace that has a `tsconfig.json`
 with that workspace's own config:
 
 ```sh
@@ -239,8 +239,8 @@ are. `.dependency-cruiser.cjs` turns it into the repo-wide run's
 `orphanExemptions` option, and `scripts/deps-graph-aliased.mjs` cruises the same
 list - so adding an alias to a workspace means adding it there and nowhere else,
 and an exclusion can never outlive the check that covers it. The list lives in
-this repo rather than inside `@busirocket/quality-config` because these
-directory names are ours, not every consumer's.
+this repo rather than inside `@syntopica/quality-config` because these directory
+names are ours, not every consumer's.
 
 **Gotcha - `paths` resolve against the cwd.** dependency-cruiser resolves a
 tsconfig's relative `paths` against the current working directory, not against
@@ -281,8 +281,8 @@ carefully: it names the rule, never the pattern that caused it.
 through a generic argument (`--strict`). The threshold is 99% per workspace.
 
 **Runs:** `pnpm type-coverage`, which is the `baseline-type-coverage` bin
-shipped by `@busirocket/quality-config`, and inside `pnpm check:quality`. One
-run per workspace that has its own `tsconfig.json`, discovered by walking the
+shipped by `@syntopica/quality-config`, and inside `pnpm check:quality`. One run
+per workspace that has its own `tsconfig.json`, discovered by walking the
 directories given as arguments (or the working directory when none are). The
 threshold is read from `TYPE_COVERAGE_THRESHOLD` in the package's own source
 rather than restated in the runner, so the published constant and the gate
@@ -370,7 +370,7 @@ assertion (`vitest/expect-expect`), duplicate test titles
 never awaited (`testing-library/await-async-queries`, `await-async-utils`).
 
 **Runs:** as an ESLint layer (`createTestingConfig`, folded into
-`createCodeQualityConfig` in `@busirocket/eslint-config`) matched against
+`createCodeQualityConfig` in `@syntopica/eslint-config`) matched against
 `**/*.{test,spec}.{ts,tsx}`, `**/__tests__/**`, `**/test/**`. Every template
 inherits it automatically through the shared `code-quality` layer - there is no
 separate script to wire.
@@ -604,7 +604,7 @@ rather than failing, and should be checked inside each workspace.
 ## `baseline-estate` (the whole estate at once)
 
 **Detects:** the same seven checks, across every directory under a root that
-depends on a `@busirocket/*` package.
+depends on a `@syntopica/*` package.
 
 **Runs:** `pnpm estate ~/p`, on demand and before a release.
 
@@ -787,7 +787,7 @@ rather than left to be recovered from the log. Re-run just that gate with
 
 **A cold-run failure that is not a gate failure:** pnpm does not relink a
 workspace package's binaries when only that package's `bin` map changes. A
-`node_modules` installed before `@busirocket/quality-config` gained
+`node_modules` installed before `@syntopica/quality-config` gained
 `baseline-type-coverage` still has no symlink for it, and `pnpm type-coverage`
 
 - a step of `check:quality` - dies with

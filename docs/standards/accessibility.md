@@ -12,9 +12,9 @@ as ESLint rules that run on every save.
 Add `createAccessibilityConfig()` after the framework layer:
 
 ```ts
-import { createAccessibilityConfig } from '@busirocket/eslint-config/accessibility'
-import { createBaseConfig } from '@busirocket/eslint-config/base'
-import { createNextjsConfig } from '@busirocket/eslint-config/nextjs'
+import { createAccessibilityConfig } from '@syntopica/eslint-config/accessibility'
+import { createBaseConfig } from '@syntopica/eslint-config/base'
+import { createNextjsConfig } from '@syntopica/eslint-config/nextjs'
 
 export default [
   ...createBaseConfig({ tsconfigRootDir: import.meta.dirname }),

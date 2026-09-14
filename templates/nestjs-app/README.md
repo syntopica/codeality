@@ -5,10 +5,9 @@ NestJS service scaffolded on the BusiRocket engineering baseline.
 ## Stack
 
 - **NestJS 11** (Express platform)
-- **ESLint** via `@busirocket/eslint-config` (`base` + `nestjs` +
-  `code-quality`)
-- **TypeScript** via `@busirocket/tsconfig/nestjs.json` (decorators enabled)
-- **Prettier** via `@busirocket/prettier-config`
+- **ESLint** via `@syntopica/eslint-config` (`base` + `nestjs` + `code-quality`)
+- **TypeScript** via `@syntopica/tsconfig/nestjs.json` (decorators enabled)
+- **Prettier** via `@syntopica/prettier-config`
 - **Vitest** for tests
 
 ## Scripts

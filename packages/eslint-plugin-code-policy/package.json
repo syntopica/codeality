@@ -125,7 +125,7 @@
   },
   "devDependencies": {
     "@arethetypeswrong/cli": "^0.18.5",
-    "@busirocket/tsconfig": "workspace:*",
+    "@syntopica/tsconfig": "workspace:*",
     "@stryker-mutator/core": "^10.0.0",
     "@stryker-mutator/vitest-runner": "^10.0.0",
     "@types/node": "^26.4.0",

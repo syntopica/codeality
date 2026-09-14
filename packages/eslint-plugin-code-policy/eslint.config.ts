@@ -1,4 +1,4 @@
-// Relative imports, not the `@busirocket/eslint-config` package specifier:
+// Relative imports, not the `@syntopica/eslint-config` package specifier:
 // eslint-config's own code-quality.ts imports this package (eslint-plugin-code-policy)
 // as a real runtime dependency, so a package.json edge back to eslint-config
 // here would be a workspace cycle. Reaching its source by path (the same

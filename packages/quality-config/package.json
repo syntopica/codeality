@@ -1,5 +1,5 @@
 {
-  "name": "@busirocket/quality-config",
+  "name": "@syntopica/quality-config",
   "version": "0.11.0",
   "private": false,
   "packageManager": "pnpm@11.25.0",
@@ -81,7 +81,7 @@
   },
   "devDependencies": {
     "@arethetypeswrong/cli": "^0.18.5",
-    "@busirocket/eslint-config": "workspace:*",
+    "@syntopica/eslint-config": "workspace:*",
     "@types/node": "^26.4.0",
     "dependency-cruiser": "^18.2.0",
     "eslint": "^10.9.1",

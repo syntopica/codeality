@@ -1,5 +1,5 @@
 /**
- * Every project tsconfig must extend an `@busirocket/tsconfig` preset.
+ * Every project tsconfig must extend an `@syntopica/tsconfig` preset.
  *
  * A repository can carry the dependency, pass every other column, and still
  * not be on the baseline: in consumer-g only `tsconfig.app.json` extended a
@@ -16,13 +16,13 @@
  * the projects - a root that extends instead of referencing hands the runner
  * one project and hides the rest.
  *
- * Only judged when the repository depends on `@busirocket/tsconfig`;
+ * Only judged when the repository depends on `@syntopica/tsconfig`;
  * `checkVersionRanges` owns the case of the package missing entirely. A leaf
  * that failed to parse is skipped rather than judged - `checkTsconfigProjects`
  * and `tsc` itself surface an unreadable reference.
  */
 export function checkTsconfigPresets({ tsconfigs, deps }) {
-  if (!tsconfigs || !deps['@busirocket/tsconfig']) return []
+  if (!tsconfigs || !deps['@syntopica/tsconfig']) return []
 
   if (!tsconfigs.solution) {
     return extendsPreset(tsconfigs.root) ? [] : [finding('tsconfig.json')]
@@ -40,7 +40,7 @@ function extendsPreset(parsed) {
     : [parsed.extends]
   return bases.some(
     (base) =>
-      typeof base === 'string' && base.startsWith('@busirocket/tsconfig'),
+      typeof base === 'string' && base.startsWith('@syntopica/tsconfig'),
   )
 }
 
@@ -48,7 +48,7 @@ function finding(config) {
   return {
     id: `tsconfig-preset:${config}`,
     level: 'error',
-    message: `\`${config}\` does not extend an \`@busirocket/tsconfig\` preset`,
+    message: `\`${config}\` does not extend an \`@syntopica/tsconfig\` preset`,
     detail:
       'A hand-written tsconfig drifts below the baseline silently. Extend ' +
       'the matching preset in this file; in a multi-project repository the ' +

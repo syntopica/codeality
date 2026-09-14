@@ -1,4 +1,4 @@
-# @busirocket/prettier-config
+# @syntopica/prettier-config
 
 Shared Prettier configuration presets for JavaScript, TypeScript, Markdown, and
 optional Tailwind and Astro plugins.
@@ -15,7 +15,7 @@ Peer plugins are listed in `package.json` (`prettier-plugin-organize-imports`,
 ## Install
 
 ```bash
-pnpm add -D @busirocket/prettier-config@^0.1.0 prettier
+pnpm add -D @syntopica/prettier-config@^0.1.0 prettier
 ```
 
 Add optional peers for Astro or Tailwind when you use those stacks.
@@ -31,7 +31,7 @@ Add optional peers for Astro or Tailwind when you use those stacks.
 Example `prettier.config.mjs`:
 
 ```js
-import base from '@busirocket/prettier-config'
+import base from '@syntopica/prettier-config'
 
 /** @type {import('prettier').Config} */
 export default { ...base }
