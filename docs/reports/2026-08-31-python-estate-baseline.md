@@ -99,7 +99,7 @@ exists for. `atrium`'s two BPY002 findings are genuine near-misses instead
 ## Reproducing this
 
 ```bash
-for repo in ~/p/atrium ~/p/mempalace ~/p/djplayerdeluxe \
+for repo in ~/p/mem ~/p/mempalace ~/p/djplayerdeluxe \
             ~/p/esp32-amoled/agentmeter ~/p/esp32-amoled/clawd-pet; do
   uv run --project packages/baseline-py baseline-py check \
     --project "$repo" --format json > "/tmp/$(basename "$repo").json"

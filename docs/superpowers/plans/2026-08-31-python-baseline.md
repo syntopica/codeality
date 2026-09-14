@@ -1225,7 +1225,7 @@ git commit -m "feat(templates): add the python-package template on the baseline"
 - [ ] **Step 1: Run the checker over the five repositories**
 
 ```bash
-for repo in ~/p/atrium ~/p/mempalace ~/p/djplayerdeluxe \
+for repo in ~/p/mem ~/p/mempalace ~/p/djplayerdeluxe \
             ~/p/esp32-amoled/agentmeter ~/p/esp32-amoled/clawd-pet; do
   uv run --project packages/baseline-py baseline-py check \
     --project "$repo" --format json > "/tmp/$(basename "$repo").json"
@@ -1235,7 +1235,7 @@ done
 - [ ] **Step 2: Verify nothing changed in any of the five repos**
 
 ```bash
-for repo in ~/p/atrium ~/p/mempalace ~/p/djplayerdeluxe \
+for repo in ~/p/mem ~/p/mempalace ~/p/djplayerdeluxe \
             ~/p/esp32-amoled/agentmeter ~/p/esp32-amoled/clawd-pet; do
   git -C "$repo" status --short
 done
