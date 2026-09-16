@@ -7,6 +7,21 @@ verified complete - `[-]` obsolete or superseded.
 
 ## Python baseline
 
+- [!] Finish the `codeality-py` rename. Blocked on PyPI: trusted publishing is
+  configured per project name, so `syntopica-codeality-py` needs a pending
+  publisher (owner `syntopica`, repository `codeality`, workflow
+  `publish-python.yml`, environment `pypi`) before
+  `gh workflow run publish-python.yml -f package=codeality-py` can succeed.
+  After 0.2.0 is on PyPI: regenerate `templates/python-package/uv.lock` (it
+  still pins `busirocket-baseline-py`, which keeps the template gate job red),
+  then migrate the ten consumers - wiki, brain, clips, atrium, syntopica,
+  agent-deluxe, DeluxeServerTools, DJCenterDeluxe, djplayerdeluxe and
+  esp32-amoled/clawd-pet - by swapping the dependency, renaming
+  `baseline-py.toml` to `codeality-py.toml`, rewriting the two
+  `# baseline-py: ignore` comments in wiki, and changing
+  `uv run baseline-py gate` in each CI workflow. `busirocket-baseline-py` 0.1.12
+  stays published and is not yanked: yanking breaks every lock still pinning it.
+
 - [ ] Work down the adoption debt the 2026-09-01 sweep recorded across the seven
       repositories now gating: the mypy `ignore_errors` ratchets (djplayerdeluxe
       52 modules, DJCenterDeluxe 35, brain 28, agent-deluxe 12, clawd-pet 9),
