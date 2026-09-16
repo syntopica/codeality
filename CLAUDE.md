@@ -26,12 +26,12 @@ workflow `publish.yml`, allowed action `npm publish`, no environment.
 
 ## The Python package publishes to PyPI, also without a token
 
-`packages/baseline-py` is a uv project, outside the pnpm workspace. It publishes
-through **PyPI Trusted Publishing (OIDC)** from
+`packages/codeality-py` is a uv project, outside the pnpm workspace. It
+publishes through **PyPI Trusted Publishing (OIDC)** from
 `.github/workflows/publish-python.yml`, the same shape as the npm flow: no
 token, no `twine`, no local login.
 
-    gh workflow run publish-python.yml -f package=baseline-py
+    gh workflow run publish-python.yml -f package=codeality-py
 
 The trusted publisher was registered on 2026-08-31 under the PyPI account
 `busirocket` (info@busirocket.com; credentials and TOTP in 1Password, vault
@@ -42,8 +42,8 @@ exist for the job to run - it did not, and was created with
 
 Its own checks run through uv, not pnpm:
 
-    uv run --project packages/baseline-py pytest
-    uv run --project packages/baseline-py baseline-py gate --project packages/baseline-py
+    uv run --project packages/codeality-py pytest
+    uv run --project packages/codeality-py codeality-py gate --project packages/codeality-py
 
 ## Dependency updates
 

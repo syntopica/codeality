@@ -11,18 +11,18 @@ import { checkLockPin } from '../bin/python/checkLockPin.mjs'
 import { checkQualityGroup } from '../bin/python/checkQualityGroup.mjs'
 import { runPythonConformance } from '../bin/python/runPythonConformance.mjs'
 
-const VERSIONS = { 'busirocket-baseline-py': '0.1.9' }
+const VERSIONS = { 'syntopica-codeality-py': '0.1.9' }
 const PYPROJECT = `[project]
 name = "demo"
 
 [dependency-groups]
 quality = [
-  "busirocket-baseline-py>=0.1,<1",
+  "syntopica-codeality-py>=0.1,<1",
   "ruff>=0.15,<1",
 ]
 `
 const LOCK = `[[package]]
-name = "busirocket-baseline-py"
+name = "syntopica-codeality-py"
 version = "0.1.9"
 `
 const GATE_WORKFLOW = `on:
@@ -32,13 +32,13 @@ jobs:
   gate:
     steps:
       - uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6
-      - run: uv run baseline-py gate --json
+      - run: uv run codeality-py gate --json
 `
 
 let root
 
 beforeEach(async () => {
-  root = await mkdtemp(join(tmpdir(), 'baseline-python-estate-'))
+  root = await mkdtemp(join(tmpdir(), 'codeality-python-estate-'))
 })
 
 const project = async (path, files) => {
@@ -61,8 +61,8 @@ describe('findPythonConsumers', () => {
   })
 
   it('does not report the tool as its own consumer', async () => {
-    await project('baseline/packages/baseline-py', {
-      'pyproject.toml': '[project]\nname = "busirocket-baseline-py"\n',
+    await project('baseline/packages/codeality-py', {
+      'pyproject.toml': '[project]\nname = "syntopica-codeality-py"\n',
     })
     expect(await findPythonConsumers(root)).toEqual([])
   })
@@ -89,7 +89,7 @@ describe('checkQualityGroup', () => {
   })
 
   it('reports the tool declared outside the group', () => {
-    const pyproject = '[project]\ndependencies = ["busirocket-baseline-py"]\n'
+    const pyproject = '[project]\ndependencies = ["syntopica-codeality-py"]\n'
     expect(checkQualityGroup({ pyproject }).map((f) => f.id)).toEqual([
       'py-quality-group',
     ])
@@ -106,12 +106,12 @@ describe('checkGateWorkflow', () => {
     const text =
       'on:\n  push:\njobs:\n  test:\n    steps:\n      - run: pytest\n'
     const found = checkGateWorkflow({ workflows: [{ name: 'ci.yml', text }] })
-    expect(found[0].message).toBe('no workflow runs baseline-py gate')
+    expect(found[0].message).toBe('no workflow runs codeality-py gate')
   })
 
   it('reports a manual-only gate workflow', () => {
     const text =
-      'on:\n  workflow_dispatch:\njobs:\n  g:\n    steps:\n      - run: baseline-py gate\n'
+      'on:\n  workflow_dispatch:\njobs:\n  g:\n    steps:\n      - run: codeality-py gate\n'
     const found = checkGateWorkflow({ workflows: [{ name: 'ci.yml', text }] })
     expect(found[0].message).toMatch(/manual or scheduled/)
   })
@@ -126,7 +126,7 @@ describe('checkLockPin', () => {
     const lock = LOCK.replace('0.1.9', '0.1.7')
     const [finding] = checkLockPin({ lock, versions: VERSIONS })
     expect(finding.message).toBe(
-      'uv.lock pins busirocket-baseline-py 0.1.7, current is 0.1.9',
+      'uv.lock pins syntopica-codeality-py 0.1.7, current is 0.1.9',
     )
   })
 

@@ -12,7 +12,7 @@ const TEMPLATES = fileURLToPath(new URL('../../../templates', import.meta.url))
 // commit, and `create-baseline --write` renders the same file for a repository
 // that already exists. Two producers of one file is two chances to drift, so
 // the shipped copies are asserted against the renderer rather than trusted.
-// Only the npm templates: python-package is gated by baseline-py's own
+// Only the npm templates: python-package is gated by codeality-py's own
 // scaffolded workflow, which the Python package asserts against its asset.
 const names = []
 for (const entry of await readdir(TEMPLATES, { withFileTypes: true })) {

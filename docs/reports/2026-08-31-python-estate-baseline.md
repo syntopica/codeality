@@ -1,9 +1,9 @@
 # Python estate baseline pass
 
-Date: 2026-08-31 Tool: `baseline-py` 0.1.0 Mode: **read-only**
+Date: 2026-08-31 Tool: `codeality-py` 0.1.0 Mode: **read-only**
 
-Nothing was written to any repository. No `baseline-py.toml`, no `mypy.ini`, no
-`.baseline-py-baseline.json` exists in any of the five projects; verified after
+Nothing was written to any repository. No `codeality-py.toml`, no `mypy.ini`, no
+`.codeality-py-baseline.json` exists in any of the five projects; verified after
 the pass. The uncommitted changes standing in `atrium` (`atrium/cli.py`,
 `atrium/doctor/`) and `djplayerdeluxe` (`.gitignore`) are unrelated work in
 progress, not products of this pass.
@@ -101,7 +101,7 @@ exists for. `atrium`'s two BPY002 findings are genuine near-misses instead
 ```bash
 for repo in ~/p/mem ~/p/mempalace ~/p/djplayerdeluxe \
             ~/p/esp32-amoled/agentmeter ~/p/esp32-amoled/clawd-pet; do
-  uv run --project packages/baseline-py baseline-py check \
+  uv run --project packages/codeality-py codeality-py check \
     --project "$repo" --format json > "/tmp/$(basename "$repo").json"
 done
 ```

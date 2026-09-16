@@ -52,15 +52,15 @@ const THIRD_PARTY_PINS = {
 
 // The Python package has no package.json; its version lives in pyproject.toml
 // and travels to consumers as the exact release their uv.lock should pin.
-const PYTHON_PACKAGE = 'busirocket-baseline-py'
+const PYTHON_PACKAGE = 'syntopica-codeality-py'
 
 async function readPythonVersion() {
   const text = await readFile(
-    resolve(PACKAGES_DIR, 'baseline-py/pyproject.toml'),
+    resolve(PACKAGES_DIR, 'codeality-py/pyproject.toml'),
     'utf8',
   )
   const match = /^version = "([^"]+)"/m.exec(text)
-  if (!match) throw new Error('sync-versions: baseline-py version not found')
+  if (!match) throw new Error('sync-versions: codeality-py version not found')
   return match[1]
 }
 

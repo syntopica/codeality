@@ -24,10 +24,10 @@ Then run `pnpm install` or `npm install`. See
 ## python-package
 
 `python-package` is the odd one out: it is a **uv** project, not a pnpm one, and
-its quality chain is `baseline-py gate` rather than `pnpm check:ci`. It depends
-on `busirocket-baseline-py` from PyPI and ships a committed `uv.lock`.
+its quality chain is `codeality-py gate` rather than `pnpm check:ci`. It depends
+on `syntopica-codeality-py` from PyPI and ships a committed `uv.lock`.
 
 ```bash
 uv sync --group quality
-uv run baseline-py gate
+uv run codeality-py gate
 ```
