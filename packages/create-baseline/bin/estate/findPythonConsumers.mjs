@@ -1,16 +1,16 @@
 import { readdir, readFile } from 'node:fs/promises'
 import { relative, resolve } from 'node:path'
 
-const TOOL = 'busirocket-baseline-py'
+const TOOL = 'syntopica-codeality-py'
 // The tool's own pyproject names it too; a package is not its own consumer.
-const IS_THE_TOOL = /^name = "busirocket-baseline-py"/m
+const IS_THE_TOOL = /^name = "syntopica-codeality-py"/m
 // Directories that never hold a project of ours, and would make the walk
 // slow (node_modules), circular (.venv) or pointless (a build tree).
 const SKIP = new Set(['node_modules', 'build', 'dist', 'target'])
 const MAX_DEPTH = 3
 
 /**
- * Every project under `root` whose pyproject.toml depends on baseline-py.
+ * Every project under `root` whose pyproject.toml depends on codeality-py.
  *
  * Three levels deep, unlike `findConsumers`: the estate sweep proved that a
  * Python project is often nested inside a repository that is about something

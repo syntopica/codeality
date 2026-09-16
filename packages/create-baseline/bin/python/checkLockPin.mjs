@@ -1,5 +1,5 @@
-const TOOL = 'busirocket-baseline-py'
-const LOCKED = /^name = "busirocket-baseline-py"\nversion = "([^"]+)"/m
+const TOOL = 'syntopica-codeality-py'
+const LOCKED = /^name = "syntopica-codeality-py"\nversion = "([^"]+)"/m
 
 /**
  * The lockfile must pin the current release of the tool.

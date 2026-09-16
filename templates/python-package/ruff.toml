@@ -1,4 +1,4 @@
-# Managed by baseline-py. Rules are listed explicitly: ALL expands silently on
+# Managed by codeality-py. Rules are listed explicitly: ALL expands silently on
 # every ruff upgrade, turning a dependency bump into a lint failure.
 line-length = 100
 target-version = "py312"

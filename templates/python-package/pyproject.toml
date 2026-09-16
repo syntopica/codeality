@@ -17,7 +17,7 @@ greeting-service = "greeting_service.cli:cli"
 
 [dependency-groups]
 quality = [
-  "busirocket-baseline-py>=0.1,<1",
+  "syntopica-codeality-py>=0.1,<1",
   "deptry>=0.20,<1",
   "mypy>=1.11,<2",
   "pip-audit>=2.7,<3",

@@ -1,8 +1,8 @@
 const AUTOMATIC_TRIGGER = /^\s*(?:push|pull_request|pull_request_target)\s*:/m
-const RUNS_GATE = /\bbaseline-py\s+gate\b/
+const RUNS_GATE = /\bcodeality-py\s+gate\b/
 
 /**
- * Something has to run `baseline-py gate` on every push.
+ * Something has to run `codeality-py gate` on every push.
  *
  * The 2026-09-01 audit found every adopted repository green locally and not
  * one of them running the gate anywhere else; one still ran its
@@ -16,9 +16,9 @@ export function checkGateWorkflow({ workflows }) {
     return []
   }
   const message = gated.length
-    ? 'the workflow running baseline-py gate is manual or scheduled'
+    ? 'the workflow running codeality-py gate is manual or scheduled'
     : workflows.length
-      ? 'no workflow runs baseline-py gate'
+      ? 'no workflow runs codeality-py gate'
       : 'no GitHub Actions workflow'
   return [
     {
@@ -27,7 +27,7 @@ export function checkGateWorkflow({ workflows }) {
       message,
       detail:
         'The gate is installed and unreachable: nothing runs it on push. ' +
-        '`baseline-py init --ci --apply` writes .github/workflows/quality.yml.',
+        '`codeality-py init --ci --apply` writes .github/workflows/quality.yml.',
     },
   ]
 }

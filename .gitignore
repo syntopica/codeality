@@ -32,7 +32,7 @@ target/
 .stryker-tmp/
 reports/mutation/
 
-# Python (packages/baseline-py, templates/python-package)
+# Python (packages/codeality-py, templates/python-package)
 **/.venv/
 **/__pycache__/
 **/.pytest_cache/

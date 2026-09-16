@@ -20,9 +20,9 @@ verified complete - `[-]` obsolete or superseded.
       and consumer-e renamed theirs on 2026-09-01; brain's carry
       `# mypy: ignore-errors` in place because renaming means rewriting about
       150 references in the wiki's prose. Rename each when it is next touched.
-- [ ] `baseline-py init --check` exits 2 on every adopted repository that
+- [ ] `codeality-py init --check` exits 2 on every adopted repository that
       carries adoption debt, so it cannot serve as a drift gate. parent-repo on
-      2026-09-02: `baseline-py.toml`, `mypy.ini` and `ruff.toml` all report
+      2026-09-02: `codeality-py.toml`, `mypy.ini` and `ruff.toml` all report
       `exists and differs; use --force to replace`, and every difference is a
       section the adoption itself wrote - the dated mypy `ignore_errors`
       ratchet, the ruff `ignore` ratchet, the `[[overrides]]` for the check-rule
@@ -38,7 +38,7 @@ verified complete - `[-]` obsolete or superseded.
       Linux runner reported the macOS branch as unreachable; the fix was a
       hand-written `platform = darwin` in the managed file (parent-repo
       2240a2f), which the next `init --force` would erase. Add a `mypy-platform`
-      key (or a `[mypy]` passthrough table) to `baseline-py.toml` so init
+      key (or a `[mypy]` passthrough table) to `codeality-py.toml` so init
       renders it.
 - [ ] consumer-c's pre-adoption `ci.yml` still pins `actions/checkout@v7`,
       `setup-python@v7` and friends by tag, which is the one red cell left in
@@ -62,7 +62,7 @@ verified complete - `[-]` obsolete or superseded.
       set - not a stability label.
 - [-] consumer-z. Its checkout is a clone of upstream `mcallegari/consumer-z`, not a
   fork, and its only Python is one 675-line fixture tool. The config and its
-  baseline live there untracked so `baseline-py check` works locally; nothing
+  baseline live there untracked so `codeality-py check` works locally; nothing
   was committed, because it could never be pushed and would conflict on every
   pull.
 - [-] Decide what to do about `memstore`'s 402 inline-SQL findings. Superseded

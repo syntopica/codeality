@@ -35,7 +35,7 @@ jobs:
           UV_PYTHON: ${{ matrix.python-version }}
 
       - name: Run the quality gate
-        run: uv run baseline-py gate --json
+        run: uv run codeality-py gate --json
 
       - name: Type-check with pyrefly, without blocking
         continue-on-error: true
