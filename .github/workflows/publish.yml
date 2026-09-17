@@ -5,7 +5,7 @@ name: Publish
 # it publishes the version currently in that package's package.json.
 #
 # Auth is tokenless via npm Trusted Publishing (OIDC): npmjs.com must list this
-# repo (BusiRocket/baseline) + this workflow (publish.yml) as a trusted publisher
+# repo (syntopica/codeality) + this workflow (publish.yml) as a trusted publisher
 # for each package, with the "npm publish" action allowed and no environment.
 # pnpm exchanges the GitHub OIDC id-token for a short-lived publish credential,
 # so no NPM_TOKEN is needed. Provenance is generated automatically because this
@@ -35,6 +35,8 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6
+        with:
+          persist-credentials: false
 
       # No version pin: pnpm/action-setup reads it from package.json "packageManager".
       - uses: pnpm/action-setup@0977fd99725f1db4007ccb2928dbb4e90d06cc86 # v6
