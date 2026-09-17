@@ -4,6 +4,14 @@ All notable changes to `syntopica-codeality-py` are documented here. The format
 follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/) and the project
 adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## 0.2.2
+
+### Changed
+
+- The CI workflow `init --ci` writes now checks out without persisting the
+  GitHub token in the runner's git config. Nothing in that workflow pushes, so
+  the credential only widened what a compromised step could reach.
+
 ## 0.2.1
 
 ### Fixed
