@@ -4,6 +4,15 @@ All notable changes to `syntopica-codeality-py` are documented here. The format
 follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/) and the project
 adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## 0.2.1
+
+### Fixed
+
+- A functional `TypedDict` or `NamedTuple` assigned to a name is the module's
+  unit, like the `NewType` beside it. The class syntax is not always available:
+  a field named `in`, or any other Python keyword, can only be declared this
+  way, and such a module was reported as having no declaration at all.
+
 ## 0.2.0
 
 ### Changed

@@ -9,10 +9,13 @@ from codeality_py.units.named_declaration import named_declaration
 
 
 def legacy_type_alias(statement: ast.stmt, location: Location) -> Declaration | None:
-    """Return a declaration for ``X: TypeAlias`` or ``X = NewType(...)``.
+    """Return a declaration for ``X: TypeAlias`` or a functional type call.
 
-    A plain ``Alias = list[str]`` is deliberately not recognised: inferring
-    intent from an unannotated assignment produces false positives.
+    The functional forms - ``NewType``, ``TypedDict`` and ``NamedTuple`` - are
+    the same declaration the class syntax makes, written the only way that
+    works when a field name is a Python keyword. A plain ``Alias = list[str]``
+    is deliberately not recognised: inferring intent from an unannotated
+    assignment produces false positives.
     """
     if isinstance(statement, ast.AnnAssign) and isinstance(statement.target, ast.Name):
         annotation = statement.annotation
@@ -23,11 +26,11 @@ def legacy_type_alias(statement: ast.stmt, location: Location) -> Declaration | 
         return None
     target = statement.targets[0]
     value = statement.value
-    is_new_type = (
+    is_type_call = (
         isinstance(value, ast.Call)
         and isinstance(value.func, ast.Name)
-        and value.func.id == "NewType"
+        and value.func.id in ("NewType", "TypedDict", "NamedTuple")
     )
-    if isinstance(target, ast.Name) and is_new_type:
+    if isinstance(target, ast.Name) and is_type_call:
         return named_declaration(target.id, DeclarationKind.TYPE_ALIAS, location)
     return None
