@@ -15,6 +15,8 @@ const GITLEAKS_VERSION = '8.30.1'
 const setup = (
   node,
 ) => `      - uses: ${ACTION_PINS.checkout.uses} # ${ACTION_PINS.checkout.tag}
+        with:
+          persist-credentials: false
 
       - uses: ${ACTION_PINS.setupPnpm.uses} # ${ACTION_PINS.setupPnpm.tag}
 
@@ -105,6 +107,7 @@ ${setup(node)}
       - uses: ${ACTION_PINS.checkout.uses} # ${ACTION_PINS.checkout.tag}
         with:
           fetch-depth: 0
+          persist-credentials: false
 
       - uses: ${ACTION_PINS.setupPnpm.uses} # ${ACTION_PINS.setupPnpm.tag}
 
