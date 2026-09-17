@@ -97,14 +97,14 @@
     "url": "https://github.com/cristiandeluxe"
   },
   "license": "MIT",
-  "homepage": "https://github.com/BusiRocket/baseline/tree/main/packages/eslint-plugin-code-policy#readme",
+  "homepage": "https://github.com/syntopica/codeality/tree/main/packages/eslint-plugin-code-policy#readme",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/BusiRocket/baseline.git",
+    "url": "git+https://github.com/syntopica/codeality.git",
     "directory": "packages/eslint-plugin-code-policy"
   },
   "bugs": {
-    "url": "https://github.com/BusiRocket/baseline/issues"
+    "url": "https://github.com/syntopica/codeality/issues"
   },
   "publishConfig": {
     "access": "public",

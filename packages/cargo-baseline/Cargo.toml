@@ -5,7 +5,7 @@ edition = "2024"
 rust-version = "1.85"
 description = "Structural linter and config scaffolder: atomic files, placement, size caps, no inline SQL"
 license = "MIT"
-repository = "https://github.com/BusiRocket/baseline"
+repository = "https://github.com/syntopica/codeality"
 
 [dependencies]
 anyhow = "1"

@@ -21,7 +21,7 @@ Watch it with `gh run watch`, then confirm with `pnpm release:check`, which
 checks each package for its git tag, its npm version and its CHANGELOG entry.
 
 If the publish step fails on auth, the trusted-publisher entry is missing on
-npmjs.com for that package: organization `BusiRocket`, repository `baseline`,
+npmjs.com for that package: organization `syntopica`, repository `codeality`,
 workflow `publish.yml`, allowed action `npm publish`, no environment.
 
 ## The Python package publishes to PyPI, also without a token
@@ -35,10 +35,10 @@ token, no `twine`, no local login.
 
 The trusted publisher was registered on 2026-08-31 under the PyPI account
 `busirocket` (me@cristiandeluxe.dev; credentials and TOTP in the password manager, vault
-BusiRocket): owner `BusiRocket`, repository `baseline`, workflow
+BusiRocket): owner `syntopica`, repository `codeality`, workflow
 `publish-python.yml`, environment `pypi`. The GitHub `pypi` environment has to
 exist for the job to run - it did not, and was created with
-`gh api -X PUT repos/BusiRocket/baseline/environments/pypi`.
+`gh api -X PUT repos/syntopica/codeality/environments/pypi`.
 
 Its own checks run through uv, not pnpm:
 

@@ -12,7 +12,7 @@ is a separate refactor effort (see the adoption guide's triage order).
 ## Step 0: install the binary
 
 ```bash
-cargo install --git https://github.com/BusiRocket/baseline cargo-baseline --locked
+cargo install --git https://github.com/syntopica/codeality cargo-baseline --locked
 # Local monorepo checkout alternative:
 # cargo install --path <baseline-repo>/packages/cargo-baseline --locked
 ```
@@ -61,7 +61,7 @@ GitHub only reads workflows at the repo root.
     `with: manifest-path: <CRATE_DIR>/Cargo.toml`
 - All layouts: while the crate is unpublished, replace the
   `cargo install cargo-baseline --locked` step with
-  `cargo install --git https://github.com/BusiRocket/baseline cargo-baseline --locked`.
+  `cargo install --git https://github.com/syntopica/codeality cargo-baseline --locked`.
 - If a workflow named `baseline.yml` already exists at the root, merge by hand;
   do not clobber.
 

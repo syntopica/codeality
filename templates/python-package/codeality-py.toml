@@ -1,4 +1,4 @@
-# codeality-py configuration - https://github.com/BusiRocket/baseline
+# codeality-py configuration - https://github.com/syntopica/codeality
 schema-version = 1
 source-roots = ["src"]
 test-roots = ["tests"]

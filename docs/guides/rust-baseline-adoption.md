@@ -38,7 +38,7 @@ The generated workflow also runs `cargo install cargo-baseline --locked`, which
 needs the crate published on crates.io. Until then, install from git instead:
 
 ```bash
-cargo install --git https://github.com/BusiRocket/baseline cargo-baseline
+cargo install --git https://github.com/syntopica/codeality cargo-baseline
 ```
 
 ## 2. Wire up lints

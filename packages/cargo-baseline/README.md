@@ -5,7 +5,7 @@ caps, no inline SQL. Brings the same discipline as `@syntopica/eslint-config` to
 Rust/Tauri crates.
 
 - **Design spec:**
-  [docs/superpowers/specs/2026-07-23-rust-baseline-design.md](https://github.com/BusiRocket/baseline/blob/main/docs/superpowers/specs/2026-07-23-rust-baseline-design.md).
+  [docs/superpowers/specs/2026-07-23-rust-baseline-design.md](https://github.com/syntopica/codeality/blob/main/docs/superpowers/specs/2026-07-23-rust-baseline-design.md).
 
 ## Install
 
@@ -31,7 +31,7 @@ For `--ci`: move the generated workflow to the repo root's `.github/workflows/`
 (add `defaults: run: working-directory: src-tauri` for crate-in-subdir layouts
 like Tauri), and until `cargo-baseline` is published on crates.io, install it
 with
-`cargo install --git https://github.com/BusiRocket/baseline cargo-baseline`.
+`cargo install --git https://github.com/syntopica/codeality cargo-baseline`.
 
 ## Enforcement
 
@@ -126,7 +126,7 @@ not.
 ## Existing project?
 
 See
-[docs/guides/rust-baseline-adoption.md](https://github.com/BusiRocket/baseline/blob/main/docs/guides/rust-baseline-adoption.md)
+[docs/guides/rust-baseline-adoption.md](https://github.com/syntopica/codeality/blob/main/docs/guides/rust-baseline-adoption.md)
 for a step-by-step adoption walkthrough, or
-[docs/guides/rust-baseline-agent-install.md](https://github.com/BusiRocket/baseline/blob/main/docs/guides/rust-baseline-agent-install.md)
+[docs/guides/rust-baseline-agent-install.md](https://github.com/syntopica/codeality/blob/main/docs/guides/rust-baseline-agent-install.md)
 for the deterministic runbook an AI agent can execute non-interactively.
