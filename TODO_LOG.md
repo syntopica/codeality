@@ -1,3 +1,20 @@
+### 2026-09-17
+
+- [x] Renamed the Python baseline to `codeality-py`. `syntopica-codeality-py`
+      0.2.0 is on PyPI (run 35163939573, trusted publishing from a pending
+      publisher on the personal account: owner `syntopica`, repository
+      `codeality`, workflow `publish-python.yml`, environment `pypi`). Import
+      package `codeality_py`, console script `codeality-py`, config
+      `codeality-py.toml`, accepted-findings record
+      `.codeality-py-baseline.json`, suppression prefix
+      `# codeality-py: ignore`. Rule codes keep `BPY`. Migrated and pushed:
+      wiki, brain, clips, atrium, syntopica, consumer-d, consumer-e,
+      consumer-a, consumer-b, consumer-c and consumer-y; consumer-z's two
+      files are untracked and were renamed on disk only. `baseline check`
+      reports `0 new` in every repository that carries a baseline except atrium,
+      whose 2 new findings predate the rename. `busirocket-baseline-py` 0.1.12
+      stays published and unyanked.
+
 # TODO Log
 
 Closed work from `TODO.md`, grouped by year and month.
