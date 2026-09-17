@@ -7,67 +7,16 @@ verified complete - `[-]` obsolete or superseded.
 
 ## Python baseline
 
-- [ ] Work down the adoption debt the 2026-09-01 sweep recorded across the seven
-      repositories now gating: the mypy `ignore_errors` ratchets (consumer-b
-      52 modules, consumer-a 35, brain 28, consumer-d 12, consumer-c 9),
-      the ruff families beside them, and the coverage floors (consumer-d 9%,
-      consumer-b 5%, brain 19%, consumer-e 19%, consumer-a 35%,
-      consumer-c 78%). Each floor was measured, and none may go down. Beside
-      them: atrium's 19 structural findings, and the five accepted starlette
-      advisories in consumer-c that fall away when platformio 7 lands.
-- [ ] Rename the 22 hyphenated scripts left under brain's `tools/` (the
-      `filing-*`, `credit-*`, `social-*`, `review-pass/*` families). consumer-a
-      and consumer-e renamed theirs on 2026-09-01; brain's carry
-      `# mypy: ignore-errors` in place because renaming means rewriting about
-      150 references in the wiki's prose. Rename each when it is next touched.
-- [ ] `codeality-py init --check` exits 2 on every adopted repository that
-      carries adoption debt, so it cannot serve as a drift gate. parent-repo on
-      2026-09-02: `codeality-py.toml`, `mypy.ini` and `ruff.toml` all report
-      `exists and differs; use --force to replace`, and every difference is a
-      section the adoption itself wrote - the dated mypy `ignore_errors`
-      ratchet, the ruff `ignore` ratchet, the `[[overrides]]` for the check-rule
-      naming convention, and `platform = darwin`. The README says init "merges
-      into existing configuration, or reports a conflict"; a sanctioned local
-      section is neither. Decide the contract: either `--check` compares only
-      the keys init owns and ignores the rest, or the rendered files carry a
-      marker that fences the local part. Until then no consumer can put
-      `init --check` in CI, and the 2026-09-02 note that it "stays idempotent"
-      in parent-repo was true of the workflow file only.
-- [ ] `mypy.ini` has no way to state the platform the code runs on.
-      parent-repo' `qlc_user_dir` branches on `sys.platform`, and mypy on the
-      Linux runner reported the macOS branch as unreachable; the fix was a
-      hand-written `platform = darwin` in the managed file (parent-repo
-      2240a2f), which the next `init --force` would erase. Add a `mypy-platform`
-      key (or a `[mypy]` passthrough table) to `codeality-py.toml` so init
-      renders it.
-- [ ] consumer-c's pre-adoption `ci.yml` still pins `actions/checkout@v7`,
-      `setup-python@v7` and friends by tag, which is the one red cell left in
-      the Python estate table, and its "Host application" job repeats what
-      `quality.yml` now gates with pip instead of the lockfile. Pin by commit
-      and drop the job, minding `desktop/scripts/test-ci-workflow.sh`, which
-      asserts the workflow's shape.
-- [ ] This repository's Security gates job is red on zizmor: 117 findings, 29
-      high, across the templates' workflows (`artipacked`: checkout without
-      `persist-credentials: false`, and more). Pre-existing, failing on main
-      since before the Python audit; the Python work did not add any. Triage by
-      audit, fix the templates once, and re-render.
-- [ ] Wire `vulture` and `jscpd` into the gate as advisory stages, then decide
-      from measurement whether either can block. Both were deliberately left out
-      of v1: vulture's false positives on decorators and registries are
-      expensive, and jscpd's Python noise is uncalibrated.
-- [ ] Revisit the pyrefly shadow stage once a quarter of CI artifacts exists.
-      Every consumer's `quality.yml` now uploads `pyrefly-shadow-<python>` on
-      each push, so the artifacts accumulate from 2026-09-02. Promotion criteria
-      are crash rate, runtime and memory against mypy, and the disagreement
-      set - not a stability label.
-- [-] consumer-z. Its checkout is a clone of upstream `mcallegari/consumer-z`, not a
-  fork, and its only Python is one 675-line fixture tool. The config and its
-  baseline live there untracked so `codeality-py check` works locally; nothing
-  was committed, because it could never be pushed and would conflict on every
-  pull.
-- [-] Decide what to do about `memstore`'s 402 inline-SQL findings. Superseded
-  2026-09-01: memstore is kept for reference only, it is not ours, so it gets
-  no baseline adoption at all.
+- [ ] Work down the structural backlog left in five repositories, measured
+      2026-09-17 with codeality-py 0.2.2: consumer-a 194 accepted findings
+      and 36 mypy `ignore_errors` modules, consumer-b 64 and 51, consumer-c
+      57 and 9, consumer-d 26 and 12, atrium 19 and 0. Every one reports
+      `0 new`, so nothing is drifting; the debt is what adoption accepted.
+      Coverage floors beside them: consumer-b 5%, consumer-d 9%,
+      consumer-a 35%, atrium 54%, consumer-c 78%. Each floor was measured and
+      none may go down. brain, clips, wiki, syntopica and consumer-e are
+      clear: their whole gate passes with an empty backlog. The five accepted
+      starlette advisories in consumer-c still fall away when platformio 7 lands.
 
 ## Estate
 
