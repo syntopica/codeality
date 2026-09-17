@@ -71,4 +71,4 @@ jobs:
       - name: Publish failed notice
         if: failure()
         run: |
-          echo "::warning title=Publish failed::If the publish step failed on auth, confirm npm Trusted Publishing for this package on npmjs.com (Settings -> Trusted publishing) points to organization 'BusiRocket', repository 'baseline', workflow 'publish.yml', allowed action 'npm publish', and no environment. Also check the version in packages/${{ inputs.package }}/package.json is not already published."
+          echo "::warning title=Publish failed::If the publish step failed on auth, confirm npm Trusted Publishing for this package on npmjs.com (Settings -> Trusted publishing) points to organization 'syntopica', repository 'codeality', workflow 'publish.yml', allowed action 'npm publish', and no environment. Also check the version in packages/${{ inputs.package }}/package.json is not already published."

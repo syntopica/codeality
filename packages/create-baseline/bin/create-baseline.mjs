@@ -330,7 +330,7 @@ async function main() {
     }
     if (!eslintOk) {
       console.log(
-        '\nNo eslint.config.* found. Add a flat config that imports @syntopica/eslint-config (see https://github.com/BusiRocket/engineering-baseline/tree/main/docs/adoption).',
+        '\nNo eslint.config.* found. Add a flat config that imports @syntopica/eslint-config (see https://github.com/syntopica/codeality/tree/main/docs/adoption).',
       )
     }
     if (missingQuality.length) {

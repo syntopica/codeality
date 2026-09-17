@@ -3,7 +3,7 @@
 #   defaults:
 #     run:
 #       working-directory: src-tauri
-# cargo install cargo-baseline --locked needs crates.io; until published: cargo install --git https://github.com/BusiRocket/baseline cargo-baseline
+# cargo install cargo-baseline --locked needs crates.io; until published: cargo install --git https://github.com/syntopica/codeality cargo-baseline
 name: baseline
 on:
   push:

@@ -7,12 +7,12 @@
   "description": "Shared TypeScript configuration baseline",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/BusiRocket/baseline.git",
+    "url": "git+https://github.com/syntopica/codeality.git",
     "directory": "packages/tsconfig"
   },
-  "homepage": "https://github.com/BusiRocket/baseline/tree/main/packages/tsconfig#readme",
+  "homepage": "https://github.com/syntopica/codeality/tree/main/packages/tsconfig#readme",
   "bugs": {
-    "url": "https://github.com/BusiRocket/baseline/issues"
+    "url": "https://github.com/syntopica/codeality/issues"
   },
   "publishConfig": {
     "access": "public"

@@ -7,12 +7,12 @@
   "description": "Shared configuration for cross-file quality gates: knip, dependency-cruiser, type-coverage, jscpd, lefthook",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/BusiRocket/baseline.git",
+    "url": "git+https://github.com/syntopica/codeality.git",
     "directory": "packages/quality-config"
   },
-  "homepage": "https://github.com/BusiRocket/baseline/tree/main/packages/quality-config#readme",
+  "homepage": "https://github.com/syntopica/codeality/tree/main/packages/quality-config#readme",
   "bugs": {
-    "url": "https://github.com/BusiRocket/baseline/issues"
+    "url": "https://github.com/syntopica/codeality/issues"
   },
   "publishConfig": {
     "access": "public"
