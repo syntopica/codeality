@@ -77,6 +77,17 @@ def test_new_type_counts(make_source, config) -> None:
     assert not _clean(make_source, config, body)
 
 
+def test_a_functional_typed_dict_is_the_module_unit(make_source, config) -> None:
+    # The only way to declare a field whose name is a Python keyword.
+    body = "from typing import TypedDict\n\nNode = TypedDict('Node', {'id': str, 'in': int})\n"
+    assert _clean(make_source, config, body)
+
+
+def test_a_functional_named_tuple_is_the_module_unit(make_source, config) -> None:
+    body = "from typing import NamedTuple\n\nPoint = NamedTuple('Point', [('x', int)])\n"
+    assert _clean(make_source, config, body)
+
+
 def test_a_plain_assignment_alias_does_not_count(make_source, config) -> None:
     body = "Rows = list[str]\n\n\ndef load() -> Rows:\n    return []\n"
     assert _clean(make_source, config, body)
