@@ -5,21 +5,6 @@ Active backlog for the `baseline` repo. Closed items move to `TODO_LOG.md`.
 States: `[ ]` pending - `[~]` partial or unverified - `[!]` blocked - `[x]`
 verified complete - `[-]` obsolete or superseded.
 
-## npm publishing
-
-- [!] **The five `@syntopica/*` packages have no trusted publisher.**
-  `@syntopica/eslint-config`, `prettier-config`, `quality-config`, `tsconfig`
-  and `create-baseline` were first published by hand on 2026-09-14 (maintainer
-  `cristiandeluxe`, no provenance), and their npmjs.com access pages, read
-  2026-09-18, show the empty "Select your publisher" form.
-  `eslint-plugin-code-policy` is the only package already trusting
-  `syntopica/codeality` `publish.yml`. Until each is set, `publish.yml` fails on
-  auth for them. Blocked on the owner: npmjs.com settings need a passkey
-  escalation, and this machine's npm token answers E401. Smallest step: on each
-  access page choose GitHub Actions, owner `syntopica`, repository `codeality`,
-  workflow `publish.yml`, no environment; the next release of any of them is the
-  proof.
-
 ## Python baseline
 
 - [ ] Work down the structural backlog left in five repositories, measured
