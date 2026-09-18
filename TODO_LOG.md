@@ -1,3 +1,15 @@
+### 2026-09-18
+
+- [x] Trusted publishing is configured for all six npm packages. The five
+      `@syntopica/*` packages (`eslint-config`, `prettier-config`,
+      `quality-config`, `tsconfig`, `create-baseline`) had none after their
+      manual first publish on 2026-09-14; each now trusts GitHub Actions
+      `syntopica/codeality` `publish.yml` (`npm trust github`, one passkey
+      escalation per package), confirmed on every npmjs.com access page.
+      `eslint-plugin-code-policy` already trusted it. The next release of each
+      is the end-to-end proof. Gotcha: `npm trust` only prints its auth URL on a
+      TTY; without one it prints `***` and exits EOTP.
+
 ### 2026-09-17
 
 - [x] Renamed the Python baseline to `codeality-py`. `syntopica-codeality-py`
