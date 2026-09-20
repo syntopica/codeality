@@ -222,3 +222,25 @@ verified complete - `[-]` obsolete or superseded.
       1352-error case above is the same shape. Worth a documented first step
       (bracket access sweep, `.prettierignore` for `.serena/`, knip ignores)
       rather than a surprise per repo.
+
+## Shared package scope migration (routed from `~/p/TODO.md`, 2026-09-20)
+
+- [ ] **Coordinated delivery across the consumers**, parked in `~/p/TODO.md`
+      since 2026-09-14. On npm on 2026-09-20: `@syntopica/tsconfig` 0.3.0,
+      `prettier-config` 0.2.0, `quality-config` 0.11.0, `eslint-config` 0.8.0;
+      `npm view @syntopica/eslint-plugin-code-policy` errors, so confirm which
+      package is the fifth and whether it is published. Once all five are up,
+      regenerate consumer lockfiles and run each repository's normal quality
+      gate; no npm publication or version bump is part of this rename. Brain
+      stays limited to `commitlint.config.mjs`; its other config references need
+      a separate owner decision. consumer-h's rename is on
+      `refactor/shared-config-syntopica`, following its branch-only push rule.
+- [!] **Consumers whose push is blocked:** `consumer-u` carries 8 unpushed
+  commits (gitleaks pre-push, 38 historical findings); `consumer-l` commit
+  `c3b67af06e` plus two more sit on `codex/discord-catchup-todo` behind four
+  historical gitleaks findings (Phil's repo, nothing is pushed there unasked);
+  `consumer-ab` (`CristianDeluxe/consumer-ab`) and `agents-skills`
+  (`BusiRocket/agents-skills`) each hold one unpushed commit and their remotes
+  answer 404 on 2026-09-20, not "archived" as first recorded, so those two need
+  a destination or the commits are dropped. The verification helpers this item
+  once named under `/private/tmp/npm-scope-resume/` are gone.
