@@ -228,13 +228,18 @@ verified complete - `[-]` obsolete or superseded.
 - [ ] **Coordinated delivery across the consumers**, parked in `~/p/TODO.md`
       since 2026-09-14. On npm on 2026-09-20: `@syntopica/tsconfig` 0.3.0,
       `prettier-config` 0.2.0, `quality-config` 0.11.0, `eslint-config` 0.8.0;
-      `npm view @syntopica/eslint-plugin-code-policy` errors, so confirm which
-      package is the fifth and whether it is published. Once all five are up,
-      regenerate consumer lockfiles and run each repository's normal quality
-      gate; no npm publication or version bump is part of this rename. Brain
-      stays limited to `commitlint.config.mjs`; its other config references need
-      a separate owner decision. consumer-h's rename is on
+      there is no fifth package (see the closed bullet below), so the lockfile
+      half is done; no npm publication or version bump is part of this rename.
+      Brain stays limited to `commitlint.config.mjs`; its other config
+      references need a separate owner decision. consumer-h's rename is on
       `refactor/shared-config-syntopica`, following its branch-only push rule.
+- [x] Consumer lockfiles already resolve the new scope (2026-09-20): the 25
+      consumer `package.json` files under `~/p` reference only the four
+      published packages, and their `pnpm-lock.yaml` files carry `@syntopica/`
+      entries (`pnpm install --frozen-lockfile` exited 0 in all 16 on
+      2026-09-15). `eslint-plugin-code-policy` is not on npm and no consumer
+      references it. Each repository's gate runs in the daily round, which files
+      any failure in that repository's own `TODO.md`.
 - [!] **Consumers whose push is blocked:** `consumer-u` carries 8 unpushed
   commits (gitleaks pre-push, 38 historical findings); `consumer-l` commit
   `c3b67af06e` plus two more sit on `codex/discord-catchup-todo` behind four
