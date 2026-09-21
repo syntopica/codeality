@@ -26,6 +26,10 @@ minimumReleaseAgeExclude:
   - nuxt@4.5.0
   - '@vitest/eslint-plugin@1.6.25'
   - jscpd@5.1.0
+  - '@nestjs/common@12.0.4'
+  - '@nestjs/core@12.0.4'
+  - '@nestjs/platform-express@12.0.4'
+  - '@nestjs/schematics@12.0.4'
 patchedDependencies:
   eslint-plugin-react: patches/eslint-plugin-react.patch
 # Security overrides: `pnpm audit --audit-level=high` findings that survived

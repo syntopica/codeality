@@ -1,5 +1,36 @@
 # @busirocket/quality-config
 
+## 0.11.1
+
+### Patch Changes
+
+- fix: knip's `includeEntryExports` now defaults per framework.
+
+  knip 6.35 started applying the option to the files its own plugins register,
+  so `export default defineConfig(...)` in a vite, astro or nuxt config, and a
+  Next.js route's `default`/`metadata`, all reported as unused exports - in six
+  of the eight templates, with no export a project could remove. It is now true
+  only where the entries are hand-written (`nestjs`, `ts-package`), which is
+  where the check ever found anything, and false where the framework owns them.
+
+- fix: dependency-cruiser excludes `.venv` and exempts `.d.mts`/`.d.cts`.
+
+  A repository with a uv project cruised the virtualenv's vendored JavaScript
+  and failed on four orphan modules it does not own; a package shipping types
+  beside an `.mjs` entry failed on the declaration file itself.
+
+- fix: run pnpm through an entry point Node can execute.
+
+  `baseline-type-coverage`, `baseline-dupes`, `baseline-audit` and
+  `baseline-deps-graph` spawned `pnpm` directly. pnpm 11 puts a shebang-less
+  `sh` script at its bin path and replaces it with the native binary during
+  installation; where that replacement never ran, macOS answers `ENOEXEC` and
+  every one of those gates failed with empty output - `type-coverage: FAIL .` on
+  a repository measured at 99.82%, and `baseline-dupes: could not run jscpd`.
+  The gate blamed its subject for a broken launcher. The runners now resolve
+  `npm_execpath`, the executable `pnpm` on PATH, or the `bin/pnpm.mjs` the
+  placeholder hands over to, in that order.
+
 ## 0.11.0
 
 ### Minor Changes

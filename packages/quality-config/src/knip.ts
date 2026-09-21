@@ -103,9 +103,11 @@ export const createKnipConfig = (options: {
    */
   entry?: string[]
   /**
-   * Set `false` for a package that is finished but not wired up yet. With the
-   * default `true` its entire public API reports as unused exports, and the
-   * obvious reading of that report is "delete this package".
+   * Whether an entry file's own exports are checked. Defaults per framework
+   * (see FRAMEWORK_ENTRIES): true where the entries are hand-written, false
+   * where the framework owns them. Set `false` for a package that is finished
+   * but not wired up yet - with `true` its entire public API reports as unused
+   * exports, and the obvious reading of that report is "delete this package".
    */
   includeEntryExports?: boolean
   /**
@@ -116,7 +118,8 @@ export const createKnipConfig = (options: {
    */
   drizzle?: false
 }): KnipConfiguration => {
-  const { entry, project } = FRAMEWORK_ENTRIES[options.framework]
+  const { entry, project, includeEntryExports } =
+    FRAMEWORK_ENTRIES[options.framework]
 
   return {
     entry: [...entry, ...(options.entry ?? [])],
@@ -130,7 +133,7 @@ export const createKnipConfig = (options: {
     // fail `nextjs-app` (app/page.tsx), `vite-react-app` (src/main.tsx) or
     // `vue-app` (src/main.ts) - files a knip framework plugin registers as an
     // entry of its own, which the option does not reach.
-    includeEntryExports: options.includeEntryExports ?? true,
+    includeEntryExports: options.includeEntryExports ?? includeEntryExports,
     // The Primary Unit Rule (code-policy/no-hidden-top-level-declarations)
     // forbids a hidden top-level declaration, so a helper an entry file uses
     // only itself still has to be exported - NestJS's `bootstrap`, called by

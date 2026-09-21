@@ -1,8 +1,8 @@
 {
   "name": "@syntopica/quality-config",
-  "version": "0.11.0",
+  "version": "0.11.1",
   "private": false,
-  "packageManager": "pnpm@11.25.0",
+  "packageManager": "pnpm@12.5.1",
   "license": "MIT",
   "description": "Shared configuration for cross-file quality gates: knip, dependency-cruiser, type-coverage, jscpd, lefthook",
   "repository": {
@@ -47,7 +47,8 @@
     "./lefthook": "./src/lefthook.ts",
     "./jscpd": "./jscpd.json",
     "./commitlint": "./src/commitlint.ts",
-    "./oxlint": "./oxlintrc.json"
+    "./oxlint": "./oxlintrc.json",
+    "./pnpm-command": "./bin/pnpmCommand.mjs"
   },
   "scripts": {
     "fix": "pnpm run lint:fix",
@@ -82,11 +83,11 @@
   "devDependencies": {
     "@arethetypeswrong/cli": "^0.18.5",
     "@syntopica/eslint-config": "workspace:*",
-    "@types/node": "^26.4.0",
-    "dependency-cruiser": "^18.2.0",
-    "eslint": "^10.9.1",
-    "eslint-plugin-regexp": "^3.2.0",
-    "knip": "^6.33.0",
+    "@types/node": "^26.6.2",
+    "dependency-cruiser": "^18.4.0",
+    "eslint": "^10.11.0",
+    "eslint-plugin-regexp": "^3.3.1",
+    "knip": "^6.37.0",
     "publint": "^0.3.24",
     "typescript": "npm:@typescript/typescript6@^6.0.2"
   }

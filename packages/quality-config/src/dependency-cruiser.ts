@@ -21,7 +21,10 @@ const NEXT_FILE_CONVENTIONS =
 // optional-directory group.
 const ORPHAN_EXEMPTIONS = [
   '(^|/)\\.[^/]+\\.(js|cjs|mjs|ts|json)$',
-  '\\.d\\.ts$',
+  // Declaration files of every extension: `.d.ts`, and the `.d.mts`/`.d.cts`
+  // a package ships beside an `.mjs`/`.cjs` entry point. They carry types, not
+  // modules, so nothing imports them.
+  '\\.d\\.[cm]?ts$',
   '(^|/)tsconfig\\.json$',
   // Framework/tooling config files: loaded directly by that tool's own
   // runtime, never imported by application code. Being an orphan in the module
@@ -131,7 +134,11 @@ export const createDepCruiserConfig = (
   options: {
     doNotFollow: { path: 'node_modules' },
     exclude: {
-      path: '(^|/)(dist|coverage|\\.next|\\.nuxt|\\.output|\\.astro|target)/',
+      // `.venv` is here because a Python workspace vendors JavaScript: urllib3
+      // ships an Emscripten fetch worker, and cruising a repository that holds
+      // a uv project reported four of those as orphan modules - errors about
+      // files the repository does not own and cannot remove.
+      path: '(^|/)(dist|coverage|\\.next|\\.nuxt|\\.output|\\.astro|\\.venv|target)/',
     },
     tsPreCompilationDeps: true,
     tsConfig: options.tsConfigPath

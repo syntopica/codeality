@@ -2,7 +2,7 @@
   "@syntopica/eslint-config": "^0.8.0",
   "@syntopica/prettier-config": "^0.2.0",
   "@syntopica/tsconfig": "^0.3.0",
-  "@syntopica/quality-config": "^0.11.0",
+  "@syntopica/quality-config": "^0.11.1",
   "eslint-plugin-code-policy": "^0.7.4",
   "dependency-cruiser": "^18.1.1",
   "jiti": "^2.7.0",

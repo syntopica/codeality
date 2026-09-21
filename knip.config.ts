@@ -40,11 +40,25 @@ const config: KnipConfig = {
       // `jiti('@syntopica/quality-config/dependency-cruiser')` — a
       // dynamic string argument, not a static import/require knip's
       // analysis can trace back to the package.
-      ignoreDependencies: ['@syntopica/quality-config'],
+      ignoreDependencies: [
+        '@syntopica/quality-config',
+        // The root gates spawn these binaries through the baseline runners
+        // (`baseline-dupes` -> jscpd, `baseline-type-coverage` ->
+        // type-coverage). The runners resolve pnpm's entry point at runtime
+        // rather than naming it as a literal, so no file knip parses mentions
+        // either tool. Same reason the templates ignore them.
+        ...TEMPLATE_RUNNER_DEPENDENCIES,
+      ],
     },
     'packages/*': {
       entry: ['src/index.ts', 'src/*.ts', 'bin/*.mjs'],
       project: ['src/**/*.ts'],
+    },
+    'packages/tsconfig': {
+      // nextjs.json declares the Next TypeScript plugin by name, which knip
+      // reads as an import. The preset is for consumers that install Next
+      // themselves; this package must not depend on it.
+      ignoreUnresolved: ['next'],
     },
     'packages/eslint-plugin-code-policy': {
       // A workspace-specific key replaces rather than merges with the

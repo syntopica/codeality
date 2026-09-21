@@ -13,6 +13,7 @@
 //
 // Usage:
 //   node scripts/check-quality.mjs
+import { pnpmCommand } from '@syntopica/quality-config/pnpm-command'
 import { spawnSync } from 'node:child_process'
 import { exit } from 'node:process'
 
@@ -27,9 +28,13 @@ const STEPS = [
   'publish:check',
 ]
 
+const [pnpm, ...pnpmArgs] = pnpmCommand()
+
 for (const step of STEPS) {
   console.log(`\ncheck:quality: running  ${step}`)
-  const result = spawnSync('pnpm', ['run', step], { stdio: 'inherit' })
+  const result = spawnSync(pnpm, [...pnpmArgs, 'run', step], {
+    stdio: 'inherit',
+  })
 
   if (result.error) {
     console.error(

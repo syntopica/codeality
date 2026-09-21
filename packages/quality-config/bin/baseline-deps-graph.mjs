@@ -15,6 +15,7 @@ import { spawnSync } from 'node:child_process'
 import { existsSync, readdirSync } from 'node:fs'
 import { relative, resolve } from 'node:path'
 import { argv, cwd, exit } from 'node:process'
+import { pnpmCommand } from './pnpmCommand.mjs'
 
 const DEFAULT_SOURCES = ['src', 'app', 'server', 'lib']
 const SKIPPED_DIRECTORIES = new Set([
@@ -69,6 +70,8 @@ function findWorkspaces(root, depth = 0) {
   return found
 }
 
+const [pnpm, ...pnpmArgs] = pnpmCommand()
+
 const failed = []
 for (const workspace of findWorkspaces(cwd())) {
   const present = sourceDirectories.filter((directory) =>
@@ -79,8 +82,9 @@ for (const workspace of findWorkspaces(cwd())) {
   const label = relative(cwd(), workspace) || '.'
   console.log(`deps-graph: cruising ${label} (${present.join(', ')})`)
   const result = spawnSync(
-    'pnpm',
+    pnpm,
     [
+      ...pnpmArgs,
       'exec',
       'depcruise',
       ...present,

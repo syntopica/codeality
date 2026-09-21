@@ -26,6 +26,7 @@ import { spawnSync } from 'node:child_process'
 import { readFile } from 'node:fs/promises'
 import { resolve } from 'node:path'
 import { argv, cwd, exit } from 'node:process'
+import { pnpmCommand } from './pnpmCommand.mjs'
 
 const LEVELS = ['info', 'low', 'moderate', 'high', 'critical']
 const DEFAULT_FILE = '.baseline-advisories.json'
@@ -48,7 +49,8 @@ const allowlist = await readAllowlist(resolve(root, flag('file', DEFAULT_FILE)))
 
 // `pnpm audit` exits non-zero when it finds anything, which is the whole
 // point, so its status is not an error condition here - the JSON is.
-const result = spawnSync('pnpm', ['audit', '--json'], {
+const [pnpm, ...pnpmArgs] = pnpmCommand()
+const result = spawnSync(pnpm, [...pnpmArgs, 'audit', '--json'], {
   encoding: 'utf8',
   maxBuffer: 64 * 1024 * 1024,
 })

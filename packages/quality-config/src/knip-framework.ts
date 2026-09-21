@@ -1,4 +1,16 @@
-/** Entry and project globs per template framework, consumed by createKnipConfig. */
+/**
+ * Entry and project globs per template framework, consumed by createKnipConfig.
+ *
+ * `includeEntryExports` says whether an entry file's own exports are checked.
+ * It is true only where the entries are hand-written (`src/main.ts`,
+ * `src/index.ts`), which is where a dead export is a real finding. Where the
+ * framework owns the entry - a config file's `export default defineConfig(...)`,
+ * a Next.js route's `export default function Page()`, its `metadata` - the
+ * export exists because the framework reads it, and nothing in the project
+ * imports it by design. knip 6.35 started applying `includeEntryExports` to
+ * the files its own plugins register, so a blanket `true` failed the gate in
+ * six of the eight templates with exports no project can remove.
+ */
 export type KnipFramework =
   | 'astro'
   | 'nestjs'
@@ -12,15 +24,17 @@ export type KnipFramework =
 
 export const FRAMEWORK_ENTRIES: Record<
   KnipFramework,
-  { entry: string[]; project: string[] }
+  { entry: string[]; project: string[]; includeEntryExports: boolean }
 > = {
   astro: {
     entry: ['src/pages/**/*.{astro,ts,tsx}', 'astro.config.*'],
     project: ['src/**/*.{astro,ts,tsx}'],
+    includeEntryExports: false,
   },
   nestjs: {
     entry: ['src/main.ts', 'src/**/*.module.ts'],
     project: ['src/**/*.ts'],
+    includeEntryExports: true,
   },
   // The App Router lives at either `app/` or `src/app/`, and the proxy follows
   // it. `{,src/}` matches both in one pattern, so neither layout produces a
@@ -42,10 +56,12 @@ export const FRAMEWORK_ENTRIES: Record<
       '{,src/}{middleware,proxy}.ts',
     ],
     project: ['{,src/}app/**/*.{ts,tsx}', 'src/**/*.{ts,tsx}'],
+    includeEntryExports: false,
   },
   nuxt: {
     entry: ['app/**/*.vue', 'server/**/*.ts', 'nuxt.config.*'],
     project: ['app/**/*.{ts,vue}', 'server/**/*.ts'],
+    includeEntryExports: false,
   },
   // TanStack Start has no index.html and no src/main.tsx: the router is the
   // root of the graph and the framework generates routeTree.gen.ts from the
@@ -61,6 +77,7 @@ export const FRAMEWORK_ENTRIES: Record<
       'vite.config.*',
     ],
     project: ['src/**/*.{ts,tsx}'],
+    includeEntryExports: false,
   },
   tauri: {
     // The scaffolded tauri-app frontend is React, so its entry is
@@ -68,17 +85,21 @@ export const FRAMEWORK_ENTRIES: Record<
     // Tauri frontend also matches.
     entry: ['src/main.{ts,tsx}', 'vite.config.*'],
     project: ['src/**/*.{ts,tsx}'],
+    includeEntryExports: false,
   },
   'ts-package': {
     entry: ['src/index.ts'],
     project: ['src/**/*.ts'],
+    includeEntryExports: true,
   },
   'vite-react': {
     entry: ['src/main.tsx', 'index.html', 'vite.config.*'],
     project: ['src/**/*.{ts,tsx}'],
+    includeEntryExports: false,
   },
   'vite-vue': {
     entry: ['src/main.ts', 'index.html', 'vite.config.*'],
     project: ['src/**/*.{ts,vue}'],
+    includeEntryExports: false,
   },
 }

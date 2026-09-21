@@ -11,6 +11,7 @@
 // Usage:
 //   node scripts/lint-staged.mjs <file> [...]   lint each file from its own workspace
 
+import { pnpmCommand } from '@syntopica/quality-config/pnpm-command'
 import { execFileSync } from 'node:child_process'
 import { existsSync } from 'node:fs'
 import { dirname, relative, resolve, sep } from 'node:path'
@@ -41,6 +42,8 @@ function groupByWorkspace(filePaths) {
   return groups
 }
 
+const [pnpm, ...pnpmArgs] = pnpmCommand()
+
 const files = argv.slice(2)
 if (files.length === 0) exit(0)
 
@@ -50,8 +53,9 @@ for (const [workspaceRoot, workspaceFiles] of groupByWorkspace(files)) {
   console.log(`eslint (${label}${sep}): ${workspaceFiles.join(' ')}`)
   try {
     execFileSync(
-      'pnpm',
+      pnpm,
       [
+        ...pnpmArgs,
         'exec',
         'eslint',
         '--max-warnings',
