@@ -86,7 +86,7 @@
   next-intl's
   `export const { Link, redirect, usePathname, useRouter, getPathname } = createNavigation(routing)`.
   Both are verbatim from their official setup guides, and both were found in
-  real repos (consumer-p, busirocket).
+  real repos (consumer-p, consumer-i).
 
   A declarator whose init is a call or `new` expression now counts once. The
   case the change targeted is unaffected, because its init is a plain reference:

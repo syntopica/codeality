@@ -174,7 +174,7 @@
   `type-coverage`, `baseline-deps-graph` spawns `depcruise` - all through
   `pnpm exec`, so a project that wires the runner into its scripts never names
   the underlying tool anywhere knip can see and knip reports a real dependency
-  as unused. Only `jscpd` was on the list; found in busirocket the moment its
+  as unused. Only `jscpd` was on the list; found in a consumer the moment its
   `type-coverage` script became `baseline-type-coverage` and `pnpm knip` went
   red on a dependency it uses on every run.
 

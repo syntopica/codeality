@@ -35,7 +35,7 @@ import { FRAMEWORK_ENTRIES, type KnipFramework } from './knip-framework'
 // `type-coverage`, `baseline-deps-graph` spawns `depcruise`. A project that
 // wires the runner into its scripts never names the underlying tool anywhere
 // knip can see, so knip reports a real dependency as unused. Found in
-// busirocket the moment its `type-coverage` script became
+// a consumer the moment its `type-coverage` script became
 // `baseline-type-coverage`.
 //
 // `dependency-cruiser` is on the list even though a project calling
