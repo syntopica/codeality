@@ -10,9 +10,9 @@ that LLM-generated code cannot produce 4000-line files.
 
 Evidence from real projects:
 
-- `project-after/src-tauri/src/store/sqlite_store.rs`: 4,728 lines, 176 functions, inline
-  SQL throughout (rusqlite), forced by a 464-line god trait (`store_trait.rs`)
-  whose single `impl` block cannot be split across files.
+- `consumer-o/src-tauri/src/store/sqlite_store.rs`: 4,728 lines, 176 functions,
+  inline SQL throughout (rusqlite), forced by a 464-line god trait
+  (`store_trait.rs`) whose single `impl` block cannot be split across files.
 - `consumer-t/src-tauri/src/lib.rs`: 177 lines mixing ~15 `#[tauri::command]`
   functions with wiring; grab-bag files (`file/operations.rs` 10 fns,
   `audio/metadata.rs` 8 fns).
@@ -138,7 +138,7 @@ Verify command for the deliverable: `cargo test && cargo run -- baseline check`
 
 ## Out of scope
 
-- Refactoring `project-after`'s `sqlite_store.rs` — separate effort in that repo; the
-  tool detects it, it does not fix it.
+- Refactoring `consumer-o`'s `sqlite_store.rs` — separate effort in that repo;
+  the tool detects it, it does not fix it.
 - Dylint-based compiler lints.
 - Auto-fix; v1 diagnoses only.

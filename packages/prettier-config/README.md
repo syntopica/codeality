@@ -40,7 +40,7 @@ export default { ...base }
 ## Repository
 
 Source and issues:
-[github.com/BusiRocket/prettier-config](https://github.com/BusiRocket/prettier-config).
+[github.com/syntopica/codeality](https://github.com/syntopica/codeality/tree/main/packages/prettier-config).
 
 Broader adoption docs:
-[engineering-baseline](https://github.com/BusiRocket/engineering-baseline).
+[engineering-baseline](https://github.com/syntopica/codeality).

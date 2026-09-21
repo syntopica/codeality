@@ -79,7 +79,7 @@ treated as authored, so an unreadable file never silently drops the requirement.
 ## Repository
 
 Source and issues:
-[github.com/BusiRocket/create-baseline](https://github.com/BusiRocket/create-baseline).
+[github.com/syntopica/codeality](https://github.com/syntopica/codeality/tree/main/packages/create-baseline).
 
 Adoption guides:
-[engineering-baseline/docs/adoption](https://github.com/BusiRocket/engineering-baseline/tree/main/docs/adoption).
+[engineering-baseline/docs/adoption](https://github.com/syntopica/codeality/tree/main/docs/adoption).

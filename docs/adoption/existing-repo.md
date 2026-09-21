@@ -41,7 +41,7 @@ TypeScript source rather than a build, so its `import` statements resolve from
 your project: a plugin missing there fails `tsc --noEmit` with
 `Cannot find module '<plugin>'` before ESLint runs, even when the plugin is a
 `dependencies` entry of the config package. The per-subpath list is in the
-[package README](https://github.com/BusiRocket/engineering-baseline/tree/main/packages/eslint-config#stacks).
+[package README](https://github.com/syntopica/codeality/tree/main/packages/eslint-config#stacks).
 
 Two that are easy to miss:
 

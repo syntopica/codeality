@@ -140,12 +140,11 @@
 - feat: recognise every filename a gate tool would load, and say so instead of
   writing a file the tool ignores.
 
-  consumer-m carried a `knip.json` that set `project` to
-  `["tsconfig.json"]`, so knip scanned almost nothing: 34 live dependencies
-  reported as unused and 23 genuinely dead files never found. `--write` checked
-  for `knip.config.ts` and `knip.config.js`, saw neither, and wrote the shared
-  factory next to it. Knip went on loading the json. The gate stayed broken
-  while looking configured.
+  consumer-m carried a `knip.json` that set `project` to `["tsconfig.json"]`, so
+  knip scanned almost nothing: 34 live dependencies reported as unused and 23
+  genuinely dead files never found. `--write` checked for `knip.config.ts` and
+  `knip.config.js`, saw neither, and wrote the shared factory next to it. Knip
+  went on loading the json. The gate stayed broken while looking configured.
 
   Each entry now lists every filename its tool actually resolves -- knip's
   seven, lefthook's three, renovate's six, dependency-cruiser's five -- and a

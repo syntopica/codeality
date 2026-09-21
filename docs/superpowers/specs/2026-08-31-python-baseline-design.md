@@ -12,18 +12,18 @@ modules.
 
 Evidence from the real projects (measured 2026-08-31):
 
-- `memstore/memstore/mcp_server.py`: **8,698 lines** in one module, with its
+- `consumer-v/consumer-v/mcp_server.py`: **8,698 lines** in one module, with its
   test file at 8,666 and `cli.py` at 3,655. This is the Python `sqlite_store.rs`
   — the same failure the Rust baseline was built to stop.
 - `atrium/atrium/cli.py`: 482 lines; 63 Python files, 4,264 lines total.
-- `consumer-b`: 56 files, 7,189 lines; `gui_forms/PyQt6/utils.py` is a
-  grab-bag module, and `player_controls.py` is 570 lines.
-- `multi-project-repo/consumer-w` and `multi-project-repo/consumer-c` each carry a
-  `host/tests/helpers.py`, and their Python project metadata sits at the
+- `consumer-b`: 56 files, 7,189 lines; `gui_forms/PyQt6/utils.py` is a grab-bag
+  module, and `player_controls.py` is 570 lines.
+- `multi-project-repo/consumer-w` and `multi-project-repo/consumer-c` each carry
+  a `host/tests/helpers.py`, and their Python project metadata sits at the
   repository root while sources live under `host/src` and `host/tests`.
 
 Tooling already in place: uv with a committed `uv.lock` and `[tool.ruff]` in
-`pyproject.toml` in `atrium`, `memstore` and `consumer-b`. `memstore`
+`pyproject.toml` in `atrium`, `consumer-v` and `consumer-b`. `consumer-v`
 additionally declares `mypy>=1.0` and `pytest-cov` in its dependency groups, run
 ad hoc with no CI gate. Nothing in the estate has dependency-hygiene checking or
 an advisory audit. uv and ruff are settled house tools; adoption must therefore
@@ -83,7 +83,7 @@ Three modes with a fixed contract:
 The critical constraint, found by review against the real repos: **ruff resolves
 exactly one configuration file per directory, and a sibling `ruff.toml` takes
 precedence over `[tool.ruff]` in `pyproject.toml` without merging.** Writing a
-fresh `ruff.toml` into `atrium`, `memstore` or `consumer-b` would silently
+fresh `ruff.toml` into `atrium`, `consumer-v` or `consumer-b` would silently
 discard their existing selects, ignores, excludes, target version and per-file
 ignores. `init` therefore edits the existing `[tool.ruff]` table in place with
 comment- and order-preserving TOML editing (`tomlkit`), or refuses with a
@@ -133,10 +133,11 @@ Concrete stage commands, because the underspecified versions do nothing:
 - `pip-audit` audits the **locked project** (`pip-audit --locked .`, or a
   deterministic lock export), not whatever happens to be in the ambient
   environment.
-- Roots are explicit. `multi-project-repo/consumer-w` and `multi-project-repo/consumer-c`
-  keep `pyproject.toml` at the repository root with sources under `host/src`, so
-  every child tool receives the same project root and the configured source and
-  test roots, rather than being pointed at a directory.
+- Roots are explicit. `multi-project-repo/consumer-w` and
+  `multi-project-repo/consumer-c` keep `pyproject.toml` at the repository root
+  with sources under `host/src`, so every child tool receives the same project
+  root and the configured source and test roots, rather than being pointed at a
+  directory.
 
 ## Structural rules (v1)
 
@@ -186,11 +187,11 @@ inferred from file content.
 | `excluded`       | Not scanned at all.                                                 | Traversal policy, not suppression.                        |
 
 Test detection covers `tests/**`, `test_*.py`, `*_test.py`, `tests.py` and
-`conftest.py` — `consumer-b/waveform_test.py` is missed by a
-`test_*.py`-only pattern. Generated defaults cover Django migrations,
-`*_pb2.py`, `*_pb2_grpc.py`, `ui_*.py`, `*_ui.py`, `resources_rc.py`, plus
-configured globs and a recognised generated-file marker. Generated status is
-never inferred from size.
+`conftest.py` — `consumer-b/waveform_test.py` is missed by a `test_*.py`-only
+pattern. Generated defaults cover Django migrations, `*_pb2.py`,
+`*_pb2_grpc.py`, `ui_*.py`, `*_ui.py`, `resources_rc.py`, plus configured globs
+and a recognised generated-file marker. Generated status is never inferred from
+size.
 
 ### `BPY001` one-primary-unit — decision procedure
 
@@ -521,15 +522,15 @@ Each stage's success criterion is a command that must pass.
    precedes any estate baseline; a baseline written against a wrong checker
    becomes a second estate-wide migration.
 3. **`init`** — verify: `init --check` against real copies of `atrium`,
-   `memstore` and `consumer-b` reports `merge`, never `create`, for ruff
-   configuration, and reports memstore's existing mypy and pytest-cov as
+   `consumer-v` and `consumer-b` reports `merge`, never `create`, for ruff
+   configuration, and reports consumer-v's existing mypy and pytest-cov as
    already present.
 4. **Estate pass, read-only first** — `check --format json` over `atrium`,
-   `memstore`, `consumer-b`, `multi-project-repo/consumer-w` and
+   `consumer-v`, `consumer-b`, `multi-project-repo/consumer-w` and
    `multi-project-repo/consumer-c`, producing a findings report per repo and no
    repository change whatsoever. Adoption — config, lock and baseline — is a
    separate, individually reviewed change per repo. Expected scale, from the
-   review's inventory: memstore ~61 multi-unit modules, consumer-b ~23
+   review's inventory: consumer-v ~61 multi-unit modules, consumer-b ~23
    filename mismatches, the two firmware hosts ~19–20 multi-unit modules each.
 5. **Template** — verify: render into a temporary directory, lock and sync from
    scratch, run the installed `gate`, build sdist and wheel, install the wheel

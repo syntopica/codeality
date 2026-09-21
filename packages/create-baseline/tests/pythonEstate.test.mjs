@@ -50,13 +50,15 @@ const project = async (path, files) => {
 
 describe('findPythonConsumers', () => {
   it('finds projects nested inside a repository about something else', async () => {
-    await project('parent-repo/tools/nested-tool', { 'pyproject.toml': PYPROJECT })
+    await project('parent-repo/tools/nested-tool', {
+      'pyproject.toml': PYPROJECT,
+    })
     await project('flat', { 'pyproject.toml': PYPROJECT })
     await project('unrelated', { 'pyproject.toml': '[project]\nname = "x"\n' })
     const found = await findPythonConsumers(root)
     expect(found.map((c) => c.name)).toEqual([
-      'parent-repo/tools/nested-tool',
       'flat',
+      'parent-repo/tools/nested-tool',
     ])
   })
 

@@ -19,13 +19,12 @@
       package `codeality_py`, console script `codeality-py`, config
       `codeality-py.toml`, accepted-findings record
       `.codeality-py-baseline.json`, suppression prefix
-      `# codeality-py: ignore`. Rule codes keep `BPY`. Migrated and pushed:
-      wiki, brain, clips, atrium, syntopica, consumer-d, consumer-e,
-      consumer-a, consumer-b, consumer-c and consumer-y; consumer-z's two
-      files are untracked and were renamed on disk only. `baseline check`
-      reports `0 new` in every repository that carries a baseline except atrium,
-      whose 2 new findings predate the rename. `busirocket-baseline-py` 0.1.12
-      stays published and unyanked.
+      `# codeality-py: ignore`. Rule codes keep `BPY`. Migrated and pushed
+      across the eleven adopting repositories, brain, clips, atrium and
+      syntopica among them; one more carries two untracked files, renamed on
+      disk only. `baseline check` reports `0 new` in every repository that
+      carries a baseline except atrium, whose 2 new findings predate the rename.
+      `busirocket-baseline-py` 0.1.12 stays published and unyanked.
 
 # TODO Log
 
@@ -33,217 +32,14 @@ Closed work from `TODO.md`, grouped by year and month.
 
 ## 2026-09
 
-### 2026-09-02 - parent-repo' one new structural finding is split
-
-`nested-tool/install_plan.py` landed with three declarations (ff42d6c) and put the
-parent-repo gate on red; its two helpers are `install_state.py` and
-`gobo_folder.py` now, `baseline-py baseline check` reads `0 new, 170 known` and
-the gate is green again (parent-repo, branch `nested-tool`, 2026-09-02).
-
-### 2026-09-02 - The Python gate runs in CI everywhere; baseline-py 0.1.9 through 0.1.12
-
-The audit's seven findings are closed. baseline-py shipped four releases in the
-process, each for a defect the wiring exposed: 0.1.9 extends a consumer's ruff
-`ignore` list in place instead of rewriting it (the dated ratchets survive a
-re-run now), renders the CI matrix and ruff target from `requires-python`,
-installs `--all-extras --all-groups` in CI, pins the scaffolded actions by
-commit and drops the dead `[mypy-tests.*]` section; 0.1.10 renders the
-checked-out branch, after consumer-b (master) and parent-repo (nested-tool)
-pushed workflows that watched `main` and never ran; 0.1.11 reports an f-string
-query once (its constant part's position differs between 3.11 and 3.12, so one
-baseline showed "1 new, 1 resolved" on the other interpreter) and writes a
-nested project's workflow at the repository root as `quality-<project>.yml`,
-since GitHub never read the one inside `tools/nested-tool`; 0.1.12 keeps a failing
-stage's stderr, because deptry reports there and a red deptry cell showed an
-empty detail.
-
-This repository's CI gained a `python` job (lockfiles, the package's own gate,
-the template's gate against the published release) and `publish-python.yml` is
-pinned by commit, which is what had been failing the Conformance step.
-`baseline-estate` prints a Python table now - quality group, gate in CI, action
-pins, lock on the current release - found three levels deep, and the Python
-release travels in `python-versions.json`, apart from the npm pins `--check`
-installs. The template workflow test skips templates without a package.json; it
-had failed on python-package since that template landed.
-
-Eight consumers run `baseline-py gate` on push and pull request on 0.1.12, and
-the runs found real defects on a clean Linux install that eight green laptops
-had not: atrium's embedder returned Any under 3.11's numpy stubs; consumer-c and
-nested-tool type-checked their macOS branches as unreachable on a Linux runner
-(`platform = darwin`); brain's `robust_merge` read a scratchpad path at import;
-consumer-a's `github_commits` fetched the GitHub events feed at import and
-both it and `process_text` exited on a missing credential (CI has no `.env`);
-consumer-b's lockfile builds dbus-python and imports PyQt6, which need
-system libraries and an offscreen Qt platform, and imports `evdev` directly
-while declaring it nowhere. Green as of the last run: atrium, consumer-c,
-consumer-d, consumer-a, brain, consumer-e, consumer-b;
-parent-repo red on `install_plan.py` alone, from the session working that repo.
-
-Evidence: publish runs for 0.1.9 through 0.1.12 green; baseline CI 3defd35 green
-on every job but the pre-existing zizmor one; `baseline-estate ~/p` Python table
-8 of 9 wired, the ninth being consumer-c's old `ci.yml` tags; each consumer's
-`quality.yml` run listed in its repository.
-
-### 2026-09-01 - Python adoption audit: every gate green locally, none running anywhere else
-
-Audited the nine adopting repositories plus the package and the template against
-baseline-py 0.1.8. `uv run baseline-py gate` exits 0 in all ten (atrium,
-consumer-c, consumer-b, consumer-d, consumer-a, nested-tool, brain,
-consumer-e, packages/baseline-py, templates/python-package) and
-`baseline check` reports 0 new in consumer-y; every coverage floor in
-`baseline-py.toml` matches the `fail_under` beside it. What the audit found is
-recorded as seven new items under "Python baseline" in TODO.md, the largest
-being that no gate runs in CI - not the package's own, not the template's, not
-any consumer's - and that `init --apply` would erase the dated ruff ratchets the
-sweep wrote. One thing fixed on the spot: `packages/baseline-py/.coverage` had
-been tracked since af67ef4 and every gate run modified it; untracked and
-ignored.
-
-Evidence: gate JSON summaries for the ten runs, `init --check` in each
-repository, the merge diff on a copy of consumer-a's pyproject, and
-`grep -c python .github/workflows/ci.yml` returning 0.
-
-### 2026-09-01 - Python baseline adopted across the estate; baseline-py 0.1.3 through 0.1.7
-
-The adoption sweep the estate report ordered is done, and every repository that
-is actually ours now gates. atrium (BPY baseline 19 after a reasoned BPY006
-override - it is a SQLite index engine and inline SQL is its style; coverage
-ratchet 54, PLC0415/T201 as project decisions, dev extra folded into the quality
-group; ruff and strict-mypy debt handed to the atrium-57 session working that
-repo). consumer-c (the first fully green gate, exit 0: 61 structural findings
-baselined, entrypoint roles, mechanical ruff fixes plus reasoned noqa, a
-nine-module mypy ignore_errors ratchet, coverage 78, deptry clean, five
-starlette advisories accepted with platformio 6.x as the recorded root cause).
-consumer-b (check-level: requires-python >=3.8 cannot host the quality
-group; source-roots "." because the app lives in top-level scripts; 63 findings
-baselined). consumer-d (check-level, no pyproject; 28 findings baselined). Not
-ours, so not adopted: memstore (reference only, per Cristian), consumer-w
-(prabhavalabs upstream), toolkit (alfem upstream), consumer-z (already recorded).
-consumer-a's blocked push resolved itself: the repo is level with origin,
-another session reconciled the two conflicted files, and the leftover
-TODO-repository-sync.md note was removed.
-
-Each wall the sweep hit became a released fix the same day - 0.1.3 (Python 3.11
-support, init discovers roots and first-party instead of writing CHANGE_ME),
-0.1.5 (the gate honors a recorded baseline; init reads declared layouts from
-pytest/hatch config; the package finally dogfoods its own strict config, which
-found 8 findings and 53 unformatted files in itself), 0.1.6 ([audit]
-ignore-vulns reaches pip-audit; import-package recorded for coverage; tests get
-S105/S106/S108 and the PLR family ignored), 0.1.7 (a missing shadow tool is a
-skip, not an alarm; init refuses to declare the quality group below the 3.11
-floor). 0.1.4 never reached PyPI - its publish failed on a stale uv.lock, relock
-now precedes every release.
-
-consumer-a followed the same day and went further than planned. It had
-gained a `pyproject.toml`, so the whole gate could apply, and applying it
-exposed the defect worth remembering: the repository carried both a `ruff.toml`
-from the August adoption and a `[tool.ruff]` table added later. Ruff reads one
-configuration per directory, so the file won and the table was never read - the
-repository had spent a release linting against rules nobody applied. Deleting
-the file took the count from 1707 findings to 6 real ones, all fixed, and 0.1.8
-now reports the pair as a conflict during `init`. The same pass found two live
-credentials committed in plain text (an IMAP account password and an OVH FTP
-password), moved both to the environment, and filed their rotation as blocked on
-the owner. Also fixed: three scripts that exited during import when a credential
-was missing, a logging call with brace placeholders, `Hash.generate_from_file`
-dropping its `chunk_size` argument, and `RenamedFile` declaring `name` while
-every caller used `new`. The gate exits 0 there now, with ratchets at 35 modules
-for mypy, 35% for coverage and a dated per-family ruff list.
-
-parent-repo followed, at the owner's request: `tools/nested-tool`, 191 modules and
-41 test modules that generate a lighting show a real venue runs. The gate exits
-0 there too, and the pass found five things worth the trip. `speed_dial`
-annotated `Sequence["DialFunction"]` without importing the name, so any
-annotation resolution broke; `movement_efx` shadowed its `fixture_ids` parameter
-with the per-part loop variable; `test_stage_layout` was reading
-`POINTS_OF_VIEW` through an accidental re-export rather than from
-`monitor_node`. `lxml-stubs` cleared 67 of 303 mypy errors outright - the stubs
-existed, nobody had installed them. And the venv had been created with
-`--system-site-packages`, so it saw every Homebrew package on the Mac: the tests
-could have been passing on something absent from the lockfile, and pip-audit was
-auditing the whole machine. Rebuilt without it, 352 tests still pass. One
-process lesson: `ruff check --fix` must exclude F401 in a codebase with
-deliberate re-exports - the first attempt removed the import that
-`test_stage_layout` depended on and broke collection.
-
-A full sweep for `.py` files under `~/p` closed the question of what is left,
-after parent-repo proved that scanning for `pyproject.toml` at repository roots
-misses Python nested in `tools/`. Three more of ours adopted at check level -
-`brain` (89 findings; `tools/` is the source root, `sources/vault` is archived
-material), `consumer-e` (8) and `consumer-y` (6, blocked on its own
-pre-commit hook). Deliberately not adopted, with the reason recorded:
-`rocket-agents-library`'s 537 files are vendored skills whose upstream source
-and hash `curation.json` tracks, `~/p/mcp` is third-party MCP servers and not
-even a repository, `seo-stack`'s four are vendored skill examples,
-`ai-job-search` and `marketing-tool` belong to other people, and the `_archivar`
-and `_backup-*` trees are archives. The `consumer-e` pass also found a
-tracked `admin_scripts/.env` holding a root WHM API token, filed in that
-repository's new TODO.md rather than changed, because untracking it silently
-would leave the scripts unconfigured wherever else it is cloned.
-
-A second pass on 2026-09-01 closed the remaining backlog items and took four
-more repositories from check level to a green gate. `consumer-d` traded
-setup.py and requirements.txt for a pyproject and found three defects: an
-undeclared `pydantic_settings` that made browser-use unimportable on a clean
-install, a `BrowserContextConfig` built and passed nowhere - so the domain
-allowlist that keeps a credentialed session on the provider's own site never
-applied - and the placeholder password compared as a literal in four places
-instead of the constant that existed for it. `consumer-e` had the MySQL
-root password in plain text in two scripts, committed since 2025-12-02; it reads
-the environment now, and the value needs rotating. `consumer-b` raised its
-floor from >=3.8, which no install could honour once matplotlib requires 3.11,
-and lost a debug script that pytest ran at import against a hardcoded path plus
-two dead classes shadowing `NotImplemented`. `consumer-y` committed once its
-own pre-commit hook stopped failing on the pnpm version mismatch.
-
-Three repositories gained their first tests: 14 in consumer-d over credential
-masking and validation, 8 in consumer-e over the Cloudflare record
-conversion, 17 in consumer-b over the Converter. One of those records a
-behaviour rather than endorsing it - `to_int("1/12")` returns 112 - and is
-flagged in that repository's TODO rather than changed blind.
-
-Two process lessons worth keeping. Running ruff's unsafe fixes before T201 is in
-the ignore list deletes every print statement, which in an administration script
-is the entire interface; order the ratchet before the fixes. And
-`git add <directory>` in a shared worktree sweeps in whatever another session
-left untracked - it happened twice in brain with the same file - so a
-path-limited `git commit -- <paths>` is the only safe form.
-
-A third pass the same day cleared the findings the second one had left for a
-decision. `admin_scripts/.env` is out of Git in ServerTools, with a `.gitignore`
-rule for any `.env` and the two missing keys added to `env.example`; the values
-still need rotating, which only the owner can do. `Converter.to_int` reads the
-first number instead of joining every digit, so a track written "1/12" is 1
-rather than 112. ServerTools' two database scripts were renamed to importable
-names, wrapped in `main()` - both connected to MySQL at import, which is why
-they had no tests - and typed, which surfaced a real defect: the connector
-answers bytes for some columns, and those values were being formatted into
-`ALTER TABLE` statements as `b'wp_posts'`. Eight tests cover that decoding and
-took coverage from 18% to 25%.
-
-The hyphenated-filename problem got two answers rather than one. Where the
-references were few the file was renamed; where renaming meant rewriting about
-150 references across brain's own prose, the file carries
-`# mypy: ignore-errors` with four lines saying how to remove it. No repository
-excludes files from type checking by name pattern now, and brain type-checks 68
-files where it checked 47.
-
-Evidence: adoption commits dda386d (atrium, two commits), 9b4ca75 (consumer-c),
-9e1b4d6 (consumer-b), 98b0a0f (consumer-d), cd45b84 (consumer-a, five
-commits), all pushed; publish runs for 0.1.5/0.1.6/0.1.7 green;
-`uv run baseline-py gate` exits 0 in consumer-c and in packages/baseline-py
-itself.
-
 ## 2026-08
 
 ### 2026-08-31 - busirocket-baseline-py 0.1.0 published to PyPI
 
-The Python baseline shipped. PyPI had no BusiRocket account at all, so the
-account was created (`busirocket`, me@cristiandeluxe.dev), its email verified by
-reading the message straight from the mailbox on server-a with `<mail-tool>`, recovery
-codes generated and 2FA enabled with TOTP. Credentials, the TOTP seed and the
-remaining recovery codes are in the password manager, vault BusiRocket, item "PyPI -
-BusiRocket".
+The Python baseline shipped. The publishing organization had no PyPI account, so
+one was created, its email verified, recovery codes generated and 2FA enabled
+with TOTP. The credentials, the TOTP seed and the remaining recovery codes live
+in the password manager, not here.
 
 The trusted-publisher entry is registered as a pending publisher: owner
 `BusiRocket`, repository `baseline`, workflow `publish-python.yml`, environment
@@ -290,35 +86,6 @@ committed.
       `.ncurc.json` (`reject: ["h3"]`, plus `deep`, so `ncu -u` alone is the
       whole procedure) and explained in `CLAUDE.md`. Evidence: `pnpm check:ci`
       exits 0 with all 41 turbo tasks green.
-
-- [~] 2026-08-28 - **Estate sweep, first execution pass: 19 consumers fixed
-  mechanically, matrix from ~77 to ~39 red cells, and the sweep surfaced three
-  defects in `create-baseline` itself, all fixed with tests.** Ran
-  `--check`/install/`--fix` across every failing consumer except the four
-  excluded `client-widgets-*` widgets (delegated in four parallel batches, all
-  changes left uncommitted per repo). Tool defects found and fixed in
-  `packages/create-baseline`: (1) `checkGateCoverage`'s fix appended gates to
-  `check:quality`/`check:security` even when CI never reaches them, so the gate
-  stayed red and every `--fix` pass appended another copy - `entryFor` now
-  targets only a reachable check-style entrypoint and falls back to the
-  conventional name (leaving the finding standing) rather than polluting
-  whatever CI runs first, which had put `type-coverage` inside consumer-h's
-  `lint:prune` and consumer-l's `build`; (2) `applyFixes`' `append-to-script`
-  was not idempotent - it now skips a command the entrypoint already runs; (3)
-  the missing-packages install hint lacked `-w` for pnpm workspace roots
-  (consumer-y failed with `ERR_PNPM_ADDING_TO_ROOT`). Duplicated segments the
-  old behaviour left in consumer-ab, consumer-h, consumer-l, project-after and consumer-t were
-  deduped back; consumer-h's `lint:prune` and consumer-l's `build` restored to their
-  HEAD values. Evidence: `pnpm vitest run` in create-baseline passes 165 tests
-  (two new: reachable-entrypoint routing, no-check-entrypoint fallback; one new
-  idempotent-append test), `eslint bin tests --max-warnings 0` clean, second
-  `--fix` pass converges ("nothing was mechanically fixable"), `pnpm estate ~/p`
-  shows 2 fully wired and the residue listed in `TODO.md`. Item stays `[~]`
-  there: 13 lockfile syncs and three repos' installs are blocked on the
-  unreleased package versions (new `[!]` release item), and the rest is per-repo
-  decisions. Delegation caveat logged: the batch agent claimed
-  consumer-q was fixed but no change existed on disk - redone by the
-  coordinator and verified.
 
 - [x] 2026-08-28 - **The per-rule mutation pass is complete: all ten rules
       tightened, package 60.80% → 89.38%, floor ratcheted to 89.** Fourth and
@@ -399,7 +166,7 @@ committed.
       `prettier --check` clean on both changed files. Remaining per-rule work
       stays in TODO.md with the new table.
 
-- [x] 2026-08-27 - **The tsconfig lessons from consumer-g are documented where
+- [x] 2026-08-27 - **The tsconfig lessons from a consumer are documented where
       the next adopter will look.** `packages/tsconfig/README.md` gained "The
       two root shapes" (single-project root extends a preset; multi-project root
       stays `{"files": [], "references": [...]}` with presets on the leaves, and
@@ -410,7 +177,7 @@ committed.
       `type-check`; and Next does not rewrite a tsconfig the preset completed,
       so it can leave `.prettierignore`). `docs/adoption/existing-repo.md`
       section 5 gained "What turning the strictness on actually costs": 33
-      pre-existing findings on consumer-g, all in `scripts/` and `e2e/`, two
+      pre-existing findings in that consumer, all in `scripts/` and `e2e/`, two
       real bugs of the `name in obj` shape fixed with `Object.hasOwn`; plus the
       two adoption notes - the lint wave arrives WITH the tsconfig change (adopt
       eslint-config and tsconfig in one pass), and fixes belong at the source,
@@ -429,10 +196,10 @@ committed.
       covers only what it names); the second judges by shape - leaves must
       extend `@busirocket/tsconfig`, a solution root must not, a single-project
       root must. Verified: 162 tests pass (17 new); a scratch fixture
-      reproducing the consumer-g defect (three references, two type-checked, one
-      hand-written leaf) yields exactly `tsconfig-project:tsconfig.app.json` and
-      `tsconfig-preset:tsconfig.node.json`; the repaired consumer-g passes both
-      checks legitimately; `pnpm estate ~/p` prints the column. Dogfooding
+      reproducing that consumer's defect (three references, two type-checked,
+      one hand-written leaf) yields exactly `tsconfig-project:tsconfig.app.json`
+      and `tsconfig-preset:tsconfig.node.json`; the repaired consumer passes
+      both checks legitimately; `pnpm estate ~/p` prints the column. Dogfooding
       caught the first offender: this repo's own root `tsconfig.json` was
       hand-written - it now extends `base.json` with `@busirocket/tsconfig`
       added as a root devDependency, and `create-baseline --check` here reports
@@ -458,12 +225,12 @@ committed.
       the crate's parsed files (2018-edition module resolution, both `name.rs`
       and `name/mod.rs`, test scope inherited through plain child modules), and
       `is_test_scope_file` takes the resulting set. Verified against a fixture
-      reproducing the consumer-t shape: before, 23 test `unwrap()` calls counted
+      reproducing the consumer's shape: before, 23 test `unwrap()` calls counted
       as production plus a spurious `file-matches-item` error; after, zero of
-      each. `~/p/consumer-t/src-tauri` now anchors the tip at
-      `src/ops/clean_name.rs` with the correct crate total of 45. 100 tests
-      pass. `docs/guides/rust-baseline-adoption.md` no longer asks adopters to
-      add `#![cfg(test)]` for this tool's sake.
+      each. That crate now anchors the tip at `src/ops/clean_name.rs` with the
+      correct crate total of 45. 100 tests pass.
+      `docs/guides/rust-baseline-adoption.md` no longer asks adopters to add
+      `#![cfg(test)]` for this tool's sake.
 
 - [x] 2026-08-25 - **Ran 0.7.0 / 0.5.0 against the estate before either reached
       npm, and it found three defects.** 22 repos adopt
@@ -474,14 +241,14 @@ committed.
     extension before the suffix check, which is right for `orderMapper.tsx` and
     wrong for `MarketSelector.tsx`. Enumerated across `~/p`: all 45 files newly
     matching a kind suffix on a `.tsx` extension were PascalCase components,
-    zero were misplaced units. Reproduced in consumer-r, 0 errors
-    to 11. `is-component-filename` now holds the one definition of "component
-    file", shared with the colocation anchor that had it inline.
+    zero were misplaced units. Reproduced in a consumer widget, 0 errors to 11.
+    `is-component-filename` now holds the one definition of "component file",
+    shared with the colocation anchor that had it inline.
   - **`one-primary-unit` flagged two idioms that cannot be split.**
-    `export const { handlers, auth, signIn, signOut } = NextAuth(config)`
-    (consumer-p, 3 errors) and
+    `export const { handlers, auth, signIn, signOut } = NextAuth(config)` (one
+    consumer, 3 errors) and
     `export const { Link, redirect, usePathname, useRouter, getPathname } = createNavigation(routing)`
-    (busirocket, 4 errors), both verbatim from their official setup guides. The
+    (another, 4 errors), both verbatim from their official setup guides. The
     factory returns one object; splitting means calling it twice. A declarator
     whose init is a call or `new` now counts once, and
     `export const { first, second } = source` still counts as two.
@@ -495,11 +262,11 @@ committed.
     directory and silently dropped the flag after a `--config`; arguments are
     now forwarded untouched.
   - **What held up.** `cargo baseline check` matched the published binary's
-    error counts on all four crates (project-after 0, consumer-t 20, consumer-f 22,
-    Midia 0) while correcting the unwrap-density tips: project-after 906 calls blamed on
-    one arbitrary file became 11 real ones, consumer-t 475 became 45. project-after's file
-    count went 523 to 538 with `tests/` read, no new errors. The canonical jscpd
-    config reproduced project-after's own result exactly (1866 files, 61 clones).
+    error counts on all four crates (0, 20, 22 and 0) while correcting the
+    unwrap-density tips: in the largest, 906 calls blamed on one arbitrary file
+    became 11 real ones, and 475 became 45 in another. That crate's file count
+    went 523 to 538 with `tests/` read, no new errors. The canonical jscpd
+    config reproduced its own result exactly (1866 files, 61 clones).
   - Evidence: A/B lint sweep across all 21 adopting repos with the plugin
     installed, before and after, **0 deltas**; every repo restored and verified
     byte-identical afterwards. 146 plugin tests, `check:ci` / `check:quality` /
@@ -659,7 +426,7 @@ committed.
     scope rules.
 
 - [x] 2026-08-24 - **Adoption backlog cleared:** the twelve findings that three
-      real adoptions (consumer-y, consumer-t, consumer-x) left open.
+      real adoptions left open.
   - **`createKnipConfig` is configurable instead of a fixed preset.** Four
     findings reduced to that. A drizzle schema aggregator reported every table
     as a dead export - `drizzle.config.ts` is its only consumer - and acting on
@@ -834,7 +601,7 @@ committed.
     `pnpm dupes` exit 0, `cargo test --workspace` 63 passed, `actionlint` clean.
 
 - [x] 2026-08-04 - **Consumer findings:** Fix the five gaps that adopting the
-      standard in `BusiRocket/busirocket` (Next.js 16, ESLint 10.8) exposed.
+      standard in a consumer (Next.js 16, ESLint 10.8) exposed.
   - Result: `quality-config` 0.4.0. The knip Next.js preset named
     `middleware.ts`, renamed `proxy.ts` in Next 16, so the proxy read as an
     unused file; it now matches either in one pattern, and the App Router
@@ -861,13 +628,13 @@ committed.
     (tokenless OIDC trusted publishing - there is no local npm credential to
     have, which is what the 401 from `npm whoami` was really saying), on an
     annotated tag. `pnpm release:check` reports all six packages fully released.
-    `BusiRocket/busirocket` is on `^0.4.0` with its local patches deleted and
-    both gates green, which is the acceptance test passing for real rather than
-    against a working copy.
-  - Evidence: the new patterns were unit-checked against 13 real busirocket
-    paths (route files, nested routes, metadata routes, `src/proxy.ts`, and the
+    That consumer is on `^0.4.0` with its local patches deleted and both gates
+    green, which is the acceptance test passing for real rather than against a
+    working copy.
+  - Evidence: the new patterns were unit-checked against 13 real consumer paths
+    (route files, nested routes, metadata routes, `src/proxy.ts`, and the
     near-misses `app/blog/mypage.tsx` and `src/lib/route.ts`),
-    `pnpm check:quality` passes here, and busirocket passes `knip` and
+    `pnpm check:quality` passes here, and the consumer passes `knip` and
     `deps:graph` with its local patches deleted and this factory in place.
 
 - [x] 2026-08-04 — **release:** cut `eslint-config@0.6.0`,
@@ -928,8 +695,8 @@ committed.
       `contextOrFilename.getFilename is not a function` before a rule runs. This
       repo could not see it: `patches/eslint-plugin-react.patch` fixes
       `resolveBasedir` locally, so the templates lint green while external
-      consumers crash - the patch is what made this a report from
-      `capture-service` rather than a failing gate here. `createNextjsConfig` and
+      consumers crash - the patch is what made this a report from a consumer
+      rather than a failing gate here. `createNextjsConfig` and
       `createViteReactConfig` now resolve the React installed beside the linted
       project (`resolveReactVersion`, `require.resolve('react/package.json')`
       from `process.cwd()`) and hand the plugin a concrete version, with a new
@@ -1314,8 +1081,8 @@ committed.
       be consumed by an in-repo caller. No source change needed; documented in
       `TODO.md`'s `includeEntryExports` entry.
 
-- [x] 2026-08-12 — **Adoption findings (consumer-t):** fixed the three gaps
-      consumer-t's adoption surfaced.
+- [x] 2026-08-12 — **Adoption findings:** fixed the three gaps a consumer's
+      adoption surfaced.
   - `tailwindcss/classnames-order` fought `prettier-plugin-tailwindcss`:
     `createTailwindConfig` now turns the rule off, with a comment explaining
     Prettier owns class ordering (same rationale style as the neighboring
@@ -1346,7 +1113,7 @@ committed.
     runs `--max-warnings 0`, so an adopting repo with warn-level debt can't go
     green without fixing all warnings up front or promoting rules to error.
     Documented in `docs/adoption/existing-repo.md` under a new subsection, with
-    the concrete rule list consumer-t had to promote
+    the concrete rule list that consumer had to promote
     (`code-policy/view-logic-separation`, `max-lines-per-function`,
     `max-params`, `max-depth`, `complexity`, `promise/prefer-await-to-then`,
     `promise/prefer-await-to-callbacks`, `react-refresh/only-export-components`,

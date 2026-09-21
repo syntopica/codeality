@@ -126,9 +126,8 @@
   `KnipConfig` is a union that also admits a function, so a project spreading
   the factory's result to override one rule got
   `Property 'rules' does not exist on type 'RawConfigurationOrFn'` and had to
-  cast the value first. Consumer-ab and consumer-m both hit it.
-  Returning the object shape makes extending the config the ordinary thing it
-  looks like.
+  cast the value first. Consumer-s and consumer-m both hit it. Returning the
+  object shape makes extending the config the ordinary thing it looks like.
 
 ## 0.8.0
 
@@ -138,11 +137,11 @@
   framework preset.
 
   Every preset assumes the framework's own layout -- for Next.js, `src/` and
-  `app/`. consumer-m predates that convention: `actions/`,
-  `components/`, `hooks/`, `services/`, `types/` and six more sit at the repo
-  root, so knip saw only `app/` and reported 34 live dependencies as unused. The
-  factory had no override, so a repo in that shape could either delete the gate
-  or carry a permanent 34-line false report.
+  `app/`. consumer-m predates that convention: `actions/`, `components/`,
+  `hooks/`, `services/`, `types/` and six more sit at the repo root, so knip saw
+  only `app/` and reported 34 live dependencies as unused. The factory had no
+  override, so a repo in that shape could either delete the gate or carry a
+  permanent 34-line false report.
 
   Both options merge rather than replace: a project can tell knip where its
   extra code lives, but cannot silently stop it scanning the directories the
@@ -157,7 +156,7 @@
 
   The bar is 99% and the runner had no way to say otherwise, so a codebase that
   measures 96.93% could not wire this gate at all: the choice was an unenforced
-  gate or none. Found adopting capture-service, whose 25 uncovered expressions sit
+  gate or none. Found adopting consumer-k, whose 25 uncovered expressions sit
   almost entirely in one database row mapper -- a real boundary, not sloppiness.
 
   Freezing at the measured value makes coverage a ratchet: it cannot fall, and

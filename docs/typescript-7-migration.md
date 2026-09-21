@@ -77,7 +77,7 @@ changes**.
    node node_modules/@typescript/native/bin/tsc --version              # 7.x
    ```
 
-Real-world reference: `consumer-ab` commit `1e4d5bd` (2026-07-16).
+Real-world reference: `consumer-s` commit `1e4d5bd` (2026-07-16).
 
 ## Gotchas (hit in real migrations)
 

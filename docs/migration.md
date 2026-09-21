@@ -22,7 +22,7 @@ Use `npm install -D` with the same spec if you use npm.
 
 Remove legacy `.eslintrc.*` and `FlatCompat` bridges. Add `eslint.config.ts` (or
 `.mjs`) that imports from `@syntopica/eslint-config/*` — see
-[eslint-config README](https://github.com/BusiRocket/eslint-config/blob/main/README.md)
+[eslint-config README](https://github.com/syntopica/codeality/blob/main/packages/eslint-config/README.md)
 and [standards/eslint.md](./standards/eslint.md).
 
 Install **peer** packages required by the stacks you use (Next.js, React, Astro,

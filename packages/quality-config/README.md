@@ -7,7 +7,7 @@ files/exports/dependencies (knip), module boundaries and dependency cycles
 
 - **Public API (semver):** see [PUBLIC_API.md](./PUBLIC_API.md).
 - **Platform decisions:**
-  [engineering-baseline/docs/platform-decisions.md](https://github.com/BusiRocket/engineering-baseline/blob/main/docs/platform-decisions.md).
+  [engineering-baseline/docs/platform-decisions.md](https://github.com/syntopica/codeality/blob/main/docs/platform-decisions.md).
 
 ## Requirements
 

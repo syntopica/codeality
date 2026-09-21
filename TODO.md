@@ -7,16 +7,16 @@ verified complete - `[-]` obsolete or superseded.
 
 ## Python baseline
 
-- [ ] Work down the structural backlog left in five repositories, measured
-      2026-09-17 with codeality-py 0.2.2: consumer-a 194 accepted findings
-      and 36 mypy `ignore_errors` modules, consumer-b 64 and 51, consumer-c
-      57 and 9, consumer-d 26 and 12, atrium 19 and 0. Every one reports
-      `0 new`, so nothing is drifting; the debt is what adoption accepted.
-      Coverage floors beside them: consumer-b 5%, consumer-d 9%,
-      consumer-a 35%, atrium 54%, consumer-c 78%. Each floor was measured and
-      none may go down. brain, clips, wiki, syntopica and consumer-e are
-      clear: their whole gate passes with an empty backlog. The five accepted
-      starlette advisories in consumer-c still fall away when platformio 7 lands.
+- [ ] Work down the structural backlog left in five consumer repositories,
+      measured 2026-09-17 with codeality-py 0.2.2: 194 accepted findings and 36
+      mypy `ignore_errors` modules in the largest, then 64 and 51, 57 and 9, 26
+      and 12, and atrium at 19 and 0. Every one reports `0 new`, so nothing is
+      drifting; the debt is what adoption accepted. Coverage floors beside them:
+      5%, 9%, 35%, atrium 54%, 78%. Each floor was measured and none may go
+      down. brain, clips and syntopica are clear, as are the private consumers
+      not listed here: their whole gate passes with an empty backlog. The five
+      accepted starlette advisories in one of them still fall away when
+      platformio 7 lands.
 
 ## Estate
 
@@ -38,214 +38,39 @@ verified complete - `[-]` obsolete or superseded.
       its props (`TableCell`, `Input`, shadcn's whole `ui/` folder) reports
       `'className' is missing in props validation`. In a TypeScript project the
       prop types are the validation, so adopters turn the rule off for
-      `**/*.tsx` by hand (consumer-m, 2026-09-08). Smallest step:
-      the nextjs and vite-react layers set `react/prop-types: 'off'` for `.tsx`
-      files themselves.
+      `**/*.tsx` by hand (one consumer, 2026-09-08). Smallest step: the nextjs
+      and vite-react layers set `react/prop-types: 'off'` for `.tsx` files
+      themselves.
 
-- [~] Bring the rest of the estate up to the wiring the conformance check
-  asserts. 2026-08-28 sweep ran `--fix` + installs across 19 consumers: matrix
-  went from 23-of-24 repos failing (~77 red cells) to ~39 red cells, 2 fully
-  wired. The 2026-08-31 pass took it to **10 of 24 fully wired** and ~25 red
-  cells outside the four excluded `client-widgets-*` widgets, and the `pins` column
-  is green estate-wide. Every repo's changes are now **committed** (2026-08-31,
-  14 repos, all worktrees clean, all hooks green), unpushed. consumer-l's
-  landed on `codex/discord-catchup-todo` because that is the branch its worktree
-  is on; switching branches would have disturbed that session's work.
-
-  One correction to what this file said earlier: the plan was to avoid adding
-  per-repo exclusions to the release-age gate, and pnpm added them anyway during
-  the installs - `minimumReleaseAgeExclude` entries for the freshly published
-  @busirocket versions now sit in busirocket, consumer-t, consumer-l, consumer-h and
-  consumer-g. They were kept rather than reverted: each names one exact version
-  of a first-party package published minutes earlier by our own OIDC workflow
-  with provenance, which is not the threat the policy exists to catch. Worth
-  deciding deliberately rather than by default next release.
-
-  Pushed 2026-08-31: baseline, capture-service, busirocket, inbox-tool,
-  consumer-i, consumer-n, consumer-l (its codex branch), plus project-after and
-  consumer-p, which a concurrent session had already pushed. Six could not
-  be, each for its own reason, and none of them is "run push again":
-
-  - consumer-f: **pushed 2026-08-31.** The three findings in `backend/.env`
-    (commits `ac4dc81a` and `17f0831a`, April 2025) are historical and the
-    repository is private, so a `.gitleaks.toml` allowlist scoped to that one
-    path unblocks the gate. The file is untracked at HEAD and `.env*` is
-    gitignored, so nothing can re-introduce it there. **The keys are still in
-    the history and should still be rotated** - a key in a private repository's
-    history is exposed to every collaborator, clone and backup, and the OpenAI
-    one is billable. Rotating does not invalidate the allowlist: the rotated
-    values were never committed.
-  - [!] **Consumer-u: the Maps key is confirmed unrestricted.** Investigated to
-    a conclusion 2026-08-31. The 38 gitleaks hits are all historical - nothing
-    at HEAD carries a key except the tracked `dist/the-client.html` - and the
-    open question, whether the key was referrer-restricted, now has an answer:
-    it is not. A page served from `http://127.0.0.1:8731`, an origin unrelated
-    to <client-domain>, loads the Maps JS API with that key and renders the map:
-    `PROBE_RESULT map constructed`, no `gm_authFailure`, no
-    `RefererNotAllowedMapError`, 7 tile requests served. It does carry an API
-    restriction (Static Maps answers
-    `This API is not activated on your API project`), so the scope is map
-    rendering rather than Geocoding or Places, but rendering bills.
-
-    It cannot be fixed from here: the key is in no GCP project that
-    the personal account (6 projects) or the work account (44) can
-    enumerate - every "Maps Platform API Key" found was fingerprint-compared and
-    none matches - so it belongs to a third-party project, presumably
-    the client's. Next step needs a person: have the project owner rotate it and
-    issue one restricted to `https://<client-domain>/*`, then update
-    `VITE_GOOGLE_MAPS_API_KEY` and rebuild `dist/`. Only then does allowlisting
-    the historical finding make sense. The gate stays red, correctly - the six
-    pending commits were pushed 2026-08-31 with a one-off
-    `git push --no-verify`, deliberately leaving `.gitleaks.toml` untouched.
-    That is defensible only because
-    `gitleaks detect --log-opts=origin/main..HEAD` reports **no leaks** in those
-    six commits: every one of the 38 findings sits in history already on origin,
-    so the push added no exposure and the hook was blocking documentation over
-    already-published commits. A bypass is not the answer for anything that
-    introduces a new finding.
-
-    A second unrestricted Maps key, in BusiRocket's own `project-28baa0cb`, was
-    chased and **discarded**: that project is a "My First Project" from
-    2026-02-12 with `billingEnabled: false`, and Maps Platform requires billing,
-    so it cannot be charged. Housekeeping, not a finding.
-
-  - [!] **consumer-g: 1352 type errors**, 1347 of them TS4111 plus 5 TS1294.
-    Caused by this session: syncing the lockfile moved `@busirocket/tsconfig`
-    0.2.1 to 0.3.0, whose `base.json` turns on
-    `noPropertyAccessFromIndexSignature`. The commit is sound and stays local;
-    the adoption is a real task, mostly mechanical (dot to bracket access), not
-    a drive-by fix. Same shape as project-after's 156-error cargo-baseline adoption.
-  - consumer-ab: **pushed 2026-08-31.** GitHub had it archived and read-only, so
-    the sequence was `gh repo unarchive` -> push -> `gh repo archive`; it is
-    archived again and local `main` is level with origin. The project is
-    retired, so it should leave the estate matrix rather than keep reporting
-    conformance nobody will act on.
-  - consumer-t: **done via PR**, https://github.com/consumer-t/consumer-t/pull/2.
-    Cherry-picking the stale local commits conflicted, so the work was redone
-    against `origin/main` instead: 11 action pins, `--coverage` on the `test`
-    script with the provider declared, and the thresholds block (lines 80.06,
-    101 test files pass). The local `main` there is still 150 behind with three
-    unmerged commits from earlier sessions - untouched, still needing a
-    decision.
-  - [!] consumer-h: **left alone deliberately.** Its `origin/main` is a _bun_ repo
-    (`bun.lock`, `bun run` scripts, no `check:*` entrypoints), while the local
-    `main` carries an unmerged pnpm adoption. Landing a coverage tweak on the
-    bun side would collide with whoever finishes that migration, and the two
-    have to be reconciled first. The `gates` finding here was already logged as
-    a human call.
-
-  Two remotes were on HTTPS and failed with 403 / "Repository not found" while
-  every SSH remote worked; consumer-i and consumer-g now point at SSH.
-
-  What remains:
-
-  - Lockfile sync: **done 2026-08-31.** 12 repos were stale (capture-service,
-    busirocket, consumer-ab, consumer-t, inbox-tool, consumer-f,
-    consumer-l, consumer-i, consumer-h, consumer-g, consumer-n, Consumer-u); all 12
-    now pass `pnpm install --frozen-lockfile`. The changes are left uncommitted
-    in each repo, alongside the 2026-08-28 sweep's, for a per-repo review.
-  - [!] `pnpm run prepare` in consumer-h still fails, and will until 2026-09-01
-    ~10:18Z. Not a wiring problem: consumer-h enforces pnpm's `minimumReleaseAge`, and
-    the three packages released today sit inside the 24-hour cutoff -
-    `ERR_PNPM_MINIMUM_RELEASE_AGE_VIOLATION ... @busirocket/eslint-config@0.8.0 was published at 2026-08-31T09:54:54.000Z`.
-    The install itself succeeds; it is the policy verification that rejects it.
-    This applies to every consumer enforcing the policy, so hold the remaining
-    `--fix` adoptions (the `vers` column: brain, consumer-y,
-    consumer-q, rocket-agents, consumer-p, project-after,
-    consumer-m) until the cutoff passes rather than adding per-repo
-    exclusions to a supply-chain gate.
-  - Action pins (`pins` column): **done 2026-08-31.** 54 tag pins across
-    busirocket, consumer-ab, consumer-t, consumer-l and project-after now carry commit SHAs
-    with the tag kept as a trailing comment. Two of them were never tags at all:
-    `denoland/setup-deno@v2` and `dtolnay/rust-toolchain@stable` are moving
-    _branches_, so `git/ref/tags/<tag>` 404s and they have to be resolved
-    through `git/ref/heads/<name>`. `actionlint` is clean in all five.
-  - Coverage (`cov` column): **done in 8 repos 2026-08-31**, and it was not
-    `--fix` material - `create-baseline --fix` reports "nothing was mechanically
-    fixable" when the config has no `coverage:` key at all, which was the case
-    everywhere. The block was added by hand (provider v8, `autoUpdate: true`,
-    every floor at 0) to capture-service, busirocket, consumer-t, inbox-tool,
-    consumer-f, consumer-i, consumer-p and consumer-g; the first run
-    then ratcheted each floor to what the suite actually reaches (38.39 in
-    consumer-f, 89.79 in busirocket). Two remain: consumer-l has no `test`
-    block in `vite.config.ts` at all, and consumer-h's install is held by the
-    release-age quarantine above.
-  - [!] **8 repos' `test` script was broken and nobody noticed**: capture-service,
-    busirocket, consumer-t, inbox-tool, consumer-f, consumer-i, consumer-h
-    and consumer-g all run `vitest run --coverage` without depending on
-    `@vitest/coverage-v8`, so the script died on
-    `MISSING DEPENDENCY  Cannot find dependency '@vitest/coverage-v8'` before
-    running a single test. It predates this session - reproducible with the
-    coverage config reverted. Fixed by adding the dependency in seven of them,
-    all now green (55, 91, 79, 15, 27, 1027 and 142 test files). consumer-h is the
-    eighth and waits on the quarantine. Worth a conformance rule: a `test`
-    script that passes `--coverage` should assert the provider is a dependency.
-  - Coverage, still open: project-after and consumer-m have no `test` script
-    at all.
-  - CI wiring (`gates`): consumer-h and consumer-q CI reaches no `check:*`
-    entrypoint, so six gates sit dead; wiring the workflow is a human call.
-  - consumer-y: hooks run through husky (`.husky/pre-commit`,
-    `prepare: husky`); migrating to lefthook is a decision, WARN left standing.
-  - The four `client-widgets-*` widgets: untouched, as excluded - they predate
-    `@busirocket/quality-config` entirely; all nine baseline packages missing. A
-    real migration, not `--fix` material.
-
-## Cross-project (filed 2026-09-09 from the consumer-i and inbox-tool backlog runs)
+## Cross-project (filed 2026-09-09 from two consumer backlog runs)
 
 - [ ] **knip 6.35 reports the default export of `vite.config.ts` as unused when
       the framework preset lists `vite.config.*` under `entry`.** The Vite
       plugin already treats that file as an entry whose exports are ignored;
       naming it again as a plain project entry now surfaces
-      `Unused exports: default vite.config.ts`. consumer-t hit it the day knip
+      `Unused exports: default vite.config.ts`. A consumer hit it the day knip
       moved 6.34 -> 6.35.1 (2026-09-12) and worked around it by overriding
       `entry: ['src/main.{ts,tsx}']` in its `knip.config.ts`. Fix in
       `knip-framework.ts`: drop `vite.config.*` from the `tauri`, `vite-react`,
       `vite-vue` and TanStack presets, or mark it as an entry with exports
       ignored, then re-run the affected repos' `pnpm knip`.
 - [ ] **commitlint's `type-enum` rejects `todo:`**, the subject every repo here
-      uses for backlog commits (5 of consumer-i's last 12). No sibling repo
+      uses for backlog commits (5 of one consumer's last 12). No sibling repo
       has wired the `commit-msg` hook yet, so the day one does, the standard
       blocks the convention estate-wide. Either add `todo` to the shared list or
-      state that backlog commits use `docs(todo):`. Evidence: consumer-i run
+      state that backlog commits use `docs(todo):`. Evidence: a consumer run
       2026-09-09, `@commitlint/cli` declared there with nothing running it (its
       single knip finding).
 - [ ] **`@busirocket/eslint-config` pulls `@eslint/js@10.0.1`, whose peer is
-      `eslint ^10`, against the installed `eslint 9.39.5`.** Pre-existing in
-      consumer-i's HEAD lockfile and warns on every install; decide whether
-      the config moves to ESLint 10 or pins `@eslint/js` 9.
+      `eslint ^10`, against the installed `eslint 9.39.5`.** Pre-existing in a
+      consumer's HEAD lockfile and warns on every install; decide whether the
+      config moves to ESLint 10 or pins `@eslint/js` 9.
 - [ ] **Adoption guide: the `vite-react` tsconfig's
       `noPropertyAccessFromIndexSignature` and the quality-config lint rules
-      break `check:ci` on adoption in any repository written before them.**
-      inbox-tool needed three commits (12 TS4111 in `vite-plugins/db-api`,
-      41 lint errors, knip on the Homebrew `gitleaks` binary and an unused
-      `@commitlint/cli`) before a single backlog item could land; consumer-g's
-      1352-error case above is the same shape. Worth a documented first step
-      (bracket access sweep, `.prettierignore` for `.serena/`, knip ignores)
-      rather than a surprise per repo.
-
-## Shared package scope migration (routed from `~/p/TODO.md`, 2026-09-20)
-
-- [ ] **Coordinated delivery across the consumers**, parked in `~/p/TODO.md`
-      since 2026-09-14. On npm on 2026-09-20: `@syntopica/tsconfig` 0.3.0,
-      `prettier-config` 0.2.0, `quality-config` 0.11.0, `eslint-config` 0.8.0;
-      there is no fifth package (see the closed bullet below), so the lockfile
-      half is done; no npm publication or version bump is part of this rename.
-      Brain stays limited to `commitlint.config.mjs`; its other config
-      references need a separate owner decision. consumer-h's rename is on
-      `refactor/shared-config-syntopica`, following its branch-only push rule.
-- [x] Consumer lockfiles already resolve the new scope (2026-09-20): the 25
-      consumer `package.json` files under `~/p` reference only the four
-      published packages, and their `pnpm-lock.yaml` files carry `@syntopica/`
-      entries (`pnpm install --frozen-lockfile` exited 0 in all 16 on
-      2026-09-15). `eslint-plugin-code-policy` is not on npm and no consumer
-      references it. Each repository's gate runs in the daily round, which files
-      any failure in that repository's own `TODO.md`.
-- [!] **Consumers whose push is blocked:** `consumer-u` carries 8 unpushed
-  commits (gitleaks pre-push, 38 historical findings); `consumer-l` commit
-  `c3b67af06e` plus two more sit on `codex/discord-catchup-todo` behind four
-  historical gitleaks findings (Phil's repo, nothing is pushed there unasked);
-  `consumer-ab` (`CristianDeluxe/consumer-ab`) and `agents-skills`
-  (`BusiRocket/agents-skills`) each hold one unpushed commit and their remotes
-  answer 404 on 2026-09-20, not "archived" as first recorded, so those two need
-  a destination or the commits are dropped. The verification helpers this item
-  once named under `/private/tmp/npm-scope-resume/` are gone.
+      break `check:ci` on adoption in any repository written before them.** One
+      consumer needed three commits (12 TS4111 in a Vite plugin directory, 41
+      lint errors, knip on the Homebrew `gitleaks` binary and an unused
+      `@commitlint/cli`) before a single backlog item could land; the 1352-error
+      case in another is the same shape. Worth a documented first step (bracket
+      access sweep, `.prettierignore` for `.serena/`, knip ignores) rather than
+      a surprise per repo.

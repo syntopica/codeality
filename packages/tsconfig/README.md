@@ -96,7 +96,7 @@ it formatted like everything else.
 ## Repository
 
 Source and issues:
-[github.com/BusiRocket/tsconfig](https://github.com/BusiRocket/tsconfig).
+[github.com/syntopica/codeality](https://github.com/syntopica/codeality/tree/main/packages/tsconfig).
 
 Broader adoption docs:
-[engineering-baseline](https://github.com/BusiRocket/engineering-baseline).
+[engineering-baseline](https://github.com/syntopica/codeality).

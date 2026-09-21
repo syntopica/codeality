@@ -132,6 +132,6 @@ Tell the human:
    guide's ratchet + triage order is the fix path — do not start that refactor
    as part of installation).
 
-Worked example: project-after (`~/p/project-after`, layout B, Tauri, one JNI unsafe adaptation,
-156 errors at adoption) — commit `f061a5f` in that repo shows the exact target
-state of every file.
+Worked example: consumer-o (`~/p/consumer-o`, layout B, Tauri, one JNI unsafe
+adaptation, 156 errors at adoption) — commit `f061a5f` in that repo shows the
+exact target state of every file.

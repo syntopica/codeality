@@ -33,11 +33,11 @@ token, no `twine`, no local login.
 
     gh workflow run publish-python.yml -f package=codeality-py
 
-The trusted publisher was registered on 2026-08-31 under the PyPI account
-`busirocket` (me@cristiandeluxe.dev; credentials and TOTP in the password manager, vault
-BusiRocket): owner `syntopica`, repository `codeality`, workflow
-`publish-python.yml`, environment `pypi`. The GitHub `pypi` environment has to
-exist for the job to run - it did not, and was created with
+The trusted publisher was registered on 2026-08-31 under the project's PyPI
+account (its credentials and TOTP live in the password manager, never here):
+owner `syntopica`, repository `codeality`, workflow `publish-python.yml`,
+environment `pypi`. The GitHub `pypi` environment has to exist for the job to
+run - it did not, and was created with
 `gh api -X PUT repos/syntopica/codeality/environments/pypi`.
 
 Its own checks run through uv, not pnpm:
