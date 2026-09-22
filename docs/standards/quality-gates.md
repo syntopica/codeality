@@ -389,6 +389,33 @@ code (asserting on a DOM node property Testing Library doesn't expose a query
 for). Add a narrow, commented `eslint-disable-next-line` at the call site rather
 than turning the rule off repo-wide.
 
+## Suite time budget (`test-budget-seconds`)
+
+**Detects:** a suite that passes and has quietly grown past what anyone will
+wait for - the failure a green run never surfaces. One consumer's suite reached
+31 minutes before anybody measured it; a profile found a checker re-parsing the
+same file 620 951 times per run (2026-09-22).
+
+**Runs:** in `codeality-py gate`, on the pytest stage, which always carries
+`--durations=10`. Past the budget the stage reports `over-budget`, exits 1 like
+any finding, and its detail holds the slowest-tests table and the procedure in
+`docs/standards/testing.md#suite-time-budget`. Vitest projects have no separate
+tool: `vitest run --reporter=verbose` gives the per-test times and `check:ci`'s
+timeout is the budget.
+
+**Threshold:** `test-budget-seconds = 300` in a scaffolded `codeality-py.toml`.
+Unset, the suite is unbudgeted, so upgrading changes nothing until a project
+writes the number. Lower it as the suite gets faster; a budget is a ratchet.
+
+**Why:** the fix order matters - profile, memoise on the immutable input, walk
+in the runtime, prove identical output, then parallelise, then lock what is
+shared - and a red gate is what makes someone start at step one instead of at
+"add workers".
+
+**False positive:** a loaded machine. The same suite measured 240 s and 331 s
+within an hour on a box at load 25. Read the number with `uptime` beside it
+before profiling anything, and set the budget with headroom for CI runners.
+
 ## gitleaks
 
 **Detects:** committed secrets by regex + entropy against gitleaks' default

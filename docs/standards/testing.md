@@ -125,6 +125,56 @@ disk, and linting them reports the very violations they exist to reproduce.
 test scaffolding is duplication that has to be maintained like any other, so it
 is gated the same way. See `docs/standards/quality-gates.md`.
 
+## Suite time budget
+
+A suite has a time budget, and going over it is a finding, not a fact of life.
+The gate is what says the number is too big: `codeality-py gate` reports the
+pytest stage as `over-budget` past `test-budget-seconds` (scaffolded at 300); a
+Vitest project puts the same number in `check:ci`'s timeout. Where this comes
+from: a Python suite in this estate grew to 31 minutes with every gate green,
+and one profiling pass took it to four minutes, a second to two, and parallel
+workers to 32 seconds (2026-09-22). Nothing about it needed hardware.
+
+Work in this order. Each step is measured before the next starts.
+
+1. **Find where the time goes.** pytest: `--durations=25` (the gate passes
+   `--durations=10` on every run), then sum per file. Vitest:
+   `vitest run --reporter=verbose` prints each test's time and flags those over
+   `slowTestThreshold`. Read the result with the machine's load beside it: the
+   same suite measured 240 s and 331 s within an hour on a shared box.
+2. **Profile one slow test, not the suite.** `python -m cProfile -s tottime` or
+   `node --cpu-prof` on a single test that takes seconds. The usual finding is a
+   cache created per call instead of per immutable input: a helper that parsed
+   the same file 620 951 times in one run because each caller built a fresh
+   evaluator. Memoise on the immutable input - the parsed document, the graph -
+   and hand out copies where a caller may write.
+3. **Do the walk in the runtime, not in the language.** lxml's `{*}name`
+   wildcard walks a namespaced tree in C where a Python filter on the local name
+   cost 2.7 million calls per run; `Array.prototype` and native `querySelector`
+   do the same for TypeScript. One pass went from 2.4 s to 0.8 s on this step
+   and memoisation alone.
+4. **Prove the outputs did not change.** Dump the unit's result for every real
+   input before the change and diff it after; a speed-up that changes one
+   finding is a bug with a good excuse. Identical means byte-identical.
+5. **Then parallelise.** pytest: `pytest-xdist`, `-n auto` in `addopts`, `-n 0`
+   for a debugger. Vitest runs files in parallel already; `pool` and
+   `maxWorkers` are the dials. Parallel is the last step, not the first: it
+   hides the problem it multiplies.
+6. **Serialise what must stay shared, in the code that uses it.** A GUI process,
+   a hard-coded log file, a port, a database: the code that opens it takes a
+   lock (`fcntl.flock` on a file in the user's tempdir; `proper-lockfile` in
+   Node), so every caller is serialised without the tests knowing. Never by test
+   ordering or worker groups: the next test that touches the resource will not
+   be marked. Write the regression as two calls from two threads and watch it
+   fail without the lock.
+7. **Shorten waits on measurement, never on hope.** A "settle" timeout stays
+   until nine launches say where the last line lands: in one case every
+   complaint arrived within 20 ms of the load marker and the log stopped 0.2 s
+   after it, so a 2 s wait became 1 s with a fivefold margin.
+
+What goes in the report: the durations table, the profile's top entries, the
+identical-output diff, the timing under load. "It is faster" is not a report.
+
 ## Runtime accessibility tests
 
 For React-based projects, add a smoke-level accessibility test using
