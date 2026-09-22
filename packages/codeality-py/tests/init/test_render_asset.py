@@ -128,5 +128,6 @@ def test_a_nested_workflow_is_planned_at_the_repository_root(tmp_path: Path) -> 
         if ".github" in str(managed.path)
     )
     assert (
-        workflow.resolve() == (tmp_path / ".github" / "workflows" / "quality-nested-tool.yml").resolve()
+        workflow.resolve()
+        == (tmp_path / ".github" / "workflows" / "quality-nested-tool.yml").resolve()
     )

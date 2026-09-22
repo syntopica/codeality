@@ -138,10 +138,9 @@ pnpm dlx @syntopica/create-baseline --check
 
 `--check` asserts the gates are **wired**, not merely installed: `lint` fails on
 warnings, every gate is reachable from what CI actually runs, a workflow fires
-on push, actions are pinned to commit SHAs, coverage is produced and
-thresacme, lefthook reached `.git/hooks`, and the installed ranges can resolve
-the pinned baseline. Run it in CI; run `--fix` locally to repair the mechanical
-half.
+on push, actions are pinned to commit SHAs, coverage is produced and thresacme,
+lefthook reached `.git/hooks`, and the installed ranges can resolve the pinned
+baseline. Run it in CI; run `--fix` locally to repair the mechanical half.
 
 Waive a finding by id in `baseline.exceptions.json`:
 
