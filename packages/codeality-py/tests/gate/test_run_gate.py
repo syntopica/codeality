@@ -83,3 +83,38 @@ def test_a_failing_stage_keeps_what_it_wrote_to_stderr(tmp_path: Path) -> None:
     assert result.status is StageStatus.FINDINGS
     assert "found on stdout" in result.detail
     assert "found on stderr" in result.detail
+
+
+def test_a_passing_stage_past_its_budget_is_over_budget(tmp_path: Path) -> None:
+    """2026-09-22: a consumer's suite had grown to 31 minutes and every gate
+    was green, because a slow suite was not a finding. One profiling pass
+    found that a checker re-parsed the same file 620 951 times per run and
+    took it to four minutes; parallel workers took it to 32 seconds. The
+    gate has to be what says the number is too big.
+    """
+    stage = Stage("sleep", StageKind.REQUIRED, ("sleep", "0.2"), budget_seconds=0.05)
+    result = run_stage(stage, tmp_path)
+    assert result.status is StageStatus.OVER_BUDGET
+    assert result.exit_code == 0
+    assert "over its budget of 0.05s" in result.detail
+    assert "testing.md#suite-time-budget" in result.detail
+
+
+def test_an_unbudgeted_stage_passes_however_long_it_takes(tmp_path: Path) -> None:
+    result = run_stage(Stage("sleep", StageKind.REQUIRED, ("sleep", "0.05")), tmp_path)
+    assert result.status is StageStatus.PASSED
+
+
+def test_a_failing_stage_past_its_budget_reports_the_failure(tmp_path: Path) -> None:
+    stage = Stage("false", StageKind.REQUIRED, ("false",), budget_seconds=0.000001)
+    assert run_stage(stage, tmp_path).status is StageStatus.FINDINGS
+
+
+def test_over_budget_in_a_required_stage_exits_1() -> None:
+    result = GateResult(stages=(_stage_result(StageKind.REQUIRED, StageStatus.OVER_BUDGET),))
+    assert result.exit_code() is ExitCode.FINDINGS
+
+
+def test_over_budget_in_a_shadow_stage_does_not_fail_the_gate() -> None:
+    result = GateResult(stages=(_stage_result(StageKind.SHADOW, StageStatus.OVER_BUDGET),))
+    assert result.exit_code() is ExitCode.OK

@@ -6,6 +6,7 @@ import time
 from pathlib import Path
 
 from codeality_py.gate.build_stage_result import build_stage_result
+from codeality_py.gate.over_budget_detail import over_budget_detail
 from codeality_py.gate.stage import Stage
 from codeality_py.gate.stage_kind import StageKind
 from codeality_py.gate.stage_result import StageResult
@@ -49,4 +50,10 @@ def run_stage(stage: Stage, project_root: Path) -> StageResult:
         part.strip() for part in (completed.stdout, completed.stderr) if part.strip()
     )
     detail = "" if completed.returncode == 0 else output[-2000:]
+    # A suite that passes but takes longer than it may is a finding of its
+    # own: the tail of its output holds pytest's slowest-durations table,
+    # which is where fixing it starts.
+    if status is StageStatus.PASSED and 0.0 < stage.budget_seconds < elapsed:
+        status = StageStatus.OVER_BUDGET
+        detail = over_budget_detail(stage, elapsed, output)
     return build_stage_result(stage, status, completed.returncode, elapsed, detail)

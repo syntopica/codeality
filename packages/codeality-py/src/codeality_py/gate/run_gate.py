@@ -7,7 +7,7 @@ from codeality_py.gate.run_stage import run_stage
 from codeality_py.gate.stage_kind import StageKind
 from codeality_py.gate.stage_status import StageStatus
 
-_BLOCKED = (StageStatus.FINDINGS, StageStatus.FAILED_TO_RUN)
+_BLOCKED = (StageStatus.FINDINGS, StageStatus.OVER_BUDGET, StageStatus.FAILED_TO_RUN)
 
 
 def run_gate(config: BaselineConfig, fail_fast: bool) -> GateResult:

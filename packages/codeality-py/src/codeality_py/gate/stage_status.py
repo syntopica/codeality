@@ -8,5 +8,7 @@ class StageStatus(StrEnum):
 
     PASSED = "passed"
     FINDINGS = "findings"
+    # The command succeeded and took longer than the stage's budget.
+    OVER_BUDGET = "over-budget"
     FAILED_TO_RUN = "failed-to-run"
     SKIPPED_NOT_APPLICABLE = "skipped-not-applicable"

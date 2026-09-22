@@ -39,6 +39,19 @@ rather than skipping it.
 | `BPY005` | `barrel-only-init`  | `__init__.py` holds imports, `__all__` and nothing else.       |
 | `BPY006` | `no-inline-sql`     | SQL lives in resource files, not in string literals.           |
 
+## Suite time budget
+
+```toml
+# codeality-py.toml
+test-budget-seconds = 300
+```
+
+Past the budget a passing suite is a finding: the pytest stage reports
+`over-budget`, exits 1, and its detail carries the slowest tests. The
+procedure - profile, make the unit under test cheaper, parallelise, serialise
+what must stay shared - is in
+[docs/standards/testing.md](https://github.com/syntopica/codeality/blob/main/docs/standards/testing.md#suite-time-budget).
+
 ## Exit codes
 
 | Code | Meaning                                                         |

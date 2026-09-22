@@ -4,6 +4,24 @@ All notable changes to `syntopica-codeality-py` are documented here. The format
 follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/) and the project
 adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## 0.2.3
+
+### Added
+
+- `test-budget-seconds` in `codeality-py.toml`: the gate reports the pytest
+  stage as `over-budget` when the suite passes but takes longer, and the detail
+  carries pytest's slowest-durations table and the suite-time procedure. A
+  consumer's suite had grown to 31 minutes with every gate green; one profiling
+  pass found a checker re-parsing the same file 620 951 times per run
+  (2026-09-22). Unset, the suite is unbudgeted, so no existing gate changes
+  colour on upgrade.
+- The pytest stage always runs with `--durations=10`, so the measurement is in
+  the output before anyone asks for it.
+- `init` scaffolds `pytest-xdist` with `addopts = "-ra -n auto"` and a
+  `test-budget-seconds = 300` in `codeality-py.toml`: a suite written parallel
+  from its first test stays isolated. A project with its own `[tool.pytest]`
+  table keeps it, as before.
+
 ## 0.2.2
 
 ### Changed

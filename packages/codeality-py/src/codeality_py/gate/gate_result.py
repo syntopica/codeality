@@ -6,6 +6,9 @@ from codeality_py.gate.stage_result import StageResult
 from codeality_py.gate.stage_status import StageStatus
 from codeality_py.report.exit_code import ExitCode
 
+# A suite past its budget exits like any other finding: it is one.
+_FINDINGS = (StageStatus.FINDINGS, StageStatus.OVER_BUDGET)
+
 
 @dataclass(frozen=True, slots=True)
 class GateResult:
@@ -18,6 +21,6 @@ class GateResult:
         blocking = [stage for stage in self.stages if stage.kind.value == "required"]
         if any(stage.status is StageStatus.FAILED_TO_RUN for stage in blocking):
             return ExitCode.INFRASTRUCTURE
-        if any(stage.status is StageStatus.FINDINGS for stage in blocking):
+        if any(stage.status in _FINDINGS for stage in blocking):
             return ExitCode.FINDINGS
         return ExitCode.OK

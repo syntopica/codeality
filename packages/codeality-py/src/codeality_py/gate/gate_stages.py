@@ -12,6 +12,10 @@ def gate_stages(config: BaselineConfig) -> tuple[Stage, ...]:
     Coverage is collected rather than merely configured. pip-audit audits the
     installed environment, which the CI workflow builds with "uv sync
     --locked", so what is audited is exactly what the lockfile pins.
+
+    pytest reports its slowest tests every run, so a suite that goes over its
+    budget hands the reader the measurement in the same output, and a suite
+    creeping towards it is visible before it gets there.
     """
     roots = [*config.source_roots, *config.test_roots]
     package = config.import_package or config.source_roots[0]
@@ -44,7 +48,9 @@ def gate_stages(config: BaselineConfig) -> tuple[Stage, ...]:
                 f"--cov={package}",
                 "--cov-report=term-missing",
                 f"--cov-fail-under={config.coverage_threshold}",
+                "--durations=10",
             ),
+            budget_seconds=float(config.test_budget_seconds),
         ),
         Stage("pyrefly", StageKind.SHADOW, ("pyrefly", "check")),
     )

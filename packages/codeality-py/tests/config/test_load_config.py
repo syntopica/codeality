@@ -86,3 +86,13 @@ def test_an_unknown_rule_code_in_an_override_is_fatal(tmp_path: Path) -> None:
     )
     with pytest.raises(ConfigError, match="unknown rule code"):
         load_config(tmp_path)
+
+
+def test_the_suite_is_unbudgeted_unless_the_project_says_otherwise(tmp_path: Path) -> None:
+    (tmp_path / "src").mkdir()
+    assert load_config(tmp_path).test_budget_seconds == 0
+
+
+def test_the_test_budget_is_read(tmp_path: Path) -> None:
+    _write(tmp_path, "schema-version = 1\ntest-budget-seconds = 300\n")
+    assert load_config(tmp_path).test_budget_seconds == 300

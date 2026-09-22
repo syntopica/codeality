@@ -12,3 +12,5 @@ class Stage:
     name: str
     kind: StageKind
     command: tuple[str, ...]
+    # Seconds the stage may take and still pass. Zero means unbudgeted.
+    budget_seconds: float = 0.0

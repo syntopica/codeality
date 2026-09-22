@@ -4,6 +4,7 @@ source-roots = ["src"]
 test-roots = ["tests"]
 import-package = "codeality_py"
 coverage-threshold = 80
+test-budget-seconds = 60
 
 [limits]
 max-file-lines = 150

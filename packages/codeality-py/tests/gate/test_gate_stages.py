@@ -67,3 +67,16 @@ def test_a_missing_required_tool_still_fails_to_run(tmp_path: Path) -> None:
     result = run_stage(stage, tmp_path)
     assert result.status is StageStatus.FAILED_TO_RUN
     assert result.exit_code == 127
+
+
+def test_pytest_reports_its_slowest_tests_on_every_run() -> None:
+    """The measurement a slow suite is fixed from is in the output already."""
+    config = BaselineConfig(project_root=Path("/p"), import_package="demo")
+    assert "--durations=10" in _commands(config)["pytest"]
+
+
+def test_the_test_budget_reaches_the_pytest_stage_and_no_other() -> None:
+    config = BaselineConfig(project_root=Path("/p"), test_budget_seconds=300)
+    budgets = {stage.name: stage.budget_seconds for stage in gate_stages(config)}
+    assert budgets["pytest"] == 300.0
+    assert all(budget == 0.0 for name, budget in budgets.items() if name != "pytest")

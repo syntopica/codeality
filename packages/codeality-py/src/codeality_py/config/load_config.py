@@ -25,6 +25,7 @@ _TOP_LEVEL_KEYS = {
     "sql-resource-globs",
     "import-package",
     "coverage-threshold",
+    "test-budget-seconds",
     "limits",
     "audit",
     "roles",
@@ -61,4 +62,5 @@ def load_config(project_root: Path) -> BaselineConfig:
         import_package=document.get("import-package"),
         coverage_threshold=int(document.get("coverage-threshold", 0)),
         audit_ignore_vulns=tuple(audit.get("ignore-vulns", ())),
+        test_budget_seconds=int(document.get("test-budget-seconds", 0)),
     )

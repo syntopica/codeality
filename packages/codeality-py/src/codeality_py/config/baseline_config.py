@@ -25,3 +25,6 @@ class BaselineConfig:
     import_package: str | None = None
     coverage_threshold: int = 0
     audit_ignore_vulns: tuple[str, ...] = ()
+    # Seconds the pytest stage may take before the gate reports it. Zero
+    # leaves the suite unbudgeted.
+    test_budget_seconds: int = 0

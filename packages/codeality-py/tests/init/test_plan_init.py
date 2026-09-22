@@ -170,3 +170,26 @@ def test_a_ruff_toml_alone_is_not_a_conflict(tmp_path: Path) -> None:
     (tmp_path / "pyproject.toml").write_text('[project]\nname = "demo"\n', encoding="utf-8")
     dispositions = _dispositions(plan_init(tmp_path, "lib", with_ci=False))
     assert dispositions["ruff.toml"] is PlanDisposition.CREATE
+
+
+def test_a_new_project_runs_its_suite_on_every_core(tmp_path: Path) -> None:
+    """A suite written parallel from its first test stays isolated; one
+    retrofitted later finds every shared port, file and process the hard way.
+    """
+    (tmp_path / "pyproject.toml").write_text('[project]\nname = "demo"\n', encoding="utf-8")
+    plan = plan_init(tmp_path, "lib", with_ci=False)
+    pyproject = next(item for item in plan if item.path.name == "pyproject.toml").content
+    assert 'addopts = "-ra -n auto"' in pyproject
+    assert '"pytest-xdist>=3,<4"' in pyproject
+    assert 'DEP002 = ["pytest-xdist"]' in pyproject
+
+
+def test_a_project_with_its_own_pytest_table_keeps_it(tmp_path: Path) -> None:
+    (tmp_path / "pyproject.toml").write_text(
+        '[project]\nname = "demo"\n\n[tool.pytest.ini_options]\naddopts = "-q"\n',
+        encoding="utf-8",
+    )
+    plan = plan_init(tmp_path, "lib", with_ci=False)
+    pyproject = next(item for item in plan if item.path.name == "pyproject.toml").content
+    assert 'addopts = "-q"' in pyproject
+    assert "-n auto" not in pyproject
