@@ -914,15 +914,15 @@ wheels = [
 
 [[package]]
 name = "syntopica-codeality-py"
-version = "0.2.0"
+version = "0.2.3"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "click" },
     { name = "tomlkit" },
 ]
-sdist = { url = "https://files.pythonhosted.org/packages/53/73/54aaa59dd20e9f6a70350c2d32c939b98af4115b05b3fd8b365e19064197/syntopica_codeality_py-0.2.0.tar.gz", hash = "sha256:315364856f996ec030b9c0fa093a322acbaa0e4a9907cdd32b455df85d33c72b", size = 126928, upload-time = "2026-09-16T23:49:39.971Z" }
+sdist = { url = "https://files.pythonhosted.org/packages/8e/18/71938d37c90ee26f6ff1b2c733bb4606cb2fb3320b6572654cc46fb714e9/syntopica_codeality_py-0.2.3.tar.gz", hash = "sha256:f746ae62e7e8163c14a3dd09cab2ef9152661fa165b147d5591ea6e7f4900a3b", size = 129945, upload-time = "2026-09-22T22:15:44.137Z" }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/c9/2d/9887f4c50681bd2608c738cad3f4390cd78768fa64bef0c4c9d44fb847cc/syntopica_codeality_py-0.2.0-py3-none-any.whl", hash = "sha256:a4582be692c6f8e44e1978eba6810864449561262aee21dbf87c69a514934044", size = 94533, upload-time = "2026-09-16T23:49:38.77Z" },
+    { url = "https://files.pythonhosted.org/packages/50/0d/7e6454d4c9e5fdd90a699f183c54a86b670ec9559bb1b9ee1fa9319c348d/syntopica_codeality_py-0.2.3-py3-none-any.whl", hash = "sha256:c09d8ae281e5226ff1ce1c344ecc77896852206e24de2e82b7347cddf0ab4db4", size = 96530, upload-time = "2026-09-22T22:15:42.751Z" },
 ]
 
 [[package]]

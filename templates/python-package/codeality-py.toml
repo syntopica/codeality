@@ -5,6 +5,9 @@ test-roots = ["tests"]
 respect-gitignore = true
 import-package = "greeting_service"
 coverage-threshold = 80
+# The gate reports the pytest stage as over-budget past this many seconds.
+# A suite that grows past it gets profiled, not more hardware.
+test-budget-seconds = 300
 
 [limits]
 max-file-lines = 150

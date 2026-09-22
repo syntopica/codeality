@@ -1,3 +1,15 @@
+### 2026-09-23
+
+- [x] `syntopica-codeality-py` 0.2.3 is on PyPI (run 35791330170, trusted
+      publishing). It adds `test-budget-seconds`: the gate reports a passing
+      pytest stage as `over-budget` past it, with `--durations=10` on every run,
+      and `init` scaffolds `pytest-xdist` with `-n auto`. The python-package
+      template now carries `test-budget-seconds = 300` and locks 0.2.3; its gate
+      passes against the published package. The first consumer budgeted is
+      qlctool at 120 s, whose suite went from 19 minutes to 32 seconds on
+      2026-09-22 - the measurement that became
+      `docs/standards/testing.md#suite-time-budget`.
+
 ### 2026-09-18
 
 - [x] Trusted publishing is configured for all six npm packages. The five

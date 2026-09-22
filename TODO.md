@@ -18,15 +18,6 @@ verified complete - `[-]` obsolete or superseded.
       accepted starlette advisories in one of them still fall away when
       platformio 7 lands.
 
-- [ ] Publish `syntopica-codeality-py` 0.2.3
-      (`gh workflow run     publish-python.yml -f package=codeality-py`), then
-      put `test-budget-seconds = 300` into
-      `templates/python-package/codeality-py.toml`: the template gates against
-      the published package in CI, and 0.2.2 rejects the key as unknown, so it
-      was held back on 2026-09-23. The same day, bump the consumers and give
-      each a budget it already meets - qlctool runs in 32 s, so 120 is honest
-      there.
-
 ## Estate
 
 - [ ] `@busirocket/eslint-config` 0.8.0 declares `@vitest/eslint-plugin` and
