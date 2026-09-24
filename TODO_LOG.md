@@ -1,3 +1,14 @@
+### 2026-09-24
+
+- [x] `docs/standards/testing.md#suite-time-budget` gains "Vitest suites against
+      a real database": nine techniques measured A/B (best of three under load)
+      on a Next.js + MySQL monorepo, 819 s -> 139 s for the full check. Kept:
+      dirty-table cleanup, a parallel DB-free project, tmpfs MySQL, a schema per
+      worker, a node/DOM split, happy-dom. Rejected with numbers:
+      `fsModuleCache`, `isolate: false`, `DELETE` over `TRUNCATE`, per-test
+      rollback. Step 6 now points at per-worker copies as the way out of a
+      shared resource, which the "never by worker groups" rule had left open.
+
 ### 2026-09-23
 
 - [x] `syntopica-codeality-py` 0.2.3 is on PyPI (run 35791330170, trusted

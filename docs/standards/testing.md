@@ -166,11 +166,61 @@ Work in this order. Each step is measured before the next starts.
    Node), so every caller is serialised without the tests knowing. Never by test
    ordering or worker groups: the next test that touches the resource will not
    be marked. Write the regression as two calls from two threads and watch it
-   fail without the lock.
+   fail without the lock. Better still, when the resource can be copied, stop
+   sharing it: a database schema per worker (below) removes the lock and the
+   wait together.
 7. **Shorten waits on measurement, never on hope.** A "settle" timeout stays
    until nine launches say where the last line lands: in one case every
    complaint arrived within 20 ms of the load marker and the log stopped 0.2 s
    after it, so a 2 s wait became 1 s with a fivefold margin.
+
+### Vitest suites against a real database
+
+Measured on a Next.js + MySQL monorepo on 2026-09-24: the full check went from
+819 s for the core suite alone to 139 s for everything. The runs alternated A
+and B three times and the best of each counts, because the machine sat at load
+25-60. The same config gave 88 s and 115 s an hour apart, so a single run proves
+nothing. In order of gain:
+
+| Change                                                                                                                                                       | Before              | After                      | Verdict                                                                               |
+| ------------------------------------------------------------------------------------------------------------------------------------------------------------ | ------------------- | -------------------------- | ------------------------------------------------------------------------------------- |
+| Clean only the tables a test dirtied, instead of `TRUNCATE` of all 89 before every test                                                                      | 819 s               | 380 s                      | keep                                                                                  |
+| Split DB-free files into their own parallel project; only DB files stay serial                                                                               | 380 s               | 138 s                      | keep                                                                                  |
+| Test MySQL on tmpfs with durability off (Docker, `--skip-log-bin`, `innodb_flush_log_at_trx_commit=0`, `innodb_doublewrite=0`, `innodb_flush_method=nosync`) | core 67 s, db 20 s  | 26 s, 7 s                  | keep                                                                                  |
+| A schema per worker (clone of the run's migrated schema, keyed on `VITEST_POOL_ID`), so DB files run in parallel                                             | core 126 s          | 103 s                      | keep where DB files are many (73); in an 8-file package cloning cost more than it won |
+| Web: split `.test.ts` files that never touch the DOM into an `environment: 'node'` project                                                                   | 88 s                | 67 s                       | keep                                                                                  |
+| Web: `happy-dom` instead of `jsdom` for the rest                                                                                                             | 59 s                | 51 s                       | keep (all tests passed unchanged)                                                     |
+| `fsModuleCache: true` + `NODE_COMPILE_CACHE`                                                                                                                 | web 55 s, core 87 s | 45 s at best, core no gain | noise-level; not adopted                                                              |
+| `isolate: false` (globally or on the node project only)                                                                                                      | web 60 s            | 26-60 s                    | rejected: 2-22 tests fail on leaked module state                                      |
+| `DELETE` + `ALTER ... AUTO_INCREMENT` instead of `TRUNCATE`                                                                                                  | 32-49 s             | 49-59 s                    | rejected                                                                              |
+
+Rules that fall out of it:
+
+- **Point the tests at a throwaway server.** A developer's MySQL is durable and
+  flushes on every commit, and a test suite is mostly commits. Run the test
+  database in a container with its data on tmpfs, and never tune the durable
+  server down instead: it may hold data you need to keep. The suite should probe
+  for the fast server and fall back to the normal one, rather than read an env
+  var. turbo's strict env mode strips undeclared variables, so an env switch
+  silently does nothing under `turbo run test`.
+- **Clean up by what the test touched.** One `UNION ALL` of
+  `EXISTS (SELECT 1 FROM t)` per table, plus `information_schema.tables`
+  `auto_increment > 1` read with `information_schema_stats_expiry = 0`, lists
+  the dirty tables in one round trip. Do the cleanup on one pinned connection:
+  `SET FOREIGN_KEY_CHECKS = 0` on a pool applies to whichever connection it
+  happened to land on.
+- **Find DB tests by what they import, not by a list.** The config globs the
+  test files and reads each one; any file that imports the test-db helpers lands
+  in the database project. A new test cannot be forgotten.
+- **Clone a schema with `SHOW CREATE TABLE`, not `CREATE TABLE ... LIKE`.**
+  `LIKE` drops foreign keys, so cascade tests pass against the clone for the
+  wrong reason. Turn FK checks off while creating, copy the migrations log, and
+  name the clone after the run's schema so the stale-schema sweep and the run's
+  teardown both find it.
+- **Per-test transaction rollback does not fit code that opens its own
+  transactions.** MySQL has no nested `BEGIN`: an inner `BEGIN` implicitly
+  commits the outer one. Code under test with dozens of `.transaction(` call
+  sites therefore escapes the rollback. Clean up by table instead.
 
 What goes in the report: the durations table, the profile's top entries, the
 identical-output diff, the timing under load. "It is faster" is not a report.
