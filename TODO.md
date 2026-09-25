@@ -42,6 +42,26 @@ verified complete - `[-]` obsolete or superseded.
       and vite-react layers set `react/prop-types: 'off'` for `.tsx` files
       themselves.
 
+## db-quality
+
+- [ ] The files `codeality-db` writes (`codeality-db.json` from `init`,
+      `.codeality-db-bench.json`, `db-quality/bench/README.md`) are
+      `JSON.stringify` / hard-wrapped text that prettier reformats, so a
+      consumer whose pre-commit runs `prettier --check` refuses the commit. Hit
+      in verticagtm on 2026-09-26 adopting 0.2.0; worked around there by
+      ignoring `.codeality-db-*.json` and formatting the config once. Next step:
+      emit prettier-shaped JSON (short arrays inline) and unwrapped Markdown, or
+      have `init` add the ignore line.
+- [ ] `no-inline-types-in-runtime-files` misses anonymous type literals
+      (`{ a: string }[]` in a `const` annotation); the 0.2.0 final review found
+      two in `summarizeExplain.ts` that lint passed. Next step: extend the rule
+      to `TSTypeLiteral` in annotations and assertions, with a test.
+- [ ] Watch `perf diff` in the gate for BDB901 on noise: it compares the window
+      mean against the cumulative mean since the stats reset, so time-of-day
+      load moves it. The 5 ms floor removed the two cron false positives
+      measured on verticagtm; if another appears, the next step is comparing
+      against the previous window, not the history.
+
 ## Cross-project (filed 2026-09-09 from two consumer backlog runs)
 
 - [ ] **knip 6.35 reports the default export of `vite.config.ts` as unused when
