@@ -1,3 +1,15 @@
+### 2026-09-25
+
+- [x] `@syntopica/db-quality` 0.1.0 is on npm, published by hand from a clean
+      build after `npm login` (the recorded registry token answered 401), and
+      trusts GitHub Actions `syntopica/codeality` `publish.yml` (trust id
+      `ba8c64de-...`, permissions publish and stage publish). Next releases go
+      through `gh workflow run publish.yml -f package=db-quality`. Gotcha: a new
+      package took about three minutes to answer `npm view` after the publish
+      printed `+ @syntopica/db-quality@0.1.0`. First adopter: verticagtm
+      `b9d6e90d`, strict configuration, baseline of 131, CI gate green on the
+      static stage and 104 live findings left to migrations.
+
 ### 2026-09-24
 
 - [x] `docs/standards/testing.md#suite-time-budget` gains "Vitest suites against
