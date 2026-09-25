@@ -58,4 +58,19 @@ describe('runCheck', () => {
       }),
     ).toEqual([])
   })
+  it('runs the postgrest rules with an empty knowledge map when supabase is not configured', () => {
+    const root = mkdtempSync(join(tmpdir(), 'dbq-'))
+    mkdirSync(join(root, 'src'), { recursive: true })
+    writeFileSync(
+      join(root, 'src/queries.ts'),
+      "declare const supabase: { from: (t: string) => any }\nexport const listAll = () => supabase.from('orders').select('*')\n",
+    )
+    const config = configFromDocument({
+      schemaVersion: 1,
+      postgrest: { roots: ['src'] },
+    })
+    expect(runCheck({ root, config, runner }).map((f) => f.code)).toEqual([
+      'BDB801',
+    ])
+  })
 })
