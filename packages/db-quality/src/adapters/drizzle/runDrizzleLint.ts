@@ -1,6 +1,7 @@
 import { parseEslintReport } from '@/adapters/drizzle/parseEslintReport.js'
 import { assetPath } from '@/assetPath.js'
 import type { DbQualityConfig } from '@/config/DbQualityConfig.js'
+import type { DisableEntry } from '@/config/DisableEntry.js'
 import type { Finding } from '@/model/Finding.js'
 import type { CommandRunner } from '@/tools/CommandRunner.js'
 import { ToolMissingError } from '@/tools/ToolMissingError.js'
@@ -16,7 +17,7 @@ export const runDrizzleLint = (
   runner: CommandRunner,
   root: string,
   drizzle: NonNullable<DbQualityConfig['drizzle']>,
-  disabled: string[],
+  disabled: DisableEntry[],
 ): Finding[] => {
   const result = runner(
     'eslint',

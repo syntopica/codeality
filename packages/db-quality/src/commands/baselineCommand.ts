@@ -12,6 +12,7 @@ import type { CommandIo } from '@/commands/CommandIo.js'
 import { parseCommandArgs } from '@/commands/parseCommandArgs.js'
 import { reportCommandError } from '@/commands/reportCommandError.js'
 import { ConfigError } from '@/config/ConfigError.js'
+import { legacyConfigNotice } from '@/config/legacyConfigNotice.js'
 import { readConfig } from '@/config/readConfig.js'
 import { ExitCode } from '@/model/ExitCode.js'
 import { PACKAGE_VERSION } from '@/packageVersion.js'
@@ -27,9 +28,12 @@ export const baselineCommand = (argv: string[], io: CommandIo): number => {
         `${BASELINE_FILENAME} exists; use "baseline update" to rewrite it`,
       )
     }
+    const config = readConfig(io.root)
+    const notice = legacyConfigNotice(config)
+    if (notice) io.stderr(`${notice}\n`)
     const findings = runCheck({
       root: io.root,
-      config: readConfig(io.root),
+      config,
       runner: io.runner,
     })
     if (action !== 'check') {

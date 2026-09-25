@@ -29,8 +29,10 @@ describe('parseIndexStats', () => {
     })
     expect(
       parseIndexStats(stdout, []).map((f) => [f.code, f.subject, f.severity]),
-    ).toEqual([['BDB601', 'public.a_idx', 'info']])
-    expect(parseIndexStats(stdout, ['BDB601'])).toEqual([])
+    ).toEqual([['BDB601', 'public.a_idx', 'warn']])
+    expect(
+      parseIndexStats(stdout, [{ code: 'BDB601', reason: 'test' }]),
+    ).toEqual([])
   })
 })
 
@@ -45,6 +47,8 @@ describe('parseBloat', () => {
     expect(
       parseBloat(stdout, 5, []).map((f) => [f.code, f.subject, f.message]),
     ).toEqual([['BDB602', 'public.big', 'bloat factor 7.1, 3 MB wasted']])
-    expect(parseBloat(stdout, 5, ['BDB602'])).toEqual([])
+    expect(parseBloat(stdout, 5, [{ code: 'BDB602', reason: 'test' }])).toEqual(
+      [],
+    )
   })
 })

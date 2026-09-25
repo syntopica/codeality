@@ -27,15 +27,15 @@ describe('parseAdvisorReport', () => {
     const bare =
       '{"results":[{"name":"auth_otp_long_expiry","title":"t","level":"INFO","detail":"d"}]}'
     expect(parseAdvisorReport(bare, [])[0]).toMatchObject({
-      severity: 'info',
+      severity: 'warn',
       subject: '',
     })
   })
   it('drops disabled codes', () => {
     expect(
-      parseAdvisorReport(stdout, ['BDB500/security_definer_view']).map(
-        (f) => f.code,
-      ),
+      parseAdvisorReport(stdout, [
+        { code: 'BDB500/security_definer_view', reason: 'test' },
+      ]).map((f) => f.code),
     ).not.toContain('BDB500/security_definer_view')
   })
 })

@@ -32,7 +32,15 @@ describe('runSqliteChecks', () => {
   })
   it('honours the disable list', () => {
     expect(
-      runSqliteChecks(runner, '/p', ['data/app.db'], ['BDB402', 'BDB403']),
+      runSqliteChecks(
+        runner,
+        '/p',
+        ['data/app.db'],
+        [
+          { code: 'BDB402', reason: 'test' },
+          { code: 'BDB403', reason: 'test' },
+        ],
+      ),
     ).toEqual([])
   })
   it('reports a failed integrity check as an error', () => {

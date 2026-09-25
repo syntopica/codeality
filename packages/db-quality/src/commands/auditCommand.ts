@@ -6,6 +6,7 @@ import { renderFindingsJson } from '@/check/renderFindingsJson.js'
 import type { CommandIo } from '@/commands/CommandIo.js'
 import { parseCommandArgs } from '@/commands/parseCommandArgs.js'
 import { reportCommandError } from '@/commands/reportCommandError.js'
+import { legacyConfigNotice } from '@/config/legacyConfigNotice.js'
 import { readConfig } from '@/config/readConfig.js'
 import { ExitCode } from '@/model/ExitCode.js'
 
@@ -17,6 +18,8 @@ export const auditCommand = (argv: string[], io: CommandIo): number => {
       'db-url': { type: 'string' },
     })
     const config = readConfig(io.root)
+    const notice = legacyConfigNotice(config)
+    if (notice) io.stderr(`${notice}\n`)
     const target = resolveAuditTarget(io.root, {
       linked: values['linked'] === true,
       'db-url': values['db-url'] as string | undefined,

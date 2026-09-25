@@ -46,6 +46,16 @@ describe('checkCommand', () => {
     expect(checkCommand([], io)).toBe(1)
     expect(io.out.join('')).toMatch(/BDB003/)
   })
+  it('prints the legacy schemaVersion notice on stderr and still exits by findings', () => {
+    const root = supabaseProject()
+    writeFileSync(
+      join(root, 'supabase/migrations/1.sql'),
+      'create table public.t (id int);',
+    )
+    const io = commandIoFor(root, ok)
+    expect(checkCommand([], io)).toBe(1)
+    expect(io.err.join('')).toMatch(/schemaVersion 1.*init --apply/)
+  })
   it('exits 3 when a required tool is missing', () => {
     const io = commandIoFor(supabaseProject(), () => ({
       status: -1,

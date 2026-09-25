@@ -33,7 +33,9 @@ describe('parseSquawkReport', () => {
   })
   it('drops disabled codes', () => {
     expect(
-      parseSquawkReport(stdout, set, ['BDB100/prefer-bigint-over-int']),
+      parseSquawkReport(stdout, set, [
+        { code: 'BDB100/prefer-bigint-over-int', reason: 'test' },
+      ]),
     ).toEqual([])
   })
   it('treats empty output as no findings and rejects non-JSON', () => {

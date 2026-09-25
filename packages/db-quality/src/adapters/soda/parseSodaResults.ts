@@ -1,4 +1,5 @@
 import type { SodaCheckResult } from '@/adapters/soda/SodaCheckResult.js'
+import type { DisableEntry } from '@/config/DisableEntry.js'
 import { isDisabled } from '@/config/isDisabled.js'
 import type { Finding } from '@/model/Finding.js'
 import { fingerprintFinding } from '@/model/fingerprintFinding.js'
@@ -6,7 +7,7 @@ import { fingerprintFinding } from '@/model/fingerprintFinding.js'
 export const parseSodaResults = (
   json: string,
   sodaDir: string,
-  disabled: string[],
+  disabled: DisableEntry[],
 ): Finding[] => {
   const { checks } = JSON.parse(json) as { checks: SodaCheckResult[] }
   return checks.flatMap((check) => {

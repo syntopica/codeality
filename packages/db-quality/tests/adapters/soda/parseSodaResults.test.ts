@@ -49,9 +49,9 @@ describe('parseSodaResults', () => {
   })
   it('drops disabled checks', () => {
     expect(
-      parseSodaResults(json, 'd', ['BDB700/duplicate_count(email) = 0']).map(
-        (f) => f.code,
-      ),
+      parseSodaResults(json, 'd', [
+        { code: 'BDB700/duplicate_count(email) = 0', reason: 'test' },
+      ]).map((f) => f.code),
     ).toEqual(['BDB700/missing_count(id) = 0'])
   })
 })

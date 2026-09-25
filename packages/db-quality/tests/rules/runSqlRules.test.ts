@@ -16,6 +16,8 @@ describe('runSqlRules', () => {
     ])
   })
   it('honours the disable list', () => {
-    expect(runSqlRules(set, ['BDB003']).map((f) => f.code)).toEqual(['BDB001'])
+    expect(
+      runSqlRules(set, [{ code: 'BDB003', reason: 'test' }]).map((f) => f.code),
+    ).toEqual(['BDB001'])
   })
 })

@@ -1,12 +1,13 @@
 import { ADVISOR_SEVERITY } from '@/adapters/supabase/ADVISOR_SEVERITY.js'
 import type { AdvisorEntry } from '@/adapters/supabase/AdvisorEntry.js'
+import type { DisableEntry } from '@/config/DisableEntry.js'
 import { isDisabled } from '@/config/isDisabled.js'
 import type { Finding } from '@/model/Finding.js'
 import { fingerprintFinding } from '@/model/fingerprintFinding.js'
 
 export const parseAdvisorReport = (
   stdout: string,
-  disabled: string[],
+  disabled: DisableEntry[],
 ): Finding[] => {
   const { results } = JSON.parse(stdout) as { results: AdvisorEntry[] }
   return results.flatMap((entry) => {

@@ -1,4 +1,5 @@
 import type { SquawkEntry } from '@/adapters/squawk/SquawkEntry.js'
+import type { DisableEntry } from '@/config/DisableEntry.js'
 import { isDisabled } from '@/config/isDisabled.js'
 import type { Finding } from '@/model/Finding.js'
 import { fingerprintFinding } from '@/model/fingerprintFinding.js'
@@ -9,7 +10,7 @@ import { statementAtLine } from '@/sql/statementAtLine.js'
 export const parseSquawkReport = (
   stdout: string,
   set: MigrationFile[],
-  disabled: string[],
+  disabled: DisableEntry[],
 ): Finding[] => {
   if (!stdout.trim()) return []
   let entries: SquawkEntry[]

@@ -1,5 +1,6 @@
 import { parsePrismaLintReport } from '@/adapters/prisma/parsePrismaLintReport.js'
 import { assetPath } from '@/assetPath.js'
+import type { DisableEntry } from '@/config/DisableEntry.js'
 import type { Finding } from '@/model/Finding.js'
 import type { CommandRunner } from '@/tools/CommandRunner.js'
 import { ToolMissingError } from '@/tools/ToolMissingError.js'
@@ -10,7 +11,7 @@ export const runPrismaLint = (
   runner: CommandRunner,
   root: string,
   schemaPath: string,
-  disabled: string[],
+  disabled: DisableEntry[],
 ): Finding[] => {
   const result = runner(
     'prisma-lint',

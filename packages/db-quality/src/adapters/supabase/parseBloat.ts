@@ -1,4 +1,5 @@
 import type { BloatRow } from '@/adapters/supabase/BloatRow.js'
+import type { DisableEntry } from '@/config/DisableEntry.js'
 import { isDisabled } from '@/config/isDisabled.js'
 import type { Finding } from '@/model/Finding.js'
 import { fingerprintFinding } from '@/model/fingerprintFinding.js'
@@ -6,7 +7,7 @@ import { fingerprintFinding } from '@/model/fingerprintFinding.js'
 export const parseBloat = (
   stdout: string,
   threshold: number,
-  disabled: string[],
+  disabled: DisableEntry[],
 ): Finding[] => {
   if (isDisabled('BDB602', disabled)) return []
   const { rows } = JSON.parse(stdout) as { rows: BloatRow[] }

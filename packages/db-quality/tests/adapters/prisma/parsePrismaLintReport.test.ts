@@ -17,7 +17,9 @@ describe('parsePrismaLintReport', () => {
   })
   it('drops disabled codes, accepts empty output, rejects garbage', () => {
     expect(
-      parsePrismaLintReport(stderr, ['BDB200/require-field-index']),
+      parsePrismaLintReport(stderr, [
+        { code: 'BDB200/require-field-index', reason: 'test' },
+      ]),
     ).toEqual([])
     expect(parsePrismaLintReport('', [])).toEqual([])
     expect(() => parsePrismaLintReport('Error: boom', [])).toThrow(

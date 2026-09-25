@@ -24,7 +24,7 @@ describe('planConfigFile', () => {
     writeFileSync(join(root, 'codeality-db.json'), '{"schemaVersion":9}')
     expect(planConfigFile(root, false)).toMatchObject({
       disposition: 'conflict',
-      detail: 'schemaVersion must be 1',
+      detail: 'schemaVersion must be 1 or 2',
     })
     expect(planConfigFile(root, true).disposition).toBe('merge')
   })

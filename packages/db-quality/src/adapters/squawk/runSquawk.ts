@@ -1,5 +1,6 @@
 import { parseSquawkReport } from '@/adapters/squawk/parseSquawkReport.js'
 import { SUPABASE_SQUAWK_EXCLUDES } from '@/adapters/squawk/SUPABASE_SQUAWK_EXCLUDES.js'
+import type { DisableEntry } from '@/config/DisableEntry.js'
 import type { Finding } from '@/model/Finding.js'
 import type { MigrationFile } from '@/sql/MigrationFile.js'
 import type { CommandRunner } from '@/tools/CommandRunner.js'
@@ -9,7 +10,7 @@ export const runSquawk = (
   runner: CommandRunner,
   root: string,
   set: MigrationFile[],
-  disabled: string[],
+  disabled: DisableEntry[],
 ): Finding[] => {
   const result = runner(
     'squawk',

@@ -3,7 +3,7 @@ import { CONFIG_KEYS } from '@/config/CONFIG_KEYS.js'
 import { ConfigError } from '@/config/ConfigError.js'
 import { configSection } from '@/config/configSection.js'
 import type { DbQualityConfig } from '@/config/DbQualityConfig.js'
-import { isStringList } from '@/config/isStringList.js'
+import { disableEntriesFrom } from '@/config/disableEntriesFrom.js'
 import { stackSectionsFrom } from '@/config/stackSectionsFrom.js'
 
 /** Validates a parsed codeality-db.json and fills its defaults; ConfigError on any defect. */
@@ -19,15 +19,13 @@ export const configFromDocument = (document: unknown): DbQualityConfig => {
   for (const key of Object.keys(raw)) {
     if (!CONFIG_KEYS.has(key)) throw new ConfigError(`unknown key "${key}"`)
   }
-  if (raw['schemaVersion'] !== 1)
-    throw new ConfigError('schemaVersion must be 1')
-  const disable = raw['disable'] ?? []
-  if (!isStringList(disable))
-    throw new ConfigError('disable must be a list of strings')
+  const schemaVersion = raw['schemaVersion']
+  if (schemaVersion !== 1 && schemaVersion !== 2)
+    throw new ConfigError('schemaVersion must be 1 or 2')
   return {
-    schemaVersion: 1,
+    schemaVersion,
     ...stackSectionsFrom(raw),
     audit: auditSectionFrom(configSection(raw, 'audit')),
-    disable,
+    disable: disableEntriesFrom(raw['disable'], schemaVersion),
   }
 }

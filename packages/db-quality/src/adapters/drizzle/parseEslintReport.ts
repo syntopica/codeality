@@ -1,6 +1,7 @@
 import { relative } from 'node:path'
 
 import type { EslintFileResult } from '@/adapters/drizzle/EslintFileResult.js'
+import type { DisableEntry } from '@/config/DisableEntry.js'
 import { isDisabled } from '@/config/isDisabled.js'
 import type { Finding } from '@/model/Finding.js'
 import { fingerprintFinding } from '@/model/fingerprintFinding.js'
@@ -8,7 +9,7 @@ import { fingerprintFinding } from '@/model/fingerprintFinding.js'
 export const parseEslintReport = (
   stdout: string,
   root: string,
-  disabled: string[],
+  disabled: DisableEntry[],
 ): Finding[] => {
   if (!stdout.trim()) return []
   let files: EslintFileResult[]

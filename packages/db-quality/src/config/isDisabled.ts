@@ -1,2 +1,4 @@
-export const isDisabled = (code: string, disabled: string[]): boolean =>
-  disabled.includes(code)
+import type { DisableEntry } from '@/config/DisableEntry.js'
+
+export const isDisabled = (code: string, disabled: DisableEntry[]): boolean =>
+  disabled.some((entry) => entry.code === code)

@@ -33,7 +33,9 @@ describe('parseEslintReport', () => {
   })
   it('drops disabled codes, accepts empty output and rejects non-JSON', () => {
     expect(
-      parseEslintReport(stdout, '/p', ['BDB300/enforce-delete-with-where']),
+      parseEslintReport(stdout, '/p', [
+        { code: 'BDB300/enforce-delete-with-where', reason: 'test' },
+      ]),
     ).toEqual([])
     expect(parseEslintReport('', '/p', [])).toEqual([])
     expect(() => parseEslintReport('Oops!', '/p', [])).toThrow(/no JSON report/)

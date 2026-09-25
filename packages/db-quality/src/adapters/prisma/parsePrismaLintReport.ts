@@ -1,11 +1,12 @@
 import type { PrismaViolation } from '@/adapters/prisma/PrismaViolation.js'
+import type { DisableEntry } from '@/config/DisableEntry.js'
 import { isDisabled } from '@/config/isDisabled.js'
 import type { Finding } from '@/model/Finding.js'
 import { fingerprintFinding } from '@/model/fingerprintFinding.js'
 
 export const parsePrismaLintReport = (
   stderr: string,
-  disabled: string[],
+  disabled: DisableEntry[],
 ): Finding[] => {
   if (!stderr.trim()) return []
   let violations: PrismaViolation[]

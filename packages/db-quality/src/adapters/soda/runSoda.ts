@@ -12,6 +12,7 @@ import { dataSourceType } from '@/adapters/soda/dataSourceType.js'
 import { parseSodaResults } from '@/adapters/soda/parseSodaResults.js'
 import { renderSodaConfiguration } from '@/adapters/soda/renderSodaConfiguration.js'
 import type { SodaTarget } from '@/adapters/soda/SodaTarget.js'
+import type { DisableEntry } from '@/config/DisableEntry.js'
 import type { Finding } from '@/model/Finding.js'
 import type { CommandRunner } from '@/tools/CommandRunner.js'
 import { ToolMissingError } from '@/tools/ToolMissingError.js'
@@ -22,7 +23,7 @@ export const runSoda = (
   runner: CommandRunner,
   root: string,
   soda: SodaTarget,
-  disabled: string[],
+  disabled: DisableEntry[],
 ): Finding[] => {
   const scratch = mkdtempSync(join(tmpdir(), 'codeality-db-soda-'))
   try {

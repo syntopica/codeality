@@ -6,7 +6,7 @@ import type { SqlRule } from '@/rules/SqlRule.js'
 export const rlsEnabledNoPolicy: SqlRule = {
   code: 'BDB002',
   name: 'rls-enabled-no-policy',
-  severity: 'info',
+  severity: 'warn',
   run: (set) => {
     const withPolicy = policyTables(set)
     return [...rlsEnabledTables(set)]
