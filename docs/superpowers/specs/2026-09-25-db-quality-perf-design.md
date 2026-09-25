@@ -297,10 +297,11 @@ a write fails in the read-only transaction; and the inner block always ends in a
 rolled-back subtransaction, because `EXPLAIN ANALYZE` of `CREATE TABLE AS`,
 `SELECT INTO` and `CREATE MATERIALIZED VIEW` writes even in a read-only
 transaction (measured on PG 18.6). The integration test proves both. Side
-effects outside any transaction (`dblink`, `pg_net`, and for a superuser
-`COPY ... TO PROGRAM`, `pg_terminate_backend`, `pg_stat_statements_reset`) are
-not stopped by a read-only session; a dedicated non-superuser read-only role is
-the strongest boundary. The README says so.
+effects outside any transaction (`dblink`, `pg_net`, a replication slot for a
+role with `REPLICATION`, and for a superuser `COPY ... TO PROGRAM`, `lo_export`,
+`pg_terminate_backend`, `pg_stat_statements_reset`) are not stopped by a
+read-only session; a dedicated read-only role with neither superuser nor
+`REPLICATION` is the strongest boundary. The README says so.
 
 ## `gate`
 

@@ -12,8 +12,9 @@ runs before the median is recorded, in place of \`perf.benchRuns\` in
 codeality-db.json.
 
 A file holding more than one statement is refused. The statement runs
-inside a read-only transaction it cannot leave, so a statement that writes
-fails instead of touching the database.
+inside a read-only transaction it cannot leave, and whatever it did is
+rolled back, so a statement that writes is refused or undone instead of
+touching the database.
 
 Run \`codeality-db perf bench --record\` once to write the reference numbers
 to ${BENCH_RECORD_FILENAME}. Run \`codeality-db perf bench\` afterwards to

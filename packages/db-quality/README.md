@@ -225,10 +225,12 @@ rolled back, which undoes what a read-only transaction does not stop:
 `CREATE MATERIALIZED VIEW` writes even there.
 
 Some side effects are outside any transaction and no read-only session stops
-them: calls that leave the database through `dblink` or `pg_net`, and, for a
-superuser, `COPY ... TO PROGRAM`, `pg_terminate_backend` and
-`pg_stat_statements_reset`. The strongest boundary is a dedicated role that is
-not a superuser and can only read; point `--db-url` at it for `perf`.
+them: calls that leave the database through `dblink` or `pg_net`; for a role
+with `REPLICATION`, a replication slot, which persists and retains WAL until it
+is dropped; and, for a superuser, `COPY ... TO PROGRAM`, `lo_export`,
+`pg_terminate_backend` and `pg_stat_statements_reset`. The strongest boundary is
+a dedicated role that is not a superuser, has no `REPLICATION`, and can only
+read; point `--db-url` at it for `perf`.
 
 | Code     | Layer | Rule                                                                                                                                         | Severity |
 | -------- | ----- | -------------------------------------------------------------------------------------------------------------------------------------------- | -------- |
