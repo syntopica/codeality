@@ -51,6 +51,7 @@ def gate_stages(config: BaselineConfig) -> tuple[Stage, ...]:
                 "--durations=10",
             ),
             budget_seconds=float(config.test_budget_seconds),
+            budget_source=config.test_budget_source if config.test_budget_seconds else "",
         ),
         Stage("pyrefly", StageKind.SHADOW, ("pyrefly", "check")),
     )

@@ -14,3 +14,5 @@ class Stage:
     command: tuple[str, ...]
     # Seconds the stage may take and still pass. Zero means unbudgeted.
     budget_seconds: float = 0.0
+    # Where the budget came from, so a report can say which one applied.
+    budget_source: str = ""

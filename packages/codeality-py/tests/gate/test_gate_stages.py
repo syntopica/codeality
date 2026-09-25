@@ -80,3 +80,19 @@ def test_the_test_budget_reaches_the_pytest_stage_and_no_other() -> None:
     budgets = {stage.name: stage.budget_seconds for stage in gate_stages(config)}
     assert budgets["pytest"] == 300.0
     assert all(budget == 0.0 for name, budget in budgets.items() if name != "pytest")
+
+
+def test_the_pytest_stage_carries_where_its_budget_came_from() -> None:
+    config = BaselineConfig(
+        project_root=Path("/p"),
+        test_budget_seconds=600,
+        test_budget_source="CODEALITY_PY_TEST_BUDGET_SECONDS",
+    )
+    sources = {stage.name: stage.budget_source for stage in gate_stages(config)}
+    assert sources["pytest"] == "CODEALITY_PY_TEST_BUDGET_SECONDS"
+    assert all(source == "" for name, source in sources.items() if name != "pytest")
+
+
+def test_an_unbudgeted_pytest_stage_names_no_source() -> None:
+    config = BaselineConfig(project_root=Path("/p"))
+    assert {stage.name: stage.budget_source for stage in gate_stages(config)}["pytest"] == ""

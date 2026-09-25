@@ -13,4 +13,6 @@ def stage_document(stage: StageResult) -> dict[str, object]:
         "exit_code": stage.exit_code,
         "duration_seconds": stage.duration_seconds,
         "detail": stage.detail,
+        "budget_seconds": stage.budget_seconds or None,
+        "budget_source": stage.budget_source or None,
     }

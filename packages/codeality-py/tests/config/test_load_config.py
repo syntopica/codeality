@@ -88,11 +88,51 @@ def test_an_unknown_rule_code_in_an_override_is_fatal(tmp_path: Path) -> None:
         load_config(tmp_path)
 
 
-def test_the_suite_is_unbudgeted_unless_the_project_says_otherwise(tmp_path: Path) -> None:
+def test_the_suite_is_unbudgeted_unless_the_project_says_otherwise(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    monkeypatch.delenv("CODEALITY_PY_TEST_BUDGET_SECONDS", raising=False)
     (tmp_path / "src").mkdir()
     assert load_config(tmp_path).test_budget_seconds == 0
 
 
-def test_the_test_budget_is_read(tmp_path: Path) -> None:
+def test_the_test_budget_is_read(tmp_path: Path, monkeypatch: pytest.MonkeyPatch) -> None:
+    monkeypatch.delenv("CODEALITY_PY_TEST_BUDGET_SECONDS", raising=False)
     _write(tmp_path, "schema-version = 1\ntest-budget-seconds = 300\n")
-    assert load_config(tmp_path).test_budget_seconds == 300
+    config = load_config(tmp_path)
+    assert config.test_budget_seconds == 300
+    assert config.test_budget_source == "codeality-py.toml"
+
+
+def test_the_environment_overrides_the_test_budget(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    """2026-09-25: spectalive/qlctool's suite takes 75 s on the developer's
+    machine and 292-347 s on GitHub's 4-core runners, where 3.11 and 3.13 fall
+    back to coverage's slow tracer. One committed number cannot guard both.
+    """
+    monkeypatch.setenv("CODEALITY_PY_TEST_BUDGET_SECONDS", "600")
+    _write(tmp_path, "schema-version = 1\ntest-budget-seconds = 120\n")
+    config = load_config(tmp_path)
+    assert config.test_budget_seconds == 600
+    assert config.test_budget_source == "CODEALITY_PY_TEST_BUDGET_SECONDS"
+
+
+def test_an_empty_budget_variable_changes_nothing(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    monkeypatch.setenv("CODEALITY_PY_TEST_BUDGET_SECONDS", "")
+    _write(tmp_path, "schema-version = 1\ntest-budget-seconds = 120\n")
+    config = load_config(tmp_path)
+    assert config.test_budget_seconds == 120
+    assert config.test_budget_source == "codeality-py.toml"
+
+
+@pytest.mark.parametrize("value", ["ten", "1.5", "0", "-30"])
+def test_a_budget_variable_that_is_not_a_positive_integer_is_fatal(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch, value: str
+) -> None:
+    monkeypatch.setenv("CODEALITY_PY_TEST_BUDGET_SECONDS", value)
+    _write(tmp_path, "schema-version = 1\ntest-budget-seconds = 120\n")
+    with pytest.raises(ConfigError, match="CODEALITY_PY_TEST_BUDGET_SECONDS"):
+        load_config(tmp_path)

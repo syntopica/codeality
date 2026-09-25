@@ -28,3 +28,6 @@ class BaselineConfig:
     # Seconds the pytest stage may take before the gate reports it. Zero
     # leaves the suite unbudgeted.
     test_budget_seconds: int = 0
+    # Where that budget came from: the configuration file, or the environment
+    # variable that overrides it for one machine. Reported beside the budget.
+    test_budget_source: str = "codeality-py.toml"

@@ -17,3 +17,5 @@ class StageResult:
     exit_code: int
     duration_seconds: float
     detail: str = ""
+    budget_seconds: float = 0.0
+    budget_source: str = ""

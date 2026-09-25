@@ -18,7 +18,8 @@ def over_budget_detail(stage: Stage, elapsed: float, output: str) -> str:
     """
     header = (
         f"{stage.name} passed in {elapsed:.1f}s, over its budget of "
-        f"{stage.budget_seconds:g}s. Profile before adding hardware: {PROCEDURE_URL}"
+        f"{stage.budget_seconds:g}s (from {stage.budget_source}). "
+        f"Profile before adding hardware: {PROCEDURE_URL}"
     )
     tail = output[-2000:].strip()
     return f"{header}\n{tail}" if tail else header

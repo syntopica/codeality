@@ -92,11 +92,17 @@ def test_a_passing_stage_past_its_budget_is_over_budget(tmp_path: Path) -> None:
     took it to four minutes; parallel workers took it to 32 seconds. The
     gate has to be what says the number is too big.
     """
-    stage = Stage("sleep", StageKind.REQUIRED, ("sleep", "0.2"), budget_seconds=0.05)
+    stage = Stage(
+        "sleep",
+        StageKind.REQUIRED,
+        ("sleep", "0.2"),
+        budget_seconds=0.05,
+        budget_source="codeality-py.toml",
+    )
     result = run_stage(stage, tmp_path)
     assert result.status is StageStatus.OVER_BUDGET
     assert result.exit_code == 0
-    assert "over its budget of 0.05s" in result.detail
+    assert "over its budget of 0.05s (from codeality-py.toml)" in result.detail
     assert "testing.md#suite-time-budget" in result.detail
 
 
@@ -118,3 +124,23 @@ def test_over_budget_in_a_required_stage_exits_1() -> None:
 def test_over_budget_in_a_shadow_stage_does_not_fail_the_gate() -> None:
     result = GateResult(stages=(_stage_result(StageKind.SHADOW, StageStatus.OVER_BUDGET),))
     assert result.exit_code() is ExitCode.OK
+
+
+def test_a_passing_budgeted_stage_names_its_budget_and_its_source(tmp_path: Path) -> None:
+    """A CI log has to show whether the environment's override was in force."""
+    stage = Stage(
+        "true",
+        StageKind.REQUIRED,
+        ("true",),
+        budget_seconds=600.0,
+        budget_source="CODEALITY_PY_TEST_BUDGET_SECONDS",
+    )
+    result = run_stage(stage, tmp_path)
+    assert result.status is StageStatus.PASSED
+    assert result.detail == "budget 600s from CODEALITY_PY_TEST_BUDGET_SECONDS"
+    assert result.budget_seconds == 600.0
+    assert result.budget_source == "CODEALITY_PY_TEST_BUDGET_SECONDS"
+
+
+def test_a_passing_unbudgeted_stage_has_no_detail(tmp_path: Path) -> None:
+    assert run_stage(Stage("true", StageKind.REQUIRED, ("true",)), tmp_path).detail == ""

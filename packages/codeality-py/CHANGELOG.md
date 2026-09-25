@@ -4,6 +4,23 @@ All notable changes to `syntopica-codeality-py` are documented here. The format
 follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/) and the project
 adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## 0.2.4
+
+### Added
+
+- `CODEALITY_PY_TEST_BUDGET_SECONDS` overrides `test-budget-seconds` for one
+  run. The budget is a regression guard tuned to the developer's machine, and a
+  suite that takes 75 s there took 292-347 s on GitHub's 4-core runners, where
+  Python 3.11 and 3.13 fall back to coverage's slow tracer (spectalive/qlctool,
+  2026-09-25); the only fix was to raise the committed number and blunt the
+  guard everywhere. Unset or empty, nothing changes; a value that is not a
+  positive integer is a configuration error (exit 2).
+- The pytest stage says which budget applied and where it came from: its text
+  line ends in `[budget 600s from CODEALITY_PY_TEST_BUDGET_SECONDS]`, a passing
+  stage's detail carries the same note, the over-budget header names the source,
+  and `gate --json` gains `budget_seconds` and `budget_source` on every stage
+  (`null` when unbudgeted).
+
 ## 0.2.3
 
 ### Added

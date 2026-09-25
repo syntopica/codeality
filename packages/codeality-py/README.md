@@ -52,6 +52,23 @@ procedure - profile, make the unit under test cheaper, parallelise, serialise
 what must stay shared - is in
 [docs/standards/testing.md](https://github.com/syntopica/codeality/blob/main/docs/standards/testing.md#suite-time-budget).
 
+The budget is tuned to the machine the suite is developed on. A slower
+environment, such as a CI runner, sets its own for the run instead of raising
+the committed number for everyone:
+
+```yaml
+# .github/workflows/quality.yml
+env:
+  CODEALITY_PY_TEST_BUDGET_SECONDS: '600'
+```
+
+When `CODEALITY_PY_TEST_BUDGET_SECONDS` is set it replaces
+`test-budget-seconds`; unset or empty, it changes nothing. A value that is not a
+positive integer is a configuration error (exit 2), never silently ignored. The
+pytest stage names the budget it was held to and where it came from -
+`budget 600s from CODEALITY_PY_TEST_BUDGET_SECONDS` - in its text line, its
+detail, and the `budget_seconds` and `budget_source` fields of `gate --json`.
+
 ## Exit codes
 
 | Code | Meaning                                                         |

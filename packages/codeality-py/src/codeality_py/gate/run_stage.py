@@ -5,6 +5,7 @@ import subprocess
 import time
 from pathlib import Path
 
+from codeality_py.gate.budget_note import budget_note
 from codeality_py.gate.build_stage_result import build_stage_result
 from codeality_py.gate.over_budget_detail import over_budget_detail
 from codeality_py.gate.stage import Stage
@@ -49,7 +50,13 @@ def run_stage(stage: Stage, project_root: Path) -> StageResult:
     output = "\n".join(
         part.strip() for part in (completed.stdout, completed.stderr) if part.strip()
     )
-    detail = "" if completed.returncode == 0 else output[-2000:]
+    # A passing budgeted stage names the budget it was held to and where
+    # that came from, so a CI log shows whether an override was in force.
+    detail = (
+        budget_note(stage.budget_seconds, stage.budget_source)
+        if completed.returncode == 0
+        else output[-2000:]
+    )
     # A suite that passes but takes longer than it may is a finding of its
     # own: the tail of its output holds pytest's slowest-durations table,
     # which is where fixing it starts.

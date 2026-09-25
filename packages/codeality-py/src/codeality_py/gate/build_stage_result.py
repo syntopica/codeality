@@ -17,4 +17,6 @@ def build_stage_result(
         exit_code=exit_code,
         duration_seconds=round(elapsed, 3),
         detail=detail,
+        budget_seconds=stage.budget_seconds,
+        budget_source=stage.budget_source,
     )
