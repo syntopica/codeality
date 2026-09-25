@@ -20,6 +20,17 @@ verified complete - `[-]` obsolete or superseded.
 
 ## Estate
 
+- [!] Publish `@syntopica/db-quality` 0.1.0. `publish.yml` already lists the
+  package, but npm trusted publishing cannot create a package that does not
+  exist yet, and the registry token recorded in the access map answers 401, so
+  the first publish is manual: `npm login` on the machine, then
+  `pnpm --filter @syntopica/db-quality publish --access public` from a clean
+  build, then
+  `npm trust github @syntopica/db-quality     --repo=syntopica/codeality --file=publish.yml --allow-publish`
+  on a TTY. verticagtm is prepared for adoption (config, baseline of 131,
+  workflow, `db:gate`) and waits for the package to exist so `pnpm add -D`
+  resolves.
+
 - [ ] `@busirocket/eslint-config` 0.8.0 declares `@vitest/eslint-plugin` and
       `eslint-plugin-testing-library` as optional peers, but `code-quality.ts`
       composes `testing.ts` unconditionally, so every `/code-quality` consumer
