@@ -24,16 +24,5 @@ export default [
       'security/detect-non-literal-fs-filename': 'off',
     },
   },
-  {
-    // The read-only session, the project root, perf config, the optional
-    // recorded baseline and the disable list: the exact five things both the
-    // `perf bench` action and the gate's perf stage already hold, spelled out
-    // by the plan (task 9 and task 10 briefs agree on this signature)
-    // literally so neither caller has to assemble a throwaway options object.
-    files: ['src/bench/runBench.ts'],
-    rules: {
-      'max-params': 'off',
-    },
-  },
   { ignores: ['dist/**', 'coverage/**', 'assets/**'] },
 ]

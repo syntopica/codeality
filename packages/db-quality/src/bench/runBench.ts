@@ -1,27 +1,21 @@
 import type { BenchEntry } from '@/bench/BenchEntry.js'
 import { benchFindings } from '@/bench/benchFindings.js'
+import type { BenchJudgement } from '@/bench/BenchJudgement.js'
 import type { BenchRecord } from '@/bench/BenchRecord.js'
 import type { BenchResult } from '@/bench/BenchResult.js'
 import { readBenchQueries } from '@/bench/readBenchQueries.js'
 import { runBenchQuery } from '@/bench/runBenchQuery.js'
-import type { DisableEntry } from '@/config/DisableEntry.js'
-import type { PerfConfig } from '@/config/PerfConfig.js'
 import type { Finding } from '@/model/Finding.js'
 import type { Improvement } from '@/perf/Improvement.js'
 import type { PsqlSession } from '@/postgres/PsqlSessionType.js'
 
-// Five positional parameters: the read-only session, the project root, perf
-// config, the optional recorded baseline and the disable list, exactly what
-// the gate stage and `perf bench --record` each already hold, so neither has
-// to assemble an options object to call this. See eslint.config.ts for the
-// matching max-params exemption.
 export const runBench = (
   session: PsqlSession,
   root: string,
-  perf: PerfConfig,
   recorded: BenchRecord | undefined,
-  disabled: DisableEntry[],
+  judgement: BenchJudgement,
 ): BenchResult => {
+  const { perf } = judgement
   const queries = readBenchQueries(root, perf.benchDir, perf.benchRuns)
   const entries: Record<string, BenchEntry> = {}
   const findings: Finding[] = []
@@ -35,7 +29,7 @@ export const runBench = (
         { file: query.file, benchDir: perf.benchDir },
         recordedEntry,
         entry,
-        { perf, disabled },
+        judgement,
       ),
     )
     if (

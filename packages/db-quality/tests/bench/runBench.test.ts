@@ -45,7 +45,10 @@ describe('runBench', () => {
         },
       },
     }
-    const result = runBench(session, root, PERF_DEFAULTS, recorded, [])
+    const result = runBench(session, root, recorded, {
+      perf: PERF_DEFAULTS,
+      disabled: [],
+    })
     expect(sqls).toHaveLength(4)
     expect(sqls[0]).toBe(
       'explain (analyze, buffers, format json) select * from t where id = 5',
@@ -66,7 +69,10 @@ describe('runBench', () => {
       rows: () => [],
       text: () => fixture('index_scan.json'),
     }
-    const result = runBench(session, root, PERF_DEFAULTS, undefined, [])
+    const result = runBench(session, root, undefined, {
+      perf: PERF_DEFAULTS,
+      disabled: [],
+    })
     expect(result.findings).toEqual([])
     expect(Object.keys(result.entries)).toEqual(['a.sql'])
   })
@@ -94,20 +100,23 @@ describe('runBench', () => {
         },
       },
     }
-    const result = runBench(session, root, PERF_DEFAULTS, recorded, [])
+    const result = runBench(session, root, recorded, {
+      perf: PERF_DEFAULTS,
+      disabled: [],
+    })
     expect(result.improvements).toHaveLength(1)
     expect(result.improvements[0]?.subject).toBe('a.sql')
   })
   it('refuses an empty file and a missing directory', () => {
     const root = mkdtempSync(join(tmpdir(), 'dbq-'))
     const session: PsqlSession = { rows: () => [], text: () => '' }
-    expect(() => runBench(session, root, PERF_DEFAULTS, undefined, [])).toThrow(
-      /db-quality\/bench is not a directory/,
-    )
+    expect(() =>
+      runBench(session, root, undefined, { perf: PERF_DEFAULTS, disabled: [] }),
+    ).toThrow(/db-quality\/bench is not a directory/)
     mkdirSync(join(root, BENCH_DIR), { recursive: true })
     writeFileSync(join(root, `${BENCH_DIR}/empty.sql`), '-- nothing\n')
-    expect(() => runBench(session, root, PERF_DEFAULTS, undefined, [])).toThrow(
-      /empty.sql holds no statement/,
-    )
+    expect(() =>
+      runBench(session, root, undefined, { perf: PERF_DEFAULTS, disabled: [] }),
+    ).toThrow(/empty.sql holds no statement/)
   })
 })
