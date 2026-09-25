@@ -1,0 +1,44 @@
+import { parseEslintReport } from '@/adapters/drizzle/parseEslintReport.js'
+import { assetPath } from '@/assetPath.js'
+import type { DbQualityConfig } from '@/config/DbQualityConfig.js'
+import type { Finding } from '@/model/Finding.js'
+import type { CommandRunner } from '@/tools/CommandRunner.js'
+import { ToolMissingError } from '@/tools/ToolMissingError.js'
+
+// Runs from the project root: ESLint ignores any file outside its cwd, which
+// is what an earlier attempt from another directory reported as "all files
+// matching the pattern are ignored".
+export const runDrizzleLint = (
+  runner: CommandRunner,
+  root: string,
+  drizzle: NonNullable<DbQualityConfig['drizzle']>,
+  disabled: string[],
+): Finding[] => {
+  const result = runner(
+    'eslint',
+    [
+      '--no-config-lookup',
+      '-c',
+      assetPath('drizzle-eslint.config.mjs'),
+      '-f',
+      'json',
+      ...drizzle.roots,
+    ],
+    {
+      cwd: root,
+      env: { CODEALITY_DB_DRIZZLE_OBJECTS: drizzle.objectNames.join(',') },
+    },
+  )
+  if (result.missing) {
+    throw new ToolMissingError(
+      'eslint',
+      'add eslint, eslint-plugin-drizzle and typescript-eslint as devDependencies',
+    )
+  }
+  if (result.status !== 0 && result.status !== 1) {
+    throw new Error(
+      `eslint exited ${String(result.status)}: ${result.stderr.trim()}`,
+    )
+  }
+  return parseEslintReport(result.stdout, root, disabled)
+}
