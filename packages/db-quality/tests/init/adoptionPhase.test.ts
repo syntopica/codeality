@@ -28,8 +28,11 @@ describe('adoptionPhase', () => {
     ).toBe(4)
   })
   it('renders the ladder with the current phase and the next step', () => {
-    const text = renderAdoptionPhase(1)
+    const text = renderAdoptionPhase({ phase: 1 })
     expect(text).toMatch(/^adoption phase 1 of 4/m)
     expect(text).toMatch(/next: codeality-db perf snapshot/)
+    expect(
+      renderAdoptionPhase({ phase: 1, next: 'codeality-db baseline update' }),
+    ).toMatch(/next: codeality-db baseline update$/)
   })
 })

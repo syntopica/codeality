@@ -2,9 +2,9 @@ import type { CommandIo } from '@/commands/CommandIo.js'
 import { parseCommandArgs } from '@/commands/parseCommandArgs.js'
 import { reportCommandError } from '@/commands/reportCommandError.js'
 import { ConfigError } from '@/config/ConfigError.js'
+import type { DbQualityConfig } from '@/config/DbQualityConfig.js'
 import { readConfig } from '@/config/readConfig.js'
-import type { AdoptionPhaseNumber } from '@/init/AdoptionPhaseNumber.js'
-import { adoptionPhase } from '@/init/adoptionPhase.js'
+import { adoptionStanding } from '@/init/adoptionStanding.js'
 import { applyInit } from '@/init/applyInit.js'
 import { planInit } from '@/init/planInit.js'
 import { renderAdoptionPhase } from '@/init/renderAdoptionPhase.js'
@@ -32,14 +32,17 @@ export const initCommand = (argv: string[], io: CommandIo): number => {
       }
       applyInit(io.root, plan)
     }
-    const phase = ((): AdoptionPhaseNumber => {
+    const config = ((): DbQualityConfig | undefined => {
       try {
-        return adoptionPhase(io.root, readConfig(io.root))
+        return readConfig(io.root)
       } catch {
-        return 0
+        return undefined
       }
     })()
-    io.stdout(`${renderAdoptionPhase(phase)}\n`)
+    const standing = config
+      ? adoptionStanding({ root: io.root, config, runner: io.runner })
+      : { phase: 0 as const }
+    io.stdout(`${renderAdoptionPhase(standing)}\n`)
     return exitCode
   } catch (error) {
     return reportCommandError(error, io.stderr)

@@ -10,6 +10,7 @@ import { join } from 'node:path'
 
 import { describe, expect, it } from 'vitest'
 
+import { baselineCommand } from '@/commands/baselineCommand.js'
 import { initCommand } from '@/commands/initCommand.js'
 import { commandIoFor } from '@tests/commands/commandIoFor.js'
 
@@ -59,6 +60,31 @@ describe('initCommand', () => {
     expect(initCommand(['--check'], io)).not.toBe(0)
     expect(io.out.join('')).toMatch(
       /merge\s+codeality-db.json\s+upgraded to schemaVersion 2/,
+    )
+  })
+  it('stays at phase 1 while check reports findings the baseline does not cover', () => {
+    const io = ioFor()
+    mkdirSync(join(io.root, 'src'), { recursive: true })
+    writeFileSync(
+      join(io.root, 'package.json'),
+      JSON.stringify({ dependencies: { '@supabase/supabase-js': '^2.0.0' } }),
+    )
+    writeFileSync(join(io.root, '.codeality-db-perf.json'), '{}')
+    const star = "export const q = supabase.from('orders').select('*')\n"
+    writeFileSync(join(io.root, 'src/a.ts'), star)
+    expect(initCommand(['--apply'], io)).toBe(0)
+    expect(io.out.join('')).toMatch(
+      /adoption phase 1 of 4[\s\S]*next: codeality-db baseline create/,
+    )
+    expect(baselineCommand(['create'], io)).toBe(0)
+    io.out.length = 0
+    expect(initCommand([], io)).toBe(0)
+    expect(io.out.join('')).toMatch(/adoption phase 2 of 4/)
+    writeFileSync(join(io.root, 'src/b.ts'), star)
+    io.out.length = 0
+    expect(initCommand([], io)).toBe(0)
+    expect(io.out.join('')).toMatch(
+      /adoption phase 1 of 4[\s\S]*next: codeality-db baseline update/,
     )
   })
 })
