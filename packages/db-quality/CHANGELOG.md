@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.2.1
+
+- `init` proposes a PostgREST root only when it holds a TypeScript source; an
+  empty or untracked directory such as a local `supabase/functions` no longer
+  ends up in the configuration and fails CI.
+
 ## 0.2.0
 
 - Strict mode: no `info` severity, every finding fails the gate unless the

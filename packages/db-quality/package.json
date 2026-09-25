@@ -1,6 +1,6 @@
 {
   "name": "@syntopica/db-quality",
-  "version": "0.2.0",
+  "version": "0.2.1",
   "private": false,
   "packageManager": "pnpm@12.5.1",
   "license": "MIT",
