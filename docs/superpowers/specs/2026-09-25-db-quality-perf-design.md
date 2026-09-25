@@ -78,14 +78,20 @@ One resolver, `resolvePostgresTarget`, used by every live command:
 3. Neither: `perf` commands exit 2 with a message naming both options; the gate
    stage reports `skipped-not-applicable`.
 
-The driver is `pg` (node-postgres), a regular dependency. Every session opens
-with `set default_transaction_read_only = on` and
-`set statement_timeout = '30s'`; the bench overrides the timeout with its own
-`perf.benchTimeoutMs`. Connection failures are infrastructure (exit 3).
+The driver is `psql`, called through `CommandRunner` like every other external
+tool in this CLI. Every call is one `psql` process, opened with
+`set default_transaction_read_only = on` and `set statement_timeout = <ms>` as
+separate `-c` arguments before the query; the bench overrides the timeout with
+its own `perf.benchTimeoutMs`. Measured on 2026-09-25 against a Supabase session
+pooler: `PGOPTIONS='-c default_transaction_read_only=on'` does not reach the
+session through the pooler (an insert went through), while the session-level
+`SET` does (a `CREATE TEMP TABLE` was refused) — so `PGOPTIONS` is not used
+anywhere, and the two `SET`s are sent before every query, every call. Connection
+failures are infrastructure (exit 3).
 
-A `SqlClient` interface (`query(text, values) => rows`) is the seam: adapters
-take it, tests give it a scripted fake, and one integration test runs against
-`DB_QUALITY_TEST_DB_URL` when set.
+A `PsqlSession` interface (`rows(sql) => rows`, `text(sql) => string`) is the
+seam: adapters take it, tests give it a scripted fake, and one integration test
+runs against `DB_QUALITY_TEST_DB_URL` when set.
 
 ## Configuration
 
