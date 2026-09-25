@@ -1,0 +1,5 @@
+{
+  "rules": {
+    "require-field-index": ["error", { "forAllRelations": true }]
+  }
+}
