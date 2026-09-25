@@ -1,18 +1,20 @@
 import { existsSync } from 'node:fs'
 import { join } from 'node:path'
 
-import type { DbQualityConfig } from '@/config/DbQualityConfig.js'
 import { findSqliteFiles } from '@/config/findSqliteFiles.js'
+import { hasSupabaseJsDependency } from '@/config/hasSupabaseJsDependency.js'
 import { isDirectory } from '@/config/isDirectory.js'
+import type { StackSections } from '@/config/StackSections.js'
 
-export const detectStacks = (
-  root: string,
-): Omit<DbQualityConfig, 'audit' | 'disable' | 'schemaVersion'> => {
+export const detectStacks = (root: string): StackSections => {
   const sqliteFiles = findSqliteFiles(root)
   const hasDrizzle = ['ts', 'js', 'mjs'].some((ext) =>
     existsSync(join(root, `drizzle.config.${ext}`)),
   )
   const drizzleRoots = ['src', 'server', 'app', 'lib', 'db'].filter((name) =>
+    isDirectory(join(root, name)),
+  )
+  const postgrestRoots = ['src', 'app', 'supabase/functions'].filter((name) =>
     isDirectory(join(root, name)),
   )
   return {
@@ -26,5 +28,8 @@ export const detectStacks = (
       ? { drizzle: { roots: drizzleRoots, objectNames: ['db', 'tx'] } }
       : {}),
     ...(sqliteFiles.length > 0 ? { sqlite: { files: sqliteFiles } } : {}),
+    ...(hasSupabaseJsDependency(root) && postgrestRoots.length > 0
+      ? { postgrest: { roots: postgrestRoots } }
+      : {}),
   }
 }

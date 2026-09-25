@@ -2,6 +2,7 @@ import { ConfigError } from '@/config/ConfigError.js'
 import { configSection } from '@/config/configSection.js'
 import { drizzleSectionFrom } from '@/config/drizzleSectionFrom.js'
 import { isStringList } from '@/config/isStringList.js'
+import { postgrestSectionFrom } from '@/config/postgrestSectionFrom.js'
 import type { StackSections } from '@/config/StackSections.js'
 
 export const stackSectionsFrom = (
@@ -31,5 +32,7 @@ export const stackSectionsFrom = (
       throw new ConfigError('sqlite.files must be a list of strings')
     stacks.sqlite = { files }
   }
+  const postgrest = configSection(raw, 'postgrest')
+  if (postgrest) stacks.postgrest = postgrestSectionFrom(postgrest)
   return stacks
 }

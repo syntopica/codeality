@@ -32,4 +32,20 @@ describe('detectStacks', () => {
   it('returns nothing for an empty directory', () => {
     expect(detectStacks(mkdtempSync(join(tmpdir(), 'dbq-')))).toEqual({})
   })
+  it('detects postgrest when @supabase/supabase-js is a dependency', () => {
+    const root = mkdtempSync(join(tmpdir(), 'dbq-'))
+    writeFileSync(
+      join(root, 'package.json'),
+      JSON.stringify({ dependencies: { '@supabase/supabase-js': '^2' } }),
+    )
+    mkdirSync(join(root, 'src'))
+    mkdirSync(join(root, 'app'))
+    expect(detectStacks(root).postgrest).toEqual({ roots: ['src', 'app'] })
+  })
+  it('does not detect postgrest without the dependency', () => {
+    const root = mkdtempSync(join(tmpdir(), 'dbq-'))
+    writeFileSync(join(root, 'package.json'), JSON.stringify({}))
+    mkdirSync(join(root, 'src'))
+    expect(detectStacks(root).postgrest).toBeUndefined()
+  })
 })

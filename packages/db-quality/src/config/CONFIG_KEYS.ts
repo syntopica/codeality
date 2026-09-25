@@ -4,6 +4,8 @@ export const CONFIG_KEYS = new Set([
   'prisma',
   'drizzle',
   'sqlite',
+  'postgrest',
   'audit',
+  'perf',
   'disable',
 ])

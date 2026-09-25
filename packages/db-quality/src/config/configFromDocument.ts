@@ -4,6 +4,7 @@ import { ConfigError } from '@/config/ConfigError.js'
 import { configSection } from '@/config/configSection.js'
 import type { DbQualityConfig } from '@/config/DbQualityConfig.js'
 import { disableEntriesFrom } from '@/config/disableEntriesFrom.js'
+import { perfSectionFrom } from '@/config/perfSectionFrom.js'
 import { stackSectionsFrom } from '@/config/stackSectionsFrom.js'
 
 /** Validates a parsed codeality-db.json and fills its defaults; ConfigError on any defect. */
@@ -26,6 +27,7 @@ export const configFromDocument = (document: unknown): DbQualityConfig => {
     schemaVersion,
     ...stackSectionsFrom(raw),
     audit: auditSectionFrom(configSection(raw, 'audit')),
+    perf: perfSectionFrom(configSection(raw, 'perf')),
     disable: disableEntriesFrom(raw['disable'], schemaVersion),
   }
 }
