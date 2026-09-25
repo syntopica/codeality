@@ -75,7 +75,7 @@ Node, validated against a schema shipped in the package, and matches
   "drizzle": { "roots": ["src"], "objectNames": ["db", "tx"] },
   "sqlite": { "files": ["data/app.db"] },
   "audit": { "inGate": true, "bloatThreshold": 5, "soda": "db-quality/soda" },
-  "disable": ["BDB1xx/prefer-bigint-over-int"]
+  "disable": ["BDB100/prefer-bigint-over-int"]
 }
 ```
 
@@ -118,7 +118,8 @@ Codes are `BDB` plus a family digit:
 
 External tools are consumed through their JSON output and mapped into this
 model; the tool's own rule name is kept after the family code so the upstream
-documentation stays reachable.
+documentation stays reachable. The concrete code for a tool-sourced finding is
+the family's base number, `BDB100/<rule>`, `BDB200/<rule>` and so on.
 
 ## `check`: static adapters
 
