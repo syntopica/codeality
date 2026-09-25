@@ -53,4 +53,12 @@ describe('initCommand', () => {
     expect(existsSync(join(io.root, 'db-quality/bench/README.md'))).toBe(true)
     expect(io.out.join('')).toMatch(/adoption phase 1 of 4/)
   })
+  it('--check fails on a valid schemaVersion 1 file, offering the upgrade', () => {
+    const io = ioFor()
+    writeFileSync(join(io.root, 'codeality-db.json'), '{"schemaVersion":1}')
+    expect(initCommand(['--check'], io)).not.toBe(0)
+    expect(io.out.join('')).toMatch(
+      /merge\s+codeality-db.json\s+upgraded to schemaVersion 2/,
+    )
+  })
 })

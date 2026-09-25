@@ -1,9 +1,7 @@
+import type { AdoptionRung } from '@/init/AdoptionRung.js'
+
 /** The phased adoption ladder: what each phase means and the command that reaches the next one. */
-export const ADOPTION_LADDER: Array<{
-  phase: 0 | 1 | 2 | 3 | 4
-  does: string
-  next: string
-}> = [
+export const ADOPTION_LADDER: AdoptionRung[] = [
   { phase: 0, does: 'no configuration', next: 'codeality-db init --apply' },
   {
     phase: 1,

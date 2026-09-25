@@ -3,6 +3,7 @@ import { parseCommandArgs } from '@/commands/parseCommandArgs.js'
 import { reportCommandError } from '@/commands/reportCommandError.js'
 import { ConfigError } from '@/config/ConfigError.js'
 import { readConfig } from '@/config/readConfig.js'
+import type { AdoptionPhaseNumber } from '@/init/AdoptionPhaseNumber.js'
 import { adoptionPhase } from '@/init/adoptionPhase.js'
 import { applyInit } from '@/init/applyInit.js'
 import { planInit } from '@/init/planInit.js'
@@ -31,7 +32,7 @@ export const initCommand = (argv: string[], io: CommandIo): number => {
       }
       applyInit(io.root, plan)
     }
-    const phase = ((): 0 | 1 | 2 | 3 | 4 => {
+    const phase = ((): AdoptionPhaseNumber => {
       try {
         return adoptionPhase(io.root, readConfig(io.root))
       } catch {

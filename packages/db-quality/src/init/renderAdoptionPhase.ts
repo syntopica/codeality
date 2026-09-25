@@ -1,7 +1,8 @@
 import { ADOPTION_LADDER } from '@/init/ADOPTION_LADDER.js'
+import type { AdoptionPhaseNumber } from '@/init/AdoptionPhaseNumber.js'
 
 /** Renders the ladder with the current phase marked and the next step named. */
-export const renderAdoptionPhase = (phase: 0 | 1 | 2 | 3 | 4): string => {
+export const renderAdoptionPhase = (phase: AdoptionPhaseNumber): string => {
   const rungs = ADOPTION_LADDER.map(
     (rung) =>
       `${rung.phase === phase ? '*' : ' '} ${String(rung.phase)}  ${rung.does}`,

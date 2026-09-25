@@ -33,4 +33,14 @@ describe('upgradedConfigDocument', () => {
       upgradedConfigDocument(raw, { postgrest: { roots: ['src'] } }),
     ).toMatchObject({ postgrest: { roots: ['app'] }, perf: { inGate: true } })
   })
+  it('keeps an already-objectified disable entry and converts only the string', () => {
+    const raw = {
+      schemaVersion: 1,
+      disable: [{ code: 'BDB001', reason: 'kept' }, 'BDB002'],
+    }
+    expect(upgradedConfigDocument(raw, {})['disable']).toEqual([
+      { code: 'BDB001', reason: 'kept' },
+      { code: 'BDB002', reason: LEGACY_DISABLE_REASON },
+    ])
+  })
 })
