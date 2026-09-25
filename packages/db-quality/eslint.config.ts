@@ -15,5 +15,15 @@ export default [
       'code-policy/no-hidden-top-level-declarations': 'off',
     },
   },
+  {
+    // The tool's whole job is to read files under a project root the person
+    // names on the command line, so every filesystem call takes a computed
+    // path and the rule fires on all of them without a taint to report. The
+    // tests build their paths from `mkdtemp` for the same reason.
+    files: ['src/**/*.ts', 'tests/**/*.ts'],
+    rules: {
+      'security/detect-non-literal-fs-filename': 'off',
+    },
+  },
   { ignores: ['dist/**', 'coverage/**', 'assets/**'] },
 ]
