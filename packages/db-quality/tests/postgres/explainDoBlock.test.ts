@@ -4,11 +4,11 @@ import { dollarTag } from '@/postgres/dollarTag.js'
 import { explainDoBlock } from '@/postgres/explainDoBlock.js'
 
 describe('explainDoBlock', () => {
-  it('passes the statement to EXECUTE as a dollar-quoted literal and keeps the plan in a session setting', () => {
+  it('opens a cursor over the statement as a dollar-quoted literal and keeps the plan in a session setting', () => {
     const sql = "select 'it''s', $$a;b$$"
     const block = explainDoBlock(sql)
     const match =
-      /^do \$(dbq_[0-9a-f]{16})\$ declare p text; begin execute 'explain \(analyze, buffers, format json\) ' \|\| \$(dbq_[0-9a-f]{16})\$(.*)\$\2\$ into p; perform set_config\('dbq\.plan', p, false\); end \$\1\$$/s.exec(
+      /^do \$(dbq_[0-9a-f]{16})\$ declare c refcursor; p text; begin open c for execute 'explain \(analyze, buffers, format json\) ' \|\| \$(dbq_[0-9a-f]{16})\$(.*)\$\2\$; fetch c into p; close c; perform set_config\('dbq\.plan', p, false\); end \$\1\$$/s.exec(
         block,
       )
     expect(match?.[3]).toBe(sql)

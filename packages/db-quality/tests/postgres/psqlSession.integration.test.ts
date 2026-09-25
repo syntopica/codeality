@@ -20,16 +20,15 @@ describe.skipIf(!url)('psqlSession against a real database', () => {
       { Plan: { 'Node Type': 'Result' } },
     ])
   })
-  it('keeps the bench statement inside the read-only transaction', () => {
-    expect(() => session().explain('select 1; commit; select 1')).toThrow(
-      /EXECUTE of transaction commands is not implemented/,
-    )
-    expect(() =>
-      session().explain('select 1; set transaction read write; select 1'),
-    ).toThrow(/read-write mode must be set before any query/)
-    expect(() =>
-      session().explain('select 1; create table dbq_probe (a int)'),
-    ).toThrow(/cannot execute CREATE TABLE in a read-only transaction/)
+  it('refuses more than one statement in the bench string, so nothing after the EXPLAIN runs', () => {
+    for (const sql of [
+      'select 1; commit; select 1',
+      'select 1; set transaction read write; select 1',
+      'select 1; create table dbq_probe (a int)',
+    ])
+      expect(() => session().explain(sql)).toThrow(
+        /cannot open multi-query plan as cursor/,
+      )
     expect(session().rows("select to_regclass('dbq_probe') as probe")).toEqual([
       { probe: null },
     ])
