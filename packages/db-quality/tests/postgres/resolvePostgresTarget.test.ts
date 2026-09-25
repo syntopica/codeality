@@ -4,6 +4,7 @@ import { join } from 'node:path'
 
 import { afterEach, describe, expect, it } from 'vitest'
 
+import { ConfigError } from '@/config/ConfigError.js'
 import { requirePostgresTarget } from '@/postgres/requirePostgresTarget.js'
 import { resolvePostgresTarget } from '@/postgres/resolvePostgresTarget.js'
 
@@ -52,5 +53,32 @@ describe('resolvePostgresTarget', () => {
     expect(() =>
       resolvePostgresTarget('/p', { 'db-url': 'not a url' }),
     ).toThrow(/--db-url is not a valid url/)
+  })
+  it('refuses a transaction pooler: the read-only SET could land on another backend', () => {
+    for (const url of [
+      'postgres://u@pooler.example.com:6543/d',
+      'postgres://u@h:5432/d?pgbouncer=true',
+    ])
+      expect(() => resolvePostgresTarget('/p', { 'db-url': url })).toThrow(
+        /transaction pooler.*session pooler \(port 5432\)/,
+      )
+    const root = mkdtempSync(join(tmpdir(), 'dbq-'))
+    mkdirSync(join(root, 'supabase/.temp'), { recursive: true })
+    writeFileSync(
+      join(root, 'supabase/.temp/pooler-url'),
+      pooler.replace(':5432', ':6543'),
+    )
+    process.env['SUPABASE_DB_PASSWORD'] = 'pw'
+    expect(() => resolvePostgresTarget(root, {})).toThrow(ConfigError)
+  })
+  it('turns an unparsable linked pooler url into a ConfigError', () => {
+    const root = mkdtempSync(join(tmpdir(), 'dbq-'))
+    mkdirSync(join(root, 'supabase/.temp'), { recursive: true })
+    writeFileSync(join(root, 'supabase/.temp/pooler-url'), 'not a url\n')
+    process.env['SUPABASE_DB_PASSWORD'] = 'pw'
+    expect(() => resolvePostgresTarget(root, {})).toThrow(ConfigError)
+    expect(() => resolvePostgresTarget(root, {})).toThrow(
+      /supabase\/.temp\/pooler-url is not a valid url/,
+    )
   })
 })
