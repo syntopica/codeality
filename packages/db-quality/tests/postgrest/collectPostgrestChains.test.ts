@@ -51,4 +51,20 @@ export const read = async () => supabase.from('table').select('id')
     const chains = collectPostgrestChains('src/storage.ts', source)
     expect(chains.map((c) => [c.root, c.target])).toEqual([['from', 'table']])
   })
+  it('requires a literal target: `Array.from({ length })` is not a chain root', () => {
+    const source = `
+declare const supabase: { from: (t: string) => any, rpc: (f: string, a?: unknown) => any }
+declare const rows: number
+export const grid = () => {
+  for (const n of Array.from({ length: rows }, (_, i) => i)) void n
+}
+export const read = async () => supabase.from('t').select('id')
+export const call = async () => supabase.rpc('f', { a: 1 })
+`
+    const chains = collectPostgrestChains('src/arrayFrom.ts', source)
+    expect(chains.map((c) => [c.root, c.target])).toEqual([
+      ['from', 't'],
+      ['rpc', 'f'],
+    ])
+  })
 })

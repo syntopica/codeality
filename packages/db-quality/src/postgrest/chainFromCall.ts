@@ -3,6 +3,7 @@ import ts from 'typescript'
 import type { CollectedCall } from '@/postgrest/CollectedCall.js'
 import { isInsideLoop } from '@/postgrest/isInsideLoop.js'
 import { isStorageReceiver } from '@/postgrest/isStorageReceiver.js'
+import { isStringLiteralArgument } from '@/postgrest/isStringLiteralArgument.js'
 import { literalArgument } from '@/postgrest/literalArgument.js'
 import type { PostgrestCall } from '@/postgrest/PostgrestCall.js'
 import type { PostgrestChain } from '@/postgrest/PostgrestChain.js'
@@ -29,8 +30,7 @@ export const chainFromCall = (
   const rootIndex = calls.findIndex(
     (call) =>
       (call.name === 'from' || call.name === 'rpc') &&
-      call.args[0] !== undefined &&
-      call.args[0] !== '?',
+      isStringLiteralArgument(call.node.arguments[0]),
   )
   const root = calls[rootIndex]
   if (!root) return undefined
