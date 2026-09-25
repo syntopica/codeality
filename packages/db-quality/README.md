@@ -210,15 +210,15 @@ and `BDB912` need a recorded entry to compare against, so they never fire for a
 file that has none. A write statement in the bench directory fails at run time
 because the session is read-only.
 
-| Code     | Layer | Rule                                                                                                                          | Severity |
-| -------- | ----- | ----------------------------------------------------------------------------------------------------------------------------- | -------- |
-| `BDB901` | live  | query-regressed: mean time grew by `perf.regressionPercent` or more, at least `perf.minCalls` calls, at least 5 ms mean       | error    |
-| `BDB902` | live  | slow-query: mean time at or above `perf.slowMs`, at least `perf.minCalls` calls                                               | warn     |
-| `BDB903` | live  | seq-scan-table: a table with at least `perf.seqScanRows` live rows and more sequential than index scans in the window         | warn     |
-| `BDB904` | live  | temp-spill: a statement wrote temp blocks in the window, at least `perf.minCalls` calls: a sort or hash spilled to disk       | warn     |
-| `BDB911` | bench | bench-regressed: median grew by `perf.regressionPercent` or more and by at least 5 ms                                         | error    |
-| `BDB912` | bench | bench-plan-degraded: a new sequential scan on a table with at least `perf.seqScanRows` rows, or an index scan that became one | error    |
-| `BDB913` | bench | bench-estimate-off: the planner's row estimate is off by a factor of 100 or more                                              | warn     |
+| Code     | Layer | Rule                                                                                                                                         | Severity |
+| -------- | ----- | -------------------------------------------------------------------------------------------------------------------------------------------- | -------- |
+| `BDB901` | live  | query-regressed: mean time grew by `perf.regressionPercent` or more and by at least 5 ms, at least `perf.minCalls` calls, at least 5 ms mean | error    |
+| `BDB902` | live  | slow-query: mean time at or above `perf.slowMs`, at least `perf.minCalls` calls                                                              | warn     |
+| `BDB903` | live  | seq-scan-table: a table with at least `perf.seqScanRows` live rows and more sequential than index scans in the window                        | warn     |
+| `BDB904` | live  | temp-spill: a statement wrote temp blocks in the window, at least `perf.minCalls` calls: a sort or hash spilled to disk                      | warn     |
+| `BDB911` | bench | bench-regressed: median grew by `perf.regressionPercent` or more and by at least 5 ms                                                        | error    |
+| `BDB912` | bench | bench-plan-degraded: a new sequential scan on a table with at least `perf.seqScanRows` rows, or an index scan that became one                | error    |
+| `BDB913` | bench | bench-estimate-off: the planner's row estimate is off by a factor of 100 or more                                                             | warn     |
 
 Live and bench findings are never carried in `.codeality-db-baseline.json`: they
 are measurements, and a measurement nobody likes is fixed at the source, not

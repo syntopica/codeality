@@ -148,20 +148,20 @@ already controls.
 
 New code families:
 
-| code     | layer | rule                                                                                                                                                | severity |
-| -------- | ----- | --------------------------------------------------------------------------------------------------------------------------------------------------- | -------- |
-| `BDB801` | code  | `select-star`: `.select('*')`, `.select()` or a `select` whose list contains `*`                                                                    | warn     |
-| `BDB802` | code  | `unbounded-list`: a read chain with no `limit`, `range`, `single`, `maybeSingle`, `csv`, `head: true`, and no equality on a primary or unique key   | warn     |
-| `BDB803` | code  | `filter-without-index`: a filter on a literal column that no index, primary key or unique constraint in the migrations covers as its leading column | warn     |
-| `BDB804` | code  | `query-in-loop`: a `.from(` or `.rpc(` chain awaited inside `for`, `for of`, `while`, or a callback of `map`, `forEach`, `reduce`, `filter`         | warn     |
-| `BDB805` | code  | `exact-count-unbounded`: `{ count: 'exact' }` on a chain with no `limit`, `range` or `head: true`                                                   | warn     |
-| `BDB901` | live  | `query-regressed`: mean time in the window grew by `regressionPercent` or more, with at least `minCalls` calls and at least 5 ms mean               | error    |
-| `BDB902` | live  | `slow-query`: mean time in the window at or above `slowMs` with at least `minCalls` calls                                                           | warn     |
-| `BDB903` | live  | `seq-scan-table`: a table with at least `seqScanRows` live rows whose sequential scans in the window outnumber index scans                          | warn     |
-| `BDB904` | live  | `temp-spill`: a statement that wrote temp blocks in the window with at least `minCalls` calls                                                       | warn     |
-| `BDB911` | bench | `bench-regressed`: median execution time grew by `regressionPercent` or more and by at least 5 ms                                                   | error    |
-| `BDB912` | bench | `bench-plan-degraded`: a new `Seq Scan` on a table with at least `seqScanRows` rows, or an index scan that became a sequential one                  | error    |
-| `BDB913` | bench | `bench-estimate-off`: the planner's row estimate is off by a factor of 100 or more on any node (stale statistics)                                   | warn     |
+| code     | layer | rule                                                                                                                                                       | severity |
+| -------- | ----- | ---------------------------------------------------------------------------------------------------------------------------------------------------------- | -------- |
+| `BDB801` | code  | `select-star`: `.select('*')`, `.select()` or a `select` whose list contains `*`                                                                           | warn     |
+| `BDB802` | code  | `unbounded-list`: a read chain with no `limit`, `range`, `single`, `maybeSingle`, `csv`, `head: true`, and no equality on a primary or unique key          | warn     |
+| `BDB803` | code  | `filter-without-index`: a filter on a literal column that no index, primary key or unique constraint in the migrations covers as its leading column        | warn     |
+| `BDB804` | code  | `query-in-loop`: a `.from(` or `.rpc(` chain awaited inside `for`, `for of`, `while`, or a callback of `map`, `forEach`, `reduce`, `filter`                | warn     |
+| `BDB805` | code  | `exact-count-unbounded`: `{ count: 'exact' }` on a chain with no `limit`, `range` or `head: true`                                                          | warn     |
+| `BDB901` | live  | `query-regressed`: mean time in the window grew by `regressionPercent` or more and by at least 5 ms, with at least `minCalls` calls and at least 5 ms mean | error    |
+| `BDB902` | live  | `slow-query`: mean time in the window at or above `slowMs` with at least `minCalls` calls                                                                  | warn     |
+| `BDB903` | live  | `seq-scan-table`: a table with at least `seqScanRows` live rows whose sequential scans in the window outnumber index scans                                 | warn     |
+| `BDB904` | live  | `temp-spill`: a statement that wrote temp blocks in the window with at least `minCalls` calls                                                              | warn     |
+| `BDB911` | bench | `bench-regressed`: median execution time grew by `regressionPercent` or more and by at least 5 ms                                                          | error    |
+| `BDB912` | bench | `bench-plan-degraded`: a new `Seq Scan` on a table with at least `seqScanRows` rows, or an index scan that became a sequential one                         | error    |
+| `BDB913` | bench | `bench-estimate-off`: the planner's row estimate is off by a factor of 100 or more on any node (stale statistics)                                          | warn     |
 
 Fingerprints keep the existing rule: `sha256('1|code|path|context')`. For code
 rules the context is the normalized chain text; for live rules it is
@@ -242,8 +242,8 @@ fresh absolute values are the window. Then:
 - `windowMean = ΔtotalMs / Δcalls` (statements with `Δcalls < minCalls` are
   skipped; they say nothing yet).
 - `previousMean = totalMs / calls` at snapshot time.
-- `BDB901` when `windowMean >= previousMean * (1 + regressionPercent / 100)` and
-  `windowMean >= 5`.
+- `BDB901` when `windowMean >= previousMean * (1 + regressionPercent / 100)`,
+  `windowMean >= 5`, and `windowMean - previousMean >= 5`.
 - `BDB902` when `windowMean >= slowMs`.
 - `BDB904` when `ΔtempBlksWritten > 0`.
 - `BDB903` per table with `liveRows >= seqScanRows` and `ΔseqScan > ΔidxScan`.

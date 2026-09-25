@@ -99,6 +99,22 @@ describe('diffSnapshots', () => {
         .findings,
     ).toEqual([])
   })
+  it('does not flag a regression that clears the percent but not a 5 ms floor', () => {
+    const previous = snap([stat('floor', 100, 500)])
+    const current = snap([stat('floor', 200, 1253)])
+    expect(
+      diffSnapshots(previous, current, PERF_DEFAULTS, []).findings,
+    ).toEqual([])
+  })
+  it('flags a regression that clears both the percent and the 5 ms floor', () => {
+    const previous = snap([stat('floor', 100, 1000)])
+    const current = snap([stat('floor', 200, 2550)])
+    expect(
+      diffSnapshots(previous, current, PERF_DEFAULTS, []).findings.map(
+        (f) => f.code,
+      ),
+    ).toEqual(['BDB901'])
+  })
 })
 
 describe('windowTables', () => {

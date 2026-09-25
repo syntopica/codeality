@@ -7,4 +7,5 @@ export const isRegression = (
 ): boolean =>
   window.previousMeanMs !== null &&
   window.meanMs >= 5 &&
-  window.meanMs >= window.previousMeanMs * (1 + perf.regressionPercent / 100)
+  window.meanMs >= window.previousMeanMs * (1 + perf.regressionPercent / 100) &&
+  window.meanMs - window.previousMeanMs >= 5
