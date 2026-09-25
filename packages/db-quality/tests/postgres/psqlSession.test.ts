@@ -8,7 +8,7 @@ const target = { url: 'postgres://u@h/d', host: 'h', password: 'pw' }
 
 describe('psqlSession', () => {
   it('opens every statement read-only with a timeout, before the query', () => {
-    expect(psqlArguments('postgres://u@h/d', 30000, 'select 1')).toEqual([
+    expect(psqlArguments('postgres://u@h/d', 30000, ['select 1'])).toEqual([
       'postgres://u@h/d',
       '-X',
       '-q',
@@ -40,16 +40,41 @@ describe('psqlSession', () => {
     expect(seen[0]?.env).toEqual({ PGPASSWORD: 'pw', PGCONNECT_TIMEOUT: '10' })
     expect(JSON.stringify(seen)).not.toContain('pw@')
   })
-  it('returns an empty list for an empty result and raw text for text()', () => {
-    const runner: CommandRunner = (_c, args) => ({
+  it('returns an empty list for an empty result', () => {
+    const runner: CommandRunner = () => ({
       status: 0,
-      stdout: args.at(-1)?.startsWith('explain') ? '[{"Plan":{}}]' : '\n',
+      stdout: '\n',
       stderr: '',
       missing: false,
     })
     const session = psqlSession(runner, '/p', target, 1000)
     expect(session.rows('select 1 where false')).toEqual([])
-    expect(session.text('explain (format json) select 1')).toBe('[{"Plan":{}}]')
+  })
+  it('explains inside a DO block, then reads the plan back in the same session', () => {
+    const seen: string[][] = []
+    const runner: CommandRunner = (_c, args) => {
+      seen.push(args)
+      return {
+        status: 0,
+        stdout: '[{"Plan":{}}]\n',
+        stderr: '',
+        missing: false,
+      }
+    }
+    const session = psqlSession(runner, '/p', target, 1000)
+    expect(session.explain('select 1; commit')).toBe('[{"Plan":{}}]')
+    const args = seen[0] ?? []
+    expect(args.slice(7, 11)).toEqual([
+      '-c',
+      'set default_transaction_read_only = on',
+      '-c',
+      'set statement_timeout = 1000',
+    ])
+    expect(args[11]).toBe('-c')
+    expect(args[12]).toMatch(
+      /^do \$dbq_[0-9a-f]+\$ .*select 1; commit.* end \$dbq_/s,
+    )
+    expect(args.slice(13)).toEqual(['-c', "select current_setting('dbq.plan')"])
   })
   it('reports a missing psql as a missing tool and a failure by its stderr', () => {
     const missing: CommandRunner = () => ({

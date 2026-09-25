@@ -10,12 +10,11 @@ export const runBenchQuery = (
   session: PsqlSession,
   query: BenchQuery,
 ): BenchEntry => {
-  const explain = `explain (analyze, buffers, format json) ${query.sql}`
-  session.text(explain)
+  session.explain(query.sql)
   const times: number[] = []
   let last: ExplainSummary | undefined
   for (let run = 0; run < query.runs; run += 1) {
-    last = summarizeExplain(session.text(explain))
+    last = summarizeExplain(session.explain(query.sql))
     times.push(last.executionMs)
   }
   if (!last) throw new Error(`${query.file} has zero runs`)

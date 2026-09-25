@@ -24,7 +24,7 @@ describe('runBench', () => {
     const sqls: string[] = []
     const session: PsqlSession = {
       rows: () => [],
-      text: (sql) => {
+      explain: (sql) => {
         sqls.push(sql)
         return fixture('seq_scan.json')
       },
@@ -50,9 +50,7 @@ describe('runBench', () => {
       disabled: [],
     })
     expect(sqls).toHaveLength(4)
-    expect(sqls[0]).toBe(
-      'explain (analyze, buffers, format json) select * from t where id = 5',
-    )
+    expect(sqls[0]).toBe('select * from t where id = 5')
     expect(result.entries['by_id.sql']?.runs).toBe(3)
     // The seq_scan.json fixture measures well under a millisecond on this
     // machine, so BDB911's absolute 5 ms floor never fires against it; that
@@ -67,7 +65,7 @@ describe('runBench', () => {
     writeFileSync(join(root, `${BENCH_DIR}/a.sql`), 'select 1;')
     const session: PsqlSession = {
       rows: () => [],
-      text: () => fixture('index_scan.json'),
+      explain: () => fixture('index_scan.json'),
     }
     const result = runBench(session, root, undefined, {
       perf: PERF_DEFAULTS,
@@ -82,7 +80,7 @@ describe('runBench', () => {
     writeFileSync(join(root, `${BENCH_DIR}/a.sql`), '-- runs: 1\nselect 1;')
     const session: PsqlSession = {
       rows: () => [],
-      text: () => fixture('index_scan.json'),
+      explain: () => fixture('index_scan.json'),
     }
     const recorded = {
       schemaVersion: 1 as const,
@@ -109,7 +107,7 @@ describe('runBench', () => {
   })
   it('refuses an empty file and a missing directory', () => {
     const root = mkdtempSync(join(tmpdir(), 'dbq-'))
-    const session: PsqlSession = { rows: () => [], text: () => '' }
+    const session: PsqlSession = { rows: () => [], explain: () => '' }
     expect(() =>
       runBench(session, root, undefined, { perf: PERF_DEFAULTS, disabled: [] }),
     ).toThrow(/db-quality\/bench is not a directory/)

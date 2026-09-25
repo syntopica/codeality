@@ -33,7 +33,7 @@ describe('takePerfSnapshot', () => {
           ]
         return statements
       },
-      text: () => '',
+      explain: () => '',
     }
     const snapshot = takePerfSnapshot(
       session,
@@ -74,7 +74,7 @@ describe('takePerfSnapshot', () => {
   it('tolerates a null reset marker', () => {
     const session: PsqlSession = {
       rows: (sql) => (sql.includes('_info') ? [{ stats_reset: null }] : []),
-      text: () => '',
+      explain: () => '',
     }
     expect(
       takePerfSnapshot(session, PERF_DEFAULTS, 'h', 't').statsReset,

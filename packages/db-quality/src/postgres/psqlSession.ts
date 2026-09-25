@@ -1,3 +1,5 @@
+import { explainDoBlock } from '@/postgres/explainDoBlock.js'
+import { PLAN_SETTING } from '@/postgres/PLAN_SETTING.js'
 import type { PostgresTarget } from '@/postgres/PostgresTarget.js'
 import { psqlArguments } from '@/postgres/psqlArguments.js'
 import type { PsqlSession } from '@/postgres/PsqlSessionType.js'
@@ -14,11 +16,15 @@ export const psqlSession = (
   target: PostgresTarget,
   timeoutMs: number,
 ): PsqlSession => {
-  const run = (sql: string): string => {
-    const result = runner('psql', psqlArguments(target.url, timeoutMs, sql), {
-      cwd: root,
-      env: { PGPASSWORD: target.password ?? '', PGCONNECT_TIMEOUT: '10' },
-    })
+  const run = (statements: string[]): string => {
+    const result = runner(
+      'psql',
+      psqlArguments(target.url, timeoutMs, statements),
+      {
+        cwd: root,
+        env: { PGPASSWORD: target.password ?? '', PGCONNECT_TIMEOUT: '10' },
+      },
+    )
     if (result.missing)
       throw new ToolMissingError('psql', 'install the PostgreSQL client')
     if (result.status !== 0)
@@ -29,11 +35,15 @@ export const psqlSession = (
   }
   return {
     rows: (sql) => {
-      const out = run(
+      const out = run([
         `select coalesce(json_agg(t), '[]'::json) from (${sql}) t`,
-      ).trim()
+      ]).trim()
       return out === '' ? [] : (JSON.parse(out) as unknown[])
     },
-    text: (sql) => run(sql).trim(),
+    explain: (sql) =>
+      run([
+        explainDoBlock(sql),
+        `select current_setting('${PLAN_SETTING}')`,
+      ]).trim(),
   }
 }

@@ -117,7 +117,7 @@ describe('perfStage', () => {
       const sql = args.at(-1) ?? ''
       return {
         status: 0,
-        stdout: sql.startsWith('explain')
+        stdout: sql.includes('dbq.plan')
           ? '[{"Plan":{"Node Type":"Result","Plan Rows":1,"Actual Rows":1,"Actual Loops":1},"Execution Time":0.5}]'
           : '[]',
         stderr: '',

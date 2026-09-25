@@ -5,7 +5,7 @@ import type { BenchQuery } from '@/bench/BenchQuery.js'
 import { RUNS_HEADER } from '@/bench/RUNS_HEADER.js'
 import { ConfigError } from '@/config/ConfigError.js'
 import { isDirectory } from '@/config/isDirectory.js'
-import { stripSqlComments } from '@/sql/stripSqlComments.js'
+import { splitSqlStatements } from '@/sql/splitSqlStatements.js'
 
 export const readBenchQueries = (
   root: string,
@@ -21,9 +21,14 @@ export const readBenchQueries = (
       const raw = readFileSync(join(dir, name), 'utf8')
       const match = RUNS_HEADER.exec(raw)
       const runs = match?.[1] ? Number(match[1]) : defaultRuns
-      let sql = stripSqlComments(raw).trim()
-      if (sql.endsWith(';')) sql = sql.slice(0, -1).trim()
-      if (sql === '') throw new ConfigError(`${name} holds no statement`)
+      const statements = splitSqlStatements(raw)
+      const sql = statements[0]?.text
+      if (sql === undefined) throw new ConfigError(`${name} holds no statement`)
+      // A clear message, not the boundary: the server enforces that one.
+      if (statements.length > 1)
+        throw new ConfigError(
+          `${name} holds more than one statement; a bench file is one statement`,
+        )
       return { file: name, sql, runs }
     })
 }

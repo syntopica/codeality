@@ -16,7 +16,7 @@ const psql: CommandRunner = (_c, args) => {
     ? '[{"stats_reset":"r"}]'
     : sql.includes('pg_stat_user_tables')
       ? '[]'
-      : sql.startsWith('explain')
+      : sql.includes('dbq.plan')
         ? '[{"Plan":{"Node Type":"Result","Plan Rows":1,"Actual Rows":1,"Actual Loops":1},"Execution Time":0.5}]'
         : '[]'
   return { status: 0, stdout, stderr: '', missing: false }

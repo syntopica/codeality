@@ -1,8 +1,8 @@
-/** The `psql` argument vector for one statement: read-only and timed out before it runs, every call. */
+/** The `psql` argument vector for one session: read-only and timed out before the statements run, every call. */
 export const psqlArguments = (
   url: string,
   timeoutMs: number,
-  sql: string,
+  statements: string[],
 ): string[] => [
   url,
   '-X',
@@ -15,6 +15,5 @@ export const psqlArguments = (
   'set default_transaction_read_only = on',
   '-c',
   `set statement_timeout = ${String(timeoutMs)}`,
-  '-c',
-  sql,
+  ...statements.flatMap((statement) => ['-c', statement]),
 ]

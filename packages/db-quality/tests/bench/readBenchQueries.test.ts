@@ -45,4 +45,19 @@ describe('readBenchQueries', () => {
       /empty.sql holds no statement/,
     )
   })
+  it('refuses a file holding more than one statement', () => {
+    const root = rootWith({
+      'escape.sql': 'select 1; commit; set transaction read write; select 1',
+    })
+    expect(() => readBenchQueries(root, BENCH_DIR, 5)).toThrow(ConfigError)
+    expect(() => readBenchQueries(root, BENCH_DIR, 5)).toThrow(
+      /escape.sql holds more than one statement/,
+    )
+  })
+  it('keeps a semicolon inside a string or a dollar-quoted body', () => {
+    const root = rootWith({ 'q.sql': "select 'a;b', $$c;d$$;\n" })
+    expect(readBenchQueries(root, BENCH_DIR, 5)[0]?.sql).toBe(
+      "select 'a;b', $$c;d$$",
+    )
+  })
 })
