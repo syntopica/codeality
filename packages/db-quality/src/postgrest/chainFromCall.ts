@@ -2,6 +2,7 @@ import ts from 'typescript'
 
 import type { CollectedCall } from '@/postgrest/CollectedCall.js'
 import { isInsideLoop } from '@/postgrest/isInsideLoop.js'
+import { isStorageReceiver } from '@/postgrest/isStorageReceiver.js'
 import { literalArgument } from '@/postgrest/literalArgument.js'
 import type { PostgrestCall } from '@/postgrest/PostgrestCall.js'
 import type { PostgrestChain } from '@/postgrest/PostgrestChain.js'
@@ -33,6 +34,7 @@ export const chainFromCall = (
   )
   const root = calls[rootIndex]
   if (!root) return undefined
+  if (rootIndex === 0 && isStorageReceiver(current)) return undefined
   const rest: PostgrestCall[] = calls
     .slice(rootIndex + 1)
     .map(({ name, args }) => ({ name, args }))

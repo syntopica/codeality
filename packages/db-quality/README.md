@@ -156,7 +156,10 @@ table the migrations never created — a view, a table in another schema — is
 exempt from `BDB803` rather than reported as a false positive, and a chain whose
 table or column is not a string literal is exempt from every rule: each rule
 reports only what it can prove. `.select('*')` inside `.rpc()` is not `BDB801`:
-a function returns what it returns.
+a function returns what it returns. A chain rooted at `<expr>.storage.from(...)`
+(e.g. `supabase.storage.from('bucket')`) is a Supabase Storage call, not
+PostgREST, and is skipped by every rule; a bucket reached through an aliased
+variable is not recognized.
 
 What these rules cannot see: a table or column name built from a variable
 instead of a string literal, a filter reached through `.match()` rather than a

@@ -37,4 +37,18 @@ describe('collectPostgrestChains', () => {
     const loops = collectPostgrestChains('src/loops.tsx', fixture('loops.tsx'))
     expect(loops.map((c) => c.inLoop)).toEqual([true, true, false])
   })
+  it('skips a `.storage.from()` chain: Storage is not PostgREST', () => {
+    const source = `
+declare const supabase: { from: (t: string) => any, storage: { from: (b: string) => any } }
+declare const files: string[]
+export const upload = async () => {
+  for (const file of files) {
+    await supabase.storage.from('client-docs').uploadToSignedUrl(file, 'token', file)
+  }
+}
+export const read = async () => supabase.from('table').select('id')
+`
+    const chains = collectPostgrestChains('src/storage.ts', source)
+    expect(chains.map((c) => [c.root, c.target])).toEqual([['from', 'table']])
+  })
 })
