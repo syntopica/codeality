@@ -202,16 +202,25 @@ poll, `COPY` statements, and any pattern added to `perf.ignore`, which extends
 that built-in list rather than replacing it.
 
 `perf bench` runs each `.sql` file in `perf.benchDir` (default
-`db-quality/bench`) as `EXPLAIN (ANALYZE, BUFFERS, FORMAT JSON)` inside a
-read-only transaction that is always rolled back: one warm-up run, then
-`perf.benchRuns` runs — or the count from a leading `-- runs: N` comment in the
-file — taking the median execution time. `perf bench --record` writes
-`.codeality-db-bench.json`; `perf bench` without the flag compares the current
-run against that record. A `.sql` file with no recorded entry yet is still
-judged for `BDB913` (the estimate check needs only the current run); `BDB911`
-and `BDB912` need a recorded entry to compare against, so they never fire for a
-file that has none. A write statement in the bench directory fails at run time
-because the session is read-only.
+`db-quality/bench`) as `EXPLAIN (ANALYZE, BUFFERS, FORMAT JSON)`: one warm-up
+run, then `perf.benchRuns` runs — or the count from a leading `-- runs: N`
+comment in the file — taking the median execution time. `perf bench --record`
+writes `.codeality-db-bench.json`; `perf bench` without the flag compares the
+current run against that record. A `.sql` file with no recorded entry yet is
+still judged for `BDB913` (the estimate check needs only the current run);
+`BDB911` and `BDB912` need a recorded entry to compare against, so they never
+fire for a file that has none. A statement that fails to run is an
+infrastructure error (exit 3) naming the file.
+
+A bench file is one statement; a file holding more than one is refused as a
+configuration error. The server, not that check, is the boundary: the statement
+reaches Postgres as a dollar-quoted literal handed to PL/pgSQL `EXECUTE` inside
+a `DO` block, in a session that is read-only before it starts, and the plan
+comes back through a session setting. `EXECUTE` refuses `COMMIT` and `ROLLBACK`,
+`SET TRANSACTION READ WRITE` is rejected once the `EXPLAIN` has run, and a write
+fails as a write in a read-only transaction. Side effects that leave the
+database through `dblink` or `pg_net` are outside any read-only session; the
+strongest boundary is a dedicated role that can only read.
 
 | Code     | Layer | Rule                                                                                                                                         | Severity |
 | -------- | ----- | -------------------------------------------------------------------------------------------------------------------------------------------- | -------- |
@@ -243,9 +252,17 @@ on `PATH`: it is a required tool, and a missing one is an infrastructure failure
 Every session opens with `set default_transaction_read_only = on` and
 `set statement_timeout = <ms>` as separate arguments before the query, sent
 again before every call: a Supabase session pooler was measured, on 2026-09-25,
-to ignore `PGOPTIONS` for this, so `PGOPTIONS` is never used. A password `psql`
-echoes back in a connection error is redacted to `***` before it reaches a
-finding or the terminal.
+to ignore `PGOPTIONS` for this, so `PGOPTIONS` is never used. A transaction
+pooler (port 6543, or `pgbouncer=true` in the url) is refused as a configuration
+error: it can run each statement on a different backend, so the read-only
+setting would not hold, and it would stay behind on a connection the application
+shares. Use the session pooler (port 5432) or a direct connection.
+
+The password reaches `psql` through `PGPASSWORD` only: a password in `--db-url`
+is taken out of the url before `psql` sees its arguments, and `PGPASSWORD` is
+left as it is when no password is given. A password `psql` echoes back in a
+connection error is redacted to `***` before it reaches a finding or the
+terminal.
 
 ## Adoption in phases
 

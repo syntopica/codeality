@@ -89,7 +89,12 @@ session through the pooler (an insert went through), while the session-level
 anywhere, and the two `SET`s are sent before every query, every call. Connection
 failures are infrastructure (exit 3).
 
-A `PsqlSession` interface (`rows(sql) => rows`, `text(sql) => string`) is the
+A transaction pooler (port 6543 or `pgbouncer=true`) is refused as a
+configuration error: the `SET` and the query could land on different backends. A
+password in `--db-url` is taken out of the url and passed through `PGPASSWORD`,
+so it never appears on `psql`'s argument vector.
+
+A `PsqlSession` interface (`rows(sql) => rows`, `explain(sql) => plan`) is the
 seam: adapters take it, tests give it a scripted fake, and one integration test
 runs against `DB_QUALITY_TEST_DB_URL` when set.
 
@@ -266,19 +271,31 @@ statement; a leading `-- runs: N` comment overrides `perf.benchRuns`. Parameters
 are inline literals: the bench measures a plan, not a prepared statement.
 
 For each file: one warm-up run, then `benchRuns` runs of
-`EXPLAIN (ANALYZE, BUFFERS, FORMAT JSON) <statement>` inside a read-only
-transaction that is rolled back. Recorded per file: median `Execution Time`,
-minimum, the set of `(node type, relation)` pairs, every `Seq Scan` relation
-with its `Actual Rows`, and the worst `Plan Rows / Actual Rows` ratio.
+`EXPLAIN (ANALYZE, BUFFERS, FORMAT JSON) <statement>`. Recorded per file: median
+`Execution Time`, minimum, the set of `(node type, relation)` pairs, every
+`Seq Scan` relation with its `Actual Rows`, and the worst
+`Plan Rows / Actual Rows` ratio.
 
 `perf bench --record` writes `.codeality-db-bench.json`. `perf bench` without
 the flag compares against it and reports `BDB911`, `BDB912`, `BDB913`, plus an
 improvement report of every file whose median fell by `regressionPercent` or
-more. A file with no recorded entry is measured and printed, not judged. A
-statement that fails to run is an infrastructure error naming the file.
+more. A file with no recorded entry yet is still judged for `BDB913` (the
+estimate check needs only the current run); `BDB911` and `BDB912` need a
+recorded entry to compare against, so they never fire for a file that has none.
+A statement that fails to run is an infrastructure error naming the file
+(`<file>: <message>`).
 
-A write statement in the bench directory fails at run time because the
-transaction is read-only; the README says so.
+A file holding more than one statement is refused as a configuration error, for
+a clear message; the boundary is the server. After the two session `SET`s, each
+run is
+`do $<tag>$ declare p text; begin execute 'explain (analyze, buffers, format json) ' || $<qtag>$<statement>$<qtag>$ into p; perform set_config('dbq.plan', p, false); end $<tag>$`,
+then `select current_setting('dbq.plan')`, with random `dbq_<hex>` tags that do
+not occur in the statement. PL/pgSQL `EXECUTE` refuses `COMMIT` and `ROLLBACK`,
+`SET TRANSACTION READ WRITE` is rejected once the `EXPLAIN` has run, and a write
+fails in the read-only transaction; the integration test proves all three. Side
+effects that leave the database through `dblink` or `pg_net` are outside any
+read-only session; a dedicated read-only role is the strongest boundary. The
+README says so.
 
 ## `gate`
 

@@ -117,4 +117,18 @@ describe('runBench', () => {
       runBench(session, root, undefined, { perf: PERF_DEFAULTS, disabled: [] }),
     ).toThrow(/empty.sql holds no statement/)
   })
+  it('names the file when a statement fails', () => {
+    const root = mkdtempSync(join(tmpdir(), 'dbq-'))
+    mkdirSync(join(root, BENCH_DIR), { recursive: true })
+    writeFileSync(join(root, `${BENCH_DIR}/broken.sql`), 'select nope;')
+    const session: PsqlSession = {
+      rows: () => [],
+      explain: () => {
+        throw new Error('psql failed: column "nope" does not exist')
+      },
+    }
+    expect(() =>
+      runBench(session, root, undefined, { perf: PERF_DEFAULTS, disabled: [] }),
+    ).toThrow(/^broken.sql: psql failed: column "nope" does not exist$/)
+  })
 })

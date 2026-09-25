@@ -13,7 +13,12 @@
   bench queries under `EXPLAIN ANALYZE` with `BDB911`-`BDB913`. The `perf` gate
   stage runs them when `perf.inGate` is true and a target resolves.
 - The live connection is `psql` with a session-level read-only `SET`: the
-  Supabase pooler ignores `PGOPTIONS`.
+  Supabase pooler ignores `PGOPTIONS`. A bench statement runs through PL/pgSQL
+  `EXECUTE` inside a `DO` block, so it cannot leave the read-only transaction; a
+  transaction pooler (port 6543) is refused; a `--db-url` password travels only
+  through `PGPASSWORD`.
+- `typescript` is loaded only when `postgrest` is configured; without it the
+  other commands run, and the PostgREST rules exit 3 asking for it.
 - `init` upgrades the workflow file of an earlier release, recognised by its
   SHA-256, instead of reporting it as a conflict.
 - Validated against verticagtm and pxpn; see `docs/validation-2026-09.md`.

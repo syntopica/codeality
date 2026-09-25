@@ -5,19 +5,25 @@ import { median } from '@/bench/median.js'
 import { summarizeExplain } from '@/bench/summarizeExplain.js'
 import type { PsqlSession } from '@/postgres/PsqlSessionType.js'
 
-/** Runs the query once as a warm-up (discarded), then `query.runs` times, taking the median. */
+/** Runs the query once as a warm-up (discarded), then `query.runs` times, taking the median. A failure names the file. */
 export const runBenchQuery = (
   session: PsqlSession,
   query: BenchQuery,
 ): BenchEntry => {
-  session.explain(query.sql)
   const times: number[] = []
   let last: ExplainSummary | undefined
-  for (let run = 0; run < query.runs; run += 1) {
-    last = summarizeExplain(session.explain(query.sql))
-    times.push(last.executionMs)
+  try {
+    session.explain(query.sql)
+    for (let run = 0; run < query.runs; run += 1) {
+      last = summarizeExplain(session.explain(query.sql))
+      times.push(last.executionMs)
+    }
+  } catch (error) {
+    throw new Error(`${query.file}: ${(error as Error).message}`, {
+      cause: error,
+    })
   }
-  if (!last) throw new Error(`${query.file} has zero runs`)
+  if (!last) throw new Error(`${query.file}: zero runs`)
   return {
     medianMs: median(times),
     minMs: Math.min(...times),
