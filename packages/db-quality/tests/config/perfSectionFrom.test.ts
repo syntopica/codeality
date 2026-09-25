@@ -30,4 +30,14 @@ describe('perfSectionFrom', () => {
       /perf.benchDir must be a string/,
     )
   })
+  it('requires positive integers for the counts and the timeout, and at least one role', () => {
+    for (const key of ['benchRuns', 'minCalls', 'benchTimeoutMs'])
+      for (const value of [0, -1, 1.5])
+        expect(() => perfSectionFrom({ [key]: value })).toThrow(
+          `perf.${key} must be a positive integer`,
+        )
+    expect(() => perfSectionFrom({ roles: [] })).toThrow(
+      /perf.roles must name at least one role/,
+    )
+  })
 })

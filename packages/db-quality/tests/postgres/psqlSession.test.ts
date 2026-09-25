@@ -137,4 +137,13 @@ describe('psqlSession', () => {
     psqlSession(runner, '/p', { url: DB_URL, host: 'h' }, 1000).rows('select 1')
     expect(envs[0]).toEqual({ PGCONNECT_TIMEOUT: '10' })
   })
+  it('asks for psql from the shell PATH alone', () => {
+    const seen: (boolean | undefined)[] = []
+    const runner: CommandRunner = (_c, _args, options) => {
+      seen.push(options.systemPathOnly)
+      return { status: 0, stdout: '[]', stderr: '', missing: false }
+    }
+    psqlSession(runner, '/p', target, 1000).rows('select 1')
+    expect(seen).toEqual([true])
+  })
 })

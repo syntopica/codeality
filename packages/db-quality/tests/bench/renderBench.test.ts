@@ -76,6 +76,18 @@ describe('renderBench', () => {
       ].join('\n'),
     )
   })
+  it('prints the runs per line when the files ran a different number of times', () => {
+    const mixed: BenchResult = {
+      entries: { 'a.sql': entry(1), 'b.sql': { ...entry(2), runs: 20 } },
+      findings: [],
+      improvements: [],
+    }
+    expect(renderBench(mixed, undefined).split('\n').slice(0, 3)).toEqual([
+      'bench (runs per file)',
+      '  a.sql  1.00 ms   (no record)   5 runs',
+      '  b.sql  2.00 ms   (no record)   20 runs',
+    ])
+  })
 })
 
 describe('renderBenchJson', () => {

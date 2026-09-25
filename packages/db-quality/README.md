@@ -198,8 +198,9 @@ answer to "did the change help", and never itself a finding. `--json` returns
 `{ improvements, findings }`. Statements that are platform noise, not the
 application, are excluded before any of this: `pg_sleep`, `pg_timezone_names`,
 `pg_stat_statements` itself, PostgREST's schema-cache CTEs, the WAL replication
-poll, `COPY` statements, and any pattern added to `perf.ignore`, which extends
-that built-in list rather than replacing it.
+poll, `COPY` statements, and any statement containing one of the plain
+substrings (not patterns) listed in `perf.ignore`, which extends that built-in
+list rather than replacing it.
 
 `perf bench` runs each `.sql` file in `perf.benchDir` (default
 `db-quality/bench`) as `EXPLAIN (ANALYZE, BUFFERS, FORMAT JSON)`: one warm-up

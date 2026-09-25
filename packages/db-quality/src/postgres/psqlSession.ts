@@ -22,6 +22,7 @@ export const psqlSession = (
       psqlArguments(target.url, timeoutMs, statements),
       {
         cwd: root,
+        systemPathOnly: true,
         env: {
           ...(target.password === undefined
             ? {}

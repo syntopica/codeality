@@ -13,4 +13,5 @@ export const statementStatsSql = (roles: string[]): string =>
   from pg_stat_statements s join pg_roles r on r.oid = s.userid
   where s.toplevel and r.rolname in (${roles.map((role) => `'${role}'`).join(', ')})
     and s.query ~* '^\\s*(select|with|insert|update|delete|merge|values|table)\\y'
-    and s.query !~* '^\\s*explain'`
+    and s.query !~* '^\\s*explain'
+    and s.dbid = (select oid from pg_database where datname = current_database())`

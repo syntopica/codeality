@@ -13,4 +13,9 @@ describe('statementStatsSql', () => {
   it('names the application roles', () => {
     expect(sql).toContain("r.rolname in ('authenticated', 'anon')")
   })
+  it('reads the current database only, so one queryid in two databases never pairs wrongly', () => {
+    expect(sql).toContain(
+      'and s.dbid = (select oid from pg_database where datname = current_database())',
+    )
+  })
 })

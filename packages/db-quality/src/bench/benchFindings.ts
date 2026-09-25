@@ -2,8 +2,10 @@ import type { BenchEntry } from '@/bench/BenchEntry.js'
 import { benchFinding } from '@/bench/benchFinding.js'
 import type { BenchFindingsInput } from '@/bench/BenchFindingsInput.js'
 import type { BenchJudgement } from '@/bench/BenchJudgement.js'
+import { ESTIMATE_RATIO_LIMIT } from '@/bench/ESTIMATE_RATIO_LIMIT.js'
 import { isDisabled } from '@/config/isDisabled.js'
 import type { Finding } from '@/model/Finding.js'
+import { REGRESSION_FLOOR_MS } from '@/perf/REGRESSION_FLOOR_MS.js'
 
 // Three codes: BDB911 a query that got materially slower against its record,
 // BDB912 a sequential scan the record did not have (over a big table, or over
@@ -24,7 +26,7 @@ export const benchFindings = (
     recorded &&
     current.medianMs >=
       recorded.medianMs * (1 + perf.regressionPercent / 100) &&
-    current.medianMs - recorded.medianMs >= 5
+    current.medianMs - recorded.medianMs >= REGRESSION_FLOOR_MS
   if (slower)
     add(
       'BDB911',
@@ -45,7 +47,7 @@ export const benchFindings = (
       scan.relation,
       `sequential scan over ${scan.rows.toLocaleString('en-US')} rows of "${scan.relation}" where the record had ${recorded?.indexScans.includes(scan.relation) ? 'an index scan' : 'none'}`,
     )
-  if (current.worstEstimateRatio >= 100)
+  if (current.worstEstimateRatio >= ESTIMATE_RATIO_LIMIT)
     add(
       'BDB913',
       input.file,

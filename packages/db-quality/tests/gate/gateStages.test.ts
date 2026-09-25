@@ -59,7 +59,7 @@ describe('gateStages', () => {
     const stages = gateStages({ root, config, runner })
     expect(stages[2]?.name).toBe('perf')
     expect(stages[2]?.run()).toEqual({
-      skipped: 'no --db-url and no linked project with SUPABASE_DB_PASSWORD',
+      skipped: 'no linked project with SUPABASE_DB_PASSWORD',
     })
   })
 })

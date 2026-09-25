@@ -60,4 +60,12 @@ describe('readBenchQueries', () => {
       "select 'a;b', $$c;d$$",
     )
   })
+  it('refuses a -- runs: header that is not a positive integer', () => {
+    for (const runs of ['0', '1.5', '-2']) {
+      const root = rootWith({ 'q.sql': `-- runs: ${runs}\nselect 1` })
+      expect(() => readBenchQueries(root, BENCH_DIR, 5)).toThrow(
+        /q.sql: -- runs: must be a positive integer/,
+      )
+    }
+  })
 })

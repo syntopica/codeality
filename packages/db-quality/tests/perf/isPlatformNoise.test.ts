@@ -22,8 +22,12 @@ describe('isPlatformNoise', () => {
     )
     expect(
       isPlatformNoise('select public.ping_generation_worker()', [
-        '^select public\\.ping_',
+        'public.ping_',
       ]),
     ).toBe(true)
+  })
+  it('treats perf.ignore entries as plain substrings, never as patterns', () => {
+    expect(isPlatformNoise('select 1', ['^select'])).toBe(false)
+    expect(isPlatformNoise('select a.b(', ['a.b('])).toBe(true)
   })
 })

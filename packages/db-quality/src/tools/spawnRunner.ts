@@ -7,11 +7,14 @@ import { packageBinPath } from '@/tools/packageBinPath.js'
 
 export const spawnRunner: CommandRunner = (command, args, options) => {
   // The project's tools win; the package's own follow; the shell's PATH last.
-  const path = [
-    join(options.cwd, 'node_modules/.bin'),
-    packageBinPath(),
-    processEnv['PATH'] ?? '',
-  ].join(delimiter)
+  // A command that receives a credential resolves from the shell's PATH alone.
+  const path = options.systemPathOnly
+    ? (processEnv['PATH'] ?? '')
+    : [
+        join(options.cwd, 'node_modules/.bin'),
+        packageBinPath(),
+        processEnv['PATH'] ?? '',
+      ].join(delimiter)
   const child = spawnSync(command, args, {
     cwd: options.cwd,
     encoding: 'utf8',

@@ -49,7 +49,7 @@ describe('perfStage', () => {
     })
     const root = mkdtempSync(join(tmpdir(), 'dbq-'))
     expect(perfStage({ root, config, runner }).run()).toEqual({
-      skipped: 'no --db-url and no linked project with SUPABASE_DB_PASSWORD',
+      skipped: 'no linked project with SUPABASE_DB_PASSWORD',
     })
   })
   it('says why it skipped without a snapshot or a bench record', () => {

@@ -57,4 +57,13 @@ describe('spawnRunner', () => {
       spawnRunner('squawk', ['--version'], { cwd: tmpdir() }).missing,
     ).toBe(false)
   })
+  it('resolves from the shell PATH alone when asked, so no project binary stands in for it', () => {
+    const cwd = mkdtempSync(join(tmpdir(), 'dbq-'))
+    const result = spawnRunner(
+      'node',
+      ['-e', 'console.log(process.env.PATH)'],
+      { cwd, systemPathOnly: true },
+    )
+    expect(result.stdout.trim()).toBe(process.env['PATH'])
+  })
 })

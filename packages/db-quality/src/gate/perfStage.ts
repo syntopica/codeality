@@ -19,7 +19,7 @@ export const perfStage = (context: CheckContext): Stage => ({
     const target = resolvePostgresTarget(context.root, {})
     if (!target)
       return {
-        skipped: 'no --db-url and no linked project with SUPABASE_DB_PASSWORD',
+        skipped: 'no linked project with SUPABASE_DB_PASSWORD',
       }
     const hasSnapshot = existsSync(join(context.root, PERF_SNAPSHOT_FILENAME))
     const hasRecord = existsSync(join(context.root, BENCH_RECORD_FILENAME))

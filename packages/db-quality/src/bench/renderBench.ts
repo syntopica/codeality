@@ -8,13 +8,15 @@ export const renderBench = (
 ): string => {
   const entries = Object.entries(result.entries)
   const width = Math.max(0, ...entries.map(([file]) => file.length)) + 2
-  const runs = entries[0]?.[1].runs ?? 0
+  const runs = new Set(entries.map(([, entry]) => entry.runs))
+  const perFile = runs.size > 1
   const lines = entries.map(([file, entry]) => {
     const recordedEntry = recorded?.entries[file]
     const record = recordedEntry
       ? `(record ${recordedEntry.medianMs.toFixed(2)} ms)`
       : '(no record)'
-    return `  ${file.padEnd(width)}${entry.medianMs.toFixed(2)} ms   ${record}`
+    const count = perFile ? `   ${String(entry.runs)} runs` : ''
+    return `  ${file.padEnd(width)}${entry.medianMs.toFixed(2)} ms   ${record}${count}`
   })
   const improvementLines =
     result.improvements.length === 0
@@ -29,7 +31,9 @@ export const renderBench = (
           }),
         ]
   return [
-    `bench (${String(runs)} runs each)`,
+    perFile
+      ? 'bench (runs per file)'
+      : `bench (${String([...runs][0] ?? 0)} runs each)`,
     ...lines,
     ...improvementLines,
     renderFindings(result.findings),

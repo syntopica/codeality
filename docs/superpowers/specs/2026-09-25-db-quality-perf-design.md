@@ -138,8 +138,9 @@ runs against `DB_QUALITY_TEST_DB_URL` when set.
   roots among `src`, `app`, `supabase/functions` that exist.
 - `perf.roles`: the database roles whose statements count as the application;
   the default is the three above.
-- `perf.ignore`: regular expressions matched against the normalized statement
-  text; entries extend the built-in platform-noise list, never replace it.
+- `perf.ignore`: plain substrings (not regular expressions) looked for in the
+  normalized statement text; entries extend the built-in platform-noise list,
+  never replace it.
 - `audit` keeps its shape.
 
 ## Finding model

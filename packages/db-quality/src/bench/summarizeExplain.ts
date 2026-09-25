@@ -1,6 +1,7 @@
 import { ESTIMATE_MIN_ROWS } from '@/bench/ESTIMATE_MIN_ROWS.js'
+import type { ExplainDocument } from '@/bench/ExplainDocument.js'
 import type { ExplainSummary } from '@/bench/ExplainSummary.js'
-import type { PlanNode } from '@/bench/PlanNode.js'
+import type { SeqScanStat } from '@/bench/SeqScanStat.js'
 import { walkPlan } from '@/bench/walkPlan.js'
 
 export const summarizeExplain = (explainJson: string): ExplainSummary => {
@@ -14,8 +15,8 @@ export const summarizeExplain = (explainJson: string): ExplainSummary => {
     !('Execution Time' in first)
   )
     throw new Error('psql output is not an EXPLAIN document')
-  const document = first as { Plan: PlanNode; 'Execution Time': number }
-  const seqScans: { relation: string; rows: number }[] = []
+  const document = first as ExplainDocument
+  const seqScans: SeqScanStat[] = []
   const indexScans: string[] = []
   let worstEstimateRatio = 0
   walkPlan(document.Plan, (node) => {
