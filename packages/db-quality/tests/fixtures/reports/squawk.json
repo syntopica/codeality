@@ -1,0 +1,24 @@
+[
+  {
+    "file": "supabase/migrations/20260508000000_initial_schema.sql",
+    "line": 47,
+    "column": 18,
+    "level": "Warning",
+    "message": "m",
+    "help": "h",
+    "rule_name": "prefer-bigint-over-int",
+    "column_end": 25,
+    "line_end": 47
+  },
+  {
+    "file": "supabase/migrations/20260508000000_initial_schema.sql",
+    "line": 127,
+    "column": 18,
+    "level": "Warning",
+    "message": "m",
+    "help": "h",
+    "rule_name": "prefer-bigint-over-int",
+    "column_end": 25,
+    "line_end": 127
+  }
+]
