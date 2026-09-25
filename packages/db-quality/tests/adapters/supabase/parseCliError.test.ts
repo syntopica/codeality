@@ -13,6 +13,16 @@ describe('parseCliError', () => {
       message: expect.stringContaining('401') as string,
     })
   })
+  it('stops at the document even when more output follows it', () => {
+    expect(
+      parseCliError(
+        '{"_tag":"Error","error":{"code":"LegacyDbConnectError","message":"failed to connect: {}"}}\nTry again\n',
+      ),
+    ).toEqual({
+      code: 'LegacyDbConnectError',
+      message: 'failed to connect: {}',
+    })
+  })
   it('returns undefined for a normal document', () => {
     expect(parseCliError('{"results":[]}')).toBeUndefined()
   })

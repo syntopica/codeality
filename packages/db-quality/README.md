@@ -95,6 +95,11 @@ account has no privileges on the project. The gate reports that as
 `failed-to-run` (exit 3) rather than passing silently; set
 `"audit": { "inGate": false }` for a CI job that has no token.
 
+With `--db-url`, the advisors and inspect run only when the host is a Supabase
+one (`*.supabase.co` or `*.pooler.supabase.com`); any other Postgres gets the
+Soda stage alone and a `supabase: skipped` notice. A non-Supabase URL with no
+`audit.soda` configured is a configuration error (exit 2).
+
 ## Exit codes
 
 | Code | Meaning                                                         |

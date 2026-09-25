@@ -8,6 +8,10 @@ import { auditCommand } from '@/commands/auditCommand.js'
 import type { CommandRunner } from '@/tools/CommandRunner.js'
 import { commandIoFor } from '@tests/commands/commandIoFor.js'
 
+const supabaseUrl = 'postgres://u:p@db.x.supabase.co/d'
+const withSoda = '{"schemaVersion":1,"audit":{"soda":"soda"}}'
+const configName = 'codeality-db.json'
+const plainConfig = '{"schemaVersion":1}'
 const denied: CommandRunner = () => ({
   status: 1,
   stdout: '{"_tag":"Error","error":{"code":"X","message":"status 403"}}',
@@ -24,22 +28,27 @@ const clean: CommandRunner = (_c, args) => ({
 describe('auditCommand', () => {
   it('exits 2 without a target and 3 on an auth failure', () => {
     const root = mkdtempSync(join(tmpdir(), 'dbq-'))
-    writeFileSync(join(root, 'codeality-db.json'), '{"schemaVersion":1}')
+    writeFileSync(join(root, configName), plainConfig)
     const io = commandIoFor(root, denied)
     expect(auditCommand([], io)).toBe(2)
-    expect(auditCommand(['--db-url', 'postgres://u:p@h/d'], io)).toBe(3)
+    expect(auditCommand(['--db-url', supabaseUrl], io)).toBe(3)
     expect(io.err.join('')).toMatch(/403/)
+  })
+  it('exits 2 when the URL is not Supabase and Soda is not configured', () => {
+    const root = mkdtempSync(join(tmpdir(), 'dbq-'))
+    writeFileSync(join(root, configName), plainConfig)
+    const io = commandIoFor(root, clean)
+    expect(auditCommand(['--db-url', 'postgres://u:p@localhost/d'], io)).toBe(2)
+    expect(io.err.join('')).toMatch(/nothing to audit/)
   })
   it('exits 3 when Soda produces no results, and 2 when --linked has no link', () => {
     const root = mkdtempSync(join(tmpdir(), 'dbq-'))
-    writeFileSync(
-      join(root, 'codeality-db.json'),
-      '{"schemaVersion":1,"audit":{"soda":"soda"}}',
-    )
+    writeFileSync(join(root, configName), withSoda)
     const io = commandIoFor(root, clean)
-    expect(auditCommand(['--json', '--db-url', 'postgres://u:p@h/d'], io)).toBe(
-      3,
-    )
+    expect(
+      auditCommand(['--json', '--db-url', 'postgres://u:p@localhost/d'], io),
+    ).toBe(3)
+    expect(io.err.join('')).toMatch(/supabase: skipped/)
     expect(io.err.join('')).toMatch(/soda scan produced no results/)
     const linkedIo = commandIoFor(root, clean)
     expect(auditCommand(['--linked'], linkedIo)).toBe(2)
@@ -47,10 +56,7 @@ describe('auditCommand', () => {
   })
   it('exits 0 on a clean linked project and says when Soda was skipped', () => {
     const root = mkdtempSync(join(tmpdir(), 'dbq-'))
-    writeFileSync(
-      join(root, 'codeality-db.json'),
-      '{"schemaVersion":1,"audit":{"soda":"soda"}}',
-    )
+    writeFileSync(join(root, configName), withSoda)
     mkdirSync(join(root, 'supabase/.temp'), { recursive: true })
     writeFileSync(join(root, 'supabase/.temp/project-ref'), 'abc')
     const io = commandIoFor(root, clean)

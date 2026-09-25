@@ -1,3 +1,4 @@
+import { auditPlan } from '@/audit/auditPlan.js'
 import { resolveAuditTarget } from '@/audit/resolveAuditTarget.js'
 import { runAudit } from '@/audit/runAudit.js'
 import { renderFindings } from '@/check/renderFindings.js'
@@ -20,11 +21,8 @@ export const auditCommand = (argv: string[], io: CommandIo): number => {
       linked: values['linked'] === true,
       'db-url': values['db-url'] as string | undefined,
     })
-    if (config.audit.soda && !('dbUrl' in target)) {
-      io.stderr(
-        'soda: skipped, a linked target carries no database password; pass --db-url\n',
-      )
-    }
+    for (const notice of auditPlan(config, target).skipped)
+      io.stderr(`${notice}\n`)
     const findings = runAudit({
       root: io.root,
       config,

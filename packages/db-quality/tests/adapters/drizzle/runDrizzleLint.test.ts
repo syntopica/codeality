@@ -17,7 +17,13 @@ describe('runDrizzleLint', () => {
     expect(runDrizzleLint(runner, '/p', drizzle, [])).toEqual([])
     expect(seen?.args.slice(0, 2)).toEqual(['--no-config-lookup', '-c'])
     expect(seen?.args[2]).toMatch(/assets\/drizzle-eslint\.config\.mjs$/)
-    expect(seen?.args.slice(3)).toEqual(['-f', 'json', 'src', 'server'])
+    expect(seen?.args.slice(3)).toEqual([
+      '-f',
+      'json',
+      '--pass-on-unpruned-suppressions',
+      'src',
+      'server',
+    ])
     expect(seen?.env).toEqual({ CODEALITY_DB_DRIZZLE_OBJECTS: 'db,trx' })
   })
   it('raises ToolMissingError when eslint is absent', () => {

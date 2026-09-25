@@ -29,13 +29,9 @@ describe('runAudit', () => {
       'supabase inspect',
       'supabase inspect',
     ])
+    const url = 'postgres://u:p@db.x.supabase.co/d'
     expect(() =>
-      runAudit({
-        root: '/p',
-        config,
-        runner,
-        target: { dbUrl: 'postgres://u:p@h/d' },
-      }),
+      runAudit({ root: '/p', config, runner, target: { dbUrl: url } }),
     ).toThrow(/soda scan produced no results/)
     expect(commands.at(-1)).toBe('uvx --with')
   })

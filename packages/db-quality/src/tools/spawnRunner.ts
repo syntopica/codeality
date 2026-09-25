@@ -3,10 +3,13 @@ import { delimiter, join } from 'node:path'
 import { env as processEnv } from 'node:process'
 
 import type { CommandRunner } from '@/tools/CommandRunner.js'
+import { packageBinPath } from '@/tools/packageBinPath.js'
 
 export const spawnRunner: CommandRunner = (command, args, options) => {
+  // The project's tools win; the package's own follow; the shell's PATH last.
   const path = [
     join(options.cwd, 'node_modules/.bin'),
+    packageBinPath(),
     processEnv['PATH'] ?? '',
   ].join(delimiter)
   const child = spawnSync(command, args, {

@@ -8,6 +8,10 @@ import { ToolMissingError } from '@/tools/ToolMissingError.js'
 // Runs from the project root: ESLint ignores any file outside its cwd, which
 // is what an earlier attempt from another directory reported as "all files
 // matching the pattern are ignored".
+// `--no-config-lookup` does not stop ESLint reading the project's own
+// eslint-suppressions.json, and an entry there that no longer matches makes
+// it exit 2 with no report; the flag turns that into a pass (measured on a
+// project whose suppressions had gone stale, 2026-09-25).
 export const runDrizzleLint = (
   runner: CommandRunner,
   root: string,
@@ -22,6 +26,7 @@ export const runDrizzleLint = (
       assetPath('drizzle-eslint.config.mjs'),
       '-f',
       'json',
+      '--pass-on-unpruned-suppressions',
       ...drizzle.roots,
     ],
     {

@@ -18,6 +18,8 @@ describe('detectStacks', () => {
     writeFileSync(join(root, 'data/app.db'), '')
     mkdirSync(join(root, 'node_modules/x'), { recursive: true })
     writeFileSync(join(root, 'node_modules/x/ignored.db'), '')
+    mkdirSync(join(root, '.pnpm-store/v11'), { recursive: true })
+    writeFileSync(join(root, '.pnpm-store/v11/index.db'), '')
     mkdirSync(join(root, 'deep/er/still'), { recursive: true })
     writeFileSync(join(root, 'deep/er/still/too-deep.db'), '')
     expect(detectStacks(root)).toEqual({
