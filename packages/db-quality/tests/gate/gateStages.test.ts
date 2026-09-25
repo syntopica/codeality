@@ -22,6 +22,7 @@ describe('gateStages', () => {
     expect(gateStages({ root, config, runner }).map((s) => s.name)).toEqual([
       'check',
       'audit',
+      'perf',
     ])
     expect(gateStages({ root, config, runner })[0]?.run()).toEqual([])
     writeFileSync(
@@ -48,5 +49,14 @@ describe('gateStages', () => {
     expect(gateStages({ root, config: off, runner })[1]?.run()).toBe(
       'not-applicable',
     )
+  })
+  it('appends the perf stage, which names why it skipped without a target', () => {
+    const root = mkdtempSync(join(tmpdir(), 'dbq-'))
+    const config = configFromDocument({ schemaVersion: 1 })
+    const stages = gateStages({ root, config, runner })
+    expect(stages[2]?.name).toBe('perf')
+    expect(stages[2]?.run()).toEqual({
+      skipped: 'no --db-url and no linked project with SUPABASE_DB_PASSWORD',
+    })
   })
 })

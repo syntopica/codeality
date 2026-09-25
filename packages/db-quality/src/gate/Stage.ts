@@ -1,3 +1,3 @@
-import type { Finding } from '@/model/Finding.js'
+import type { StageOutcome } from '@/gate/StageOutcome.js'
 
-export type Stage = { name: string; run: () => Finding[] | 'not-applicable' }
+export type Stage = { name: string; run: () => StageOutcome }

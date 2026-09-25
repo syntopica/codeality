@@ -7,6 +7,7 @@ import { classifyFindings } from '@/baseline/classifyFindings.js'
 import { readBaseline } from '@/baseline/readBaseline.js'
 import type { CheckContext } from '@/check/CheckContext.js'
 import { runCheck } from '@/check/runCheck.js'
+import { perfStage } from '@/gate/perfStage.js'
 import type { Stage } from '@/gate/Stage.js'
 
 // A recorded baseline is the migration plan; the gate must honour it, or
@@ -31,5 +32,6 @@ export const gateStages = (context: CheckContext): Stage[] => {
           ? runAudit({ ...context, target: { linked: true } })
           : 'not-applicable',
     },
+    perfStage(context),
   ]
 }

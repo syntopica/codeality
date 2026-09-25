@@ -41,4 +41,12 @@ describe('runStage', () => {
       }).detail,
     ).toBe('boom')
   })
+  it('carries the skip reason as detail on a skipped outcome', () => {
+    const result = runStage({
+      name: 's',
+      run: () => ({ skipped: 'no --db-url and no linked project' }),
+    })
+    expect(result.status).toBe('skipped-not-applicable')
+    expect(result.detail).toBe('no --db-url and no linked project')
+  })
 })

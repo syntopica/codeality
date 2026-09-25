@@ -18,4 +18,18 @@ describe('renderGateReport', () => {
       '                passed  check             1.23s\n         failed-to-run  audit             0.50s\n  supabase advisors failed: X: status 403',
     )
   })
+  it('prints the skip reason for a stage that skipped with a detail', () => {
+    expect(
+      renderGateReport([
+        {
+          name: 'perf',
+          status: 'skipped-not-applicable',
+          durationSeconds: 0.01,
+          detail: 'no --db-url and no linked project',
+        },
+      ]),
+    ).toBe(
+      'skipped-not-applicable  perf              0.01s\n  no --db-url and no linked project',
+    )
+  })
 })

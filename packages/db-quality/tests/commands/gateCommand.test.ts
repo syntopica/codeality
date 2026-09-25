@@ -40,6 +40,7 @@ describe('gateCommand', () => {
     expect(report.stages.map((s) => [s.name, s.status])).toEqual([
       ['check', 'passed'],
       ['audit', 'skipped-not-applicable'],
+      ['perf', 'skipped-not-applicable'],
     ])
   })
   it('returns 2 without a configuration', () => {

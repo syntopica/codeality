@@ -16,6 +16,8 @@ export const runStage = (stage: Stage): StageResult => {
   try {
     const outcome = stage.run()
     if (outcome === 'not-applicable') return done('skipped-not-applicable', '')
+    if (!Array.isArray(outcome))
+      return done('skipped-not-applicable', outcome.skipped)
     return outcome.length === 0
       ? done('passed', '')
       : done('findings', renderFindings(outcome))

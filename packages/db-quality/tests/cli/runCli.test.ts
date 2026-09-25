@@ -22,7 +22,7 @@ describe('runCli', () => {
     expect(io.out[0]).toMatch(/^codeality-db \d+\.\d+\.\d+\n$/)
     expect(runCli(['--help'], io)).toBe(0)
     expect(runCli(['-h'], io)).toBe(0)
-    expect(io.out[1]).toMatch(/init.*check.*audit.*gate.*baseline/s)
+    expect(io.out[1]).toMatch(/init.*check.*audit.*gate.*baseline.*perf/s)
     expect(runCli([], io)).toBe(2)
     expect(runCli(['nope'], io)).toBe(2)
     expect(io.err.join('')).toMatch(/usage: codeality-db/)
