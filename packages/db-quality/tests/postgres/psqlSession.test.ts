@@ -71,4 +71,20 @@ describe('psqlSession', () => {
       psqlSession(failing, '/p', target, 1000).rows('select 1'),
     ).toThrow(/psql failed: psql: error: connection refused/)
   })
+  it('redacts a password echoed back in a failure message', () => {
+    const failing: CommandRunner = () => ({
+      status: 2,
+      stdout: '',
+      stderr: 'psql: error: could not parse "postgres://u:secret@h/d"',
+      missing: false,
+    })
+    let message = ''
+    try {
+      psqlSession(failing, '/p', target, 1000).rows('select 1')
+    } catch (error) {
+      message = (error as Error).message
+    }
+    expect(message).toContain('postgres://u:***@h/d')
+    expect(message).not.toContain('secret')
+  })
 })

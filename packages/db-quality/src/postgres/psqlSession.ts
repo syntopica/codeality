@@ -1,6 +1,7 @@
 import type { PostgresTarget } from '@/postgres/PostgresTarget.js'
 import { psqlArguments } from '@/postgres/psqlArguments.js'
 import type { PsqlSession } from '@/postgres/PsqlSessionType.js'
+import { redactConnectionSecrets } from '@/postgres/redactConnectionSecrets.js'
 import type { CommandRunner } from '@/tools/CommandRunner.js'
 import { ToolMissingError } from '@/tools/ToolMissingError.js'
 
@@ -21,7 +22,9 @@ export const psqlSession = (
     if (result.missing)
       throw new ToolMissingError('psql', 'install the PostgreSQL client')
     if (result.status !== 0)
-      throw new Error(`psql failed: ${result.stderr.trim()}`)
+      throw new Error(
+        `psql failed: ${redactConnectionSecrets(result.stderr.trim())}`,
+      )
     return result.stdout
   }
   return {

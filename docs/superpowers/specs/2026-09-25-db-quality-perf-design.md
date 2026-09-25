@@ -322,7 +322,7 @@ not apply to a project.
 - `indexedColumns`: fixtures covering inline `primary key`, table-level
   `unique (a, b)`, `create unique index ... on t (a)`,
   `alter table ... add constraint ... primary key`, and a quoted identifier.
-- Snapshot and diff: scripted `SqlClient` returning fixture rows; tests cover
+- Snapshot and diff: scripted `PsqlSession` returning fixture rows; tests cover
   the window arithmetic, the reset case (`statsSince` changed), the `minCalls`
   skip, the noise filter, the improvement report, and the JSON shape.
 - Bench: scripted client returning saved `EXPLAIN` JSON (two plans per file:
