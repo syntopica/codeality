@@ -1,3 +1,21 @@
+### 2026-09-26
+
+- [x] `@syntopica/db-quality` 0.2.0 and 0.2.1 are on npm through `publish.yml`
+      with provenance (runs 36201133295 and 36202178819). 0.2.0 adds strict
+      mode, PostgREST rules BDB801-805, `perf snapshot`/`diff` (BDB901-904) and
+      `perf bench` (BDB911-913) behind `perf.inGate`, and the adoption phases
+      0-4. Validation on verticagtm and pxpn found six divergences, each fixed
+      with a test (workflow upgrade, BDB901 5 ms floor, BDB913 1000-row floor,
+      Storage and `Array.from` chains, and in 0.2.1 roots that git does not
+      track). The final review found the bench could leave the read-only
+      transaction (`; commit; set transaction read write`) and that EXPLAIN
+      ANALYZE of CREATE TABLE AS writes even read-only; the bench now runs as a
+      cursor in a subtransaction that is always rolled back, proven against a
+      local Postgres. verticagtm is on 0.2.1 at phase 4 (`8a14a643`), baseline
+      230, CI green on the static stage; its perf stage runs locally and in CI
+      only once a `SUPABASE_DB_PASSWORD` secret exists. Follow-ups are in
+      `TODO.md` under db-quality.
+
 ### 2026-09-25
 
 - [x] `@syntopica/db-quality` 0.1.0 is on npm, published by hand from a clean
