@@ -14,15 +14,19 @@ describe('resolvePostgresTarget', () => {
   afterEach(() => {
     delete process.env['SUPABASE_DB_PASSWORD']
   })
-  it('prefers --db-url and keeps only the host name', () => {
+  it('prefers --db-url, keeps only the host name, and moves the password out of the url', () => {
     expect(
       resolvePostgresTarget('/p', {
-        'db-url': 'postgres://u:secret@db.example.com:5432/d',
+        'db-url': 'postgres://u:s%40c%2Fret@db.example.com:5432/d',
       }),
     ).toEqual({
-      url: 'postgres://u:secret@db.example.com:5432/d',
+      url: 'postgres://u@db.example.com:5432/d',
       host: 'db.example.com',
+      password: 's@c/ret',
     })
+    expect(
+      resolvePostgresTarget('/p', { 'db-url': 'postgres://u@h/d' }),
+    ).toEqual({ url: 'postgres://u@h/d', host: 'h' })
   })
   it('uses the linked pooler url with the password from the environment', () => {
     const root = mkdtempSync(join(tmpdir(), 'dbq-'))

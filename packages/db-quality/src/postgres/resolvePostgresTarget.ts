@@ -2,11 +2,11 @@ import { existsSync, readFileSync } from 'node:fs'
 import { join } from 'node:path'
 import { env } from 'node:process'
 
-import { ConfigError } from '@/config/ConfigError.js'
 import { DB_PASSWORD_ENV } from '@/postgres/DB_PASSWORD_ENV.js'
 import { POOLER_URL_FILE } from '@/postgres/POOLER_URL_FILE.js'
 import type { PostgresTarget } from '@/postgres/PostgresTarget.js'
 import type { PostgresTargetFlags } from '@/postgres/PostgresTargetFlags.js'
+import { targetFromDbUrl } from '@/postgres/targetFromDbUrl.js'
 
 /** --db-url first; then the linked pooler url with the password from the environment; undefined when neither applies. */
 export const resolvePostgresTarget = (
@@ -14,15 +14,7 @@ export const resolvePostgresTarget = (
   flags: PostgresTargetFlags,
 ): PostgresTarget | undefined => {
   const explicit = flags['db-url']
-  if (explicit !== undefined) {
-    let host: string
-    try {
-      host = new URL(explicit).hostname
-    } catch {
-      throw new ConfigError('--db-url is not a valid url')
-    }
-    return { url: explicit, host }
-  }
+  if (explicit !== undefined) return targetFromDbUrl(explicit)
   const poolerPath = join(root, POOLER_URL_FILE)
   const password = env[DB_PASSWORD_ENV]
   if (!existsSync(poolerPath) || password === undefined || password === '')

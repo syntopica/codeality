@@ -22,7 +22,12 @@ export const psqlSession = (
       psqlArguments(target.url, timeoutMs, statements),
       {
         cwd: root,
-        env: { PGPASSWORD: target.password ?? '', PGCONNECT_TIMEOUT: '10' },
+        env: {
+          ...(target.password === undefined
+            ? {}
+            : { PGPASSWORD: target.password }),
+          PGCONNECT_TIMEOUT: '10',
+        },
       },
     )
     if (result.missing)

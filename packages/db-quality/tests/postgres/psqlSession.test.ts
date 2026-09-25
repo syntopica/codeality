@@ -2,14 +2,16 @@ import { describe, expect, it } from 'vitest'
 
 import { psqlArguments } from '@/postgres/psqlArguments.js'
 import { psqlSession } from '@/postgres/psqlSession.js'
+import { resolvePostgresTarget } from '@/postgres/resolvePostgresTarget.js'
 import type { CommandRunner } from '@/tools/CommandRunner.js'
 
-const target = { url: 'postgres://u@h/d', host: 'h', password: 'pw' }
+const DB_URL = 'postgres://u@h/d'
+const target = { url: DB_URL, host: 'h', password: 'pw' }
 
 describe('psqlSession', () => {
   it('opens every statement read-only with a timeout, before the query', () => {
-    expect(psqlArguments('postgres://u@h/d', 30000, ['select 1'])).toEqual([
-      'postgres://u@h/d',
+    expect(psqlArguments(DB_URL, 30000, ['select 1'])).toEqual([
+      DB_URL,
       '-X',
       '-q',
       '-A',
@@ -111,5 +113,28 @@ describe('psqlSession', () => {
     }
     expect(message).toContain('postgres://u:***@h/d')
     expect(message).not.toContain('secret')
+  })
+  it('never puts a --db-url password on the argument vector', () => {
+    const seen: string[][] = []
+    const runner: CommandRunner = (_c, args) => {
+      seen.push(args)
+      return { status: 0, stdout: '[]', stderr: '', missing: false }
+    }
+    const resolved = resolvePostgresTarget('/p', {
+      'db-url': 'postgres://u:hunter2@h:5432/d',
+    })
+    if (!resolved) throw new Error('unreachable')
+    psqlSession(runner, '/p', resolved, 1000).rows('select 1')
+    expect(seen[0]?.length).toBeGreaterThan(0)
+    for (const arg of seen[0] ?? []) expect(arg).not.toContain('hunter2')
+  })
+  it('leaves PGPASSWORD alone when the target carries no password', () => {
+    const envs: (Record<string, string> | undefined)[] = []
+    const runner: CommandRunner = (_c, _args, options) => {
+      envs.push(options.env)
+      return { status: 0, stdout: '[]', stderr: '', missing: false }
+    }
+    psqlSession(runner, '/p', { url: DB_URL, host: 'h' }, 1000).rows('select 1')
+    expect(envs[0]).toEqual({ PGCONNECT_TIMEOUT: '10' })
   })
 })
