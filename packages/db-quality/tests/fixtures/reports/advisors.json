@@ -1,0 +1,52 @@
+{
+  "results": [
+    {
+      "name": "security_definer_view",
+      "title": "Security Definer View",
+      "level": "ERROR",
+      "facing": "EXTERNAL",
+      "categories": ["SECURITY"],
+      "description": "Detects views defined with the SECURITY DEFINER property. These views enforce Postgres permissions and row level security policies (RLS) of the view creator, rather than that of the querying user",
+      "detail": "View \\`public.example_view\\` is defined with the SECURITY DEFINER property",
+      "remediation": "https://supabase.com/docs/guides/database/database-linter?lint=0010_security_definer_view",
+      "metadata": {
+        "name": "example_view",
+        "schema": "public",
+        "type": "view"
+      },
+      "cacheKey": "security_definer_view_public_example_view"
+    },
+    {
+      "name": "function_search_path_mutable",
+      "title": "Function Search Path Mutable",
+      "level": "WARN",
+      "facing": "EXTERNAL",
+      "categories": ["SECURITY"],
+      "description": "Detects functions where the search_path parameter is not set.",
+      "detail": "Function \\`public.example_fn\\` has a role mutable search_path",
+      "remediation": "https://supabase.com/docs/guides/database/database-linter?lint=0011_function_search_path_mutable",
+      "metadata": {
+        "name": "example_fn",
+        "schema": "public",
+        "type": "function"
+      },
+      "cacheKey": "function_search_path_mutable_public_example_fn_77839a111895b7217db44173446e6bd0"
+    },
+    {
+      "name": "function_search_path_mutable",
+      "title": "Function Search Path Mutable",
+      "level": "WARN",
+      "facing": "EXTERNAL",
+      "categories": ["SECURITY"],
+      "description": "Detects functions where the search_path parameter is not set.",
+      "detail": "Function \\`public.example_fn\\` has a role mutable search_path",
+      "remediation": "https://supabase.com/docs/guides/database/database-linter?lint=0011_function_search_path_mutable",
+      "metadata": {
+        "name": "example_fn",
+        "schema": "public",
+        "type": "function"
+      },
+      "cacheKey": "function_search_path_mutable_public_example_fn_26753718ecc213c78d297ed46faf79f7"
+    }
+  ]
+}
