@@ -81,4 +81,23 @@ describe('resolvePostgresTarget', () => {
       /supabase\/.temp\/pooler-url is not a valid url/,
     )
   })
+  it('moves a ?password= parameter out of the url too', () => {
+    expect(
+      resolvePostgresTarget('/p', {
+        'db-url': 'postgres://u@h:5432/d?password=se%20cret&sslmode=require',
+      }),
+    ).toEqual({
+      url: 'postgres://u@h:5432/d?sslmode=require',
+      host: 'h',
+      password: 'se cret',
+    })
+  })
+  it('turns a malformed percent-escape in the password into a ConfigError', () => {
+    expect(() =>
+      resolvePostgresTarget('/p', { 'db-url': 'postgres://u:%E0%A4%A@h/d' }),
+    ).toThrow(ConfigError)
+    expect(() =>
+      resolvePostgresTarget('/p', { 'db-url': 'postgres://u:%E0%A4%A@h/d' }),
+    ).toThrow(/--db-url password is not valid percent-encoding/)
+  })
 })

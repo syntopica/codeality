@@ -120,13 +120,16 @@ describe('psqlSession', () => {
       seen.push(args)
       return { status: 0, stdout: '[]', stderr: '', missing: false }
     }
-    const resolved = resolvePostgresTarget('/p', {
-      'db-url': 'postgres://u:hunter2@h:5432/d',
-    })
-    if (!resolved) throw new Error('unreachable')
-    psqlSession(runner, '/p', resolved, 1000).rows('select 1')
-    expect(seen[0]?.length).toBeGreaterThan(0)
-    for (const arg of seen[0] ?? []) expect(arg).not.toContain('hunter2')
+    for (const dbUrl of [
+      'postgres://u:hunter2@h:5432/d',
+      'postgres://u@h:5432/d?password=hunter2',
+    ]) {
+      const resolved = resolvePostgresTarget('/p', { 'db-url': dbUrl })
+      if (!resolved) throw new Error('unreachable')
+      psqlSession(runner, '/p', resolved, 1000).rows('select 1')
+    }
+    expect(seen).toHaveLength(2)
+    for (const arg of seen.flat()) expect(arg).not.toContain('hunter2')
   })
   it('leaves PGPASSWORD alone when the target carries no password', () => {
     const envs: (Record<string, string> | undefined)[] = []
