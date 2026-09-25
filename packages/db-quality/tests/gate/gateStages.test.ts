@@ -52,7 +52,10 @@ describe('gateStages', () => {
   })
   it('appends the perf stage, which names why it skipped without a target', () => {
     const root = mkdtempSync(join(tmpdir(), 'dbq-'))
-    const config = configFromDocument({ schemaVersion: 1 })
+    const config = configFromDocument({
+      schemaVersion: 1,
+      perf: { inGate: true },
+    })
     const stages = gateStages({ root, config, runner })
     expect(stages[2]?.name).toBe('perf')
     expect(stages[2]?.run()).toEqual({

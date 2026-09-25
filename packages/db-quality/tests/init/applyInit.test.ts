@@ -17,7 +17,7 @@ describe('applyInit', () => {
     )
     applyInit(root, plan)
     expect(readFileSync(join(root, 'codeality-db.json'), 'utf8')).toContain(
-      '"schemaVersion": 1',
+      '"schemaVersion": 2',
     )
     expect(existsSync(join(root, '.github/workflows/db-quality.yml'))).toBe(
       true,

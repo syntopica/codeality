@@ -24,3 +24,5 @@ jobs:
       - run: pnpm exec codeality-db gate
         env:
           SUPABASE_ACCESS_TOKEN: ${{ secrets.SUPABASE_ACCESS_TOKEN }}
+          # The perf stage skips itself without a database password.
+          SUPABASE_DB_PASSWORD: ${{ secrets.SUPABASE_DB_PASSWORD }}

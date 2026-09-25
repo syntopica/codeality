@@ -43,7 +43,10 @@ describe('perfStage', () => {
     )
   })
   it('says why it skipped without a target, and without state files', () => {
-    const config = configFromDocument({ schemaVersion: 2 })
+    const config = configFromDocument({
+      schemaVersion: 2,
+      perf: { inGate: true },
+    })
     const root = mkdtempSync(join(tmpdir(), 'dbq-'))
     expect(perfStage({ root, config, runner }).run()).toEqual({
       skipped: 'no --db-url and no linked project with SUPABASE_DB_PASSWORD',
@@ -51,7 +54,10 @@ describe('perfStage', () => {
   })
   it('says why it skipped without a snapshot or a bench record', () => {
     env['SUPABASE_DB_PASSWORD'] = 'pw'
-    const config = configFromDocument({ schemaVersion: 2 })
+    const config = configFromDocument({
+      schemaVersion: 2,
+      perf: { inGate: true },
+    })
     const root = linkedRoot()
     expect(perfStage({ root, config, runner }).run()).toEqual({
       skipped:
@@ -60,7 +66,10 @@ describe('perfStage', () => {
   })
   it('diffs the snapshot when one exists, and reports no findings', () => {
     env['SUPABASE_DB_PASSWORD'] = 'pw'
-    const config = configFromDocument({ schemaVersion: 2 })
+    const config = configFromDocument({
+      schemaVersion: 2,
+      perf: { inGate: true },
+    })
     const root = linkedRoot()
     writeFileSync(
       join(root, PERF_SNAPSHOT_FILENAME),
@@ -87,7 +96,10 @@ describe('perfStage', () => {
   })
   it('benches the recorded queries when a bench record exists', () => {
     env['SUPABASE_DB_PASSWORD'] = 'pw'
-    const config = configFromDocument({ schemaVersion: 2 })
+    const config = configFromDocument({
+      schemaVersion: 2,
+      perf: { inGate: true },
+    })
     const root = linkedRoot()
     mkdirSync(join(root, 'db-quality/bench'), { recursive: true })
     writeFileSync(join(root, 'db-quality/bench/a.sql'), 'select 1;')

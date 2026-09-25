@@ -1,4 +1,10 @@
-import { mkdtempSync, writeFileSync } from 'node:fs'
+import {
+  existsSync,
+  mkdirSync,
+  mkdtempSync,
+  readFileSync,
+  writeFileSync,
+} from 'node:fs'
 import { tmpdir } from 'node:os'
 import { join } from 'node:path'
 
@@ -31,5 +37,20 @@ describe('initCommand', () => {
     expect(io.err.join('')).toMatch(/conflicts remain/)
     expect(initCommand(['--force'], io)).toBe(0)
     expect(initCommand(['--bogus'], io)).toBe(2)
+  })
+  it('detects a Supabase project, writes postgrest.roots and the bench README, and shows the adoption phase', () => {
+    const io = ioFor()
+    mkdirSync(join(io.root, 'src'), { recursive: true })
+    writeFileSync(
+      join(io.root, 'package.json'),
+      JSON.stringify({ dependencies: { '@supabase/supabase-js': '^2.0.0' } }),
+    )
+    expect(initCommand(['--apply'], io)).toBe(0)
+    const config = JSON.parse(
+      readFileSync(join(io.root, 'codeality-db.json'), 'utf8'),
+    ) as { postgrest?: { roots: string[] } }
+    expect(config.postgrest?.roots).toContain('src')
+    expect(existsSync(join(io.root, 'db-quality/bench/README.md'))).toBe(true)
+    expect(io.out.join('')).toMatch(/adoption phase 1 of 4/)
   })
 })

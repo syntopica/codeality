@@ -1,7 +1,7 @@
 import type { PerfConfig } from '@/config/PerfConfig.js'
 
 export const PERF_DEFAULTS: PerfConfig = {
-  inGate: true,
+  inGate: false,
   slowMs: 100,
   regressionPercent: 20,
   minCalls: 20,
