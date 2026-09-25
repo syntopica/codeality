@@ -42,6 +42,7 @@ describe('initCommand', () => {
   it('detects a Supabase project, writes postgrest.roots and the bench README, and shows the adoption phase', () => {
     const io = ioFor()
     mkdirSync(join(io.root, 'src'), { recursive: true })
+    writeFileSync(join(io.root, 'src/index.ts'), '')
     writeFileSync(
       join(io.root, 'package.json'),
       JSON.stringify({ dependencies: { '@supabase/supabase-js': '^2.0.0' } }),
