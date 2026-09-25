@@ -1,3 +1,4 @@
+import { ESTIMATE_MIN_ROWS } from '@/bench/ESTIMATE_MIN_ROWS.js'
 import type { ExplainSummary } from '@/bench/ExplainSummary.js'
 import type { PlanNode } from '@/bench/PlanNode.js'
 import { walkPlan } from '@/bench/walkPlan.js'
@@ -30,7 +31,7 @@ export const summarizeExplain = (explainJson: string): ExplainSummary => {
       indexScans.push(relation)
     const plan = node['Plan Rows']
     const actual = node['Actual Rows']
-    if (plan > 0 && actual > 0) {
+    if (plan > 0 && actual > 0 && Math.max(plan, actual) >= ESTIMATE_MIN_ROWS) {
       const ratio = Math.max(
         (plan + 1) / (actual + 1),
         (actual + 1) / (plan + 1),

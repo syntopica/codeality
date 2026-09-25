@@ -218,7 +218,7 @@ because the session is read-only.
 | `BDB904` | live  | temp-spill: a statement wrote temp blocks in the window, at least `perf.minCalls` calls: a sort or hash spilled to disk                      | warn     |
 | `BDB911` | bench | bench-regressed: median grew by `perf.regressionPercent` or more and by at least 5 ms                                                        | error    |
 | `BDB912` | bench | bench-plan-degraded: a new sequential scan on a table with at least `perf.seqScanRows` rows, or an index scan that became one                | error    |
-| `BDB913` | bench | bench-estimate-off: the planner's row estimate is off by a factor of 100 or more                                                             | warn     |
+| `BDB913` | bench | bench-estimate-off: the planner's row estimate is off by a factor of 100 or more on a plan node with at least 1000 estimated or actual rows  | warn     |
 
 Live and bench findings are never carried in `.codeality-db-baseline.json`: they
 are measurements, and a measurement nobody likes is fixed at the source, not

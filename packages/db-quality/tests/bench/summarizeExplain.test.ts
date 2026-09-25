@@ -17,7 +17,7 @@ describe('summarizeExplain', () => {
   it('reads a sequential scan with the rows it touched', () => {
     const summary = summarizeExplain(fixture('seq_scan.json'))
     expect(summary.seqScans).toEqual([{ relation: 't', rows: 20000 }])
-    expect(summary.worstEstimateRatio).toBeGreaterThanOrEqual(1)
+    expect(summary.worstEstimateRatio).toBe(0)
   })
   it('rejects output that is not an explain document', () => {
     expect(() => summarizeExplain('[]')).toThrow(/not an EXPLAIN document/)
@@ -35,6 +35,36 @@ describe('summarizeExplain', () => {
       },
     ])
     expect(summarizeExplain(document).worstEstimateRatio).toBe(0)
+  })
+  it('ignores a node whose plan and actual rows are both under the material-rows floor', () => {
+    const document = JSON.stringify([
+      {
+        Plan: {
+          'Node Type': 'Seq Scan',
+          'Relation Name': 't',
+          'Plan Rows': 290,
+          'Actual Rows': 2,
+          'Actual Loops': 1,
+        },
+        'Execution Time': 0.1,
+      },
+    ])
+    expect(summarizeExplain(document).worstEstimateRatio).toBe(0)
+  })
+  it('scores a node whose actual rows alone cross the material-rows floor', () => {
+    const document = JSON.stringify([
+      {
+        Plan: {
+          'Node Type': 'Seq Scan',
+          'Relation Name': 't',
+          'Plan Rows': 10,
+          'Actual Rows': 5000,
+          'Actual Loops': 1,
+        },
+        'Execution Time': 0.1,
+      },
+    ])
+    expect(summarizeExplain(document).worstEstimateRatio).toBeGreaterThan(100)
   })
   it('walks nested plan nodes, collecting every scan and the worst estimate', () => {
     const document = JSON.stringify([
@@ -57,7 +87,7 @@ describe('summarizeExplain', () => {
               'Node Type': 'Bitmap Heap Scan',
               'Relation Name': 'b',
               'Plan Rows': 1,
-              'Actual Rows': 1,
+              'Actual Rows': 2000,
               'Actual Loops': 1,
             },
           ],
