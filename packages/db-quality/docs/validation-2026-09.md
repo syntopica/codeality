@@ -119,3 +119,92 @@ migrations between runs as intended.
 - The live audit found what static checks cannot: 34 security-definer functions
   executable by `authenticated` or `anon` on verticagtm, and one
   security-definer view flagged as an error.
+
+# Validation of 0.2.0, 2026-09-25
+
+0.2.0 adds the PostgREST rules (BDB801-805), the live `perf snapshot` and
+`perf diff` (BDB901-904), and `perf bench` (BDB911-913). It was run from the
+working tree against verticagtm, a Supabase project with production traffic, and
+pxpn, a Supabase project it had never seen. Every divergence found here was
+fixed in the package, one commit each with a test, before the release.
+
+## Connection: `PGOPTIONS` does not reach a pooled session
+
+Against the Supabase session pooler,
+`PGOPTIONS='-c default_transaction_read_only=on'` was ignored: a test insert
+went through, into a production table, and was deleted straight away (one row,
+verified gone). A session-level `SET default_transaction_read_only = on` sent as
+the first command was honoured: `CREATE TEMP TABLE` was refused. Every `psql`
+call therefore sends `set default_transaction_read_only = on` and
+`set statement_timeout` before its query, and `PGOPTIONS` is not used anywhere.
+
+## `init` on an existing adopter and on a new repository
+
+| repository | step           | result                                                                                         |
+| ---------- | -------------- | ---------------------------------------------------------------------------------------------- |
+| verticagtm | `init`         | config merged to schemaVersion 2, workflow upgraded from the 0.1.0 asset, bench README created |
+| verticagtm | `init --apply` | applied; reports adoption phase 3 of 4 (snapshot and bench record present)                     |
+| pxpn       | `init`         | config, `db:gate` script, workflow and bench README planned; adoption phase 0 of 4             |
+| pxpn       | `init --apply` | applied for the run, then only the generated files were reverted                               |
+
+The first run flagged verticagtm's unmodified 0.1.0 workflow as a conflict, so
+`--apply` refused. `init` now recognises the byte-exact workflow of every
+earlier release by SHA-256 and upgrades it; any other edit is still a conflict.
+
+## PostgREST rules (`check`)
+
+| code   | verticagtm | pxpn |
+| ------ | ---------- | ---- |
+| BDB801 | 32         | 32   |
+| BDB802 | 33         | 30   |
+| BDB803 | 28         | 86   |
+| BDB804 | 6          | 30   |
+| BDB805 | 0          | 0    |
+
+Ten findings per repository were read against the source and the migrations.
+Three were false and are fixed:
+
+- `Array.from({ length: n }, fn)` inside a `map` was collected as a chain whose
+  root is `.from(`, and raised BDB804 three times on verticagtm, two of them in
+  the sample. A chain root now needs a string literal target.
+- `supabase.storage.from('client-docs').uploadToSignedUrl(...)` in a loop raised
+  BDB804 on pxpn; Storage shares the method name. Chains rooted on a `.storage`
+  property are skipped (two findings on pxpn).
+
+The rest held: `select('*')`, reads with no bound on tables that grow, and
+filters on columns no migration indexes (checked against every `create index`
+for the table).
+
+## Live performance (`perf snapshot`, `perf diff`)
+
+| step                     | result                                                               |
+| ------------------------ | -------------------------------------------------------------------- |
+| `perf snapshot`          | 3394 statements, 49 tables; the file stores the host, never the URL  |
+| `perf diff` after 2 h 55 | 1 improvement; 2 BDB901 on pg_cron functions, exit 1, before the fix |
+| `perf diff` in the gate  | `passed perf` after the fix                                          |
+
+The two BDB901 were `ping_generation_worker` (5.00 to 7.53 ms) and
+`reap_stale_generation_jobs` (4.43 to 6.72 ms), 176 calls each, with no code
+change between the readings: evening pooler variance on a function a cron runs
+every minute. BDB901 now also needs the mean to grow by at least 5 ms, the floor
+BDB911 already had. Without it, phase 4 would fail on noise.
+
+## Bench (`perf bench`)
+
+Two queries the application runs: the waitlist view and the pending field
+suggestions of one product. `--record` exit 0; the comparison run reported 0
+findings. The waitlist query read a 2-row table whose plan estimated about 290
+rows, a ratio of 97, one row away from BDB913's 100. BDB913 now only counts plan
+nodes with at least 1000 estimated or actual rows.
+
+## Gate with `perf.inGate`
+
+| `SUPABASE_DB_PASSWORD` | perf stage                                                                     |
+| ---------------------- | ------------------------------------------------------------------------------ |
+| absent                 | `skipped-not-applicable`, reason: no `--db-url` and no linked project password |
+| present                | `passed perf 6.57s`                                                            |
+
+`init` reports adoption phase 4 of 4 once `perf.inGate` is true. On verticagtm
+the local gate still exits 1 on the audit stage: 94 advisor findings and 10
+never-scanned indexes, the same audit debt 0.1.0 reported. CI skips that stage
+because it holds no Supabase access token.
