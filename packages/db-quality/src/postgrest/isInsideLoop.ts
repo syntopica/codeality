@@ -1,14 +1,18 @@
-import ts from 'typescript'
+import type ts from 'typescript'
 
 import { isIterationCallback } from '@/postgrest/isIterationCallback.js'
+import type { TypeScriptModule } from '@/postgrest/TypeScriptModule.js'
 
 /** Walks up to the enclosing function; a loop statement or an iteration callback on the way means the query runs once per item. */
-export const isInsideLoop = (node: ts.Node): boolean => {
+export const isInsideLoop = (
+  compiler: TypeScriptModule,
+  node: ts.Node,
+): boolean => {
   let current: ts.Node = node.parent
-  while (!ts.isSourceFile(current)) {
-    if (ts.isIterationStatement(current, false)) return true
-    if (isIterationCallback(current)) return true
-    if (ts.isFunctionLike(current)) return false
+  while (!compiler.isSourceFile(current)) {
+    if (compiler.isIterationStatement(current, false)) return true
+    if (isIterationCallback(compiler, current)) return true
+    if (compiler.isFunctionLike(current)) return false
     current = current.parent
   }
   return false

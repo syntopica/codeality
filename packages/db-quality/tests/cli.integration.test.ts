@@ -3,7 +3,7 @@ import {
   spawnSync,
   type SpawnSyncReturns,
 } from 'node:child_process'
-import { mkdirSync, mkdtempSync, writeFileSync } from 'node:fs'
+import { cpSync, mkdirSync, mkdtempSync, writeFileSync } from 'node:fs'
 import { tmpdir } from 'node:os'
 import { join } from 'node:path'
 
@@ -40,5 +40,32 @@ describe('codeality-db', () => {
     const check = run(['--project', root, 'check'], tmpdir())
     expect(check.status).toBe(1)
     expect(check.stdout).toMatch(/BDB001/)
+  })
+  it('runs without typescript until the PostgREST rules need it', () => {
+    // A copy of the published files with no node_modules anywhere above it:
+    // the bundle's own imports must all resolve, and typescript must not.
+    const copy = mkdtempSync(join(tmpdir(), 'dbq-nots-'))
+    for (const entry of ['bin', 'dist', 'package.json'])
+      cpSync(new URL(`../${entry}`, import.meta.url), join(copy, entry), {
+        recursive: true,
+      })
+    const bare = (args: string[], cwd: string): SpawnSyncReturns<string> =>
+      spawnSync('node', [join(copy, 'bin/codeality-db.mjs'), ...args], {
+        cwd,
+        encoding: 'utf8',
+      })
+    expect(bare(['--help'], copy).status).toBe(0)
+    const root = mkdtempSync(join(tmpdir(), 'dbq-nots-project-'))
+    mkdirSync(join(root, 'src'))
+    const config = join(root, 'codeality-db.json')
+    writeFileSync(config, JSON.stringify({ schemaVersion: 2 }))
+    expect(bare(['check'], root).status).toBe(0)
+    writeFileSync(
+      config,
+      JSON.stringify({ schemaVersion: 2, postgrest: { roots: ['src'] } }),
+    )
+    const postgrest = bare(['check'], root)
+    expect(postgrest.status).toBe(3)
+    expect(postgrest.stderr).toMatch(/typescript.*PostgREST rules/)
   })
 })

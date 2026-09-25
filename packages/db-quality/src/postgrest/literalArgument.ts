@@ -1,23 +1,32 @@
-import ts from 'typescript'
+import type ts from 'typescript'
+
+import type { TypeScriptModule } from '@/postgrest/TypeScriptModule.js'
 
 /** A string literal verbatim, an object literal as `{key:value}` pairs, anything else as `?`. */
-export const literalArgument = (node: ts.Expression): string => {
-  if (ts.isStringLiteral(node) || ts.isNoSubstitutionTemplateLiteral(node))
+export const literalArgument = (
+  compiler: TypeScriptModule,
+  node: ts.Expression,
+): string => {
+  if (
+    compiler.isStringLiteral(node) ||
+    compiler.isNoSubstitutionTemplateLiteral(node)
+  )
     return node.text
-  if (!ts.isObjectLiteralExpression(node)) return '?'
+  if (!compiler.isObjectLiteralExpression(node)) return '?'
   const pairs = node.properties.map((property) => {
-    if (!ts.isPropertyAssignment(property)) return '?'
+    if (!compiler.isPropertyAssignment(property)) return '?'
     const key =
-      ts.isIdentifier(property.name) || ts.isStringLiteral(property.name)
+      compiler.isIdentifier(property.name) ||
+      compiler.isStringLiteral(property.name)
         ? property.name.text
         : '?'
     const value = property.initializer
     const text =
-      ts.isStringLiteral(value) || ts.isNumericLiteral(value)
+      compiler.isStringLiteral(value) || compiler.isNumericLiteral(value)
         ? value.text
-        : value.kind === ts.SyntaxKind.TrueKeyword
+        : value.kind === compiler.SyntaxKind.TrueKeyword
           ? 'true'
-          : value.kind === ts.SyntaxKind.FalseKeyword
+          : value.kind === compiler.SyntaxKind.FalseKeyword
             ? 'false'
             : '?'
     return `${key}:${text}`

@@ -1,5 +1,6 @@
 import { readFileSync } from 'node:fs'
 
+import ts from 'typescript'
 import { describe, expect, it } from 'vitest'
 
 import { collectPostgrestChains } from '@/postgrest/collectPostgrestChains.js'
@@ -11,7 +12,11 @@ const fixture = (name: string): string =>
   )
 
 describe('collectPostgrestChains', () => {
-  const chains = collectPostgrestChains('src/chains.ts', fixture('chains.ts'))
+  const chains = collectPostgrestChains(
+    ts,
+    'src/chains.ts',
+    fixture('chains.ts'),
+  )
   it('finds every chain rooted at from or rpc with a literal target', () => {
     expect(chains.map((c) => [c.root, c.target])).toEqual([
       ['from', 'orders'],
@@ -34,7 +39,11 @@ describe('collectPostgrestChains', () => {
     expect(chains[0]?.text).toBe("supabase.from('orders').select('*')")
   })
   it('marks chains inside loops and iteration callbacks, not helpers', () => {
-    const loops = collectPostgrestChains('src/loops.tsx', fixture('loops.tsx'))
+    const loops = collectPostgrestChains(
+      ts,
+      'src/loops.tsx',
+      fixture('loops.tsx'),
+    )
     expect(loops.map((c) => c.inLoop)).toEqual([true, true, false])
   })
   it('skips a `.storage.from()` chain: Storage is not PostgREST', () => {
@@ -48,7 +57,7 @@ export const upload = async () => {
 }
 export const read = async () => supabase.from('table').select('id')
 `
-    const chains = collectPostgrestChains('src/storage.ts', source)
+    const chains = collectPostgrestChains(ts, 'src/storage.ts', source)
     expect(chains.map((c) => [c.root, c.target])).toEqual([['from', 'table']])
   })
   it('requires a literal target: `Array.from({ length })` is not a chain root', () => {
@@ -61,7 +70,7 @@ export const grid = () => {
 export const read = async () => supabase.from('t').select('id')
 export const call = async () => supabase.rpc('f', { a: 1 })
 `
-    const chains = collectPostgrestChains('src/arrayFrom.ts', source)
+    const chains = collectPostgrestChains(ts, 'src/arrayFrom.ts', source)
     expect(chains.map((c) => [c.root, c.target])).toEqual([
       ['from', 't'],
       ['rpc', 'f'],
