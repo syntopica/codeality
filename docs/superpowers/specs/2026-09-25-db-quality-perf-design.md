@@ -117,9 +117,11 @@ take it, tests give it a scripted fake, and one integration test runs against
 }
 ```
 
-- `schemaVersion` becomes `2`. A file with `1` is read but every `disable` entry
-  must already be an object; a bare string is a configuration error whose
-  message shows the object form. This is the breaking change.
+- `schemaVersion` becomes `2`. A `schemaVersion: 1` file is still read in full:
+  its string `disable` entries keep working and a one-line notice on stderr says
+  `init --apply` will rewrite them. Under `schemaVersion: 2` a bare string is a
+  configuration error whose message shows the object form. The strictness is
+  opted into by bumping the version, never by upgrading the package.
 - `postgrest.roots`: directories scanned for `.ts` and `.tsx` files. `init` adds
   the section when `package.json` depends on `@supabase/supabase-js`, with the
   roots among `src`, `app`, `supabase/functions` that exist.
@@ -134,6 +136,9 @@ take it, tests give it a scripted fake, and one integration test runs against
 `Severity` becomes `'error' | 'warn'`. `BDB002` (RLS enabled, no policy) and
 `BDB601` (never-scanned index) move from `info` to `warn`. Every finding fails
 the gate unless the baseline knows it or `disable` names it with a reason.
+Fingerprints do not include severity, so a `BDB002` already in a baseline stays
+known after the change; `BDB601` belongs to the audit, which `audit.inGate`
+already controls.
 
 New code families:
 
@@ -287,7 +292,8 @@ not apply to a project.
 ## `init`
 
 - Adds `postgrest.roots` when `@supabase/supabase-js` is a dependency.
-- Adds the `perf` section with the defaults above.
+- Adds the `perf` section with the defaults above, except `inGate: false`: the
+  gate measures nothing until the adopter reaches phase 4.
 - Creates `perf.benchDir` with a `README.md` explaining the one-statement-per-
   file rule and the read-only transaction; no example query, because an invented
   query would be measured and believed.
@@ -336,6 +342,25 @@ not apply to a project.
   files, 26 `select('*')`).
 - Every divergence is a fix in the package before the release, recorded in
   `docs/validation-2026-09.md`.
+
+## Adoption in phases
+
+Owner's condition (2026-09-25): a project must be able to take this in steps,
+and no step may turn its CI red by itself. Every new family is off until its
+configuration section exists, and every step ends with a green gate:
+
+| phase | what the adopter does                                                                                               | what changes in the gate                                                                                                                                                             |
+| ----- | ------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| 0     | `pnpm add -D @syntopica/db-quality@0.2`                                                                             | Nothing. `schemaVersion: 1` is read as before, `postgrest` and `perf` are absent, so no new finding exists.                                                                          |
+| 1     | `init --apply` (rewrites `disable`, adds `postgrest.roots` and `perf` with `inGate: false`), then `baseline update` | `check` gains `BDB8xx`; the baseline absorbs the existing ones, so the gate stays green and only new debt fails.                                                                     |
+| 2     | `perf snapshot` after a deploy, `perf diff` after the next one                                                      | Nothing yet: `perf.inGate` is false. The improvement report and the `BDB9xx` findings are read by a person.                                                                          |
+| 3     | Write bench queries, `perf bench --record`                                                                          | Nothing yet. The bench file is the reference.                                                                                                                                        |
+| 4     | Set `perf.inGate: true`                                                                                             | The `perf` stage runs `diff` and `bench` in the gate; regressions fail it. Locally and in any CI that holds `SUPABASE_DB_PASSWORD`; elsewhere the stage is `skipped-not-applicable`. |
+
+`init --apply` on a phase-1 project prints the ladder with the phase it detects,
+so the next step is never a guess. The README carries the same table. The
+configuration example above shows `inGate: true`, which is what phase 4 sets;
+`init` writes `false`.
 
 ## Out of scope
 
