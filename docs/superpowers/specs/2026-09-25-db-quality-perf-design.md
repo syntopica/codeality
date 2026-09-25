@@ -289,14 +289,18 @@ A statement that fails to run is an infrastructure error naming the file
 A file holding more than one statement is refused as a configuration error, for
 a clear message; the boundary is the server. After the two session `SET`s, each
 run is
-`do $<tag>$ declare p text; begin execute 'explain (analyze, buffers, format json) ' || $<qtag>$<statement>$<qtag>$ into p; perform set_config('dbq.plan', p, false); end $<tag>$`,
+`do $<tag>$ declare c refcursor; p text; begin begin open c for execute 'explain (analyze, buffers, format json) ' || $<qtag>$<statement>$<qtag>$; fetch c into p; close c; raise exception using errcode = 'DBQRB'; exception when sqlstate 'DBQRB' then null; end; perform set_config('dbq.plan', p, false); end $<tag>$`,
 then `select current_setting('dbq.plan')`, with random `dbq_<hex>` tags that do
-not occur in the statement. PL/pgSQL `EXECUTE` refuses `COMMIT` and `ROLLBACK`,
-`SET TRANSACTION READ WRITE` is rejected once the `EXPLAIN` has run, and a write
-fails in the read-only transaction; the integration test proves all three. Side
-effects that leave the database through `dblink` or `pg_net` are outside any
-read-only session; a dedicated read-only role is the strongest boundary. The
-README says so.
+not occur in the statement. A cursor over a multi-statement string is refused
+("cannot open multi-query plan as cursor"), so nothing after the `EXPLAIN` runs;
+a write fails in the read-only transaction; and the inner block always ends in a
+rolled-back subtransaction, because `EXPLAIN ANALYZE` of `CREATE TABLE AS`,
+`SELECT INTO` and `CREATE MATERIALIZED VIEW` writes even in a read-only
+transaction (measured on PG 18.6). The integration test proves both. Side
+effects outside any transaction (`dblink`, `pg_net`, and for a superuser
+`COPY ... TO PROGRAM`, `pg_terminate_backend`, `pg_stat_statements_reset`) are
+not stopped by a read-only session; a dedicated non-superuser read-only role is
+the strongest boundary. The README says so.
 
 ## `gate`
 

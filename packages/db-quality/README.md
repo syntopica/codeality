@@ -215,13 +215,20 @@ infrastructure error (exit 3) naming the file.
 
 A bench file is one statement; a file holding more than one is refused as a
 configuration error. The server, not that check, is the boundary: the statement
-reaches Postgres as a dollar-quoted literal handed to PL/pgSQL `EXECUTE` inside
-a `DO` block, in a session that is read-only before it starts, and the plan
-comes back through a session setting. `EXECUTE` refuses `COMMIT` and `ROLLBACK`,
-`SET TRANSACTION READ WRITE` is rejected once the `EXPLAIN` has run, and a write
-fails as a write in a read-only transaction. Side effects that leave the
-database through `dblink` or `pg_net` are outside any read-only session; the
-strongest boundary is a dedicated role that can only read.
+reaches Postgres as a dollar-quoted literal opened as a PL/pgSQL cursor inside a
+`DO` block, in a session that is read-only before it starts, and the plan comes
+back through a session setting. A cursor over more than one statement is
+refused, so nothing after the `EXPLAIN` ever runs; a write fails in the
+read-only transaction; and the cursor runs in an inner block that is always
+rolled back, which undoes what a read-only transaction does not stop:
+`EXPLAIN ANALYZE` of `CREATE TABLE AS`, `SELECT INTO` or
+`CREATE MATERIALIZED VIEW` writes even there.
+
+Some side effects are outside any transaction and no read-only session stops
+them: calls that leave the database through `dblink` or `pg_net`, and, for a
+superuser, `COPY ... TO PROGRAM`, `pg_terminate_backend` and
+`pg_stat_statements_reset`. The strongest boundary is a dedicated role that is
+not a superuser and can only read; point `--db-url` at it for `perf`.
 
 | Code     | Layer | Rule                                                                                                                                         | Severity |
 | -------- | ----- | -------------------------------------------------------------------------------------------------------------------------------------------- | -------- |

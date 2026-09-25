@@ -13,8 +13,8 @@
   bench queries under `EXPLAIN ANALYZE` with `BDB911`-`BDB913`. The `perf` gate
   stage runs them when `perf.inGate` is true and a target resolves.
 - The live connection is `psql` with a session-level read-only `SET`: the
-  Supabase pooler ignores `PGOPTIONS`. A bench statement runs through PL/pgSQL
-  `EXECUTE` inside a `DO` block, so it cannot leave the read-only transaction; a
+  Supabase pooler ignores `PGOPTIONS`. A bench statement runs as a PL/pgSQL
+  cursor inside a `DO` block, one statement only and always rolled back; a
   transaction pooler (port 6543) is refused; a `--db-url` password travels only
   through `PGPASSWORD`.
 - `typescript` is loaded only when `postgrest` is configured; without it the
