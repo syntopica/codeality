@@ -43,7 +43,7 @@ run - it did not, and was created with
 
 Its own checks run through uv, not pnpm:
 
-    uv run --project packages/codeality-py pytest
+    uv run --project packages/codeality-py pytest packages/codeality-py/tests
     uv run --project packages/codeality-py codeality-py gate --project packages/codeality-py
 
 ## Dependency updates
