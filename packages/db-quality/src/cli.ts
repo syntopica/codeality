@@ -1,10 +1,17 @@
-import { argv, exit, stdout } from 'node:process'
+import { argv, cwd, exit, stderr, stdout } from 'node:process'
 
-import { PACKAGE_VERSION } from '@/packageVersion.js'
+import { runCli } from '@/cli/runCli.js'
+import { spawnRunner } from '@/tools/spawnRunner.js'
 
-if (argv.includes('--version')) {
-  stdout.write(`codeality-db ${PACKAGE_VERSION}\n`)
-  exit(0)
-}
-stdout.write('codeality-db: no command yet\n')
-exit(2)
+exit(
+  runCli(argv.slice(2), {
+    root: cwd(),
+    runner: spawnRunner,
+    stdout: (text) => {
+      stdout.write(text)
+    },
+    stderr: (text) => {
+      stderr.write(text)
+    },
+  }),
+)

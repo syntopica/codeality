@@ -81,6 +81,27 @@ const config: KnipConfig = {
       // dependency here, and cannot connect them.
       ignoreDependencies: ['eslint-plugin-regexp'],
     },
+    'packages/db-quality': {
+      // A workspace-specific key replaces rather than merges with the
+      // `packages/*` wildcard, so entry/project are repeated here.
+      entry: ['src/cli.ts', 'bin/*.mjs'],
+      project: ['src/**/*.ts', 'tests/**/*.ts'],
+      // The adapters spawn these as executables through the command runner
+      // (`runSquawk` -> squawk, `runPrismaLint` -> prisma-lint) or load them
+      // from the shipped ESLint config in assets/, which knip does not parse
+      // (`runDrizzleLint` -> eslint-plugin-drizzle and typescript-eslint).
+      // They are devDependencies so the integration tests run the real
+      // tools, and optional peers so a consumer installs only its own.
+      ignoreDependencies: [
+        'eslint-plugin-drizzle',
+        'prisma-lint',
+        'squawk-cli',
+        'typescript-eslint',
+      ],
+      // `sqlite3` is the system shell the sqlite adapter spawns; the
+      // integration test calls it directly to build a fixture database.
+      ignoreBinaries: ['sqlite3'],
+    },
     'templates/*': {
       entry: TEMPLATE_GLOB,
       project: TEMPLATE_GLOB,

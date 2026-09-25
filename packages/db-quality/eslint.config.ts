@@ -12,7 +12,6 @@ export default [
     files: ['src/cli.ts'],
     rules: {
       'code-policy/one-primary-unit': 'off',
-      'code-policy/no-hidden-top-level-declarations': 'off',
     },
   },
   {
