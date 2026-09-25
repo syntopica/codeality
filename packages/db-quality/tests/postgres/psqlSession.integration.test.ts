@@ -33,4 +33,15 @@ describe.skipIf(!url)('psqlSession against a real database', () => {
       { probe: null },
     ])
   })
+  it('rolls back what EXPLAIN ANALYZE of a utility write did, which read-only does not stop', () => {
+    for (const sql of [
+      'create table dbq_probe as select 1 as a',
+      'select 1 as a into dbq_probe',
+      'create materialized view dbq_probe as select 1 as a',
+    ])
+      session().explain(sql)
+    expect(session().rows("select to_regclass('dbq_probe') as probe")).toEqual([
+      { probe: null },
+    ])
+  })
 })
