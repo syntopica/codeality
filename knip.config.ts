@@ -101,6 +101,12 @@ const config: KnipConfig = {
       // `sqlite3` is the system shell the sqlite adapter spawns; the
       // integration test calls it directly to build a fixture database.
       ignoreBinaries: ['sqlite3'],
+      // The postgrest fixtures are read from disk by path (readFileSync)
+      // and parsed with the TypeScript compiler API, never imported, so
+      // knip cannot see a consumer of chains.ts and reports it as an
+      // unused file. Same reasoning as eslint-plugin-code-policy's
+      // `fixtures/**` ignore above.
+      ignore: ['tests/fixtures/postgrest/**'],
     },
     'templates/*': {
       entry: TEMPLATE_GLOB,
