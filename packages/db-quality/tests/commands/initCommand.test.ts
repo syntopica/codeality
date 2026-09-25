@@ -87,4 +87,24 @@ describe('initCommand', () => {
       /adoption phase 1 of 4[\s\S]*next: codeality-db baseline update/,
     )
   })
+  it('keeps its own exit code when check cannot run, and names the problem as the next step', () => {
+    const io = commandIoFor(mkdtempSync(join(tmpdir(), 'dbq-')), () => ({
+      status: -1,
+      stdout: '',
+      stderr: '',
+      missing: true,
+    }))
+    mkdirSync(join(io.root, 'supabase/migrations'), { recursive: true })
+    writeFileSync(
+      join(io.root, 'supabase/migrations/1.sql'),
+      'create table public.t (id bigint primary key);',
+    )
+    expect(initCommand([], io)).toBe(0)
+    expect(initCommand(['--apply'], io)).toBe(0)
+    expect(initCommand(['--check'], io)).toBe(0)
+    expect(io.out.join('')).toMatch(
+      /adoption phase 1 of 4[\s\S]*next: make check run: squawk is not installed/,
+    )
+    expect(io.err).toEqual([])
+  })
 })
