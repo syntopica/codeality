@@ -1,0 +1,32 @@
+[
+  {
+    "role": "service_role",
+    "query_id": "-11",
+    "text": "WITH pgrst_source AS (SELECT 1)",
+    "calls": 100,
+    "total_ms": 2500.5,
+    "rows": 100,
+    "shared_blks_read": 3,
+    "temp_blks_written": 0
+  },
+  {
+    "role": "postgres",
+    "query_id": "22",
+    "text": "select public.ping_generation_worker()",
+    "calls": 50,
+    "total_ms": 250,
+    "rows": 50,
+    "shared_blks_read": 0,
+    "temp_blks_written": 2
+  },
+  {
+    "role": "authenticator",
+    "query_id": "33",
+    "text": "SELECT name FROM pg_timezone_names",
+    "calls": 10,
+    "total_ms": 6000,
+    "rows": 5000,
+    "shared_blks_read": 0,
+    "temp_blks_written": 0
+  }
+]
