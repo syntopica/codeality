@@ -1,0 +1,85 @@
+{
+  "name": "@syntopica/db-quality",
+  "version": "0.1.0",
+  "private": false,
+  "packageManager": "pnpm@12.5.1",
+  "license": "MIT",
+  "description": "Database quality gate: lint Supabase migrations, Prisma and Drizzle schemas and SQLite files, audit a live Supabase project, carry debt in a baseline",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/syntopica/codeality.git",
+    "directory": "packages/db-quality"
+  },
+  "homepage": "https://github.com/syntopica/codeality/tree/main/packages/db-quality#readme",
+  "bugs": {
+    "url": "https://github.com/syntopica/codeality/issues"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "type": "module",
+  "engines": {
+    "node": ">=22"
+  },
+  "bin": {
+    "codeality-db": "bin/codeality-db.mjs"
+  },
+  "files": [
+    "LICENSE",
+    "README.md",
+    "assets",
+    "bin",
+    "dist"
+  ],
+  "scripts": {
+    "build": "tsup",
+    "lint": "eslint src tests bin --max-warnings 0",
+    "lint:fix": "eslint src tests bin --fix",
+    "lint:suppress": "eslint src tests bin --suppress-all",
+    "lint:prune": "eslint src tests bin --prune-suppressions",
+    "type-check": "tsc --noEmit -p tsconfig.json",
+    "test": "vitest run --coverage",
+    "publish:check": "baseline-licenses && publint --strict"
+  },
+  "peerDependencies": {
+    "eslint": ">=9.0.0",
+    "eslint-plugin-drizzle": ">=0.2.0",
+    "prisma-lint": ">=0.13.0",
+    "squawk-cli": ">=2.0.0",
+    "typescript-eslint": ">=8.0.0"
+  },
+  "peerDependenciesMeta": {
+    "eslint": {
+      "optional": true
+    },
+    "eslint-plugin-drizzle": {
+      "optional": true
+    },
+    "prisma-lint": {
+      "optional": true
+    },
+    "squawk-cli": {
+      "optional": true
+    },
+    "typescript-eslint": {
+      "optional": true
+    }
+  },
+  "devDependencies": {
+    "@syntopica/eslint-config": "workspace:*",
+    "@syntopica/quality-config": "workspace:*",
+    "@syntopica/tsconfig": "workspace:*",
+    "@types/node": "^26.6.2",
+    "@vitest/coverage-v8": "^5.0.1",
+    "eslint": "^10.11.0",
+    "eslint-plugin-drizzle": "^0.2.3",
+    "eslint-plugin-regexp": "^3.3.1",
+    "prisma-lint": "^0.13.1",
+    "publint": "^0.3.24",
+    "squawk-cli": "^2.66.0",
+    "tsup": "^8.5.1",
+    "typescript": "npm:@typescript/typescript6@^6.0.2",
+    "typescript-eslint": "^8.70.1",
+    "vitest": "^5.0.1"
+  }
+}

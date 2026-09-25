@@ -25,6 +25,7 @@ on:
           - prettier-config
           - create-baseline
           - quality-config
+          - db-quality
 
 permissions:
   contents: read

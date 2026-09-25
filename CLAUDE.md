@@ -15,7 +15,8 @@ Publish one package at a time, using the version already in its `package.json`:
     gh workflow run publish.yml -f package=eslint-config
 
 Valid `package` values: `eslint-config`, `eslint-plugin-code-policy`,
-`tsconfig`, `prettier-config`, `create-baseline`, `quality-config`.
+`tsconfig`, `prettier-config`, `create-baseline`, `quality-config`,
+`db-quality`.
 
 Watch it with `gh run watch`, then confirm with `pnpm release:check`, which
 checks each package for its git tag, its npm version and its CHANGELOG entry.
