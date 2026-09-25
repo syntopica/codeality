@@ -69,6 +69,33 @@ describe('perfCommand', () => {
     expect(perfCommand(['bench', '--db-url', url], io)).toBe(0)
     expect(io.out.join('')).toMatch(/a\.sql/)
   })
+  it('returns 1 when the diff finds a slow statement', () => {
+    const root = rootWith()
+    writeFileSync(
+      join(root, '.codeality-db-perf.json'),
+      JSON.stringify({
+        schemaVersion: 1,
+        toolVersion: '0',
+        takenAt: 't0',
+        host: 'db.example.com',
+        statsReset: null,
+        statements: [],
+        tables: [],
+      }),
+    )
+    const slow: CommandRunner = (_c, args) => {
+      const sql = args.at(-1) ?? ''
+      const stdout = sql.includes('_info')
+        ? '[{"stats_reset":null}]'
+        : sql.includes('pg_stat_statements')
+          ? '[{"role":"authenticator","query_id":"q1","text":"select 1","calls":20,"total_ms":3000,"rows":20,"shared_blks_read":0,"temp_blks_written":0}]'
+          : '[]'
+      return { status: 0, stdout, stderr: '', missing: false }
+    }
+    const io = commandIoFor(root, slow)
+    expect(perfCommand(['diff', '--db-url', url], io)).toBe(1)
+    expect(io.out.join('')).toMatch(/BDB902/)
+  })
   it('reports psql failures as infrastructure', () => {
     const failing: CommandRunner = () => ({
       status: 2,
