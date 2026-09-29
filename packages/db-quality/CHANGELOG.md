@@ -1,6 +1,6 @@
 # Changelog
 
-## Unreleased
+## 0.3.0
 
 - `sqlite.queries` (`paths`, optional `database`, `minRows` default 10000):
   `check` and `gate` read a SQLite project's `.sql` query files. `BDB404` flags
