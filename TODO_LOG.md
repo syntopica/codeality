@@ -1,3 +1,19 @@
+### 2026-09-29
+
+- [x] db-quality reads SQLite query files (unreleased): `sqlite.queries`
+      (`paths`, optional `database`, `minRows` default 10000) adds `BDB404`
+      (optional-parameter guard), `BDB405` (comma-list `instr()`) and `BDB406`
+      (full table or index scan of a table above `minRows` in the plan of each
+      statement, parameters unbound) to `check` and `gate`. Replayed on Vexa's
+      dev store copy: the `jobs_list.sql` before f1052981 gives all three (a
+      `SCAN jobs` of 800,535 rows plus a temp B-tree for ORDER BY), and the
+      `mailbox_counts.sql` before 7bbbd697 gives `BDB406` (a full scan of the
+      `message_placements` autoindex, 233,351 rows). The current 541 files give
+      38 `BDB404` and 67 `BDB406` in 7.7 s. Gotcha: the sqlite3 shell draws
+      `EXPLAIN QUERY PLAN` as a tree even under `-json`, so the plan is parsed
+      from the tree. Not done: a per-file allowlist (the baseline covers
+      intended scans) and `init` detection.
+
 ### 2026-09-26
 
 - [x] `@syntopica/db-quality` 0.2.0 and 0.2.1 are on npm through `publish.yml`

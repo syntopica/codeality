@@ -397,3 +397,9 @@ configuration example above shows `inGate: true`, which is what phase 4 sets;
 install), `auto_explain` (server setting), query plans of PostgREST requests
 through the `pgrst.plan` media type (disabled on Supabase by default), MySQL and
 SQLite performance counters, and rewriting any query the rules flag.
+
+Amendment, 2026-09-29: SQLite query plans are no longer out of scope, but they
+live in `check`, not in `perf`. With `sqlite.queries`, `check` reads a project's
+`.sql` query files statically (`BDB404`, `BDB405`) and plans each statement with
+`EXPLAIN QUERY PLAN` against a local database copy (`BDB406`); there are still
+no SQLite runtime counters. See the package README, "SQLite query files".
