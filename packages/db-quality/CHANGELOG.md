@@ -1,5 +1,16 @@
 # Changelog
 
+## Unreleased
+
+- `sqlite.queries` (`paths`, optional `database`, `minRows` default 10000):
+  `check` and `gate` read a SQLite project's `.sql` query files. `BDB404` flags
+  an optional-parameter guard (`?1 IS NULL OR ...`), `BDB405` comma-list
+  membership through `instr()`, and `BDB406` a full table or index scan of a
+  table of at least `minRows` rows in the `EXPLAIN QUERY PLAN` of each
+  statement, planned with its parameters unbound against `database`. A missing
+  or unreadable database skips `BDB406` with one line on stderr; a statement
+  `sqlite3` cannot plan is skipped. Additive: `schemaVersion` is unchanged.
+
 ## 0.2.1
 
 - `init` proposes a PostgREST root only when it holds a TypeScript source; an

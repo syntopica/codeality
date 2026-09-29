@@ -1,6 +1,7 @@
 import { renderFindings } from '@/check/renderFindings.js'
 import { renderFindingsJson } from '@/check/renderFindingsJson.js'
 import { runCheck } from '@/check/runCheck.js'
+import { sqliteQueriesNotice } from '@/check/sqliteQueriesNotice.js'
 import type { CommandIo } from '@/commands/CommandIo.js'
 import { parseCommandArgs } from '@/commands/parseCommandArgs.js'
 import { reportCommandError } from '@/commands/reportCommandError.js'
@@ -14,6 +15,8 @@ export const checkCommand = (argv: string[], io: CommandIo): number => {
     const config = readConfig(io.root)
     const notice = legacyConfigNotice(config)
     if (notice) io.stderr(`${notice}\n`)
+    const skipped = sqliteQueriesNotice(io.runner, io.root, config)
+    if (skipped) io.stderr(`${skipped}\n`)
     const findings = runCheck({
       root: io.root,
       config,

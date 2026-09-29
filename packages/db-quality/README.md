@@ -51,7 +51,14 @@ a dependency:
   "supabase": { "migrations": "supabase/migrations" },
   "prisma": { "schema": "prisma/schema.prisma" },
   "drizzle": { "roots": ["src"], "objectNames": ["db", "tx"] },
-  "sqlite": { "files": ["data/app.db"] },
+  "sqlite": {
+    "files": ["data/app.db"],
+    "queries": {
+      "paths": ["src/sql"],
+      "database": "~/dev/app-copy.db",
+      "minRows": 10000
+    }
+  },
   "postgrest": { "roots": ["src", "app"] },
   "audit": { "inGate": true, "bloatThreshold": 5, "soda": "db-quality/soda" },
   "perf": {
@@ -80,27 +87,29 @@ Every section is optional. `audit.soda` names a directory holding a Soda Core
 database password. `postgrest.roots` names the directories scanned for `.ts` and
 `.tsx` files. The `perf` values above are the built-in defaults except `inGate`,
 which `init` always writes as `false` — the gate measures nothing until a
-project reaches phase 4.
+project reaches phase 4. `sqlite.queries` is optional and never written by
+`init`; see [SQLite query files](#sqlite-query-files).
 
 ## Findings
 
-| Code               | Source                      | Severity    | What it means                                                                                       |
-| ------------------ | --------------------------- | ----------- | --------------------------------------------------------------------------------------------------- |
-| `BDB001`           | permissive-policy           | warn        | a policy uses `using (true)` or `with check (true)`                                                 |
-| `BDB002`           | rls-enabled-no-policy       | warn        | RLS on, no policy in any migration: service role only                                               |
-| `BDB003`           | table-without-rls           | warn        | a `public` table never enables row level security                                                   |
-| `BDB004`           | auth-uid-not-wrapped        | warn        | `auth.uid()` in a policy without `(select ...)`: evaluated per row                                  |
-| `BDB005`           | definer-without-search-path | warn        | `SECURITY DEFINER` function without `set search_path`                                               |
-| `BDB100/<rule>`    | squawk                      | as squawk   | migration lock and schema hazards, Supabase profile                                                 |
-| `BDB200/<rule>`    | prisma-lint                 | warn        | relation field without an index                                                                     |
-| `BDB300/<rule>`    | eslint-plugin-drizzle       | error       | `delete` or `update` without `.where()`                                                             |
-| `BDB401`-`BDB403`  | sqlite3                     | error/warn  | integrity, dangling foreign keys, table without primary key                                         |
-| `BDB500/<name>`    | Supabase advisors           | as Supabase | splinter security and performance lints on the live project                                         |
-| `BDB601`, `BDB602` | Supabase inspect            | warn        | never-scanned index, table bloat over `audit.bloatThreshold`                                        |
-| `BDB700/<check>`   | Soda Core                   | error/warn  | a failed or warned data check from `<audit.soda>/checks.yml`                                        |
-| `BDB801`-`BDB805`  | PostgREST rules             | warn        | query-chain rules on `.ts`/`.tsx` under `postgrest.roots`; see [PostgREST rules](#postgrest-rules)  |
-| `BDB901`-`BDB904`  | perf diff                   | error/warn  | live regressions, slow queries, sequential scans, temp spill; see [Performance](#performance)       |
-| `BDB911`-`BDB913`  | perf bench                  | error/warn  | bench query regressions, plan degradation, stale planner estimates; see [Performance](#performance) |
+| Code               | Source                      | Severity    | What it means                                                                                                             |
+| ------------------ | --------------------------- | ----------- | ------------------------------------------------------------------------------------------------------------------------- |
+| `BDB001`           | permissive-policy           | warn        | a policy uses `using (true)` or `with check (true)`                                                                       |
+| `BDB002`           | rls-enabled-no-policy       | warn        | RLS on, no policy in any migration: service role only                                                                     |
+| `BDB003`           | table-without-rls           | warn        | a `public` table never enables row level security                                                                         |
+| `BDB004`           | auth-uid-not-wrapped        | warn        | `auth.uid()` in a policy without `(select ...)`: evaluated per row                                                        |
+| `BDB005`           | definer-without-search-path | warn        | `SECURITY DEFINER` function without `set search_path`                                                                     |
+| `BDB100/<rule>`    | squawk                      | as squawk   | migration lock and schema hazards, Supabase profile                                                                       |
+| `BDB200/<rule>`    | prisma-lint                 | warn        | relation field without an index                                                                                           |
+| `BDB300/<rule>`    | eslint-plugin-drizzle       | error       | `delete` or `update` without `.where()`                                                                                   |
+| `BDB401`-`BDB403`  | sqlite3                     | error/warn  | integrity, dangling foreign keys, table without primary key                                                               |
+| `BDB404`-`BDB406`  | SQLite query files          | warn        | optional-parameter guard, comma-list `instr()`, full scan of a large table; see [SQLite query files](#sqlite-query-files) |
+| `BDB500/<name>`    | Supabase advisors           | as Supabase | splinter security and performance lints on the live project                                                               |
+| `BDB601`, `BDB602` | Supabase inspect            | warn        | never-scanned index, table bloat over `audit.bloatThreshold`                                                              |
+| `BDB700/<check>`   | Soda Core                   | error/warn  | a failed or warned data check from `<audit.soda>/checks.yml`                                                              |
+| `BDB801`-`BDB805`  | PostgREST rules             | warn        | query-chain rules on `.ts`/`.tsx` under `postgrest.roots`; see [PostgREST rules](#postgrest-rules)                        |
+| `BDB901`-`BDB904`  | perf diff                   | error/warn  | live regressions, slow queries, sequential scans, temp spill; see [Performance](#performance)                             |
+| `BDB911`-`BDB913`  | perf bench                  | error/warn  | bench query regressions, plan degradation, stale planner estimates; see [Performance](#performance)                       |
 
 Disable a code for a project with an object naming the reason:
 
@@ -166,6 +175,45 @@ instead of a string literal, a filter reached through `.match()` rather than a
 named method like `.eq()`, and anything about a view or a table the migrations
 do not define — the index knowledge `BDB802` and `BDB803` use comes only from
 `create table`, `create index` and constraint statements.
+
+## SQLite query files
+
+An application that keeps its SQLite queries in `.sql` files (loaded with
+`include_str!`, `readFileSync` or the like) can have `check` and `gate` read
+them. `sqlite.queries.paths` names directories, relative to the project root,
+walked recursively for `*.sql`; each file is split into statements, comments
+removed, and only statements starting with `SELECT`, `WITH`, `UPDATE`, `DELETE`,
+`INSERT` or `REPLACE` are considered. Findings carry the line of the match.
+
+| Code     | Rule                     | What it proves                                                                                                                                                                                    |
+| -------- | ------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `BDB404` | optional-parameter-guard | `?1 IS NULL OR ...` (or `... OR ?1 IS NULL`, with `?`, `?NNN`, `:name`, `@name`, `$name`): SQLite plans at prepare time, before the value is bound, so the guarded column's index is out of reach |
+| `BDB405` | comma-list-membership    | `instr(',' \|\| ?1 \|\| ',', ',' \|\| col \|\| ',')`: list membership no index can answer; bind a JSON array and use `col IN (SELECT value FROM json_each(?1))`                                   |
+| `BDB406` | full-scan                | with `sqlite.queries.database`, `EXPLAIN QUERY PLAN` shows `SCAN <table>` or `SCAN <table> USING [COVERING] INDEX` on a table of at least `minRows` rows                                          |
+
+`BDB404` and `BDB405` need nothing but the files. `BDB406` needs
+`sqlite.queries.database`: a SQLite file whose schema matches the queries,
+usually a local copy of the application's store. It is resolved against the
+project root; a leading `~/` is the home directory; an absolute path is used as
+is. It is opened with `sqlite3 -readonly`. Every statement is planned with its
+parameters left unbound, which is the plan the application gets at prepare time;
+binding a literal would let SQLite fold a `?1 IS NULL OR` guard away and show a
+plan the application never runs. A `SCAN` of a CTE, a subquery, a constant row
+or a virtual table is not reported; an alias is resolved to its table through
+the statement's `FROM`/`JOIN`. Rows are counted once per table per run, the
+default `minRows` is 10000, and there is at most one finding per file, table and
+scan kind. When the same plan also sorts the rows in a temporary B-tree for
+`ORDER BY`, the message says so.
+
+A statement `sqlite3` cannot plan is skipped rather than failed: a table the
+application creates at run time, a module the shell lacks, syntax the shell
+rejects. A function the application registers itself (`vexa_strip_digits`) does
+not stop `EXPLAIN QUERY PLAN` in current shells, so those statements are still
+planned. A configured database that does not exist or is not readable skips
+`BDB406` with one line on stderr naming the path, and the static rules still
+run, so a CI runner without the local copy stays green on what it can check. A
+scan that is intended (a batch job, a garbage collector) is carried in the
+baseline or the rule is disabled with a reason.
 
 ## Performance
 

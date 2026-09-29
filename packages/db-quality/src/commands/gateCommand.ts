@@ -1,3 +1,4 @@
+import { sqliteQueriesNotice } from '@/check/sqliteQueriesNotice.js'
 import type { CommandIo } from '@/commands/CommandIo.js'
 import { parseCommandArgs } from '@/commands/parseCommandArgs.js'
 import { reportCommandError } from '@/commands/reportCommandError.js'
@@ -14,6 +15,8 @@ export const gateCommand = (argv: string[], io: CommandIo): number => {
     const config = readConfig(io.root)
     const notice = legacyConfigNotice(config)
     if (notice) io.stderr(`${notice}\n`)
+    const skipped = sqliteQueriesNotice(io.runner, io.root, config)
+    if (skipped) io.stderr(`${skipped}\n`)
     const results = runGate(
       gateStages({
         root: io.root,

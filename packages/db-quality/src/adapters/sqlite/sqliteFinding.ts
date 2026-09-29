@@ -4,7 +4,7 @@ import { isDisabled } from '@/config/isDisabled.js'
 import type { Finding } from '@/model/Finding.js'
 import { fingerprintFinding } from '@/model/fingerprintFinding.js'
 
-/** Zero or one finding on a SQLite file: none when the code is disabled. Line is always 0. */
+/** Zero or one finding on a SQLite file: none when the code is disabled. Line 0 unless the input names one. */
 export const sqliteFinding = (
   input: SqliteFindingInput,
   disabled: DisableEntry[],
@@ -14,7 +14,7 @@ export const sqliteFinding = (
     code: input.code,
     severity: input.severity,
     path: input.file,
-    line: 0,
+    line: input.line ?? 0,
     message: input.message,
     subject: input.subject,
   }

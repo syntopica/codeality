@@ -1,6 +1,7 @@
 import { runDrizzleLint } from '@/adapters/drizzle/runDrizzleLint.js'
 import { runPrismaLint } from '@/adapters/prisma/runPrismaLint.js'
 import { runSqliteChecks } from '@/adapters/sqlite/runSqliteChecks.js'
+import { runSqliteQueryChecks } from '@/adapters/sqlite/runSqliteQueryChecks.js'
 import { runSquawk } from '@/adapters/squawk/runSquawk.js'
 import type { CheckContext } from '@/check/CheckContext.js'
 import { compareFindings } from '@/model/compareFindings.js'
@@ -36,6 +37,15 @@ export const runCheck = ({ root, config, runner }: CheckContext): Finding[] => {
     findings.push(
       ...runSqliteChecks(runner, root, config.sqlite.files, config.disable),
     )
+    if (config.sqlite.queries)
+      findings.push(
+        ...runSqliteQueryChecks(
+          runner,
+          root,
+          config.sqlite.queries,
+          config.disable,
+        ),
+      )
   }
   if (config.postgrest) {
     findings.push(

@@ -76,4 +76,25 @@ describe('checkCommand', () => {
       findings: [],
     })
   })
+  it('says the plan check was skipped and still reports the static query rules', () => {
+    const root = mkdtempSync(join(tmpdir(), 'dbq-'))
+    mkdirSync(join(root, 'sql'))
+    writeFileSync(
+      join(root, 'sql/q.sql'),
+      'SELECT * FROM t WHERE ?1 IS NULL OR a = ?1;',
+    )
+    writeFileSync(
+      join(root, 'codeality-db.json'),
+      JSON.stringify({
+        schemaVersion: 2,
+        sqlite: { files: [], queries: { paths: ['sql'], database: 'dev.db' } },
+      }),
+    )
+    const io = commandIoFor(root, ok)
+    expect(checkCommand([], io)).toBe(1)
+    expect(io.err.join('')).toMatch(
+      /sqlite\.queries\.database .*dev\.db does not exist; the query-plan check BDB406 was skipped/,
+    )
+    expect(io.out.join('')).toMatch(/sql\/q\.sql:1: BDB404 /)
+  })
 })
