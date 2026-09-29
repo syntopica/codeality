@@ -68,6 +68,14 @@ verified complete - `[-]` obsolete or superseded.
       `supabase/.temp/pooler-url` from a secret, which the shipped workflow
       lacks (the file is gitignored, so the perf stage always skips in CI
       today).
+- [ ] `sqlite.queries` follow-ups from adopting 0.3.0 in Vexa (2026-09-29, 105
+      findings baselined): (1) no way to exclude a subtree, so
+      `sql/store/migrations` (8 findings, one-shot data migrations that may
+      scan) is checked with the queries; add `exclude` globs. (2) `BDB404` fires
+      on every guard, including `?2 IS NULL OR account_id = ?2` in a query whose
+      other filter already seeks an index (`jobs_list.sql` after the fix); when
+      `database` is set, drop a BDB404 whose statement plans without a full
+      scan. Next step: both, with tests.
 
 ## Cross-project (filed 2026-09-09 from two consumer backlog runs)
 
