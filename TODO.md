@@ -68,6 +68,26 @@ verified complete - `[-]` obsolete or superseded.
       `supabase/.temp/pooler-url` from a secret, which the shipped workflow
       lacks (the file is gitignored, so the perf stage always skips in CI
       today).
+- [ ] SQLite query-plan checks: nothing in codeality reads a SQLite project's
+      query files. On 2026-09-29 Vexa's `jobs_list.sql` filtered with
+      `(?1 IS NULL OR instr(',' || ?1 || ',', ',' || state || ',') > 0)`, so
+      `EXPLAIN QUERY PLAN` gave `SCAN jobs` + `USE TEMP B-TREE FOR ORDER BY`
+      over 852k rows; the status footer polled it every 5 s under the store's
+      single read connection and opening the inbox queued behind it (fixed in
+      Vexa f1052981 with `state IN (SELECT value FROM json_each(?1))`). The
+      SQLite adapter only runs integrity, foreign-key and primary-key checks
+      (BDB401-403), BDB912 is Postgres-only, and cargo-baseline's
+      `no-inline-sql` moves SQL into `.sql` files but never looks inside. A
+      sweep of Vexa's 481 query files found 36 with `?N IS NULL OR` guards and
+      46 scanning a table above 20k rows. Next step: a `sqlite.queries` config
+      (glob of `.sql` files) plus `src/adapters/sqlite/queryPlanFindings.ts`
+      running `EXPLAIN QUERY PLAN` with parameters left unbound (the plan the
+      app gets at prepare time) against `sqlite.files`, flagging `SCAN <t>`
+      without `USING INDEX` on tables above a row threshold, with a per-file
+      allowlist for batch/GC queries; and a static BDB4xx rule for an
+      optional-parameter guard or a function wrapped around an indexed column in
+      `WHERE`. Needs an amendment to the perf spec, which puts SQLite out of
+      scope.
 
 ## Cross-project (filed 2026-09-09 from two consumer backlog runs)
 
