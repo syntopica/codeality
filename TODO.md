@@ -67,7 +67,12 @@ verified complete - `[-]` obsolete or superseded.
       1.0.7 exists but is single-maintainer, unreleased since 2025-04, ~1k
       downloads/month - do not wrap it. Design:
       `docs/superpowers/specs/2026-09-30-db-quality-kysely-design.md`. Smallest
-      next step: its implementation plan.
+      next step: its implementation plan. Add to it a cross-dialect rule
+      `kysely.inline-references`: an inline column `.references()` compiles to a
+      column-level `REFERENCES`, which MySQL 8.4 parses and silently ignores (no
+      FK created); MariaDB and SQLite enforce it. Seen in compratuentrada
+      f4ba7e2, caught only by the mysql:8.4 CI leg, fixed with a table-level
+      `addForeignKeyConstraint` in 37d1c05.
 
 - [ ] The files `codeality-db` writes (`codeality-db.json` from `init`,
       `.codeality-db-bench.json`, `db-quality/bench/README.md`) are
