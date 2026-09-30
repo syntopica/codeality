@@ -20,6 +20,16 @@ verified complete - `[-]` obsolete or superseded.
 
 ## Estate
 
+- [ ] **The nextjs template ships no `.baseline-advisories.json`, so a fresh
+      consumer fails CI `check:security` on day one** (found 2026-09-30 in
+      `~/p/compratuentrada`, run on `b4a8615`):
+      `baseline-audit --level     moderate` reports 4 unwaived advisories, all
+      through `@lhci/cli` - uuid GHSA-w5hq-g745-h8pq, tmp GHSA-ph9p-34f9-6g65,
+      extract-zip GHSA-jmr9-qjv8-65gv and GHSA-7pqw-9j4j-h8q3 (no patched
+      version). The repo root carries a waiver file for uuid but the template
+      does not. Smallest next step: add the template's own
+      `.baseline-advisories.json` and a `tmp` override, and make the template CI
+      job run the audit so the gap shows here first.
 - [ ] `@busirocket/eslint-config` 0.8.0 declares `@vitest/eslint-plugin` and
       `eslint-plugin-testing-library` as optional peers, but `code-quality.ts`
       composes `testing.ts` unconditionally, so every `/code-quality` consumer
