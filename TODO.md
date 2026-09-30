@@ -44,6 +44,20 @@ verified complete - `[-]` obsolete or superseded.
 
 ## db-quality
 
+- [ ] **Kysely support** (filed 2026-09-30; first consumer is the new
+      `~/p/compratuentrada` ticketing app, which chose Kysely for one schema
+      over MySQL/MariaDB, PostgreSQL and SQLite). 0.3.0 detects Supabase,
+      Prisma, Drizzle and SQLite only. Scope, mirroring `adapters/drizzle/`: (1)
+      lint rules in an ESLint asset - `updateTable`/`deleteFrom` without
+      `.where`, `sql.raw`/`sql.ref` with a non-literal argument; (2) compile the
+      project's Kysely migrations to SQL per dialect with a compile-only Kysely
+      and feed the existing squawk and SQLite rules, require a `down`, hash
+      applied migrations; (3) optional audit: `kysely-codegen` against a live DB
+      diffed with the hand-written `Database` interface. `eslint-plugin-kysely`
+      1.0.7 exists but is single-maintainer, unreleased since 2025-04, ~1k
+      downloads/month - do not wrap it. Smallest next step: a design spec under
+      `docs/superpowers/specs/`.
+
 - [ ] The files `codeality-db` writes (`codeality-db.json` from `init`,
       `.codeality-db-bench.json`, `db-quality/bench/README.md`) are
       `JSON.stringify` / hard-wrapped text that prettier reformats, so a
