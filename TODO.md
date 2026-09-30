@@ -55,8 +55,9 @@ verified complete - `[-]` obsolete or superseded.
       applied migrations; (3) optional audit: `kysely-codegen` against a live DB
       diffed with the hand-written `Database` interface. `eslint-plugin-kysely`
       1.0.7 exists but is single-maintainer, unreleased since 2025-04, ~1k
-      downloads/month - do not wrap it. Smallest next step: a design spec under
-      `docs/superpowers/specs/`.
+      downloads/month - do not wrap it. Design:
+      `docs/superpowers/specs/2026-09-30-db-quality-kysely-design.md`. Smallest
+      next step: its implementation plan.
 
 - [ ] The files `codeality-db` writes (`codeality-db.json` from `init`,
       `.codeality-db-bench.json`, `db-quality/bench/README.md`) are
