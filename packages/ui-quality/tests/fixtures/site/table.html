@@ -1,0 +1,98 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>A table to sort and search</title>
+    <style>
+      body {
+        margin: 0;
+        font: 16px/1.4 sans-serif;
+        color: #000000;
+        background: #ffffff;
+      }
+      main {
+        padding: 24px;
+      }
+      button,
+      input {
+        font: inherit;
+        color: #000000;
+        background: #ffffff;
+        border: 1px solid #000000;
+        padding: 4px 8px;
+      }
+      th,
+      td {
+        padding: 4px 12px;
+        text-align: left;
+      }
+    </style>
+  </head>
+  <body>
+    <main>
+      <h1>Customers</h1>
+      <input type="text" placeholder="Search customers" />
+      <table>
+        <thead>
+          <tr>
+            <th><button type="button" data-key="name">Name</button></th>
+            <th><button type="button" data-key="amount">Amount</button></th>
+          </tr>
+        </thead>
+        <tbody></tbody>
+      </table>
+    </main>
+    <script>
+      // With #broken the amount header sorts by a hidden id and the search
+      // box ignores what is typed into it.
+      const broken = location.hash === '#broken'
+      const customers = [
+        { id: 3, name: 'Delta Foods', amount: 120 },
+        { id: 1, name: 'Alpha Studio', amount: 45.5 },
+        { id: 5, name: 'Echo Labs', amount: 1200 },
+        { id: 2, name: 'Bravo Shipping', amount: 8 },
+        { id: 4, name: 'Charlie Books', amount: 300 },
+      ]
+      let query = ''
+      let sort = null
+      const render = () => {
+        const rows = customers
+          .filter(
+            (customer) =>
+              broken ||
+              customer.name.toLowerCase().includes(query.toLowerCase()),
+          )
+          .sort((left, right) => {
+            if (!sort) return 0
+            const key = broken && sort.key === 'amount' ? 'id' : sort.key
+            const order =
+              typeof left[key] === 'number'
+                ? left[key] - right[key]
+                : left[key].localeCompare(right[key])
+            return sort.descending ? -order : order
+          })
+        document.querySelector('tbody').innerHTML = rows
+          .map(
+            (customer) =>
+              `<tr><td>${customer.name}</td><td>${customer.amount.toFixed(2)} €</td></tr>`,
+          )
+          .join('')
+      }
+      for (const button of document.querySelectorAll('th button')) {
+        button.addEventListener('click', () => {
+          const key = button.dataset.key
+          sort = {
+            key,
+            descending: sort?.key === key ? !sort.descending : false,
+          }
+          render()
+        })
+      }
+      document.querySelector('input').addEventListener('input', (event) => {
+        query = event.target.value
+        render()
+      })
+      render()
+    </script>
+  </body>
+</html>

@@ -1,8 +1,7 @@
 import type { Page } from 'playwright'
 
-import { ANIMATIONS_SETTLED } from '@/capture/ANIMATIONS_SETTLED.js'
 import { CLICK_TIMEOUT_MS } from '@/capture/CLICK_TIMEOUT_MS.js'
-import { SETTLE_TIMEOUT_MS } from '@/capture/SETTLE_TIMEOUT_MS.js'
+import { settlePage } from '@/capture/settlePage.js'
 
 /**
  * Clicks each selector in order, letting the page settle after each one: its
@@ -20,10 +19,7 @@ export const clickThrough = async (
     } catch {
       return [selector]
     }
-    await page
-      .waitForLoadState('networkidle', { timeout: SETTLE_TIMEOUT_MS })
-      .catch(() => undefined)
-    await page.evaluate(ANIMATIONS_SETTLED)
+    await settlePage(page)
   }
   return []
 }

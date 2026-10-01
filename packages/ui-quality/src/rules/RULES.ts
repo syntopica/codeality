@@ -1,5 +1,6 @@
 import { axeFindings } from '@/rules/axeFindings.js'
 import { bareUrl } from '@/rules/bareUrl.js'
+import { behaviourBroken } from '@/rules/behaviourBroken.js'
 import { blankRoute } from '@/rules/blankRoute.js'
 import { clickFailed } from '@/rules/clickFailed.js'
 import { consoleError } from '@/rules/consoleError.js'
@@ -14,12 +15,14 @@ import { palette } from '@/rules/palette.js'
 import { rawPlaceholder } from '@/rules/rawPlaceholder.js'
 import { rowMisaligned } from '@/rules/rowMisaligned.js'
 import type { Rule } from '@/rules/Rule.js'
+import { slowRequest } from '@/rules/slowRequest.js'
 import { textClipped } from '@/rules/textClipped.js'
 import { textHardCut } from '@/rules/textHardCut.js'
 
 export const RULES: Rule[] = [
   axeFindings,
   bareUrl,
+  behaviourBroken,
   blankRoute,
   clickFailed,
   consoleError,
@@ -33,6 +36,7 @@ export const RULES: Rule[] = [
   palette,
   rawPlaceholder,
   rowMisaligned,
+  slowRequest,
   textClipped,
   textHardCut,
 ]

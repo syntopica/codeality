@@ -1,4 +1,4 @@
-import { existsSync, mkdirSync } from 'node:fs'
+import { mkdirSync } from 'node:fs'
 import { join } from 'node:path'
 
 import { assertCredentials } from '@/capture/assertCredentials.js'
@@ -6,6 +6,7 @@ import type { CapturedScreen } from '@/capture/CapturedScreen.js'
 import { captureScreen } from '@/capture/captureScreen.js'
 import { loadPlaywright } from '@/capture/loadPlaywright.js'
 import { probeSource } from '@/capture/probeSource.js'
+import { screenContextOptions } from '@/capture/screenContextOptions.js'
 import { STATE_DIR } from '@/config/STATE_DIR.js'
 import type { UiQualityConfig } from '@/config/UiQualityConfig.js'
 
@@ -26,15 +27,13 @@ export const captureScreens = async (
     const captured: CapturedScreen[] = []
     for (const colorScheme of config.colorSchemes) {
       for (const viewport of config.viewports) {
-        const context = await browser.newContext({
-          viewport,
-          colorScheme,
-          reducedMotion: 'reduce',
-          ...(config.auth && existsSync(statePath)
-            ? { storageState: statePath }
-            : {}),
-        })
+        const context = await browser.newContext(
+          screenContextOptions(viewport, colorScheme, config.auth && statePath),
+        )
         const page = await context.newPage()
+        // Sort and search once per route: they behave the same at every size
+        // and in both schemes, and each costs several reloads.
+        const exercise = captured.length < config.routes.length
         for (const route of config.routes) {
           const screen = { route: route.path, viewport, colorScheme }
           log(
@@ -49,6 +48,7 @@ export const captureScreens = async (
             screen,
             screensDir,
             probe,
+            exercise,
           })
           captured.push({ route, snapshot })
         }

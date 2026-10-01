@@ -4,4 +4,5 @@ export type RuleOptions = {
   edgeMisaligned: { tolerance: number; maxOffset: number }
   contentWidth: { minRatio: number; minViewport: number }
   palette: { maxDeltaE: number }
+  slowRequest: { maxMs: number }
 }

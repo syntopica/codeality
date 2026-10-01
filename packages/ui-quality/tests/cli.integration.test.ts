@@ -136,6 +136,18 @@ describe('codeality-ui', () => {
     expect(await runCli(['check'], missed.io)).toBe(1)
     expect(missed.out.join('')).toContain('click-failed')
   })
+  it('sorts and searches the main table, and reports the controls that do not work', async () => {
+    const working = io(project(['/table.html']))
+    expect(await runCli(['check'], working.io)).toBe(0)
+    const broken = io(project(['/table.html#broken']))
+    expect(await runCli(['check', '--json'], broken.io)).toBe(1)
+    const { findings } = JSON.parse(broken.out.join('')) as {
+      findings: { rule: string; subject: string }[]
+    }
+    expect(
+      findings.map((finding) => `${finding.rule} ${finding.subject}`).sort(),
+    ).toEqual(['filter-broken search box', 'sort-broken column "Amount"'])
+  })
   it('fails with exit 2 on a login it cannot perform', async () => {
     const root = project(['/fixed.html'])
     const config = JSON.parse(

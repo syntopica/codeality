@@ -6,4 +6,5 @@ export const RULE_DEFAULTS: RuleOptions = {
   edgeMisaligned: { tolerance: 2, maxOffset: 240 },
   contentWidth: { minRatio: 0.8, minViewport: 1280 },
   palette: { maxDeltaE: 5 },
+  slowRequest: { maxMs: 1000 },
 }

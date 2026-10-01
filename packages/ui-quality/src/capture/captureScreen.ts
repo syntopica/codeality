@@ -1,13 +1,13 @@
-import { join } from 'node:path'
-
 import AxeBuilder from '@axe-core/playwright'
 
 import { axeViolationsOf } from '@/capture/axeViolationsOf.js'
 import { clickThrough } from '@/capture/clickThrough.js'
+import { exerciseScreen } from '@/capture/exerciseScreen.js'
 import { openRoute } from '@/capture/openRoute.js'
 import { recordConsoleErrors } from '@/capture/recordConsoleErrors.js'
+import { recordRequests } from '@/capture/recordRequests.js'
 import type { ScreenRequest } from '@/capture/ScreenRequest.js'
-import { screenshotName } from '@/capture/screenshotName.js'
+import { screenshotPage } from '@/capture/screenshotPage.js'
 import { storageInitScript } from '@/capture/storageInitScript.js'
 import type { PageSnapshot } from '@/model/PageSnapshot.js'
 import type { ProbeResult } from '@/model/ProbeResult.js'
@@ -19,9 +19,11 @@ export const captureScreen = async ({
   screen,
   screensDir,
   probe,
+  exercise,
   ...request
 }: ScreenRequest): Promise<PageSnapshot> => {
   const consoleLog = recordConsoleErrors(page)
+  const requestLog = recordRequests(page)
   if (Object.keys(route.localStorage).length > 0)
     await page.addInitScript(
       storageInitScript(request.baseUrl + route.path, route.localStorage),
@@ -29,18 +31,14 @@ export const captureScreen = async ({
   await openRoute(page, route.path, request)
   if (route.waitFor) await page.locator(route.waitFor).first().waitFor()
   const clickFailures = await clickThrough(page, route.click)
-  // A string, because this package compiles without the DOM library.
-  await page.evaluate('document.fonts.ready.then(() => true)')
-  // A page that scrolls itself (a chat opening on its last message) would
-  // stitch its sticky header into the middle of a full-page capture.
-  await page.evaluate('window.scrollTo(0, 0)')
-  const screenshot = join(screensDir, screenshotName(screen))
-  await page.screenshot({ path: screenshot, fullPage: true })
+  const screenshot = await screenshotPage(page, screensDir, screen)
   const axe = axeViolationsOf(await new AxeBuilder({ page }).analyze())
   const probed: ProbeResult = await page.evaluate(
     `(${probe})(${JSON.stringify(route.main)})`,
   )
+  const behaviour = exercise ? await exerciseScreen(page, route.main) : []
   consoleLog.stop()
+  requestLog.stop()
   return {
     ...probed,
     screen,
@@ -48,5 +46,7 @@ export const captureScreen = async ({
     screenshot,
     consoleErrors: consoleLog.errors,
     clickFailures,
+    requests: requestLog.requests,
+    behaviour,
   }
 }

@@ -11,4 +11,6 @@ export type ScreenRequest = RouteRequest & {
   screen: Screen
   screensDir: string
   probe: string
+  /** Whether to sort and search the screen after measuring it. */
+  exercise: boolean
 }

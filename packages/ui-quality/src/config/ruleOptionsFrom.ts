@@ -18,5 +18,6 @@ export const ruleOptionsFrom = (value: unknown): RuleOptions => {
     edgeMisaligned: read('edge-misaligned', RULE_DEFAULTS.edgeMisaligned),
     contentWidth: read('content-width', RULE_DEFAULTS.contentWidth),
     palette: read('palette', RULE_DEFAULTS.palette),
+    slowRequest: read('slow-request', RULE_DEFAULTS.slowRequest),
   }
 }

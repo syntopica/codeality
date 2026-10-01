@@ -19,5 +19,7 @@ export const snapshotOf = (
   screenshot: '/tmp/inbox.png',
   consoleErrors: [],
   clickFailures: [],
+  requests: [],
+  behaviour: [],
   ...overrides,
 })
