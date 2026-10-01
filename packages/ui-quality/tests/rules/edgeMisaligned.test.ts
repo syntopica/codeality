@@ -36,6 +36,44 @@ describe('edgeMisaligned', () => {
       'header and main content edges differ by 64px on the left and 64px on the right at 1920px; put both on the same container',
     )
   })
+  it('ignores full-bleed section bands and drawers fixed over the page', () => {
+    const band = elementBox({
+      id: 5,
+      parent: 1,
+      x: 256,
+      width: 1664,
+      backgroundColor: [240, 244, 250, 1],
+    })
+    const drawer = elementBox({
+      id: 6,
+      parent: 1,
+      x: 1200,
+      width: 720,
+      position: 'fixed',
+    })
+    const drawerText = elementBox({
+      id: 7,
+      parent: 6,
+      x: 1220,
+      width: 680,
+      text: 'Invoice',
+    })
+    expect(
+      edgeMisaligned(
+        snapshotOf([
+          banner,
+          main,
+          search,
+          account,
+          list(288, 1600),
+          band,
+          drawer,
+          drawerText,
+        ]),
+        ruleContext(),
+      ),
+    ).toEqual([])
+  })
   it('measures a wide table only as far as its scrolling frame shows it', () => {
     const frame = elementBox({
       id: 4,

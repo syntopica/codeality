@@ -1,5 +1,5 @@
 import type { RawFinding } from '@/model/RawFinding.js'
-import { inkEdgesOf } from '@/rules/inkEdgesOf.js'
+import { alignmentEdgesOf } from '@/rules/alignmentEdgesOf.js'
 import type { Rule } from '@/rules/Rule.js'
 
 // The header and the content below it start a few pixels apart: a full-width
@@ -10,8 +10,8 @@ export const edgeMisaligned: Rule = (snapshot, context) => {
   const banner = snapshot.elements.find((element) => element.isBanner)
   const main = snapshot.elements.find((element) => element.isMain)
   if (!banner || !main) return []
-  const top = inkEdgesOf(banner, snapshot.elements)
-  const body = inkEdgesOf(main, snapshot.elements)
+  const top = alignmentEdgesOf(banner, snapshot.elements)
+  const body = alignmentEdgesOf(main, snapshot.elements)
   if (!top || !body) return []
   const offsets = [
     { side: 'left', offset: Math.abs(top.left - body.left) },
