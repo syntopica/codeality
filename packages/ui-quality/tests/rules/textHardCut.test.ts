@@ -46,6 +46,23 @@ describe('textHardCut', () => {
       '6 texts in this column stop at exactly 40 characters',
     )
   })
+  it('accepts whole sentences and one label repeated as a spike', () => {
+    const sentences = [
+      'Bodas y fiestas privadas en toda la provincia.'.padStart(58, ' '),
+      'Fiestas patronales impulsados por ayuntamientos.'.padStart(58, ' '),
+      'short',
+    ].map((text) => [{ x: 0, text: text.trim().padEnd(58, '.') }])
+    expect(textHardCut(snapshotOf(rows(sentences)), ruleContext())).toEqual([])
+    const label =
+      'Destacado (página completa; sin marcar, tarjeta compacta de tres por página'
+    const repeated = [
+      ...Array.from({ length: 9 }, () => label),
+      'Visible',
+      'Visible',
+      'Visible',
+    ].map((text) => [{ x: 0, text }])
+    expect(textHardCut(snapshotOf(rows(repeated)), ruleContext())).toEqual([])
+  })
   it('accepts natural lengths that repeat no more than their neighbours', () => {
     const table = [40, 40, 40, 40, 40, 41, 41, 42, 42, 70].map(
       (length, index) => [{ x: 0, text: String(index).padEnd(length, 'y') }],

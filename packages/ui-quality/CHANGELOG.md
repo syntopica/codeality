@@ -15,6 +15,8 @@
 - `edge-misaligned` and `content-width` measure what a sideways-scrolling frame
   shows, not the full width of the wide table inside it.
 - `row-misaligned` accepts a right-aligned column whose cells end at one x.
+- `text-hard-cut` ignores texts that end a sentence and one label repeated on
+  every row.
 - Elements the browser does not render (inside a closed `<details>`, under
   `content-visibility: hidden`) are no longer measured.
 - A page that never lets its network go idle is measured 5 seconds after the
