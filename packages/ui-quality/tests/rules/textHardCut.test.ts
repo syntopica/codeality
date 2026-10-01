@@ -37,7 +37,7 @@ describe('textHardCut', () => {
   })
   it('reports a spike of cut texts hidden by a longer text from another source', () => {
     const table = [
-      ...Array.from({ length: 6 }, (_, index) => cut(`row ${String(index)}`)),
+      ...['alpha', 'bravo', 'charlie', 'delta', 'echo', 'foxtrot'].map(cut),
       'a subject line that is longer than every cut preview in the column',
       'short',
     ].map((text) => [{ x: 0, text }])
@@ -127,6 +127,16 @@ describe('textHardCut', () => {
       ),
       'Proveedores',
       'Clientes',
+    ].map((text) => [{ x: 0, text }])
+    expect(textHardCut(snapshotOf(rows(table)), ruleContext())).toEqual([])
+  })
+  it('accepts whole texts built from one template that differ only in digits', () => {
+    const table = [
+      'E2E Generation Probe 1788619860147',
+      'E2E Generation Probe 1788620441109',
+      'E2E Generation Probe 1790083973279',
+      '7 personas · updated Sep 22, 2026',
+      'Regional Staffing Agencies',
     ].map((text) => [{ x: 0, text }])
     expect(textHardCut(snapshotOf(rows(table)), ruleContext())).toEqual([])
   })

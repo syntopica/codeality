@@ -1,4 +1,5 @@
 import type { ElementBox } from '@/model/ElementBox.js'
+import { digitTemplate } from '@/rules/digitTemplate.js'
 import { ELLIPSIS_TAILS } from '@/rules/ELLIPSIS_TAILS.js'
 import { SENTENCE_TAILS } from '@/rules/SENTENCE_TAILS.js'
 import { spikeLength } from '@/rules/spikeLength.js'
@@ -10,7 +11,8 @@ import { tiesAtLongest } from '@/rules/tiesAtLongest.js'
  * three distinct texts (or half the column) tie there, more on a long column
  * (natural text rarely ties at the maximum), or a length that spikes above its
  * neighbours. Texts ending a sentence, one label repeated on every row, and
- * a tie no larger than the texts just shorter than it are not cuts.
+ * texts that differ only in digits, and a tie no larger than the texts just
+ * shorter than it are not cuts.
  */
 export const hardCutColumn = (
   cells: ElementBox[],
@@ -30,8 +32,10 @@ export const hardCutColumn = (
       !SENTENCE_TAILS.some((tail) => cell.textTail.endsWith(tail)),
   )
   // The same label on every row (a checkbox repeated per block) is the
-  // copy, however long it is next to its neighbours.
+  // copy, however long it is next to its neighbours; so is one template whose
+  // texts differ only in digits ("Probe 1788619860147", "updated Sep 22").
   const repeated =
-    cut.length > 1 && new Set(cut.map((cell) => cell.text)).size === 1
+    cut.length > 1 &&
+    new Set(cut.map((cell) => digitTemplate(cell.text))).size === 1
   return cut.length > 0 && !repeated ? { length, cut } : null
 }
