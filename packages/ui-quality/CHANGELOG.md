@@ -12,6 +12,9 @@
 - `auth.storageState` reuses a session the project mints itself (magic link,
   SSO) instead of filling a password form; a missing file or an expired session
   fails with exit 2.
+- `console-error` leaves out what axe-core logs while it fetches stylesheets to
+  read the CSSOM: under a narrow `connect-src` that refusal is the tool's, not
+  the page's.
 - Sign-in happens on the route that bounces to the login page, not on the first
   route only, so a run that starts on a public page still measures the private
   ones; missing credentials fail before the browser starts.

@@ -35,7 +35,11 @@ export const captureScreen = async ({
   if (route.waitFor) await page.locator(route.waitFor).first().waitFor()
   const clickFailures = await clickThrough(page, route.click)
   const screenshot = await screenshotPage(page, screensDir, screen)
+  // axe fetches each stylesheet itself to read the CSSOM; a page whose CSP
+  // keeps connect-src narrow logs that refusal, which the page never caused.
+  const loggedBeforeAxe = consoleLog.errors.length
   const axe = axeViolationsOf(await new AxeBuilder({ page }).analyze())
+  consoleLog.errors.splice(loggedBeforeAxe)
   const probed: ProbeResult = await page.evaluate(
     `(${probe})(${JSON.stringify(route.main)})`,
   )
