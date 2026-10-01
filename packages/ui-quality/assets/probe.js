@@ -23,6 +23,13 @@
     return match ? match.slice(1).map(Number) : null
   }
 
+  const paintPixel = (style) => {
+    context.clearRect(0, 0, 1, 1)
+    context.fillStyle = style
+    context.fillRect(0, 0, 1, 1)
+    return context.getImageData(0, 0, 1, 1).data
+  }
+
   // Any CSS colour, oklch and color-mix included, resolved to sRGB bytes by
   // painting one pixel: computed styles may keep the authored colour space.
   const toRgba = (value) => {
@@ -35,11 +42,15 @@
       colorCache.set(value, serialised)
       return serialised
     }
-    context.clearRect(0, 0, 1, 1)
-    context.fillStyle = value
-    context.fillRect(0, 0, 1, 1)
-    const [r, g, b, a] = context.getImageData(0, 0, 1, 1).data
-    const rgba = [r, g, b, Math.round((a / 255) * 100) / 100]
+    // Outside sRGB (Tailwind's color-mix lands in oklab) the pixel is the
+    // only reader, so the channels are painted opaque and the alpha apart.
+    const opaque = `rgb(from ${value} r g b / 1)`
+    const relative = CSS.supports('color', opaque)
+    const [r, g, b, a] = paintPixel(relative ? opaque : value)
+    const alpha = relative
+      ? paintPixel(`rgb(from ${value} calc(alpha * 255) 0 0 / 1)`)[0]
+      : a
+    const rgba = [r, g, b, Math.round((alpha / 255) * 100) / 100]
     colorCache.set(value, rgba)
     return rgba
   }

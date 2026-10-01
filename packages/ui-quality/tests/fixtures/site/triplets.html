@@ -22,6 +22,14 @@
         /* A faint tint: read back from a pixel, 6% alpha bends the hue. */
         background: hsl(var(--brand-accent) / 0.06);
       }
+      h1 {
+        /* Tailwind v4's bg-brand/6: a mix the canvas cannot name in sRGB. */
+        background: color-mix(
+          in oklab,
+          hsl(var(--brand-accent)) 6%,
+          transparent
+        );
+      }
       p {
         border-bottom: 2px solid hsl(var(--brand-accent));
       }
