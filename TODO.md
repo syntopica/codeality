@@ -52,6 +52,28 @@ verified complete - `[-]` obsolete or superseded.
       and vite-react layers set `react/prop-types: 'off'` for `.tsx` files
       themselves.
 
+- [ ] **`check:ci` passes locally while CI `check:security` fails, because the
+      audit is not part of `check:ci`.** Smallest next step: make the template's
+      `check:ci` run `baseline-audit`, or document that the audit only runs in
+      CI. Evidence: compratuentrada session transcript 2026-09-30.
+- [ ] **The `create-baseline` README and template name the wrong plugin
+      package.** `@syntopica/eslint-plugin-code-policy` returns 404 and the
+      package resolves unscoped, so the template needs
+      `eslint-plugin-code-policy`; pnpm 12 also needs `allowBuilds` rather than
+      `onlyBuiltDependencies` in the templates. Smallest next step: fix the
+      README and the template package names and the pnpm key. Evidence:
+      compratuentrada task 1 report, `b4a8615`.
+- [ ] **Test files are linted by the lefthook pre-commit but not by `check:ci`,
+      so their errors only appear at commit time.** Smallest next step: add test
+      files to the lint scope of the template's `check:ci`. Evidence:
+      compratuentrada session transcript 2026-09-30.
+- [~] **Knip prints hints on the nextjs template: `gitleaks` unlisted,
+  `dependency-cruiser` redundant, and a `middleware` entry pattern that matches
+  nothing.** Unclear whether the template still does this. Smallest next step:
+  run `pnpm knip` on a fresh template install; if the hints remain, remove the
+  `ignoreDependencies` placeholders and the dead entry pattern. Evidence:
+  compratuentrada session transcript 2026-09-30.
+
 ## ui-quality
 
 Rule candidates from the 2026-10-01 review of the TienesLaVibra admin inbox by

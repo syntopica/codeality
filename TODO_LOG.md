@@ -1,3 +1,10 @@
+### 2026-09-30
+
+- [x] Kysely support for `db-quality` is filed in `TODO.md` with its design spec
+      (`docs/superpowers/specs/2026-09-30-db-quality-kysely-design.md`),
+      including the cross-dialect rule `kysely.inline-references` for the MySQL
+      8.4 case where an inline column `.references()` creates no foreign key.
+
 ### 2026-09-29
 
 - [x] db-quality reads SQLite query files (unreleased): `sqlite.queries`
