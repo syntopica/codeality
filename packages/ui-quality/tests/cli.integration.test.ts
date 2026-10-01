@@ -113,6 +113,11 @@ describe('codeality-ui', () => {
     expect(await runCli(['baseline', 'check'], io(broken).io)).toBe(0)
     expect(await runCli(['baseline', 'update'], io(broken).io)).toBe(0)
   })
+  it('reads tokens stored as bare HSL triplets into the palette', async () => {
+    const run = io(project(['/triplets.html']))
+    expect(await runCli(['check', '--json'], run.io)).toBe(0)
+    expect(run.out.join('')).not.toContain('"rule": "palette"')
+  })
   it('fails with exit 2 on a login it cannot perform', async () => {
     const root = project(['/fixed.html'])
     const config = JSON.parse(

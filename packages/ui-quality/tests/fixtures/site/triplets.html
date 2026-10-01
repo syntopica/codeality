@@ -1,0 +1,34 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>Tokens as bare HSL triplets</title>
+    <style>
+      /* shadcn/ui stores each token as the channels alone, wrapped at use. */
+      :root {
+        --brand-ink: 222 47% 11%;
+        --brand-surface: 210 40% 98%;
+        --brand-accent: 217 91% 60%;
+        color-scheme: light;
+      }
+      body {
+        margin: 0;
+        font: 16px/1.4 sans-serif;
+        color: hsl(var(--brand-ink));
+        background: hsl(var(--brand-surface));
+      }
+      main {
+        padding: 24px;
+      }
+      p {
+        border-bottom: 2px solid hsl(var(--brand-accent));
+      }
+    </style>
+  </head>
+  <body>
+    <main>
+      <h1>Invoices</h1>
+      <p>Every colour on this page comes from a triplet token.</p>
+    </main>
+  </body>
+</html>

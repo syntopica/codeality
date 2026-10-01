@@ -176,11 +176,15 @@
     })
   }
 
+  // shadcn/ui keeps a token as its channels alone ("222 47% 11%") and wraps it
+  // in hsl() where it is used, so a bare triplet is read as hsl.
+  const HSL_TRIPLET = /^-?[\d.]+(deg)?\s+[\d.]+%\s+[\d.]+%(\s*\/\s*[\d.]+%?)?$/
   const variables = {}
   const rootStyle = getComputedStyle(document.documentElement)
   for (const name of rootStyle) {
     if (!name.startsWith('--')) continue
-    const rgba = toRgba(rootStyle.getPropertyValue(name).trim())
+    const value = rootStyle.getPropertyValue(name).trim()
+    const rgba = toRgba(HSL_TRIPLET.test(value) ? `hsl(${value})` : value)
     if (rgba) variables[name] = rgba
   }
 
