@@ -4,6 +4,7 @@ import AxeBuilder from '@axe-core/playwright'
 
 import { axeViolationsOf } from '@/capture/axeViolationsOf.js'
 import { openRoute } from '@/capture/openRoute.js'
+import { recordConsoleErrors } from '@/capture/recordConsoleErrors.js'
 import type { ScreenRequest } from '@/capture/ScreenRequest.js'
 import { screenshotName } from '@/capture/screenshotName.js'
 import type { PageSnapshot } from '@/model/PageSnapshot.js'
@@ -18,6 +19,7 @@ export const captureScreen = async ({
   probe,
   ...request
 }: ScreenRequest): Promise<PageSnapshot> => {
+  const consoleLog = recordConsoleErrors(page)
   await openRoute(page, route.path, request)
   if (route.waitFor) await page.locator(route.waitFor).first().waitFor()
   // A string, because this package compiles without the DOM library.
@@ -31,5 +33,12 @@ export const captureScreen = async ({
   const probed: ProbeResult = await page.evaluate(
     `(${probe})(${JSON.stringify(route.main)})`,
   )
-  return { ...probed, screen, axe, screenshot }
+  consoleLog.stop()
+  return {
+    ...probed,
+    screen,
+    axe,
+    screenshot,
+    consoleErrors: consoleLog.errors,
+  }
 }

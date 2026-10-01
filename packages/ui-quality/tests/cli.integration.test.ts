@@ -75,6 +75,7 @@ describe('codeality-ui', () => {
     ).toEqual([
       'a11y/color-contrast',
       'bare-url',
+      'console-error',
       'content-width',
       'control-inset',
       'edge-misaligned',

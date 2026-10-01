@@ -7,4 +7,6 @@ export type PageSnapshot = ProbeResult & {
   screen: Screen
   axe: AxeViolation[]
   screenshot: string
+  /** Console errors and uncaught exceptions logged while the page loaded. */
+  consoleErrors: string[]
 }

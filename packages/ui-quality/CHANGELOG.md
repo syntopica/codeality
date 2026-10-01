@@ -8,7 +8,7 @@
 - Rules: every axe violation as `a11y/<id>`, `text-clipped`, `text-hard-cut`,
   `row-misaligned`, `control-inset`, `content-width`, `palette`, `blank-route`,
   `horizontal-overflow`, `edge-misaligned`, `fixed-overflow`, `icon-contrast`,
-  `raw-placeholder` and `bare-url`.
+  `raw-placeholder`, `bare-url` and `console-error`.
 - Sign-in happens on the route that bounces to the login page, not on the first
   route only, so a run that starts on a public page still measures the private
   ones; missing credentials fail before the browser starts.

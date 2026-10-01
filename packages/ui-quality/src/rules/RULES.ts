@@ -1,6 +1,7 @@
 import { axeFindings } from '@/rules/axeFindings.js'
 import { bareUrl } from '@/rules/bareUrl.js'
 import { blankRoute } from '@/rules/blankRoute.js'
+import { consoleError } from '@/rules/consoleError.js'
 import { contentWidth } from '@/rules/contentWidth.js'
 import { controlInset } from '@/rules/controlInset.js'
 import { edgeMisaligned } from '@/rules/edgeMisaligned.js'
@@ -18,6 +19,7 @@ export const RULES: Rule[] = [
   axeFindings,
   bareUrl,
   blankRoute,
+  consoleError,
   contentWidth,
   controlInset,
   edgeMisaligned,

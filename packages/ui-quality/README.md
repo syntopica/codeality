@@ -78,6 +78,7 @@ pnpm exec codeality-ui init
 | `icon-contrast`       | an icon-only button or link under 3:1 against its background (WCAG 1.4.11)                  |
 | `raw-placeholder`     | a bracketed lower-case stand-in such as `[media message]` shown as content                  |
 | `bare-url`            | a web address shown as plain text outside any link                                          |
+| `console-error`       | the page logged a console error or threw while loading (missing translation, duplicate key) |
 
 Findings are fingerprinted on rule, route, element and, for colour rules only,
 colour scheme; viewports and pixel values are left out, so a defect seen at

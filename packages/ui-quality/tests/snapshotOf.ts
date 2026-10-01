@@ -17,5 +17,6 @@ export const snapshotOf = (
   },
   axe: [],
   screenshot: '/tmp/inbox.png',
+  consoleErrors: [],
   ...overrides,
 })
