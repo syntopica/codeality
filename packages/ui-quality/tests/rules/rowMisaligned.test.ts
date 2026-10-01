@@ -30,6 +30,28 @@ describe('rowMisaligned', () => {
     expect(findings[0]?.message).toContain('x=40 to x=60')
     expect(findings[0]?.subject).toBe('ul > li > a > span.c1')
   })
+  it('ignores siblings laid side by side, such as a row of icons', () => {
+    const table = [
+      [
+        { x: 16, text: 'a' },
+        { x: 40, text: 'b' },
+      ],
+      [
+        { x: 16, text: 'a' },
+        { x: 60, text: 'b' },
+      ],
+      [
+        { x: 16, text: 'a' },
+        { x: 50, text: 'b' },
+      ],
+    ]
+    const flat = rows(table).map((element) =>
+      element.tag === 'li' || element.tag === 'a' || element.tag === 'span'
+        ? { ...element, y: 0 }
+        : element,
+    )
+    expect(rowMisaligned(snapshotOf(flat), ruleContext())).toEqual([])
+  })
   it('accepts aligned columns and groups shorter than minRows', () => {
     const aligned = [0, 1, 2].map(() => [
       { x: 16, text: 'WA' },

@@ -18,3 +18,6 @@ pnpm-lock.yaml
 # Stryker's mutant sandbox and HTML report
 .stryker-tmp/
 reports/mutation/
+
+# turbo rewrites its agent-guidance block unwrapped before every agent-run command
+AGENTS.md

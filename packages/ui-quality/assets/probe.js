@@ -44,9 +44,11 @@
     'file',
   ])
 
+  // A box of one pixel or less paints nothing a person can see: it is the
+  // screen-reader-only pattern, whose clipping is the point.
   const isVisible = (element, style, rect) =>
-    rect.width > 0 &&
-    rect.height > 0 &&
+    rect.width > 1 &&
+    rect.height > 1 &&
     style.display !== 'none' &&
     style.visibility !== 'hidden' &&
     Number(style.opacity) > 0
