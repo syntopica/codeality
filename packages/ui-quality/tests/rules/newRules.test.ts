@@ -92,6 +92,20 @@ describe('iconContrast', () => {
     })
     expect(iconContrast(snapshotOf([header, loose]), ruleContext())).toEqual([])
   })
+  it('composites a tinted button over the fill behind it', () => {
+    const tinted = elementBox({
+      id: 1,
+      parent: 0,
+      tag: 'button',
+      backgroundColor: [30, 59, 138, 0.1],
+    })
+    expect(
+      iconContrast(
+        snapshotOf([header, tinted, bell([30, 59, 138, 1])]),
+        ruleContext(),
+      ),
+    ).toEqual([])
+  })
   it('measures a translucent icon over a white canvas', () => {
     expect(contrastRatio([0, 0, 0, 1], [255, 255, 255, 1])).toBeCloseTo(21)
     const ghost = elementBox({ id: 0, tag: 'button' })
