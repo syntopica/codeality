@@ -61,6 +61,16 @@ describe('textHardCut', () => {
     })
     expect(textHardCut(snapshotOf(elements), ruleContext())).toHaveLength(1)
   })
+  it('accepts two natural texts tying at the longest length in a long column', () => {
+    const table = Array.from({ length: 200 }, (_, index) => [
+      { x: 0, text: String(index).padEnd(10 + (index % 20), 'n') },
+    ])
+    table.push(
+      [{ x: 0, text: cut('first name') }],
+      [{ x: 0, text: cut('second') }],
+    )
+    expect(textHardCut(snapshotOf(rows(table)), ruleContext())).toEqual([])
+  })
   it('accepts an ellipsis, a single longest text and short texts', () => {
     const dotted = [
       `${cut('a').slice(0, 39)}…`,

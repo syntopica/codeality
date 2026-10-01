@@ -1,11 +1,13 @@
 import type { ElementBox } from '@/model/ElementBox.js'
 import { ELLIPSIS_TAILS } from '@/rules/ELLIPSIS_TAILS.js'
 import { spikeLength } from '@/rules/spikeLength.js'
+import { TIES_PER_TEXT } from '@/rules/TIES_PER_TEXT.js'
 
 /**
  * The cells of one column that were cut to a fixed length upstream, ending
  * without an ellipsis. The limit is either the longest length when at least
- * two cells tie there (natural text almost never ties at the maximum) or a
+ * two cells tie there, more on a long column (natural text rarely ties at the
+ * maximum), or a
  * length that spikes above its neighbours.
  */
 export const hardCutColumn = (
@@ -17,7 +19,8 @@ export const hardCutColumn = (
   const longest = Math.max(...texts.map((cell) => cell.textLength))
   const tiesAtLongest =
     longest >= minLength &&
-    texts.filter((cell) => cell.textLength === longest).length >= 2
+    texts.filter((cell) => cell.textLength === longest).length >=
+      Math.max(2, Math.ceil(texts.length / TIES_PER_TEXT))
   const length = tiesAtLongest ? longest : spikeLength(texts, minLength)
   if (length === null) return null
   const cut = texts.filter(
