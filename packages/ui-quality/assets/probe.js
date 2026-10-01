@@ -46,7 +46,10 @@
 
   // A box of one pixel or less paints nothing a person can see: it is the
   // screen-reader-only pattern, whose clipping is the point.
+  // checkVisibility also sees what the box does not: content inside a closed
+  // <details> keeps a layout box but is hidden by content-visibility.
   const isVisible = (element, style, rect) =>
+    element.checkVisibility({ checkOpacity: true, checkVisibilityCSS: true }) &&
     rect.width > 1 &&
     rect.height > 1 &&
     style.display !== 'none' &&
