@@ -5,7 +5,9 @@ import { elementBox } from '@tests/elementBox.js'
  * A list `ul#0` of `li > a` rows, each with cells at the given x positions and
  * texts. Ids are assigned in document order, as the probe does.
  */
-export const rows = (table: { x: number; text: string }[][]): ElementBox[] => {
+export const rows = (
+  table: { x: number; text: string; width?: number }[][],
+): ElementBox[] => {
   const elements: ElementBox[] = [
     elementBox({ id: 0, tag: 'ul', signature: 'ul', selector: 'ul' }),
   ]
@@ -35,6 +37,7 @@ export const rows = (table: { x: number; text: string }[][]): ElementBox[] => {
           signature: `span.c${String(column)}`,
           selector: `ul > li > a > span.c${String(column)}`,
           x: cell.x,
+          ...(cell.width === undefined ? {} : { width: cell.width }),
           y: row * 40,
           text: cell.text.slice(0, 80),
           textLength: cell.text.length,

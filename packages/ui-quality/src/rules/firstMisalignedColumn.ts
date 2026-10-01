@@ -1,7 +1,9 @@
 import type { ElementBox } from '@/model/ElementBox.js'
 
 /**
- * The first column whose cells do not share a left edge, with its spread.
+ * The first column whose cells share neither a left edge nor a right edge,
+ * with the spread of its left edges. A right-aligned column (amounts, or an
+ * email pushed to the end of the row) starts wherever its text is long.
  * Columns are compared while every row has a cell of the same signature at
  * that position; only the first is reported, since every later column
  * inherits its offset.
@@ -21,7 +23,10 @@ export const firstMisalignedColumn = (
     const xs = cells.map((cell) => cell.x)
     const min = Math.min(...xs)
     const max = Math.max(...xs)
-    if (max - min > tolerance) return { column, cell: first, min, max }
+    const rights = cells.map((cell) => cell.x + cell.width)
+    const rightAligned = Math.max(...rights) - Math.min(...rights) <= tolerance
+    if (max - min > tolerance && !rightAligned)
+      return { column, cell: first, min, max }
   }
   return null
 }

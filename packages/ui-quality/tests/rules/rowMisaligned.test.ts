@@ -30,6 +30,17 @@ describe('rowMisaligned', () => {
     expect(findings[0]?.message).toContain('x=40 to x=60')
     expect(findings[0]?.subject).toBe('ul > li > a > span.c1')
   })
+  it('accepts a right-aligned column whose cells end at one x', () => {
+    const table = [
+      { x: 160, width: 40 },
+      { x: 120, width: 80 },
+      { x: 140, width: 60 },
+    ].map(({ x, width }) => [
+      { x: 16, text: 'Ana' },
+      { x, width, text: 'ana@example.com' },
+    ])
+    expect(rowMisaligned(snapshotOf(rows(table)), ruleContext())).toEqual([])
+  })
   it('ignores siblings laid side by side, such as a row of icons', () => {
     const table = [
       [
