@@ -76,6 +76,15 @@ needs.
       `transition-property: all`. Need `boxShadow` and `transitionProperty`.
 - [ ] Enable axe's `target-size` (WCAG 2.2 AA) and check whether the default
       AxeBuilder run already includes it.
+- [ ] 49 more candidates, tiered by value and false-positive risk, with exact
+      triggers and sources (Impeccable's detector registry, Vercel Web Interface
+      Guidelines, Krehel's better-* skills, WCAG 2.2, Carbon, the OpenAI GPT-5.5
+      frontend prompt): `packages/ui-quality/docs/rule-candidates.md`. Smallest
+      step: add the style fields the probe lacks (`fontSize`, `lineHeight`,
+      `letterSpacing`, `fontWeight`, `fontVariantNumeric`, `textAlign`,
+      `boxShadow`, `borderRadius`, padding) to `assets/probe.js`, which unlocks
+      about 15 of them, then ship tier 1 (`numeric-alignment`,
+      `undersized-text`, `type-scale-sprawl`, `tight-leading`, ...).
 
 ## db-quality
 
