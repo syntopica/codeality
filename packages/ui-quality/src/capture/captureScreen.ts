@@ -7,6 +7,7 @@ import { openRoute } from '@/capture/openRoute.js'
 import { recordConsoleErrors } from '@/capture/recordConsoleErrors.js'
 import type { ScreenRequest } from '@/capture/ScreenRequest.js'
 import { screenshotName } from '@/capture/screenshotName.js'
+import { storageInitScript } from '@/capture/storageInitScript.js'
 import type { PageSnapshot } from '@/model/PageSnapshot.js'
 import type { ProbeResult } from '@/model/ProbeResult.js'
 
@@ -20,6 +21,10 @@ export const captureScreen = async ({
   ...request
 }: ScreenRequest): Promise<PageSnapshot> => {
   const consoleLog = recordConsoleErrors(page)
+  if (Object.keys(route.localStorage).length > 0)
+    await page.addInitScript(
+      storageInitScript(request.baseUrl + route.path, route.localStorage),
+    )
   await openRoute(page, route.path, request)
   if (route.waitFor) await page.locator(route.waitFor).first().waitFor()
   // A string, because this package compiles without the DOM library.

@@ -5,7 +5,7 @@ export const ruleContext = (
   overrides: Partial<RuleContext> = {},
 ): RuleContext => ({
   options: RULE_DEFAULTS,
-  route: { path: '/inbox', main: 'main', waitFor: null },
+  route: { path: '/inbox', main: 'main', waitFor: null, localStorage: {} },
   palette: null,
   ...overrides,
 })

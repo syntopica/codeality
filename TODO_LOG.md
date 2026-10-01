@@ -1,3 +1,11 @@
+### 2026-10-01
+
+- [x] ui-quality reaches views held in client state: `routes[].localStorage` is
+      written by an init script before the route loads (guarded by URL so it
+      applies to that route alone). Found on InteliFactu, whose zustand store
+      persists the current view; tested with a fixture that renders nothing
+      without the stored view.
+
 ### 2026-09-30
 
 - [x] Kysely support for `db-quality` is filed in `TODO.md` with its design spec

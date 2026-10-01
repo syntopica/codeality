@@ -54,6 +54,9 @@ pnpm exec codeality-ui init
   for good.
 - `routes[].main` is the main content region (`main` by default); `waitFor` is a
   selector to wait for before measuring.
+- `routes[].localStorage` is written before the route's own scripts run, for an
+  app that keeps its current view in client state instead of the URL. Give each
+  such route a distinct path, such as `/app?view=sales`.
 - `palette` is the set of colours a page may show: root custom properties whose
   names start with one of `variablePrefixes`, plus literal hex values. Without
   it the `palette` rule is off.

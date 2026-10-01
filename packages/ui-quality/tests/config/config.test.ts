@@ -27,7 +27,14 @@ describe('configuration', () => {
     const config = configFromDocument({
       baseUrl: 'https://x.test',
       auth: { loginPath: '/auth/login' },
-      routes: [{ path: '/admin', main: 'main.admin', waitFor: 'ul' }],
+      routes: [
+        {
+          path: '/admin',
+          main: 'main.admin',
+          waitFor: 'ul',
+          localStorage: { view: 'sales' },
+        },
+      ],
       viewports: [{ width: 800, height: 600 }],
       colorSchemes: ['dark'],
       palette: { variablePrefixes: ['--brand-'], colors: ['#fff'] },
@@ -44,6 +51,7 @@ describe('configuration', () => {
       path: '/admin',
       main: 'main.admin',
       waitFor: 'ul',
+      localStorage: { view: 'sales' },
     })
     expect(config.rules.controlInset.minInset).toBe(8)
     expect(config.disable[0]?.route).toBeNull()
@@ -53,6 +61,10 @@ describe('configuration', () => {
     [{ baseUrl: 'x', routes: [] }, 'at least one route'],
     [{ baseUrl: 'x', routes: ['admin'] }, 'start with "/"'],
     [{ baseUrl: 'x', routes: [3] }, 'a path or an object'],
+    [
+      { baseUrl: 'x', routes: [{ path: '/', localStorage: { view: 1 } }] },
+      'localStorage must be an object of strings',
+    ],
     [{ baseUrl: 'x', routes: '/' }, 'must be a list'],
     [{ baseUrl: 'x', routes: ['/'], colorSchemes: ['sepia'] }, 'colorSchemes'],
     [

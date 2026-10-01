@@ -2,6 +2,7 @@ import { expectConfig } from '@/config/expectConfig.js'
 import { isRecord } from '@/config/isRecord.js'
 import type { RouteConfig } from '@/config/RouteConfig.js'
 import { stringField } from '@/config/stringField.js'
+import { stringMap } from '@/config/stringMap.js'
 
 /** A route is either a bare path or an object with a path. */
 export const routeFrom = (value: unknown, index: number): RouteConfig => {
@@ -17,5 +18,6 @@ export const routeFrom = (value: unknown, index: number): RouteConfig => {
       record['waitFor'] === undefined
         ? null
         : stringField(record, 'waitFor', '', where),
+    localStorage: stringMap(record['localStorage'], `${where}.localStorage`),
   }
 }

@@ -24,7 +24,7 @@ const io = (root: string) => {
   }
 }
 
-const project = (routes: string[]): string => {
+const project = (routes: unknown[]): string => {
   const root = mkdtempSync(join(tmpdir(), 'uiq-'))
   writeFileSync(
     join(root, CONFIG),
@@ -117,6 +117,15 @@ describe('codeality-ui', () => {
     const run = io(project(['/triplets.html']))
     expect(await runCli(['check', '--json'], run.io)).toBe(0)
     expect(run.out.join('')).not.toContain('"rule": "palette"')
+  })
+  it('writes the localStorage of a route before the page reads it', async () => {
+    const bare = io(project(['/storage.html']))
+    expect(await runCli(['check'], bare.io)).toBe(1)
+    expect(bare.out.join('')).toContain('blank-route')
+    const seeded = io(
+      project([{ path: '/storage.html', localStorage: { view: 'sales' } }]),
+    )
+    expect(await runCli(['check'], seeded.io)).toBe(0)
   })
   it('fails with exit 2 on a login it cannot perform', async () => {
     const root = project(['/fixed.html'])

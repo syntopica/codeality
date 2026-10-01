@@ -1,0 +1,27 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>A view chosen from localStorage</title>
+    <style>
+      body {
+        margin: 0;
+        font: 16px/1.4 sans-serif;
+        color: #000000;
+        background: #ffffff;
+      }
+      main {
+        padding: 24px;
+      }
+    </style>
+  </head>
+  <body>
+    <main></main>
+    <script>
+      // Like an app whose router lives in a persisted store: no stored view,
+      // nothing rendered.
+      if (localStorage.getItem('view') === 'sales')
+        document.querySelector('main').innerHTML = '<h1>Sales</h1>'
+    </script>
+  </body>
+</html>

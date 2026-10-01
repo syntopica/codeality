@@ -97,12 +97,6 @@ needs.
       then capture and run the rules again), plus an `empty-dialog` rule: an
       open `[role=dialog]` or drawer with no link, button or input besides its
       own close control.
-- [ ] **Views held in client state cannot be routed.** 2026-10-01, InteliFactu
-      switches every screen through a zustand store persisted in `localStorage`
-      (`intelifactu.navigation`), so `/app` measures only the last-used view and
-      Ventas, Tesorería, Contabilidad and Impuestos are unreachable. Smallest
-      step: an optional `localStorage` map per route, written by `addInitScript`
-      before navigation.
 - [ ] **Dark runs duplicate light on class-themed apps.** 2026-10-01, every
       InteliFactu `*.dark.png` equals its light twin because the theme follows a
       stored preference, not `prefers-color-scheme`. Smallest step: detect
