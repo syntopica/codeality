@@ -1,5 +1,11 @@
 ### 2026-10-01
 
+- [x] ui-quality `text-hard-cut` false positive closed: a tie at the longest
+      length now has to outnumber the texts within 10 characters below it
+      (`pilesAtLongest`). InteliFactu's chart of accounts, once paged to 50,
+      showed three whole PGC names of exactly 50 characters over twelve of 40-49
+      and was reported as cut. Regression test in `textHardCut.test.ts`;
+      InteliFactu full sweep afterwards: 1 finding, a real one.
 - [x] ui-quality: `slow-request` times a slow GET a second time once the page
       settled (`retimeSlowRequests`, through the context's own session) and
       reports it only when it is still over `maxMs`; POSTs and server actions

@@ -117,4 +117,17 @@ describe('textHardCut', () => {
     const short = ['same len', 'same len', 'x'].map((text) => [{ x: 0, text }])
     expect(textHardCut(snapshotOf(rows(short)), ruleContext())).toEqual([])
   })
+  it('accepts whole names that tie at the longest length over many just shorter', () => {
+    const table = [
+      'Amortización acumulada del inmovilizado intangible',
+      'Hacienda Pública, acreedora por conceptos fiscales',
+      'Bancos e instituciones de crédito c/c vista, euros',
+      ...Array.from({ length: 4 }, (_, index) =>
+        'Hacienda Pública, deudora por IVA'.padEnd(44 + index, '.'),
+      ),
+      'Proveedores',
+      'Clientes',
+    ].map((text) => [{ x: 0, text }])
+    expect(textHardCut(snapshotOf(rows(table)), ruleContext())).toEqual([])
+  })
 })
