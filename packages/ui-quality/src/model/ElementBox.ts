@@ -26,6 +26,8 @@ export type ElementBox = {
   overflowX: string
   overflowY: string
   position: string
+  /** Computed `flex-wrap`: a wrapping container lays its children out in lines, not rows. */
+  flexWrap: string
   textOverflow: string
   scrollWidth: number
   clientWidth: number

@@ -81,4 +81,49 @@ describe('rowMisaligned', () => {
     ]
     expect(rowMisaligned(snapshotOf(rows(two)), ruleContext())).toEqual([])
   })
+  it('ignores chips in a wrapping flex container', () => {
+    const table = [
+      [
+        { x: 16, text: 'alpha' },
+        { x: 60, text: 'x' },
+      ],
+      [
+        { x: 16, text: 'bravo charlie' },
+        { x: 110, text: 'x' },
+      ],
+      [
+        { x: 16, text: 'delta' },
+        { x: 64, text: 'x' },
+      ],
+    ]
+    const wrapped = rows(table).map((element) =>
+      element.tag === 'ul' ? { ...element, flexWrap: 'wrap' } : element,
+    )
+    expect(rowMisaligned(snapshotOf(wrapped), ruleContext())).toEqual([])
+  })
+  it('ignores links set in running text, whose x follows the words before them', () => {
+    const table = [
+      [
+        { x: 16, text: 'a' },
+        { x: 60, text: 'source' },
+      ],
+      [
+        { x: 16, text: 'b' },
+        { x: 110, text: 'source' },
+      ],
+      [
+        { x: 16, text: 'c' },
+        { x: 64, text: 'source' },
+      ],
+    ]
+    const prose = rows(table).map((element) =>
+      element.tag === 'a'
+        ? { ...element, text: 'See', textLength: 3 }
+        : element,
+    )
+    expect(rowMisaligned(snapshotOf(prose), ruleContext())).toEqual([])
+    expect(rowMisaligned(snapshotOf(rows(table)), ruleContext())).toHaveLength(
+      1,
+    )
+  })
 })

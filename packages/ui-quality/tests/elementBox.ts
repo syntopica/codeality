@@ -24,6 +24,7 @@ export const elementBox = (
   overflowX: 'visible',
   overflowY: 'visible',
   position: 'static',
+  flexWrap: 'nowrap',
   textOverflow: 'clip',
   scrollWidth: 100,
   clientWidth: 100,

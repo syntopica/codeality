@@ -197,6 +197,7 @@
       overflowX: style.overflowX,
       overflowY: style.overflowY,
       position: style.position,
+      flexWrap: style.flexWrap,
       textOverflow: style.textOverflow,
       scrollWidth: element.scrollWidth,
       clientWidth: element.clientWidth,
