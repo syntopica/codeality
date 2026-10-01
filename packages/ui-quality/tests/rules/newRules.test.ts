@@ -1,6 +1,7 @@
 import { describe, expect, it } from 'vitest'
 
 import { contrastRatio } from '@/color/contrastRatio.js'
+import { bareUrl } from '@/rules/bareUrl.js'
 import { fixedOverflow } from '@/rules/fixedOverflow.js'
 import { iconContrast } from '@/rules/iconContrast.js'
 import { rawPlaceholder } from '@/rules/rawPlaceholder.js'
@@ -91,6 +92,29 @@ describe('rawPlaceholder', () => {
       elementBox({ id: 2, text: '[VIBRA LAB S.L.]' }),
     ]
     const findings = rawPlaceholder(snapshotOf(elements), ruleContext())
+    expect(findings.map((finding) => finding.subject)).toEqual(['#e0'])
+  })
+})
+
+describe('bareUrl', () => {
+  it('reports an address in plain text and accepts one inside a link', () => {
+    const elements = [
+      elementBox({
+        id: 0,
+        tag: 'p',
+        text: 'Mira https://example.com/artistas',
+      }),
+      elementBox({ id: 1, tag: 'a', text: 'https://example.com' }),
+      elementBox({ id: 2, tag: 'a' }),
+      elementBox({
+        id: 3,
+        parent: 2,
+        tag: 'span',
+        text: 'https://example.com/x',
+      }),
+      elementBox({ id: 4, tag: 'p', text: 'no address here' }),
+    ]
+    const findings = bareUrl(snapshotOf(elements), ruleContext())
     expect(findings.map((finding) => finding.subject)).toEqual(['#e0'])
   })
 })

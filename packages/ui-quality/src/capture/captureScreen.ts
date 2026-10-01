@@ -21,6 +21,9 @@ export const captureScreen = async ({
   if (route.waitFor) await page.locator(route.waitFor).first().waitFor()
   // A string, because this package compiles without the DOM library.
   await page.evaluate('document.fonts.ready.then(() => true)')
+  // A page that scrolls itself (a chat opening on its last message) would
+  // stitch its sticky header into the middle of a full-page capture.
+  await page.evaluate('window.scrollTo(0, 0)')
   const screenshot = join(screensDir, screenshotName(screen))
   await page.screenshot({ path: screenshot, fullPage: true })
   const axe = axeViolationsOf(await new AxeBuilder({ page }).analyze())

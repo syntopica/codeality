@@ -7,5 +7,5 @@
   with a screenshot per screen and `.codeality-ui/report.json`.
 - Rules: every axe violation as `a11y/<id>`, `text-clipped`, `text-hard-cut`,
   `row-misaligned`, `control-inset`, `content-width`, `palette`, `blank-route`,
-  `horizontal-overflow`, `edge-misaligned`, `fixed-overflow`, `icon-contrast`
-  and `raw-placeholder`.
+  `horizontal-overflow`, `edge-misaligned`, `fixed-overflow`, `icon-contrast`,
+  `raw-placeholder` and `bare-url`.

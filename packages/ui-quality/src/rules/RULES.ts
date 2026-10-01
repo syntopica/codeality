@@ -1,4 +1,5 @@
 import { axeFindings } from '@/rules/axeFindings.js'
+import { bareUrl } from '@/rules/bareUrl.js'
 import { blankRoute } from '@/rules/blankRoute.js'
 import { contentWidth } from '@/rules/contentWidth.js'
 import { controlInset } from '@/rules/controlInset.js'
@@ -15,6 +16,7 @@ import { textHardCut } from '@/rules/textHardCut.js'
 
 export const RULES: Rule[] = [
   axeFindings,
+  bareUrl,
   blankRoute,
   contentWidth,
   controlInset,

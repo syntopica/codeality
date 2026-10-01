@@ -74,6 +74,7 @@ describe('codeality-ui', () => {
       [...new Set(findings.map((finding) => finding.rule))].sort(),
     ).toEqual([
       'a11y/color-contrast',
+      'bare-url',
       'content-width',
       'control-inset',
       'edge-misaligned',
