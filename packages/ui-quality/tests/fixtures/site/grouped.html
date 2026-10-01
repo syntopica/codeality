@@ -1,0 +1,78 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>A list grouped into tables</title>
+    <style>
+      body {
+        margin: 0;
+        font: 16px/1.4 sans-serif;
+        color: #000000;
+        background: #ffffff;
+      }
+      main {
+        padding: 24px;
+      }
+      input {
+        font: inherit;
+        color: #000000;
+        background: #ffffff;
+        border: 1px solid #000000;
+        padding: 4px 8px;
+      }
+      th,
+      td {
+        padding: 4px 12px;
+        text-align: left;
+      }
+    </style>
+  </head>
+  <body>
+    <main>
+      <h1>Accounts</h1>
+      <input type="text" placeholder="Search accounts" />
+      <div id="groups"></div>
+    </main>
+    <div id="dialog" role="dialog" aria-label="Import" hidden>
+      <p>Import accounts</p>
+    </div>
+    <script>
+      // One list rendered as a table per group, rebuilt on every search, so
+      // a matching row can move from the second table to the first. With
+      // #modal a dialog covers the list and the search box ignores input.
+      const modal = location.hash === '#modal'
+      const groups = [
+        { name: 'Consulting', rows: ['Lattice', 'BambooHR'] },
+        { name: 'Software', rows: ['Rippling', 'Gusto', 'Deel'] },
+      ]
+      const render = (query) => {
+        const host = document.getElementById('groups')
+        host.replaceChildren()
+        for (const group of groups) {
+          const rows = group.rows.filter(
+            (row) => modal || row.toLowerCase().includes(query.toLowerCase()),
+          )
+          if (rows.length === 0) continue
+          const table = document.createElement('table')
+          table.innerHTML =
+            '<thead><tr><th>Account</th><th>Group</th></tr></thead><tbody>' +
+            rows
+              .map((row) => `<tr><td>${row}</td><td>${group.name}</td></tr>`)
+              .join('') +
+            '</tbody>'
+          host.append(table)
+        }
+        if (host.childElementCount === 0)
+          host.textContent = 'No accounts match this search.'
+      }
+      document
+        .querySelector('input')
+        .addEventListener('input', (event) => render(event.target.value))
+      render('')
+      if (modal) {
+        document.querySelector('main').setAttribute('aria-hidden', 'true')
+        document.getElementById('dialog').hidden = false
+      }
+    </script>
+  </body>
+</html>

@@ -15,6 +15,9 @@
 - `console-error` leaves out what axe-core logs while it fetches stylesheets to
   read the CSSOM: under a narrow `connect-src` that refusal is the tool's, not
   the page's.
+- Search and empty-result checks read every table of a list grouped into one
+  table per group, and no behaviour check runs while a modal dialog hides the
+  main region.
 - Sign-in happens on the route that bounces to the login page, not on the first
   route only, so a run that starts on a public page still measures the private
   ones; missing credentials fail before the browser starts.

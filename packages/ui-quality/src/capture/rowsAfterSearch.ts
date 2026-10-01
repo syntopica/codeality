@@ -2,7 +2,6 @@ import type { Locator, Page } from 'playwright'
 
 import { FILTER_DEBOUNCE_MS } from '@/capture/FILTER_DEBOUNCE_MS.js'
 import { settlePage } from '@/capture/settlePage.js'
-import { STABLE_INTERVAL_MS } from '@/capture/STABLE_INTERVAL_MS.js'
 import { tableRowTexts } from '@/capture/tableRowTexts.js'
 import { waitForTableChange } from '@/capture/waitForTableChange.js'
 
@@ -19,7 +18,8 @@ export const rowsAfterSearch = async (
 ): Promise<string[]> => {
   const before = await table
     .locator('tbody')
-    .innerText({ timeout: STABLE_INTERVAL_MS })
+    .allInnerTexts()
+    .then((texts) => texts.join('\n'))
     .catch(() => '')
   await box.fill(query)
   await page.waitForTimeout(FILTER_DEBOUNCE_MS)

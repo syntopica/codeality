@@ -13,12 +13,16 @@ export const waitForTableChange = async (
   table: Locator,
   before: string,
 ): Promise<void> => {
+  // A grouped list is several tables, so their bodies are read together.
   const body = table.locator('tbody')
   const deadline = Date.now() + CHANGE_TIMEOUT_MS
   let previous = before
   while (Date.now() < deadline) {
     await page.waitForTimeout(STABLE_INTERVAL_MS)
-    const current = await body.innerText().catch(() => previous)
+    const current = await body
+      .allInnerTexts()
+      .then((texts) => texts.join('\n'))
+      .catch(() => previous)
     if (current !== before && current === previous) return
     previous = current
   }
