@@ -9,7 +9,8 @@ import { SCROLLABLE } from '@/rules/SCROLLABLE.js'
 // second is the `truncate` that never fires because a flex child without
 // `min-width: 0` is as wide as its text. A horizontal scroller between the
 // text and the clipper keeps the text reachable: a tab strip or a wide table
-// scrolled sideways is not cut, so the search stops there.
+// scrolled sideways is not cut, so the search stops there. A clipper that
+// ends in an ellipsis tells the reader, so a suffix it hides is not silent.
 export const textClipped: Rule = (snapshot) => {
   const findings: RawFinding[] = []
   for (const element of snapshot.elements) {
@@ -33,7 +34,12 @@ export const textClipped: Rule = (snapshot) => {
       (ancestor) =>
         clipsOverflow(ancestor) || SCROLLABLE.has(ancestor.overflowX),
     )
-    if (!clipper || !clipsOverflow(clipper)) continue
+    if (
+      !clipper ||
+      !clipsOverflow(clipper) ||
+      clipper.textOverflow === 'ellipsis'
+    )
+      continue
     const past = Math.max(
       element.x + element.width - (clipper.x + clipper.width),
       clipper.x - element.x,
