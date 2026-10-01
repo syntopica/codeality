@@ -42,6 +42,10 @@ describe('textClipped', () => {
     expect(
       textClipped(snapshotOf([box, wrapper, untexted]), ruleContext()),
     ).toEqual([])
+    const scroller = { ...wrapper, overflowX: 'auto' }
+    expect(
+      textClipped(snapshotOf([box, scroller, text]), ruleContext()),
+    ).toEqual([])
     const free = elementBox({ id: 0, text: 'no clipper', width: 5000 })
     expect(textClipped(snapshotOf([free]), ruleContext())).toEqual([])
   })
