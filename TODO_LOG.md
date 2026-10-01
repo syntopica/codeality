@@ -1,5 +1,10 @@
 ### 2026-10-01
 
+- [x] `edge-misaligned` false positives on InteliFactu closed: full-bleed
+      section bands and fixed drawers (82118ab) and contentless absolute
+      ornaments such as a blurred circle overhanging a card (bfc77ee) no longer
+      count as content edges. Verified by a full 45-route sweep of InteliFactu
+      ending with 0 findings.
 - [x] ui-quality reaches views held in client state: `routes[].localStorage` is
       written by an init script before the route loads (guarded by URL so it
       applies to that route alone). Found on InteliFactu, whose zustand store

@@ -105,16 +105,6 @@ needs.
       Empresa select at 1920px cuts the descenders of "AJN Hostelería ESPJ ·
       E67686287" and `text-clipped` stays silent. Smallest step: compare a
       select's line-height plus padding against its content box height.
-- [~] **`edge-misaligned` on a full-bleed landing.** 2026-10-01, InteliFactu `/`
-  reports 168px on both sides at 1440px while header logo and hero text both
-  start at x=136 on the screenshot. Unverified: confirm which element the rule
-  measured as main content before changing it.
-- [ ] **`edge-misaligned` with an overlay drawer open.** 2026-10-01, InteliFactu
-      sales detail and new-invoice drawers (`role="dialog"`, fixed, right edge)
-      report 16px on both sides at 1440px and 390px. A modal panel is not page
-      content; the smallest next step is to exclude elements inside a
-      `[role=dialog]` from the main-content edges, with a fixture that opens
-      one.
 - [ ] `placeholder-fit`: placeholder text wider than its input's text box by
       over 20% ("Buscar rosters, categ…" at 390px). Needs `placeholder` plus a
       canvas `measureText` with the computed font.
