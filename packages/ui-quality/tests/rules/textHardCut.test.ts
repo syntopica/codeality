@@ -11,14 +11,29 @@ const cut = (text: string): string => text.padEnd(40, 'x')
 
 describe('textHardCut', () => {
   it('reports texts that tie at the longest length with no ellipsis', () => {
-    const table = [cut('first'), cut('second'), 'short one'].map((text) => [
-      { x: 0, text },
-    ])
+    const table = [cut('first'), cut('second'), cut('third'), 'short one'].map(
+      (text) => [{ x: 0, text }],
+    )
     const findings = textHardCut(snapshotOf(rows(table)), ruleContext())
     expect(findings).toHaveLength(1)
     expect(findings[0]?.message).toContain(
-      '2 texts in this column stop at exactly 40 characters',
+      '3 texts in this column stop at exactly 40 characters',
     )
+  })
+  it('accepts two natural texts or one repeated text at the longest length', () => {
+    const pair = [
+      cut('first'),
+      cut('second'),
+      'short one',
+      'short two',
+      'short three',
+      'short four',
+    ].map((text) => [{ x: 0, text }])
+    expect(textHardCut(snapshotOf(rows(pair)), ruleContext())).toEqual([])
+    const repeated = [cut('same'), cut('same'), cut('same'), 'short'].map(
+      (text) => [{ x: 0, text }],
+    )
+    expect(textHardCut(snapshotOf(rows(repeated)), ruleContext())).toEqual([])
   })
   it('reports a spike of cut texts hidden by a longer text from another source', () => {
     const table = [
