@@ -36,6 +36,28 @@ describe('edgeMisaligned', () => {
       'header and main content edges differ by 64px on the left and 64px on the right at 1920px; put both on the same container',
     )
   })
+  it('measures a wide table only as far as its scrolling frame shows it', () => {
+    const frame = elementBox({
+      id: 4,
+      parent: 1,
+      x: 288,
+      width: 1600,
+      overflowX: 'auto',
+    })
+    const table = elementBox({
+      id: 5,
+      parent: 4,
+      x: 288,
+      width: 1720,
+      text: 'Total',
+    })
+    expect(
+      edgeMisaligned(
+        snapshotOf([banner, main, search, account, frame, table]),
+        ruleContext(),
+      ),
+    ).toEqual([])
+  })
   it('accepts shared edges, deliberate offsets and pages without a header', () => {
     expect(
       edgeMisaligned(
