@@ -48,6 +48,23 @@ describe('controlInset', () => {
     expect(
       controlInset(snapshotOf([header, wrapper, borderless]), ruleContext()),
     ).toEqual([])
+    const ruled = {
+      ...header,
+      backgroundColor: null,
+      borderWidths: [1, 0, 0, 0] as [number, number, number, number],
+      borderColors: [line, null, null, null] as typeof header.borderColors,
+    }
+    const flush = { ...input(12, 40), x: 0 }
+    expect(
+      controlInset(snapshotOf([ruled, wrapper, flush]), ruleContext()),
+    ).toEqual([])
+    const scroller = { ...wrapper, overflowY: 'auto' }
+    expect(
+      controlInset(
+        snapshotOf([header, scroller, input(80, 40)]),
+        ruleContext(),
+      ),
+    ).toEqual([])
     const orphan = { ...input(0, 64), parent: null }
     expect(controlInset(snapshotOf([orphan]), ruleContext())).toEqual([])
   })
