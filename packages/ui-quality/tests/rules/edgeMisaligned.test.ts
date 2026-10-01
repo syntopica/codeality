@@ -74,6 +74,22 @@ describe('edgeMisaligned', () => {
       ),
     ).toEqual([])
   })
+  it('ignores a contentless ornament positioned past the content edge', () => {
+    const ornament = elementBox({
+      id: 5,
+      parent: 1,
+      x: 1744,
+      width: 160,
+      backgroundColor: [37, 99, 235, 0.2],
+      position: 'absolute',
+    })
+    expect(
+      edgeMisaligned(
+        snapshotOf([banner, main, search, account, list(288, 1600), ornament]),
+        ruleContext(),
+      ),
+    ).toEqual([])
+  })
   it('measures a wide table only as far as its scrolling frame shows it', () => {
     const frame = elementBox({
       id: 4,
