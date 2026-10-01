@@ -97,6 +97,25 @@ needs.
       then capture and run the rules again), plus an `empty-dialog` rule: an
       open `[role=dialog]` or drawer with no link, button or input besides its
       own close control.
+- [ ] **Views held in client state cannot be routed.** 2026-10-01, InteliFactu
+      switches every screen through a zustand store persisted in `localStorage`
+      (`intelifactu.navigation`), so `/app` measures only the last-used view and
+      Ventas, Tesorería, Contabilidad and Impuestos are unreachable. Smallest
+      step: an optional `localStorage` map per route, written by `addInitScript`
+      before navigation.
+- [ ] **Dark runs duplicate light on class-themed apps.** 2026-10-01, every
+      InteliFactu `*.dark.png` equals its light twin because the theme follows a
+      stored preference, not `prefers-color-scheme`. Smallest step: detect
+      identical light/dark captures and warn once, or let `colorSchemes` name a
+      class or `localStorage` key to set.
+- [ ] **Clipped text inside a `<select>` passes.** 2026-10-01, InteliFactu's
+      Empresa select at 1920px cuts the descenders of "AJN Hostelería ESPJ ·
+      E67686287" and `text-clipped` stays silent. Smallest step: compare a
+      select's line-height plus padding against its content box height.
+- [~] **`edge-misaligned` on a full-bleed landing.** 2026-10-01, InteliFactu `/`
+  reports 168px on both sides at 1440px while header logo and hero text both
+  start at x=136 on the screenshot. Unverified: confirm which element the rule
+  measured as main content before changing it.
 - [ ] `placeholder-fit`: placeholder text wider than its input's text box by
       over 20% ("Buscar rosters, categ…" at 390px). Needs `placeholder` plus a
       canvas `measureText` with the computed font.
