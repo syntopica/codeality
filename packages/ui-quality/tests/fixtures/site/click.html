@@ -14,7 +14,12 @@
         font: inherit;
         color: #000000;
         background: #ffffff;
-        border: 1px solid #000000;
+        border: 1px solid #ffffff;
+        transition: border-color 600ms;
+      }
+      /* Measured halfway, the border would be a grey outside the palette. */
+      button.active {
+        border-color: #000000;
       }
       main {
         padding: 24px;
@@ -27,9 +32,12 @@
     </nav>
     <main></main>
     <script>
-      document.querySelector('#customers').addEventListener('click', () => {
-        document.querySelector('main').innerHTML = '<h1>Customers</h1>'
-      })
+      document
+        .querySelector('#customers')
+        .addEventListener('click', (event) => {
+          event.currentTarget.classList.add('active')
+          document.querySelector('main').innerHTML = '<h1>Customers</h1>'
+        })
     </script>
   </body>
 </html>
