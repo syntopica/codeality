@@ -11,11 +11,30 @@
   const context = canvas.getContext('2d', { willReadFrequently: true })
   const colorCache = new Map()
 
+  // The canvas serialises an sRGB colour as #rrggbb or rgba(r, g, b, a) with
+  // its channels intact. A painted pixel is stored premultiplied, so reading
+  // one back at 6% alpha moves #1e3a8a to #223388: the serialised form is used
+  // whenever there is one.
+  const SERIALISED_RGBA = /^rgba\((\d+), (\d+), (\d+), ([\d.]+)\)$/
+  const serialisedRgba = (style) => {
+    if (/^#[\da-f]{6}$/.test(style))
+      return [1, 3, 5].map((i) => parseInt(style.slice(i, i + 2), 16)).concat(1)
+    const match = SERIALISED_RGBA.exec(style)
+    return match ? match.slice(1).map(Number) : null
+  }
+
   // Any CSS colour, oklch and color-mix included, resolved to sRGB bytes by
   // painting one pixel: computed styles may keep the authored colour space.
   const toRgba = (value) => {
     if (!value || !CSS.supports('color', value)) return null
     if (colorCache.has(value)) return colorCache.get(value)
+    context.fillStyle = value
+    const serialised = serialisedRgba(context.fillStyle)
+    if (serialised) {
+      serialised[3] = Math.round(serialised[3] * 100) / 100
+      colorCache.set(value, serialised)
+      return serialised
+    }
     context.clearRect(0, 0, 1, 1)
     context.fillStyle = value
     context.fillRect(0, 0, 1, 1)
