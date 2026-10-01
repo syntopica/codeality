@@ -17,6 +17,8 @@ export type ElementBox = {
   textTail: string
   color: Rgba | null
   backgroundColor: Rgba | null
+  /** A gradient or image paints the background, whose colour cannot be read. */
+  hasBackgroundImage: boolean
   borderWidths: [number, number, number, number]
   borderColors: [Rgba | null, Rgba | null, Rgba | null, Rgba | null]
   overflowX: string

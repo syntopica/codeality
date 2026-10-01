@@ -148,6 +148,7 @@
       textTail: text.slice(-3),
       color: toRgba(style.color),
       backgroundColor: toRgba(style.backgroundColor),
+      hasBackgroundImage: style.backgroundImage !== 'none',
       borderWidths: [
         parseFloat(style.borderTopWidth),
         parseFloat(style.borderRightWidth),

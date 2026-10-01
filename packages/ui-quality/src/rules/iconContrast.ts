@@ -3,6 +3,7 @@ import { contrastRatio } from '@/color/contrastRatio.js'
 import type { RawFinding } from '@/model/RawFinding.js'
 import { backdropOf } from '@/rules/backdropOf.js'
 import { iconOnlyControlOf } from '@/rules/iconOnlyControlOf.js'
+import { imageBehind } from '@/rules/imageBehind.js'
 import { NON_TEXT_MIN_RATIO } from '@/rules/NON_TEXT_MIN_RATIO.js'
 import type { Rule } from '@/rules/Rule.js'
 
@@ -16,6 +17,8 @@ export const iconContrast: Rule = (snapshot) => {
     if (icon.tag !== 'svg' || !icon.color) continue
     const control = iconOnlyControlOf(icon, snapshot.elements)
     if (!control) continue
+    // A gradient button has no single colour to measure against.
+    if (imageBehind(icon, snapshot.elements)) continue
     const backdrop = backdropOf(icon, snapshot.elements)
     const ratio = contrastRatio(blendOver(icon.color, backdrop), backdrop)
     if (ratio >= NON_TEXT_MIN_RATIO) continue

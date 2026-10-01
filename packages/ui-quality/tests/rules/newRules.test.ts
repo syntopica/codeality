@@ -47,6 +47,20 @@ describe('iconContrast', () => {
     )
     expect(findings[0]?.message).toContain('2.54:1')
   })
+  it('skips an icon on a gradient, whose backdrop has no single colour', () => {
+    const gradient = elementBox({
+      id: 1,
+      parent: 0,
+      tag: 'button',
+      hasBackgroundImage: true,
+    })
+    expect(
+      iconContrast(
+        snapshotOf([header, gradient, bell([255, 255, 255, 1])]),
+        ruleContext(),
+      ),
+    ).toEqual([])
+  })
   it('accepts a dark icon, a labelled control and an icon outside a control', () => {
     expect(
       iconContrast(
