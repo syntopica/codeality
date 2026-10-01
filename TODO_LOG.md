@@ -1,5 +1,17 @@
 ### 2026-10-01
 
+- [x] ui-quality behaviour checks for what the user is told:
+      `empty-state-missing` (a search for `zqxjv-0000` that empties the table
+      with nothing in its place), `pagination-broken` (Next/Siguiente keeps the
+      same rows, or Previous/Anterior does not bring page one back) and
+      `action-silent` (the first form of the main region submitted while every
+      non-GET request is answered 500 in the browser, so nothing is written; the
+      screen must change). The action runs after the console and request
+      recorders stop, since its failure is injected. The search is cleared in a
+      `finally`, and its text read tolerates a table replaced by an empty state:
+      without that, InteliFactu Compras remembered the probe search and the next
+      route found no rows. Fixture `table.html#silent`; 103 tests; InteliFactu
+      full sweep 0 behaviour findings.
 - [x] `edge-misaligned` false positives on InteliFactu closed: full-bleed
       section bands and fixed drawers (82118ab) and contentless absolute
       ornaments such as a blurred circle overhanging a card (bfc77ee) no longer

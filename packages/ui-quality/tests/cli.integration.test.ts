@@ -147,6 +147,22 @@ describe('codeality-ui', () => {
     expect(
       findings.map((finding) => `${finding.rule} ${finding.subject}`).sort(),
     ).toEqual(['filter-broken search box', 'sort-broken column "Amount"'])
+    // Every control that changes nothing is waited out in full, so the
+    // broken page takes longer than one that works.
+  }, 120_000)
+  it('searches for nothing, pages the table and fails a save, and reports what the user is not told', async () => {
+    const silent = io(project(['/table.html#silent']))
+    expect(await runCli(['check', '--json'], silent.io)).toBe(1)
+    const { findings } = JSON.parse(silent.out.join('')) as {
+      findings: { rule: string; subject: string }[]
+    }
+    expect(
+      findings.map((finding) => `${finding.rule} ${finding.subject}`).sort(),
+    ).toEqual([
+      'action-silent form submit "Add"',
+      'empty-state-missing search box',
+      'pagination-broken next page',
+    ])
   })
   it('fails with exit 2 on a login it cannot perform', async () => {
     const root = project(['/fixed.html'])

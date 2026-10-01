@@ -130,6 +130,18 @@ needs.
       about 15 of them, then ship tier 1 (`numeric-alignment`,
       `undersized-text`, `type-scale-sprawl`, `tight-leading`, ...).
 
+- [ ] **`slow-request` reports machine load as a slow app.** 2026-10-01, a
+      45-route InteliFactu sweep at load average 15-21 on 16 cores flagged 12
+      requests at 1.0-3.2 s (`/api/fiscal/trays` 3177ms, `/api/admin/overview`
+      1.1-2.1 s); timed right after with curl, every one answered in 37-100 ms.
+      Smallest step: re-time a flagged GET once after the run and report it only
+      if it is still over `maxMs`, or record the load average in the report so a
+      reader can discount it.
+- [ ] **A huge table with no pager is not caught.** `pagination-broken` only
+      tests a pager that exists. Smallest step: flag a main table rendering over
+      a few hundred body rows with no next-page control and no virtual
+      scrolling.
+
 ## db-quality
 
 - [ ] **Kysely support** (filed 2026-09-30; first consumer is the new

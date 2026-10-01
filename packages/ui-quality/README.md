@@ -90,12 +90,23 @@ pnpm exec codeality-ui init
 | `slow-request`        | a document, fetch or server action taking over `maxMs` (1000ms) while the page loaded or was used           |
 | `sort-broken`         | a sortable header that, clicked twice, leaves its column out of order or never reverses it                  |
 | `filter-broken`       | the main search, given a word shown in a row, drops that row, keeps every row, or does not restore on clear |
+| `empty-state-missing` | a search nothing matches empties the table and shows nothing in its place                                   |
+| `pagination-broken`   | an enabled "next page" leaves the same rows, or "previous page" does not bring the first page back          |
+| `action-silent`       | the first form of the main region, submitted while every write fails, changes nothing the user can see      |
 
-`sort-broken` and `filter-broken` come from using the first table of the main
-region once per route, after it is measured: the search box is found by type,
-role or a "search"/"buscar" placeholder, and a header sorts when it holds a
-button or declares `aria-sort`. Sorting may persist in the app, as it would for
-a person.
+The behaviour rules come from using the screen once per route, after it is
+measured. On the first table of the main region: the search box is found by
+type, role or a "search"/"buscar" placeholder; a header sorts when it holds a
+button or declares `aria-sort`; the pager is a button or link named
+"Next"/"Siguiente" (or `›`, `»`) and "Previous"/"Anterior". Sorting and paging
+may persist in the app, as they would for a person.
+
+`action-silent` answers every request other than GET, HEAD and OPTIONS with HTTP
+500 before it leaves the browser, so nothing is written even against production,
+then submits the form. Any new text, a new `role="alert"` or `aria-invalid`
+field, a dialog or a change of address counts as telling the user; a form the
+browser refuses for its own validation passes. Console errors and requests from
+that step are not recorded, since the failure is injected.
 
 Findings are fingerprinted on rule, route, element and, for colour rules only,
 colour scheme; viewports and pixel values are left out, so a defect seen at

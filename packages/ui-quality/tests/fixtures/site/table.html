@@ -41,17 +41,32 @@
         </thead>
         <tbody></tbody>
       </table>
+      <p id="empty"></p>
+      <p>
+        <button type="button" id="previous">Previous</button>
+        <button type="button" id="next">Next</button>
+      </p>
+      <form>
+        <input name="name" aria-label="New customer" />
+        <button type="submit">Add</button>
+      </form>
+      <p id="status"></p>
     </main>
     <script>
       // With #broken the amount header sorts by a hidden id and the search
-      // box ignores what is typed into it.
+      // box ignores what is typed into it. With #silent the search works but
+      // an empty result says nothing, "Next" does nothing and a failed save
+      // is swallowed.
       const broken = location.hash === '#broken'
+      const silent = location.hash === '#silent'
+      const PAGE_SIZE = 3
+      let page = 1
       const customers = [
         { id: 3, name: 'Delta Foods', amount: 120 },
         { id: 1, name: 'Alpha Studio', amount: 45.5 },
-        { id: 5, name: 'Echo Labs', amount: 1200 },
+        { id: 4, name: 'Echo Labs', amount: 1200 },
         { id: 2, name: 'Bravo Shipping', amount: 8 },
-        { id: 4, name: 'Charlie Books', amount: 300 },
+        { id: 5, name: 'Charlie Books', amount: 300 },
       ]
       let query = ''
       let sort = null
@@ -71,7 +86,18 @@
                 : left[key].localeCompare(right[key])
             return sort.descending ? -order : order
           })
-        document.querySelector('tbody').innerHTML = rows
+        const lastPage = Math.max(1, Math.ceil(rows.length / PAGE_SIZE))
+        document.querySelector('#previous').disabled = page === 1
+        document.querySelector('#next').disabled = page === lastPage
+        const visible = rows.slice((page - 1) * PAGE_SIZE, page * PAGE_SIZE)
+        // Like many apps, an empty result replaces the table rather than
+        // emptying it, which is what a search left typed in would hide.
+        document.querySelector('table').hidden = visible.length === 0
+        document.querySelector('#empty').textContent =
+          visible.length === 0 && !silent
+            ? 'No customers match this search'
+            : ''
+        document.querySelector('tbody').innerHTML = visible
           .map(
             (customer) =>
               `<tr><td>${customer.name}</td><td>${customer.amount.toFixed(2)} €</td></tr>`,
@@ -90,7 +116,29 @@
       }
       document.querySelector('input').addEventListener('input', (event) => {
         query = event.target.value
+        page = 1
         render()
+      })
+      document.querySelector('#next').addEventListener('click', () => {
+        if (!silent) page += 1
+        render()
+      })
+      document.querySelector('#previous').addEventListener('click', () => {
+        page -= 1
+        render()
+      })
+      document.querySelector('form').addEventListener('submit', (event) => {
+        event.preventDefault()
+        void fetch('/customers', { method: 'POST' })
+          .then((response) => {
+            if (!response.ok) throw new Error(String(response.status))
+          })
+          .catch(() => {
+            if (silent) return
+            const status = document.querySelector('#status')
+            status.setAttribute('role', 'alert')
+            status.textContent = 'Could not add the customer'
+          })
       })
       render()
     </script>

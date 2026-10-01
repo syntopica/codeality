@@ -1,6 +1,7 @@
 import AxeBuilder from '@axe-core/playwright'
 
 import { axeViolationsOf } from '@/capture/axeViolationsOf.js'
+import { checkAction } from '@/capture/checkAction.js'
 import { clickThrough } from '@/capture/clickThrough.js'
 import { exerciseScreen } from '@/capture/exerciseScreen.js'
 import { openRoute } from '@/capture/openRoute.js'
@@ -39,6 +40,10 @@ export const captureScreen = async ({
   const behaviour = exercise ? await exerciseScreen(page, route.main) : []
   consoleLog.stop()
   requestLog.stop()
+  // After the recorders stop: the failures it injects are not the site's.
+  const actions = exercise
+    ? await checkAction(page, route.main).catch(() => [])
+    : []
   return {
     ...probed,
     screen,
@@ -47,6 +52,6 @@ export const captureScreen = async ({
     consoleErrors: consoleLog.errors,
     clickFailures,
     requests: requestLog.requests,
-    behaviour,
+    behaviour: [...behaviour, ...actions],
   }
 }
