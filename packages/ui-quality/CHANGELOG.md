@@ -9,6 +9,9 @@
   `row-misaligned`, `control-inset`, `content-width`, `palette`, `blank-route`,
   `horizontal-overflow`, `edge-misaligned`, `fixed-overflow`, `icon-contrast`,
   `raw-placeholder`, `bare-url`, `console-error` and `input-zoom`.
+- `auth.storageState` reuses a session the project mints itself (magic link,
+  SSO) instead of filling a password form; a missing file or an expired session
+  fails with exit 2.
 - Sign-in happens on the route that bounces to the login page, not on the first
   route only, so a run that starts on a public page still measures the private
   ones; missing credentials fail before the browser starts.

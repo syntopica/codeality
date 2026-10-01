@@ -48,6 +48,7 @@ describe('configuration', () => {
       ],
     })
     expect(config.auth?.usernameEnv).toBe('UI_QUALITY_USER')
+    expect(config.auth?.storageState).toBeNull()
     expect(config.routes[0]).toEqual({
       path: '/admin',
       main: 'main.admin',
@@ -57,6 +58,14 @@ describe('configuration', () => {
     })
     expect(config.rules.controlInset.minInset).toBe(8)
     expect(config.disable[0]?.route).toBeNull()
+  })
+  it('reads a session file the project mints itself', () => {
+    const config = configFromDocument({
+      baseUrl: 'https://x.test',
+      auth: { storageState: 'e2e/.auth/state.json' },
+      routes: ['/'],
+    })
+    expect(config.auth?.storageState).toBe('e2e/.auth/state.json')
   })
   it.each([
     [[], 'JSON object'],
@@ -84,6 +93,10 @@ describe('configuration', () => {
       'list of strings',
     ],
     [{ baseUrl: 'x', routes: ['/'], auth: 'yes' }, 'auth must be an object'],
+    [
+      { baseUrl: 'x', routes: ['/'], auth: { storageState: '' } },
+      'auth.storageState must be a non-empty string',
+    ],
     [{ baseUrl: 'x', routes: ['/'], rules: [] }, 'rules must be an object'],
     [
       { baseUrl: 'x', routes: ['/'], rules: { palette: 1 } },

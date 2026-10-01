@@ -49,6 +49,11 @@ pnpm exec codeality-ui init
   `.codeality-ui/state.json`. The credentials come from the environment
   variables it names, never from the file; a missing one fails the run before
   the browser starts.
+- `auth.storageState` is for a login no form can perform (a magic link, SSO):
+  the path, from the project root, of a Playwright storageState file the project
+  mints with its own setup. It is read as is, no credentials are asked for, and
+  a route that still bounces to `loginPath` stops the run with exit 2 rather
+  than measuring the login page.
 - Each route is measured once its network goes idle, or 5 seconds after the load
   event when a widget (Cloudflare Turnstile, a chat embed) keeps a request open
   for good.

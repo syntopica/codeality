@@ -33,5 +33,9 @@ export const authFrom = (value: unknown): AuthConfig | null => {
       'button[type=submit]',
       'auth',
     ),
+    storageState:
+      value['storageState'] === undefined
+        ? null
+        : stringField(value, 'storageState', '', 'auth'),
   }
 }

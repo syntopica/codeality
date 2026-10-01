@@ -7,6 +7,7 @@ import { captureScreen } from '@/capture/captureScreen.js'
 import { loadPlaywright } from '@/capture/loadPlaywright.js'
 import { probeSource } from '@/capture/probeSource.js'
 import { screenContextOptions } from '@/capture/screenContextOptions.js'
+import { statePathOf } from '@/capture/statePathOf.js'
 import { STATE_DIR } from '@/config/STATE_DIR.js'
 import type { UiQualityConfig } from '@/config/UiQualityConfig.js'
 
@@ -16,9 +17,9 @@ export const captureScreens = async (
   config: UiQualityConfig,
   log: (text: string) => void,
 ): Promise<CapturedScreen[]> => {
-  assertCredentials(config.auth)
+  const statePath = statePathOf(root, config.auth)
+  assertCredentials(config.auth, statePath)
   const { chromium } = await loadPlaywright()
-  const statePath = join(root, STATE_DIR, 'state.json')
   const screensDir = join(root, STATE_DIR, 'screens')
   mkdirSync(screensDir, { recursive: true })
   const probe = probeSource()
