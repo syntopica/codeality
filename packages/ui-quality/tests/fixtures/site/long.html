@@ -1,0 +1,46 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>A long table with no pager</title>
+    <style>
+      body {
+        margin: 0;
+        font: 16px/1.4 sans-serif;
+        color: #000000;
+        background: #ffffff;
+      }
+      main {
+        padding: 24px;
+      }
+      th,
+      td {
+        padding: 4px 12px;
+        text-align: left;
+      }
+    </style>
+  </head>
+  <body>
+    <main>
+      <h1>Movements</h1>
+      <table>
+        <thead>
+          <tr>
+            <th>Concept</th>
+            <th>Amount</th>
+          </tr>
+        </thead>
+        <tbody></tbody>
+      </table>
+    </main>
+    <script>
+      // Every movement at once, with no pager: 320 rows.
+      const body = document.querySelector('tbody')
+      for (let index = 1; index <= 320; index += 1) {
+        const row = body.insertRow()
+        row.insertCell().textContent = `Movement ${String(index)}`
+        row.insertCell().textContent = String(index * 3)
+      }
+    </script>
+  </body>
+</html>

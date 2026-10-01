@@ -1,5 +1,13 @@
 ### 2026-10-01
 
+- [x] ui-quality: `slow-request` times a slow GET a second time once the page
+      settled (`retimeSlowRequests`, through the context's own session) and
+      reports it only when it is still over `maxMs`; POSTs and server actions
+      are never repeated. New `pagination-missing`: a main table rendering over
+      300 body rows with no next-page control (fixture `long.html`). 112 tests.
+      InteliFactu full sweep at load average 11-13: one `slow-request` left
+      (`GET /api/purchases` 1635 ms, 1973 ms again), down from 12 machine-load
+      findings, and two `pagination-missing` on Contabilidad (428 accounts).
 - [x] ui-quality behaviour checks for what the user is told:
       `empty-state-missing` (a search for `zqxjv-0000` that empties the table
       with nothing in its place), `pagination-broken` (Next/Siguiente keeps the

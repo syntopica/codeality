@@ -5,6 +5,7 @@ export type BehaviourFailure = {
     | 'filter-broken'
     | 'empty-state-missing'
     | 'pagination-broken'
+    | 'pagination-missing'
     | 'action-silent'
   /** The control: a column header, the search box, a pager or a form. */
   subject: string

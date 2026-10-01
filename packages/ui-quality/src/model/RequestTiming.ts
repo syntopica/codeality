@@ -6,4 +6,9 @@ export type RequestTiming = {
   /** The Next.js server action id the request invoked, when it was one. */
   action: string | null
   durationMs: number
+  /**
+   * A second timing of a slow GET, taken once the page had settled; absent
+   * when the request was fast or could not be repeated safely.
+   */
+  retimedMs?: number
 }

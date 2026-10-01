@@ -164,6 +164,16 @@ describe('codeality-ui', () => {
       'pagination-broken next page',
     ])
   })
+  it('reports a table that renders every row with no pager', async () => {
+    const long = io(project(['/long.html']))
+    expect(await runCli(['check', '--json'], long.io)).toBe(1)
+    const { findings } = JSON.parse(long.out.join('')) as {
+      findings: { rule: string; subject: string }[]
+    }
+    expect(
+      findings.map((finding) => `${finding.rule} ${finding.subject}`),
+    ).toEqual(['pagination-missing main table'])
+  })
   it('fails with exit 2 on a login it cannot perform', async () => {
     const root = project(['/fixed.html'])
     const config = JSON.parse(

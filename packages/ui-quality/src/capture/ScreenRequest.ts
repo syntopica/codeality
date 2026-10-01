@@ -13,4 +13,6 @@ export type ScreenRequest = RouteRequest & {
   probe: string
   /** Whether to sort and search the screen after measuring it. */
   exercise: boolean
+  /** Data requests slower than this are timed a second time. */
+  slowRequestMs: number
 }

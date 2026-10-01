@@ -38,4 +38,40 @@ describe('slowRequest', () => {
       ),
     ).toEqual([])
   })
+  it('drops a GET that answered within the threshold when timed again', () => {
+    expect(
+      slowRequest(
+        snapshotOf([], {
+          requests: [
+            {
+              method: 'GET',
+              path: '/api/fiscal/trays',
+              action: null,
+              durationMs: 3177,
+              retimedMs: 62,
+            },
+          ],
+        }),
+        ruleContext(),
+      ),
+    ).toEqual([])
+  })
+  it('reports a GET that is still slow when timed again, with both timings', () => {
+    const findings = slowRequest(
+      snapshotOf([], {
+        requests: [
+          {
+            method: 'GET',
+            path: '/api/reports',
+            action: null,
+            durationMs: 2600,
+            retimedMs: 2400,
+          },
+        ],
+      }),
+      ruleContext(),
+    )
+    expect(findings[0]?.message).toContain('took 2600ms')
+    expect(findings[0]?.message).toContain('2400ms again')
+  })
 })

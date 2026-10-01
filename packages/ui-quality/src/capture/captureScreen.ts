@@ -7,6 +7,7 @@ import { exerciseScreen } from '@/capture/exerciseScreen.js'
 import { openRoute } from '@/capture/openRoute.js'
 import { recordConsoleErrors } from '@/capture/recordConsoleErrors.js'
 import { recordRequests } from '@/capture/recordRequests.js'
+import { retimeSlowRequests } from '@/capture/retimeSlowRequests.js'
 import type { ScreenRequest } from '@/capture/ScreenRequest.js'
 import { screenshotPage } from '@/capture/screenshotPage.js'
 import { storageInitScript } from '@/capture/storageInitScript.js'
@@ -21,6 +22,7 @@ export const captureScreen = async ({
   screensDir,
   probe,
   exercise,
+  slowRequestMs,
   ...request
 }: ScreenRequest): Promise<PageSnapshot> => {
   const consoleLog = recordConsoleErrors(page)
@@ -44,6 +46,11 @@ export const captureScreen = async ({
   const actions = exercise
     ? await checkAction(page, route.main).catch(() => [])
     : []
+  const requests = await retimeSlowRequests(
+    page,
+    requestLog.requests,
+    slowRequestMs,
+  )
   return {
     ...probed,
     screen,
@@ -51,7 +58,7 @@ export const captureScreen = async ({
     screenshot,
     consoleErrors: consoleLog.errors,
     clickFailures,
-    requests: requestLog.requests,
+    requests,
     behaviour: [...behaviour, ...actions],
   }
 }

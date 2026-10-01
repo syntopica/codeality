@@ -49,6 +49,7 @@ export const captureScreens = async (
             screensDir,
             probe,
             exercise,
+            slowRequestMs: config.rules.slowRequest.maxMs,
           })
           captured.push({ route, snapshot })
         }
