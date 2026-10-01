@@ -127,6 +127,15 @@ describe('codeality-ui', () => {
     )
     expect(await runCli(['check'], seeded.io)).toBe(0)
   })
+  it('clicks through to a screen, and reports a click with no target', async () => {
+    const reached = io(
+      project([{ path: '/click.html', click: ['#customers'] }]),
+    )
+    expect(await runCli(['check'], reached.io)).toBe(0)
+    const missed = io(project([{ path: '/click.html', click: ['#suppliers'] }]))
+    expect(await runCli(['check'], missed.io)).toBe(1)
+    expect(missed.out.join('')).toContain('click-failed')
+  })
   it('fails with exit 2 on a login it cannot perform', async () => {
     const root = project(['/fixed.html'])
     const config = JSON.parse(

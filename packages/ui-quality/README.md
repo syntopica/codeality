@@ -57,6 +57,9 @@ pnpm exec codeality-ui init
 - `routes[].localStorage` is written before the route's own scripts run, for an
   app that keeps its current view in client state instead of the URL. Give each
   such route a distinct path, such as `/app?view=sales`.
+- `routes[].click` is a list of Playwright selectors clicked in order after the
+  route loads, to measure a tab, drawer or dialog. A selector that matches
+  nothing is reported as `click-failed` and the run carries on.
 - `palette` is the set of colours a page may show: root custom properties whose
   names start with one of `variablePrefixes`, plus literal hex values. Without
   it the `palette` rule is off.
@@ -82,6 +85,7 @@ pnpm exec codeality-ui init
 | `raw-placeholder`     | a bracketed lower-case stand-in such as `[media message]` shown as content                                |
 | `bare-url`            | a web address shown as plain text outside any link                                                        |
 | `console-error`       | the page logged a console error or threw while loading (missing translation, duplicate key)               |
+| `click-failed`        | a configured click found nothing to click, so the screen behind it was not measured                       |
 | `input-zoom`          | a field the user types into sets text under 16px below 1024px wide, so iOS Safari zooms the page on focus |
 
 Findings are fingerprinted on rule, route, element and, for colour rules only,

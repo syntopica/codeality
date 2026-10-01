@@ -90,13 +90,12 @@ needs.
       already captured. Smallest step: in `captureScreens`, retry a route once
       on `ERR_ABORTED`, then record it as a `capture-failed` finding and carry
       on, so exit 3 is kept for browser-level failures.
-- [ ] **Interaction states are never captured.** 2026-10-01, the TienesLaVibra
-      phone menu opened onto a drawer with no links and every rule passed,
-      because capture only sees the resting page. Smallest step: an optional
-      `interactions` list per route in `codeality-ui.json` (a selector to click,
-      then capture and run the rules again), plus an `empty-dialog` rule: an
-      open `[role=dialog]` or drawer with no link, button or input besides its
-      own close control.
+- [~] **Interaction states are never captured.** 2026-10-01, the TienesLaVibra
+  phone menu opened onto a drawer with no links and every rule passed, because
+  capture only sees the resting page. `routes[].click` now clicks selectors in
+  order before measuring (`click-failed` when one matches nothing). Left: an
+  `empty-dialog` rule, an open `[role=dialog]` or drawer with no link, button or
+  input besides its own close control.
 - [ ] **Dark runs duplicate light on class-themed apps.** 2026-10-01, every
       InteliFactu `*.dark.png` equals its light twin because the theme follows a
       stored preference, not `prefers-color-scheme`. Smallest step: detect

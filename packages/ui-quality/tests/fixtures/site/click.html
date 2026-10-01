@@ -1,0 +1,35 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>A screen behind a tab</title>
+    <style>
+      body {
+        margin: 0;
+        font: 16px/1.4 sans-serif;
+        color: #000000;
+        background: #ffffff;
+      }
+      button {
+        font: inherit;
+        color: #000000;
+        background: #ffffff;
+        border: 1px solid #000000;
+      }
+      main {
+        padding: 24px;
+      }
+    </style>
+  </head>
+  <body>
+    <nav>
+      <button type="button" id="customers">Customers</button>
+    </nav>
+    <main></main>
+    <script>
+      document.querySelector('#customers').addEventListener('click', () => {
+        document.querySelector('main').innerHTML = '<h1>Customers</h1>'
+      })
+    </script>
+  </body>
+</html>

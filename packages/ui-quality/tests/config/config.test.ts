@@ -33,6 +33,7 @@ describe('configuration', () => {
           main: 'main.admin',
           waitFor: 'ul',
           localStorage: { view: 'sales' },
+          click: ['role=tab[name="Clientes"]'],
         },
       ],
       viewports: [{ width: 800, height: 600 }],
@@ -52,6 +53,7 @@ describe('configuration', () => {
       main: 'main.admin',
       waitFor: 'ul',
       localStorage: { view: 'sales' },
+      click: ['role=tab[name="Clientes"]'],
     })
     expect(config.rules.controlInset.minInset).toBe(8)
     expect(config.disable[0]?.route).toBeNull()

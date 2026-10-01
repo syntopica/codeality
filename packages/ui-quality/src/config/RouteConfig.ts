@@ -9,4 +9,9 @@ export type RouteConfig = {
    * app that keeps the current view in client state rather than in its URL.
    */
   localStorage: Record<string, string>
+  /**
+   * Playwright selectors clicked in order once the route has loaded, to reach a
+   * tab, drawer or dialog that only exists after an interaction.
+   */
+  click: string[]
 }

@@ -3,6 +3,7 @@ import { join } from 'node:path'
 import AxeBuilder from '@axe-core/playwright'
 
 import { axeViolationsOf } from '@/capture/axeViolationsOf.js'
+import { clickThrough } from '@/capture/clickThrough.js'
 import { openRoute } from '@/capture/openRoute.js'
 import { recordConsoleErrors } from '@/capture/recordConsoleErrors.js'
 import type { ScreenRequest } from '@/capture/ScreenRequest.js'
@@ -27,6 +28,7 @@ export const captureScreen = async ({
     )
   await openRoute(page, route.path, request)
   if (route.waitFor) await page.locator(route.waitFor).first().waitFor()
+  const clickFailures = await clickThrough(page, route.click)
   // A string, because this package compiles without the DOM library.
   await page.evaluate('document.fonts.ready.then(() => true)')
   // A page that scrolls itself (a chat opening on its last message) would
@@ -45,5 +47,6 @@ export const captureScreen = async ({
     axe,
     screenshot,
     consoleErrors: consoleLog.errors,
+    clickFailures,
   }
 }

@@ -9,4 +9,6 @@ export type PageSnapshot = ProbeResult & {
   screenshot: string
   /** Console errors and uncaught exceptions logged while the page loaded. */
   consoleErrors: string[]
+  /** The configured clicks that found nothing to click, with the reason. */
+  clickFailures: string[]
 }
