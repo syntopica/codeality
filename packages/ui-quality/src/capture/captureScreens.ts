@@ -1,9 +1,9 @@
 import { existsSync, mkdirSync } from 'node:fs'
 import { join } from 'node:path'
 
+import { assertCredentials } from '@/capture/assertCredentials.js'
 import type { CapturedScreen } from '@/capture/CapturedScreen.js'
 import { captureScreen } from '@/capture/captureScreen.js'
-import { ensureSession } from '@/capture/ensureSession.js'
 import { loadPlaywright } from '@/capture/loadPlaywright.js'
 import { probeSource } from '@/capture/probeSource.js'
 import { STATE_DIR } from '@/config/STATE_DIR.js'
@@ -15,15 +15,14 @@ export const captureScreens = async (
   config: UiQualityConfig,
   log: (text: string) => void,
 ): Promise<CapturedScreen[]> => {
+  assertCredentials(config.auth)
   const { chromium } = await loadPlaywright()
-  const stateDir = join(root, STATE_DIR)
-  const statePath = join(stateDir, 'state.json')
-  const screensDir = join(stateDir, 'screens')
+  const statePath = join(root, STATE_DIR, 'state.json')
+  const screensDir = join(root, STATE_DIR, 'screens')
   mkdirSync(screensDir, { recursive: true })
   const probe = probeSource()
   const browser = await chromium.launch()
   try {
-    await ensureSession(browser, config, statePath)
     const captured: CapturedScreen[] = []
     for (const colorScheme of config.colorSchemes) {
       for (const viewport of config.viewports) {
@@ -43,7 +42,9 @@ export const captureScreens = async (
           )
           const snapshot = await captureScreen({
             page,
-            url: config.baseUrl + route.path,
+            baseUrl: config.baseUrl,
+            auth: config.auth,
+            statePath,
             route,
             screen,
             screensDir,

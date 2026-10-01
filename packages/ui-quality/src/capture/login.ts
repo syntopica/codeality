@@ -1,3 +1,4 @@
+import { gotoSettled } from '@/capture/gotoSettled.js'
 import type { Page } from 'playwright'
 
 import { credentialFrom } from '@/capture/credentialFrom.js'
@@ -8,7 +9,7 @@ export const login = async (
   baseUrl: string,
   auth: AuthConfig,
 ): Promise<void> => {
-  await page.goto(baseUrl + auth.loginPath, { waitUntil: 'networkidle' })
+  await gotoSettled(page, baseUrl + auth.loginPath)
   await page
     .locator(auth.usernameSelector)
     .first()

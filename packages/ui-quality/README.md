@@ -44,9 +44,14 @@ pnpm exec codeality-ui init
 }
 ```
 
-- `auth` fills a username and password form once and caches the session in
+- `auth` fills a username and password form when a route bounces to `loginPath`,
+  so public and private routes can share one run, and caches the session in
   `.codeality-ui/state.json`. The credentials come from the environment
-  variables it names, never from the file.
+  variables it names, never from the file; a missing one fails the run before
+  the browser starts.
+- Each route is measured once its network goes idle, or 5 seconds after the load
+  event when a widget (Cloudflare Turnstile, a chat embed) keeps a request open
+  for good.
 - `routes[].main` is the main content region (`main` by default); `waitFor` is a
   selector to wait for before measuring.
 - `palette` is the set of colours a page may show: root custom properties whose

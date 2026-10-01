@@ -9,3 +9,8 @@
   `row-misaligned`, `control-inset`, `content-width`, `palette`, `blank-route`,
   `horizontal-overflow`, `edge-misaligned`, `fixed-overflow`, `icon-contrast`,
   `raw-placeholder` and `bare-url`.
+- Sign-in happens on the route that bounces to the login page, not on the first
+  route only, so a run that starts on a public page still measures the private
+  ones; missing credentials fail before the browser starts.
+- A page that never lets its network go idle is measured 5 seconds after the
+  load event instead of failing the run on a timeout.
