@@ -61,6 +61,13 @@ better-ui, frontend-design). Shipped from that review: `edge-misaligned`,
 reading nested rows and length spikes. Each item below names the probe fields it
 needs.
 
+- [ ] **One failed navigation aborts the whole run.** 2026-10-01, a 66-route
+      admin capture died at route 31 with
+      `page.goto: net::ERR_ABORTED at     /admin/leads` (the dev server
+      hot-reloaded mid-navigation) and exited 3 with no report for the 30 routes
+      already captured. Smallest step: in `captureScreens`, retry a route once
+      on `ERR_ABORTED`, then record it as a `capture-failed` finding and carry
+      on, so exit 3 is kept for browser-level failures.
 - [ ] `placeholder-fit`: placeholder text wider than its input's text box by
       over 20% ("Buscar rosters, categ…" at 390px). Needs `placeholder` plus a
       canvas `measureText` with the computed font.
