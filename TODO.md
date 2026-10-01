@@ -83,6 +83,12 @@ better-ui, frontend-design). Shipped from that review: `edge-misaligned`,
 reading nested rows and length spikes. Each item below names the probe fields it
 needs.
 
+- [ ] **`content-width` fires on reading and sign-in pages.** 2026-10-01,
+      verticagtm: once its legal, auth and status pages gained a `<main>`, ten
+      routes warned (legal prose at a 720px measure, a 448px sign-in card), all
+      intended and kept with `disable` entries. The rule targets data pages.
+      Smallest step: skip a main region with no table, grid or repeated row
+      group, and test it on a prose fixture and a single-form fixture.
 - [ ] **One failed navigation aborts the whole run.** 2026-10-01, a 66-route
       admin capture died at route 31 with
       `page.goto: net::ERR_ABORTED at     /admin/leads` (the dev server
