@@ -28,6 +28,8 @@ export const elementBox = (
   scrollHeight: 20,
   clientHeight: 20,
   isControl: false,
+  fontSize: 16,
+  isTextEntry: false,
   isMain: false,
   isBanner: false,
   ...overrides,

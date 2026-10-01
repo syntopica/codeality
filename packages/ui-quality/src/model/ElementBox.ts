@@ -28,6 +28,13 @@ export type ElementBox = {
   scrollHeight: number
   clientHeight: number
   isControl: boolean
+  /** Computed font size in CSS pixels. */
+  fontSize: number
+  /**
+   * A field the user types into (text-like input, textarea, select, or the root
+   * of a contenteditable region): focusing one opens the keyboard.
+   */
+  isTextEntry: boolean
   isMain: boolean
   /** The page-level header (banner landmark). */
   isBanner: boolean

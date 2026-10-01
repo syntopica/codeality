@@ -94,6 +94,19 @@
     return !(element.tagName === 'INPUT' && HIDDEN_INPUTS.has(element.type))
   }
 
+  // Inputs that open the keyboard; buttons and pickers rendered as inputs do not.
+  const NON_TYPING_INPUTS = new Set(['button', 'submit', 'reset', 'image'])
+  const isTextEntry = (element) => {
+    if (element.isContentEditable)
+      return !element.parentElement || !element.parentElement.isContentEditable
+    if (element.tagName === 'TEXTAREA' || element.tagName === 'SELECT')
+      return true
+    if (element.tagName !== 'INPUT') return false
+    return (
+      !HIDDEN_INPUTS.has(element.type) && !NON_TYPING_INPUTS.has(element.type)
+    )
+  }
+
   const ids = new Map()
   const elements = []
   const main = document.querySelector(mainSelector || 'main')
@@ -156,6 +169,8 @@
       scrollHeight: element.scrollHeight,
       clientHeight: element.clientHeight,
       isControl: isControl(element),
+      fontSize: parseFloat(style.fontSize),
+      isTextEntry: isTextEntry(element),
       isMain: element === main,
       isBanner: element === banner,
     })

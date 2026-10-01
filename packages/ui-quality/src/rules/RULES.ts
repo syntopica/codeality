@@ -8,6 +8,7 @@ import { edgeMisaligned } from '@/rules/edgeMisaligned.js'
 import { fixedOverflow } from '@/rules/fixedOverflow.js'
 import { horizontalOverflow } from '@/rules/horizontalOverflow.js'
 import { iconContrast } from '@/rules/iconContrast.js'
+import { inputZoom } from '@/rules/inputZoom.js'
 import { palette } from '@/rules/palette.js'
 import { rawPlaceholder } from '@/rules/rawPlaceholder.js'
 import { rowMisaligned } from '@/rules/rowMisaligned.js'
@@ -26,6 +27,7 @@ export const RULES: Rule[] = [
   fixedOverflow,
   horizontalOverflow,
   iconContrast,
+  inputZoom,
   palette,
   rawPlaceholder,
   rowMisaligned,
