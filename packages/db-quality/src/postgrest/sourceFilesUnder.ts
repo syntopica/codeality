@@ -1,9 +1,9 @@
 import { readdirSync } from 'node:fs'
 import { join, relative } from 'node:path'
 
-import { ConfigError } from '@/config/ConfigError.js'
 import { isDirectory } from '@/config/isDirectory.js'
 import { SKIPPED_SOURCE_DIRS } from '@/postgrest/SKIPPED_SOURCE_DIRS.js'
+import { ConfigError } from '@syntopica/gate-kit/ConfigError'
 
 /** Every .ts/.tsx under the roots, relative to root, tests and declarations excluded, sorted. */
 export const sourceFilesUnder = (root: string, roots: string[]): string[] => {

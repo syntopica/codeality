@@ -1,7 +1,7 @@
-import { ConfigError } from '@/config/ConfigError.js'
 import { isStringList } from '@/config/isStringList.js'
 import type { SqliteConfig } from '@/config/SqliteConfig.js'
 import { sqliteQueriesSectionFrom } from '@/config/sqliteQueriesSectionFrom.js'
+import { ConfigError } from '@syntopica/gate-kit/ConfigError'
 
 export const sqliteSectionFrom = (
   raw: Record<string, unknown>,

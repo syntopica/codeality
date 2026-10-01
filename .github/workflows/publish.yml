@@ -26,6 +26,7 @@ on:
           - create-baseline
           - quality-config
           - db-quality
+          - ui-quality
 
 permissions:
   contents: read

@@ -121,23 +121,23 @@
     }
   },
   "dependencies": {
-    "@typescript-eslint/utils": "^8.70.0"
+    "@typescript-eslint/utils": "^8.71.0"
   },
   "devDependencies": {
     "@arethetypeswrong/cli": "^0.18.5",
     "@syntopica/tsconfig": "workspace:*",
     "@stryker-mutator/core": "^10.0.0",
     "@stryker-mutator/vitest-runner": "^10.0.0",
-    "@types/node": "^26.6.2",
-    "@typescript-eslint/parser": "^8.70.0",
-    "@typescript-eslint/rule-tester": "^8.70.0",
-    "@vitest/coverage-v8": "^5.0.1",
+    "@types/node": "^26.6.3",
+    "@typescript-eslint/parser": "^8.71.0",
+    "@typescript-eslint/rule-tester": "^8.71.0",
+    "@vitest/coverage-v8": "^5.0.3",
     "eslint": "^10.11.0",
     "eslint-plugin-regexp": "^3.3.1",
     "publint": "^0.3.24",
-    "tsc-alias": "^1.9.5",
+    "tsc-alias": "^1.9.7",
     "tsup": "^8.5.1",
     "typescript": "npm:@typescript/typescript6@^6.0.2",
-    "vitest": "^5.0.1"
+    "vitest": "^5.0.3"
   }
 }

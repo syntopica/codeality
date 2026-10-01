@@ -1,4 +1,4 @@
-import { ConfigError } from '@/config/ConfigError.js'
+import { ConfigError } from '@syntopica/gate-kit/ConfigError'
 
 /** The named section as an object, undefined when absent, ConfigError when it is not an object. */
 export const configSection = (

@@ -1,8 +1,8 @@
 import { COMMANDS } from '@/cli/COMMANDS.js'
 import { USAGE } from '@/cli/USAGE.js'
 import type { CommandIo } from '@/commands/CommandIo.js'
-import { ExitCode } from '@/model/ExitCode.js'
 import { PACKAGE_VERSION } from '@/packageVersion.js'
+import { ExitCode } from '@syntopica/gate-kit/ExitCode'
 
 /** Dispatches the argument vector (without the node and script entries) and returns the exit code. */
 export const runCli = (argv: string[], io: CommandIo): number => {

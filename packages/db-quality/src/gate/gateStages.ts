@@ -3,12 +3,12 @@ import { join } from 'node:path'
 
 import { runAudit } from '@/audit/runAudit.js'
 import { BASELINE_FILENAME } from '@/baseline/BASELINE_FILENAME.js'
-import { classifyFindings } from '@/baseline/classifyFindings.js'
-import { readBaseline } from '@/baseline/readBaseline.js'
 import type { CheckContext } from '@/check/CheckContext.js'
 import { runCheck } from '@/check/runCheck.js'
 import { perfStage } from '@/gate/perfStage.js'
 import type { Stage } from '@/gate/Stage.js'
+import { classifyFindings } from '@syntopica/gate-kit/classifyFindings'
+import { readBaseline } from '@syntopica/gate-kit/readBaseline'
 
 // A recorded baseline is the migration plan; the gate must honour it, or
 // recording debt could never turn the gate green. Audit runs when the project
@@ -22,7 +22,10 @@ export const gateStages = (context: CheckContext): Stage[] => {
       ? {
           name: 'baseline-check',
           run: () =>
-            classifyFindings(runCheck(context), readBaseline(context.root)).new,
+            classifyFindings(
+              runCheck(context),
+              readBaseline(context.root, BASELINE_FILENAME, 'codeality-db'),
+            ).new,
         }
       : { name: 'check', run: () => runCheck(context) },
     {

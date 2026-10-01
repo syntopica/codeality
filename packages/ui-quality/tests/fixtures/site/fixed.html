@@ -1,0 +1,163 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>Inbox (fixed)</title>
+    <style>
+      :root {
+        --brand-pink: #f027a5;
+        --brand-pink-dark: #a3166e;
+        --brand-ink: #111827;
+        --brand-surface: #f9fafb;
+        --brand-line: #e5e7eb;
+        --brand-muted: #4b5563;
+        color-scheme: light;
+      }
+      * {
+        box-sizing: border-box;
+      }
+      body {
+        margin: 0;
+        font: 14px/1.4 sans-serif;
+        color: var(--brand-ink);
+        background: var(--brand-surface);
+      }
+      aside {
+        position: fixed;
+        inset: 0 auto 0 0;
+        width: 256px;
+        background: var(--brand-ink);
+        color: #ffffff;
+        padding: 16px;
+      }
+      .shell {
+        padding-left: 256px;
+      }
+      header {
+        display: flex;
+        align-items: center;
+        gap: 24px;
+        height: 64px;
+        background: #ffffff;
+        border-bottom: 1px solid var(--brand-line);
+        padding: 0 32px;
+      }
+      header input {
+        flex: 1;
+        height: 40px;
+        border: 1px solid var(--brand-line);
+        border-radius: 8px;
+        padding: 0 12px;
+        font: inherit;
+        color: var(--brand-ink);
+        background: #ffffff;
+      }
+      main {
+        display: block;
+        padding: 32px;
+      }
+      h1 {
+        margin: 0 0 16px;
+        font-size: 24px;
+      }
+      ul {
+        list-style: none;
+        margin: 0;
+        padding: 0;
+        border: 1px solid var(--brand-line);
+        border-radius: 8px;
+        background: #ffffff;
+      }
+      li {
+        border-top: 1px solid var(--brand-line);
+      }
+      li:first-child {
+        border-top: 0;
+      }
+      li a {
+        display: grid;
+        grid-template-columns: 48px 200px minmax(0, 1fr) 32px;
+        align-items: center;
+        gap: 12px;
+        padding: 12px 16px;
+        text-decoration: none;
+        color: var(--brand-ink);
+      }
+      .label {
+        font-size: 11px;
+        color: var(--brand-muted);
+        text-transform: uppercase;
+      }
+      .name {
+        font-weight: 600;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+      }
+      .preview {
+        color: var(--brand-muted);
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+      }
+      .badge {
+        justify-self: end;
+        background: var(--brand-pink-dark);
+        color: #ffffff;
+        border-radius: 9999px;
+        padding: 0 8px;
+        font-size: 11px;
+      }
+    </style>
+  </head>
+  <body>
+    <aside>TienesLaVibra</aside>
+    <div class="shell">
+      <header>
+        <input
+          type="search"
+          aria-label="Search"
+          placeholder="Search rosters"
+        /><span>info@example.com</span>
+      </header>
+      <main>
+        <h1>Inbox</h1>
+        <ul>
+          <li>
+            <a href="#"
+              ><span class="label">wa</span><span class="name">Sin nombre</span
+              ><span class="preview">[media message]</span
+              ><span class="badge">1</span></a
+            >
+          </li>
+          <li>
+            <a href="#"
+              ><span class="label">email</span><span class="name">Arbaz</span
+              ><span class="preview">Ready to launch your mobile app?</span
+              ><span class="badge">1</span></a
+            >
+          </li>
+          <li>
+            <a href="#"
+              ><span class="label">wa</span><span class="name">Sin nombre</span
+              ><span class="preview"
+                >Hola, gracias por contactar con Vibra Eventos. En este momento
+                estamos fuera de horario, pero en cuanto estemos disponibles te
+                responderemos con toda la informacion que necesites para tu
+                evento y tu presupuesto</span
+              ><span class="badge">1</span></a
+            >
+          </li>
+          <li>
+            <a href="#"
+              ><span class="label">email</span
+              ><span class="name">Banco Santander</span
+              ><span class="preview">Verificacion de identidad electronica</span
+              ><span class="badge">1</span></a
+            >
+          </li>
+        </ul>
+      </main>
+    </div>
+  </body>
+</html>

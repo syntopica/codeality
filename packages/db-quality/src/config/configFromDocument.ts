@@ -1,11 +1,11 @@
 import { auditSectionFrom } from '@/config/auditSectionFrom.js'
 import { CONFIG_KEYS } from '@/config/CONFIG_KEYS.js'
-import { ConfigError } from '@/config/ConfigError.js'
 import { configSection } from '@/config/configSection.js'
 import type { DbQualityConfig } from '@/config/DbQualityConfig.js'
 import { disableEntriesFrom } from '@/config/disableEntriesFrom.js'
 import { perfSectionFrom } from '@/config/perfSectionFrom.js'
 import { stackSectionsFrom } from '@/config/stackSectionsFrom.js'
+import { ConfigError } from '@syntopica/gate-kit/ConfigError'
 
 /** Validates a parsed codeality-db.json and fills its defaults; ConfigError on any defect. */
 export const configFromDocument = (document: unknown): DbQualityConfig => {

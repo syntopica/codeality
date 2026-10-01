@@ -1,0 +1,10 @@
+{
+  "axe-core": {
+    "reason": "MPL-2.0 is file-level copyleft: axe-core is used unmodified as a runtime dependency, which places no obligation on this MIT package. It is the WCAG engine the contrast and accessibility rules rely on, and has no permissive equivalent of the same coverage.",
+    "expires": "2027-10-01"
+  },
+  "@axe-core/playwright": {
+    "reason": "MPL-2.0, the Playwright binding of axe-core; used unmodified for the same reason.",
+    "expires": "2027-10-01"
+  }
+}

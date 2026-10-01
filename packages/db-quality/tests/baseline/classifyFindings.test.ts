@@ -1,8 +1,8 @@
 import { describe, expect, it } from 'vitest'
 
-import { classifyFindings } from '@/baseline/classifyFindings.js'
 import { renderClassified } from '@/baseline/renderClassified.js'
 import type { Finding } from '@/model/Finding.js'
+import { classifyFindings } from '@syntopica/gate-kit/classifyFindings'
 
 const finding = (fingerprint: string): Finding => ({
   code: 'BDB001',

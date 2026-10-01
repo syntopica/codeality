@@ -1,7 +1,7 @@
 import { describe, expect, it } from 'vitest'
 
-import { parseCommandArgs } from '@/commands/parseCommandArgs.js'
-import { ConfigError } from '@/config/ConfigError.js'
+import { ConfigError } from '@syntopica/gate-kit/ConfigError'
+import { parseCommandArgs } from '@syntopica/gate-kit/parseCommandArgs'
 
 describe('parseCommandArgs', () => {
   it('parses flags and positionals', () => {

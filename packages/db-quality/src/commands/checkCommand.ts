@@ -3,11 +3,11 @@ import { renderFindingsJson } from '@/check/renderFindingsJson.js'
 import { runCheck } from '@/check/runCheck.js'
 import { sqliteQueriesNotice } from '@/check/sqliteQueriesNotice.js'
 import type { CommandIo } from '@/commands/CommandIo.js'
-import { parseCommandArgs } from '@/commands/parseCommandArgs.js'
-import { reportCommandError } from '@/commands/reportCommandError.js'
 import { legacyConfigNotice } from '@/config/legacyConfigNotice.js'
 import { readConfig } from '@/config/readConfig.js'
-import { ExitCode } from '@/model/ExitCode.js'
+import { ExitCode } from '@syntopica/gate-kit/ExitCode'
+import { parseCommandArgs } from '@syntopica/gate-kit/parseCommandArgs'
+import { reportCommandError } from '@syntopica/gate-kit/reportCommandError'
 
 export const checkCommand = (argv: string[], io: CommandIo): number => {
   try {

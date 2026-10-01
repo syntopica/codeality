@@ -5,7 +5,7 @@ import { join } from 'node:path'
 import { describe, expect, it } from 'vitest'
 
 import { readBenchQueries } from '@/bench/readBenchQueries.js'
-import { ConfigError } from '@/config/ConfigError.js'
+import { ConfigError } from '@syntopica/gate-kit/ConfigError'
 
 const BENCH_DIR = 'db-quality/bench'
 

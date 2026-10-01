@@ -1,15 +1,15 @@
 import type { CommandIo } from '@/commands/CommandIo.js'
-import { parseCommandArgs } from '@/commands/parseCommandArgs.js'
 import { perfBenchAction } from '@/commands/perfBenchAction.js'
 import { perfDiffAction } from '@/commands/perfDiffAction.js'
 import { perfSnapshotAction } from '@/commands/perfSnapshotAction.js'
-import { reportCommandError } from '@/commands/reportCommandError.js'
 import { legacyConfigNotice } from '@/config/legacyConfigNotice.js'
 import { readConfig } from '@/config/readConfig.js'
 import { perfActionFrom } from '@/perf/perfActionFrom.js'
 import { QUERY_TIMEOUT_MS } from '@/perf/QUERY_TIMEOUT_MS.js'
 import { psqlSession } from '@/postgres/psqlSession.js'
 import { requirePostgresTarget } from '@/postgres/requirePostgresTarget.js'
+import { parseCommandArgs } from '@syntopica/gate-kit/parseCommandArgs'
+import { reportCommandError } from '@syntopica/gate-kit/reportCommandError'
 
 export const perfCommand = (argv: string[], io: CommandIo): number => {
   try {

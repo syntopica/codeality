@@ -1,9 +1,9 @@
 import { describe, expect, it } from 'vitest'
 
-import { ConfigError } from '@/config/ConfigError.js'
 import { configFromDocument } from '@/config/configFromDocument.js'
 import { LEGACY_DISABLE_REASON } from '@/config/LEGACY_DISABLE_REASON.js'
 import { PERF_DEFAULTS } from '@/config/PERF_DEFAULTS.js'
+import { ConfigError } from '@syntopica/gate-kit/ConfigError'
 
 describe('configFromDocument', () => {
   it('fills the defaults', () => {

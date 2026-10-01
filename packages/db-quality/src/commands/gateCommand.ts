@@ -1,13 +1,13 @@
 import { sqliteQueriesNotice } from '@/check/sqliteQueriesNotice.js'
 import type { CommandIo } from '@/commands/CommandIo.js'
-import { parseCommandArgs } from '@/commands/parseCommandArgs.js'
-import { reportCommandError } from '@/commands/reportCommandError.js'
 import { legacyConfigNotice } from '@/config/legacyConfigNotice.js'
 import { readConfig } from '@/config/readConfig.js'
 import { gateExitCode } from '@/gate/gateExitCode.js'
 import { gateStages } from '@/gate/gateStages.js'
 import { renderGateReport } from '@/gate/renderGateReport.js'
 import { runGate } from '@/gate/runGate.js'
+import { parseCommandArgs } from '@syntopica/gate-kit/parseCommandArgs'
+import { reportCommandError } from '@syntopica/gate-kit/reportCommandError'
 
 export const gateCommand = (argv: string[], io: CommandIo): number => {
   try {

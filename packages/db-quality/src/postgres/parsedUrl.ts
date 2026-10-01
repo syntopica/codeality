@@ -1,4 +1,4 @@
-import { ConfigError } from '@/config/ConfigError.js'
+import { ConfigError } from '@syntopica/gate-kit/ConfigError'
 
 /** `raw` as a URL, or a ConfigError naming where it came from. */
 export const parsedUrl = (raw: string, source: string): URL => {

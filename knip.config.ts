@@ -81,6 +81,15 @@ const config: KnipConfig = {
       // dependency here, and cannot connect them.
       ignoreDependencies: ['eslint-plugin-regexp'],
     },
+    'packages/gate-kit': {
+      // Consumed through the `./*` export map by the gate CLIs, which bundle it.
+      entry: ['src/*.ts'],
+      project: ['src/**/*.ts', 'tests/**/*.ts'],
+    },
+    'packages/ui-quality': {
+      entry: ['bin/*.mjs'],
+      project: ['src/**/*.ts', 'tests/**/*.ts'],
+    },
     'packages/db-quality': {
       // A workspace-specific key replaces rather than merges with the
       // `packages/*` wildcard, so entry/project are repeated here.

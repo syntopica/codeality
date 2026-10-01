@@ -2,7 +2,7 @@ import { describe, expect, it } from 'vitest'
 
 import { dataSourceType } from '@/adapters/soda/dataSourceType.js'
 import { renderSodaConfiguration } from '@/adapters/soda/renderSodaConfiguration.js'
-import { ConfigError } from '@/config/ConfigError.js'
+import { ConfigError } from '@syntopica/gate-kit/ConfigError'
 
 describe('renderSodaConfiguration', () => {
   it('renders the postgres block from the URL', () => {

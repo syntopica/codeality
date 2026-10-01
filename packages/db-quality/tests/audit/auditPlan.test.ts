@@ -2,8 +2,8 @@ import { describe, expect, it } from 'vitest'
 
 import { auditPlan } from '@/audit/auditPlan.js'
 import { isSupabaseHost } from '@/audit/isSupabaseHost.js'
-import { ConfigError } from '@/config/ConfigError.js'
 import { configFromDocument } from '@/config/configFromDocument.js'
+import { ConfigError } from '@syntopica/gate-kit/ConfigError'
 
 const plain = configFromDocument({ schemaVersion: 1 })
 const withSoda = configFromDocument({

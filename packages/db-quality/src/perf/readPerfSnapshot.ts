@@ -1,9 +1,9 @@
 import { existsSync, readFileSync } from 'node:fs'
 import { join } from 'node:path'
 
-import { ConfigError } from '@/config/ConfigError.js'
 import { PERF_SNAPSHOT_FILENAME } from '@/perf/PERF_SNAPSHOT_FILENAME.js'
 import type { PerfSnapshot } from '@/perf/PerfSnapshot.js'
+import { ConfigError } from '@syntopica/gate-kit/ConfigError'
 
 export const readPerfSnapshot = (root: string): PerfSnapshot => {
   const path = join(root, PERF_SNAPSHOT_FILENAME)

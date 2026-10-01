@@ -1,7 +1,4 @@
 import type { CommandIo } from '@/commands/CommandIo.js'
-import { parseCommandArgs } from '@/commands/parseCommandArgs.js'
-import { reportCommandError } from '@/commands/reportCommandError.js'
-import { ConfigError } from '@/config/ConfigError.js'
 import type { DbQualityConfig } from '@/config/DbQualityConfig.js'
 import { readConfig } from '@/config/readConfig.js'
 import { adoptionStanding } from '@/init/adoptionStanding.js'
@@ -9,7 +6,10 @@ import { applyInit } from '@/init/applyInit.js'
 import { planInit } from '@/init/planInit.js'
 import { renderAdoptionPhase } from '@/init/renderAdoptionPhase.js'
 import { renderInitPlan } from '@/init/renderInitPlan.js'
-import { ExitCode } from '@/model/ExitCode.js'
+import { ConfigError } from '@syntopica/gate-kit/ConfigError'
+import { ExitCode } from '@syntopica/gate-kit/ExitCode'
+import { parseCommandArgs } from '@syntopica/gate-kit/parseCommandArgs'
+import { reportCommandError } from '@syntopica/gate-kit/reportCommandError'
 
 export const initCommand = (argv: string[], io: CommandIo): number => {
   try {

@@ -1,8 +1,8 @@
 import type { PerfActionIo } from '@/commands/PerfActionIo.js'
-import { ExitCode } from '@/model/ExitCode.js'
 import { PERF_SNAPSHOT_FILENAME } from '@/perf/PERF_SNAPSHOT_FILENAME.js'
 import { takePerfSnapshot } from '@/perf/takePerfSnapshot.js'
 import { writePerfSnapshot } from '@/perf/writePerfSnapshot.js'
+import { ExitCode } from '@syntopica/gate-kit/ExitCode'
 
 export const perfSnapshotAction = ({
   io,

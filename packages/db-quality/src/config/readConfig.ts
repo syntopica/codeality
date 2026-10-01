@@ -2,9 +2,9 @@ import { existsSync, readFileSync } from 'node:fs'
 import { join } from 'node:path'
 
 import { CONFIG_FILENAME } from '@/config/CONFIG_FILENAME.js'
-import { ConfigError } from '@/config/ConfigError.js'
 import type { DbQualityConfig } from '@/config/DbQualityConfig.js'
 import { configFromDocument } from '@/config/configFromDocument.js'
+import { ConfigError } from '@syntopica/gate-kit/ConfigError'
 
 export const readConfig = (root: string): DbQualityConfig => {
   const path = join(root, CONFIG_FILENAME)

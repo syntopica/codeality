@@ -1,8 +1,8 @@
-import { ConfigError } from '@/config/ConfigError.js'
 import { DB_PASSWORD_ENV } from '@/postgres/DB_PASSWORD_ENV.js'
 import type { PostgresTarget } from '@/postgres/PostgresTarget.js'
 import type { PostgresTargetFlags } from '@/postgres/PostgresTargetFlags.js'
 import { resolvePostgresTarget } from '@/postgres/resolvePostgresTarget.js'
+import { ConfigError } from '@syntopica/gate-kit/ConfigError'
 
 /** Resolves the live target or fails with a configuration error naming both ways to supply one. */
 export const requirePostgresTarget = (

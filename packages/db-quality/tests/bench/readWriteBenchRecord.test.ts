@@ -8,7 +8,7 @@ import { BENCH_RECORD_FILENAME } from '@/bench/BENCH_RECORD_FILENAME.js'
 import type { BenchRecord } from '@/bench/BenchRecord.js'
 import { readBenchRecord } from '@/bench/readBenchRecord.js'
 import { writeBenchRecord } from '@/bench/writeBenchRecord.js'
-import { ConfigError } from '@/config/ConfigError.js'
+import { ConfigError } from '@syntopica/gate-kit/ConfigError'
 
 const record: BenchRecord = {
   schemaVersion: 1,

@@ -1,17 +1,18 @@
+import { BASELINE_FILENAME } from '@/baseline/BASELINE_FILENAME.js'
 import { mkdtempSync, readFileSync, writeFileSync } from 'node:fs'
 import { tmpdir } from 'node:os'
 import { join } from 'node:path'
 
 import { describe, expect, it } from 'vitest'
 
-import { readBaseline } from '@/baseline/readBaseline.js'
-import { writeBaseline } from '@/baseline/writeBaseline.js'
-import { ConfigError } from '@/config/ConfigError.js'
+import { ConfigError } from '@syntopica/gate-kit/ConfigError'
+import { readBaseline } from '@syntopica/gate-kit/readBaseline'
+import { writeBaseline } from '@syntopica/gate-kit/writeBaseline'
 
 describe('baseline file', () => {
   it('round-trips with sorted entries and a trailing newline', () => {
     const root = mkdtempSync(join(tmpdir(), 'dbq-'))
-    writeBaseline(root, {
+    writeBaseline(root, BASELINE_FILENAME, {
       schemaVersion: 1,
       toolVersion: '0.1.0',
       entries: ['b', 'a'],
@@ -21,12 +22,18 @@ describe('baseline file', () => {
     ).toBe(
       '{\n  "schemaVersion": 1,\n  "toolVersion": "0.1.0",\n  "entries": [\n    "a",\n    "b"\n  ]\n}\n',
     )
-    expect(readBaseline(root).entries).toEqual(['a', 'b'])
+    expect(
+      readBaseline(root, BASELINE_FILENAME, 'codeality-db').entries,
+    ).toEqual(['a', 'b'])
   })
   it('reports a missing baseline', () => {
-    expect(() => readBaseline(mkdtempSync(join(tmpdir(), 'dbq-')))).toThrow(
-      ConfigError,
-    )
+    expect(() =>
+      readBaseline(
+        mkdtempSync(join(tmpdir(), 'dbq-')),
+        BASELINE_FILENAME,
+        'codeality-db',
+      ),
+    ).toThrow(ConfigError)
   })
   it('rejects a baseline of another version', () => {
     const root = mkdtempSync(join(tmpdir(), 'dbq-'))
@@ -34,6 +41,8 @@ describe('baseline file', () => {
       join(root, '.codeality-db-baseline.json'),
       '{"schemaVersion":2,"entries":[]}',
     )
-    expect(() => readBaseline(root)).toThrow(/not a version 1 baseline/)
+    expect(() => readBaseline(root, BASELINE_FILENAME, 'codeality-db')).toThrow(
+      /not a version 1 baseline/,
+    )
   })
 })

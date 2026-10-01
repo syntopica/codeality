@@ -4,11 +4,11 @@ import { runAudit } from '@/audit/runAudit.js'
 import { renderFindings } from '@/check/renderFindings.js'
 import { renderFindingsJson } from '@/check/renderFindingsJson.js'
 import type { CommandIo } from '@/commands/CommandIo.js'
-import { parseCommandArgs } from '@/commands/parseCommandArgs.js'
-import { reportCommandError } from '@/commands/reportCommandError.js'
 import { legacyConfigNotice } from '@/config/legacyConfigNotice.js'
 import { readConfig } from '@/config/readConfig.js'
-import { ExitCode } from '@/model/ExitCode.js'
+import { ExitCode } from '@syntopica/gate-kit/ExitCode'
+import { parseCommandArgs } from '@syntopica/gate-kit/parseCommandArgs'
+import { reportCommandError } from '@syntopica/gate-kit/reportCommandError'
 
 export const auditCommand = (argv: string[], io: CommandIo): number => {
   try {

@@ -7,10 +7,10 @@ import { describe, expect, it } from 'vitest'
 import { resolveQueryDatabase } from '@/adapters/sqlite/resolveQueryDatabase.js'
 import { runSqliteQueryChecks } from '@/adapters/sqlite/runSqliteQueryChecks.js'
 import { sqliteQueriesNotice } from '@/check/sqliteQueriesNotice.js'
-import { ConfigError } from '@/config/ConfigError.js'
 import { configFromDocument } from '@/config/configFromDocument.js'
 import type { CommandRunner } from '@/tools/CommandRunner.js'
 import { ToolMissingError } from '@/tools/ToolMissingError.js'
+import { ConfigError } from '@syntopica/gate-kit/ConfigError'
 
 const absent: CommandRunner = () => ({
   status: -1,

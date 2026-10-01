@@ -1,0 +1,29 @@
+import type { ElementBox } from '@/model/ElementBox.js'
+
+/** A visible, unstyled element at the origin; tests override what they measure. */
+export const elementBox = (
+  overrides: Partial<ElementBox> & { id: number },
+): ElementBox => ({
+  parent: null,
+  tag: 'div',
+  signature: 'div',
+  selector: `#e${String(overrides.id)}`,
+  x: 0,
+  y: 0,
+  width: 100,
+  height: 20,
+  text: '',
+  textLength: 0,
+  textTail: '',
+  color: [17, 24, 39, 1],
+  backgroundColor: [0, 0, 0, 0],
+  borderWidths: [0, 0, 0, 0],
+  borderColors: [null, null, null, null],
+  overflowX: 'visible',
+  textOverflow: 'clip',
+  scrollWidth: 100,
+  clientWidth: 100,
+  isControl: false,
+  isMain: false,
+  ...overrides,
+})

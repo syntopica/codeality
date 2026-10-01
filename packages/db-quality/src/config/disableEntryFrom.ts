@@ -1,6 +1,6 @@
-import { ConfigError } from '@/config/ConfigError.js'
 import type { DisableEntry } from '@/config/DisableEntry.js'
 import { LEGACY_DISABLE_REASON } from '@/config/LEGACY_DISABLE_REASON.js'
+import { ConfigError } from '@syntopica/gate-kit/ConfigError'
 
 /** One raw `disable` entry, validated against its schemaVersion's shape. */
 export const disableEntryFrom = (

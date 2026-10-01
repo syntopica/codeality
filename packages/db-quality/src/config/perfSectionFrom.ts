@@ -1,10 +1,10 @@
-import { ConfigError } from '@/config/ConfigError.js'
 import { expectConfig } from '@/config/expectConfig.js'
 import { isPositiveInteger } from '@/config/isPositiveInteger.js'
 import { isStringList } from '@/config/isStringList.js'
 import { PERF_DEFAULTS } from '@/config/PERF_DEFAULTS.js'
 import type { PerfConfig } from '@/config/PerfConfig.js'
 import { ROLE_NAME_PATTERN } from '@/config/ROLE_NAME_PATTERN.js'
+import { ConfigError } from '@syntopica/gate-kit/ConfigError'
 
 export const perfSectionFrom = (
   raw: Record<string, unknown> | undefined,

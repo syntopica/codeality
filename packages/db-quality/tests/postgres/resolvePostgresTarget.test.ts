@@ -4,9 +4,9 @@ import { join } from 'node:path'
 
 import { afterEach, describe, expect, it } from 'vitest'
 
-import { ConfigError } from '@/config/ConfigError.js'
 import { requirePostgresTarget } from '@/postgres/requirePostgresTarget.js'
 import { resolvePostgresTarget } from '@/postgres/resolvePostgresTarget.js'
+import { ConfigError } from '@syntopica/gate-kit/ConfigError'
 
 const pooler =
   'postgresql://postgres.abc@aws-0-eu-west-1.pooler.supabase.com:5432/postgres'

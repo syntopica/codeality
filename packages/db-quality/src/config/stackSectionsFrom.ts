@@ -1,9 +1,9 @@
-import { ConfigError } from '@/config/ConfigError.js'
 import { configSection } from '@/config/configSection.js'
 import { drizzleSectionFrom } from '@/config/drizzleSectionFrom.js'
 import { postgrestSectionFrom } from '@/config/postgrestSectionFrom.js'
 import { sqliteSectionFrom } from '@/config/sqliteSectionFrom.js'
 import type { StackSections } from '@/config/StackSections.js'
+import { ConfigError } from '@syntopica/gate-kit/ConfigError'
 
 export const stackSectionsFrom = (
   raw: Record<string, unknown>,

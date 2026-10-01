@@ -4,8 +4,8 @@ import { join } from 'node:path'
 
 import { describe, expect, it } from 'vitest'
 
-import { ConfigError } from '@/config/ConfigError.js'
 import { readConfig } from '@/config/readConfig.js'
+import { ConfigError } from '@syntopica/gate-kit/ConfigError'
 
 describe('readConfig', () => {
   it('reads codeality-db.json from the root', () => {

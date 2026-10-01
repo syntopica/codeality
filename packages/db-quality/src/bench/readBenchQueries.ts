@@ -3,10 +3,10 @@ import { join } from 'node:path'
 
 import type { BenchQuery } from '@/bench/BenchQuery.js'
 import { RUNS_HEADER } from '@/bench/RUNS_HEADER.js'
-import { ConfigError } from '@/config/ConfigError.js'
 import { isDirectory } from '@/config/isDirectory.js'
 import { isPositiveInteger } from '@/config/isPositiveInteger.js'
 import { splitSqlStatements } from '@/sql/splitSqlStatements.js'
+import { ConfigError } from '@syntopica/gate-kit/ConfigError'
 
 export const readBenchQueries = (
   root: string,

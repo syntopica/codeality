@@ -1,0 +1,21 @@
+import { expectConfig } from '@/config/expectConfig.js'
+import { isRecord } from '@/config/isRecord.js'
+import type { RouteConfig } from '@/config/RouteConfig.js'
+import { stringField } from '@/config/stringField.js'
+
+/** A route is either a bare path or an object with a path. */
+export const routeFrom = (value: unknown, index: number): RouteConfig => {
+  const where = `routes[${String(index)}]`
+  const record = typeof value === 'string' ? { path: value } : value
+  expectConfig(isRecord(record), `${where} must be a path or an object`)
+  const path = stringField(record, 'path', '', where)
+  expectConfig(path.startsWith('/'), `${where}.path must start with "/"`)
+  return {
+    path,
+    main: stringField(record, 'main', 'main', where),
+    waitFor:
+      record['waitFor'] === undefined
+        ? null
+        : stringField(record, 'waitFor', '', where),
+  }
+}

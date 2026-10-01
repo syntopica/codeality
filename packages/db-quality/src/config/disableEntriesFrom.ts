@@ -1,6 +1,6 @@
-import { ConfigError } from '@/config/ConfigError.js'
 import type { DisableEntry } from '@/config/DisableEntry.js'
 import { disableEntryFrom } from '@/config/disableEntryFrom.js'
+import { ConfigError } from '@syntopica/gate-kit/ConfigError'
 
 export const disableEntriesFrom = (
   raw: unknown,

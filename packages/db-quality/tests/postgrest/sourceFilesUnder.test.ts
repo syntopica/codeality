@@ -4,8 +4,8 @@ import { join } from 'node:path'
 
 import { describe, expect, it } from 'vitest'
 
-import { ConfigError } from '@/config/ConfigError.js'
 import { sourceFilesUnder } from '@/postgrest/sourceFilesUnder.js'
+import { ConfigError } from '@syntopica/gate-kit/ConfigError'
 
 const buildTree = (): string => {
   const root = mkdtempSync(join(tmpdir(), 'dbq-source-'))

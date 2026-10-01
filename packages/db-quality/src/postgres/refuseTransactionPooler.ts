@@ -1,4 +1,4 @@
-import { ConfigError } from '@/config/ConfigError.js'
+import { ConfigError } from '@syntopica/gate-kit/ConfigError'
 
 /**
  * A transaction pooler hands each statement to whichever backend is free, so

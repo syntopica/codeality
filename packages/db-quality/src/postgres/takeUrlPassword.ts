@@ -1,4 +1,4 @@
-import { ConfigError } from '@/config/ConfigError.js'
+import { ConfigError } from '@syntopica/gate-kit/ConfigError'
 
 /**
  * Removes the password from `url`, whether in the user info or in a

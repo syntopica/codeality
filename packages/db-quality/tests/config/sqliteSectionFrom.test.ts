@@ -1,8 +1,8 @@
 import { describe, expect, it } from 'vitest'
 
-import { ConfigError } from '@/config/ConfigError.js'
 import { configFromDocument } from '@/config/configFromDocument.js'
 import { sqliteSectionFrom } from '@/config/sqliteSectionFrom.js'
+import { ConfigError } from '@syntopica/gate-kit/ConfigError'
 
 describe('sqliteSectionFrom', () => {
   it('keeps a files-only section as it was', () => {

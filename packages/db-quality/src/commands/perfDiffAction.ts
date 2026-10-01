@@ -1,10 +1,10 @@
 import type { PerfActionIo } from '@/commands/PerfActionIo.js'
-import { ExitCode } from '@/model/ExitCode.js'
 import { diffSnapshots } from '@/perf/diffSnapshots.js'
 import { readPerfSnapshot } from '@/perf/readPerfSnapshot.js'
 import { renderPerfDiff } from '@/perf/renderPerfDiff.js'
 import { renderPerfDiffJson } from '@/perf/renderPerfDiffJson.js'
 import { takePerfSnapshot } from '@/perf/takePerfSnapshot.js'
+import { ExitCode } from '@syntopica/gate-kit/ExitCode'
 
 export const perfDiffAction = ({
   io,

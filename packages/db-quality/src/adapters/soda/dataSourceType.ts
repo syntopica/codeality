@@ -1,4 +1,4 @@
-import { ConfigError } from '@/config/ConfigError.js'
+import { ConfigError } from '@syntopica/gate-kit/ConfigError'
 
 export const dataSourceType = (url: string): 'postgres' | 'mysql' => {
   const scheme = url.split(':')[0] ?? ''

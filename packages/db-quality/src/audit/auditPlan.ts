@@ -1,7 +1,7 @@
 import type { AuditTarget } from '@/audit/AuditTarget.js'
 import { isSupabaseHost } from '@/audit/isSupabaseHost.js'
-import { ConfigError } from '@/config/ConfigError.js'
 import type { DbQualityConfig } from '@/config/DbQualityConfig.js'
+import { ConfigError } from '@syntopica/gate-kit/ConfigError'
 
 /**
  * Which live adapters a target can run. Advisors and inspect need a Supabase

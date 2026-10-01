@@ -5,8 +5,8 @@ import { renderBenchJson } from '@/bench/renderBenchJson.js'
 import { runBench } from '@/bench/runBench.js'
 import { writeBenchRecord } from '@/bench/writeBenchRecord.js'
 import type { PerfActionIo } from '@/commands/PerfActionIo.js'
-import { ExitCode } from '@/model/ExitCode.js'
 import { PACKAGE_VERSION } from '@/packageVersion.js'
+import { ExitCode } from '@syntopica/gate-kit/ExitCode'
 
 export const perfBenchAction = ({
   io,

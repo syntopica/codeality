@@ -1,6 +1,6 @@
-import { ConfigError } from '@/config/ConfigError.js'
 import type { DbQualityConfig } from '@/config/DbQualityConfig.js'
 import { isStringList } from '@/config/isStringList.js'
+import { ConfigError } from '@syntopica/gate-kit/ConfigError'
 
 export const drizzleSectionFrom = (
   drizzle: Record<string, unknown>,

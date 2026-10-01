@@ -3,7 +3,7 @@ import { join } from 'node:path'
 
 import type { AuditTarget } from '@/audit/AuditTarget.js'
 import type { AuditTargetFlags } from '@/audit/AuditTargetFlags.js'
-import { ConfigError } from '@/config/ConfigError.js'
+import { ConfigError } from '@syntopica/gate-kit/ConfigError'
 
 export const resolveAuditTarget = (
   root: string,

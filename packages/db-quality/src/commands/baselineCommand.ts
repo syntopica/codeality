@@ -3,20 +3,20 @@ import { join } from 'node:path'
 
 import { BASELINE_FILENAME } from '@/baseline/BASELINE_FILENAME.js'
 import { baselineActionFrom } from '@/baseline/baselineActionFrom.js'
-import { classifyFindings } from '@/baseline/classifyFindings.js'
-import { readBaseline } from '@/baseline/readBaseline.js'
 import { renderClassified } from '@/baseline/renderClassified.js'
-import { writeBaseline } from '@/baseline/writeBaseline.js'
 import { runCheck } from '@/check/runCheck.js'
 import { sqliteQueriesNotice } from '@/check/sqliteQueriesNotice.js'
 import type { CommandIo } from '@/commands/CommandIo.js'
-import { parseCommandArgs } from '@/commands/parseCommandArgs.js'
-import { reportCommandError } from '@/commands/reportCommandError.js'
-import { ConfigError } from '@/config/ConfigError.js'
 import { legacyConfigNotice } from '@/config/legacyConfigNotice.js'
 import { readConfig } from '@/config/readConfig.js'
-import { ExitCode } from '@/model/ExitCode.js'
 import { PACKAGE_VERSION } from '@/packageVersion.js'
+import { classifyFindings } from '@syntopica/gate-kit/classifyFindings'
+import { ConfigError } from '@syntopica/gate-kit/ConfigError'
+import { ExitCode } from '@syntopica/gate-kit/ExitCode'
+import { parseCommandArgs } from '@syntopica/gate-kit/parseCommandArgs'
+import { readBaseline } from '@syntopica/gate-kit/readBaseline'
+import { reportCommandError } from '@syntopica/gate-kit/reportCommandError'
+import { writeBaseline } from '@syntopica/gate-kit/writeBaseline'
 
 export const baselineCommand = (argv: string[], io: CommandIo): number => {
   try {
@@ -41,7 +41,7 @@ export const baselineCommand = (argv: string[], io: CommandIo): number => {
     })
     if (action !== 'check') {
       const entries = findings.map((f) => f.fingerprint)
-      writeBaseline(io.root, {
+      writeBaseline(io.root, BASELINE_FILENAME, {
         schemaVersion: 1,
         toolVersion: PACKAGE_VERSION,
         entries,
@@ -51,7 +51,10 @@ export const baselineCommand = (argv: string[], io: CommandIo): number => {
       )
       return ExitCode.OK
     }
-    const classified = classifyFindings(findings, readBaseline(io.root))
+    const classified = classifyFindings(
+      findings,
+      readBaseline(io.root, BASELINE_FILENAME, 'codeality-db'),
+    )
     io.stdout(`${renderClassified(classified)}\n`)
     const stale =
       values['check-stale'] === true && classified.resolved.length > 0

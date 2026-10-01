@@ -1,6 +1,6 @@
-import { ConfigError } from '@/config/ConfigError.js'
 import { isStringList } from '@/config/isStringList.js'
 import type { PostgrestConfig } from '@/config/PostgrestConfig.js'
+import { ConfigError } from '@syntopica/gate-kit/ConfigError'
 
 export const postgrestSectionFrom = (
   raw: Record<string, unknown>,

@@ -1,5 +1,5 @@
 import type { StageResult } from '@/gate/StageResult.js'
-import { ExitCode } from '@/model/ExitCode.js'
+import { ExitCode } from '@syntopica/gate-kit/ExitCode'
 
 export const gateExitCode = (results: StageResult[]): number => {
   if (results.some((result) => result.status === 'failed-to-run'))

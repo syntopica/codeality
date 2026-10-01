@@ -5,7 +5,7 @@ import { join } from 'node:path'
 import { describe, expect, it } from 'vitest'
 
 import { resolveAuditTarget } from '@/audit/resolveAuditTarget.js'
-import { ConfigError } from '@/config/ConfigError.js'
+import { ConfigError } from '@syntopica/gate-kit/ConfigError'
 
 describe('resolveAuditTarget', () => {
   it('prefers --db-url, accepts --linked only when the project is linked', () => {

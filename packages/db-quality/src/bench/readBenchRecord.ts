@@ -3,7 +3,7 @@ import { join } from 'node:path'
 
 import { BENCH_RECORD_FILENAME } from '@/bench/BENCH_RECORD_FILENAME.js'
 import type { BenchRecord } from '@/bench/BenchRecord.js'
-import { ConfigError } from '@/config/ConfigError.js'
+import { ConfigError } from '@syntopica/gate-kit/ConfigError'
 
 /** `undefined` when the record is absent: the caller decides what that means. */
 export const readBenchRecord = (root: string): BenchRecord | undefined => {
