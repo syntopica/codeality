@@ -149,6 +149,9 @@
       color: toRgba(style.color),
       backgroundColor: toRgba(style.backgroundColor),
       hasBackgroundImage: style.backgroundImage !== 'none',
+      disabled:
+        element.matches(':disabled') ||
+        element.getAttribute('aria-disabled') === 'true',
       borderWidths: [
         parseFloat(style.borderTopWidth),
         parseFloat(style.borderRightWidth),

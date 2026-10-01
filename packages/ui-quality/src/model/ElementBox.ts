@@ -19,6 +19,8 @@ export type ElementBox = {
   backgroundColor: Rgba | null
   /** A gradient or image paints the background, whose colour cannot be read. */
   hasBackgroundImage: boolean
+  /** `:disabled` or `aria-disabled="true"`: an inactive control. */
+  disabled: boolean
   borderWidths: [number, number, number, number]
   borderColors: [Rgba | null, Rgba | null, Rgba | null, Rgba | null]
   overflowX: string

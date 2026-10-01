@@ -18,6 +18,7 @@ export const elementBox = (
   color: [17, 24, 39, 1],
   backgroundColor: [0, 0, 0, 0],
   hasBackgroundImage: false,
+  disabled: false,
   borderWidths: [0, 0, 0, 0],
   borderColors: [null, null, null, null],
   overflowX: 'visible',

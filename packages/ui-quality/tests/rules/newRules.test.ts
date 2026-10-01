@@ -47,6 +47,15 @@ describe('iconContrast', () => {
     )
     expect(findings[0]?.message).toContain('2.54:1')
   })
+  it('skips a disabled control, which WCAG exempts', () => {
+    const disabled = { ...button, disabled: true }
+    expect(
+      iconContrast(
+        snapshotOf([header, disabled, bell([156, 163, 175, 1])]),
+        ruleContext(),
+      ),
+    ).toEqual([])
+  })
   it('skips an icon on a gradient, whose backdrop has no single colour', () => {
     const gradient = elementBox({
       id: 1,

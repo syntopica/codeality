@@ -11,12 +11,13 @@ import type { Rule } from '@/rules/Rule.js'
 // content, so WCAG 1.4.11 asks 3:1 against what is behind it. axe checks text
 // only; a pale gray-400 bell on white passes every text rule at 2.5:1. The
 // icon's colour is its `color`, which outline sets draw with `currentColor`.
+// An inactive control is exempt, as WCAG 1.4.11 says.
 export const iconContrast: Rule = (snapshot) => {
   const findings: RawFinding[] = []
   for (const icon of snapshot.elements) {
     if (icon.tag !== 'svg' || !icon.color) continue
     const control = iconOnlyControlOf(icon, snapshot.elements)
-    if (!control) continue
+    if (!control || control.disabled) continue
     // A gradient button has no single colour to measure against.
     if (imageBehind(icon, snapshot.elements)) continue
     const backdrop = backdropOf(icon, snapshot.elements)
