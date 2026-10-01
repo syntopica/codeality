@@ -35,6 +35,22 @@
         color: #ffffff;
         padding: 16px;
       }
+      .sr-only {
+        position: absolute;
+        width: 1px;
+        height: 1px;
+        overflow: hidden;
+        clip: rect(0, 0, 0, 0);
+        white-space: nowrap;
+      }
+      .menu {
+        height: 1200px;
+      }
+      .bell {
+        border: 0;
+        background: none;
+        color: #d1d5db;
+      }
       .shell {
         padding-left: 256px;
       }
@@ -125,12 +141,20 @@
     </style>
   </head>
   <body>
-    <aside>TienesLaVibra</aside>
+    <aside>
+      TienesLaVibra
+      <nav class="menu">Menu</nav>
+      Sign out
+    </aside>
     <div class="shell">
       <header>
-        <input type="search" placeholder="Search rosters" /><span
-          >info@example.com</span
+        <input type="search" placeholder="Search rosters" /><button
+          class="bell"
         >
+          <svg width="20" height="20" viewBox="0 0 20 20" aria-hidden="true">
+            <circle cx="10" cy="10" r="8" fill="currentColor" /></svg
+          ><span class="sr-only">Notifications</span></button
+        ><span>info@example.com</span>
       </header>
       <main>
         <div class="container">

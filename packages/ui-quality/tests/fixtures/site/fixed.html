@@ -29,6 +29,18 @@
         background: var(--brand-ink);
         color: #ffffff;
         padding: 16px;
+        overflow-y: auto;
+      }
+      .menu {
+        height: 1200px;
+      }
+      aside a {
+        color: inherit;
+      }
+      .bell {
+        border: 0;
+        background: none;
+        color: #4b5563;
       }
       .shell {
         padding-left: 256px;
@@ -127,14 +139,22 @@
     </style>
   </head>
   <body>
-    <aside>TienesLaVibra</aside>
+    <aside>
+      TienesLaVibra
+      <nav class="menu"><a href="#">Menu</a></nav>
+      <a href="#">Sign out</a>
+    </aside>
     <div class="shell">
       <header>
         <input
           type="search"
           aria-label="Search"
           placeholder="Search rosters"
-        /><span>info@example.com</span>
+        /><button class="bell">
+          <svg width="20" height="20" viewBox="0 0 20 20" aria-hidden="true">
+            <circle cx="10" cy="10" r="8" fill="currentColor" /></svg
+          ><span class="sr-only">Notifications</span></button
+        ><span>info@example.com</span>
       </header>
       <main>
         <h1>Inbox</h1>
@@ -142,8 +162,7 @@
           <li>
             <a href="#"
               ><span class="label">wa</span><span class="name">Sin nombre</span
-              ><span class="preview">[media message]</span
-              ><span class="badge">1</span></a
+              ><span class="preview">Foto</span><span class="badge">1</span></a
             >
           </li>
           <li>

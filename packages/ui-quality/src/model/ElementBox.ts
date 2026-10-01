@@ -20,9 +20,15 @@ export type ElementBox = {
   borderWidths: [number, number, number, number]
   borderColors: [Rgba | null, Rgba | null, Rgba | null, Rgba | null]
   overflowX: string
+  overflowY: string
+  position: string
   textOverflow: string
   scrollWidth: number
   clientWidth: number
+  scrollHeight: number
+  clientHeight: number
   isControl: boolean
   isMain: boolean
+  /** The page-level header (banner landmark). */
+  isBanner: boolean
 }

@@ -61,13 +61,17 @@ pnpm exec codeality-ui init
 | --------------------- | ------------------------------------------------------------------------------------------- |
 | `a11y/<id>`           | every axe-core violation, contrast included; serious and critical ones are errors           |
 | `text-clipped`        | text cut by its own or an ancestor's overflow with no ellipsis                              |
-| `text-hard-cut`       | texts in one column that stop at exactly the same length with no ellipsis: cut upstream     |
+| `text-hard-cut`       | texts in one column that pile up at one length with no ellipsis: cut upstream               |
 | `row-misaligned`      | repeated rows whose n-th cell starts at a different x                                       |
 | `control-inset`       | a bordered input less than `minInset` (4px) from the edge of the bar or card it sits in     |
+| `edge-misaligned`     | the header's content and the main content start or end up to `maxOffset` (240px) apart      |
 | `content-width`       | the main column using less than `minRatio` (80%) of its region at `minViewport` (1280px) up |
 | `palette`             | a text, fill or border colour farther than `maxDeltaE` (5) from every palette colour        |
 | `blank-route`         | no element matches the main selector, or the main region paints nothing                     |
 | `horizontal-overflow` | the page is wider than its viewport                                                         |
+| `fixed-overflow`      | a fixed or sticky element taller than the window that cannot scroll: content unreachable    |
+| `icon-contrast`       | an icon-only button or link under 3:1 against its background (WCAG 1.4.11)                  |
+| `raw-placeholder`     | a bracketed lower-case stand-in such as `[media message]` shown as content                  |
 
 Findings are fingerprinted on rule, route, element and, for colour rules only,
 colour scheme; viewports and pixel values are left out, so a defect seen at

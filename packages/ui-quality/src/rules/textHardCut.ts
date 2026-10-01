@@ -1,8 +1,8 @@
 import type { RawFinding } from '@/model/RawFinding.js'
 import { childrenIndex } from '@/rules/childrenIndex.js'
 import { hardCutColumn } from '@/rules/hardCutColumn.js'
-import { rowCells } from '@/rules/rowCells.js'
 import { rowGroups } from '@/rules/rowGroups.js'
+import { rowTexts } from '@/rules/rowTexts.js'
 import type { Rule } from '@/rules/Rule.js'
 
 // Previews sliced to N characters by the server and printed as they are:
@@ -13,7 +13,7 @@ export const textHardCut: Rule = (snapshot, context) => {
   const findings: RawFinding[] = []
   for (const siblings of children.values()) {
     for (const rows of rowGroups(siblings, minRows)) {
-      const table = rows.map((row) => rowCells(row, children))
+      const table = rows.map((row) => rowTexts(row, snapshot.elements))
       const width = Math.max(...table.map((cells) => cells.length))
       for (let column = 0; column < width; column++) {
         const cells = table

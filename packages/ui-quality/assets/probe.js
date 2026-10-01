@@ -94,6 +94,13 @@
   const ids = new Map()
   const elements = []
   const main = document.querySelector(mainSelector || 'main')
+  // The page-level header: a <header> outside any sectioning element, which
+  // the HTML accessibility mapping exposes as the banner landmark.
+  const banner =
+    document.querySelector('[role="banner"]') ||
+    [...document.querySelectorAll('header')].find(
+      (header) => !header.closest('article, aside, main, nav, section'),
+    )
 
   for (const element of document.body.querySelectorAll('*')) {
     if (SKIP.has(element.tagName)) continue
@@ -138,11 +145,16 @@
         toRgba(style.borderLeftColor),
       ],
       overflowX: style.overflowX,
+      overflowY: style.overflowY,
+      position: style.position,
       textOverflow: style.textOverflow,
       scrollWidth: element.scrollWidth,
       clientWidth: element.clientWidth,
+      scrollHeight: element.scrollHeight,
+      clientHeight: element.clientHeight,
       isControl: isControl(element),
       isMain: element === main,
+      isBanner: element === banner,
     })
   }
 
@@ -158,6 +170,7 @@
     elements,
     variables,
     viewportWidth: window.innerWidth,
+    viewportHeight: window.innerHeight,
     documentWidth: document.documentElement.scrollWidth,
   }
 }

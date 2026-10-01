@@ -1,0 +1,59 @@
+import { describe, expect, it } from 'vitest'
+
+import { edgeMisaligned } from '@/rules/edgeMisaligned.js'
+import { elementBox } from '@tests/elementBox.js'
+import { ruleContext } from '@tests/ruleContext.js'
+import { snapshotOf } from '@tests/snapshotOf.js'
+
+const banner = elementBox({ id: 0, isBanner: true, x: 256, width: 1664 })
+const main = elementBox({ id: 1, isMain: true, x: 256, width: 1664 })
+const search = elementBox({
+  id: 2,
+  parent: 0,
+  x: 288,
+  width: 576,
+  isControl: true,
+})
+const account = elementBox({
+  id: 3,
+  parent: 0,
+  x: 1700,
+  width: 188,
+  text: 'info@',
+})
+const list = (x: number, width: number) =>
+  elementBox({ id: 4, parent: 1, x, width, text: 'Inbox' })
+
+describe('edgeMisaligned', () => {
+  it('reports a header and a centred column that nearly line up', () => {
+    const findings = edgeMisaligned(
+      snapshotOf([banner, main, search, account, list(352, 1472)], {
+        viewportWidth: 1920,
+      }),
+      ruleContext(),
+    )
+    expect(findings[0]?.message).toBe(
+      'header and main content edges differ by 64px on the left and 64px on the right at 1920px; put both on the same container',
+    )
+  })
+  it('accepts shared edges, deliberate offsets and pages without a header', () => {
+    expect(
+      edgeMisaligned(
+        snapshotOf([banner, main, search, account, list(288, 1600)]),
+        ruleContext(),
+      ),
+    ).toEqual([])
+    expect(
+      edgeMisaligned(
+        snapshotOf([banner, main, search, account, list(800, 300)]),
+        ruleContext(),
+      ),
+    ).toEqual([])
+    expect(
+      edgeMisaligned(snapshotOf([main, list(352, 1472)]), ruleContext()),
+    ).toEqual([])
+    expect(edgeMisaligned(snapshotOf([banner, main]), ruleContext())).toEqual(
+      [],
+    )
+  })
+})

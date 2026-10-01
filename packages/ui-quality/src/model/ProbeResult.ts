@@ -6,5 +6,6 @@ export type ProbeResult = {
   elements: ElementBox[]
   variables: Record<string, Rgba>
   viewportWidth: number
+  viewportHeight: number
   documentWidth: number
 }

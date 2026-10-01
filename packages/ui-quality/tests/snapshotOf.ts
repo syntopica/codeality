@@ -8,6 +8,7 @@ export const snapshotOf = (
   elements,
   variables: {},
   viewportWidth: 1440,
+  viewportHeight: 900,
   documentWidth: 1440,
   screen: {
     route: '/inbox',

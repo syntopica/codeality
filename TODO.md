@@ -52,6 +52,31 @@ verified complete - `[-]` obsolete or superseded.
       and vite-react layers set `react/prop-types: 'off'` for `.tsx` files
       themselves.
 
+## ui-quality
+
+Rule candidates from the 2026-10-01 review of the TienesLaVibra admin inbox by
+Codex and five design skills (impeccable, web-design-guidelines, ui-ux-pro-max,
+better-ui, frontend-design). Shipped from that review: `edge-misaligned`,
+`fixed-overflow`, `icon-contrast`, `raw-placeholder`, and `text-hard-cut`
+reading nested rows and length spikes. Each item below names the probe fields it
+needs.
+
+- [ ] `placeholder-fit`: placeholder text wider than its input's text box by
+      over 20% ("Buscar rosters, categ…" at 390px). Needs `placeholder` plus a
+      canvas `measureText` with the computed font.
+- [ ] `duplicate-nav-icon`: two navigation items drawing the same icon (Clientes
+      and Contactos share one, as do Plantillas and Canales). Needs a hash of
+      each svg's markup.
+- [ ] `mixed-icon-family`: filled and outline icons in one repeated column (a
+      Font Awesome WhatsApp glyph beside a Lucide envelope). Needs the svg's
+      fill/stroke attributes.
+- [ ] `oversized-list`: one list over N rows (200 conversations, a 13,161px
+      page) with no pagination control after it.
+- [ ] `ghost-elevation` and `transition-all`: border plus shadow on one card;
+      `transition-property: all`. Need `boxShadow` and `transitionProperty`.
+- [ ] Enable axe's `target-size` (WCAG 2.2 AA) and check whether the default
+      AxeBuilder run already includes it.
+
 ## db-quality
 
 - [ ] **Kysely support** (filed 2026-09-30; first consumer is the new
