@@ -1,5 +1,6 @@
 import type { Page } from 'playwright'
 
+import { checkCollectionPagination } from '@/capture/checkCollectionPagination.js'
 import { checkEmptyState } from '@/capture/checkEmptyState.js'
 import { checkFiltering } from '@/capture/checkFiltering.js'
 import { checkPagination } from '@/capture/checkPagination.js'
@@ -16,7 +17,8 @@ import type { BehaviourFailure } from '@/model/BehaviourFailure.js'
  * operated at all (covered by a drawer, detached by a re-render) is skipped
  * rather than reported: the click rules already own that failure. So is a
  * main region a modal dialog covers. Search and empty results read every
- * table of a grouped list.
+ * table of a grouped list. A main region with no table is paged through
+ * its repeated collection, a card grid or a list, instead.
  */
 export const exerciseScreen = async (
   page: Page,
@@ -25,7 +27,7 @@ export const exerciseScreen = async (
   const failures: BehaviourFailure[] = []
   if (await mainIsCovered(page, main).catch(() => true)) return failures
   const table = await firstDataTable(page, main)
-  if (!table) return failures
+  if (!table) return await checkCollectionPagination(page, main).catch(() => [])
   const list = await listOfTable(page, main, table)
   failures.push(...(await checkFiltering(page, main, list).catch(() => [])))
   failures.push(...(await checkEmptyState(page, main, list).catch(() => [])))

@@ -1,0 +1,84 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="utf-8" />
+    <title>A card grid paged by links</title>
+    <style>
+      body {
+        margin: 0;
+        font: 16px/1.4 sans-serif;
+        color: #000000;
+        background: #ffffff;
+      }
+      main {
+        padding: 24px;
+      }
+      .grid {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        gap: 16px;
+      }
+      .card {
+        border: 1px solid #000000;
+        padding: 12px;
+      }
+      a {
+        color: #000000;
+      }
+      .pager {
+        display: flex;
+        gap: 8px;
+        margin-top: 24px;
+      }
+    </style>
+  </head>
+  <body>
+    <main>
+      <h1>Artistas</h1>
+      <div class="grid"></div>
+      <div class="pager"></div>
+    </main>
+    <script>
+      // A server-rendered listing: every page is its own address, reached by
+      // a full navigation. With #same the second page repeats the first, as a
+      // tied ORDER BY under LIMIT/OFFSET can; with #overlap it repeats three
+      // of its four cards. The pager links are found by rel alone. With #stuck
+      // the pager is numbers only and its "2" links back to the same address.
+      const mode = location.hash
+      const page = Number(new URLSearchParams(location.search).get('page') ?? 1)
+      const artists = [
+        'Alba',
+        'Bruno',
+        'Carla',
+        'Dario',
+        'Elena',
+        'Fabio',
+        'Gala',
+        'Hugo',
+      ]
+      const PAGE_SIZE = 4
+      const shown =
+        page === 1 || mode === '#same'
+          ? artists.slice(0, PAGE_SIZE)
+          : mode === '#overlap'
+            ? artists.slice(1, PAGE_SIZE + 1)
+            : artists.slice(PAGE_SIZE, PAGE_SIZE * 2)
+      document.querySelector('.grid').innerHTML = shown
+        .map(
+          (name) =>
+            `<div class="card"><a href="artistas/${name.toLowerCase()}.html" aria-label="${name}"></a><a href="artistas/${name.toLowerCase()}.html"><h3>${name}</h3></a><p>Contratar a ${name}</p></div>`,
+        )
+        .join('')
+      const link = (target, label, rel) =>
+        `<a href="grid.html${mode === '#stuck' ? '' : `?page=${String(target)}`}${mode}"${rel ? ` rel="${rel}"` : ''}>${label}</a>`
+      document.querySelector('.pager').innerHTML = [
+        page > 1 ? link(page - 1, 'Volver', 'prev') : '',
+        page === 1 ? '<span aria-current="page">1</span>' : link(1, '1'),
+        page === 2 ? '<span aria-current="page">2</span>' : link(2, '2'),
+        page < 2 && mode !== '#stuck'
+          ? link(page + 1, 'Más artistas', 'next')
+          : '',
+      ].join('')
+    </script>
+  </body>
+</html>

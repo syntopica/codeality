@@ -26,6 +26,10 @@
 - `row-misaligned` accepts a right-aligned column whose cells end at one x.
 - `text-hard-cut` ignores texts that end a sentence, one label repeated on every
   row, and texts from one template that differ only in digits.
+- `pagination-broken` also pages a main region with no table through its
+  repeated collection (a card grid, a list), following pager links that load
+  another document, and reports a next page that repeats the first page's items
+  or over half of them. Pager links are also found by `rel="next"`/`rel="prev"`.
 - Elements the browser does not render (inside a closed `<details>`, under
   `content-visibility: hidden`) are no longer measured.
 - A page that never lets its network go idle is measured 5 seconds after the

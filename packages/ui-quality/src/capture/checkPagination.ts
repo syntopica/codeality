@@ -20,7 +20,7 @@ export const checkPagination = async (
   main: string,
   table: Locator,
 ): Promise<BehaviourFailure[]> => {
-  const next = await pageControlOf(page, main, NEXT_PAGE_NAME)
+  const next = await pageControlOf(page, main, NEXT_PAGE_NAME, 'next')
   if (!next) {
     const failure = unpagedFailureOf(
       await table.locator('tbody tr').count(),
@@ -31,7 +31,7 @@ export const checkPagination = async (
   }
   const first = await tableRowTexts(table)
   const second = await rowsAfterClick(page, next, table)
-  const previous = await pageControlOf(page, main, PREVIOUS_PAGE_NAME)
+  const previous = await pageControlOf(page, main, PREVIOUS_PAGE_NAME, 'prev')
   const back = previous ? await rowsAfterClick(page, previous, table) : null
   const failure = paginationFailureOf(first, second, back)
   return failure ? [failure] : []

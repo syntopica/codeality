@@ -96,7 +96,7 @@ pnpm exec codeality-ui init
 | `sort-broken`         | a sortable header that, clicked twice, leaves its column out of order or never reverses it                                     |
 | `filter-broken`       | the main search, given a word shown in a row, drops that row, keeps every row, or does not restore on clear                    |
 | `empty-state-missing` | a search nothing matches empties the table and shows nothing in its place                                                      |
-| `pagination-broken`   | an enabled "next page" leaves the same rows, or "previous page" does not bring the first page back                             |
+| `pagination-broken`   | an enabled "next page" leaves the same rows or cards, repeats over half of them, or "previous page" does not bring them back   |
 | `pagination-missing`  | the main table renders over 300 body rows with no pager and no virtual scrolling                                               |
 | `action-silent`       | the first form of the main region, submitted while every write fails, changes nothing the user can see                         |
 
@@ -104,8 +104,20 @@ The behaviour rules come from using the screen once per route, after it is
 measured. On the first table of the main region: the search box is found by
 type, role or a "search"/"buscar" placeholder; a header sorts when it holds a
 button or declares `aria-sort`; the pager is a button or link named
-"Next"/"Siguiente" (or `›`, `»`) and "Previous"/"Anterior". Sorting and paging
-may persist in the app, as they would for a person.
+"Next"/"Siguiente" (or `›`, `»`) and "Previous"/"Anterior", or a link with
+`rel="next"`/`rel="prev"`. Sorting and paging may persist in the app, as they
+would for a person.
+
+A main region with no table is paged through its largest repeated collection:
+the visible siblings of one tag that each hold a heading or a worded link, such
+as the cards of a grid, outside navigation. Each item is known by its first
+link's address, else its heading. The pager is found as above, or by a link
+named "2"; following it may load another document. `pagination-broken` fires
+when the next page shows only items the first page showed (whether or not its
+address changed), when over half of its items were already on the first page,
+the mark of an unstable order under `LIMIT`/`OFFSET`, or when "previous page"
+does not bring back the first page's items. The route's address is restored
+afterwards.
 
 `action-silent` answers every request other than GET, HEAD and OPTIONS with HTTP
 500 before it leaves the browser, so nothing is written even against production,

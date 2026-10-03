@@ -11,6 +11,7 @@ export const hasPageControl = async (
   return await region
     .getByRole('button', { name: NEXT_PAGE_NAME })
     .or(region.getByRole('link', { name: NEXT_PAGE_NAME }))
+    .or(region.locator('a[href][rel~="next" i]'))
     .first()
     .isVisible()
 }
