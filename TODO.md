@@ -83,6 +83,32 @@ better-ui, frontend-design). Shipped from that review: `edge-misaligned`,
 reading nested rows and length spikes. Each item below names the probe fields it
 needs.
 
+- [ ] **A consumer can gate only part of its site and nothing says so.**
+      2026-10-03, TienesLaVibra: `codeality-ui.json` listed three `/admin`
+      routes only, so the public card grid whose page 2 repeated page 1 (tied
+      `ORDER BY` under `LIMIT/OFFSET`) shipped unseen. Adding 24 public routes
+      surfaced 393 findings (192 palette, 48 nested-interactive, 30
+      color-contrast, 9 console-error, 6 select-name, dark scheme with #111827
+      on #0a0a0a), all fixed. Smallest step: have `check` read the site's
+      `sitemap.xml` (or `init` propose routes from it) and warn once per route
+      template with no configured route.
+- [ ] **`console-error` cannot ignore a third-party frame.** 2026-10-03,
+      TienesLaVibra: Cloudflare Turnstile logs "Permissions policy violation:
+      picture-in-picture is not allowed" and "font-size:0;" from its own iframe,
+      so `console-error` had to be disabled whole on four routes, hiding any
+      real error there. Smallest step: let a `disable` entry take a `message`
+      pattern, or skip messages whose source frame is cross-origin.
+- [ ] **`auth` blocks a run of public routes.** 2026-10-03, TienesLaVibra: with
+      `UI_QUALITY_USER` unset the run stops before the browser starts, even for
+      routes that never reach `loginPath`, so the public pass needed a copied
+      config without `auth` or `/admin` routes. Smallest step: a
+      `--routes <glob>` filter, or measure routes that do not bounce and report
+      the rest as `auth-skipped`.
+- [ ] **`slow-request` flags fire-and-forget work.** 2026-10-03, TienesLaVibra
+      artist pages: `trackRosterAccess`, a background view insert nothing on
+      screen waits for, ran 2.5-4.7s on one screen per run and had to be
+      disabled per route. Smallest step: a `disable` entry matching the request
+      URL or server-action name, so the route keeps the rule.
 - [ ] **Grid `pagination-broken` may misread a "next post" link.** 2026-10-03,
       b18a5c9: a main region with no table is paged through its largest repeated
       collection, and `rel="next"` or a "Siguiente" link counts as its pager. On
@@ -109,7 +135,11 @@ needs.
   capture only sees the resting page. `routes[].click` now clicks selectors in
   order before measuring (`click-failed` when one matches nothing). Left: an
   `empty-dialog` rule, an open `[role=dialog]` or drawer with no link, button or
-  input besides its own close control.
+  input besides its own close control. 2026-10-03, TienesLaVibra public pages:
+  colour defects seen in code but never measured because they only appear on
+  interaction: sticky CTAs that show after scrolling, roster card buttons on
+  hover, selected states in the budget form. Left as well: capture after a
+  scroll, and `:hover`/`:focus`/ selected states of repeated controls.
 - [ ] **Dark runs duplicate light on class-themed apps.** 2026-10-01, every
       InteliFactu `*.dark.png` equals its light twin because the theme follows a
       stored preference, not `prefers-color-scheme`. Smallest step: detect
