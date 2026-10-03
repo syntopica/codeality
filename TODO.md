@@ -83,6 +83,14 @@ better-ui, frontend-design). Shipped from that review: `edge-misaligned`,
 reading nested rows and length spikes. Each item below names the probe fields it
 needs.
 
+- [ ] **Grid `pagination-broken` may misread a "next post" link.** 2026-10-03,
+      b18a5c9: a main region with no table is paged through its largest repeated
+      collection, and `rel="next"` or a "Siguiente" link counts as its pager. On
+      an article page that link opens the next article, whose related-items list
+      may match the first and fire. Unseen so far; checked live on
+      tieneslavibra.com/categorias/artistas (12 cards, rel=next found, 0 overlap
+      with page 2, no finding). Smallest step: require the next link's address
+      to share the route's path prefix, or a numbered sibling.
 - [ ] **`content-width` fires on reading and sign-in pages.** 2026-10-01,
       verticagtm: once its legal, auth and status pages gained a `<main>`, ten
       routes warned (legal prose at a 720px measure, a 448px sign-in card), all
