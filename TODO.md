@@ -223,3 +223,13 @@ needs.
       case in another is the same shape. Worth a documented first step (bracket
       access sweep, `.prettierignore` for `.serena/`, knip ignores) rather than
       a surprise per repo.
+
+## Routed from `~/p/TODO.md` (2026-10-03)
+
+Moved verbatim from `~/p/TODO.md` on 2026-10-03; the routing table in
+`~/p/TODO_LOG.md` (entry of that date) records each move.
+
+- [ ] **CI red on `main`.** Every push run on 2026-10-01 failed (latest 22:44
+      UTC, `gh run list -R syntopica/codeality`); on 2026-09-28 the failing
+      steps were `audit:check`, `check:ci` and `check:quality` (first seen
+      2026-09-26). Split out of a cross-repo "Red CI" line in `~/p/TODO.md`.
