@@ -27,6 +27,7 @@ on:
           - quality-config
           - db-quality
           - ui-quality
+          - test-quality
 
 permissions:
   contents: read

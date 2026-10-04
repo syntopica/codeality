@@ -70,7 +70,6 @@
     }
   },
   "devDependencies": {
-    "@syntopica/eslint-config": "workspace:*",
     "@syntopica/gate-kit": "workspace:*",
     "@syntopica/quality-config": "workspace:*",
     "@syntopica/tsconfig": "workspace:*",
@@ -78,7 +77,6 @@
     "@vitest/coverage-v8": "^5.0.3",
     "eslint": "^10.11.0",
     "eslint-plugin-drizzle": "^0.2.3",
-    "eslint-plugin-regexp": "^3.3.1",
     "prisma-lint": "^0.13.1",
     "publint": "^0.3.24",
     "squawk-cli": "^2.66.0",

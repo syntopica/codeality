@@ -1,5 +1,17 @@
 ### 2026-10-04
 
+- [x] Gate packages share one ESLint config: `gateCliEslintConfig` in gate-kit
+      replaces the copies in db-quality, ui-quality and test-quality (609 rules
+      on each `--print-config`, a hidden top-level const still errors), and
+      their direct `@syntopica/eslint-config`/`eslint-plugin-regexp` devDeps go
+      (knip). jscpd 0.94% to 0.76%.
+- [x] test-quality candidate list measured: on 10xjoy 11 of the 70 DOM-word
+      files passed under node anyway, 10 because of a bare `location` (an HTTP
+      header) and one of `document` as a noun. `document`/`location` now count
+      only as `document.`/`location.` globals and `Blob` is out (node has it):
+      10xjoy 82 of 82 candidates pass under node (was 71 of 71), no failed
+      candidate; verticagtm none left after its four files moved to node
+      (verticagtm 327a0215).
 - [x] New package `@syntopica/test-quality` (`codeality-test`), from the
       verticagtm test-cost diagnosis. `check` lists the suite through the
       project's own vitest (`assets/vitest-inventory.mjs`, nothing executed) and

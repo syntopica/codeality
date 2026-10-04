@@ -237,15 +237,6 @@ needs.
       choice list and in CLAUDE.md's valid values, the npm trusted-publisher
       entry, and `gh workflow run publish.yml -f     package=test-quality`.
       `pnpm release:check` will flag it until then.
-- [ ] **test-quality: `eslint.config.ts` is the last clone of db-quality's (25
-      lines, jscpd).** Under the 1% threshold (0.94%) after the tsup, vitest
-      alias and argv helpers moved to gate-kit. A shared
-      `createGateCliEslintConfig` would retire it in all three gate packages.
-- [ ] **test-quality: candidates are decided by a word list.** A DOM-environment
-      file that names `render`, `window` and so on is never proposed, so a file
-      that only mentions them in a string stays on jsdom. Measure how many such
-      files pass under node on verticagtm/10xjoy before widening the candidate
-      set (a full node rerun of every DOM file is the alternative).
 
 ## Cross-project (filed 2026-09-09 from two consumer backlog runs)
 
