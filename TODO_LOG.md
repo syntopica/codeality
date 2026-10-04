@@ -1,5 +1,16 @@
 ### 2026-10-04
 
+- [x] `@syntopica/test-quality` 0.1.0 and `@syntopica/ui-quality` 0.1.0 are on
+      npm, both first releases published by hand after `npm login` (the
+      `~/.npmrc` registry token answered 401, so the `PUT` came back `E404` and
+      `npm trust` `E401`), each trusting GitHub Actions `syntopica/codeality`
+      `publish.yml` (test-quality `0ed2ad87-...`, ui-quality `1ad462a4-...`,
+      publish and stage publish). Tags `test-quality@0.1.0`, `ui-quality@0.1.0`
+      at 18a3438. The OIDC run for the never-published name failed as on
+      2026-09-25 (run 37218754473, token exchange 404). Next releases:
+      `gh workflow run publish.yml -f package=<name>`. `npm trust     --yes`
+      still asks for 2FA in the browser; pasting it after other commands feeds
+      the y/N prompt an empty line and cancels it.
 - [x] Gate packages share one ESLint config: `gateCliEslintConfig` in gate-kit
       replaces the copies in db-quality, ui-quality and test-quality (609 rules
       on each `--print-config`, a hidden top-level const still errors), and

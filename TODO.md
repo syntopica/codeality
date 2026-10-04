@@ -229,17 +229,6 @@ needs.
       `database` is set, drop a BDB404 whose statement plans without a full
       scan. Next step: both, with tests.
 
-## test-quality (owner ask 2026-10-04)
-
-- [!] **Publish `@syntopica/test-quality` 0.1.0.** In publish.yml and CLAUDE.md
-  since 2739ea0; run 37218754473 failed as expected for a package npm has never
-  seen: `ERR_PNPM_AUTH_TOKEN_EXCHANGE ... (status code 404)`. db-quality went
-  the same way (manual 0.1.0 on 2026-09-25, OIDC from 0.2.0). Unblock (owner,
-  passkey, on a TTY): in `packages/test-quality`,
-  `pnpm build && npm publish --access public`, then
-  `npm trust github @syntopica/test-quality --repo syntopica/codeality --file publish.yml --allow-publish`;
-  later releases go through the workflow.
-
 ## Cross-project (filed 2026-09-09 from two consumer backlog runs)
 
 - [ ] **knip 6.35 reports the default export of `vite.config.ts` as unused when
