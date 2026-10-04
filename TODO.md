@@ -231,35 +231,21 @@ needs.
 
 ## test-quality (owner ask 2026-10-04)
 
-- [ ] **A test-cost audit, so a consumer finds where its suite spends time and
-      memory without a manual investigation.** Owner, after verticagtm's
-      pre-push took 417-547 s: "deberíamos tener una cosa para optimizar test y
-      descubrir este tipo de cosas". What the manual pass found there (vitest 5,
-      1545 files, 7620 tests, all measured 2026-10-04 on a shared machine): -
-      `environment: 'jsdom'` set globally was 61-72% of suite time
-      ("environment" in vitest's own summary) while tests summed to 61 s CPU and
-      no file exceeded 1.6 s. 1024 files never touched the DOM: 65-67 s under
-      jsdom vs 31 s under node. Fix was two `test.projects` (jsdom for
-      `*.test.tsx`, hooks, components; node for the rest) plus a
-      `// @vitest-environment jsdom` docblock on 17 `.ts` files that really
-      failed under node. Suite 106-131 s to 72 s; with coverage 124 s to 81 s. -
-      Trap: with `extends: true` a project's `include` is concatenated with the
-      root `include`, so the first attempt ran 2687 files (every test twice) and
-      still went green. The audit must assert each file runs exactly once. -
-      ESLint without `--cache`: 175-180 s cold, 6 s warm. `check:ci` 421 s cold,
-      88 s warm. Hosted CI should stay cold because typed rules can go stale in
-      a cache. - pre-push reran the full `check:ci` an agent had just run by
-      hand. - Peak ~4 GB RSS across 15 workers; average 2.45 to 2.2 GB after the
-      split. Proposed checks, each a measurement rather than a lint opinion:
-      share of time in environment vs tests (`vitest --reporter=json` plus the
-      summary line); files run under a DOM environment that pass under node (run
-      the candidate set with `--environment node`, keep those that pass);
-      duplicate file execution across projects; slowest files; uncached lint and
-      format steps in local gates; hooks that repeat a gate; peak and mean
-      worker RSS. Smallest next step: script the verticagtm pass (candidate list
-      by grepping DOM APIs, node rerun, per-file JSON timings, run-count check)
-      as a `test-quality` CLI in this repo, and run it on one more consumer to
-      see which findings generalise.
+- [ ] **Publish `@syntopica/test-quality` 0.1.0.** Built and green in `check:ci`
+      (30 tests, integration test over a fixture suite), never published. Needs
+      the owner's go-ahead, then `test-quality` in the publish.yml `package`
+      choice list and in CLAUDE.md's valid values, the npm trusted-publisher
+      entry, and `gh workflow run publish.yml -f     package=test-quality`.
+      `pnpm release:check` will flag it until then.
+- [ ] **test-quality: `eslint.config.ts` is the last clone of db-quality's (25
+      lines, jscpd).** Under the 1% threshold (0.94%) after the tsup, vitest
+      alias and argv helpers moved to gate-kit. A shared
+      `createGateCliEslintConfig` would retire it in all three gate packages.
+- [ ] **test-quality: candidates are decided by a word list.** A DOM-environment
+      file that names `render`, `window` and so on is never proposed, so a file
+      that only mentions them in a string stays on jsdom. Measure how many such
+      files pass under node on verticagtm/10xjoy before widening the candidate
+      set (a full node rerun of every DOM file is the alternative).
 
 ## Cross-project (filed 2026-09-09 from two consumer backlog runs)
 

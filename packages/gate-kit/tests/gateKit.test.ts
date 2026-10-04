@@ -5,9 +5,12 @@ import { join } from 'node:path'
 import { describe, expect, it } from 'vitest'
 
 import { classifyFindings } from '../src/classifyFindings.js'
+import { cliTestAliases } from '../src/cliTestAliases.js'
+import { cliTsupOptions } from '../src/cliTsupOptions.js'
 import { ConfigError } from '../src/ConfigError.js'
 import { parseCommandArgs } from '../src/parseCommandArgs.js'
 import { readBaseline } from '../src/readBaseline.js'
+import { readCliInvocation } from '../src/readCliInvocation.js'
 import { reportCommandError } from '../src/reportCommandError.js'
 import { writeBaseline } from '../src/writeBaseline.js'
 
@@ -58,5 +61,42 @@ describe('gate-kit', () => {
       'error: boom\n',
       'error: raw\n',
     ])
+  })
+  it('reads the flags every gate CLI shares', () => {
+    expect(readCliInvocation(['x', '--version'], '/cwd')).toEqual({
+      kind: 'version',
+    })
+    expect(readCliInvocation(['-h'], '/cwd')).toEqual({ kind: 'help' })
+    expect(readCliInvocation(['check', '--json'], '/cwd')).toEqual({
+      kind: 'command',
+      root: '/cwd',
+      command: 'check',
+      rest: ['--json'],
+    })
+    expect(readCliInvocation(['--project', '/p', 'check'], '/cwd')).toEqual({
+      kind: 'command',
+      root: '/p',
+      command: 'check',
+      rest: [],
+    })
+    expect(readCliInvocation(['--project'], '/cwd')).toEqual({
+      kind: 'command',
+      root: '',
+      command: undefined,
+      rest: [],
+    })
+  })
+  it('builds the bundle options and test aliases of a gate CLI', () => {
+    const options = cliTsupOptions('/pkg')
+    const esbuild: { alias?: Record<string, string> } = {}
+    options.esbuildOptions(esbuild)
+    expect(esbuild.alias).toEqual({ '@': '/pkg/src' })
+    const [tests, source] = cliTestAliases('/pkg')
+    expect(
+      '@tests/a/b.js'.replace(tests?.find ?? '', tests?.replacement ?? ''),
+    ).toBe('/pkg/tests/a/b.ts')
+    expect(
+      '@/a.js'.replace(source?.find ?? '', source?.replacement ?? ''),
+    ).toBe('/pkg/src/a.ts')
   })
 })

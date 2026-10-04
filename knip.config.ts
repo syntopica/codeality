@@ -90,6 +90,12 @@ const config: KnipConfig = {
       entry: ['bin/*.mjs'],
       project: ['src/**/*.ts', 'tests/**/*.ts'],
     },
+    'packages/test-quality': {
+      // The inventory probe in assets/ is run with node inside the audited
+      // project, so knip sees it only as an entry.
+      entry: ['src/cli.ts', 'bin/*.mjs', 'assets/*.mjs'],
+      project: ['src/**/*.ts', 'tests/**/*.ts'],
+    },
     'packages/db-quality': {
       // A workspace-specific key replaces rather than merges with the
       // `packages/*` wildcard, so entry/project are repeated here.

@@ -1,0 +1,3 @@
+# Written from manifest.json by the integration test: a committed package.json
+# makes the pre-commit hook treat the fixture as a workspace to lint from.
+tests/fixtures/suite/package.json

@@ -1,0 +1,9 @@
+{
+  "name": "test-quality-fixture",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "check:ci": "eslint . && prettier --check .",
+    "test": "vitest run"
+  }
+}

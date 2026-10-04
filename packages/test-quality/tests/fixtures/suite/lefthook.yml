@@ -1,0 +1,4 @@
+pre-push:
+  commands:
+    verify:
+      run: pnpm run check:ci && pnpm run test

@@ -1,3 +1,22 @@
+### 2026-10-04
+
+- [x] New package `@syntopica/test-quality` (`codeality-test`), from the
+      verticagtm test-cost diagnosis. `check` lists the suite through the
+      project's own vitest (`assets/vitest-inventory.mjs`, nothing executed) and
+      reads the git hooks: `duplicate-file-run`, `dom-environment-unused`,
+      `uncached-hook-lint`, `hook-runs-full-gate`. `measure` runs the suite with
+      the JSON reporter and samples RSS of vitest and its workers:
+      `environment-dominates` (vitest 5 shares and vitest 4 seconds),
+      `slowest-files`, `memory-use`, and with `--node-candidates` a rerun under
+      `--environment node`. Generalises: 10xjoy (vitest 4, global jsdom) 71 of
+      141 files are DOM-free and all 71 pass under node, environment 63-65% of
+      the work vs tests 7%. verticagtm after its fix: no environment finding, 4
+      files left that pass under node, 58 s wall, peak 3.3 GB. Running it on
+      verticagtm caught a false positive in the tool itself (a
+      `--cache-location .../eslint/` path read as an uncached eslint), fixed
+      with that script as the fixture. gate-kit gained `readCliInvocation`,
+      `cliTsupOptions`, `cliTestAliases`.
+
 ### 2026-10-01
 
 - [x] ui-quality `text-hard-cut` false positive closed: a tie at the longest
