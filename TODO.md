@@ -231,12 +231,14 @@ needs.
 
 ## test-quality (owner ask 2026-10-04)
 
-- [ ] **Publish `@syntopica/test-quality` 0.1.0.** Built and green in `check:ci`
-      (30 tests, integration test over a fixture suite), never published. Needs
-      the owner's go-ahead, then `test-quality` in the publish.yml `package`
-      choice list and in CLAUDE.md's valid values, the npm trusted-publisher
-      entry, and `gh workflow run publish.yml -f     package=test-quality`.
-      `pnpm release:check` will flag it until then.
+- [!] **Publish `@syntopica/test-quality` 0.1.0.** In publish.yml and CLAUDE.md
+  since 2739ea0; run 37218754473 failed as expected for a package npm has never
+  seen: `ERR_PNPM_AUTH_TOKEN_EXCHANGE ... (status code 404)`. db-quality went
+  the same way (manual 0.1.0 on 2026-09-25, OIDC from 0.2.0). Unblock (owner,
+  passkey, on a TTY): in `packages/test-quality`,
+  `pnpm build && npm publish --access public`, then
+  `npm trust github @syntopica/test-quality --repo syntopica/codeality --file publish.yml --allow-publish`;
+  later releases go through the workflow.
 
 ## Cross-project (filed 2026-09-09 from two consumer backlog runs)
 
