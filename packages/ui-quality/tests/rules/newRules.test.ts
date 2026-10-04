@@ -154,4 +154,23 @@ describe('bareUrl', () => {
     const findings = bareUrl(snapshotOf(elements), ruleContext())
     expect(findings.map((finding) => finding.subject)).toEqual(['#e0'])
   })
+  it('accepts an address inside a control, where a link would nest', () => {
+    const elements = [
+      elementBox({ id: 0, tag: 'summary' }),
+      elementBox({
+        id: 1,
+        parent: 0,
+        tag: 'code',
+        text: 'https://example.com/a',
+      }),
+      elementBox({ id: 2, tag: 'button' }),
+      elementBox({
+        id: 3,
+        parent: 2,
+        tag: 'span',
+        text: 'https://example.com/b',
+      }),
+    ]
+    expect(bareUrl(snapshotOf(elements), ruleContext())).toEqual([])
+  })
 })
