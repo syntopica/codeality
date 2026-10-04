@@ -1,5 +1,14 @@
 # @busirocket/quality-config
 
+## 0.12.0
+
+### Minor Changes
+
+- feat: `baseline-type-coverage --at-least` accepts a value above the shared
+  threshold, up to 100, so a repository that has climbed past the shared floor
+  can pin its coverage there. A value equal to the shared threshold is still
+  refused as a restatement.
+
 ## 0.11.1
 
 ### Patch Changes

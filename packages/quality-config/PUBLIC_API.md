@@ -56,9 +56,9 @@ file plus a runner rather than as a factory: the config is read in place, never
 copied into the consuming repo.
 
 `baseline-type-coverage` takes the directories to search and `--at-least <n>`, a
-repo-local floor for a project still climbing toward the shared threshold. It
-refuses a value above that threshold, so it can only lower the bar where one is
-needed, never raise or restate it.
+repo-local bar: below the shared threshold for a project still climbing toward
+it, above it to pin a project that has passed it (up to 100). It refuses a value
+equal to the shared threshold, which would only restate it.
 
 `--also-ignore <patterns>` adds ignore patterns **on top of** the shared list.
 jscpd's own `--ignore` replaces that list instead, so without this a project

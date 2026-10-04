@@ -12,12 +12,14 @@
 // to `any` is the point. `--strict` is on, so an `any` reached through a
 // generic argument counts as uncovered.
 //
-// `--at-least <n>` lowers the bar for one repo. It exists for adoption: a
-// codebase below the shared threshold cannot wire this gate at all otherwise,
-// so the choice is an unenforced gate or none. Freezing at the measured value
-// makes coverage a ratchet - it cannot fall - and the number in package.json
-// is the debt, visible in every diff that changes it. Raise it as the `any`s
-// go; never lower it to get green.
+// `--at-least <n>` sets the bar for one repo. Below the shared threshold it
+// exists for adoption: a codebase under it cannot wire this gate at all
+// otherwise, so the choice is an unenforced gate or none. Freezing at the
+// measured value makes coverage a ratchet - it cannot fall - and the number in
+// package.json is the debt, visible in every diff that changes it. Raise it as
+// the `any`s go; never lower it to get green. Above the shared threshold it
+// pins a repo that has already climbed past it (to 100, say), so its coverage
+// cannot slide back to the shared floor unnoticed.
 //
 // `--ignore-files <glob>` adds to the two exclusions above. Repeatable. It is
 // for generated or vendored code the project already excludes elsewhere -
@@ -27,6 +29,7 @@
 //   baseline-type-coverage                       # every workspace under the cwd
 //   baseline-type-coverage packages apps         # only under these directories
 //   baseline-type-coverage --at-least 97         # freeze below the shared bar
+//   baseline-type-coverage --at-least 100        # pin above it
 //   baseline-type-coverage --ignore-files 'migrations/**'
 import { spawnSync } from 'node:child_process'
 import { existsSync, readdirSync, readFileSync } from 'node:fs'
@@ -74,10 +77,16 @@ if (atLeastIndex !== -1 && !/^\d+(?:\.\d+)?$/.test(override ?? '')) {
   )
   exit(1)
 }
-if (override !== undefined && Number(override) > Number(declared[1])) {
+if (override !== undefined && Number(override) > 100) {
   console.error(
-    `baseline-type-coverage: --at-least ${override} is above the shared ` +
-      `threshold of ${declared[1]}. Drop the flag rather than restating it.`,
+    `baseline-type-coverage: --at-least ${override} is above 100 percent.`,
+  )
+  exit(1)
+}
+if (override !== undefined && Number(override) === Number(declared[1])) {
+  console.error(
+    `baseline-type-coverage: --at-least ${override} restates the shared ` +
+      `threshold. Drop the flag.`,
   )
   exit(1)
 }
