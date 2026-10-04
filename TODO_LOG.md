@@ -1,5 +1,8 @@
 ### 2026-10-04
 
+- [x] `quality-config@0.12.0` tag added at f6c7239 (the bump commit, 05:24Z;
+      publish run 37179879613, npm 05:28Z; no later change to the package).
+      `pnpm release:check`: 9 packages fully released.
 - [x] `@syntopica/test-quality` 0.1.0 and `@syntopica/ui-quality` 0.1.0 are on
       npm, both first releases published by hand after `npm login` (the
       `~/.npmrc` registry token answered 401, so the `PUT` came back `E404` and
