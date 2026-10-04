@@ -15,6 +15,7 @@ describe('nodeCandidates', () => {
     const result = nodeCandidates(
       [
         { file: '/r/pure.test.ts', project: 'all', environment: 'jsdom' },
+        { file: '/r/pure.test.ts', project: 'again', environment: 'jsdom' },
         { file: '/r/hook.test.ts', project: 'all', environment: 'jsdom' },
         { file: '/r/storage.test.ts', project: 'all', environment: 'jsdom' },
         { file: '/r/opted.test.ts', project: 'all', environment: 'jsdom' },

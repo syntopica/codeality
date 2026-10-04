@@ -1,5 +1,10 @@
 # Changelog
 
+## 0.1.1
+
+- `dom-environment-unused` counts a file once even when several projects run it:
+  a doubled config reported "1034 of 1559 files" for a 1545-file suite.
+
 ## 0.1.0
 
 - First release. `codeality-test check` reads the suite through the project's

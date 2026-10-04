@@ -1,6 +1,6 @@
 {
   "name": "@syntopica/test-quality",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "private": false,
   "packageManager": "pnpm@12.8.1",
   "license": "MIT",
