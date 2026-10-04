@@ -35,6 +35,15 @@ describe('textHardCut', () => {
     )
     expect(textHardCut(snapshotOf(rows(repeated)), ruleContext())).toEqual([])
   })
+  it('accepts a column of whole hexadecimal ids of one length', () => {
+    const ids = [
+      '3ad06cccb0b04306b05975ffa352e0f1',
+      '27838daa3afc43bd9b053fe900025550',
+      '99d3fe29bbd9437eb0f860c31d56a803',
+      'short',
+    ].map((text) => [{ x: 0, text }])
+    expect(textHardCut(snapshotOf(rows(ids)), ruleContext())).toEqual([])
+  })
   it('reports a spike of cut texts hidden by a longer text from another source', () => {
     const table = [
       ...['alpha', 'bravo', 'charlie', 'delta', 'echo', 'foxtrot'].map(cut),

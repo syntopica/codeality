@@ -1,6 +1,7 @@
 import type { ElementBox } from '@/model/ElementBox.js'
 import { digitTemplate } from '@/rules/digitTemplate.js'
 import { ELLIPSIS_TAILS } from '@/rules/ELLIPSIS_TAILS.js'
+import { HEX_IDENTIFIER } from '@/rules/HEX_IDENTIFIER.js'
 import { SENTENCE_TAILS } from '@/rules/SENTENCE_TAILS.js'
 import { spikeLength } from '@/rules/spikeLength.js'
 import { tiesAtLongest } from '@/rules/tiesAtLongest.js'
@@ -10,7 +11,7 @@ import { tiesAtLongest } from '@/rules/tiesAtLongest.js'
  * without an ellipsis. The limit is either the longest length when at least
  * three distinct texts (or half the column) tie there, more on a long column
  * (natural text rarely ties at the maximum), or a length that spikes above its
- * neighbours. Texts ending a sentence, one label repeated on every row, and
+ * neighbours. Texts ending a sentence, whole hexadecimal ids, one label repeated on every row, and
  * texts that differ only in digits, and a tie no larger than the texts just
  * shorter than it are not cuts.
  */
@@ -29,7 +30,8 @@ export const hardCutColumn = (
     (cell) =>
       cell.textLength === length &&
       !ELLIPSIS_TAILS.some((tail) => cell.textTail.endsWith(tail)) &&
-      !SENTENCE_TAILS.some((tail) => cell.textTail.endsWith(tail)),
+      !SENTENCE_TAILS.some((tail) => cell.textTail.endsWith(tail)) &&
+      !HEX_IDENTIFIER.test(cell.text.trim()),
   )
   // The same label on every row (a checkbox repeated per block) is the
   // copy, however long it is next to its neighbours; so is one template whose
