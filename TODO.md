@@ -228,6 +228,14 @@ needs.
       other filter already seeks an index (`jobs_list.sql` after the fix); when
       `database` is set, drop a BDB404 whose statement plans without a full
       scan. Next step: both, with tests.
+- [ ] `BDB406` reports an unfiltered whole-table statement as a missing index.
+      Hit in Vexa on 2026-10-05 (fixed by baselining in Vexa `4a88be36`): five
+      `clear_replayed_*.sql` files are a bare `DELETE FROM <table>` that empties
+      the table on purpose, yet each got "full table scan ... give the filter an
+      index it can use" although there is no filter and no index could help.
+      `queryPlanFindings.ts` checks the plan for `SCAN` without looking at the
+      statement. Next step: skip a `DELETE` or `UPDATE` with no `WHERE` (a
+      deliberate whole-table operation), with a test for `DELETE FROM t`.
 
 ## Cross-project (filed 2026-09-09 from two consumer backlog runs)
 
