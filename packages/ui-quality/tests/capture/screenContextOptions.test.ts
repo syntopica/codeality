@@ -4,6 +4,7 @@ import { describe, expect, it } from 'vitest'
 import { screenContextOptions } from '@/capture/screenContextOptions.js'
 import { screenshotName } from '@/capture/screenshotName.js'
 import { screenLabel } from '@/model/screenLabel.js'
+import { ConfigError } from '@syntopica/gate-kit/ConfigError'
 
 describe('screen context options', () => {
   it('keeps a desktop viewport a plain window', () => {
@@ -34,6 +35,16 @@ describe('screen context options', () => {
       userAgent: devices['iPhone 15'].userAgent,
     })
     expect(options.userAgent).toContain('iPhone')
+  })
+  it('fails as configuration when Playwright lacks the phone device', () => {
+    expect(() =>
+      screenContextOptions(
+        { width: 390, height: 844, mobile: true },
+        'light',
+        null,
+        {} as typeof devices,
+      ),
+    ).toThrow(ConfigError)
   })
   it('labels a phone screen apart from a desktop one of the same size', () => {
     const phone = {
