@@ -83,6 +83,33 @@ better-ui, frontend-design). Shipped from that review: `edge-misaligned`,
 reading nested rows and length spikes. Each item below names the probe fields it
 needs.
 
+- [ ] **axe hangs forever on a sandboxed srcdoc iframe.** 2026-10-06, Vexa
+      reader: `new AxeBuilder({ page }).analyze()` in `captureScreen.ts` has no
+      timeout and no frame exclusion. On the email body frame (`srcdoc`,
+      `sandbox` without `allow-scripts`) it never returns: the list-only page
+      finished in 3.4 s, the same page with the reader open timed out at 40 s,
+      and `.exclude('iframe')` finished at once. The first full run sat 10 min
+      on one route and died with
+      `browserContext.newPage: Target page, context     or browser has been closed`.
+      Smallest fix: a config `axe.exclude` list (selectors) plus a per-screen
+      timeout that records a finding instead of hanging; add a fixture page with
+      a script-less sandboxed iframe.
+
+- [ ] **`icon-contrast` composites over white when the page colour is on body.**
+      2026-10-06, Vexa dark mode: the probe collects
+      `document.body.querySelectorAll('*')`, so body's own dark
+      `background-color` and gradient are never seen and translucent ancestors
+      are blended over white. Reported 1.52:1 and 2.63:1; rendered pixels
+      measure 5.9:1 and 5.4:1. Smallest fix: include `document.body` (and
+      `html`) in the probe's backdrop chain in `assets/probe.js` / `backdropOf`,
+      with a fixture whose dark background sits on body.
+
+- [ ] **No init-script hook to stub a desktop shell.** 2026-10-06, Vexa (Tauri):
+      the frontend renders only with a `window.__TAURI_INTERNALS__` IPC stub,
+      and the config has no way to inject one, so the run needed a separate Vite
+      config prepending the stub via `transformIndexHtml`. Smallest step: a
+      config `initScripts: [path]` passed to `context.addInitScript`.
+
 - [ ] **The default `usernameSelector` fills a honeypot field.** 2026-10-06,
       Contratica: the login form starts with an off-screen spam-trap
       `<input type="text" name="companyWebsite">`. The default list
