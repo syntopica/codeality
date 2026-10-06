@@ -83,6 +83,16 @@ better-ui, frontend-design). Shipped from that review: `edge-misaligned`,
 reading nested rows and length spikes. Each item below names the probe fields it
 needs.
 
+- [ ] **The default `usernameSelector` fills a honeypot field.** 2026-10-06,
+      Contratica: the login form starts with an off-screen spam-trap
+      `<input type="text" name="companyWebsite">`. The default list
+      `input[type=email], input[name=email], ..., input[type=text]` is one CSS
+      selector, so `.first()` takes the first match in DOM order, not the first
+      alternative: the honeypot got the email, login never navigated and the run
+      died with `page.waitForURL: Timeout 30000ms exceeded` (exit 3). Smallest
+      fix: in `src/capture/login.ts`, try each alternative in order and take the
+      first visible match; add a fixture with a hidden text input first.
+
 - [ ] **A consumer can gate only part of its site and nothing says so.**
       2026-10-03, TienesLaVibra: `codeality-ui.json` listed three `/admin`
       routes only, so the public card grid whose page 2 repeated page 1 (tied
