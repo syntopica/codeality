@@ -1,6 +1,6 @@
 # Changelog
 
-## Unreleased
+## 0.2.0
 
 - `viewports[].mobile` emulates a phone (touch, pixel ratio 3, the iPhone Safari
   user agent from Playwright's `iPhone 15` device) at the configured size, so a
