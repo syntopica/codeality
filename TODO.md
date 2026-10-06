@@ -83,7 +83,7 @@ better-ui, frontend-design). Shipped from that review: `edge-misaligned`,
 reading nested rows and length spikes. Each item below names the probe fields it
 needs.
 
-- [ ] **axe hangs forever on a sandboxed srcdoc iframe.** 2026-10-06, Vexa
+- [x] **axe hangs forever on a sandboxed srcdoc iframe.** 2026-10-06, Vexa
       reader: `new AxeBuilder({ page }).analyze()` in `captureScreen.ts` has no
       timeout and no frame exclusion. On the email body frame (`srcdoc`,
       `sandbox` without `allow-scripts`) it never returns: the list-only page
@@ -93,22 +93,30 @@ needs.
       `browserContext.newPage: Target page, context     or browser has been closed`.
       Smallest fix: a config `axe.exclude` list (selectors) plus a per-screen
       timeout that records a finding instead of hanging; add a fixture page with
-      a script-less sandboxed iframe.
+      a script-less sandboxed iframe. Done 2026-10-06: sandboxed frames without
+      `allow-scripts` are always excluded, `axe.exclude` and `axe.timeoutMs`
+      added; `tests/cli.desktop-shell.integration.test.ts` times out at 60 s
+      without the exclusion and passes with it.
 
-- [ ] **`icon-contrast` composites over white when the page colour is on body.**
+- [x] **`icon-contrast` composites over white when the page colour is on body.**
       2026-10-06, Vexa dark mode: the probe collects
       `document.body.querySelectorAll('*')`, so body's own dark
       `background-color` and gradient are never seen and translucent ancestors
       are blended over white. Reported 1.52:1 and 2.63:1; rendered pixels
       measure 5.9:1 and 5.4:1. Smallest fix: include `document.body` (and
       `html`) in the probe's backdrop chain in `assets/probe.js` / `backdropOf`,
-      with a fixture whose dark background sits on body.
+      with a fixture whose dark background sits on body. Done 2026-10-06: the
+      probe returns `rootBackgrounds` (html, body) and
+      `backdropOf`/`imageBehind` use them;
+      `tests/rules/iconContrastCanvas.test.ts`.
 
-- [ ] **No init-script hook to stub a desktop shell.** 2026-10-06, Vexa (Tauri):
+- [x] **No init-script hook to stub a desktop shell.** 2026-10-06, Vexa (Tauri):
       the frontend renders only with a `window.__TAURI_INTERNALS__` IPC stub,
       and the config has no way to inject one, so the run needed a separate Vite
       config prepending the stub via `transformIndexHtml`. Smallest step: a
-      config `initScripts: [path]` passed to `context.addInitScript`.
+      config `initScripts: [path]` passed to `context.addInitScript`. Done
+      2026-10-06: `initScripts` in the config, run per context; covered by the
+      desktop-shell integration test.
 
 - [ ] **The default `usernameSelector` fills a honeypot field.** 2026-10-06,
       Contratica: the login form starts with an off-screen spam-trap
