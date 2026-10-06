@@ -124,6 +124,15 @@ needs.
       2026-10-06: `initScripts` in the config, run per context; covered by the
       desktop-shell integration test.
 
+- [ ] **`empty-state-missing` misreads a table whose header has several cells.**
+      2026-10-07, Contratica `/herramientas/buscador-cpv`:
+      `src/capture/listOfTable.ts` reads the thead with `innerText`, which joins
+      the cells with tabs (`Nivel\tDígitos\tSignificado en el     ejemplo`);
+      filtering tables with `hasText` on that string matches none, so the rule
+      counts 0 rows while the page shows 6 and reports a missing empty state.
+      Smallest fix: locate the table by index or by its first header cell, with
+      a fixture of a three-column header.
+
 - [ ] **The default `usernameSelector` fills a honeypot field.** 2026-10-06,
       Contratica: the login form starts with an off-screen spam-trap
       `<input type="text" name="companyWebsite">`. The default list
