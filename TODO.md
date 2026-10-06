@@ -83,17 +83,12 @@ better-ui, frontend-design). Shipped from that review: `edge-misaligned`,
 reading nested rows and length spikes. Each item below names the probe fields it
 needs.
 
-- [!] **`ui-quality@0.2.0` is tagged but not on npm: OIDC token exchange 404.**
-  2026-10-06, runs 37535223884 and 37535403117:
-  `ERR_PNPM_AUTH_TOKEN_EXCHANGE     ... (status code 404)` then
-  `Failed to publish ... (status 404)`, while test-quality 0.1.1 published the
-  same way on 2026-10-04. The trusted publisher recorded for ui-quality
-  (`1ad462a4-...`) is missing or does not match. Smallest step (owner, needs the
-  npm login): npmjs.com > `@syntopica/ui-quality` > Settings > Trusted
-  publishing: organization `syntopica`, repository `codeality`, workflow
-  `publish.yml`, no environment; then
-  `gh workflow run publish.yml -f package=ui-quality`.
-
+- [x] **`ui-quality@0.2.0` published 2026-10-07** (run 37538934323). The two
+      earlier runs failed with OIDC token exchange 404 because the package's
+      trusted publisher on npmjs.com showed `Status: Expired`; it was deleted
+      and recreated (syntopica/codeality, publish.yml, no environment) and is
+      `Pending validation` until this first publish. An expired trusted
+      publisher reads as a 404, not as an auth error.
 - [x] **axe hangs forever on a sandboxed srcdoc iframe.** 2026-10-06, Vexa
       reader: `new AxeBuilder({ page }).analyze()` in `captureScreen.ts` has no
       timeout and no frame exclusion. On the email body frame (`srcdoc`,
