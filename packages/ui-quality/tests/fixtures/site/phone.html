@@ -1,0 +1,22 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Phone layout</title>
+  </head>
+  <body>
+    <main>
+      <h1>Layout</h1>
+      <p id="layout">Desktop layout</p>
+    </main>
+    <script>
+      // Stands in for an app that picks its layout from the user agent, not
+      // the width. The phone text carries a bare address so the report names
+      // the screens that saw it.
+      if (/iPhone|iPad|iPod|Android/.test(navigator.userAgent))
+        document.getElementById('layout').textContent =
+          `phone dpr${devicePixelRatio} touch${navigator.maxTouchPoints > 0} https://m.example.com`
+    </script>
+  </body>
+</html>

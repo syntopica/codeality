@@ -33,7 +33,7 @@ pnpm exec codeality-ui init
   "routes": [{ "path": "/admin/inbox", "main": "main" }],
   "viewports": [
     { "width": 1920, "height": 1080 },
-    { "width": 390, "height": 844 }
+    { "width": 390, "height": 844, "mobile": true }
   ],
   "colorSchemes": ["light", "dark"],
   "palette": { "variablePrefixes": ["--brand-"], "colors": ["#ffffff"] },
@@ -67,6 +67,11 @@ pnpm exec codeality-ui init
 - `routes[].click` is a list of Playwright selectors clicked in order after the
   route loads, to measure a tab, drawer or dialog. A selector that matches
   nothing is reported as `click-failed` and the run carries on.
+- `viewports[].mobile` emulates a phone at that size: touch, a pixel ratio of 3
+  and the iPhone Safari user agent, all taken from Playwright's `iPhone 15`
+  device. Use it for a mobile site or webview that picks its layout from the
+  user agent rather than the width. Reports and screenshots name such a screen
+  `390x844 phone`, apart from a desktop window of the same size.
 - `palette` is the set of colours a page may show: root custom properties whose
   names start with one of `variablePrefixes`, plus literal hex values. Without
   it the `palette` rule is off.

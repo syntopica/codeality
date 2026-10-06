@@ -2,6 +2,10 @@
 
 ## Unreleased
 
+- `viewports[].mobile` emulates a phone (touch, pixel ratio 3, the iPhone Safari
+  user agent from Playwright's `iPhone 15` device) at the configured size, so a
+  layout chosen from the user agent can be measured from a desktop machine. Such
+  a screen is labelled `390x844 phone` in reports and screenshot names.
 - `icon-contrast` reads the page colour on `<body>` and `<html>`: a dark theme
   that paints its background there was measured over white (1.52:1 reported,
   5.9:1 on screen), and a gradient there now skips the icon as one on a button

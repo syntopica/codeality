@@ -86,6 +86,20 @@ describe('configuration', () => {
     expect(config.rules.controlInset.minInset).toBe(8)
     expect(config.disable[0]?.route).toBeNull()
   })
+  it('marks a phone viewport and leaves desktop ones plain', () => {
+    const config = configFromDocument({
+      baseUrl: 'https://x.test',
+      routes: ['/'],
+      viewports: [
+        { width: 1440, height: 900, mobile: false },
+        { width: 390, height: 844, mobile: true },
+      ],
+    })
+    expect(config.viewports).toEqual([
+      { width: 1440, height: 900 },
+      { width: 390, height: 844, mobile: true },
+    ])
+  })
   it('reads a session file the project mints itself', () => {
     const config = configFromDocument({
       baseUrl: 'https://x.test',
@@ -110,6 +124,14 @@ describe('configuration', () => {
       'positive number',
     ],
     [{ baseUrl: 'x', routes: ['/'], viewports: [1] }, 'must be an object'],
+    [
+      {
+        baseUrl: 'x',
+        routes: ['/'],
+        viewports: [{ width: 390, height: 844, mobile: 'yes' }],
+      },
+      'mobile must be a boolean',
+    ],
     [{ baseUrl: 'x', routes: ['/'], palette: { colors: ['pink'] } }, '#rgb'],
     [
       { baseUrl: 'x', routes: ['/'], palette: 'pink' },

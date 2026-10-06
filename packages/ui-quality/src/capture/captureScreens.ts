@@ -9,6 +9,7 @@ import { probeSource } from '@/capture/probeSource.js'
 import { screenContextOptions } from '@/capture/screenContextOptions.js'
 import { statePathOf } from '@/capture/statePathOf.js'
 import type { UiQualityConfig } from '@/config/UiQualityConfig.js'
+import { screenLabel } from '@/model/screenLabel.js'
 
 /** Every route at every viewport in every colour scheme, one browser for the run. */
 export const captureScreens = async (
@@ -18,7 +19,8 @@ export const captureScreens = async (
 ): Promise<CapturedScreen[]> => {
   const statePath = statePathOf(root, config.auth)
   assertCredentials(config.auth, statePath)
-  const { chromium } = await loadPlaywright()
+  const session = config.auth && statePath
+  const { chromium, devices } = await loadPlaywright()
   const screensDir = ensureScreensDir(root)
   const probe = probeSource()
   const initScripts = initScriptsOf(root, config.initScripts)
@@ -29,7 +31,7 @@ export const captureScreens = async (
       for (const viewport of config.viewports) {
         const { context, page } = await openScreenPage(
           browser,
-          screenContextOptions(viewport, colorScheme, config.auth && statePath),
+          screenContextOptions(viewport, colorScheme, session, devices),
           initScripts,
         )
         // Sort and search once per route: they behave the same at every size
@@ -37,9 +39,7 @@ export const captureScreens = async (
         const exercise = captured.length < config.routes.length
         for (const route of config.routes) {
           const screen = { route: route.path, viewport, colorScheme }
-          log(
-            `capturing ${route.path} ${String(viewport.width)}x${String(viewport.height)} ${colorScheme}\n`,
-          )
+          log(`capturing ${route.path} ${screenLabel(screen)}\n`)
           const snapshot = await captureScreen({
             page,
             baseUrl: config.baseUrl,
