@@ -1,5 +1,18 @@
 # Changelog
 
+## Unreleased
+
+- `icon-contrast` reads the page colour on `<body>` and `<html>`: a dark theme
+  that paints its background there was measured over white (1.52:1 reported,
+  5.9:1 on screen), and a gradient there now skips the icon as one on a button
+  does.
+- axe leaves out sandboxed frames without `allow-scripts`, which it cannot enter
+  and used to wait on forever; `axe.exclude` adds selectors, and an audit past
+  `axe.timeoutMs` (60 s) is reported as `a11y/axe-timeout` instead of hanging
+  the run.
+- `initScripts` runs project files in every page before the app's scripts, so a
+  Tauri or Electron frontend can be measured with its IPC bridge stubbed.
+
 ## 0.1.0
 
 - `codeality-ui check`, `baseline` and `init`: drive each configured route in

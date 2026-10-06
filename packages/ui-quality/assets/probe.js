@@ -223,9 +223,22 @@
     if (rgba) variables[name] = rgba
   }
 
+  // The walk above starts inside body, so the canvas every fill sits on is
+  // read here: html then body, outermost first.
+  const rootBackgrounds = [document.documentElement, document.body].map(
+    (root) => {
+      const computed = getComputedStyle(root)
+      return {
+        color: toRgba(computed.backgroundColor),
+        hasImage: computed.backgroundImage !== 'none',
+      }
+    },
+  )
+
   return {
     elements,
     variables,
+    rootBackgrounds,
     viewportWidth: window.innerWidth,
     viewportHeight: window.innerHeight,
     documentWidth: document.documentElement.scrollWidth,

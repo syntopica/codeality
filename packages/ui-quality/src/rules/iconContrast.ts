@@ -5,6 +5,8 @@ import { backdropOf } from '@/rules/backdropOf.js'
 import { iconOnlyControlOf } from '@/rules/iconOnlyControlOf.js'
 import { imageBehind } from '@/rules/imageBehind.js'
 import { NON_TEXT_MIN_RATIO } from '@/rules/NON_TEXT_MIN_RATIO.js'
+import { pageBackdropOf } from '@/rules/pageBackdropOf.js'
+import { pageImageBehind } from '@/rules/pageImageBehind.js'
 import type { Rule } from '@/rules/Rule.js'
 
 // An icon that is the whole control (a bell, a close cross) is non-text
@@ -14,13 +16,15 @@ import type { Rule } from '@/rules/Rule.js'
 // An inactive control is exempt, as WCAG 1.4.11 says.
 export const iconContrast: Rule = (snapshot) => {
   const findings: RawFinding[] = []
+  const canvas = pageBackdropOf(snapshot.rootBackgrounds)
+  const canvasHasImage = pageImageBehind(snapshot.rootBackgrounds)
   for (const icon of snapshot.elements) {
     if (icon.tag !== 'svg' || !icon.color) continue
     const control = iconOnlyControlOf(icon, snapshot.elements)
     if (!control || control.disabled) continue
     // A gradient button has no single colour to measure against.
-    if (imageBehind(icon, snapshot.elements)) continue
-    const backdrop = backdropOf(icon, snapshot.elements)
+    if (imageBehind(icon, snapshot.elements, canvasHasImage)) continue
+    const backdrop = backdropOf(icon, snapshot.elements, canvas)
     const ratio = contrastRatio(blendOver(icon.color, backdrop), backdrop)
     if (ratio >= NON_TEXT_MIN_RATIO) continue
     findings.push({

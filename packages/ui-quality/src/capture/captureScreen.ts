@@ -1,6 +1,4 @@
-import AxeBuilder from '@axe-core/playwright'
-
-import { axeViolationsOf } from '@/capture/axeViolationsOf.js'
+import { auditAccessibility } from '@/capture/auditAccessibility.js'
 import { checkAction } from '@/capture/checkAction.js'
 import { clickThrough } from '@/capture/clickThrough.js'
 import { exerciseScreen } from '@/capture/exerciseScreen.js'
@@ -23,6 +21,7 @@ export const captureScreen = async ({
   probe,
   exercise,
   slowRequestMs,
+  axe: axeConfig,
   ...request
 }: ScreenRequest): Promise<PageSnapshot> => {
   const consoleLog = recordConsoleErrors(page)
@@ -38,7 +37,7 @@ export const captureScreen = async ({
   // axe fetches each stylesheet itself to read the CSSOM; a page whose CSP
   // keeps connect-src narrow logs that refusal, which the page never caused.
   const loggedBeforeAxe = consoleLog.errors.length
-  const axe = axeViolationsOf(await new AxeBuilder({ page }).analyze())
+  const axe = await auditAccessibility(page, axeConfig)
   consoleLog.errors.splice(loggedBeforeAxe)
   const probed: ProbeResult = await page.evaluate(
     `(${probe})(${JSON.stringify(route.main)})`,

@@ -1,6 +1,7 @@
 import type { Page } from 'playwright'
 
 import type { RouteRequest } from '@/capture/RouteRequest.js'
+import type { AxeConfig } from '@/config/AxeConfig.js'
 import type { RouteConfig } from '@/config/RouteConfig.js'
 import type { Screen } from '@/model/Screen.js'
 
@@ -15,4 +16,6 @@ export type ScreenRequest = RouteRequest & {
   exercise: boolean
   /** Data requests slower than this are timed a second time. */
   slowRequestMs: number
+  /** What axe leaves out and how long it may take. */
+  axe: AxeConfig
 }

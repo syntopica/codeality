@@ -40,7 +40,9 @@ pnpm exec codeality-ui init
   "rules": { "content-width": { "minRatio": 0.8 } },
   "disable": [
     { "rule": "palette", "selector": ".vendor-widget", "reason": "third party" }
-  ]
+  ],
+  "axe": { "exclude": ["#vendor-chat"], "timeoutMs": 60000 },
+  "initScripts": ["e2e/ipc-stub.js"]
 }
 ```
 
@@ -70,6 +72,14 @@ pnpm exec codeality-ui init
   it the `palette` rule is off.
 - `disable` keeps a finding on purpose. `route` and `selector` narrow it;
   `reason` is required.
+- `axe.exclude` lists selectors axe leaves out. A sandboxed frame without
+  `allow-scripts` (an email client's message body) is always left out, since axe
+  cannot run inside it and used to wait on it forever. An audit that outlives
+  `axe.timeoutMs` (60 s by default) is reported as `a11y/axe-timeout` and the
+  run carries on.
+- `initScripts` are files, from the project root, run in every page before the
+  app's own scripts: the stub of a desktop shell's IPC bridge (Tauri, Electron)
+  for a frontend that renders nothing without it, or a fixed clock.
 
 ## Rules
 
@@ -86,7 +96,7 @@ pnpm exec codeality-ui init
 | `blank-route`         | no element matches the main selector, or the main region paints nothing                                                        |
 | `horizontal-overflow` | the page is wider than its viewport                                                                                            |
 | `fixed-overflow`      | a fixed or sticky element taller than the window that cannot scroll: content unreachable                                       |
-| `icon-contrast`       | an icon-only button or link under 3:1 against its background (WCAG 1.4.11)                                                     |
+| `icon-contrast`       | an icon-only button or link under 3:1 against its background, `<body>` and `<html>` fills included (WCAG 1.4.11)               |
 | `raw-placeholder`     | a bracketed lower-case stand-in such as `[media message]` shown as content                                                     |
 | `bare-url`            | a web address shown as plain text outside any link                                                                             |
 | `console-error`       | the page logged a console error or threw while loading (missing translation, duplicate key)                                    |

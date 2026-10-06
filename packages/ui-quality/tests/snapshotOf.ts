@@ -7,6 +7,7 @@ export const snapshotOf = (
 ): PageSnapshot => ({
   elements,
   variables: {},
+  rootBackgrounds: [],
   viewportWidth: 1440,
   viewportHeight: 900,
   documentWidth: 1440,

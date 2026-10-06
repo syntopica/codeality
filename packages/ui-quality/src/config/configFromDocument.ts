@@ -1,4 +1,5 @@
 import { authFrom } from '@/config/authFrom.js'
+import { axeConfigFrom } from '@/config/axeConfigFrom.js'
 import { colorSchemesFrom } from '@/config/colorSchemesFrom.js'
 import { DEFAULT_VIEWPORTS } from '@/config/DEFAULT_VIEWPORTS.js'
 import { disableEntryFrom } from '@/config/disableEntryFrom.js'
@@ -9,6 +10,7 @@ import { paletteFrom } from '@/config/paletteFrom.js'
 import { routeFrom } from '@/config/routeFrom.js'
 import { ruleOptionsFrom } from '@/config/ruleOptionsFrom.js'
 import { stringField } from '@/config/stringField.js'
+import { stringList } from '@/config/stringList.js'
 import type { UiQualityConfig } from '@/config/UiQualityConfig.js'
 import { viewportFrom } from '@/config/viewportFrom.js'
 
@@ -34,5 +36,7 @@ export const configFromDocument = (document: unknown): UiQualityConfig => {
     palette: paletteFrom(document['palette']),
     rules: ruleOptionsFrom(document['rules']),
     disable: listFrom(document['disable'], [], 'disable', disableEntryFrom),
+    axe: axeConfigFrom(document['axe']),
+    initScripts: stringList(document['initScripts'], 'initScripts'),
   }
 }

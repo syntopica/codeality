@@ -11,6 +11,33 @@ import type { Finding } from '@/model/Finding.js'
 import { ConfigError } from '@syntopica/gate-kit/ConfigError'
 
 describe('configuration', () => {
+  const AXE_BASE = 'https://axe.test'
+  it('reads axe options and init scripts, with defaults', () => {
+    const plain = configFromDocument({
+      baseUrl: AXE_BASE,
+      routes: ['/'],
+    })
+    expect(plain.axe).toEqual({ exclude: [], timeoutMs: 60_000 })
+    expect(plain.initScripts).toEqual([])
+    const set = configFromDocument({
+      baseUrl: AXE_BASE,
+      routes: ['/'],
+      axe: { exclude: ['#ads'], timeoutMs: 5000 },
+      initScripts: ['e2e/stub.js'],
+    })
+    expect(set.axe).toEqual({ exclude: ['#ads'], timeoutMs: 5000 })
+    expect(set.initScripts).toEqual(['e2e/stub.js'])
+    expect(() =>
+      configFromDocument({ baseUrl: AXE_BASE, routes: ['/'], axe: 'all' }),
+    ).toThrow(ConfigError)
+    expect(() =>
+      configFromDocument({
+        baseUrl: AXE_BASE,
+        routes: ['/'],
+        axe: { timeoutMs: 0 },
+      }),
+    ).toThrow(ConfigError)
+  })
   it('applies the defaults to a minimal document', () => {
     const config = configFromDocument({
       baseUrl: 'http://localhost:3000/',

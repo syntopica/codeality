@@ -1,4 +1,5 @@
 import type { AuthConfig } from '@/config/AuthConfig.js'
+import type { AxeConfig } from '@/config/AxeConfig.js'
 import type { DisableEntry } from '@/config/DisableEntry.js'
 import type { PaletteConfig } from '@/config/PaletteConfig.js'
 import type { RouteConfig } from '@/config/RouteConfig.js'
@@ -15,4 +16,10 @@ export type UiQualityConfig = {
   palette: PaletteConfig | null
   rules: RuleOptions
   disable: DisableEntry[]
+  axe: AxeConfig
+  /**
+   * Scripts run in every page before the app's own, relative to the project
+   * root: a stub for a desktop shell's IPC bridge, a fixed clock.
+   */
+  initScripts: string[]
 }

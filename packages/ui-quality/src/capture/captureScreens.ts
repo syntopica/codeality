@@ -1,14 +1,13 @@
-import { mkdirSync } from 'node:fs'
-import { join } from 'node:path'
-
 import { assertCredentials } from '@/capture/assertCredentials.js'
 import type { CapturedScreen } from '@/capture/CapturedScreen.js'
 import { captureScreen } from '@/capture/captureScreen.js'
+import { ensureScreensDir } from '@/capture/ensureScreensDir.js'
+import { initScriptsOf } from '@/capture/initScriptsOf.js'
 import { loadPlaywright } from '@/capture/loadPlaywright.js'
+import { openScreenPage } from '@/capture/openScreenPage.js'
 import { probeSource } from '@/capture/probeSource.js'
 import { screenContextOptions } from '@/capture/screenContextOptions.js'
 import { statePathOf } from '@/capture/statePathOf.js'
-import { STATE_DIR } from '@/config/STATE_DIR.js'
 import type { UiQualityConfig } from '@/config/UiQualityConfig.js'
 
 /** Every route at every viewport in every colour scheme, one browser for the run. */
@@ -20,18 +19,19 @@ export const captureScreens = async (
   const statePath = statePathOf(root, config.auth)
   assertCredentials(config.auth, statePath)
   const { chromium } = await loadPlaywright()
-  const screensDir = join(root, STATE_DIR, 'screens')
-  mkdirSync(screensDir, { recursive: true })
+  const screensDir = ensureScreensDir(root)
   const probe = probeSource()
+  const initScripts = initScriptsOf(root, config.initScripts)
   const browser = await chromium.launch()
   try {
     const captured: CapturedScreen[] = []
     for (const colorScheme of config.colorSchemes) {
       for (const viewport of config.viewports) {
-        const context = await browser.newContext(
+        const { context, page } = await openScreenPage(
+          browser,
           screenContextOptions(viewport, colorScheme, config.auth && statePath),
+          initScripts,
         )
-        const page = await context.newPage()
         // Sort and search once per route: they behave the same at every size
         // and in both schemes, and each costs several reloads.
         const exercise = captured.length < config.routes.length
@@ -51,6 +51,7 @@ export const captureScreens = async (
             probe,
             exercise,
             slowRequestMs: config.rules.slowRequest.maxMs,
+            axe: config.axe,
           })
           captured.push({ route, snapshot })
         }
