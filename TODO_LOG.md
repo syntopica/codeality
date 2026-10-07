@@ -1,5 +1,12 @@
 ### 2026-10-07
 
+- [x] ui-quality grid pagination ignores a "next" link whose address leaves the
+      route (`isPagerAddress`: same path with another query, or a path below it)
+      unless a numbered "2" link backs it. Evidence: new fixture `article.html`
+      -> `article-next.html` with the same related posts gives no finding, and
+      `pagination-broken` with the guard disabled; `isPagerAddress.test.ts`;
+      ui-quality 166 tests, lint, type-check clean.
+
 - [x] ui-quality `content-width` only measures a main region with a data layout
       (`hasDataLayout`: a `table`, or 3+ same-tag siblings that each have parts
       and no prose paragraph of 200+ characters or text field, `isRowItem`).

@@ -90,14 +90,6 @@ needs.
       on #0a0a0a), all fixed. Smallest step: have `check` read the site's
       `sitemap.xml` (or `init` propose routes from it) and warn once per route
       template with no configured route.
-- [ ] **Grid `pagination-broken` may misread a "next post" link.** 2026-10-03,
-      b18a5c9: a main region with no table is paged through its largest repeated
-      collection, and `rel="next"` or a "Siguiente" link counts as its pager. On
-      an article page that link opens the next article, whose related-items list
-      may match the first and fire. Unseen so far; checked live on
-      tieneslavibra.com/categorias/artistas (12 cards, rel=next found, 0 overlap
-      with page 2, no finding). Smallest step: require the next link's address
-      to share the route's path prefix, or a numbered sibling.
 - [~] **Interaction states are never captured.** 2026-10-01, the TienesLaVibra
   phone menu opened onto a drawer with no links and every rule passed, because
   capture only sees the resting page. `routes[].click` now clicks selectors in
