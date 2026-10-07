@@ -30,30 +30,7 @@ verified complete - `[-]` obsolete or superseded.
   same wall on their JS files. Next step: when
   `npm view typescript-eslint version` passes 8.71.1, remove both lines,
   `ncu -u`, `pnpm install`, `pnpm check:ci`.
-- [ ] **`pnpm audit:check` still fails on 7 advisories nothing in range fixes**
-      (2026-10-07, down from 52 after the dependency refresh): `simple-git` 3
-      (critical, needs 4.x, via nuxt>@nuxt/devtools), `uuid` <11.1.1 (via
-      @lhci/cli, a major away), and `braces`, `node-forge`, `sprintf-js` with no
-      patched release. Next step: waive the no-fix ones in
-      `.baseline-advisories.json` with an expiry, and recheck simple-git when
-      @nuxt/devtools moves to 4.x.
-- [ ] **cargo-baseline fails its own check**:
-      `cargo run -p cargo-baseline --     baseline check` reports
-      `one-primary-unit` on `child_paths` in
-      `packages/cargo-baseline/src/engine/cfg_test_module_paths.rs:53`
-      (pre-existing on `4e64761`, found 2026-10-07). Next step: extract
-      `child_paths` to its own file.
 
-- [ ] **The nextjs template ships no `.baseline-advisories.json`, so a fresh
-      consumer fails CI `check:security` on day one** (found 2026-09-30 in
-      `~/p/compratuentrada`, run on `b4a8615`):
-      `baseline-audit --level     moderate` reports 4 unwaived advisories, all
-      through `@lhci/cli` - uuid GHSA-w5hq-g745-h8pq, tmp GHSA-ph9p-34f9-6g65,
-      extract-zip GHSA-jmr9-qjv8-65gv and GHSA-7pqw-9j4j-h8q3 (no patched
-      version). The repo root carries a waiver file for uuid but the template
-      does not. Smallest next step: add the template's own
-      `.baseline-advisories.json` and a `tmp` override, and make the template CI
-      job run the audit so the gap shows here first.
 - [ ] `@busirocket/eslint-config` 0.8.0 declares `@vitest/eslint-plugin` and
       `eslint-plugin-testing-library` as optional peers, but `code-quality.ts`
       composes `testing.ts` unconditionally, so every `/code-quality` consumer
@@ -76,21 +53,6 @@ verified complete - `[-]` obsolete or superseded.
       and vite-react layers set `react/prop-types: 'off'` for `.tsx` files
       themselves.
 
-- [ ] **`check:ci` passes locally while CI `check:security` fails, because the
-      audit is not part of `check:ci`.** Smallest next step: make the template's
-      `check:ci` run `baseline-audit`, or document that the audit only runs in
-      CI. Evidence: compratuentrada session transcript 2026-09-30.
-- [ ] **The `create-baseline` README and template name the wrong plugin
-      package.** `@syntopica/eslint-plugin-code-policy` returns 404 and the
-      package resolves unscoped, so the template needs
-      `eslint-plugin-code-policy`; pnpm 12 also needs `allowBuilds` rather than
-      `onlyBuiltDependencies` in the templates. Smallest next step: fix the
-      README and the template package names and the pnpm key. Evidence:
-      compratuentrada task 1 report, `b4a8615`.
-- [ ] **Test files are linted by the lefthook pre-commit but not by `check:ci`,
-      so their errors only appear at commit time.** Smallest next step: add test
-      files to the lint scope of the template's `check:ci`. Evidence:
-      compratuentrada session transcript 2026-09-30.
 - [~] **Knip prints hints on the nextjs template: `gitleaks` unlisted,
   `dependency-cruiser` redundant, and a `middleware` entry pattern that matches
   nothing.** Unclear whether the template still does this. Smallest next step:
@@ -340,10 +302,6 @@ needs.
       state that backlog commits use `docs(todo):`. Evidence: a consumer run
       2026-09-09, `@commitlint/cli` declared there with nothing running it (its
       single knip finding).
-- [ ] **`@busirocket/eslint-config` pulls `@eslint/js@10.0.1`, whose peer is
-      `eslint ^10`, against the installed `eslint 9.39.5`.** Pre-existing in a
-      consumer's HEAD lockfile and warns on every install; decide whether the
-      config moves to ESLint 10 or pins `@eslint/js` 9.
 - [ ] **Adoption guide: the `vite-react` tsconfig's
       `noPropertyAccessFromIndexSignature` and the quality-config lint rules
       break `check:ci` on adoption in any repository written before them.** One
@@ -358,8 +316,3 @@ needs.
 
 Moved verbatim from `~/p/TODO.md` on 2026-10-03; the routing table in
 `~/p/TODO_LOG.md` (entry of that date) records each move.
-
-- [ ] **CI red on `main`.** Every push run on 2026-10-01 failed (latest 22:44
-      UTC, `gh run list -R syntopica/codeality`); on 2026-09-28 the failing
-      steps were `audit:check`, `check:ci` and `check:quality` (first seen
-      2026-09-26). Split out of a cross-repo "Red CI" line in `~/p/TODO.md`.

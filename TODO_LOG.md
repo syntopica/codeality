@@ -1,3 +1,43 @@
+### 2026-10-07
+
+- [x] cargo-baseline passes its own check again: `child_paths` moved to
+      `src/engine/child_paths.rs`.
+      `cargo run -p cargo-baseline -- baseline     check` 0 errors, `cargo test`
+      100 passed, clippy `-D warnings` clean.
+- [x] `pnpm audit:check` green: 0 unwaived of 10. Expiring waivers (2026-12-31)
+      for the advisories with no usable fix - node-forge, braces, sprintf-js (no
+      patched release) and four simple-git ones. Forcing simple-git 4 was tried
+      and reverted: @nuxt/devtools 3.4.2 does `import Git from 'simple-git'` and
+      4.x has no default export (`m.default is not a function`), so `nuxt dev`
+      would break.
+- [x] Every JS template ships a `.baseline-advisories.json` with only the no-fix
+      advisories its own tree reaches, and `docs/adoption/new-repo.md` gives the
+      three overrides (tmp, basic-ftp, @puppeteer/browsers) for the fixable ones
+      under @lhci/cli. Measured on a fresh resolution of each template outside
+      the workspace (published @syntopica versions):
+      `baseline-audit --level moderate` 0 unwaived in all eight.
+- [x] `check:ci` vs `check:security`: kept apart on purpose (advisories land
+      daily, an audit in `check:ci` turns an unchanged commit red overnight);
+      documented in `docs/adoption/new-repo.md` with `pnpm check:security` as
+      the local pre-release step.
+- [x] Wrong plugin name and `onlyBuiltDependencies` in README/templates: already
+      gone - no `@syntopica/eslint-plugin-code-policy` or
+      `onlyBuiltDependencies` left in packages, templates, docs or README (grep
+      2026-10-07).
+- [x] Test files and `check:ci` lint: every template keeps its tests under
+      `src/` (or `app/`, `server/` for nuxt, linted with `eslint .`), which its
+      `lint` script already covers. The gap was compratuentrada's own layout.
+- [-] `@eslint/js@10` against eslint 9: obsolete, the estate and every template
+  are on eslint 10.12.
+- [x] CI red on `main` since 2026-09-26, three causes: (1) `check:ci` -
+      ui-quality's integration tests exited 3 with an empty report because the
+      Verify job never installed Playwright's Chromium; ci.yml now runs
+      `playwright install --with-deps chromium`. (2) `check:quality` - depcruise
+      `no-orphans` on ~40 files imported only through `@/`: db-quality,
+      test-quality and ui-quality alias `@/` but were missing from
+      `scripts/aliasedWorkspaces.mjs`; `pnpm check:quality` 6 gates passed. (3)
+      `audit:check`, see the waivers entry.
+
 ### 2026-10-04
 
 - [x] `quality-config@0.12.0` tag added at f6c7239 (the bump commit, 05:24Z;
