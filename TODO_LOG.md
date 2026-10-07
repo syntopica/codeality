@@ -1,5 +1,23 @@
 ### 2026-10-07
 
+- [x] Release 2026-10-07 (5e450b3, annotated tags pushed): published
+      `@syntopica/quality-config@0.13.0` (`baseline-hooks-install`),
+      `@syntopica/db-quality@0.5.0` (Kysely, perf previous window),
+      `@syntopica/ui-quality@0.4.0` (tier 1 rules, scroll/hover/focus),
+      `@syntopica/test-quality@0.1.2` and `@syntopica/create-baseline@0.10.2`
+      (pins quality-config 0.13.0), runs 37656818849, 37656823210, 37656827665,
+      37656832386, 37656932686. `pnpm check:ci` exit 0 before tagging;
+      `pnpm release:check` all ok once the registry caught up (the packuments
+      lagged a few minutes behind the green runs). The first `check:ci` failed
+      on test-quality's own integration test: `duplicate-file-run` listed
+      projects in the order vitest finished collecting them (`node, dom` vs
+      `dom, node`); the evidence is now sorted, with a unit test.
+- [x] Push of 92360a5 (Kysely) was rejected with GitHub
+      `Internal Server     Error` six times over ~3 minutes (request
+      F592:1ACBE8:32C91B:396F21:6AC6792A) while githubstatus.com reported all
+      operational; it went through unchanged a few minutes later. Transient, no
+      repository cause.
+
 - [x] ui-quality interaction states: `routes[].scroll` (`"bottom"` or a
       selector), `routes[].hover` and `routes[].focus` measure the screen in
       that state after the clicks, the screenshot keeps it, and a missing target
