@@ -1,5 +1,24 @@
 ### 2026-10-07
 
+- [x] code-policy 0.8.0 adoption, the six left (no suppressions): contratica 786
+      named (67c2acd8, `pnpm check:all` green, 540 tests), inpractise-demo 85
+      (06be819), jobradar 11 (51eadb1) and ventanilla-unica 89 (cc7edf1, 1343
+      tests), both committed from a worktree beside another session's dirty
+      dependency edits; teapartydolls 80 in PR #55. livesalescoach 2d9afc5 gave
+      the two `no-console` lines a reasoned disable (its logger prints only in
+      development). Mains.World#699 and PXPN.dev#266 merged; the pxpn Worker
+      deployed. contratos was retired: the checkouts were removed on both Macs
+      and archived in `~/Archive/contratos-2026-10-07*`.
+
+- [x] Python consumers on codeality-py 0.2.5 (every gate exit 0, pushed): brain,
+      clips, memory-bench, syntopica, atrium, worker, djplayerdeluxe,
+      DeluxeServerTools (urllib3 2.8.0), qlctool 6 to 4, agent-deluxe 9 to 8
+      (`__main__.py` as entrypoint). agent-deluxe 36a77b5 ports the browser code
+      to browser-use 0.5.9 (`BrowserProfile`/`BrowserSession`; the old kwargs
+      were silently dropped). DJCenterDeluxe 4e1fe3f moved 52 inline queries to
+      `sql/queries/` (BPY006 56 to 4) and c19e24d typed
+      `holded_invoices_handler` (ignore list 35 to 0); baseline 114 to 55.
+
 - [x] Estate adoption of `eslint-plugin-code-policy@0.8.0`, 20 repos, each
       through its own gate (failures left were present on a clean HEAD) and
       pushed. Fixed with named types: busirocket cfb7ee4, capture e8423bd,

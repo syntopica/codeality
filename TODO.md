@@ -7,18 +7,14 @@ verified complete - `[-]` obsolete or superseded.
 
 ## Python baseline
 
-- [ ] Second pass on the Python consumers' accepted backlog (after the
-      2026-10-07 pass in TODO_LOG.md). Left: DJCenterDeluxe 114 findings (56 are
-      `BPY006` inline SQL, a policy call atrium answered by switching the rule
-      off) and the `holded_invoices_handler` ignore (strict path types change
-      the Holded upload); djplayerdeluxe 51 and 29 ignored modules (hardware
-      backends, the `utils` package needs a name); agent-deluxe 9 and 2 (its
-      browser code calls browser-use 0.5.9 with arguments that version rejects,
-      recorded in its TODO.md); qlctool 6; atrium 2. Each repo's TODO.md names
-      the first step. Upgrade every consumer to codeality-py 0.2.5 with
-      `uv lock --upgrade-package syntopica-codeality-py`; qlctool's
-      `stage_x_positions.py` and agent-deluxe's `__main__.py` findings should
-      then fall away.
+- [ ] Third pass on the Python consumers' accepted backlog. After the 2026-10-07
+      passes: DJCenterDeluxe 55 findings (4 `BPY006` are test-local fixture
+      SQL), djplayerdeluxe 51 and 29 ignored modules (hardware backends, the
+      `utils` package needs a name), agent-deluxe 8 and `[mypy-agent]` (a
+      login-error scan whose `str` branch can never run; typing it rewrites the
+      scan), qlctool 4, atrium 2. Each repo's TODO.md names the first step. The
+      wiki's own gate is red before any upgrade (62 ruff errors), so it is still
+      on codeality-py 0.2.4.
 
 ## Estate
 
@@ -33,17 +29,9 @@ verified complete - `[-]` obsolete or superseded.
   `npm view typescript-eslint version` passes 8.71.1, remove both lines,
   `ncu -u`, `pnpm install`, `pnpm check:ci`.
 
-- [ ] **Finish the estate adoption of `eslint-plugin-code-policy@0.8.0`**
-      (2026-10-07; 20 of 26 done, see TODO_LOG.md). Left, each for a named
-      reason: jobradar and ventanilla-unica (another session's uncommitted
-      dependency update; retry when their trees are clean); contratica (its
-      AGENTS.md keeps `eslint-suppressions.json` empty, 776 findings to fix by
-      hand) and inpractise-demo (forbids suppressions, 85 findings); contratos
-      236f696 committed but `Vibra-Lab/contratos` is archived, push refused;
-      teapartydolls (merging deploys the client storefront; needs a PR the owner
-      approves). Open PRs to merge once CI is green:
-      pixel-potion/Mains.World#699, pixel-potion/PXPN.dev#266 (its merge deploys
-      the Worker).
+- [~] **Merge pixel-potion/TeaPartyDolls.com#55** (code-policy 0.8.0, 80 inline
+  types named, `bun run check` and 514 tests green). The last repo of the 0.8.0
+  adoption; its merge deploys the client storefront, so it waits for the owner.
 
 ## ui-quality
 
