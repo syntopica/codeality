@@ -7,15 +7,13 @@ verified complete - `[-]` obsolete or superseded.
 
 ## Python baseline
 
-- [ ] Remaining Python backlog after three passes (every gate exit 0):
-      agent-deluxe, qlctool and atrium at 0. DJCenterDeluxe 28: 8 `BPY004`
-      classes need characterisation tests before splitting, 9 `BPY002` spiders
-      and caches run by path, 4 scripts under `veoplan/`, `scrapers/` and
-      `spotify/` would need `python -m` invocation (owner call), 4 test-fixture
-      SQL. djplayerdeluxe 44 and 29 ignored Qt/hardware modules (typing them
-      changes the None path), backend families chosen by try/except import,
-      `sievem` shared by symlink. Each repo's TODO.md names the step and the
-      latent bugs found.
+- [ ] Python backlog left after four passes (every gate exit 0 on a clean
+      `origin` worktree): DJCenterDeluxe 4 (test-fixture SQL, accepted).
+      djplayerdeluxe 39 findings and 28 mypy ignore sections: the Qt, audio and
+      Bluetooth modules (typing them changes the None path) and the backend
+      families chosen by try/except import, kept on purpose. Both TODO.md files
+      list the latent bugs the characterisation tests pinned. Next step only if
+      the hardware code is touched for another reason.
 
 ## Estate
 

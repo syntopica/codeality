@@ -1,5 +1,13 @@
 ### 2026-10-07
 
+- [x] Python consumers, fourth pass (owner-approved; gates re-run on clean
+      `origin` worktrees, exit 0): DJCenterDeluxe 28 to 4 (a440988): 280
+      characterisation tests first (232364c), then the 8 large classes split,
+      the `veoplan`, `scrapers/goldwing` and `spotify` scripts moved to
+      `python -m` (86508ce), spiders renamed, coverage floor 36 to 65.
+      djplayerdeluxe 44 to 39 (97ecfd1): `fileman`, `djpd` and `djpdplayer`
+      split behind their tests, `fileman` typed, floor 38 to 65.
+
 - [x] Release (64ef582, annotated tags pushed): `@syntopica/ui-quality@0.6.0`
       (tier 2 start, layout-shift read fix, run 37683250803),
       `@syntopica/quality-config@0.13.1` (knip preset hints, run 37683149534),
