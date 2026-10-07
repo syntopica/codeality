@@ -3,6 +3,7 @@ import { INTERACTION_RULES } from '@/rules/INTERACTION_RULES.js'
 import { READABILITY_RULES } from '@/rules/READABILITY_RULES.js'
 import type { Rule } from '@/rules/Rule.js'
 import { SPACING_RULES } from '@/rules/SPACING_RULES.js'
+import { TABLE_RULES } from '@/rules/TABLE_RULES.js'
 import { accentOveruse } from '@/rules/accentOveruse.js'
 import { axeFindings } from '@/rules/axeFindings.js'
 import { bareUrl } from '@/rules/bareUrl.js'
@@ -87,6 +88,7 @@ export const RULES: Rule[] = [
   unstableMediaSize,
   ...READABILITY_RULES,
   ...SPACING_RULES,
+  ...TABLE_RULES,
   ...COPY_RULES,
   ...INTERACTION_RULES,
 ]
