@@ -30,5 +30,7 @@ describe.skipIf(!installed)('runDrizzleLint with the real eslint', () => {
       ['BDB300/enforce-delete-with-where', 2],
       ['BDB300/enforce-update-with-where', 3],
     ])
-  })
+    // A real ESLint process loading the typed config cold: about 3 s on a
+    // laptop, past vitest's 5 s default on a shared CI runner.
+  }, 60_000)
 })
