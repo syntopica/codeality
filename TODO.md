@@ -81,15 +81,6 @@ needs.
       2026-10-06: `initScripts` in the config, run per context; covered by the
       desktop-shell integration test.
 
-- [ ] **A consumer can gate only part of its site and nothing says so.**
-      2026-10-03, TienesLaVibra: `codeality-ui.json` listed three `/admin`
-      routes only, so the public card grid whose page 2 repeated page 1 (tied
-      `ORDER BY` under `LIMIT/OFFSET`) shipped unseen. Adding 24 public routes
-      surfaced 393 findings (192 palette, 48 nested-interactive, 30
-      color-contrast, 9 console-error, 6 select-name, dark scheme with #111827
-      on #0a0a0a), all fixed. Smallest step: have `check` read the site's
-      `sitemap.xml` (or `init` propose routes from it) and warn once per route
-      template with no configured route.
 - [~] **Interaction states are never captured.** 2026-10-01, the TienesLaVibra
   phone menu opened onto a drawer with no links and every rule passed, because
   capture only sees the resting page. `routes[].click` now clicks selectors in

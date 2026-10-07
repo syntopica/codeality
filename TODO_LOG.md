@@ -1,5 +1,13 @@
 ### 2026-10-07
 
+- [x] ui-quality `check` reads `baseUrl/sitemap.xml` (one level of a sitemap
+      index, up to 10 children, 10 s timeout, file: URLs too) and reports
+      `route-uncovered` (warn) once per first-segment template (`/artistas/*`,
+      `/legal`) that no configured route renders; skipped under `--routes` and
+      when there is no sitemap. Evidence: `cli.sitemap.integration.test.ts`
+      (home configured, artist pages and legal page reported, nothing with
+      `--routes`), `routeTemplate.test.ts`; ui-quality 177 tests pass.
+
 - [x] ui-quality `text-clipped` reports a select whose content box (client
       height less vertical padding) is over 1px shorter than one line of its
       font (canvas `fontBoundingBox` ascent+descent, probed for selects only).
