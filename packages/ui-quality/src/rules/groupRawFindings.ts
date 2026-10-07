@@ -1,8 +1,9 @@
 import type { RawFinding } from '@/model/RawFinding.js'
+import type { RawFindingGroup } from '@/rules/RawFindingGroup.js'
 
 /** One finding per rule and identity, counting how many elements raised it. */
 export const groupRawFindings = (findings: RawFinding[]): RawFinding[] => {
-  const groups = new Map<string, { first: RawFinding; count: number }>()
+  const groups = new Map<string, RawFindingGroup>()
   for (const finding of findings) {
     const key = `${finding.rule}|${finding.identity}`
     const group = groups.get(key)

@@ -1,3 +1,4 @@
+import type { AuditAdapters } from '@/audit/AuditAdapters.js'
 import type { AuditTarget } from '@/audit/AuditTarget.js'
 import { isSupabaseHost } from '@/audit/isSupabaseHost.js'
 import type { DbQualityConfig } from '@/config/DbQualityConfig.js'
@@ -11,7 +12,7 @@ import { ConfigError } from '@syntopica/gate-kit/ConfigError'
 export const auditPlan = (
   config: DbQualityConfig,
   target: AuditTarget,
-): { supabase: boolean; soda: boolean; skipped: string[] } => {
+): AuditAdapters => {
   const supabase = 'linked' in target || isSupabaseHost(target.dbUrl)
   const soda = config.audit.soda !== undefined && 'dbUrl' in target
   const skipped = [

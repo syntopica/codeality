@@ -1,10 +1,11 @@
+import type { UncachedTool } from '@/model/UncachedTool.js'
 /**
  * Tools that keep a cache only when asked, and what asking looks like. The
  * tool must be the command itself (at the start, after `&&`/`;`/`|`, or after
  * a runner like `exec`/`npx`): a cache path such as
  * `--cache-location node_modules/.cache/eslint/` names the tool too.
  */
-export const UNCACHED_TOOLS: readonly { tool: string; pattern: RegExp }[] = [
+export const UNCACHED_TOOLS: readonly UncachedTool[] = [
   {
     tool: 'eslint',
     pattern:

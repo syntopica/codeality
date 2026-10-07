@@ -1,4 +1,4 @@
-import type { IndexStatRow } from '@/adapters/supabase/IndexStatRow.js'
+import type { IndexStatsReport } from '@/adapters/supabase/IndexStatsReport.js'
 import type { DisableEntry } from '@/config/DisableEntry.js'
 import { isDisabled } from '@/config/isDisabled.js'
 import type { Finding } from '@/model/Finding.js'
@@ -10,7 +10,7 @@ export const parseIndexStats = (
   disabled: DisableEntry[],
 ): Finding[] => {
   if (isDisabled('BDB601', disabled)) return []
-  const { rows } = JSON.parse(stdout) as { rows: IndexStatRow[] }
+  const { rows } = JSON.parse(stdout) as IndexStatsReport
   return rows
     .filter(
       (row) =>

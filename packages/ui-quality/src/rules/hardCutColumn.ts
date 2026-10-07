@@ -1,6 +1,7 @@
 import type { ElementBox } from '@/model/ElementBox.js'
 import { digitTemplate } from '@/rules/digitTemplate.js'
 import { ELLIPSIS_TAILS } from '@/rules/ELLIPSIS_TAILS.js'
+import type { HardCut } from '@/rules/HardCut.js'
 import { HEX_IDENTIFIER } from '@/rules/HEX_IDENTIFIER.js'
 import { SENTENCE_TAILS } from '@/rules/SENTENCE_TAILS.js'
 import { spikeLength } from '@/rules/spikeLength.js'
@@ -18,7 +19,7 @@ import { tiesAtLongest } from '@/rules/tiesAtLongest.js'
 export const hardCutColumn = (
   cells: ElementBox[],
   minLength: number,
-): { length: number; cut: ElementBox[] } | null => {
+): HardCut | null => {
   const texts = cells.filter((cell) => cell.textLength > 0)
   if (texts.length < 2) return null
   const longest = Math.max(...texts.map((cell) => cell.textLength))

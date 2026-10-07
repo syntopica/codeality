@@ -1,5 +1,6 @@
 import { hasPrimaryKey } from '@/adapters/sqlite/hasPrimaryKey.js'
 import { sqliteFinding } from '@/adapters/sqlite/sqliteFinding.js'
+import type { SqliteMasterTableRow } from '@/adapters/sqlite/SqliteMasterTableRow.js'
 import { sqliteRows } from '@/adapters/sqlite/sqliteRows.js'
 import type { DisableEntry } from '@/config/DisableEntry.js'
 import type { Finding } from '@/model/Finding.js'
@@ -12,7 +13,7 @@ export const primaryKeyFindings = (
   file: string,
   disabled: DisableEntry[],
 ): Finding[] =>
-  sqliteRows<{ name: string; sql: string }>(
+  sqliteRows<SqliteMasterTableRow>(
     runner,
     root,
     file,

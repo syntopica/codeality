@@ -1,5 +1,5 @@
 import { ADVISOR_SEVERITY } from '@/adapters/supabase/ADVISOR_SEVERITY.js'
-import type { AdvisorEntry } from '@/adapters/supabase/AdvisorEntry.js'
+import type { AdvisorReport } from '@/adapters/supabase/AdvisorReport.js'
 import type { DisableEntry } from '@/config/DisableEntry.js'
 import { isDisabled } from '@/config/isDisabled.js'
 import type { Finding } from '@/model/Finding.js'
@@ -9,7 +9,7 @@ export const parseAdvisorReport = (
   stdout: string,
   disabled: DisableEntry[],
 ): Finding[] => {
-  const { results } = JSON.parse(stdout) as { results: AdvisorEntry[] }
+  const { results } = JSON.parse(stdout) as AdvisorReport
   return results.flatMap((entry) => {
     const code = `BDB500/${entry.name}`
     if (isDisabled(code, disabled)) return []

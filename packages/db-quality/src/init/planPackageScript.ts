@@ -3,6 +3,7 @@ import { join } from 'node:path'
 
 import type { ManagedFile } from '@/init/ManagedFile.js'
 import { PACKAGE_MANIFEST } from '@/init/PACKAGE_MANIFEST.js'
+import type { PackageScripts } from '@/init/PackageScripts.js'
 
 export const planPackageScript = (
   root: string,
@@ -16,9 +17,7 @@ export const planPackageScript = (
       detail: 'no package.json',
     }
   }
-  const manifest = JSON.parse(readFileSync(path, 'utf8')) as {
-    scripts?: Record<string, string>
-  }
+  const manifest = JSON.parse(readFileSync(path, 'utf8')) as PackageScripts
   const current = manifest.scripts?.['db:gate']
   if (current === 'codeality-db gate') {
     return {

@@ -1,3 +1,4 @@
+import type { IntegrityCheckRow } from '@/adapters/sqlite/IntegrityCheckRow.js'
 import { sqliteFinding } from '@/adapters/sqlite/sqliteFinding.js'
 import { sqliteRows } from '@/adapters/sqlite/sqliteRows.js'
 import type { DisableEntry } from '@/config/DisableEntry.js'
@@ -11,7 +12,7 @@ export const integrityFindings = (
   file: string,
   disabled: DisableEntry[],
 ): Finding[] => {
-  const rows = sqliteRows<{ integrity_check: string }>(
+  const rows = sqliteRows<IntegrityCheckRow>(
     runner,
     root,
     file,

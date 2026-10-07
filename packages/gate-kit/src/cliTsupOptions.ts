@@ -1,4 +1,5 @@
 import { resolve } from 'node:path'
+import type { EsbuildAliasOptions } from './EsbuildAliasOptions.js'
 
 /**
  * The tsup options of a gate CLI: one ESM bundle of `src/cli.ts` for node 22,
@@ -13,7 +14,7 @@ export const cliTsupOptions = (packageDir: string) => ({
   sourcemap: true,
   minify: false,
   target: 'node22',
-  esbuildOptions(options: { alias?: Record<string, string> }): void {
+  esbuildOptions(options: EsbuildAliasOptions): void {
     options.alias = { '@': resolve(packageDir, 'src') }
   },
 })

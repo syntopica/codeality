@@ -1,3 +1,4 @@
+import type { PrismaLintReport } from '@/adapters/prisma/PrismaLintReport.js'
 import type { PrismaViolation } from '@/adapters/prisma/PrismaViolation.js'
 import type { DisableEntry } from '@/config/DisableEntry.js'
 import { isDisabled } from '@/config/isDisabled.js'
@@ -11,8 +12,7 @@ export const parsePrismaLintReport = (
   if (!stderr.trim()) return []
   let violations: PrismaViolation[]
   try {
-    violations = (JSON.parse(stderr) as { violations: PrismaViolation[] })
-      .violations
+    violations = (JSON.parse(stderr) as PrismaLintReport).violations
   } catch {
     throw new Error(
       `prisma-lint produced no JSON report: ${stderr.slice(0, 200)}`,

@@ -1,4 +1,5 @@
 import type { ElementBox } from '@/model/ElementBox.js'
+import type { MisalignedColumn } from '@/rules/MisalignedColumn.js'
 
 /**
  * The first column whose cells share neither a left edge nor a right edge,
@@ -11,7 +12,7 @@ import type { ElementBox } from '@/model/ElementBox.js'
 export const firstMisalignedColumn = (
   rows: ElementBox[][],
   tolerance: number,
-): { column: number; cell: ElementBox; min: number; max: number } | null => {
+): MisalignedColumn | null => {
   const width = Math.min(...rows.map((cells) => cells.length))
   for (let column = 0; column < width; column++) {
     const cells = rows

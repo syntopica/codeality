@@ -1,4 +1,5 @@
 import type { CliError } from '@/adapters/supabase/CliError.js'
+import type { CliErrorDocument } from '@/adapters/supabase/CliErrorDocument.js'
 
 // The CLI prints progress lines before the document and may print more after
 // it, so the JSON is searched for and parsed up to each closing brace in turn
@@ -12,9 +13,9 @@ export const parseCliError = (text: string): CliError | undefined => {
     end = text.indexOf('}', end + 1)
   ) {
     try {
-      const { error } = JSON.parse(text.slice(start, end + 1)) as {
-        error: CliError
-      }
+      const { error } = JSON.parse(
+        text.slice(start, end + 1),
+      ) as CliErrorDocument
       return { code: error.code, message: error.message }
     } catch {
       // Not the closing brace of the document yet; try the next one.

@@ -3,6 +3,7 @@ import type { Page } from 'playwright'
 import { newLinesOf } from '@/behaviour/newLinesOf.js'
 import { CHANGE_TIMEOUT_MS } from '@/capture/CHANGE_TIMEOUT_MS.js'
 import { feedbackCount } from '@/capture/feedbackCount.js'
+import type { FeedbackSnapshot } from '@/capture/FeedbackSnapshot.js'
 import { STABLE_INTERVAL_MS } from '@/capture/STABLE_INTERVAL_MS.js'
 import { visibleTextLines } from '@/capture/visibleTextLines.js'
 
@@ -13,7 +14,7 @@ import { visibleTextLines } from '@/capture/visibleTextLines.js'
  */
 export const sawFeedback = async (
   page: Page,
-  before: { lines: string[]; feedback: number; url: string },
+  before: FeedbackSnapshot,
 ): Promise<boolean> => {
   const deadline = Date.now() + CHANGE_TIMEOUT_MS
   while (Date.now() < deadline) {

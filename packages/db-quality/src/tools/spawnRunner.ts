@@ -4,6 +4,7 @@ import { env as processEnv } from 'node:process'
 
 import type { CommandRunner } from '@/tools/CommandRunner.js'
 import { packageBinPath } from '@/tools/packageBinPath.js'
+import type { SpawnOutput } from '@/tools/SpawnOutput.js'
 
 export const spawnRunner: CommandRunner = (command, args, options) => {
   // The project's tools win; the package's own follow; the shell's PATH last.
@@ -22,7 +23,7 @@ export const spawnRunner: CommandRunner = (command, args, options) => {
     env: { ...processEnv, ...options.env, PATH: path },
   })
   // The typings promise strings, but a spawn that never started hands back null.
-  const output: { stdout: string | null; stderr: string | null } = child
+  const output: SpawnOutput = child
   return {
     status: child.status ?? -1,
     stdout: output.stdout ?? '',

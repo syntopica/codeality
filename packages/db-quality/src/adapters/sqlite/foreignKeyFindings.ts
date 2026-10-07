@@ -1,3 +1,4 @@
+import type { ForeignKeyCheckRow } from '@/adapters/sqlite/ForeignKeyCheckRow.js'
 import { sqliteFinding } from '@/adapters/sqlite/sqliteFinding.js'
 import { sqliteRows } from '@/adapters/sqlite/sqliteRows.js'
 import type { DisableEntry } from '@/config/DisableEntry.js'
@@ -11,7 +12,7 @@ export const foreignKeyFindings = (
   file: string,
   disabled: DisableEntry[],
 ): Finding[] =>
-  sqliteRows<{ table: string; rowid: number; parent: string }>(
+  sqliteRows<ForeignKeyCheckRow>(
     runner,
     root,
     file,

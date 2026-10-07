@@ -1,4 +1,4 @@
-import type { BloatRow } from '@/adapters/supabase/BloatRow.js'
+import type { BloatReport } from '@/adapters/supabase/BloatReport.js'
 import type { DisableEntry } from '@/config/DisableEntry.js'
 import { isDisabled } from '@/config/isDisabled.js'
 import type { Finding } from '@/model/Finding.js'
@@ -10,7 +10,7 @@ export const parseBloat = (
   disabled: DisableEntry[],
 ): Finding[] => {
   if (isDisabled('BDB602', disabled)) return []
-  const { rows } = JSON.parse(stdout) as { rows: BloatRow[] }
+  const { rows } = JSON.parse(stdout) as BloatReport
   return rows
     .filter((row) => Number(row.bloat) > threshold)
     .map((row) => {
