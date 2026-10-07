@@ -2,6 +2,13 @@
 
 ## [Unreleased]
 
+## 0.10.3
+
+### Patch Changes
+
+- fix: pin `@syntopica/quality-config` `^0.13.1`, whose knip preset leaves no
+  configuration hints in a CLI-shaped project.
+
 ## 0.10.2
 
 ### Patch Changes

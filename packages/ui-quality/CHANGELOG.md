@@ -2,6 +2,8 @@
 
 ## [Unreleased]
 
+## 0.6.0
+
 - New rules, both `warn`: `radius-sprawl` (more than 4 distinct corner radii in
   the main region, pills and circles aside) and `card-radius-admin` (a card with
   a corner radius over 8px), which runs only with the new top-level config

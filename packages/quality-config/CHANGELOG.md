@@ -2,6 +2,8 @@
 
 ## [Unreleased]
 
+## 0.13.1
+
 ### Patch Changes
 
 - fix: `createKnipConfig` no longer leaves configuration hints in a CLI-shaped
