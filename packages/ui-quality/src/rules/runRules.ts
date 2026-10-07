@@ -18,6 +18,7 @@ export const runRules = (
     palette: resolvePalette(config.palette, snapshot.variables),
     accent: resolveAccent(config.palette),
     register: config.register,
+    enabled: config.enable,
   }
   return groupRawFindings(RULES.flatMap((rule) => rule(snapshot, context)))
 }

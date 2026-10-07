@@ -3,6 +3,7 @@ import { axeConfigFrom } from '@/config/axeConfigFrom.js'
 import { colorSchemesFrom } from '@/config/colorSchemesFrom.js'
 import { DEFAULT_VIEWPORTS } from '@/config/DEFAULT_VIEWPORTS.js'
 import { disableEntryFrom } from '@/config/disableEntryFrom.js'
+import { enableFrom } from '@/config/enableFrom.js'
 import { expectConfig } from '@/config/expectConfig.js'
 import { isRecord } from '@/config/isRecord.js'
 import { listFrom } from '@/config/listFrom.js'
@@ -36,6 +37,7 @@ export const configFromDocument = (document: unknown): UiQualityConfig => {
     colorSchemes: colorSchemesFrom(document['colorSchemes']),
     palette: paletteFrom(document['palette']),
     register: registerFrom(document['register']),
+    enable: enableFrom(document['enable']),
     rules: ruleOptionsFrom(document['rules']),
     disable: listFrom(document['disable'], [], 'disable', disableEntryFrom),
     axe: axeConfigFrom(document['axe']),

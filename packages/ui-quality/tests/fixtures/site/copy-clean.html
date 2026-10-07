@@ -1,0 +1,73 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Copy and labels done right</title>
+    <style>
+      body {
+        margin: 0;
+        font: 16px/24px sans-serif;
+        color: #111827;
+        background: #ffffff;
+      }
+      main {
+        padding: 24px;
+        max-width: 640px;
+      }
+      h1 {
+        font-size: 24px;
+        margin: 0 0 24px;
+      }
+      p {
+        margin: 0 0 24px;
+      }
+      label {
+        display: block;
+        margin-bottom: 4px;
+      }
+      input {
+        display: block;
+        box-sizing: border-box;
+        width: 280px;
+        height: 40px;
+        margin-bottom: 24px;
+        padding: 8px 12px;
+        border: 1px solid #9ca3af;
+        font: inherit;
+      }
+      .lone {
+        margin-top: 96px;
+      }
+      table {
+        border-collapse: collapse;
+      }
+      td {
+        padding: 8px 16px;
+        border-bottom: 1px solid #e5e7eb;
+      }
+    </style>
+  </head>
+  <body>
+    <main>
+      <h1>Profile</h1>
+      <p>Loading…</p>
+      <label for="name">Name</label>
+      <input id="name" type="text" />
+      <label for="email">Email (optional)</label>
+      <input id="email" type="text" />
+      <label class="lone" for="full">Full name</label>
+      <input id="full" type="text" placeholder="Ada Lovelace" />
+      <table>
+        <tr>
+          <td>Invoice sent</td>
+          <td><time datetime="2026-10-07T09:55:00Z">5 min ago</time></td>
+        </tr>
+        <tr>
+          <td>Plan changed</td>
+          <td><time datetime="2026-10-01">2026-10-01</time></td>
+        </tr>
+      </table>
+    </main>
+  </body>
+</html>

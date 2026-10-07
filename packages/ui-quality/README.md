@@ -96,6 +96,10 @@ pnpm exec codeality-ui init
   `"product"` switches on `card-radius-admin`, which holds cards to 8px of
   corner radius; a brand surface chooses its own, and without the setting the
   rule is off.
+- `enable` lists the opt-in rules a project switches on, for want of a
+  convention every design system shares. The only one is `label-punctuation`
+  (`"enable": ["label-punctuation"]`): a label with a trailing colon or an
+  asterisk for a required field. An unknown id is a configuration error.
 - `disable` keeps a finding on purpose. `route` and `selector` narrow it, and
   `message` keeps only findings whose message contains that text: one
   third-party `console-error` ("picture-in-picture is not allowed" from a
@@ -162,6 +166,10 @@ pnpm exec codeality-ui init
 | `text-cramped`           | text closer than 8px (6px in a box under 24px tall) to a left or right edge that a border or a distinct fill draws; fields, table parts and overflowing text are left out; glyph extents are measured                                                                                          |
 | `gray-on-color`          | mid-grey text (OKLCH chroma under 0.02, lightness 0.35 to 0.75) on a coloured background (chroma over 0.06); text on a gradient or an image and disabled controls are not judged                                                                                                               |
 | `line-length`            | a paragraph, list item or description set wider than 80ch on two lines or more; not in tables or code                                                                                                                                                                                          |
+| `ascii-ellipsis`         | visible text containing `word...` or ending in `...` outside `code`, `pre`, `kbd`, `samp` and `var`; use `…`                                                                                                                                                                                   |
+| `label-punctuation`      | a `label` or `legend` ending in a colon or marking the field with an asterisk; opt-in through `"enable": ["label-punctuation"]`                                                                                                                                                                |
+| `placeholder-as-label`   | an input or textarea with a placeholder and no visible label (no label with painted text, no `aria-labelledby` target with text) and no text within 48px above it or to its left; search boxes are left alone                                                                                  |
+| `time-without-datetime`  | a text that is wholly a relative time (`5 min ago`, `hace 3 horas`) or a date, in a cell or list item, with no `<time datetime>` around it and no `title`                                                                                                                                      |
 | `slow-request`           | a document, fetch or server action over `maxMs` (1000ms) while the page loaded; a GET is timed again and must still be over it                                                                                                                                                                 |
 | `sort-broken`            | a sortable header that, clicked twice, leaves its column out of order or never reverses it                                                                                                                                                                                                     |
 | `filter-broken`          | the main search, given a word shown in a row, drops that row, keeps every row, or does not restore on clear                                                                                                                                                                                    |

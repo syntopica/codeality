@@ -18,5 +18,6 @@ export const ruleContext = (
   palette: null,
   accent: null,
   register: null,
+  enabled: [],
   ...overrides,
 })

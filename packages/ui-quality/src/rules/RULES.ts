@@ -1,3 +1,4 @@
+import { COPY_RULES } from '@/rules/COPY_RULES.js'
 import { READABILITY_RULES } from '@/rules/READABILITY_RULES.js'
 import type { Rule } from '@/rules/Rule.js'
 import { SPACING_RULES } from '@/rules/SPACING_RULES.js'
@@ -85,4 +86,5 @@ export const RULES: Rule[] = [
   unstableMediaSize,
   ...READABILITY_RULES,
   ...SPACING_RULES,
+  ...COPY_RULES,
 ]

@@ -13,4 +13,6 @@ export type RuleContext = {
   accent: Rgba | null
   /** `register`: the rules that only a product UI is held to read it. */
   register: Register | null
+  /** `enable`: the ids of the opt-in rules the project switched on. */
+  enabled: string[]
 }

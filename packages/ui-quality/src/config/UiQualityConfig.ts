@@ -17,6 +17,8 @@ export type UiQualityConfig = {
   palette: PaletteConfig | null
   /** `product` switches on the rules that hold a working UI to house limits; null when not given. */
   register: Register | null
+  /** Ids of the opt-in rules switched on; empty when none are. */
+  enable: string[]
   rules: RuleOptions
   disable: DisableEntry[]
   axe: AxeConfig
