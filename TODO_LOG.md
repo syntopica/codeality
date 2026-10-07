@@ -1,5 +1,19 @@
 ### 2026-10-07
 
+- [x] Kysely acceptance on `~/p/compratuentrada` (cloned from
+      Vibra-Lab/compratuentrada): 668975b adopted db-quality 0.5.0 (code rules,
+      `db:gate` in `check:ci`) and found four defects, fixed in 0424e1a and
+      released as db-quality 0.5.1 (run 37661512203, tag pushed; ui-quality
+      0.5.0 in run 37661517593): tsconfig path aliases for migrations,
+      PostgreSQL-only squawk type advice excluded with several dialects,
+      `dynamic-raw-sql` follows literal arrays, const tuples and literal types,
+      `init` proposes the Supabase workflow only with a `supabase/` directory.
+      f6d0904 there enables the migration checks: 17 migrations hashed, 101
+      squawk findings on them baselined (317 before the fix), gate exit 0;
+      `delete-without-where` and `migration-edited` both fire on deliberate,
+      reverted violations; `pnpm check:ci` exit 0. Vibra-Lab Actions did not
+      start (billing or spending limit; run 37658901628).
+
 - [x] ui-quality tier 1 closed: `nested-cards`, `type-scale-sprawl`,
       `accent-overuse` (new `palette.accent`), `text-occlusion`, the
       layout-shift half of `unstable-media-size` (init-script observer, total

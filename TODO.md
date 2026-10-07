@@ -104,15 +104,6 @@ needs.
 
 ## db-quality
 
-- [~] **Kysely support** (2026-10-07): config section `kysely`, `BDB310/<rule>`
-  ESLint rules (`update-without-where`, `delete-without-where`,
-  `dynamic-raw-sql`), `BDB320/<rule>` migration rules compiled per dialect by a
-  compile-only Kysely (squawk on PostgreSQL, applied with `sqlite3`,
-  cross-dialect rules including `inline-references`), and
-  `.codeality-db-kysely.json` with `baseline update --accept-edit`. Next step:
-  acceptance on `~/p/compratuentrada` (`codeality-db check` exit 0, then exit 1
-  after a deliberate `db.deleteFrom('membership').execute()`), then release as
-  0.5.0 (0.4.0 is already published).
 - [ ] **Kysely type drift** (`kysely.databaseType`, spec section 3): deferred
       until a consumer has a live database in CI; the config key is reserved.
 
