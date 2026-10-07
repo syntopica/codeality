@@ -81,25 +81,6 @@ needs.
       2026-10-06: `initScripts` in the config, run per context; covered by the
       desktop-shell integration test.
 
-- [ ] **`empty-state-missing` misreads a table whose header has several cells.**
-      2026-10-07, Contratica `/herramientas/buscador-cpv`:
-      `src/capture/listOfTable.ts` reads the thead with `innerText`, which joins
-      the cells with tabs (`Nivel\tDígitos\tSignificado en el     ejemplo`);
-      filtering tables with `hasText` on that string matches none, so the rule
-      counts 0 rows while the page shows 6 and reports a missing empty state.
-      Smallest fix: locate the table by index or by its first header cell, with
-      a fixture of a three-column header.
-
-- [ ] **The default `usernameSelector` fills a honeypot field.** 2026-10-06,
-      Contratica: the login form starts with an off-screen spam-trap
-      `<input type="text" name="companyWebsite">`. The default list
-      `input[type=email], input[name=email], ..., input[type=text]` is one CSS
-      selector, so `.first()` takes the first match in DOM order, not the first
-      alternative: the honeypot got the email, login never navigated and the run
-      died with `page.waitForURL: Timeout 30000ms exceeded` (exit 3). Smallest
-      fix: in `src/capture/login.ts`, try each alternative in order and take the
-      first visible match; add a fixture with a hidden text input first.
-
 - [ ] **A consumer can gate only part of its site and nothing says so.**
       2026-10-03, TienesLaVibra: `codeality-ui.json` listed three `/admin`
       routes only, so the public card grid whose page 2 repeated page 1 (tied
@@ -140,13 +121,6 @@ needs.
       intended and kept with `disable` entries. The rule targets data pages.
       Smallest step: skip a main region with no table, grid or repeated row
       group, and test it on a prose fixture and a single-form fixture.
-- [ ] **One failed navigation aborts the whole run.** 2026-10-01, a 66-route
-      admin capture died at route 31 with
-      `page.goto: net::ERR_ABORTED at     /admin/leads` (the dev server
-      hot-reloaded mid-navigation) and exited 3 with no report for the 30 routes
-      already captured. Smallest step: in `captureScreens`, retry a route once
-      on `ERR_ABORTED`, then record it as a `capture-failed` finding and carry
-      on, so exit 3 is kept for browser-level failures.
 - [~] **Interaction states are never captured.** 2026-10-01, the TienesLaVibra
   phone menu opened onto a drawer with no links and every rule passed, because
   capture only sees the resting page. `routes[].click` now clicks selectors in

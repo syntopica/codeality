@@ -1,5 +1,24 @@
 ### 2026-10-07
 
+- [x] ui-quality `listOfTable` reads the header as textContent, the text
+      `hasText` matches. The cause was not the tab-joined cells as filed: React
+      renders `<th>`s with no whitespace between them, so textContent is
+      `NivelDígitos...` and the innerText `Nivel<TAB>Dígitos` normalised to
+      `Nivel Dígitos` matched no table. Fixture `table.html#broken-tight`:
+      before `empty-state-missing`, after `filter-broken` (the real defect).
+- [x] ui-quality login takes the first visible element of the first selector
+      alternative that has one (`firstInSelectorOrder`), for username, password
+      and submit. Fixtures `login.html` (off-screen honeypot first) and
+      `gate.html`: before `page.waitForURL: Timeout 30000ms exceeded`, after
+      exit 0. css-what was tried for the splitting and rejected: it rewrites
+      `:has-text("a, b")` and throws on `>>`.
+- [x] ui-quality retries a screen once and records a `capture-failed` finding
+      when both attempts fail; ConfigError and a closed browser/page still end
+      the run (exit 2/3). The page is parked on about:blank after each failure:
+      Chromium's own error-page navigation otherwise interrupted the next
+      route's `goto`. Test: `/missing.html` then `/fixed.html` gives one
+      `capture-failed` and the fixed screenshot.
+
 - [x] `@syntopica/eslint-config`: the four peers `/code-quality` imports
       unconditionally (`@vitest/eslint-plugin`, `eslint-plugin-testing-library`,
       `eslint-plugin-sonarjs`, `eslint-plugin-code-policy`) are no longer
