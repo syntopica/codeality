@@ -1,12 +1,13 @@
 import type { TSESTree } from '@typescript-eslint/utils'
 
 import { createRule } from '@/utils/create-rule.js'
+import { isAnonymousTypeLiteral } from '@/utils/is-anonymous-type-literal.js'
 import { isSchemaDerivedType } from '@/utils/is-schema-derived-type.js'
 import { localValueNames } from '@/utils/local-value-names.js'
 
 type Options = []
 
-type MessageIds = 'inlineTypeInRuntimeFile'
+type MessageIds = 'inlineTypeInRuntimeFile' | 'anonymousTypeLiteral'
 
 export default createRule<Options, MessageIds>({
   name: 'no-inline-types-in-runtime-files',
@@ -20,6 +21,8 @@ export default createRule<Options, MessageIds>({
     messages: {
       inlineTypeInRuntimeFile:
         'Inline types (interfaces or type aliases) are not permitted within runtime files. Please extract this type into its own dedicated file (e.g., {{name}}Props.ts or {{name}}State.ts) according to the Atomic File architecture.',
+      anonymousTypeLiteral:
+        'Anonymous object types are not permitted within runtime files. Name this shape and extract it into its own dedicated file according to the Atomic File architecture.',
     },
   },
   defaultOptions: [],
@@ -38,6 +41,11 @@ export default createRule<Options, MessageIds>({
     }
 
     return {
+      TSTypeLiteral(node: TSESTree.TSTypeLiteral) {
+        if (isAnonymousTypeLiteral(context.sourceCode.getAncestors(node))) {
+          context.report({ node, messageId: 'anonymousTypeLiteral' })
+        }
+      },
       Program(node: TSESTree.Program) {
         let hasRuntimeCode = false
         const valueNames = localValueNames(node)

@@ -87,8 +87,51 @@ runRuleTest('no-inline-types-in-runtime-files', rule, {
       code: `interface RuntimeProps {}\nexport { type RuntimeProps }`,
       filename: RUNTIME_PROPS_FILE,
     },
+    // A literal inside a named type is that type's body, and a nested one is
+    // part of the outer shape.
+    {
+      code: `export type Row = { a: string; nested: { b: number } }`,
+      filename: '/src/types/Row.ts',
+    },
+    // An ambient augmentation has no file to move to.
+    {
+      code: `declare global { interface Window { app: { ready: boolean } } }\nexport const ready = true`,
+      filename: '/src/boot.ts',
+    },
+    // A named type in an annotation is what the rule asks for.
+    {
+      code: `import type { Row } from './Row'\nexport const rows: Row[] = []`,
+      filename: '/src/rows.ts',
+    },
   ],
   invalid: [
+    // Anonymous shapes in a const annotation, an assertion, a parameter, a
+    // return type and a type argument; a nested literal is one finding.
+    {
+      code: `export const rows: { a: string; b: { c: number } }[] = []`,
+      filename: '/src/rows.ts',
+      errors: [{ messageId: 'anonymousTypeLiteral', line: 1, column: 20 }],
+    },
+    {
+      code: `export const version = (manifest as { version: string }).version`,
+      filename: '/src/version.ts',
+      errors: [{ messageId: 'anonymousTypeLiteral', line: 1, column: 37 }],
+    },
+    {
+      code: `export const name = (row: { name: string }): string => row.name`,
+      filename: '/src/name.ts',
+      errors: [{ messageId: 'anonymousTypeLiteral', line: 1, column: 27 }],
+    },
+    {
+      code: `export const pair = (): { a: number } => ({ a: 1 })`,
+      filename: '/src/pair.ts',
+      errors: [{ messageId: 'anonymousTypeLiteral', line: 1, column: 25 }],
+    },
+    {
+      code: `export const groups = new Map<string, { count: number }>()`,
+      filename: '/src/groups.ts',
+      errors: [{ messageId: 'anonymousTypeLiteral', line: 1, column: 39 }],
+    },
     // Inline interface sitting next to runtime code.
     {
       code: `interface CardProps { title: string }\nexport function Card() { return null }`,

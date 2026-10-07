@@ -135,6 +135,14 @@ coupling and violate the single responsibility principle. Every `type` or
 `interface` must be in a dedicated file, isolating runtime from type
 declarations.
 
+An anonymous object type written into runtime code is the same unit without a
+name, so it is reported too: `const rows: { a: string }[]`,
+`JSON.parse(text) as { version: string }`, a parameter or return annotation, or
+a type argument such as `new Map<string, { count: number }>()`. Only the
+outermost literal is reported. A literal inside a named type is that type's
+body, and one inside `declare global` or `declare module` has no file to move
+to.
+
 **Exemptions**
 
 - Files inside `types/` or `types/**` directories
