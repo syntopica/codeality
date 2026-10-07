@@ -6,6 +6,14 @@ import { ruleContext } from '@tests/ruleContext.js'
 import { snapshotOf } from '@tests/snapshotOf.js'
 
 describe('textClipped', () => {
+  it('reports a select whose content box is shorter than its line', () => {
+    const select = (contentHeight: number) =>
+      elementBox({ id: 0, tag: 'select', contentHeight, lineBoxHeight: 17 })
+    expect(
+      textClipped(snapshotOf([select(10)]), ruleContext())[0]?.message,
+    ).toContain('10px content box is 7px shorter than one 17px line')
+    expect(textClipped(snapshotOf([select(26)]), ruleContext())).toEqual([])
+  })
   it('reports own overflow without an ellipsis, and accepts one with it', () => {
     const clipped = elementBox({
       id: 0,

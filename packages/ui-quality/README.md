@@ -95,7 +95,7 @@ pnpm exec codeality-ui init
 | Rule                  | Reports                                                                                                                                                                               |
 | --------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | `a11y/<id>`           | every axe-core violation, contrast included, plus `target-size` (WCAG 2.2 AA), which axe ships switched off; serious and critical ones are errors                                     |
-| `text-clipped`        | text cut by its own or an ancestor's overflow with no ellipsis                                                                                                                        |
+| `text-clipped`        | text cut by its own or an ancestor's overflow with no ellipsis, or a select whose content box is shorter than one line of its font                                                    |
 | `text-hard-cut`       | texts in one column that pile up at one length with no ellipsis: cut upstream                                                                                                         |
 | `row-misaligned`      | repeated rows whose n-th cell starts at a different x                                                                                                                                 |
 | `control-inset`       | a bordered input less than `minInset` (4px) from the edge of the bar or card it sits in                                                                                               |

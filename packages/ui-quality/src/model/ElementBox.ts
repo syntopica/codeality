@@ -33,6 +33,10 @@ export type ElementBox = {
   clientWidth: number
   scrollHeight: number
   clientHeight: number
+  /** `clientHeight` less vertical padding: the box the text is laid in. */
+  contentHeight: number
+  /** One line of a select's font, which Chromium clips to the content box; 0 for other elements. */
+  lineBoxHeight: number
   isControl: boolean
   /** Computed font size in CSS pixels. */
   fontSize: number

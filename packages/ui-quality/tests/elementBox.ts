@@ -28,6 +28,8 @@ export const elementBox = (
   textOverflow: 'clip',
   scrollWidth: 100,
   clientWidth: 100,
+  contentHeight: 20,
+  lineBoxHeight: 0,
   scrollHeight: 20,
   clientHeight: 20,
   isControl: false,

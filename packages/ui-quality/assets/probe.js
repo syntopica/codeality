@@ -126,6 +126,17 @@
 
   // Inputs that open the keyboard; buttons and pickers rendered as inputs do not.
   const NON_TYPING_INPUTS = new Set(['button', 'submit', 'reset', 'image'])
+  // The height of one line of a select's font: Chromium clips the chosen
+  // option's text to the content box, so a box shorter than this cuts it.
+  // Zero for everything else, whose text wraps or overflows visibly.
+  const measure = document.createElement('canvas').getContext('2d')
+  const lineBoxOf = (element, style) => {
+    if (element.tagName !== 'SELECT' || !measure) return 0
+    measure.font = style.font
+    const metrics = measure.measureText('Mg')
+    return metrics.fontBoundingBoxAscent + metrics.fontBoundingBoxDescent
+  }
+
   const isTextEntry = (element) => {
     if (element.isContentEditable)
       return !element.parentElement || !element.parentElement.isContentEditable
@@ -203,6 +214,11 @@
       clientWidth: element.clientWidth,
       scrollHeight: element.scrollHeight,
       clientHeight: element.clientHeight,
+      contentHeight:
+        element.clientHeight -
+        parseFloat(style.paddingTop) -
+        parseFloat(style.paddingBottom),
+      lineBoxHeight: lineBoxOf(element, style),
       isControl: isControl(element),
       fontSize: parseFloat(style.fontSize),
       isTextEntry: isTextEntry(element),
