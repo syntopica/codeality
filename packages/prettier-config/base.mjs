@@ -23,5 +23,12 @@ export default {
       files: '*.md',
       options: { proseWrap: 'always' },
     },
+    // `next dev` writes its agent-rules block into AGENTS.md or CLAUDE.md as
+    // long lines and rewrites it whenever the block differs byte for byte, so
+    // wrapping it at 80 columns starts a loop: Prettier wraps, Next unwraps.
+    {
+      files: ['AGENTS.md', 'CLAUDE.md'],
+      options: { proseWrap: 'preserve' },
+    },
   ],
 }

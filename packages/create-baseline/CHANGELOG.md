@@ -2,6 +2,13 @@
 
 ## [Unreleased]
 
+## 0.10.1
+
+### Patch Changes
+
+- fix: pin `@syntopica/prettier-config` `^0.2.2`. 0.10.0 pinned `^0.2.1`, which
+  was tagged but never reached npm, so 0.10.0 was never published either.
+
 ## 0.10.0
 
 ### Minor Changes

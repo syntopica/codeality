@@ -1,6 +1,6 @@
 {
   "@syntopica/eslint-config": "^0.9.0",
-  "@syntopica/prettier-config": "^0.2.1",
+  "@syntopica/prettier-config": "^0.2.2",
   "@syntopica/tsconfig": "^0.3.1",
   "@syntopica/quality-config": "^0.12.1",
   "eslint-plugin-code-policy": "^0.8.0",

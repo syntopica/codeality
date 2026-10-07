@@ -5,6 +5,17 @@
 
 ## [Unreleased]
 
+## 0.2.2
+
+### Patch Changes
+
+- fix: `AGENTS.md` and `CLAUDE.md` keep their line breaks
+  (`proseWrap: preserve`). `next dev` writes its agent-rules block there as long
+  lines and rewrites it whenever the block differs byte for byte, so wrapping
+  those files at 80 columns made Prettier and Next undo each other on every run.
+  0.2.1 was tagged but never reached npm; this release carries its link fixes
+  too.
+
 ## 0.2.1
 
 ### Patch Changes
