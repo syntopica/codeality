@@ -154,7 +154,7 @@ three widths is one finding.
 
 ```text
 codeality-ui [--project <dir>] init
-codeality-ui [--project <dir>] check [--json]
+codeality-ui [--project <dir>] check [--json] [--routes <glob>]
 codeality-ui [--project <dir>] baseline create|update|check [--check-stale]
 ```
 
@@ -162,3 +162,10 @@ With `.codeality-ui-baseline.json` present, `check` fails only on findings the
 baseline does not carry. Exit codes: 0 passed, 1 findings, 2 invalid usage or
 configuration, 3 browser failure. A single page that fails twice is a
 `capture-failed` finding, not an exit 3.
+
+`--routes <glob>` measures only the configured routes whose path matches
+(`/admin/**`, or `'/!(admin)**'` for everything else). A full run with `auth`
+stops before the browser starts when the credentials or the session file are
+missing; a selected run does not, so the public pages can be checked on a
+machine without them, and a selected route that bounces to the login page still
+fails there. A glob that selects nothing is an exit 2.

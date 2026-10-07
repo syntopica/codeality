@@ -14,15 +14,18 @@ import { screenLabel } from '@/model/screenLabel.js'
 
 /**
  * Every route at every viewport in every colour scheme, one browser for the
- * run. A screen that fails twice is recorded and the run carries on.
+ * run. A screen that fails twice is recorded and the run carries on. A run of
+ * selected routes skips the up-front session check: a public route never
+ * needs one, and a route that bounces to the login page still fails there.
  */
 export const captureScreens = async (
   root: string,
   config: UiQualityConfig,
   log: (text: string) => void,
+  assertSession = true,
 ): Promise<CaptureRun> => {
   const statePath = statePathOf(root, config.auth)
-  assertCredentials(config.auth, statePath)
+  if (assertSession) assertCredentials(config.auth, statePath)
   const session = config.auth && statePath
   const { chromium, devices } = await loadPlaywright()
   const screensDir = ensureScreensDir(root)

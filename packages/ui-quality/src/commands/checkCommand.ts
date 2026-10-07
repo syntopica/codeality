@@ -22,9 +22,18 @@ export const checkCommand = async (
   io: CommandIo,
 ): Promise<number> => {
   try {
-    const { values } = parseCommandArgs(argv, { json: { type: 'boolean' } })
+    const { values } = parseCommandArgs(argv, {
+      json: { type: 'boolean' },
+      routes: { type: 'string' },
+    })
     const config = readConfig(io.root)
-    const result = await runCheck(io.root, config, io.stderr)
+    const routes = values['routes']
+    const result = await runCheck(
+      io.root,
+      config,
+      io.stderr,
+      typeof routes === 'string' ? routes : null,
+    )
     const report = writeReport(io.root, result)
     io.stderr(`report: ${report}\n`)
     if (values['json'] === true) {
