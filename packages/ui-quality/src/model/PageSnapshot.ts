@@ -1,5 +1,6 @@
 import type { AxeViolation } from '@/model/AxeViolation.js'
 import type { BehaviourFailure } from '@/model/BehaviourFailure.js'
+import type { FocusStop } from '@/model/FocusStop.js'
 import type { InteractionFailure } from '@/model/InteractionFailure.js'
 import type { ProbeResult } from '@/model/ProbeResult.js'
 import type { RequestTiming } from '@/model/RequestTiming.js'
@@ -24,4 +25,6 @@ export type PageSnapshot = ProbeResult & {
   layoutShift: number
   /** Addresses of images whose request failed or answered 400 and up while the page loaded. */
   failedImages: string[]
+  /** The elements the Tab pass reached, in order, and whether focus showed on each. */
+  focusStops: FocusStop[]
 }

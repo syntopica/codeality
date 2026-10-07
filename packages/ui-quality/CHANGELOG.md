@@ -2,6 +2,11 @@
 
 ## [Unreleased]
 
+- New rule, `warn`: `focus-invisible` (keyboard focus that changes nothing
+  visible). The capture now presses Tab through the first 30 focusable elements
+  after the probe and compares each with its unfocused look; a ring painted on
+  an ancestor (`:focus-within`) or a sibling counts.
+
 ## 0.5.0
 
 - New rules, all `warn`: `nested-cards` (a card inside a card within three

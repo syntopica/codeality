@@ -28,5 +28,6 @@ export const snapshotOf = (
   behaviour: [],
   layoutShift: 0,
   failedImages: [],
+  focusStops: [],
   ...overrides,
 })

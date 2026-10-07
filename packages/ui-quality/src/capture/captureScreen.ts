@@ -1,4 +1,4 @@
-import { auditAccessibility } from '@/capture/auditAccessibility.js'
+import { auditWithoutConsoleNoise } from '@/capture/auditWithoutConsoleNoise.js'
 import { checkAction } from '@/capture/checkAction.js'
 import { exerciseScreen } from '@/capture/exerciseScreen.js'
 import { fileDigest } from '@/capture/fileDigest.js'
@@ -10,6 +10,7 @@ import { recordRequests } from '@/capture/recordRequests.js'
 import { retimeSlowRequests } from '@/capture/retimeSlowRequests.js'
 import type { ScreenRequest } from '@/capture/ScreenRequest.js'
 import { screenshotPage } from '@/capture/screenshotPage.js'
+import { tabThroughPage } from '@/capture/tabThroughPage.js'
 import { holdsState } from '@/config/holdsState.js'
 import type { PageSnapshot } from '@/model/PageSnapshot.js'
 import type { ProbeResult } from '@/model/ProbeResult.js'
@@ -33,15 +34,12 @@ export const captureScreen = async ({
   const interactionFailures = await interactWithRoute(page, route)
   const keep = holdsState(route)
   const screenshot = await screenshotPage(page, screensDir, screen, keep)
-  // axe fetches each stylesheet itself to read the CSSOM; a page whose CSP
-  // keeps connect-src narrow logs that refusal, which the page never caused.
-  const loggedBeforeAxe = consoleLog.errors.length
-  const axe = await auditAccessibility(page, axeConfig)
-  consoleLog.errors.splice(loggedBeforeAxe)
+  const axe = await auditWithoutConsoleNoise(page, axeConfig, consoleLog)
   const probed: ProbeResult = await page.evaluate(
     `(${probe})(${JSON.stringify(route.main)})`,
   )
   imageLog.stop()
+  const focusStops = await tabThroughPage(page).catch(() => [])
   const behaviour = exercise ? await exerciseScreen(page, route.main) : []
   consoleLog.stop()
   requestLog.stop()
@@ -66,5 +64,6 @@ export const captureScreen = async ({
     behaviour: [...behaviour, ...actions],
     layoutShift,
     failedImages: imageLog.urls,
+    focusStops,
   }
 }

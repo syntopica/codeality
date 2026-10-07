@@ -13,6 +13,7 @@ import { duplicateNavIcon } from '@/rules/duplicateNavIcon.js'
 import { edgeMisaligned } from '@/rules/edgeMisaligned.js'
 import { emptyDialog } from '@/rules/emptyDialog.js'
 import { fixedOverflow } from '@/rules/fixedOverflow.js'
+import { focusInvisible } from '@/rules/focusInvisible.js'
 import { ghostElevation } from '@/rules/ghostElevation.js'
 import { horizontalOverflow } from '@/rules/horizontalOverflow.js'
 import { iconContrast } from '@/rules/iconContrast.js'
@@ -55,6 +56,7 @@ export const RULES: Rule[] = [
   edgeMisaligned,
   emptyDialog,
   fixedOverflow,
+  focusInvisible,
   ghostElevation,
   horizontalOverflow,
   iconContrast,

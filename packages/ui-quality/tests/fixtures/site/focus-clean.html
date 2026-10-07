@@ -1,0 +1,66 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Focus visible</title>
+    <style>
+      body {
+        margin: 0;
+        font: 16px/1.5 sans-serif;
+        color: #111827;
+        background: #ffffff;
+      }
+      main {
+        padding: 24px;
+        max-width: 640px;
+      }
+      h1 {
+        font-size: 24px;
+        margin: 0 0 16px;
+      }
+      a {
+        color: #1d4ed8;
+      }
+      button {
+        background: #2563eb;
+        color: #ffffff;
+        border: 0;
+        border-radius: 6px;
+        padding: 8px 16px;
+        font: inherit;
+        outline: none;
+        transition: box-shadow 120ms;
+      }
+      /* A ring by box-shadow, eased in: still there once the transition ends. */
+      button:focus-visible {
+        box-shadow: 0 0 0 3px #93c5fd;
+      }
+      input {
+        border: 1px solid #6b7280;
+        border-radius: 6px;
+        padding: 8px;
+        font: inherit;
+        outline: none;
+      }
+      /* The ring on the wrapper, not on the field. */
+      .field {
+        border-radius: 8px;
+      }
+      .field:focus-within {
+        outline: 2px solid #2563eb;
+        outline-offset: 2px;
+      }
+    </style>
+  </head>
+  <body>
+    <main>
+      <h1>Invoice filters</h1>
+      <p><a href="#top">Back to top</a></p>
+      <p class="field">
+        <input type="text" aria-label="Customer" value="Acme" />
+      </p>
+      <p><button type="button">Apply</button></p>
+    </main>
+  </body>
+</html>

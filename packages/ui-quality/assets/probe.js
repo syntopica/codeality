@@ -556,6 +556,9 @@
     },
   )
 
+  // The focus pass reads which element is which from the page.
+  window.__uiqIds = ids
+
   return {
     elements,
     variables,
