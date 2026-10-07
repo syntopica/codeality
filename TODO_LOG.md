@@ -1,5 +1,13 @@
 ### 2026-10-07
 
+- [x] Release 2026-10-07 (b4a0c2f, annotated tags pushed): published
+      `@syntopica/ui-quality@0.3.0`, `@syntopica/db-quality@0.4.0` and
+      `@syntopica/quality-config@0.12.1` (runs 37631196044, 37631206196,
+      37631172774; `npm view` confirms). `pnpm check:ci` exit 0 before tagging.
+      CI had been red since 76f88d7 on jscpd duplication (1.4% over 1%); 5110a09
+      moved eleven ui-quality CLI tests onto `tests/fixtureFindings.ts`,
+      duplication 0.67%.
+
 - [x] ui-quality `duplicate-nav-icon` (warn): links or buttons under `nav` whose
       first svg has the same markup digest (djb2 of the svg with
       class/style/size/id/aria attributes removed) and different names

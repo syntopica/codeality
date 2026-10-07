@@ -31,6 +31,17 @@ verified complete - `[-]` obsolete or superseded.
   `npm view typescript-eslint version` passes 8.71.1, remove both lines,
   `ncu -u`, `pnpm install`, `pnpm check:ci`.
 
+- [!] **Publish the five tagged releases whose npm trusted publisher failed**
+  (2026-10-07). `eslint-plugin-code-policy@0.8.0`,
+  `@syntopica/eslint-config@0.9.0`, `@syntopica/tsconfig@0.3.1`,
+  `@syntopica/prettier-config@0.2.1` and `@syntopica/create-baseline@0.10.0` are
+  tagged and pushed; their publish runs (37631141965, 37631184927, 37631153626,
+  37631162333, 37631215661) failed on `ERR_PNPM_AUTH_TOKEN_EXCHANGE` 404, the
+  expired-trusted-publisher signature ui-quality hit the same morning. Unblock:
+  on npmjs.com, for each package, delete and recreate the trusted publisher
+  (syntopica/codeality, publish.yml, no environment), then
+  `gh workflow run publish.yml -f package=<name>` for each, plugin first, and
+  `pnpm release:check`.
 - [ ] **Estate adoption of `eslint-plugin-code-policy@0.8.0`** (2026-10-07). The
       new `anonymousTypeLiteral` check reports every object type literal in
       runtime code. Swept with the local build through an ESM resolve hook (no
