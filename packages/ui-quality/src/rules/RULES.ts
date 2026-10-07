@@ -1,3 +1,4 @@
+import { AI_TELL_RULES } from '@/rules/AI_TELL_RULES.js'
 import { COPY_RULES } from '@/rules/COPY_RULES.js'
 import { INTERACTION_RULES } from '@/rules/INTERACTION_RULES.js'
 import { READABILITY_RULES } from '@/rules/READABILITY_RULES.js'
@@ -91,6 +92,7 @@ export const RULES: Rule[] = [
   ...SPACING_RULES,
   ...STRUCTURE_RULES,
   ...TABLE_RULES,
+  ...AI_TELL_RULES,
   ...COPY_RULES,
   ...INTERACTION_RULES,
 ]

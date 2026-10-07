@@ -1,0 +1,82 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Plain screen</title>
+    <style>
+      body {
+        margin: 0;
+        font: 16px/24px sans-serif;
+        color: #111827;
+        background: #ffffff;
+      }
+      main {
+        padding: 24px;
+      }
+      h1 {
+        font-size: 40px;
+        line-height: 48px;
+        margin: 0 0 24px;
+      }
+      h2 {
+        font-size: 32px;
+        line-height: 40px;
+        margin: 0 0 24px;
+      }
+      .eyebrow {
+        margin: 0 0 8px;
+        font-size: 12px;
+        line-height: 16px;
+        text-transform: uppercase;
+        letter-spacing: 0.1em;
+      }
+      .glow {
+        width: 240px;
+        height: 48px;
+        margin-bottom: 32px;
+        background: #0f172a;
+      }
+      .callout {
+        margin-bottom: 24px;
+        padding: 16px;
+        border-radius: 8px;
+        background: #eff6ff;
+      }
+      .dot {
+        width: 8px;
+        height: 8px;
+        margin-bottom: 24px;
+        border-radius: 50%;
+        background: #16a34a;
+      }
+      .hero {
+        height: 500px;
+      }
+      @keyframes pulse {
+        50% {
+          opacity: 0.3;
+        }
+      }
+      .glow {
+        box-shadow: 0 1px 3px rgb(0 0 0 / 0.2);
+      }
+      .callout {
+        border: 1px solid #bfdbfe;
+      }
+      .hero {
+        background: #1e3a8a;
+      }
+    </style>
+  </head>
+  <body>
+    <main>
+      <h1>Launch</h1>
+      <h2>Everything in one place</h2>
+      <div class="glow"></div>
+      <div class="callout">Heads up: invoices close on the last day.</div>
+      <div class="dot"></div>
+      <div class="hero"></div>
+    </main>
+  </body>
+</html>
