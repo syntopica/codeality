@@ -2,6 +2,27 @@
 
 ## [Unreleased]
 
+- Kysely migrations load through the project's `tsconfig.json` path aliases
+  (`compilerOptions.paths`, `extends` and `baseUrl` honoured): a migrations
+  module importing `@/db/migrations/...` no longer makes `check` and
+  `init --apply` exit 3 with `Cannot find module`.
+- With more than one Kysely dialect configured, squawk's PostgreSQL-only type
+  advice (`prefer-text-field`, `ban-char-field`, `prefer-timestamp-tz`,
+  `prefer-bigint-over-int`) is excluded, since a portable schema cannot follow
+  it. `prefer-robust-stmts` stays on.
+- `BDB310/dynamic-raw-sql` accepts the variable of a `for...of` over a literal
+  array (or a `const` bound to one), an element destructured from a `const`
+  literal tuple, and a template (or a `const` bound to one) built only from such
+  values. The files the project's `tsconfig.json` includes are now linted with
+  type information, so a value typed as a literal or a union of literals (an
+  imported `as const` array, say) passes too; other files keep the syntactic
+  checks.
+- `init` proposes and `init --check` requires the CI workflow, which passes
+  `SUPABASE_ACCESS_TOKEN` and `SUPABASE_DB_PASSWORD`, only in a Supabase project
+  (one with a `supabase/` directory).
+- `init` writes the `dialects` it inferred from the installed drivers into the
+  proposed `kysely.migrations` block.
+
 ## 0.5.0
 
 - Kysely support, additive (`schemaVersion` stays 2). A `kysely` section

@@ -8,10 +8,12 @@ import type { DialectCompilation } from '@/adapters/kysely/DialectCompilation.js
 import type { KyselyCompileRequest } from '@/adapters/kysely/KyselyCompileRequest.js'
 import { loadKyselyModule } from '@/adapters/kysely/loadKyselyModule.js'
 import { loadMigrations } from '@/adapters/kysely/loadMigrations.js'
+import { projectTsconfigPaths } from '@/adapters/kysely/projectTsconfigPaths.js'
 
 // jiti runs the project's TypeScript as written, resolving `kysely` and every
-// other import from the project. `fsCache: false` keeps it from writing a
-// transpile cache under node_modules: `check` never writes.
+// other import from the project, path aliases from its tsconfig.json included.
+// `fsCache: false` keeps it from writing a transpile cache under node_modules:
+// `check` never writes.
 /** Loads the project's migrations and compiles each on every requested dialect, nothing executed. */
 export const compileKyselyMigrations = async (
   request: KyselyCompileRequest,
@@ -19,6 +21,7 @@ export const compileKyselyMigrations = async (
   const jiti = createJiti(join(request.root, 'codeality-db.json'), {
     fsCache: false,
     interopDefault: false,
+    tsconfigPaths: projectTsconfigPaths(request.root),
   })
   const kysely = await loadKyselyModule(jiti, request.root)
   const migrations = await loadMigrations(jiti, request)

@@ -30,7 +30,7 @@ missing one fails with exit 3 rather than skipping silently.
 ## Usage
 
 ```bash
-codeality-db init [--check|--apply|--force]   # codeality-db.json, db:gate script, CI workflow
+codeality-db init [--check|--apply|--force]   # codeality-db.json, db:gate script, CI workflow (Supabase)
 codeality-db check [--json]                   # static findings, never writes
 codeality-db audit --linked|--db-url <url>    # live Supabase advisors, inspect, Soda
 codeality-db gate                             # check (or baseline check), the linked audit, then perf
@@ -172,9 +172,10 @@ A `kysely` section is proposed by `init` when `package.json` depends on
 `kysely`: `roots` are the directories among `src`, `server`, `app`, `lib` and
 `db` that exist, `objectNames` defaults to `["db", "trx"]`, and `migrations` is
 filled in only when exactly one `migrations/index.ts` or
-`migrations/migrationList.ts` exists under the roots; otherwise `init` says it
-left it out. Additive: `schemaVersion` stays 2. `kysely.databaseType` is
-reserved for a later type-drift audit and not read yet.
+`migrations/migrationList.ts` exists under the roots, with the `dialects` the
+installed drivers imply written out; otherwise `init` says it left it out.
+Additive: `schemaVersion` stays 2. `kysely.databaseType` is reserved for a later
+type-drift audit and not read yet.
 
 ### Code rules
 
@@ -184,20 +185,33 @@ project root, with `--no-config-lookup`, so the project's own ESLint setup is
 neither read nor changed. The rules are this package's own; there is no plugin
 to install.
 
-| Code                          | Rule                 | What it proves                                                                                                                                                                       |
-| ----------------------------- | -------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| `BDB310/update-without-where` | update-without-where | a chain rooted at `<objectName>.updateTable(...)` reaches `execute`, `executeTakeFirst` or `executeTakeFirstOrThrow` with no `where`, `whereRef`, `$if` or `$call` after it          |
-| `BDB310/delete-without-where` | delete-without-where | the same for `deleteFrom`                                                                                                                                                            |
-| `BDB310/dynamic-raw-sql`      | dynamic-raw-sql      | `sql.raw`, `sql.lit`, `sql.id`, `sql.ref` or `sql.table` called with an argument that is not a literal, a `const` bound to one, or a member of a `const` object or array of literals |
+| Code                          | Rule                 | What it proves                                                                                                                                                              |
+| ----------------------------- | -------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `BDB310/update-without-where` | update-without-where | a chain rooted at `<objectName>.updateTable(...)` reaches `execute`, `executeTakeFirst` or `executeTakeFirstOrThrow` with no `where`, `whereRef`, `$if` or `$call` after it |
+| `BDB310/delete-without-where` | delete-without-where | the same for `deleteFrom`                                                                                                                                                   |
+| `BDB310/dynamic-raw-sql`      | dynamic-raw-sql      | `sql.raw`, `sql.lit`, `sql.id`, `sql.ref` or `sql.table` called with an argument that is not fixed in the source (see below)                                                |
 
 A chain is recognised whether it is awaited, returned or written inside a `trx`
 callback, and when the instance is reached as `this.db`. A chain split across
 variables is not followed, and `$if` or `$call` counts as a guard because the
 callback may add the `where`: each rule reports only what it can prove. `sql` is
-matched by name. A `sql` tagged template binds its `${}` values as parameters
-and is never reported. A deliberate whole-table write or a validated identifier
-is suppressed with a `disable` entry or an ESLint directive naming the rule and
-a reason.
+matched by name.
+
+`dynamic-raw-sql` accepts an argument fixed in the source: a literal; a `const`
+bound to one; a member of a `const` object or array of literals; the variable of
+`for (const t of ...)` over an array literal of literals or a `const` bound to
+one; an element taken by destructuring a `const` literal tuple; and a template,
+or a `const` bound to a template, whose every `${}` is one of these. The files
+the project's `tsconfig.json` includes are linted with type information, so a
+value TypeScript types as a literal or a union of literals passes too: an
+element of an imported `as const` array, a `for...of` over one, a parameter
+typed `'asc' | 'desc'`. A file outside the tsconfig, or a project without one,
+gets the syntactic checks alone, which do not follow an import. A genuinely
+dynamic `string` is always reported, and an `as` cast to a literal type does not
+silence it. A `sql` tagged template binds its `${}` values as parameters and is
+never reported. A deliberate whole-table write or a validated identifier is
+suppressed with a `disable` entry or an ESLint directive naming the rule and a
+reason.
 
 ### Migrations
 
@@ -211,16 +225,23 @@ it, the dialects are inferred from the installed drivers (`pg`, `mysql2`,
 `better-sqlite3`), and a project with none of them is a configuration error.
 
 The migrations run in a separate Node process, through `jiti`, with the
-project's own `kysely`: every `up` in order, then every `down` in reverse,
-against a Kysely instance built from the dialect's real adapter, introspector
-and query compiler and a driver that records each query and returns no rows. A
-missing `kysely` exits 3. Then:
+project's own `kysely` and the path aliases (`compilerOptions.paths`, through
+`extends`) of its `tsconfig.json`, so a migrations module may import
+`@/db/migrations/...` as the application does: every `up` in order, then every
+`down` in reverse, against a Kysely instance built from the dialect's real
+adapter, introspector and query compiler and a driver that records each query
+and returns no rows. A missing `kysely` exits 3. Then:
 
 - **PostgreSQL**: each migration's SQL goes through squawk (`BDB100/<rule>`,
   reported on the migration) with `require-lock-timeout`,
   `require-statement-timeout` and `require-concurrent-index-creation` excluded.
   `prefer-robust-stmts` stays on, unlike under Supabase: on MySQL the same
-  migrations run outside any transaction.
+  migrations run outside any transaction. When more than one dialect is
+  configured, squawk's PostgreSQL-only type advice is excluded too:
+  `prefer-text-field`, `ban-char-field`, `prefer-timestamp-tz` and
+  `prefer-bigint-over-int`. A portable schema needs `varchar(n)` for an indexed
+  or unique column on MySQL, so following them would make the migrations
+  PostgreSQL-only.
 - **SQLite**: the migrations are applied in order to a scratch database in a
   temporary directory with the `sqlite3` shell, one transaction per migration,
   then `BDB401`-`BDB403` run on the result. A statement SQLite refuses is

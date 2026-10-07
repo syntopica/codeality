@@ -74,6 +74,28 @@ describe('compileKyselyMigrations', () => {
     ])
     expect(b?.dialects.postgres?.error).toBe('up: boom')
   })
+  it('resolves the project tsconfig path aliases, through extends and comments', async () => {
+    const root = kyselyTempProject({
+      'tsconfig.json':
+        '// the application config\n{ "extends": "./tsconfig.base.json" }\n',
+      'tsconfig.base.json':
+        '{ "compilerOptions": { "paths": { "@/*": ["./src/*"] } } }\n',
+      'src/db/list.ts':
+        "import { first } from '@/db/migrations/first'\nexport const migrations = { first }\n",
+      'src/db/migrations/first.ts': `${STEP}export const first = {
+  up: async (db: Kysely<any>) => { await db.schema.dropTable('t').execute() },
+}`,
+    })
+    const [first] = await compileKyselyMigrations({
+      root,
+      module: 'src/db/list.ts',
+      export: 'migrations',
+      dialects: ['postgres'],
+    })
+    expect(first?.dialects.postgres?.up).toEqual([
+      { sql: 'drop table "t"', parameters: [] },
+    ])
+  })
   it('refuses a missing module, a missing export and a value with no up()', async () => {
     const root = kyselyTempProject({
       'm.ts':

@@ -9,6 +9,7 @@ import { inlineReferencesFindings } from '@/adapters/kysely/rules/inlineReferenc
 import { nativeEnumFindings } from '@/adapters/kysely/rules/nativeEnumFindings.js'
 import { orderFindings } from '@/adapters/kysely/rules/orderFindings.js'
 import { withoutDownFindings } from '@/adapters/kysely/rules/withoutDownFindings.js'
+import { kyselySquawkExcludes } from '@/adapters/squawk/kyselySquawkExcludes.js'
 import type { DisableEntry } from '@/config/DisableEntry.js'
 import type { KyselyConfig } from '@/config/KyselyConfig.js'
 import { kyselyDialectsOf } from '@/config/kyselyDialectsOf.js'
@@ -38,7 +39,10 @@ export const runKyselyMigrationChecks = (
     ...editedFindings(migrations, hashFile, disabled),
     ...compileErrorFindings(migrations, disabled),
     ...(dialects.includes('postgres')
-      ? kyselySquawkFindings(runner, root, migrations, disabled)
+      ? kyselySquawkFindings(runner, root, migrations, {
+          excludes: kyselySquawkExcludes(dialects),
+          disabled,
+        })
       : []),
     ...(dialects.includes('sqlite')
       ? kyselySqliteFindings(runner, migrations, source, disabled)

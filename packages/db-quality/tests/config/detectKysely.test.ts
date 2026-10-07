@@ -23,8 +23,8 @@ const project = (
 }
 
 describe('Kysely detection', () => {
-  it('proposes the one migrations module, named after its export', () => {
-    const root = project({ kysely: '^0.29' }, [
+  it('proposes the one migrations module, named after its export, with the inferred dialects', () => {
+    const root = project({ kysely: '^0.29', mysql2: '^3', pg: '^8' }, [
       'src/db/migrations/migrationList.ts',
       'src/index.ts',
     ])
@@ -35,12 +35,13 @@ describe('Kysely detection', () => {
       migrations: {
         module: 'src/db/migrations/migrationList.ts',
         export: 'migrationList',
+        dialects: ['postgres', 'mysql'],
         moneyColumns: false,
       },
     })
     expect(kyselyMigrationsNote(stacks)).toBe('')
   })
-  it('proposes an index module with the default export name', () => {
+  it('proposes an index module with the default export name, no dialects without a driver', () => {
     const root = project({ kysely: '^0.29' }, ['db/migrations/index.ts'])
     expect(detectStacks(root).kysely?.migrations).toEqual({
       module: 'db/migrations/index.ts',

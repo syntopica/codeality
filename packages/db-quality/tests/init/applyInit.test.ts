@@ -1,4 +1,4 @@
-import { existsSync, mkdtempSync, readFileSync } from 'node:fs'
+import { existsSync, mkdirSync, mkdtempSync, readFileSync } from 'node:fs'
 import { tmpdir } from 'node:os'
 import { join } from 'node:path'
 
@@ -11,6 +11,7 @@ import { renderInitPlan } from '@/init/renderInitPlan.js'
 describe('applyInit', () => {
   it('writes only create and merge entries', () => {
     const root = mkdtempSync(join(tmpdir(), 'dbq-'))
+    mkdirSync(join(root, 'supabase'))
     const plan = planInit(root, false)
     expect(renderInitPlan(plan).split('\n')[0]).toBe(
       'create     codeality-db.json  from the detected stacks',
@@ -23,6 +24,20 @@ describe('applyInit', () => {
       true,
     )
     expect(existsSync(join(root, 'package.json'))).toBe(false)
+    expect(
+      planInit(root, false).every((file) => file.disposition === 'unchanged'),
+    ).toBe(true)
+  })
+  it('neither writes nor requires the Supabase workflow outside a Supabase project', () => {
+    const root = mkdtempSync(join(tmpdir(), 'dbq-'))
+    const plan = planInit(root, false)
+    expect(plan.map((file) => file.path)).not.toContain(
+      '.github/workflows/db-quality.yml',
+    )
+    applyInit(root, plan)
+    expect(existsSync(join(root, '.github/workflows/db-quality.yml'))).toBe(
+      false,
+    )
     expect(
       planInit(root, false).every((file) => file.disposition === 'unchanged'),
     ).toBe(true)

@@ -5,9 +5,8 @@ import { join } from 'node:path'
 import type { LocatedMigration } from '@/adapters/kysely/LocatedMigration.js'
 import { retargetedFinding } from '@/adapters/kysely/retargetedFinding.js'
 import { writePostgresScratch } from '@/adapters/kysely/writePostgresScratch.js'
-import { KYSELY_SQUAWK_EXCLUDES } from '@/adapters/squawk/KYSELY_SQUAWK_EXCLUDES.js'
 import { runSquawkWith } from '@/adapters/squawk/runSquawkWith.js'
-import type { DisableEntry } from '@/config/DisableEntry.js'
+import type { SquawkRun } from '@/adapters/squawk/SquawkRun.js'
 import type { Finding } from '@/model/Finding.js'
 import type { CommandRunner } from '@/tools/CommandRunner.js'
 
@@ -19,7 +18,7 @@ export const kyselySquawkFindings = (
   runner: CommandRunner,
   root: string,
   migrations: LocatedMigration[],
-  disabled: DisableEntry[],
+  run: SquawkRun,
 ): Finding[] => {
   const directory = mkdtempSync(join(tmpdir(), 'codeality-db-kysely-'))
   try {
@@ -31,7 +30,7 @@ export const kyselySquawkFindings = (
       runner,
       directory,
       scratch.map((entry) => entry.file),
-      { excludes: KYSELY_SQUAWK_EXCLUDES, disabled },
+      run,
     )
     return findings.flatMap((finding) => {
       const migration = scratch.find(

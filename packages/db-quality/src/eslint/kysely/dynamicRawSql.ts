@@ -1,6 +1,6 @@
 import type { Rule } from 'eslint'
 
-import { isStaticSqlArgument } from '@/eslint/kysely/isStaticSqlArgument.js'
+import { isFixedSqlArgument } from '@/eslint/kysely/isFixedSqlArgument.js'
 import { rawSqlMethod } from '@/eslint/kysely/rawSqlMethod.js'
 
 // A `sql` tagged template binds its `${}` values as parameters and is safe;
@@ -16,7 +16,7 @@ export const dynamicRawSql: Rule.RuleModule = {
     schema: [],
     messages: {
       dynamicRawSql:
-        'sql.{{method}}() with an argument that is not a literal or a const bound to one splices it into the query text: an injection path. Bind it in a sql`` template, or validate it against a const list',
+        'sql.{{method}}() with an argument that is not a literal, a const bound to one or a value typed as a literal union splices it into the query text: an injection path. Bind it in a sql`` template, or validate it against a const list',
     },
   },
   create(context) {
@@ -25,7 +25,9 @@ export const dynamicRawSql: Rule.RuleModule = {
         const method = rawSqlMethod(node)
         if (method === undefined) return
         const scope = context.sourceCode.getScope(node)
-        if (node.arguments.every((arg) => isStaticSqlArgument(arg, scope)))
+        if (
+          node.arguments.every((arg) => isFixedSqlArgument(arg, scope, context))
+        )
           return
         context.report({ node, messageId: 'dynamicRawSql', data: { method } })
       },

@@ -1,5 +1,6 @@
 import { join } from 'node:path'
 
+import { inferredKyselyDialects } from '@/config/inferredKyselyDialects.js'
 import { isDirectory } from '@/config/isDirectory.js'
 import type { KyselyConfig } from '@/config/KyselyConfig.js'
 import { kyselyMigrationModules } from '@/config/kyselyMigrationModules.js'
@@ -15,6 +16,7 @@ export const detectKysely = (root: string): KyselyConfig | undefined => {
   )
   const modules = kyselyMigrationModules(root, roots)
   const module = modules.length === 1 ? modules[0] : undefined
+  const dialects = inferredKyselyDialects(root)
   return {
     roots,
     objectNames: ['db', 'trx'],
@@ -28,6 +30,9 @@ export const detectKysely = (root: string): KyselyConfig | undefined => {
             export: module.endsWith('/migrationList.ts')
               ? 'migrationList'
               : 'migrations',
+            // Written out, so the dialects the checks run on are visible and
+            // reviewable rather than re-inferred from the drivers each run.
+            ...(dialects.length === 0 ? {} : { dialects }),
             moneyColumns: false,
           },
         }),
