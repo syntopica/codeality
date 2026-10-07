@@ -90,12 +90,6 @@ needs.
       on #0a0a0a), all fixed. Smallest step: have `check` read the site's
       `sitemap.xml` (or `init` propose routes from it) and warn once per route
       template with no configured route.
-- [ ] **`auth` blocks a run of public routes.** 2026-10-03, TienesLaVibra: with
-      `UI_QUALITY_USER` unset the run stops before the browser starts, even for
-      routes that never reach `loginPath`, so the public pass needed a copied
-      config without `auth` or `/admin` routes. Smallest step: a
-      `--routes <glob>` filter, or measure routes that do not bounce and report
-      the rest as `auth-skipped`.
 - [ ] **Grid `pagination-broken` may misread a "next post" link.** 2026-10-03,
       b18a5c9: a main region with no table is paged through its largest repeated
       collection, and `rel="next"` or a "Siguiente" link counts as its pager. On

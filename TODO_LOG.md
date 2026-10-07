@@ -1,5 +1,12 @@
 ### 2026-10-07
 
+- [x] ui-quality `check --routes <glob>` measures only the matching routes
+      (`node:path` `matchesGlob`, extglob such as `'/!(admin)**'` works) and
+      skips the up-front credential check; a selected route that bounces to the
+      login still fails with the missing-variable error, and a glob matching
+      nothing is exit 2. Evidence: `tests/cli.routes.integration.test.ts` (4
+      cases); ui-quality 161 tests, lint, type-check clean.
+
 - [x] ui-quality `disable` entries take `message`, a substring the finding's
       message must contain, so one third-party `console-error` (Turnstile's
       picture-in-picture violation) is kept without disabling the rule on the
