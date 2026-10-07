@@ -2,6 +2,14 @@
 
 ## [Unreleased]
 
+### Minor Changes
+
+- feat: `baseline-hooks-install` runs `lefthook install` only from the git
+  repository root. Wired into `prepare` instead of a bare `lefthook install`, it
+  stops a workspace's packages from rewriting the root's `.git/hooks` in
+  parallel, which failed `pnpm install` with
+  `could not replace the hook: remove .git/hooks/pre-push`.
+
 ## 0.12.1
 
 ### Patch Changes

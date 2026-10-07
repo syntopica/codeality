@@ -4,7 +4,7 @@
   "private": true,
   "packageManager": "pnpm@12.9.1",
   "scripts": {
-    "prepare": "lefthook install",
+    "prepare": "baseline-hooks-install",
     "build": "nest build",
     "start": "nest start",
     "start:dev": "nest start --watch",

@@ -38,16 +38,22 @@ then cruise separately with `scope: 'workspace'`.
 
 ## Stable executables (semver)
 
-| Binary              | Purpose                                                    |
-| ------------------- | ---------------------------------------------------------- |
-| `baseline-env-init` | Seed a gitignored `.env` from the committed `.env.example` |
-| `baseline-dupes`    | Run jscpd against this package's canonical `jscpd.json`    |
+| Binary                   | Purpose                                                    |
+| ------------------------ | ---------------------------------------------------------- |
+| `baseline-env-init`      | Seed a gitignored `.env` from the committed `.env.example` |
+| `baseline-hooks-install` | Run `lefthook install` only from the git repository root   |
+| `baseline-dupes`         | Run jscpd against this package's canonical `jscpd.json`    |
 
 `baseline-env-init` takes no arguments and always exits 0. It copies
 `.env.example` to `.env` in the current working directory, does nothing when
 `.env` already exists, and does nothing when there is no `.env.example`. Wire it
 into `prepare` so a freshly cloned project boots with the documented example
 values instead of failing its startup env validation.
+
+`baseline-hooks-install` forwards its arguments to `lefthook install` and exits
+with its status. It exits 0 without installing when the current directory is not
+the git repository root (a package nested in a workspace, whose root owns the
+hooks) or is not inside a git repository at all.
 
 `baseline-dupes` takes the paths to scan (a bare call scans `.`) and forwards
 every other argument to jscpd, where it wins over the config file. jscpd 5.x is

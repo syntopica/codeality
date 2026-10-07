@@ -45,7 +45,7 @@ renders and reports a blank page rather than a useful error.
 ```json
 {
   "scripts": {
-    "prepare": "lefthook install && baseline-env-init"
+    "prepare": "baseline-hooks-install && baseline-env-init"
   }
 }
 ```
@@ -53,6 +53,15 @@ renders and reports a blank page rather than a useful error.
 Idempotent: an existing `.env` is never overwritten, and a project with no
 `.env.example` is a no-op. It never writes a value into version control - `.env`
 stays gitignored, `.env.example` stays the only committed copy.
+
+### `baseline-hooks-install`
+
+Runs `lefthook install`, but only when the package is the root of its git
+repository. A package nested in a workspace skips the install, because lefthook
+would rewrite the enclosing repository's `.git/hooks`, and pnpm runs every
+workspace package's `prepare` in parallel: two packages replacing the same hook
+at once fail the install. Outside a git repository it skips too. Arguments are
+forwarded to `lefthook install`.
 
 ### `baseline-dupes`
 

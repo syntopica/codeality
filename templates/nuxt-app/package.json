@@ -5,7 +5,7 @@
   "type": "module",
   "packageManager": "pnpm@12.9.1",
   "scripts": {
-    "prepare": "lefthook install && baseline-env-init",
+    "prepare": "baseline-hooks-install && baseline-env-init",
     "dev": "nuxt dev",
     "build": "nuxt build",
     "preview": "nuxt preview",

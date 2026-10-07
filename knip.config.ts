@@ -23,12 +23,12 @@ const TEMPLATE_ESLINT_PEER_DEPENDENCIES = [
 
 // The tools @syntopica/quality-config's runners spawn through `pnpm exec`:
 // `baseline-dupes` spawns `jscpd`, `baseline-type-coverage` spawns
-// `type-coverage`. A template declares the dependency because the runner
-// spawns the binary rather than vendoring it, but nothing in the template
-// names it where knip can see. Mirrors BASELINE_RUNNER_DEPENDENCIES in that
+// `type-coverage`, `baseline-hooks-install` spawns `lefthook`. A template
+// declares the dependency because the runner spawns the binary rather than
+// vendoring it, but nothing in the template names it where knip can see. Mirrors BASELINE_RUNNER_DEPENDENCIES in that
 // package's own knip factory, which covers the per-template gate a scaffolded
 // project runs.
-const TEMPLATE_RUNNER_DEPENDENCIES = ['jscpd', 'type-coverage']
+const TEMPLATE_RUNNER_DEPENDENCIES = ['jscpd', 'type-coverage', 'lefthook']
 
 const config: KnipConfig = {
   workspaces: {

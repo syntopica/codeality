@@ -32,7 +32,8 @@ import { FRAMEWORK_ENTRIES, type KnipFramework } from './knip-framework'
 // is a dependency that silently stops being checked.
 // The tools this package's own runners spawn through `pnpm exec`:
 // `baseline-dupes` spawns `jscpd`, `baseline-type-coverage` spawns
-// `type-coverage`, `baseline-deps-graph` spawns `depcruise`. A project that
+// `type-coverage`, `baseline-deps-graph` spawns `depcruise`,
+// `baseline-hooks-install` spawns `lefthook`. A project that
 // wires the runner into its scripts never names the underlying tool anywhere
 // knip can see, so knip reports a real dependency as unused. Found in
 // a consumer the moment its `type-coverage` script became
@@ -46,6 +47,7 @@ const BASELINE_RUNNER_DEPENDENCIES = [
   'jscpd',
   'type-coverage',
   'dependency-cruiser',
+  'lefthook',
 ]
 
 const ESLINT_PEER_DEPENDENCIES = [

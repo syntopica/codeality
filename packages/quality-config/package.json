@@ -26,6 +26,7 @@
     "baseline-deps-graph": "bin/baseline-deps-graph.mjs",
     "baseline-dupes": "bin/baseline-dupes.mjs",
     "baseline-env-init": "bin/baseline-env-init.mjs",
+    "baseline-hooks-install": "bin/baseline-hooks-install.mjs",
     "baseline-licenses": "bin/baseline-licenses.mjs",
     "baseline-type-coverage": "bin/baseline-type-coverage.mjs"
   },

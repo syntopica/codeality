@@ -1,5 +1,16 @@
 ### 2026-10-07
 
+- [x] Template `prepare` race on `.git/hooks`: new `baseline-hooks-install` bin
+      in quality-config runs `lefthook install` only when the package is the git
+      repository root, and all eight templates use it in `prepare`.
+      `pnpm install --force` now reports each template as nested in the
+      repository root and skipped, and only the root syncs the hooks; a
+      standalone git repo still gets its hooks, a non-git directory exits 0.
+      `lefthook` joined the runner dependency lists in both knip configs. Needs
+      a quality-config minor release before a copied template can resolve the
+      bin. Evidence: `pnpm knip`, `pnpm lint:root`, quality-config `lint`,
+      `type-check`, `publish:check` all exit 0.
+
 - [x] Published the releases blocked on expired npm trusted publishers:
       `eslint-plugin-code-policy@0.8.0`, `@syntopica/eslint-config@0.9.0`,
       `@syntopica/tsconfig@0.3.1`, `@syntopica/prettier-config@0.2.2` and

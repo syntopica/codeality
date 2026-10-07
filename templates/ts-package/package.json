@@ -5,7 +5,7 @@
   "packageManager": "pnpm@12.9.1",
   "type": "module",
   "scripts": {
-    "prepare": "lefthook install",
+    "prepare": "baseline-hooks-install",
     "lint": "eslint src --max-warnings 0",
     "lint:fix": "eslint src --fix",
     "lint:suppress": "eslint src --suppress-all",
