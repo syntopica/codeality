@@ -70,9 +70,12 @@ const ESLINT_PEER_DEPENDENCIES = [
 export const createKnipConfig = (options: {
   framework: KnipFramework
   /**
-   * Binaries knip cannot resolve. Nothing is ignored by default: an entry for
-   * a binary knip *can* resolve becomes a permanent `Remove from
-   * ignoreBinaries` hint the consumer has no way to silence.
+   * Binaries knip cannot resolve, merged with `gitleaks`. That one is ignored
+   * by default because the baseline itself writes `gitleaks detect` into every
+   * project's `secrets:check`, and it is a system binary no package provides,
+   * so every template reported it as unlisted. Nothing else is: an entry for a
+   * binary knip *can* resolve becomes a permanent `Remove from ignoreBinaries`
+   * hint the consumer has no way to silence.
    */
   ignoreBinaries?: string[]
   /** Merged with the built-in lists, never replacing them. */
@@ -144,7 +147,7 @@ export const createKnipConfig = (options: {
     // boolean. It only hides an export that its own file already uses: an
     // export nothing references at all still fails the gate.
     ignoreExportsUsedInFile: true,
-    ignoreBinaries: options.ignoreBinaries ?? [],
+    ignoreBinaries: ['gitleaks', ...(options.ignoreBinaries ?? [])],
     ignoreDependencies: [
       ...BASELINE_RUNNER_DEPENDENCIES,
       ...ESLINT_PEER_DEPENDENCIES,

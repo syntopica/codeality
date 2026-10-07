@@ -46,14 +46,13 @@ export const FRAMEWORK_ENTRIES: Record<
   // Every file convention belongs in the one brace alternation rather than in a
   // pattern of its own, including the metadata routes (`sitemap`, `robots`,
   // `manifest`, the image generators): a pattern matching nothing is a hint, and
-  // no project uses all of them. `middleware` and `proxy` share a pattern for
-  // the same reason - Next 16 renamed the file, and a project has one or the
-  // other, never both.
+  // no project uses all of them. `middleware` and `proxy` are left to knip's
+  // Next.js plugin, which registers both: listing them here only produced a
+  // "Refine entry pattern (no matches)" hint in a project that has neither.
   nextjs: {
     entry: [
       '{,src/}app/**/{page,layout,loading,error,global-error,not-found,route,template,default,sitemap,robots,manifest,icon,apple-icon,opengraph-image,twitter-image}.{ts,tsx}',
       'next.config.*',
-      '{,src/}{middleware,proxy}.ts',
     ],
     project: ['{,src/}app/**/*.{ts,tsx}', 'src/**/*.{ts,tsx}'],
     includeEntryExports: false,
@@ -92,13 +91,15 @@ export const FRAMEWORK_ENTRIES: Record<
     project: ['src/**/*.ts'],
     includeEntryExports: true,
   },
+  // `src/main.*` is reached through index.html's module script; listing it as
+  // well was a "Remove redundant entry pattern" hint in both Vite templates.
   'vite-react': {
-    entry: ['src/main.tsx', 'index.html', 'vite.config.*'],
+    entry: ['index.html', 'vite.config.*'],
     project: ['src/**/*.{ts,tsx}'],
     includeEntryExports: false,
   },
   'vite-vue': {
-    entry: ['src/main.ts', 'index.html', 'vite.config.*'],
+    entry: ['index.html', 'vite.config.*'],
     project: ['src/**/*.{ts,vue}'],
     includeEntryExports: false,
   },
