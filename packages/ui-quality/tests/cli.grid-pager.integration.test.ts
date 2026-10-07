@@ -56,4 +56,10 @@ describe('codeality-ui pagination on a card grid with no table', () => {
   it('leaves a next-article link alone when no numbered page backs it', async () => {
     expect(await paginationFindings('/article.html')).toEqual([])
   })
+  it('reports a long list rendered whole with no pager', async () => {
+    expect(await paginationFindings('/list.html')).toEqual([
+      'pagination-missing main list',
+    ])
+    expect(await paginationFindings('/list.html#short')).toEqual([])
+  })
 })

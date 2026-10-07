@@ -1,0 +1,37 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="utf-8" />
+    <title>A conversation list with no pager</title>
+    <style>
+      body {
+        margin: 0;
+        font: 16px/1.4 sans-serif;
+        color: #000000;
+        background: #ffffff;
+      }
+      main {
+        padding: 24px;
+      }
+      a {
+        color: #000000;
+      }
+    </style>
+  </head>
+  <body>
+    <main>
+      <h1>Conversaciones</h1>
+      <ul></ul>
+    </main>
+    <script>
+      // Every conversation at once, as an inbox that never pages does; with
+      // #short a list small enough to need no pager.
+      const count = location.hash === '#short' ? 20 : 200
+      document.querySelector('ul').innerHTML = Array.from(
+        { length: count },
+        (_, index) =>
+          `<li><a href="conversaciones/${String(index)}.html">Conversación ${String(index)}</a></li>`,
+      ).join('')
+    </script>
+  </body>
+</html>

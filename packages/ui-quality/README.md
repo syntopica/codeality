@@ -121,7 +121,7 @@ pnpm exec codeality-ui init
 | `filter-broken`       | the main search, given a word shown in a row, drops that row, keeps every row, or does not restore on clear                                                                                                         |
 | `empty-state-missing` | a search nothing matches empties the table and shows nothing in its place                                                                                                                                           |
 | `pagination-broken`   | an enabled "next page" leaves the same rows or cards, repeats over half of them, or "previous page" does not bring them back                                                                                        |
-| `pagination-missing`  | the main table renders over 300 body rows with no pager and no virtual scrolling                                                                                                                                    |
+| `pagination-missing`  | the main table renders over 300 body rows, or its largest repeated list or card grid over 150 items, with no pager and no virtual scrolling                                                                         |
 | `action-silent`       | the first form of the main region, submitted while every write fails, changes nothing the user can see                                                                                                              |
 
 The behaviour rules come from using the screen once per route, after it is

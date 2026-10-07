@@ -1,6 +1,7 @@
 import type { Page } from 'playwright'
 
 import { collectionPaginationFailureOf } from '@/behaviour/collectionPaginationFailureOf.js'
+import { checkUnpagedCollection } from '@/capture/checkUnpagedCollection.js'
 import { collectionItems } from '@/capture/collectionItems.js'
 import { gotoSettled } from '@/capture/gotoSettled.js'
 import { isPagerAddress } from '@/capture/isPagerAddress.js'
@@ -14,7 +15,8 @@ import type { BehaviourFailure } from '@/model/BehaviourFailure.js'
 
 /**
  * Pages the main region's repeated collection, a card grid or a list, forward
- * once and back once when it offers a pager, then returns to the address it
+ * once and back once when it offers a pager (and counts its items when it
+ * offers none), then returns to the address it
  * started from so the checks that follow read the first page again.
  */
 export const checkCollectionPagination = async (
@@ -26,7 +28,7 @@ export const checkCollectionPagination = async (
   const next =
     (await pageControlOf(page, main, NEXT_PAGE_NAME, 'next')) ??
     (await pageTwoLinkOf(page, main))
-  if (!next) return []
+  if (!next) return await checkUnpagedCollection(page, main, items.length)
   const start = page.url()
   // A "next" link that leaves the route (the next article) is not a pager,
   // unless a numbered "2" beside it says the region is paged.

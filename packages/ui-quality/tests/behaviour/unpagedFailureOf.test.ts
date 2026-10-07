@@ -12,4 +12,10 @@ describe('unpagedFailureOf', () => {
   it('accepts a short table with no pager', () => {
     expect(unpagedFailureOf(300, false, 300)).toBeNull()
   })
+  it('names a list by its items', () => {
+    expect(unpagedFailureOf(151, false, 150, 'list')).toMatchObject({
+      subject: 'main list',
+      message: expect.stringContaining('renders 151 items') as string,
+    })
+  })
 })
