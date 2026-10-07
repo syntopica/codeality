@@ -20,6 +20,30 @@ verified complete - `[-]` obsolete or superseded.
 
 ## Estate
 
+- [!] **Drop the typescript-eslint 8.71.1 overrides once 8.71.2 ships**
+  (2026-10-07). 8.71.1 reports every variable in a `.js`/`.mjs` file as "only
+  used as a type" (`isTypeOnlyReference` tests `!ref.isValueReference`,
+  undefined on espree references; upstream issue 12980, fixed on main,
+  unreleased). `pnpm-workspace.yaml` pins `typescript-eslint` and
+  `@typescript-eslint/eslint-plugin` 8.71.1 to 8.71.0 and the manifests stay on
+  `^8.71.0`. Consumers of `@syntopica/eslint-config` that resolve 8.71.1 hit the
+  same wall on their JS files. Next step: when
+  `npm view typescript-eslint version` passes 8.71.1, remove both lines,
+  `ncu -u`, `pnpm install`, `pnpm check:ci`.
+- [ ] **`pnpm audit:check` still fails on 7 advisories nothing in range fixes**
+      (2026-10-07, down from 52 after the dependency refresh): `simple-git` 3
+      (critical, needs 4.x, via nuxt>@nuxt/devtools), `uuid` <11.1.1 (via
+      @lhci/cli, a major away), and `braces`, `node-forge`, `sprintf-js` with no
+      patched release. Next step: waive the no-fix ones in
+      `.baseline-advisories.json` with an expiry, and recheck simple-git when
+      @nuxt/devtools moves to 4.x.
+- [ ] **cargo-baseline fails its own check**:
+      `cargo run -p cargo-baseline --     baseline check` reports
+      `one-primary-unit` on `child_paths` in
+      `packages/cargo-baseline/src/engine/cfg_test_module_paths.rs:53`
+      (pre-existing on `4e64761`, found 2026-10-07). Next step: extract
+      `child_paths` to its own file.
+
 - [ ] **The nextjs template ships no `.baseline-advisories.json`, so a fresh
       consumer fails CI `check:security` on day one** (found 2026-09-30 in
       `~/p/compratuentrada`, run on `b4a8615`):
