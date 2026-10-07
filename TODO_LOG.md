@@ -1,5 +1,14 @@
 ### 2026-10-07
 
+- [x] ui-quality tier 1 closed: `nested-cards`, `type-scale-sprawl`,
+      `accent-overuse` (new `palette.accent`), `text-occlusion`, the
+      layout-shift half of `unstable-media-size` (init-script observer, total
+      over 0.1) and the CSS-background half of `broken-image` (failed image
+      requests). All warn; a scan of every existing fixture at 1440/390, light
+      and dark, found none outside the new defect page. Evidence: ui-quality
+      `test` 69 files, 224 tests; `cli.composition.integration.test.ts`;
+      `pnpm check:ci` exit 0.
+
 - [x] Release 2026-10-07 (5e450b3, annotated tags pushed): published
       `@syntopica/quality-config@0.13.0` (`baseline-hooks-install`),
       `@syntopica/db-quality@0.5.0` (Kysely, perf previous window),

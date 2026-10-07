@@ -8,7 +8,7 @@ import { ruleContext } from '@tests/ruleContext.js'
 import { snapshotOf } from '@tests/snapshotOf.js'
 
 const colors = resolvePalette(
-  { variablePrefixes: ['--brand-'], colors: ['#ffffff'] },
+  { variablePrefixes: ['--brand-'], colors: ['#ffffff'], accent: null },
   {
     '--brand-pink': hexToRgba('#f027a5'),
     '--brand-ink': hexToRgba('#111827'),

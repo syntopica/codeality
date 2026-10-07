@@ -82,4 +82,10 @@ export type ElementBox = {
   isMain: boolean
   /** The page-level header (banner landmark). */
   isBanner: boolean
+  /**
+   * The id of the element hit at the centre of the first line of this
+   * element's text when it is neither this element, its ancestor nor its
+   * descendant; null when the text is on top or was not sampled.
+   */
+  occluder: number | null
 }

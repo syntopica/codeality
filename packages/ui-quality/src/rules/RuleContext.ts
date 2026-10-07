@@ -8,4 +8,6 @@ export type RuleContext = {
   route: RouteConfig
   /** The resolved palette, or null when the project declares none. */
   palette: { rgba: Rgba; lab: Lab }[] | null
+  /** `palette.accent`, or null when the project names none. */
+  accent: Rgba | null
 }

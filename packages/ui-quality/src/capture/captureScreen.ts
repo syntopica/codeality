@@ -3,13 +3,13 @@ import { checkAction } from '@/capture/checkAction.js'
 import { exerciseScreen } from '@/capture/exerciseScreen.js'
 import { fileDigest } from '@/capture/fileDigest.js'
 import { interactWithRoute } from '@/capture/interactWithRoute.js'
-import { openRoute } from '@/capture/openRoute.js'
+import { openRouteFresh } from '@/capture/openRouteFresh.js'
 import { recordConsoleErrors } from '@/capture/recordConsoleErrors.js'
+import { recordFailedImages } from '@/capture/recordFailedImages.js'
 import { recordRequests } from '@/capture/recordRequests.js'
 import { retimeSlowRequests } from '@/capture/retimeSlowRequests.js'
 import type { ScreenRequest } from '@/capture/ScreenRequest.js'
 import { screenshotPage } from '@/capture/screenshotPage.js'
-import { storageInitScript } from '@/capture/storageInitScript.js'
 import { holdsState } from '@/config/holdsState.js'
 import type { PageSnapshot } from '@/model/PageSnapshot.js'
 import type { ProbeResult } from '@/model/ProbeResult.js'
@@ -28,11 +28,8 @@ export const captureScreen = async ({
 }: ScreenRequest): Promise<PageSnapshot> => {
   const consoleLog = recordConsoleErrors(page)
   const requestLog = recordRequests(page)
-  if (Object.keys(route.localStorage).length > 0)
-    await page.addInitScript(
-      storageInitScript(request.baseUrl + route.path, route.localStorage),
-    )
-  await openRoute(page, route.path, request)
+  const imageLog = recordFailedImages(page)
+  const layoutShift = await openRouteFresh(page, route, request)
   const interactionFailures = await interactWithRoute(page, route)
   const keep = holdsState(route)
   const screenshot = await screenshotPage(page, screensDir, screen, keep)
@@ -44,6 +41,7 @@ export const captureScreen = async ({
   const probed: ProbeResult = await page.evaluate(
     `(${probe})(${JSON.stringify(route.main)})`,
   )
+  imageLog.stop()
   const behaviour = exercise ? await exerciseScreen(page, route.main) : []
   consoleLog.stop()
   requestLog.stop()
@@ -66,5 +64,7 @@ export const captureScreen = async ({
     interactionFailures,
     requests,
     behaviour: [...behaviour, ...actions],
+    layoutShift,
+    failedImages: imageLog.urls,
   }
 }

@@ -1,3 +1,4 @@
+import type { BackgroundImage } from '@/model/BackgroundImage.js'
 import type { ElementBox } from '@/model/ElementBox.js'
 import type { HiddenText } from '@/model/HiddenText.js'
 import type { MediaBox } from '@/model/MediaBox.js'
@@ -16,4 +17,6 @@ export type ProbeResult = {
   /** Visible images and videos, at most 200. */
   media: MediaBox[]
   hiddenText: HiddenText
+  /** CSS background images of visible elements, data: URLs aside, at most 200. */
+  backgroundImages: BackgroundImage[]
 }

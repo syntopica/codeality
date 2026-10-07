@@ -10,7 +10,10 @@ repeat them, both as of 2026-10-01 and updated on 2026-10-07:
   `bare-url`. Shipped from this file on 2026-10-07: `undersized-text`,
   `tight-leading`, `letter-spacing`, `numeric-alignment`, `broken-image`,
   `unstable-media-size` (its attribute and CSS half) and
-  `content-hidden-at-rest`.
+  `content-hidden-at-rest`; then `nested-cards`, `type-scale-sprawl`,
+  `accent-overuse`, `text-occlusion` and the open halves of
+  `unstable-media-size` (layout shift) and `broken-image` (CSS backgrounds).
+  Tier 1 is now empty.
 - **Covered by an existing check**, so not shipped as their own rule:
   `zoom-disabled` is axe's `meta-viewport` (on by default, `wcag2aa`, which
   fires on `user-scalable=no` and on `maximum-scale` under 2), reported as
@@ -29,16 +32,21 @@ Since 2026-10-07 `assets/probe.js` also collects `fontSize`, `lineHeight`,
 whether the font's digits are tabular), `textAlign`, `textTransform`, the line
 count of each element's own text, `borderRadius` (top-left), padding, every
 visible `img` and `video` (broken, sized) and the share of the main region's
-text at opacity 0 or `visibility: hidden`. It still does not collect
+text at opacity 0 or `visibility: hidden`. Since the second 2026-10-07 batch it
+also collects the `url()` addresses of CSS background images and, for up to 400
+on-screen texts, the element `elementFromPoint` hits at the centre of the first
+line; the capture adds the cumulative layout shift (from an init-script
+observer) and the image requests that failed. It still does not collect gradient
 `backgroundImage` details, `backgroundClip`, per-element `opacity`, `zIndex`,
 `cursor`, margins, `gap` or `transition*` beyond `transition: all`. The
 **Probe** column names the fields each remaining candidate needs.
 
-Two halves of shipped tier 1 rows remain open: the layout-shift half of
-`unstable-media-size` (a buffered `PerformanceObserver('layout-shift')` read
-from the probe returned no entries in headless Chromium, so it needs an observer
-registered in an init script before load), and the CSS background image half of
-`broken-image` (needs the failed requests from the capture).
+The two halves left open by the first batch are shipped: `unstable-media-size`
+reports a cumulative layout shift over 0.1, read from a buffered
+`PerformanceObserver('layout-shift')` registered in an init script before the
+page's scripts (one created from the probe saw no entries in headless Chromium),
+and `broken-image` reports CSS background images whose request failed or
+answered 400 and up, from the capture's request log.
 
 Impeccable (`pbakaus/impeccable`, Apache-2.0) has implemented about half of
 these in its Rust detector (`crates/core/src/checks/`). Where it has, its id is
@@ -49,12 +57,27 @@ The FP column is the false-positive risk: L low, M medium, H high.
 
 ## Tier 1: high value for admin screens, low false-positive risk
 
-| Rule id             | Exact trigger                                                                                                                                                                                                                                                                                                | Sources                                                                               | FP                                                                                                                                | Probe                                   |
-| ------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------- | --------------------------------------- |
-| `type-scale-sprawl` | On one screen, more than 6 distinct `fontSize` values among visible text nodes, or two sizes in use that differ by 1px or less (for example 13 and 14 used side by side in one row group).                                                                                                                   | G5 (4-5 sizes), rubric 2, IMP `flat-type-hierarchy`                                   | M (rich-text bodies; scope to `main` and exclude user content)                                                                    | `fontSize`                              |
-| `nested-cards`      | A "card" is an element with radius over 0 and either a visible border, a non-none `boxShadow`, or a background at delta E over 3 from its parent, and with padding of at least 8px. The rule fires when a card has an ancestor card within 3 levels. Exempt: inputs, buttons, badges, `dialog` and popovers. | OFP ("never put UI cards inside other cards"), OFS, IMP `nested-cards`, ID, rubric 10 | M (a list item inside a panel is sometimes legitimate; report once per outer card)                                                | `borderRadius`, `boxShadow`, padding    |
-| `accent-overuse`    | Inside one `main`, `form` or `[role=dialog]`, more than one button whose background is within delta E 5 of the configured accent (`palette.accent`, new config key) or of the most saturated filled-button colour.                                                                                           | KRE better-colors ("fill exactly one action per view"), OFS, GOV buttons, BUI         | M (bulk-action bars; allow one per toolbar region)                                                                                | existing `backgroundColor`, `isControl` |
-| `text-occlusion`    | A text box intersects by more than 20% of its area with an opaque element that paints above it (later in paint order or higher `zIndex`), that is not its ancestor, and that the text is not inside.                                                                                                         | OFP ("UI elements and text must not overlap"), IMP `text-occlusion`, OFS              | M (deliberate overlays such as avatars stacking on names; require `elementFromPoint` at the text centre to return a non-ancestor) | `zIndex`, `elementFromPoint` sampling   |
+All shipped. The four of the second batch, as built:
+
+- `nested-cards`: a card is a box with radius over 0, padding of at least 8px on
+  every side, and a full border, a shadow or a fill at delta E over 3 from what
+  is behind it; buttons, fields, `summary`, dialogs, fixed or absolute layers
+  and boxes under 32px tall (badges, chips) are not cards. One finding per outer
+  card.
+- `type-scale-sprawl`: scoped to the main region; texts inside `article`,
+  `blockquote`, `pre`, an editable region or a `.prose`, `.markdown`,
+  `.rich-text`, `.user-content`, `.wysiwyg`, `.ql-editor` or `.ProseMirror`
+  container are left out, as are code, `sup` and `sub`. The 1px rule compares
+  texts that share a parent.
+- `accent-overuse`: buttons, submit inputs and rounded links with an opaque
+  fill; the fallback accent must have a Lab chroma of at least 20, so a screen
+  of grey buttons has none. A parent of two or more links or buttons is an
+  action bar and counts as its own region.
+- `text-occlusion`: the occluder must paint opaque (fill alpha 0.9 and up, a
+  background image, or an `img`, `video`, `canvas` or `iframe`); texts with
+  `pointer-events: none` or scrolled out of a clipping ancestor are not sampled,
+  and an open dialog, anything in it and a fixed layer while one is open are
+  left alone. Only texts on screen at capture time are sampled.
 
 ## Tier 2: valuable, needs a careful threshold
 
@@ -105,10 +128,11 @@ by eye; these would let a rule report it.
 1. Done on 2026-10-07: the probe extension and `numeric-alignment`,
    `undersized-text`, `tight-leading`, `letter-spacing`, `broken-image`,
    `unstable-media-size` and `content-hidden-at-rest`.
-2. Next: `nested-cards` (the probe has `borderRadius`, `shadowBlur` and padding
-   now), then `accent-overuse` (needs a `palette.accent` config key),
-   `type-scale-sprawl`, `focus-invisible` (needs a keyboard pass in capture) and
-   `touch-target`.
+2. Done on 2026-10-07: `nested-cards`, `type-scale-sprawl`, `accent-overuse`,
+   `text-occlusion`, and the layout-shift and CSS background halves of
+   `unstable-media-size` and `broken-image`.
+3. Next: `focus-invisible` (needs a keyboard pass in capture), `touch-target`,
+   then `radius-sprawl` and `card-radius-admin`, which can reuse `isCard`.
 
 Each rule needs a fixture in `tests/` with a true positive and a near-miss
 negative, following the package's existing pattern.

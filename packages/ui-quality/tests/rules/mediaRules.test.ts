@@ -63,3 +63,36 @@ describe('contentHiddenAtRest', () => {
       ).toEqual([])
   })
 })
+
+describe('the capture halves of the media rules', () => {
+  it('reports a CSS background image whose request failed', () => {
+    const findings = brokenImage(
+      snapshotOf([], {
+        backgroundImages: [
+          {
+            url: 'https://x.test/a.png',
+            signature: 'div.hero',
+            selector: 'div.hero',
+          },
+          {
+            url: 'https://x.test/b.png',
+            signature: 'div.ok',
+            selector: 'div.ok',
+          },
+        ],
+        failedImages: ['https://x.test/a.png'],
+      }),
+      ruleContext(),
+    )
+    expect(findings.map((f) => f.subject)).toEqual(['div.hero'])
+    expect(findings[0]?.message).toContain('CSS background image a.png')
+  })
+  it('reports a load whose layout shifted by over 0.1, once', () => {
+    const shifted = (layoutShift: number) =>
+      unstableMediaSize(snapshotOf([], { layoutShift }), ruleContext()).map(
+        (f) => f.identity,
+      )
+    expect(shifted(0.25)).toEqual(['layout-shift'])
+    expect(shifted(0.1)).toEqual([])
+  })
+})

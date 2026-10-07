@@ -1,3 +1,4 @@
+import { accentOveruse } from '@/rules/accentOveruse.js'
 import { axeFindings } from '@/rules/axeFindings.js'
 import { bareUrl } from '@/rules/bareUrl.js'
 import { behaviourBroken } from '@/rules/behaviourBroken.js'
@@ -18,6 +19,7 @@ import { iconContrast } from '@/rules/iconContrast.js'
 import { inputZoom } from '@/rules/inputZoom.js'
 import { letterSpacing } from '@/rules/letterSpacing.js'
 import { mixedIconFamily } from '@/rules/mixedIconFamily.js'
+import { nestedCards } from '@/rules/nestedCards.js'
 import { numericAlignment } from '@/rules/numericAlignment.js'
 import { palette } from '@/rules/palette.js'
 import { placeholderFit } from '@/rules/placeholderFit.js'
@@ -27,12 +29,18 @@ import type { Rule } from '@/rules/Rule.js'
 import { slowRequest } from '@/rules/slowRequest.js'
 import { textClipped } from '@/rules/textClipped.js'
 import { textHardCut } from '@/rules/textHardCut.js'
+import { textOcclusion } from '@/rules/textOcclusion.js'
 import { tightLeading } from '@/rules/tightLeading.js'
 import { transitionAll } from '@/rules/transitionAll.js'
+import { typeScaleSprawl } from '@/rules/typeScaleSprawl.js'
 import { undersizedText } from '@/rules/undersizedText.js'
 import { unstableMediaSize } from '@/rules/unstableMediaSize.js'
 
 export const RULES: Rule[] = [
+  accentOveruse,
+  nestedCards,
+  textOcclusion,
+  typeScaleSprawl,
   axeFindings,
   bareUrl,
   behaviourBroken,

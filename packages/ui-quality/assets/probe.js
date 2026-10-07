@@ -265,8 +265,28 @@
     )
   }
 
+  // Every CSS background image a visible element asks for, as the absolute
+  // address the computed style resolves it to; data: URLs never fail.
+  const BACKGROUND_URL = /url\("([^"]+)"\)/g
+  const MAX_BACKGROUNDS = 200
+  const backgroundImages = []
+  const recordBackgrounds = (element, style) => {
+    if (backgroundImages.length >= MAX_BACKGROUNDS) return
+    for (const [, url] of style.backgroundImage.matchAll(BACKGROUND_URL)) {
+      if (url.startsWith('data:')) continue
+      backgroundImages.push({
+        url,
+        signature: signatureOf(element),
+        selector: selectorOf(element),
+      })
+    }
+  }
+
   const ids = new Map()
   const elements = []
+  // Elements with text of their own, for the occlusion pass once every
+  // element has an id.
+  const texted = []
   const main = document.querySelector(mainSelector || 'main')
   // The page-level header: a <header> outside any sectioning element, which
   // the HTML accessibility mapping exposes as the banner landmark.
@@ -288,6 +308,9 @@
     while (parent && !ids.has(parent)) parent = parent.parentElement
     const id = elements.length
     ids.set(element, id)
+    if (text) texted.push(element)
+    if (style.backgroundImage.includes('url('))
+      recordBackgrounds(element, style)
     elements.push({
       id,
       parent: parent ? ids.get(parent) : null,
@@ -373,7 +396,58 @@
       label: (element.getAttribute('aria-label') ?? '').trim().slice(0, 80),
       isMain: element === main,
       isBanner: element === banner,
+      occluder: null,
     })
+  }
+
+  // What paints on top of each text: the element hit at the centre of its
+  // first line. Only texts on screen, hit-testable and not scrolled out of a
+  // clipping ancestor are sampled, at most MAX_OCCLUSION_SAMPLES of them.
+  const MAX_OCCLUSION_SAMPLES = 400
+  const insideClips = (element, x, y) => {
+    for (let box = element.parentElement; box; box = box.parentElement) {
+      const style = getComputedStyle(box)
+      if (style.overflowX === 'visible' && style.overflowY === 'visible')
+        continue
+      const rect = box.getBoundingClientRect()
+      if (x < rect.left || x > rect.right || y < rect.top || y > rect.bottom)
+        return false
+    }
+    return true
+  }
+  const textCentreOf = (element) => {
+    for (const node of element.childNodes) {
+      if (node.nodeType !== Node.TEXT_NODE || !node.textContent.trim()) continue
+      range.selectNodeContents(node)
+      const rect = range.getClientRects()[0]
+      if (rect) return [rect.left + rect.width / 2, rect.top + rect.height / 2]
+    }
+    return null
+  }
+  // The centre of an element's first line when it can be hit-tested there:
+  // on screen, not `pointer-events: none`, not scrolled out of a clip.
+  const samplePointOf = (element) => {
+    if (getComputedStyle(element).pointerEvents === 'none') return null
+    const centre = textCentreOf(element)
+    if (!centre) return null
+    const [x, y] = centre
+    if (x < 0 || y < 0 || x >= window.innerWidth || y >= window.innerHeight)
+      return null
+    return insideClips(element, x, y) ? centre : null
+  }
+  const occluderOf = (element, [x, y]) => {
+    const hit = document.elementFromPoint(x, y)
+    if (!hit || hit.contains(element) || element.contains(hit)) return null
+    // An svg's shapes are not walked; an invisible overlay paints nothing.
+    return ids.get(hit.closest('svg') ?? hit) ?? null
+  }
+  let samples = 0
+  for (const element of texted) {
+    if (samples >= MAX_OCCLUSION_SAMPLES) break
+    const point = samplePointOf(element)
+    if (!point) continue
+    samples += 1
+    elements[ids.get(element)].occluder = occluderOf(element, point)
   }
 
   // Text in the main region that is laid out but painted invisible: opacity
@@ -491,5 +565,6 @@
     documentWidth: document.documentElement.scrollWidth,
     media,
     hiddenText: hiddenTextOf(main),
+    backgroundImages,
   }
 }

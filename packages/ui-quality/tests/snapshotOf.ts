@@ -13,6 +13,7 @@ export const snapshotOf = (
   documentWidth: 1440,
   media: [],
   hiddenText: { total: 0, hidden: 0, selector: '' },
+  backgroundImages: [],
   screen: {
     route: '/inbox',
     viewport: { width: 1440, height: 900 },
@@ -25,5 +26,7 @@ export const snapshotOf = (
   interactionFailures: [],
   requests: [],
   behaviour: [],
+  layoutShift: 0,
+  failedImages: [],
   ...overrides,
 })

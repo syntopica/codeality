@@ -1,0 +1,95 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Composition done right</title>
+    <style>
+      body {
+        margin: 0;
+        font: 16px/1.5 sans-serif;
+        color: #111827;
+        background: #ffffff;
+      }
+      main {
+        padding: 24px;
+        max-width: 960px;
+      }
+      h1 {
+        font-size: 24px;
+        margin: 0 0 8px;
+      }
+      .meta {
+        display: flex;
+        gap: 8px;
+        font-size: 14px;
+      }
+      .card {
+        border: 1px solid #d1d5db;
+        border-radius: 8px;
+        padding: 16px;
+        margin: 16px 0;
+      }
+      .line {
+        border-top: 1px solid #d1d5db;
+        padding: 12px 0;
+      }
+      .primary,
+      .secondary {
+        border-radius: 6px;
+        padding: 8px 16px;
+        font: inherit;
+      }
+      .primary {
+        background: #2563eb;
+        color: #ffffff;
+        border: 0;
+      }
+      .secondary {
+        background: transparent;
+        color: #1d4ed8;
+        border: 1px solid #1d4ed8;
+      }
+      .stamp {
+        margin-top: 8px;
+        height: 48px;
+        background: #1e293b;
+        color: #ffffff;
+      }
+      .banner {
+        height: 80px;
+        background-image: url(pattern.svg);
+      }
+      .history {
+        height: 900px;
+      }
+    </style>
+  </head>
+  <body>
+    <main>
+      <img alt="Spring offer" width="600" height="300" src="pattern.svg" />
+      <div>
+        <h1>Invoice 2041</h1>
+        <button class="secondary" type="button">New invoice</button>
+      </div>
+      <div class="meta">
+        <span>Sent on 2 March</span>
+        <span>Due on 1 April</span>
+      </div>
+      <section class="card">
+        <h2>Lines</h2>
+        <div class="line">
+          <p>Consulting, March: 12 hours at 80 euros.</p>
+        </div>
+        <button class="primary" type="button">Save</button>
+      </section>
+      <p class="note">Payment terms are thirty days from the invoice date.</p>
+      <div class="stamp">Paid in full</div>
+      <div class="banner">Thank you for your business</div>
+      <section class="history">
+        <h2>History</h2>
+        <p>Created, sent and paid within the month.</p>
+      </section>
+    </main>
+  </body>
+</html>

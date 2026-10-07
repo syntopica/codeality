@@ -2,4 +2,6 @@
 export type PaletteConfig = {
   variablePrefixes: string[]
   colors: string[]
+  /** The one colour that marks the primary action (`#rgb` or `#rrggbb`); null when not given. */
+  accent: string | null
 }

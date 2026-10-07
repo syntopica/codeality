@@ -1,6 +1,7 @@
 import { expectConfig } from '@/config/expectConfig.js'
 import { HEX_COLOR_PATTERN } from '@/config/HEX_COLOR_PATTERN.js'
 import { isRecord } from '@/config/isRecord.js'
+import { optionalString } from '@/config/optionalString.js'
 import type { PaletteConfig } from '@/config/PaletteConfig.js'
 import { stringList } from '@/config/stringList.js'
 
@@ -12,11 +13,17 @@ export const paletteFrom = (value: unknown): PaletteConfig | null => {
     colors.every((color) => HEX_COLOR_PATTERN.test(color)),
     'palette.colors must be #rgb or #rrggbb values',
   )
+  const accent = optionalString(value, 'accent', 'palette')
+  expectConfig(
+    accent === null || HEX_COLOR_PATTERN.test(accent),
+    'palette.accent must be a #rgb or #rrggbb value',
+  )
   return {
     variablePrefixes: stringList(
       value['variablePrefixes'],
       'palette.variablePrefixes',
     ),
     colors,
+    accent,
   }
 }

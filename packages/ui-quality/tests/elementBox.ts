@@ -56,5 +56,6 @@ export const elementBox = (
   label: '',
   isMain: false,
   isBanner: false,
+  occluder: null,
   ...overrides,
 })

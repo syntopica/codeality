@@ -3,6 +3,7 @@ import type { UiQualityConfig } from '@/config/UiQualityConfig.js'
 import type { PageSnapshot } from '@/model/PageSnapshot.js'
 import type { RawFinding } from '@/model/RawFinding.js'
 import { groupRawFindings } from '@/rules/groupRawFindings.js'
+import { resolveAccent } from '@/rules/resolveAccent.js'
 import { resolvePalette } from '@/rules/resolvePalette.js'
 import { RULES } from '@/rules/RULES.js'
 
@@ -15,6 +16,7 @@ export const runRules = (
     options: config.rules,
     route,
     palette: resolvePalette(config.palette, snapshot.variables),
+    accent: resolveAccent(config.palette),
   }
   return groupRawFindings(RULES.flatMap((rule) => rule(snapshot, context)))
 }

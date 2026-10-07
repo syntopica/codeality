@@ -66,7 +66,11 @@ describe('configuration', () => {
       ],
       viewports: [{ width: 800, height: 600 }],
       colorSchemes: ['dark'],
-      palette: { variablePrefixes: ['--brand-'], colors: ['#fff'] },
+      palette: {
+        variablePrefixes: ['--brand-'],
+        colors: ['#fff'],
+        accent: '#2563eb',
+      },
       rules: {
         'content-width': { minRatio: 0.9 },
         'control-inset': { minInset: 8 },
@@ -92,6 +96,7 @@ describe('configuration', () => {
       hover: 'tbody tr',
       focus: '#search',
     })
+    expect(config.palette?.accent).toBe('#2563eb')
     expect(config.rules.controlInset.minInset).toBe(8)
     expect(config.disable[0]?.route).toBeNull()
     expect(config.disable[0]?.message).toBeNull()
@@ -144,6 +149,10 @@ describe('configuration', () => {
       'mobile must be a boolean',
     ],
     [{ baseUrl: 'x', routes: ['/'], palette: { colors: ['pink'] } }, '#rgb'],
+    [
+      { baseUrl: 'x', routes: ['/'], palette: { accent: 'blue' } },
+      'palette.accent must be a #rgb or #rrggbb value',
+    ],
     [
       { baseUrl: 'x', routes: ['/'], palette: 'pink' },
       'palette must be an object',

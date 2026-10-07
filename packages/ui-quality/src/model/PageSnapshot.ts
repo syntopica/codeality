@@ -20,4 +20,8 @@ export type PageSnapshot = ProbeResult & {
   requests: RequestTiming[]
   /** What sorting and searching the main table got wrong; empty when not exercised. */
   behaviour: BehaviourFailure[]
+  /** Cumulative layout shift from navigation until the page settled, input-driven shifts aside. */
+  layoutShift: number
+  /** Addresses of images whose request failed or answered 400 and up while the page loaded. */
+  failedImages: string[]
 }

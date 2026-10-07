@@ -2,6 +2,22 @@
 
 ## [Unreleased]
 
+- New rules, all `warn`: `nested-cards` (a card inside a card within three
+  levels, once per outer card), `type-scale-sprawl` (over 6 font sizes in the
+  main region, or two sizes 1px apart side by side; authored content left out),
+  `accent-overuse` (more than one accent-filled button in one main region, form
+  or dialog, an action bar keeping one of its own) and `text-occlusion` (text
+  painted over by an opaque element, checked with `elementFromPoint` at the
+  centre of its first line).
+- `palette.accent` names the primary-action colour for `accent-overuse`; without
+  it the most saturated filled button is taken.
+- `unstable-media-size` also reports a cumulative layout shift over 0.1 while
+  the page loads, from a `layout-shift` observer installed before the page's own
+  scripts. `broken-image` also reports a CSS background image whose request
+  failed or answered 400 and up.
+- The probe now reports CSS background image addresses and, for on-screen text,
+  the element painted over its first line.
+
 ## 0.4.0
 
 - New rules, all `warn`: `undersized-text`, `tight-leading`, `letter-spacing`,
