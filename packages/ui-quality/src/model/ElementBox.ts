@@ -45,6 +45,10 @@ export type ElementBox = {
    * of a contenteditable region): focusing one opens the keyboard.
    */
   isTextEntry: boolean
+  /** An open dialog or drawer: `dialog[open]`, a dialog role or `aria-modal`. */
+  isDialog: boolean
+  /** The `aria-label`, trimmed, first 80 characters; empty when absent. */
+  label: string
   isMain: boolean
   /** The page-level header (banner landmark). */
   isBanner: boolean

@@ -1,0 +1,65 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="utf-8" />
+    <title>A phone menu drawer</title>
+    <style>
+      body {
+        margin: 0;
+        font: 16px/1.4 sans-serif;
+        color: #000000;
+        background: #ffffff;
+      }
+      main {
+        padding: 24px;
+      }
+      button,
+      a {
+        font: inherit;
+        color: #000000;
+        background: #ffffff;
+        border: 1px solid #000000;
+        min-height: 32px;
+        min-width: 32px;
+      }
+      .drawer {
+        position: fixed;
+        inset: 0 auto 0 0;
+        width: 280px;
+        padding: 16px;
+        background: #ffffff;
+        border-right: 1px solid #000000;
+      }
+      .drawer[hidden] {
+        display: none;
+      }
+    </style>
+  </head>
+  <body>
+    <main>
+      <h1>Inicio</h1>
+      <button type="button" id="open">Menú</button>
+    </main>
+    <!-- The drawer's links are rendered from data that, with #empty, never
+         arrives: the menu opens onto nothing but its close button. -->
+    <div
+      class="drawer"
+      role="dialog"
+      aria-modal="true"
+      aria-label="Menú"
+      hidden
+    >
+      <button type="button" aria-label="Cerrar">×</button>
+      <nav></nav>
+    </div>
+    <script>
+      const links = location.hash === '#empty' ? [] : ['Artistas', 'Eventos']
+      document.querySelector('nav').innerHTML = links
+        .map((name) => `<a href="#${name.toLowerCase()}">${name}</a>`)
+        .join('')
+      document.querySelector('#open').addEventListener('click', () => {
+        document.querySelector('.drawer').hidden = false
+      })
+    </script>
+  </body>
+</html>

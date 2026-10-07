@@ -35,6 +35,8 @@ export const elementBox = (
   isControl: false,
   fontSize: 16,
   isTextEntry: false,
+  isDialog: false,
+  label: '',
   isMain: false,
   isBanner: false,
   ...overrides,

@@ -7,6 +7,7 @@ import { consoleError } from '@/rules/consoleError.js'
 import { contentWidth } from '@/rules/contentWidth.js'
 import { controlInset } from '@/rules/controlInset.js'
 import { edgeMisaligned } from '@/rules/edgeMisaligned.js'
+import { emptyDialog } from '@/rules/emptyDialog.js'
 import { fixedOverflow } from '@/rules/fixedOverflow.js'
 import { horizontalOverflow } from '@/rules/horizontalOverflow.js'
 import { iconContrast } from '@/rules/iconContrast.js'
@@ -29,6 +30,7 @@ export const RULES: Rule[] = [
   contentWidth,
   controlInset,
   edgeMisaligned,
+  emptyDialog,
   fixedOverflow,
   horizontalOverflow,
   iconContrast,

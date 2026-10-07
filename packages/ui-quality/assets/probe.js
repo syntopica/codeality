@@ -65,6 +65,9 @@
     'LINK',
   ])
   const CONTROL_TAGS = new Set(['INPUT', 'SELECT', 'TEXTAREA'])
+  // An open dialog or drawer, native or by its ARIA role.
+  const DIALOG =
+    'dialog[open], [role="dialog"], [role="alertdialog"], [aria-modal="true"]'
   const HIDDEN_INPUTS = new Set([
     'hidden',
     'checkbox',
@@ -222,6 +225,8 @@
       isControl: isControl(element),
       fontSize: parseFloat(style.fontSize),
       isTextEntry: isTextEntry(element),
+      isDialog: element.matches(DIALOG),
+      label: (element.getAttribute('aria-label') ?? '').trim().slice(0, 80),
       isMain: element === main,
       isBanner: element === banner,
     })
