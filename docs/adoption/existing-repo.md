@@ -161,6 +161,28 @@ are exactly the findings a reviewer cannot see in a diff, and every one of them
 was written into `package.json` by this tool with nothing calling it. That is
 what `--check` now refuses to pass.
 
+## The first `check:ci` on a repository older than the baseline
+
+Expect it red before any of your own work lands, in the same few places each
+time. One consumer needed three commits before its first backlog item could
+merge (12 TS4111 errors in a Vite plugin directory, 41 lint errors, two knip
+findings); another started at 1,352 errors with the same shape. Clear them as
+one adoption change, in this order:
+
+1. **TS4111, `noPropertyAccessFromIndexSignature`** (`base.json` turns it on, so
+   every preset inherits it). Every `obj.key` on an index-signature type becomes
+   `obj['key']`. It is mechanical: take the file and line list from
+   `tsc --noEmit` and rewrite the access; do not turn the option off, it is what
+   makes a missing key visible at the call site.
+2. **Tool directories under Prettier and ESLint.** Agent and editor state
+   (`.serena/`, `.claude/`, `.codegraph/`) is not source: add it to
+   `.prettierignore` and to the ESLint `ignores` rather than formatting it.
+3. **Lint debt** - freeze it with the suppressions ratchet below instead of
+   fixing it inside the adoption change.
+4. **knip.** `gitleaks` is ignored by default (it is a system binary). An unused
+   `@commitlint/cli` means the `commit-msg` hook is not wired: run
+   `create-baseline --fix` to add it rather than deleting the dependency.
+
 ## Adopting on a codebase with existing violations
 
 A large existing codebase will report thousands of violations on day one. Freeze

@@ -556,6 +556,13 @@ stack trace or a URL, which is exactly the context worth keeping in a body.
 `subject-case` rejects a subject that starts with an identifier capitalised in
 the code (`TypeScript`, `ESLint`, `GitHub`).
 
+**Backlog commits are `docs(todo):`, not `todo:`.** Several repositories wrote
+`todo: ...` for a `TODO.md` change before any of them ran this hook, and the
+hook rejects it. `todo` is not added to the set: the release tooling maps every
+type to a changelog section or to none, and a backlog edit is a documentation
+change with nothing to release. `docs(todo): close the audit item` keeps it out
+of the changelog and still finds it with `git log --grep '(todo)'`.
+
 ## size-limit (bundle budget)
 
 **Detects:** a dependency or a refactor that grows the shipped bundle.
