@@ -2,6 +2,20 @@
 
 ## [Unreleased]
 
+- New rules, all `warn`: `off-scale-spacing` (at least 3 distinct padding,
+  vertical margin or gap values in the main region that are not multiples of
+  4px), `heading-rhythm` (2 or more headings with no more space above than
+  below), `group-gap-ratio` (a form whose field groups are not at least twice as
+  far apart as a label is from its field), `text-cramped` (text under 8px, or
+  6px in a box under 24px tall, from a left or right edge that a border or a
+  fill draws), `gray-on-color` (mid-grey text on a coloured fill, in OKLCH) and
+  `line-length` (a wrapped paragraph over 80ch). They may report on projects
+  that passed before. The probe now also reads margins, gap, glyph extents, the
+  measure in `ch`, cursor, role, transitions, `z-index`, gradients, shadows,
+  `color-scheme`, `theme-color`, the document height and the running animations,
+  and the capture reads the animations that run with motion not reduced (the
+  screens are captured with it reduced).
+
 ## 0.6.0
 
 - New rules, both `warn`: `radius-sprawl` (more than 4 distinct corner radii in

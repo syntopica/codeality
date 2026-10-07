@@ -1,3 +1,6 @@
+import { READABILITY_RULES } from '@/rules/READABILITY_RULES.js'
+import type { Rule } from '@/rules/Rule.js'
+import { SPACING_RULES } from '@/rules/SPACING_RULES.js'
 import { accentOveruse } from '@/rules/accentOveruse.js'
 import { axeFindings } from '@/rules/axeFindings.js'
 import { bareUrl } from '@/rules/bareUrl.js'
@@ -28,7 +31,6 @@ import { placeholderFit } from '@/rules/placeholderFit.js'
 import { radiusSprawl } from '@/rules/radiusSprawl.js'
 import { rawPlaceholder } from '@/rules/rawPlaceholder.js'
 import { rowMisaligned } from '@/rules/rowMisaligned.js'
-import type { Rule } from '@/rules/Rule.js'
 import { slowRequest } from '@/rules/slowRequest.js'
 import { textClipped } from '@/rules/textClipped.js'
 import { textHardCut } from '@/rules/textHardCut.js'
@@ -42,9 +44,6 @@ import { unstableMediaSize } from '@/rules/unstableMediaSize.js'
 
 export const RULES: Rule[] = [
   accentOveruse,
-  nestedCards,
-  textOcclusion,
-  typeScaleSprawl,
   axeFindings,
   bareUrl,
   behaviourBroken,
@@ -67,6 +66,7 @@ export const RULES: Rule[] = [
   inputZoom,
   letterSpacing,
   mixedIconFamily,
+  nestedCards,
   numericAlignment,
   palette,
   placeholderFit,
@@ -76,9 +76,13 @@ export const RULES: Rule[] = [
   slowRequest,
   textClipped,
   textHardCut,
+  textOcclusion,
   tightLeading,
   touchTarget,
   transitionAll,
+  typeScaleSprawl,
   undersizedText,
   unstableMediaSize,
+  ...READABILITY_RULES,
+  ...SPACING_RULES,
 ]

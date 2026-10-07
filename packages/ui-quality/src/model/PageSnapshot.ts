@@ -2,6 +2,7 @@ import type { AxeViolation } from '@/model/AxeViolation.js'
 import type { BehaviourFailure } from '@/model/BehaviourFailure.js'
 import type { FocusStop } from '@/model/FocusStop.js'
 import type { InteractionFailure } from '@/model/InteractionFailure.js'
+import type { MotionRecord } from '@/model/MotionRecord.js'
 import type { ProbeResult } from '@/model/ProbeResult.js'
 import type { RequestTiming } from '@/model/RequestTiming.js'
 import type { Screen } from '@/model/Screen.js'
@@ -27,4 +28,6 @@ export type PageSnapshot = ProbeResult & {
   failedImages: string[]
   /** The elements the Tab pass reached, in order, and whether focus showed on each. */
   focusStops: FocusStop[]
+  /** The animations running with motion not reduced, transitions aside; the probe's own run has it reduced. */
+  freeAnimations: MotionRecord[]
 }

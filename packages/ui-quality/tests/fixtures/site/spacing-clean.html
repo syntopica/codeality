@@ -1,0 +1,75 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Spacing on the scale</title>
+    <style>
+      body {
+        margin: 0;
+        font: 16px/24px sans-serif;
+        color: #111827;
+        background: #ffffff;
+      }
+      main {
+        padding: 24px;
+        max-width: 720px;
+      }
+      h1 {
+        font-size: 24px;
+        margin: 0 0 24px;
+      }
+      p {
+        margin: 0;
+      }
+      h2 {
+        font-size: 20px;
+        line-height: 28px;
+        margin: 32px 0 8px;
+      }
+      .tile {
+        padding: 8px 12px;
+        margin-bottom: 16px;
+        background: #f3f4f6;
+      }
+      form {
+        margin-top: 24px;
+      }
+      label {
+        display: block;
+        margin-bottom: 4px;
+      }
+      input {
+        display: block;
+        box-sizing: border-box;
+        width: 280px;
+        height: 40px;
+        margin-bottom: 24px;
+        padding: 8px 12px;
+        border: 1px solid #9ca3af;
+        font: inherit;
+      }
+    </style>
+  </head>
+  <body>
+    <main>
+      <h1>Settings</h1>
+      <div class="tile">First tile</div>
+      <div class="tile">Second tile</div>
+      <p>Billing runs on the first of the month.</p>
+      <h2>Plan</h2>
+      <p>The team plan covers ten seats.</p>
+      <p>Extra seats are billed at the end of the month.</p>
+      <h2>Invoices</h2>
+      <p>Download a copy of any past invoice.</p>
+      <form>
+        <label for="name">Name</label>
+        <input id="name" type="text" />
+        <label for="email">Email</label>
+        <input id="email" type="text" />
+        <label for="company">Company</label>
+        <input id="company" type="text" />
+      </form>
+    </main>
+  </body>
+</html>

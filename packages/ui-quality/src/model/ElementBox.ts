@@ -1,4 +1,5 @@
 import type { Rgba } from '@/model/Rgba.js'
+import type { ShadowLayer } from '@/model/ShadowLayer.js'
 
 /** One visible element as the in-page probe serialises it; boxes are in document pixels. */
 export type ElementBox = {
@@ -66,6 +67,11 @@ export type ElementBox = {
   textTransform: string
   /** Lines the element's own text is laid out on; 0 without text. */
   lines: number
+  /** Where the glyphs of the element's own text start and end, in document px; 0 without text. */
+  textLeft: number
+  textRight: number
+  /** For text on two or more lines, the content box's width in `ch` (the width of a zero); 0 otherwise. */
+  measureCh: number
   /** Computed `display`. */
   display: string
   /**
@@ -81,6 +87,46 @@ export type ElementBox = {
   borderRadius: number
   /** Padding in px: top, right, bottom, left. */
   padding: [number, number, number, number]
+  /** Computed margin in px: top, right, bottom, left; `auto` resolves to the used width. */
+  margin: [number, number, number, number]
+  /** Computed `row-gap` and `column-gap` in px; 0 for `normal`. */
+  gap: [number, number]
+  /** An input or textarea with a non-empty `placeholder`. */
+  placeholder: boolean
+  /** For an input, its `type`; `textarea` for a textarea; empty for anything else. */
+  inputType: string
+  /** For an input or textarea: a label with painted text, or an `aria-labelledby` target with some, names it. */
+  visibleLabel: boolean
+  /** A non-empty `title` attribute. */
+  hasTitle: boolean
+  /** A `<time>` element with a `datetime` attribute. */
+  datetime: boolean
+  /** Computed `z-index`; null for `auto`. */
+  zIndex: number | null
+  /** A live region: `role="log"`, or an `aria-live` other than `off`. */
+  live: boolean
+  /** `background-clip: text`: the background is the colour of the glyphs. */
+  clipsText: boolean
+  /** The background image is, or includes, a gradient. */
+  hasGradient: boolean
+  /** The colour stops of the background gradients, at most 12; empty without one. */
+  gradientStops: Rgba[]
+  /** The visible layers of `box-shadow`, at most 4. */
+  boxShadows: ShadowLayer[]
+  /** The visible layers of `text-shadow`, at most 4. */
+  textShadows: ShadowLayer[]
+  /** Computed `cursor`. */
+  cursor: string
+  /** The `role` attribute, lower-cased; empty when absent. */
+  role: string
+  /** For an element showing a pointer cursor: it is, or sits inside, a link, button, label or ARIA widget. */
+  semantic: boolean
+  /** For an element showing a pointer cursor: it contains a link, button or other operable element. */
+  wrapsInteractive: boolean
+  /** A transition with a duration animates width, height, top, left, a margin or a padding. */
+  layoutTransition: boolean
+  /** The longest transition duration, in ms, of those with a duration above zero; 0 without one. */
+  transitionMs: number
   /**
    * A field the user types into (text-like input, textarea, select, or the root
    * of a contenteditable region): focusing one opens the keyboard.

@@ -11,9 +11,13 @@ export const snapshotOf = (
   viewportWidth: 1440,
   viewportHeight: 900,
   documentWidth: 1440,
+  documentHeight: 900,
+  rootColorScheme: 'normal',
+  hasThemeColor: false,
   media: [],
   hiddenText: { total: 0, hidden: 0, selector: '' },
   backgroundImages: [],
+  animations: [],
   screen: {
     route: '/inbox',
     viewport: { width: 1440, height: 900 },
@@ -29,5 +33,6 @@ export const snapshotOf = (
   layoutShift: 0,
   failedImages: [],
   focusStops: [],
+  freeAnimations: [],
   ...overrides,
 })

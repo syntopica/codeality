@@ -4,13 +4,13 @@ import { exerciseScreen } from '@/capture/exerciseScreen.js'
 import { fileDigest } from '@/capture/fileDigest.js'
 import { interactWithRoute } from '@/capture/interactWithRoute.js'
 import { openRouteFresh } from '@/capture/openRouteFresh.js'
+import { readProbedPage } from '@/capture/readProbedPage.js'
 import { recordConsoleErrors } from '@/capture/recordConsoleErrors.js'
 import { recordFailedImages } from '@/capture/recordFailedImages.js'
 import { recordRequests } from '@/capture/recordRequests.js'
 import { retimeSlowRequests } from '@/capture/retimeSlowRequests.js'
 import type { ScreenRequest } from '@/capture/ScreenRequest.js'
 import { screenshotPage } from '@/capture/screenshotPage.js'
-import { tabThroughPage } from '@/capture/tabThroughPage.js'
 import { holdsState } from '@/config/holdsState.js'
 import type { PageSnapshot } from '@/model/PageSnapshot.js'
 import type { ProbeResult } from '@/model/ProbeResult.js'
@@ -39,7 +39,7 @@ export const captureScreen = async ({
     `(${probe})(${JSON.stringify(route.main)})`,
   )
   imageLog.stop()
-  const focusStops = await tabThroughPage(page).catch(() => [])
+  const reading = await readProbedPage(page, probe, route.main)
   const behaviour = exercise ? await exerciseScreen(page, route.main) : []
   consoleLog.stop()
   requestLog.stop()
@@ -64,6 +64,6 @@ export const captureScreen = async ({
     behaviour: [...behaviour, ...actions],
     layoutShift,
     failedImages: imageLog.urls,
-    focusStops,
+    ...reading,
   }
 }

@@ -202,6 +202,47 @@
     return widest
   }
 
+  // Every layer of a box or text shadow as its offsets, blur, spread and
+  // colour; transparent layers paint nothing and are left out. A text shadow
+  // has no spread, so its lengths stop at the blur.
+  const MAX_SHADOW_LAYERS = 4
+  const shadowLayersOf = (value) => {
+    if (value === 'none') return []
+    const layers = []
+    for (const layer of value
+      .split(SHADOW_LAYERS)
+      .slice(0, MAX_SHADOW_LAYERS)) {
+      const color = layer.match(SHADOW_COLOR)
+      const rgba = color ? toRgba(color[0]) : null
+      if (!rgba || rgba[3] === 0) continue
+      const lengths = (
+        layer.replace(SHADOW_COLOR, '').match(/-?[\d.]+px/g) ?? []
+      ).map(parseFloat)
+      layers.push({
+        x: lengths[0] ?? 0,
+        y: lengths[1] ?? 0,
+        blur: lengths[2] ?? 0,
+        spread: lengths[3] ?? 0,
+        inset: layer.includes('inset'),
+        color: rgba,
+      })
+    }
+    return layers
+  }
+
+  // The colour stops of the gradients painted as a background, any colour
+  // space; an image or a plain fill has none.
+  const GRADIENT_COLOR =
+    /(?:rgba?|hsla?|oklch|oklab|lab|lch|color)\((?:[^()]|\([^()]*\))*\)|#[\da-f]{3,8}\b/gi
+  const MAX_GRADIENT_STOPS = 12
+  const gradientStopsOf = (style) => {
+    if (!style.backgroundImage.includes('gradient(')) return []
+    return (style.backgroundImage.match(GRADIENT_COLOR) ?? [])
+      .slice(0, MAX_GRADIENT_STOPS)
+      .map(toRgba)
+      .filter((rgba) => rgba !== null)
+  }
+
   // The line height in px; `normal` is the font's own ascent plus descent,
   // which is what the browser lays a line out with.
   const lineHeightOf = (style) => {
@@ -236,19 +277,42 @@
 
   // How many lines the element's own text is laid out on: the distinct tops
   // of its text fragments. Zero when it has no text of its own.
+  // The horizontal extent of the glyphs is read from the same fragments.
   const range = document.createRange()
-  const linesOf = (element) => {
+  const textLayoutOf = (element) => {
     const tops = []
+    let left = Infinity
+    let right = -Infinity
     for (const node of element.childNodes) {
       if (node.nodeType !== Node.TEXT_NODE || !node.textContent.trim()) continue
       range.selectNodeContents(node)
       for (const rect of range.getClientRects()) {
         if (rect.width === 0) continue
+        left = Math.min(left, rect.left)
+        right = Math.max(right, rect.right)
         if (!tops.some((top) => Math.abs(top - rect.top) < rect.height / 2))
           tops.push(rect.top)
       }
     }
-    return tops.length
+    return {
+      lines: tops.length,
+      left: tops.length ? Math.round(left + window.scrollX) : 0,
+      right: tops.length ? Math.round(right + window.scrollX) : 0,
+    }
+  }
+
+  // How many digit widths (the CSS `ch`) a wrapped text's line is allowed to
+  // run: its content box over the width of a zero in its font. Zero for
+  // text on one line, which has no measure to speak of.
+  const zeroWidthCache = new Map()
+  const measureChOf = (style, contentWidth, lines) => {
+    if (lines < 2 || !measure || contentWidth <= 0) return 0
+    if (!zeroWidthCache.has(style.font)) {
+      measure.font = style.font
+      zeroWidthCache.set(style.font, measure.measureText('0').width)
+    }
+    const zero = zeroWidthCache.get(style.font)
+    return zero > 0 ? Math.round((contentWidth / zero) * 10) / 10 : 0
   }
 
   const signatureOf = (element) =>
@@ -332,6 +396,76 @@
       : length
   }
 
+  // What a visitor can operate or that a screen reader announces as a
+  // control: a click handler on anything else has no keyboard or role.
+  const INTERACTIVE = [
+    'a[href]',
+    'area[href]',
+    'button',
+    'label',
+    'summary',
+    'input',
+    'select',
+    'textarea',
+    'option',
+    ...[
+      'button',
+      'link',
+      'tab',
+      'menuitem',
+      'menuitemcheckbox',
+      'menuitemradio',
+      'checkbox',
+      'radio',
+      'switch',
+      'option',
+      'treeitem',
+      'combobox',
+      'textbox',
+      'slider',
+    ].map((role) => `[role="${role}"]`),
+  ].join(', ')
+  const MS_PER_SECOND = 1000
+  const LAYOUT_PROPERTY = /^(width|height|top|left|margin(-.*)?|padding(-.*)?)$/
+  // The transitions that animate layout, and the longest one, in ms. A
+  // transition list pairs each property with a duration, repeating the
+  // durations when there are fewer of them.
+  const transitionsOf = (style) => {
+    const durations = style.transitionDuration.split(',').map((value) => {
+      const length = parseFloat(value)
+      return value.trim().endsWith('ms') ? length : length * MS_PER_SECOND
+    })
+    let layout = false
+    let longest = 0
+    style.transitionProperty.split(',').forEach((property, index) => {
+      const ms = durations[index % durations.length] || 0
+      if (ms <= 0) return
+      layout ||= LAYOUT_PROPERTY.test(property.trim())
+      longest = Math.max(longest, ms)
+    })
+    return { layout, longest }
+  }
+
+  // A field's visible name: a label with text that paints, or an
+  // aria-labelledby that points at some. aria-label alone is for a screen
+  // reader; a sighted person reads the placeholder until they type.
+  const paints = (node) => {
+    const box = node.getBoundingClientRect()
+    return (
+      box.width > 1 &&
+      box.height > 1 &&
+      node.checkVisibility({ checkVisibilityCSS: true }) &&
+      node.textContent.trim() !== ''
+    )
+  }
+  const hasVisibleLabel = (element) => {
+    if ([...(element.labels ?? [])].some(paints)) return true
+    const named = (element.getAttribute('aria-labelledby') ?? '')
+      .split(/\s+/)
+      .map((id) => document.getElementById(id))
+    return named.some((node) => node && paints(node))
+  }
+
   const ids = new Map()
   const elements = []
   // Elements with text of their own, for the occlusion pass once every
@@ -359,7 +493,16 @@
     const id = elements.length
     ids.set(element, id)
     if (text) texted.push(element)
+    const layout = text
+      ? textLayoutOf(element)
+      : { lines: 0, left: 0, right: 0 }
+    const contentWidth =
+      element.clientWidth -
+      parseFloat(style.paddingLeft) -
+      parseFloat(style.paddingRight)
     const tappable = element.matches(TAPPABLE)
+    const transitions = transitionsOf(style)
+    const pointer = style.cursor === 'pointer'
     const [tapWidth, tapHeight] = tappable
       ? tapAreaOf(element, style, rect)
       : [0, 0]
@@ -410,10 +553,7 @@
         parseFloat(style.paddingTop) -
         parseFloat(style.paddingBottom),
       lineBoxHeight: lineBoxOf(element, style),
-      contentWidth:
-        element.clientWidth -
-        parseFloat(style.paddingLeft) -
-        parseFloat(style.paddingRight),
+      contentWidth,
       placeholderWidth: placeholderWidthOf(element, style),
       transitionAll:
         style.transitionProperty.split(',').some((p) => p.trim() === 'all') &&
@@ -437,7 +577,10 @@
       tabularDigits: text ? tabularDigitsOf(style) : false,
       textAlign: style.textAlign,
       textTransform: style.textTransform,
-      lines: text ? linesOf(element) : 0,
+      lines: layout.lines,
+      textLeft: layout.left,
+      textRight: layout.right,
+      measureCh: measureChOf(style, contentWidth, layout.lines),
       display: style.display,
       tappable,
       tapWidth: Math.round(tapWidth),
@@ -449,6 +592,45 @@
         parseFloat(style.paddingBottom),
         parseFloat(style.paddingLeft),
       ],
+      margin: [
+        parseFloat(style.marginTop) || 0,
+        parseFloat(style.marginRight) || 0,
+        parseFloat(style.marginBottom) || 0,
+        parseFloat(style.marginLeft) || 0,
+      ],
+      gap: [parseFloat(style.rowGap) || 0, parseFloat(style.columnGap) || 0],
+      placeholder:
+        (element.getAttribute('placeholder') ?? '').trim() !== '' &&
+        (element.tagName === 'INPUT' || element.tagName === 'TEXTAREA'),
+      inputType:
+        element.tagName === 'INPUT'
+          ? element.type
+          : element.tagName === 'TEXTAREA'
+            ? 'textarea'
+            : '',
+      visibleLabel:
+        (element.tagName === 'INPUT' || element.tagName === 'TEXTAREA') &&
+        hasVisibleLabel(element),
+      hasTitle: (element.getAttribute('title') ?? '').trim() !== '',
+      datetime: element.tagName === 'TIME' && element.hasAttribute('datetime'),
+      zIndex: style.zIndex === 'auto' ? null : parseInt(style.zIndex, 10),
+      live:
+        element.getAttribute('role') === 'log' ||
+        (element.hasAttribute('aria-live') &&
+          element.getAttribute('aria-live') !== 'off'),
+      clipsText:
+        style.backgroundClip === 'text' ||
+        style.webkitBackgroundClip === 'text',
+      hasGradient: style.backgroundImage.includes('gradient('),
+      gradientStops: gradientStopsOf(style),
+      boxShadows: shadowLayersOf(style.boxShadow),
+      textShadows: shadowLayersOf(style.textShadow),
+      cursor: style.cursor,
+      role: (element.getAttribute('role') ?? '').trim().toLowerCase(),
+      semantic: pointer && element.closest(INTERACTIVE) !== null,
+      wrapsInteractive: pointer && element.querySelector(INTERACTIVE) !== null,
+      layoutTransition: transitions.layout,
+      transitionMs: Math.round(transitions.longest),
       isTextEntry: isTextEntry(element),
       isDialog: element.matches(DIALOG),
       label: (element.getAttribute('aria-label') ?? '').trim().slice(0, 80),
@@ -614,6 +796,48 @@
     },
   )
 
+  // The animations running right now, CSS transitions aside: where they are,
+  // what they change, and whether they loop for ever. document.getAnimations()
+  // is a state read, so nothing waits on a timer.
+  const SCALE = /scale/
+  const animationOf = (animation) => {
+    const target = animation.effect?.target
+    if (!target || animation.constructor.name === 'CSSTransition') return null
+    if (animation.playState !== 'running') return null
+    const rect = target.getBoundingClientRect()
+    if (rect.width === 0 && rect.height === 0) return null
+    const keyframes = animation.effect.getKeyframes()
+    const properties = [
+      ...new Set(
+        keyframes.flatMap((frame) =>
+          Object.keys(frame).filter(
+            (key) =>
+              !['offset', 'easing', 'composite', 'computedOffset'].includes(
+                key,
+              ),
+          ),
+        ),
+      ),
+    ]
+    const timing = animation.effect.getComputedTiming()
+    return {
+      selector: selectorOf(target),
+      signature: signatureOf(target),
+      width: Math.round(rect.width),
+      height: Math.round(rect.height),
+      properties,
+      scales:
+        properties.includes('scale') ||
+        keyframes.some((frame) => SCALE.test(String(frame.transform ?? ''))),
+      infinite: timing.iterations === Infinity,
+      duration: Number(timing.duration) || 0,
+    }
+  }
+  const animations = document
+    .getAnimations()
+    .map(animationOf)
+    .filter((record) => record !== null)
+
   // The focus pass reads which element is which from the page.
   window.__uiqIds = ids
 
@@ -624,8 +848,17 @@
     viewportWidth: window.innerWidth,
     viewportHeight: window.innerHeight,
     documentWidth: document.documentElement.scrollWidth,
+    documentHeight: document.documentElement.scrollHeight,
+    rootColorScheme: rootStyle.colorScheme,
+    hasThemeColor: [
+      ...document.querySelectorAll('meta[name="theme-color"]'),
+    ].some((meta) => {
+      const media = meta.getAttribute('media')
+      return !media || matchMedia(media).matches
+    }),
     media,
     hiddenText: hiddenTextOf(main),
     backgroundImages,
+    animations,
   }
 }
