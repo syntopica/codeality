@@ -12,7 +12,10 @@
 // `sources` are relative to the workspace and mirror what the repo-wide run
 // would otherwise have cruised there.
 export const ALIASED_WORKSPACES = [
+  { workspace: 'packages/db-quality', sources: ['src', 'tests'] },
   { workspace: 'packages/eslint-plugin-code-policy', sources: ['src'] },
+  { workspace: 'packages/test-quality', sources: ['src', 'tests'] },
+  { workspace: 'packages/ui-quality', sources: ['src', 'tests'] },
   { workspace: 'templates/vue-app', sources: ['src'] },
   { workspace: 'templates/nuxt-app', sources: ['app', 'server'] },
 ]

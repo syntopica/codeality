@@ -35,6 +35,13 @@ jobs:
 
       - run: pnpm install --frozen-lockfile
 
+      # ui-quality's integration tests drive a real Chromium through
+      # Playwright, whose browser binaries are not part of the npm package. A
+      # runner without them fails every one of those tests with exit 3 and an
+      # empty report, which reads as a product bug rather than a missing step.
+      - name: Install Playwright Chromium
+        run: pnpm --filter @syntopica/ui-quality exec playwright install --with-deps chromium
+
       - name: check:ci
         run: pnpm run check:ci
 
