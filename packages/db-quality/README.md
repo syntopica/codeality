@@ -253,6 +253,17 @@ counters fell below the snapshot, or whose stats-reset timestamp moved, had its
 server-side counters reset and is windowed from its current absolute values
 instead, the same as a statement that is new since the snapshot.
 
+The window mean is judged against a **reference mean**. When `perf snapshot`
+runs over an earlier snapshot, it records on each statement the mean of the
+window between the two (`windowMeanMs`), and `perf diff` compares against that:
+the recent past, not every slow week since the stats reset. A first snapshot, a
+statement new since the last one, or one whose counters reset has no recorded
+window mean, and falls back to the cumulative mean since the reset. So refresh
+the reference with `perf snapshot` twice before relying on BDB901: once to start
+a window, once more after representative traffic to record it. The diff still
+reads production-wide counters, so traffic unrelated to a commit can still move
+a mean; that is why the gate's `perf` stage stays opt-in (`perf.inGate`).
+
 Before the findings, `perf diff` prints an **improvement report**: every
 statement whose window mean fell by `perf.regressionPercent` or more against its
 snapshot mean, with both means, the call count, and the total time saved — the

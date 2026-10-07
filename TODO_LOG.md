@@ -1,5 +1,18 @@
 ### 2026-10-07
 
+- [x] db-quality `perf diff` compares against the previous window, not the
+      cumulative mean since the stats reset. Codex adjudication
+      (`codex exec -s read-only`, option A, confidence high): `perf snapshot`
+      over an earlier snapshot records each statement's `windowMeanMs`
+      (additive, `schemaVersion` stays 1 so older snapshots and tools keep
+      working), `windowStatements` judges against it through `referenceMeanOf`,
+      the gate stays read-only, and the CI secret wiring is dropped because the
+      owner keeps perf local. Evidence: `tests/perf/withWindowMeans.test.ts` (31
+      ms after a recent 30 ms window is no regression; the cumulative 16.7 ms
+      read +86%) and the snapshot-over-snapshot case in `perfCommand.test.ts`;
+      db-quality `vitest run tests/perf tests/commands` 33 passed, eslint and
+      `tsc` clean.
+
 - [x] Template `prepare` race on `.git/hooks`: new `baseline-hooks-install` bin
       in quality-config runs `lefthook install` only when the package is the git
       repository root, and all eight templates use it in `prepare`.

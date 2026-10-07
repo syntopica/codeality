@@ -2,6 +2,12 @@
 
 ## [Unreleased]
 
+- `perf snapshot` taken over an earlier snapshot records each statement's window
+  mean between the two (`windowMeanMs`, additive; `schemaVersion` stays 1), and
+  `perf diff` and the gate's `perf` stage compare against it instead of the
+  cumulative mean since the stats reset, which flagged production drift as a
+  regression. A snapshot without it keeps the cumulative comparison.
+
 ## 0.4.0
 
 - `sqlite.queries.exclude` takes root-relative globs of query files to leave

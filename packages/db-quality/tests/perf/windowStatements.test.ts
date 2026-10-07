@@ -1,6 +1,7 @@
 import { describe, expect, it } from 'vitest'
 
 import type { PerfSnapshot } from '@/perf/PerfSnapshot.js'
+import type { StatementStat } from '@/perf/StatementStat.js'
 import { windowStatements } from '@/perf/windowStatements.js'
 
 const stat = (
@@ -20,7 +21,7 @@ const stat = (
 })
 const snap = (
   statsReset: string | null,
-  statements: ReturnType<typeof stat>[],
+  statements: StatementStat[],
 ): PerfSnapshot => ({
   schemaVersion: 1,
   toolVersion: '0.2.0',
@@ -49,6 +50,13 @@ describe('windowStatements', () => {
         previousMeanMs: 10,
       },
     ])
+  })
+  it("compares against the snapshot's own window mean when it recorded one", () => {
+    const window = windowStatements(
+      snap('r1', [{ ...stat('1', 100, 1000), windowMeanMs: 14 }]),
+      snap('r1', [stat('1', 150, 1750)]),
+    )
+    expect(window[0]).toMatchObject({ meanMs: 15, previousMeanMs: 14 })
   })
   it('uses absolute values with no previous mean after a reset, for a new statement, or when a counter fell', () => {
     const reset = windowStatements(

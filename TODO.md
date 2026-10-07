@@ -139,19 +139,6 @@ needs.
       f4ba7e2, caught only by the mysql:8.4 CI leg, fixed with a table-level
       `addForeignKeyConstraint` in 37d1c05.
 
-- [ ] db-quality 0.4.0: make `perf diff` usable as a CI gate. It compares the
-      window mean against the cumulative mean since the stats reset, so it
-      measures production drift, not the commit: on 2026-09-26 a simulated
-      verticagtm CI run with the password raised BDB901 on `flush_email_queue()`
-      (17.11 to 37.33 ms, 52 calls) with no code change, after the 5 ms floor
-      had already removed two cron false positives. The owner chose to keep perf
-      local until this lands, so no database password is stored in GitHub. Next
-      step: compare against the previous window (two snapshots, or a rolling
-      reference the gate refreshes), then offer CI wiring that writes
-      `supabase/.temp/pooler-url` from a secret, which the shipped workflow
-      lacks (the file is gitignored, so the perf stage always skips in CI
-      today).
-
 ## Cross-project (filed 2026-09-09 from two consumer backlog runs)
 
 ## Routed from `~/p/TODO.md` (2026-10-03)

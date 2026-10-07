@@ -1,10 +1,13 @@
 import type { PerfSnapshot } from '@/perf/PerfSnapshot.js'
+import { referenceMeanOf } from '@/perf/referenceMeanOf.js'
 import type { StatementWindow } from '@/perf/StatementWindow.js'
 
 // A reset loses the old mean too, since the old totals were measured against
 // a different history; a new statement has nothing to regress from; a
 // counter falling back means the server-side stat itself reset underneath
-// us. All three cases fall back to the current absolute values.
+// us. All three cases fall back to the current absolute values. The previous
+// mean is the snapshot's own window mean when it recorded one, so a reading is
+// compared with the recent past rather than with everything since the reset.
 export const windowStatements = (
   previous: PerfSnapshot,
   current: PerfSnapshot,
@@ -44,7 +47,7 @@ export const windowStatements = (
       totalMs,
       tempBlksWritten: statement.tempBlksWritten - match.tempBlksWritten,
       meanMs: calls === 0 ? 0 : totalMs / calls,
-      previousMeanMs: match.calls === 0 ? null : match.totalMs / match.calls,
+      previousMeanMs: referenceMeanOf(match),
     }
   })
 }

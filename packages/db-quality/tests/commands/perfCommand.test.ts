@@ -1,10 +1,17 @@
-import { existsSync, mkdirSync, mkdtempSync, writeFileSync } from 'node:fs'
+import {
+  existsSync,
+  mkdirSync,
+  mkdtempSync,
+  readFileSync,
+  writeFileSync,
+} from 'node:fs'
 import { tmpdir } from 'node:os'
 import { join } from 'node:path'
 
 import { describe, expect, it } from 'vitest'
 
 import { perfCommand } from '@/commands/perfCommand.js'
+import { PERF_SNAPSHOT_FILENAME } from '@/perf/PERF_SNAPSHOT_FILENAME.js'
 import type { CommandRunner } from '@/tools/CommandRunner.js'
 import { commandIoFor } from '@tests/commands/commandIoFor.js'
 
@@ -42,7 +49,7 @@ describe('perfCommand', () => {
     const root = rootWith()
     const io = commandIoFor(root, psql)
     expect(perfCommand(['snapshot', '--db-url', url], io)).toBe(0)
-    expect(existsSync(join(root, '.codeality-db-perf.json'))).toBe(true)
+    expect(existsSync(join(root, PERF_SNAPSHOT_FILENAME))).toBe(true)
     expect(io.out.join('')).toMatch(
       /recorded 0 statements and 0 tables from db.example.com/,
     )
@@ -72,7 +79,7 @@ describe('perfCommand', () => {
   it('returns 1 when the diff finds a slow statement', () => {
     const root = rootWith()
     writeFileSync(
-      join(root, '.codeality-db-perf.json'),
+      join(root, PERF_SNAPSHOT_FILENAME),
       JSON.stringify({
         schemaVersion: 1,
         toolVersion: '0',
@@ -95,6 +102,48 @@ describe('perfCommand', () => {
     const io = commandIoFor(root, slow)
     expect(perfCommand(['diff', '--db-url', url], io)).toBe(1)
     expect(io.out.join('')).toMatch(/BDB902/)
+  })
+  it('a snapshot over an earlier one records the window mean between them', () => {
+    const root = rootWith()
+    writeFileSync(
+      join(root, PERF_SNAPSHOT_FILENAME),
+      JSON.stringify({
+        schemaVersion: 1,
+        toolVersion: '0',
+        takenAt: 't0',
+        host: 'db.example.com',
+        statsReset: null,
+        statements: [
+          {
+            role: 'authenticator',
+            queryId: 'q1',
+            text: 'select 1',
+            calls: 10,
+            totalMs: 100,
+            rows: 10,
+            sharedBlksRead: 0,
+            tempBlksWritten: 0,
+          },
+        ],
+        tables: [],
+      }),
+    )
+    const later: CommandRunner = (_c, args) => {
+      const sql = args.at(-1) ?? ''
+      const stdout = sql.includes('_info')
+        ? '[{"stats_reset":null}]'
+        : sql.includes('pg_stat_statements')
+          ? '[{"role":"authenticator","query_id":"q1","text":"select 1","calls":20,"total_ms":400,"rows":20,"shared_blks_read":0,"temp_blks_written":0}]'
+          : '[]'
+      return { status: 0, stdout, stderr: '', missing: false }
+    }
+    expect(
+      perfCommand(['snapshot', '--db-url', url], commandIoFor(root, later)),
+    ).toBe(0)
+    const recorded = JSON.parse(
+      readFileSync(join(root, PERF_SNAPSHOT_FILENAME), 'utf8'),
+    ) as { statements: { windowMeanMs?: number }[] }
+    expect(recorded.statements[0]?.windowMeanMs).toBe(30)
   })
   it('reports psql failures as infrastructure', () => {
     const failing: CommandRunner = () => ({
