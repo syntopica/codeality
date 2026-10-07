@@ -1,5 +1,15 @@
 ### 2026-10-07
 
+- [x] ui-quality tier 2 opened (unreleased): `focus-invisible` from a keyboard
+      Tab pass (7c630e6), `touch-target` on phone screens (40328df),
+      `radius-sprawl` and opt-in `card-radius-admin` (3c5f62d). The composition
+      integration test lost `unstable-media-size` under a loaded `check:ci`: the
+      layout-shift total was read before the observer's callback ran; the getter
+      now takes queued records first (e76b2be; three parallel suites 240/240,
+      `pnpm check:ci` exit 0). quality-config: the knip preset no longer leaves
+      configuration hints in CLI consumers such as jobradar (c98cfcb,
+      unreleased).
+
 - [x] Python consumers, third pass (gates re-run on clean `origin` worktrees,
       all exit 0): agent-deluxe 8 to 0 and `[mypy-agent]` gone, floor 35 to 42
       (5602689; dcb3802 and 7a40a27 tracked the `invoice_agents/logs/` package
