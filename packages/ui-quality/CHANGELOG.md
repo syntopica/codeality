@@ -2,6 +2,8 @@
 
 ## [Unreleased]
 
+## 0.5.0
+
 - New rules, all `warn`: `nested-cards` (a card inside a card within three
   levels, once per outer card), `type-scale-sprawl` (over 6 font sizes in the
   main region, or two sizes 1px apart side by side; authored content left out),

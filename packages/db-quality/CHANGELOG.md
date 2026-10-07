@@ -2,6 +2,8 @@
 
 ## [Unreleased]
 
+## 0.5.1
+
 - Kysely migrations load through the project's `tsconfig.json` path aliases
   (`compilerOptions.paths`, `extends` and `baseUrl` honoured): a migrations
   module importing `@/db/migrations/...` no longer makes `check` and
