@@ -1,5 +1,12 @@
 ### 2026-10-07
 
+- [x] ui-quality `content-width` only measures a main region with a data layout
+      (`hasDataLayout`: a `table`, or 3+ same-tag siblings that each have parts
+      and no prose paragraph of 200+ characters or text field, `isRowItem`).
+      Evidence: `contentWidth.test.ts` reports a narrow table and a narrow list
+      of rows, and leaves a 720px prose column and a 448px three-field form
+      alone; ui-quality 163 tests, lint, type-check clean.
+
 - [x] ui-quality `check --routes <glob>` measures only the matching routes
       (`node:path` `matchesGlob`, extglob such as `'/!(admin)**'` works) and
       skips the up-front credential check; a selected route that bounces to the

@@ -98,12 +98,6 @@ needs.
       tieneslavibra.com/categorias/artistas (12 cards, rel=next found, 0 overlap
       with page 2, no finding). Smallest step: require the next link's address
       to share the route's path prefix, or a numbered sibling.
-- [ ] **`content-width` fires on reading and sign-in pages.** 2026-10-01,
-      verticagtm: once its legal, auth and status pages gained a `<main>`, ten
-      routes warned (legal prose at a 720px measure, a 448px sign-in card), all
-      intended and kept with `disable` entries. The rule targets data pages.
-      Smallest step: skip a main region with no table, grid or repeated row
-      group, and test it on a prose fixture and a single-form fixture.
 - [~] **Interaction states are never captured.** 2026-10-01, the TienesLaVibra
   phone menu opened onto a drawer with no links and every rule passed, because
   capture only sees the resting page. `routes[].click` now clicks selectors in
