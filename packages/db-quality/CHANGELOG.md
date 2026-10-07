@@ -2,6 +2,8 @@
 
 ## [Unreleased]
 
+## 0.5.0
+
 - Kysely support, additive (`schemaVersion` stays 2). A `kysely` section
   (`roots`, `objectNames` default `["db", "trx"]`, optional `migrations` with
   `module` or `folder`, `export`, `dialects`, `moneyColumns`) is proposed by

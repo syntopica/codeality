@@ -2,6 +2,13 @@
 
 ## [Unreleased]
 
+## 0.10.2
+
+### Patch Changes
+
+- fix: pin `@syntopica/quality-config` `^0.13.0`, which ships the
+  `baseline-hooks-install` bin the templates now call from `prepare`.
+
 ## 0.10.1
 
 ### Patch Changes

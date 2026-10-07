@@ -1,6 +1,6 @@
 {
   "name": "@syntopica/create-baseline",
-  "version": "0.10.1",
+  "version": "0.10.2",
   "private": false,
   "packageManager": "pnpm@12.9.1",
   "license": "MIT",

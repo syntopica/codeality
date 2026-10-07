@@ -1,5 +1,13 @@
 # Changelog
 
+## [Unreleased]
+
+## 0.1.2
+
+- `duplicate-file-run` lists each file's projects in sorted order. Vitest
+  reports projects in the order they finish collecting, so the evidence changed
+  between runs and a baseline keyed on it could not match.
+
 ## 0.1.1
 
 - `dom-environment-unused` counts a file once even when several projects run it:

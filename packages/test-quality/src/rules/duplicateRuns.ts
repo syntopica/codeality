@@ -5,7 +5,9 @@ import type { TestFile } from '@/model/TestFile.js'
  * Files the suite runs more than once. With vitest `projects` and
  * `extends: true`, a project's `include` is added to the root's rather than
  * replacing it, so every file can run in two projects and the run stays
- * green while doing the work twice.
+ * green while doing the work twice. Project names are sorted: vitest reports
+ * its projects in whichever order they finish collecting, so the evidence
+ * would otherwise change from one run to the next.
  */
 export const duplicateRuns = (files: TestFile[]): Finding[] => {
   const projects = new Map<string, string[]>()
@@ -20,7 +22,7 @@ export const duplicateRuns = (files: TestFile[]): Finding[] => {
       severity: 'warning',
       message: `${String(repeated.length)} of ${String(projects.size)} test files run more than once`,
       evidence: repeated.map(
-        ([file, names]) => `${file} (${names.join(', ')})`,
+        ([file, names]) => `${file} (${names.toSorted().join(', ')})`,
       ),
     },
   ]

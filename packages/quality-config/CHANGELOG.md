@@ -2,6 +2,8 @@
 
 ## [Unreleased]
 
+## 0.13.0
+
 ### Minor Changes
 
 - feat: `baseline-hooks-install` runs `lefthook install` only from the git

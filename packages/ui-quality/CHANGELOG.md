@@ -2,6 +2,8 @@
 
 ## [Unreleased]
 
+## 0.4.0
+
 - New rules, all `warn`: `undersized-text`, `tight-leading`, `letter-spacing`,
   `numeric-alignment`, `broken-image`, `unstable-media-size` and
   `content-hidden-at-rest`. The probe now reads line height, letter spacing,
