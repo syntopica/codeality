@@ -4,6 +4,21 @@ All notable changes to `syntopica-codeality-py` are documented here. The format
 follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/) and the project
 adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## 0.2.5
+
+### Fixed
+
+- `BPY002` keeps the underscores a name already has: `is_a_step` belongs in
+  `is_a_step.py`, no longer `is_astep.py`. Only a letter left alone by the
+  case-boundary split (the `o` of `OAuth`) is folded into the next word.
+- A plural acronym is one word: `URLs` belongs in `urls.py` and
+  `DownloadedURLsSQL` in `downloaded_urls_sql.py`, not `ur_ls.py`. A one-letter
+  interface prefix (`IFileHandler` to `ifile_handler.py`) is unchanged: it
+  cannot be told apart from `OAuthClient`.
+- `BPY001` accepts an `entrypoint` module that declares nothing: a `__main__.py`
+  that imports its entry function and calls it under the `__main__` guard is the
+  shape the role exists for. Two declarations are still reported.
+
 ## 0.2.4
 
 ### Added

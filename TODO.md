@@ -7,16 +7,18 @@ verified complete - `[-]` obsolete or superseded.
 
 ## Python baseline
 
-- [ ] Work down the structural backlog left in five consumer repositories,
-      measured 2026-09-17 with codeality-py 0.2.2: 194 accepted findings and 36
-      mypy `ignore_errors` modules in the largest, then 64 and 51, 57 and 9, 26
-      and 12, and atrium at 19 and 0. Every one reports `0 new`, so nothing is
-      drifting; the debt is what adoption accepted. Coverage floors beside them:
-      5%, 9%, 35%, atrium 54%, 78%. Each floor was measured and none may go
-      down. brain, clips and syntopica are clear, as are the private consumers
-      not listed here: their whole gate passes with an empty backlog. The five
-      accepted starlette advisories in one of them still fall away when
-      platformio 7 lands.
+- [ ] Second pass on the Python consumers' accepted backlog (after the
+      2026-10-07 pass in TODO_LOG.md). Left: DJCenterDeluxe 114 findings (56 are
+      `BPY006` inline SQL, a policy call atrium answered by switching the rule
+      off) and the `holded_invoices_handler` ignore (strict path types change
+      the Holded upload); djplayerdeluxe 51 and 29 ignored modules (hardware
+      backends, the `utils` package needs a name); agent-deluxe 9 and 2 (its
+      browser code calls browser-use 0.5.9 with arguments that version rejects,
+      recorded in its TODO.md); qlctool 6; atrium 2. Each repo's TODO.md names
+      the first step. Upgrade every consumer to codeality-py 0.2.5 with
+      `uv lock --upgrade-package syntopica-codeality-py`; qlctool's
+      `stage_x_positions.py` and agent-deluxe's `__main__.py` findings should
+      then fall away.
 
 ## Estate
 

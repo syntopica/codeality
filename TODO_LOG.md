@@ -1,5 +1,20 @@
 ### 2026-10-07
 
+- [x] Python consumer backlog, first pass (all pushed, each repo's
+      `uv run codeality-py gate` exit 0): atrium 19 to 2 findings, coverage
+      floor 54 to 80 (b3b09c6); agent-deluxe 26 to 9, `ignore_errors` 12 to 2,
+      floor 9 to 35, oauthlib 4.0.0 for pip-audit (09e42b0); qlctool
+      `ignore_errors` 26 to 0, floor 85 to 95 (cd7412c); djplayerdeluxe 64 to
+      51, 51 to 29, floor 5 to 38 (af55eda on `master`; 54c3c7e alone does not
+      import); DJCenterDeluxe 194 to 114, 36 to 2, floor 35 to 36 (13492fd).
+      Remainder moved to a second-pass item in TODO.md.
+
+- [x] codeality-py 0.2.5: three defects the backlog pass found. `BPY002` kept no
+      underscore after a one-letter word (`is_a_step` to `is_astep.py`), cut
+      plural acronyms (`URLs` to `ur_ls.py`), and `BPY001` reported an
+      `entrypoint` `__main__.py` that only calls an imported function. Evidence:
+      248 tests, `codeality-py gate --project packages/codeality-py` exit 0.
+
 - [x] Kysely acceptance on `~/p/compratuentrada` (cloned from
       Vibra-Lab/compratuentrada): 668975b adopted db-quality 0.5.0 (code rules,
       `db:gate` in `check:ci`) and found four defects, fixed in 0424e1a and

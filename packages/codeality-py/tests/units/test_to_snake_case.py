@@ -15,6 +15,12 @@ CASES = [
     ("A", "a"),
     ("HTTPServer", "http_server"),
     ("SQLiteStore", "sq_lite_store"),
+    ("is_a_step", "is_a_step"),
+    ("stage_x_positions", "stage_x_positions"),
+    ("URLs", "urls"),
+    ("DownloadedURLsSQL", "downloaded_urls_sql"),
+    ("IDsToFetch", "ids_to_fetch"),
+    ("_private_name", "_private_name"),
 ]
 
 

@@ -218,3 +218,17 @@ def test_test_stub_generated_and_barrel_roles_are_exempt(make_source, config) ->
         ModuleRole.BARREL,
     ):
         assert _clean(make_source, config, body, role)
+
+
+def test_an_entrypoint_calling_an_imported_function_is_clean(make_source, config) -> None:
+    body = 'from pkg.run import run\n\nif __name__ == "__main__":\n    run()\n'
+    assert _clean(make_source, config, body, ModuleRole.ENTRYPOINT)
+
+
+def test_an_entrypoint_with_two_units_is_reported(make_source, config) -> None:
+    body = "def main() -> None:\n    return None\n\n\ndef helper() -> None:\n    return None\n"
+    assert not _clean(make_source, config, body, ModuleRole.ENTRYPOINT)
+
+
+def test_an_ordinary_module_without_a_declaration_is_reported(make_source, config) -> None:
+    assert not _clean(make_source, config, "from pkg.run import run\n\nrun()\n")

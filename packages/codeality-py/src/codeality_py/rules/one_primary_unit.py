@@ -5,6 +5,7 @@ from codeality_py.config.module_role import ModuleRole
 from codeality_py.model.finding import Finding
 from codeality_py.parsing.source_file import SourceFile
 from codeality_py.rules.data_unit_findings import data_unit_findings
+from codeality_py.rules.entrypoint_unit_findings import entrypoint_unit_findings
 from codeality_py.rules.ordinary_unit_findings import ordinary_unit_findings
 from codeality_py.units.count_primary_declarations import count_primary_declarations
 
@@ -19,4 +20,6 @@ def one_primary_unit(source: SourceFile, config: BaselineConfig) -> tuple[Findin
     declarations = count_primary_declarations(source.tree, source.relative_path)
     if source.role is ModuleRole.DATA:
         return data_unit_findings(source.relative_path, declarations)
+    if source.role is ModuleRole.ENTRYPOINT:
+        return entrypoint_unit_findings(source.relative_path, declarations)
     return ordinary_unit_findings(source.relative_path, declarations)

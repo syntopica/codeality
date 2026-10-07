@@ -1,11 +1,6 @@
 """Convert a declaration name to the file name that must hold it."""
 
-import re
-
-from codeality_py.units.merge_stray_letters import merge_stray_letters
-
-_ACRONYM_THEN_WORD = re.compile(r"([A-Z]+)([A-Z][a-z])")
-_WORD_THEN_CAPITAL = re.compile(r"([a-z0-9])([A-Z])")
+from codeality_py.units.snake_case_word import snake_case_word
 
 
 def to_snake_case(name: str) -> str:
@@ -13,8 +8,7 @@ def to_snake_case(name: str) -> str:
 
     One algorithm, pinned by fixtures: HTTP2Client to http2_client,
     OAuthClient to oauth_client, IPv6Address to ipv6_address, HTTPServer to
-    http_server.
+    http_server, DownloadedURLsSQL to downloaded_urls_sql. An underscore the
+    name already has is kept, so is_a_step stays is_a_step.
     """
-    separated = _ACRONYM_THEN_WORD.sub(r"\1_\2", name)
-    separated = _WORD_THEN_CAPITAL.sub(r"\1_\2", separated)
-    return "_".join(merge_stray_letters(separated.lower().split("_")))
+    return "_".join(snake_case_word(word) for word in name.split("_"))
