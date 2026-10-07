@@ -5,17 +5,21 @@ import type { Page } from 'playwright'
 import { screenshotName } from '@/capture/screenshotName.js'
 import type { Screen } from '@/model/Screen.js'
 
-/** Captures the whole page from its top once its fonts are in, returning the file. */
+/**
+ * Captures the whole page once its fonts are in, returning the file: from its
+ * top, unless `keepScroll` asks to keep a scrolled or hovered state.
+ */
 export const screenshotPage = async (
   page: Page,
   screensDir: string,
   screen: Screen,
+  keepScroll: boolean,
 ): Promise<string> => {
   // A string, because this package compiles without the DOM library.
   await page.evaluate('document.fonts.ready.then(() => true)')
   // A page that scrolls itself (a chat opening on its last message) would
   // stitch its sticky header into the middle of a full-page capture.
-  await page.evaluate('window.scrollTo(0, 0)')
+  if (!keepScroll) await page.evaluate('window.scrollTo(0, 0)')
   const screenshot = join(screensDir, screenshotName(screen))
   await page.screenshot({ path: screenshot, fullPage: true })
   return screenshot

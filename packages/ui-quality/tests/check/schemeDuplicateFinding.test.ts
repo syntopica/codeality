@@ -16,6 +16,9 @@ const capture = (
     waitFor: null,
     localStorage: {},
     click: [],
+    scroll: null,
+    hover: null,
+    focus: null,
   },
   snapshot: snapshotOf([], {
     screen: { route, viewport: { width: 1440, height: 900 }, colorScheme },

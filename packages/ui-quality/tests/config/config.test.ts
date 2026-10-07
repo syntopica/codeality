@@ -59,6 +59,9 @@ describe('configuration', () => {
           waitFor: 'ul',
           localStorage: { view: 'sales' },
           click: ['role=tab[name="Clientes"]'],
+          scroll: 'bottom',
+          hover: 'tbody tr',
+          focus: '#search',
         },
       ],
       viewports: [{ width: 800, height: 600 }],
@@ -85,6 +88,9 @@ describe('configuration', () => {
       waitFor: 'ul',
       localStorage: { view: 'sales' },
       click: ['role=tab[name="Clientes"]'],
+      scroll: 'bottom',
+      hover: 'tbody tr',
+      focus: '#search',
     })
     expect(config.rules.controlInset.minInset).toBe(8)
     expect(config.disable[0]?.route).toBeNull()

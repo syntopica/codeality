@@ -1,0 +1,97 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Typography and media done right</title>
+    <style>
+      body {
+        margin: 0;
+        font: 16px/1.5 sans-serif;
+        color: #000000;
+        background: #ffffff;
+      }
+      main {
+        padding: 24px;
+        max-width: 720px;
+      }
+      table {
+        width: 480px;
+        border-collapse: collapse;
+      }
+      td {
+        padding: 4px 8px;
+      }
+      .fine {
+        font-size: 12px;
+      }
+      .intro {
+        width: 240px;
+      }
+      .amount {
+        text-align: right;
+        font-variant-numeric: tabular-nums;
+      }
+      .chart {
+        display: block;
+        width: 100%;
+        height: auto;
+        aspect-ratio: 3 / 1;
+      }
+    </style>
+  </head>
+  <body>
+    <main>
+      <h1 class="title">Quarterly ledger</h1>
+      <p class="fine">Figures in euros, before tax.</p>
+      <p class="intro">
+        The ledger lists every client with an open balance at the end of the
+        quarter, so the accounts team can chase what is still owed.
+      </p>
+      <table>
+        <tbody>
+          <tr>
+            <td>Client Alpha</td>
+            <td class="amount">1,250.00</td>
+          </tr>
+          <tr>
+            <td>Client Beta</td>
+            <td class="amount">87.50</td>
+          </tr>
+          <tr>
+            <td>Client Gamma</td>
+            <td class="amount">12,004.10</td>
+          </tr>
+          <tr>
+            <td>Client Delta</td>
+            <td class="amount">300.00</td>
+          </tr>
+        </tbody>
+      </table>
+      <img
+        class="logo"
+        src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='40' height='40'%3E%3Ccircle cx='20' cy='20' r='16' fill='%23333333'/%3E%3C/svg%3E"
+        alt="Ledger logo"
+        width="40"
+        height="40"
+      />
+      <img
+        class="chart"
+        alt="Balance chart"
+        src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='40'%3E%3Crect width='120' height='40' fill='%23cccccc'/%3E%3C/svg%3E"
+      />
+      <section class="reveal">
+        <p>
+          Every quarter the ledger closes with a full reconciliation of each
+          account against the bank statements and the invoices issued. Every
+          quarter the ledger closes with a full reconciliation of each account
+          against the bank statements and the invoices issued. Every quarter the
+          ledger closes with a full reconciliation of each account against the
+          bank statements and the invoices issued. Every quarter the ledger
+          closes with a full reconciliation of each account against the bank
+          statements and the invoices issued.
+        </p>
+      </section>
+    </main>
+  </body>
+</html>

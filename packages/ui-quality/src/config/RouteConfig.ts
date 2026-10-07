@@ -14,4 +14,14 @@ export type RouteConfig = {
    * tab, drawer or dialog that only exists after an interaction.
    */
   click: string[]
+  /**
+   * Scrolled to after the clicks: `bottom` for the end of the page, else a
+   * Playwright selector scrolled into view. Measures what appears on scroll,
+   * such as a sticky call to action.
+   */
+  scroll: string | null
+  /** A Playwright selector hovered before measuring, to see its hover state. */
+  hover: string | null
+  /** A Playwright selector focused before measuring, to see its focus state. */
+  focus: string | null
 }

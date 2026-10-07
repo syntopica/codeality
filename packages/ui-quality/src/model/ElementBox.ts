@@ -52,6 +52,24 @@ export type ElementBox = {
   isControl: boolean
   /** Computed font size in CSS pixels. */
   fontSize: number
+  /** Computed line height in px; `normal` resolved from the font's metrics. */
+  lineHeight: number
+  /** Computed letter spacing in px; 0 for `normal`. */
+  letterSpacing: number
+  fontWeight: number
+  /** The first family of the computed `font-family`, lower-cased. */
+  fontFamily: string
+  fontVariantNumeric: string
+  /** Every digit takes one width (`tabular-nums` or the font's default); false without text. */
+  tabularDigits: boolean
+  textAlign: string
+  textTransform: string
+  /** Lines the element's own text is laid out on; 0 without text. */
+  lines: number
+  /** The top-left corner radius in px. */
+  borderRadius: number
+  /** Padding in px: top, right, bottom, left. */
+  padding: [number, number, number, number]
   /**
    * A field the user types into (text-like input, textarea, select, or the root
    * of a contenteditable region): focusing one opens the keyboard.

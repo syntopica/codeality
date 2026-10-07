@@ -1,5 +1,6 @@
 import type { AxeViolation } from '@/model/AxeViolation.js'
 import type { BehaviourFailure } from '@/model/BehaviourFailure.js'
+import type { InteractionFailure } from '@/model/InteractionFailure.js'
 import type { ProbeResult } from '@/model/ProbeResult.js'
 import type { RequestTiming } from '@/model/RequestTiming.js'
 import type { Screen } from '@/model/Screen.js'
@@ -13,8 +14,8 @@ export type PageSnapshot = ProbeResult & {
   screenshotDigest: string
   /** Console errors and uncaught exceptions logged while the page loaded. */
   consoleErrors: string[]
-  /** The configured clicks that found nothing to click, with the reason. */
-  clickFailures: string[]
+  /** The configured clicks, scrolls, hovers and focuses that found no target. */
+  interactionFailures: InteractionFailure[]
   /** Data requests the page made while it loaded, with their durations. */
   requests: RequestTiming[]
   /** What sorting and searching the main table got wrong; empty when not exercised. */

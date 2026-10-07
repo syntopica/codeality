@@ -1,5 +1,6 @@
 import { expectConfig } from '@/config/expectConfig.js'
 import { isRecord } from '@/config/isRecord.js'
+import { optionalString } from '@/config/optionalString.js'
 import type { RouteConfig } from '@/config/RouteConfig.js'
 import { stringField } from '@/config/stringField.js'
 import { stringList } from '@/config/stringList.js'
@@ -15,11 +16,11 @@ export const routeFrom = (value: unknown, index: number): RouteConfig => {
   return {
     path,
     main: stringField(record, 'main', 'main', where),
-    waitFor:
-      record['waitFor'] === undefined
-        ? null
-        : stringField(record, 'waitFor', '', where),
+    waitFor: optionalString(record, 'waitFor', where),
     localStorage: stringMap(record['localStorage'], `${where}.localStorage`),
     click: stringList(record['click'], `${where}.click`),
+    scroll: optionalString(record, 'scroll', where),
+    hover: optionalString(record, 'hover', where),
+    focus: optionalString(record, 'focus', where),
   }
 }

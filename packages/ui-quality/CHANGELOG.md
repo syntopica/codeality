@@ -2,6 +2,19 @@
 
 ## [Unreleased]
 
+- New rules, all `warn`: `undersized-text`, `tight-leading`, `letter-spacing`,
+  `numeric-alignment`, `broken-image`, `unstable-media-size` and
+  `content-hidden-at-rest`. The probe now reads line height, letter spacing,
+  font weight and family, `font-variant-numeric` (and whether the font's digits
+  are tabular), text alignment and transform, line count, corner radius and
+  padding, plus every visible image and video and the share of the main region's
+  text painted invisible.
+- `numeric-alignment` may report a table whose amounts are left-aligned or set
+  in proportional digits on projects that passed before.
+- `routes[].scroll` (`"bottom"` or a selector), `routes[].hover` and
+  `routes[].focus` measure a screen after scrolling, hovering or focusing; a
+  target that matches nothing is reported as `click-failed`, whose message now
+  names the action.
 - `ghost-elevation` (warn): a bordered box in the page flow whose shadow blurs
   over 3px, past Tailwind's `shadow-sm`, so shadcn's resting Card and Input
   pass. Dialogs, popovers and anything inside a fixed or absolute layer are left

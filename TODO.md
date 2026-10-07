@@ -97,25 +97,18 @@ needs.
       2026-10-06: `initScripts` in the config, run per context; covered by the
       desktop-shell integration test.
 
-- [~] **Interaction states are never captured.** 2026-10-01, the TienesLaVibra
-  phone menu opened onto a drawer with no links and every rule passed, because
-  capture only sees the resting page. `routes[].click` now clicks selectors in
-  order before measuring (`click-failed` when one matches nothing), and
-  `empty-dialog` (2026-10-07) reports an open dialog or drawer with nothing but
-  its close control. 2026-10-03, TienesLaVibra public pages: colour defects seen
-  in code but never measured because they only appear on interaction: sticky
-  CTAs that show after scrolling, roster card buttons on hover, selected states
-  in the budget form. Left as well: capture after a scroll, and
-  `:hover`/`:focus`/ selected states of repeated controls.
-- [ ] 49 more candidates, tiered by value and false-positive risk, with exact
-      triggers and sources (Impeccable's detector registry, Vercel Web Interface
-      Guidelines, Krehel's better-* skills, WCAG 2.2, Carbon, the OpenAI GPT-5.5
-      frontend prompt): `packages/ui-quality/docs/rule-candidates.md`. Smallest
-      step: add the style fields the probe lacks (`fontSize`, `lineHeight`,
-      `letterSpacing`, `fontWeight`, `fontVariantNumeric`, `textAlign`,
-      `boxShadow`, `borderRadius`, padding) to `assets/probe.js`, which unlocks
-      about 15 of them, then ship tier 1 (`numeric-alignment`,
-      `undersized-text`, `type-scale-sprawl`, `tight-leading`, ...).
+- [~] 49 more candidates, tiered by value and false-positive risk:
+  `packages/ui-quality/docs/rule-candidates.md`. Probe extended and tier 1
+  shipped 2026-10-07 (`undersized-text`, `tight-leading`, `letter-spacing`,
+  `numeric-alignment`, `broken-image`, `unstable-media-size`,
+  `content-hidden-at-rest`); `zoom-disabled` and `script-error` are already
+  covered by axe `meta-viewport` and `console-error`. Left in tier 1:
+  `type-scale-sprawl`, `nested-cards`, `accent-overuse`, `text-occlusion`
+  (medium false-positive risk). Smallest next step: `nested-cards` (the probe
+  now has `borderRadius`, `shadowBlur`, padding), then the open halves: layout
+  shift through an init-script `PerformanceObserver` (a buffered read from the
+  probe returns nothing in headless Chromium) and failed CSS background images
+  from the request log.
 
 ## db-quality
 

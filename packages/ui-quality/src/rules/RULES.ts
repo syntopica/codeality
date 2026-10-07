@@ -2,8 +2,10 @@ import { axeFindings } from '@/rules/axeFindings.js'
 import { bareUrl } from '@/rules/bareUrl.js'
 import { behaviourBroken } from '@/rules/behaviourBroken.js'
 import { blankRoute } from '@/rules/blankRoute.js'
+import { brokenImage } from '@/rules/brokenImage.js'
 import { clickFailed } from '@/rules/clickFailed.js'
 import { consoleError } from '@/rules/consoleError.js'
+import { contentHiddenAtRest } from '@/rules/contentHiddenAtRest.js'
 import { contentWidth } from '@/rules/contentWidth.js'
 import { controlInset } from '@/rules/controlInset.js'
 import { duplicateNavIcon } from '@/rules/duplicateNavIcon.js'
@@ -14,7 +16,9 @@ import { ghostElevation } from '@/rules/ghostElevation.js'
 import { horizontalOverflow } from '@/rules/horizontalOverflow.js'
 import { iconContrast } from '@/rules/iconContrast.js'
 import { inputZoom } from '@/rules/inputZoom.js'
+import { letterSpacing } from '@/rules/letterSpacing.js'
 import { mixedIconFamily } from '@/rules/mixedIconFamily.js'
+import { numericAlignment } from '@/rules/numericAlignment.js'
 import { palette } from '@/rules/palette.js'
 import { placeholderFit } from '@/rules/placeholderFit.js'
 import { rawPlaceholder } from '@/rules/rawPlaceholder.js'
@@ -23,18 +27,23 @@ import type { Rule } from '@/rules/Rule.js'
 import { slowRequest } from '@/rules/slowRequest.js'
 import { textClipped } from '@/rules/textClipped.js'
 import { textHardCut } from '@/rules/textHardCut.js'
+import { tightLeading } from '@/rules/tightLeading.js'
 import { transitionAll } from '@/rules/transitionAll.js'
+import { undersizedText } from '@/rules/undersizedText.js'
+import { unstableMediaSize } from '@/rules/unstableMediaSize.js'
 
 export const RULES: Rule[] = [
   axeFindings,
   bareUrl,
   behaviourBroken,
   blankRoute,
+  brokenImage,
   clickFailed,
   consoleError,
+  contentHiddenAtRest,
   contentWidth,
-  duplicateNavIcon,
   controlInset,
+  duplicateNavIcon,
   edgeMisaligned,
   emptyDialog,
   fixedOverflow,
@@ -42,7 +51,9 @@ export const RULES: Rule[] = [
   horizontalOverflow,
   iconContrast,
   inputZoom,
+  letterSpacing,
   mixedIconFamily,
+  numericAlignment,
   palette,
   placeholderFit,
   rawPlaceholder,
@@ -50,5 +61,8 @@ export const RULES: Rule[] = [
   slowRequest,
   textClipped,
   textHardCut,
+  tightLeading,
   transitionAll,
+  undersizedText,
+  unstableMediaSize,
 ]

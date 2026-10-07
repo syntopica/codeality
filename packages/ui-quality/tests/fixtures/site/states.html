@@ -1,0 +1,67 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>Defects behind a scroll, a hover and a focus</title>
+    <style>
+      body {
+        margin: 0;
+        font: 16px/1.5 sans-serif;
+        color: #000000;
+        background: #ffffff;
+      }
+      main {
+        padding: 24px;
+        min-height: 3000px;
+      }
+      .tip,
+      .hint,
+      .cta {
+        display: none;
+        font-size: 9px;
+      }
+      li.row:hover .tip {
+        display: inline;
+      }
+      label:focus-within + .hint {
+        display: block;
+      }
+      .cta {
+        position: fixed;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        padding: 16px;
+        background: #ffffff;
+      }
+      .cta.shown {
+        display: block;
+      }
+    </style>
+  </head>
+  <body>
+    <main>
+      <h1>Orders</h1>
+      <label>Search orders <input id="search" type="search" /></label>
+      <p class="hint">Search by client name or order number</p>
+      <ul>
+        <li class="row">
+          Order 1041 <span class="tip">Refund pending review</span>
+        </li>
+        <li class="row">
+          Order 1042 <span class="tip">Refund pending review</span>
+        </li>
+        <li class="row">
+          Order 1043 <span class="tip">Refund pending review</span>
+        </li>
+      </ul>
+    </main>
+    <div class="cta">Start your free trial today</div>
+    <script>
+      const cta = document.querySelector('.cta')
+      addEventListener('scroll', () => {
+        cta.classList.toggle('shown', scrollY > 200)
+      })
+    </script>
+  </body>
+</html>

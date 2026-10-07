@@ -202,6 +202,58 @@
     return widest
   }
 
+  // The line height in px; `normal` is the font's own ascent plus descent,
+  // which is what the browser lays a line out with.
+  const lineHeightOf = (style) => {
+    if (style.lineHeight !== 'normal') return parseFloat(style.lineHeight)
+    if (!measure) return 0
+    measure.font = style.font
+    const metrics = measure.measureText('Mg')
+    return (
+      Math.round(
+        (metrics.fontBoundingBoxAscent + metrics.fontBoundingBoxDescent) * 10,
+      ) / 10
+    )
+  }
+
+  // Whether every digit of the element's font takes one width, so a column
+  // of numbers lines up: `tabular-nums`, or a font whose figures are tabular
+  // unless told otherwise. The canvas ignores font-variant-numeric, so an
+  // explicit `proportional-nums` is read from the style.
+  const tabularCache = new Map()
+  const tabularDigitsOf = (style) => {
+    const variant = style.fontVariantNumeric
+    if (variant.includes('tabular-nums')) return true
+    if (variant.includes('proportional-nums') || !measure) return false
+    if (tabularCache.has(style.font)) return tabularCache.get(style.font)
+    measure.font = style.font
+    const narrow = measure.measureText('1111111111').width
+    const wide = measure.measureText('0000000000').width
+    const tabular = Math.abs(narrow - wide) < 0.5
+    tabularCache.set(style.font, tabular)
+    return tabular
+  }
+
+  // How many lines the element's own text is laid out on: the distinct tops
+  // of its text fragments. Zero when it has no text of its own.
+  const range = document.createRange()
+  const linesOf = (element) => {
+    const tops = []
+    for (const node of element.childNodes) {
+      if (node.nodeType !== Node.TEXT_NODE || !node.textContent.trim()) continue
+      range.selectNodeContents(node)
+      for (const rect of range.getClientRects()) {
+        if (rect.width === 0) continue
+        if (!tops.some((top) => Math.abs(top - rect.top) < rect.height / 2))
+          tops.push(rect.top)
+      }
+    }
+    return tops.length
+  }
+
+  const signatureOf = (element) =>
+    [element.tagName.toLowerCase(), ...[...element.classList].sort()].join('.')
+
   const isTextEntry = (element) => {
     if (element.isContentEditable)
       return !element.parentElement || !element.parentElement.isContentEditable
@@ -240,10 +292,7 @@
       id,
       parent: parent ? ids.get(parent) : null,
       tag: element.tagName.toLowerCase(),
-      signature: [
-        element.tagName.toLowerCase(),
-        ...[...element.classList].sort(),
-      ].join('.'),
+      signature: signatureOf(element),
       selector: selectorOf(element),
       x: Math.round(rect.left + window.scrollX),
       y: Math.round(rect.top + window.scrollY),
@@ -297,6 +346,28 @@
       shadowBlur: shadowBlurOf(style),
       isControl: isControl(element),
       fontSize: parseFloat(style.fontSize),
+      lineHeight: lineHeightOf(style),
+      letterSpacing:
+        style.letterSpacing === 'normal' ? 0 : parseFloat(style.letterSpacing),
+      fontWeight: Number(style.fontWeight),
+      fontFamily: style.fontFamily
+        .split(',')[0]
+        .replace(/["']/g, '')
+        .trim()
+        .toLowerCase()
+        .slice(0, 40),
+      fontVariantNumeric: style.fontVariantNumeric,
+      tabularDigits: text ? tabularDigitsOf(style) : false,
+      textAlign: style.textAlign,
+      textTransform: style.textTransform,
+      lines: text ? linesOf(element) : 0,
+      borderRadius: parseFloat(style.borderTopLeftRadius) || 0,
+      padding: [
+        parseFloat(style.paddingTop),
+        parseFloat(style.paddingRight),
+        parseFloat(style.paddingBottom),
+        parseFloat(style.paddingLeft),
+      ],
       isTextEntry: isTextEntry(element),
       isDialog: element.matches(DIALOG),
       label: (element.getAttribute('aria-label') ?? '').trim().slice(0, 80),
@@ -304,6 +375,88 @@
       isBanner: element === banner,
     })
   }
+
+  // Text in the main region that is laid out but painted invisible: opacity
+  // 0 or visibility hidden, the mark of a reveal animation that never ran.
+  // What is closed on purpose (a collapsed <details>, `hidden`, `inert`,
+  // `aria-hidden`) is left out of both counts, and so is `display: none`.
+  const AT_REST_EXEMPT =
+    'details:not([open]) > :not(summary), [hidden], [inert], [aria-hidden="true"]'
+  const hiddenTextOf = (root) => {
+    const counts = { total: 0, hidden: 0, selector: '' }
+    if (!root) return counts
+    const walker = document.createTreeWalker(root, NodeFilter.SHOW_TEXT)
+    for (let node = walker.nextNode(); node; node = walker.nextNode()) {
+      const length = node.textContent.replace(/\s+/g, '').length
+      const parent = node.parentElement
+      if (length === 0 || !parent || SKIP.has(parent.tagName)) continue
+      if (parent.closest(AT_REST_EXEMPT) || !parent.checkVisibility()) continue
+      counts.total += length
+      if (
+        parent.checkVisibility({ checkOpacity: true, checkVisibilityCSS: true })
+      )
+        continue
+      counts.hidden += length
+      if (!counts.selector) counts.selector = selectorOf(parent)
+    }
+    return counts
+  }
+
+  // Whether an image or video failed: an image that finished loading with no
+  // pixels, one with no source at all (a lazy loader's `data-src` aside), or
+  // a video the browser could not play.
+  const isBroken = (media) => {
+    if (media.tagName === 'VIDEO')
+      return media.error !== null || media.networkState === 3
+    if (media.complete && media.currentSrc && media.naturalWidth === 0)
+      return true
+    return (
+      !media.currentSrc &&
+      !(media.getAttribute('src') ?? '').trim() &&
+      !media.hasAttribute('srcset') &&
+      !media.hasAttribute('data-src') &&
+      !media.hasAttribute('data-srcset')
+    )
+  }
+
+  // Whether the box an image or video takes is known before its file loads.
+  // Width and height attributes or an aspect-ratio give it; so do CSS sizes,
+  // which a copy without a source shows: it keeps a height only when the
+  // stylesheet sets one (a video's default is 300x150 whatever it plays).
+  const isSized = (media, style) => {
+    if (media.hasAttribute('width') && media.hasAttribute('height')) return true
+    if (style.aspectRatio !== 'auto' || style.objectFit !== 'fill') return true
+    if (style.position === 'absolute' || style.position === 'fixed') return true
+    const copy = media.cloneNode(false)
+    for (const name of ['id', 'src', 'srcset', 'poster'])
+      copy.removeAttribute(name)
+    copy.setAttribute('alt', '')
+    // Beside a <picture>, not in it: inside, its sources would load again.
+    const anchor =
+      media.parentElement?.tagName === 'PICTURE' ? media.parentElement : media
+    anchor.after(copy)
+    const box = copy.getBoundingClientRect()
+    copy.remove()
+    if (media.tagName === 'VIDEO')
+      return box.width !== 300 || box.height !== 150
+    // The height is what moves the content below when the file arrives.
+    return box.height > 0
+  }
+
+  const MAX_MEDIA = 200
+  const media = [...document.body.querySelectorAll('img, video')]
+    .filter((element) => element.checkVisibility())
+    .slice(0, MAX_MEDIA)
+    .map((element) => {
+      const broken = isBroken(element)
+      return {
+        tag: element.tagName.toLowerCase(),
+        signature: signatureOf(element),
+        selector: selectorOf(element),
+        broken,
+        sized: broken || isSized(element, getComputedStyle(element)),
+      }
+    })
 
   // shadcn/ui keeps a token as its channels alone ("222 47% 11%") and wraps it
   // in hsl() where it is used, so a bare triplet is read as hsl.
@@ -336,5 +489,7 @@
     viewportWidth: window.innerWidth,
     viewportHeight: window.innerHeight,
     documentWidth: document.documentElement.scrollWidth,
+    media,
+    hiddenText: hiddenTextOf(main),
   }
 }

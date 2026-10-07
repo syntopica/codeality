@@ -1,5 +1,22 @@
 ### 2026-10-07
 
+- [x] ui-quality interaction states: `routes[].scroll` (`"bottom"` or a
+      selector), `routes[].hover` and `routes[].focus` measure the screen in
+      that state after the clicks, the screenshot keeps it, and a missing target
+      is a `click-failed` finding naming the action (a click keeps its bare
+      selector identity, so baselines still match). Evidence:
+      `tests/cli.states.integration.test.ts`.
+- [x] ui-quality tier 1 rules (warn): `undersized-text`, `tight-leading` (24px
+      and up exempt), `letter-spacing`, `numeric-alignment` (canvas test for
+      fonts whose digits are already tabular), `broken-image`,
+      `unstable-media-size`, `content-hidden-at-rest`; probe gained line height,
+      tracking, weight, family, numeric variant, alignment, transform, line
+      count, radius, padding, a media list and hidden-text counts. The sizing
+      check inserts and removes a source-less copy of the media synchronously,
+      the probe's one page mutation. Evidence: ui-quality `lint`, `type-check`,
+      `test` (64 files, 206 tests) exit 0; `cli.typography.integration.test.ts`
+      runs a defect page and its clean twin; `pnpm dupes` 0.49%.
+
 - [x] db-quality `perf diff` compares against the previous window, not the
       cumulative mean since the stats reset. Codex adjudication
       (`codex exec -s read-only`, option A, confidence high): `perf snapshot`

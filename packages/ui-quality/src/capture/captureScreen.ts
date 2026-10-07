@@ -1,8 +1,8 @@
 import { auditAccessibility } from '@/capture/auditAccessibility.js'
 import { checkAction } from '@/capture/checkAction.js'
-import { clickThrough } from '@/capture/clickThrough.js'
 import { exerciseScreen } from '@/capture/exerciseScreen.js'
 import { fileDigest } from '@/capture/fileDigest.js'
+import { interactWithRoute } from '@/capture/interactWithRoute.js'
 import { openRoute } from '@/capture/openRoute.js'
 import { recordConsoleErrors } from '@/capture/recordConsoleErrors.js'
 import { recordRequests } from '@/capture/recordRequests.js'
@@ -10,6 +10,7 @@ import { retimeSlowRequests } from '@/capture/retimeSlowRequests.js'
 import type { ScreenRequest } from '@/capture/ScreenRequest.js'
 import { screenshotPage } from '@/capture/screenshotPage.js'
 import { storageInitScript } from '@/capture/storageInitScript.js'
+import { holdsState } from '@/config/holdsState.js'
 import type { PageSnapshot } from '@/model/PageSnapshot.js'
 import type { ProbeResult } from '@/model/ProbeResult.js'
 
@@ -32,9 +33,9 @@ export const captureScreen = async ({
       storageInitScript(request.baseUrl + route.path, route.localStorage),
     )
   await openRoute(page, route.path, request)
-  if (route.waitFor) await page.locator(route.waitFor).first().waitFor()
-  const clickFailures = await clickThrough(page, route.click)
-  const screenshot = await screenshotPage(page, screensDir, screen)
+  const interactionFailures = await interactWithRoute(page, route)
+  const keep = holdsState(route)
+  const screenshot = await screenshotPage(page, screensDir, screen, keep)
   // axe fetches each stylesheet itself to read the CSSOM; a page whose CSP
   // keeps connect-src narrow logs that refusal, which the page never caused.
   const loggedBeforeAxe = consoleLog.errors.length
@@ -62,7 +63,7 @@ export const captureScreen = async ({
     screenshot,
     screenshotDigest: fileDigest(screenshot),
     consoleErrors: consoleLog.errors,
-    clickFailures,
+    interactionFailures,
     requests,
     behaviour: [...behaviour, ...actions],
   }

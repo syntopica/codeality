@@ -11,6 +11,8 @@ export const snapshotOf = (
   viewportWidth: 1440,
   viewportHeight: 900,
   documentWidth: 1440,
+  media: [],
+  hiddenText: { total: 0, hidden: 0, selector: '' },
   screen: {
     route: '/inbox',
     viewport: { width: 1440, height: 900 },
@@ -20,7 +22,7 @@ export const snapshotOf = (
   screenshot: '/tmp/inbox.png',
   screenshotDigest: 'digest',
   consoleErrors: [],
-  clickFailures: [],
+  interactionFailures: [],
   requests: [],
   behaviour: [],
   ...overrides,

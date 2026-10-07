@@ -1,13 +1,21 @@
 # Rule candidates for codeality-ui
 
 These are new measurable checks. Two lists were read first so this file does not
-repeat them, both as of 2026-10-01:
+repeat them, both as of 2026-10-01 and updated on 2026-10-07:
 
 - **Shipped rules**, from `packages/ui-quality/README.md`: `a11y/*`,
   `text-clipped`, `text-hard-cut`, `row-misaligned`, `control-inset`,
   `edge-misaligned`, `content-width`, `palette`, `blank-route`,
   `horizontal-overflow`, `fixed-overflow`, `icon-contrast`, `raw-placeholder`,
-  `bare-url`.
+  `bare-url`. Shipped from this file on 2026-10-07: `undersized-text`,
+  `tight-leading`, `letter-spacing`, `numeric-alignment`, `broken-image`,
+  `unstable-media-size` (its attribute and CSS half) and
+  `content-hidden-at-rest`.
+- **Covered by an existing check**, so not shipped as their own rule:
+  `zoom-disabled` is axe's `meta-viewport` (on by default, `wcag2aa`, which
+  fires on `user-scalable=no` and on `maximum-scale` under 2), reported as
+  `a11y/meta-viewport`; `script-error` is `console-error`, whose recorder
+  already listens to Playwright's `pageerror`.
 - **Already filed** in `TODO.md` (repository root) under ui-quality:
   `placeholder-fit`, `duplicate-nav-icon`, `mixed-icon-family`,
   `oversized-list`, `ghost-elevation`, `transition-all`, axe `target-size`.
@@ -16,12 +24,21 @@ Axe runs with default tags, best-practice included. That means `heading-order`,
 `label`, `button-name` and `color-contrast` are already covered and do not
 appear below.
 
-Today `assets/probe.js` collects colours, borders, boxes, text, `textOverflow`,
-`overflow` and `position`. It does not collect `fontSize`, `lineHeight`,
-`letterSpacing`, `fontWeight`, `fontVariantNumeric`, `textAlign`, `boxShadow`,
-`borderRadius`, `backgroundImage`, `opacity`, `zIndex`, `cursor`, padding or
-margins. Most candidates below need one or more of these. The **Probe** column
-names the fields. Adding them once unlocks about 15 rules.
+Since 2026-10-07 `assets/probe.js` also collects `fontSize`, `lineHeight`,
+`letterSpacing`, `fontWeight`, the first `fontFamily`, `fontVariantNumeric` (and
+whether the font's digits are tabular), `textAlign`, `textTransform`, the line
+count of each element's own text, `borderRadius` (top-left), padding, every
+visible `img` and `video` (broken, sized) and the share of the main region's
+text at opacity 0 or `visibility: hidden`. It still does not collect
+`backgroundImage` details, `backgroundClip`, per-element `opacity`, `zIndex`,
+`cursor`, margins, `gap` or `transition*` beyond `transition: all`. The
+**Probe** column names the fields each remaining candidate needs.
+
+Two halves of shipped tier 1 rows remain open: the layout-shift half of
+`unstable-media-size` (a buffered `PerformanceObserver('layout-shift')` read
+from the probe returned no entries in headless Chromium, so it needs an observer
+registered in an init script before load), and the CSS background image half of
+`broken-image` (needs the failed requests from the capture).
 
 Impeccable (`pbakaus/impeccable`, Apache-2.0) has implemented about half of
 these in its Rust detector (`crates/core/src/checks/`). Where it has, its id is
@@ -32,21 +49,12 @@ The FP column is the false-positive risk: L low, M medium, H high.
 
 ## Tier 1: high value for admin screens, low false-positive risk
 
-| Rule id                  | Exact trigger                                                                                                                                                                                                                                                                                                                                                              | Sources                                                                                          | FP                                                                                                                                | Probe                                           |
-| ------------------------ | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------ | --------------------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------- |
-| `numeric-alignment`      | In a repeated row group (reuse `rowGroups`), a column where at least 80% of cells match `^[-+]?[\d.,\s]+(%\|€\|\$\|£)?$`, or a date or time pattern, fails either check: (a) the cells' right edges differ by more than 2px while their left edges agree (left-aligned numbers); (b) the computed `fontVariantNumeric` lacks `tabular-nums` and the font is not monospace. | KRE better-layout ("numbers in tables align to the trailing edge"), VWIG typography, BUI, ID     | L (badge-like counts in pill cells; exempt cells under 3 characters)                                                              | `fontVariantNumeric`, `fontFamily`, `textAlign` |
-| `undersized-text`        | A visible text node with computed `fontSize` under 11px (functional: inside `a`, `button`, `label`, `td`, `th`, `li`, nav), or body text under 12px. Exempt: `sup`, `sub`, sr-only (clip at 1px), `code` and `kbd`.                                                                                                                                                        | IMP `undersized-ui-text` and `tiny-text`; KRE (floor 12px)                                       | L                                                                                                                                 | `fontSize`                                      |
-| `type-scale-sprawl`      | On one screen, more than 6 distinct `fontSize` values among visible text nodes, or two sizes in use that differ by 1px or less (for example 13 and 14 used side by side in one row group).                                                                                                                                                                                 | G5 (4-5 sizes), rubric 2, IMP `flat-type-hierarchy`                                              | M (rich-text bodies; scope to `main` and exclude user content)                                                                    | `fontSize`                                      |
-| `tight-leading`          | A text node that wraps to 2 or more lines (height of at least 2 x lineHeight) with `lineHeight / fontSize` under 1.3.                                                                                                                                                                                                                                                      | IMP `tight-leading`; KRE (at least 1.4 on 3 or more lines)                                       | L                                                                                                                                 | `fontSize`, `lineHeight`                        |
-| `letter-spacing`         | `letterSpacing` below -0.04em at any size, below 0 on text under 20px, or above 0.05em on non-uppercase text longer than 20 characters.                                                                                                                                                                                                                                    | OFP (letter-spacing 0, never negative), IMP `extreme-negative-tracking` and `wide-tracking`, BUI | L                                                                                                                                 | `letterSpacing`, `fontSize`, `textTransform`    |
-| `nested-cards`           | A "card" is an element with radius over 0 and either a visible border, a non-none `boxShadow`, or a background at delta E over 3 from its parent, and with padding of at least 8px. The rule fires when a card has an ancestor card within 3 levels. Exempt: inputs, buttons, badges, `dialog` and popovers.                                                               | OFP ("never put UI cards inside other cards"), OFS, IMP `nested-cards`, ID, rubric 10            | M (a list item inside a panel is sometimes legitimate; report once per outer card)                                                | `borderRadius`, `boxShadow`, padding            |
-| `accent-overuse`         | Inside one `main`, `form` or `[role=dialog]`, more than one button whose background is within delta E 5 of the configured accent (`palette.accent`, new config key) or of the most saturated filled-button colour.                                                                                                                                                         | KRE better-colors ("fill exactly one action per view"), OFS, GOV buttons, BUI                    | M (bulk-action bars; allow one per toolbar region)                                                                                | existing `backgroundColor`, `isControl`         |
-| `text-occlusion`         | A text box intersects by more than 20% of its area with an opaque element that paints above it (later in paint order or higher `zIndex`), that is not its ancestor, and that the text is not inside.                                                                                                                                                                       | OFP ("UI elements and text must not overlap"), IMP `text-occlusion`, OFS                         | M (deliberate overlays such as avatars stacking on names; require `elementFromPoint` at the text centre to return a non-ancestor) | `zIndex`, `elementFromPoint` sampling           |
-| `script-error`           | Any Playwright `pageerror` event during route load and settle.                                                                                                                                                                                                                                                                                                             | IMP `script-error`                                                                               | L                                                                                                                                 | capture-level, not probe                        |
-| `broken-image`           | An `img` with `complete && naturalWidth === 0`, an empty or missing `src`, or a CSS background image whose request failed.                                                                                                                                                                                                                                                 | IMP `broken-image`                                                                               | L                                                                                                                                 | `naturalWidth`, `src`                           |
-| `content-hidden-at-rest` | After settle, at least 25% of text characters inside `main` sit in nodes with computed `opacity` 0 or `visibility: hidden`, excluding closed `details`, `[hidden]`, inactive tab panels (`[role=tabpanel][hidden]`) and `aria-hidden` menus.                                                                                                                               | IMP `content-hidden-at-rest`                                                                     | L                                                                                                                                 | `opacity`, `visibility`                         |
-| `unstable-media-size`    | An `img` or `video` with no `width` and `height` attributes and no computed `aspect-ratio` (CLS risk), or a measured layout shift above 0.1 through `PerformanceObserver('layout-shift')` between load and settle.                                                                                                                                                         | VWIG images, UPM content jumping                                                                 | L                                                                                                                                 | attributes, `aspectRatio`, layout-shift entries |
-| `zoom-disabled`          | `meta[name=viewport]` content includes `user-scalable=no` or `maximum-scale=1`.                                                                                                                                                                                                                                                                                            | VWIG anti-patterns, WCAG 1.4.4                                                                   | L                                                                                                                                 | document head                                   |
+| Rule id             | Exact trigger                                                                                                                                                                                                                                                                                                | Sources                                                                               | FP                                                                                                                                | Probe                                   |
+| ------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------- | --------------------------------------- |
+| `type-scale-sprawl` | On one screen, more than 6 distinct `fontSize` values among visible text nodes, or two sizes in use that differ by 1px or less (for example 13 and 14 used side by side in one row group).                                                                                                                   | G5 (4-5 sizes), rubric 2, IMP `flat-type-hierarchy`                                   | M (rich-text bodies; scope to `main` and exclude user content)                                                                    | `fontSize`                              |
+| `nested-cards`      | A "card" is an element with radius over 0 and either a visible border, a non-none `boxShadow`, or a background at delta E over 3 from its parent, and with padding of at least 8px. The rule fires when a card has an ancestor card within 3 levels. Exempt: inputs, buttons, badges, `dialog` and popovers. | OFP ("never put UI cards inside other cards"), OFS, IMP `nested-cards`, ID, rubric 10 | M (a list item inside a panel is sometimes legitimate; report once per outer card)                                                | `borderRadius`, `boxShadow`, padding    |
+| `accent-overuse`    | Inside one `main`, `form` or `[role=dialog]`, more than one button whose background is within delta E 5 of the configured accent (`palette.accent`, new config key) or of the most saturated filled-button colour.                                                                                           | KRE better-colors ("fill exactly one action per view"), OFS, GOV buttons, BUI         | M (bulk-action bars; allow one per toolbar region)                                                                                | existing `backgroundColor`, `isControl` |
+| `text-occlusion`    | A text box intersects by more than 20% of its area with an opaque element that paints above it (later in paint order or higher `zIndex`), that is not its ancestor, and that the text is not inside.                                                                                                         | OFP ("UI elements and text must not overlap"), IMP `text-occlusion`, OFS              | M (deliberate overlays such as avatars stacking on names; require `elementFromPoint` at the text centre to return a non-ancestor) | `zIndex`, `elementFromPoint` sampling   |
 
 ## Tier 2: valuable, needs a careful threshold
 
@@ -94,16 +102,11 @@ by eye; these would let a rule report it.
 
 ## Suggested order
 
-1. Extend the probe once with `fontSize`, `lineHeight`, `letterSpacing`,
-   `fontWeight`, `fontFamily`, `fontVariantNumeric`, `textAlign`,
-   `textTransform`, `boxShadow`, `borderRadius`, `backgroundImage`,
-   `backgroundClip`, `opacity`, `visibility`, `zIndex`, `cursor`, padding and
-   `transition*`.
-2. Ship `numeric-alignment`, `undersized-text`, `tight-leading`,
-   `letter-spacing`, `nested-cards`, `script-error`, `broken-image` and
-   `zoom-disabled` first. They have the least false-positive risk and the most
-   hits on admin screens.
-3. Then `accent-overuse` (needs a `palette.accent` config key),
+1. Done on 2026-10-07: the probe extension and `numeric-alignment`,
+   `undersized-text`, `tight-leading`, `letter-spacing`, `broken-image`,
+   `unstable-media-size` and `content-hidden-at-rest`.
+2. Next: `nested-cards` (the probe has `borderRadius`, `shadowBlur` and padding
+   now), then `accent-overuse` (needs a `palette.accent` config key),
    `type-scale-sprawl`, `focus-invisible` (needs a keyboard pass in capture) and
    `touch-target`.
 
