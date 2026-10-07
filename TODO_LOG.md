@@ -1,3 +1,14 @@
+### 2026-10-08
+
+- [x] ui-quality 0.7.0 published (run 37693554087, tag pushed): every remaining
+      candidate in `docs/rule-candidates.md` shipped, 29 rules at `warn` (tier 2
+      rest and tier 3), none rejected; `label-punctuation` opt-in through the
+      new `enable` list. Deviations from the first triggers are recorded in the
+      doc (`purple-gradient` from hue 270, `id-first-column` opaque ids only).
+      Evidence: 93 files, 315 tests; a scan of every fixture at 1440/390, light
+      and dark, found no clean fixture newly reporting; `pnpm check:ci` exit 0
+      on the released tree (9b3fec7..947ee07).
+
 ### 2026-10-07
 
 - [x] Python consumers, fourth pass (owner-approved; gates re-run on clean

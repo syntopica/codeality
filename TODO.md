@@ -78,12 +78,6 @@ needs.
       2026-10-06: `initScripts` in the config, run per context; covered by the
       desktop-shell integration test.
 
-- [~] 41 more candidates, tiered by value and false-positive risk:
-  `packages/ui-quality/docs/rule-candidates.md`. Tier 1 complete 2026-10-07;
-  tier 2 started the same day with `focus-invisible`, `touch-target`,
-  `radius-sprawl` and the opt-in `card-radius-admin` (0.6.0). Smallest next
-  step: `off-scale-spacing`, then down the tier 2 table.
-
 ## db-quality
 
 - [ ] **Kysely type drift** (`kysely.databaseType`, spec section 3): deferred
