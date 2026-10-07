@@ -32,6 +32,7 @@ import { textClipped } from '@/rules/textClipped.js'
 import { textHardCut } from '@/rules/textHardCut.js'
 import { textOcclusion } from '@/rules/textOcclusion.js'
 import { tightLeading } from '@/rules/tightLeading.js'
+import { touchTarget } from '@/rules/touchTarget.js'
 import { transitionAll } from '@/rules/transitionAll.js'
 import { typeScaleSprawl } from '@/rules/typeScaleSprawl.js'
 import { undersizedText } from '@/rules/undersizedText.js'
@@ -72,6 +73,7 @@ export const RULES: Rule[] = [
   textClipped,
   textHardCut,
   tightLeading,
+  touchTarget,
   transitionAll,
   undersizedText,
   unstableMediaSize,

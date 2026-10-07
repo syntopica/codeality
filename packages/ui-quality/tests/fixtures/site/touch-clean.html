@@ -1,0 +1,97 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Tap targets that fit a thumb</title>
+    <style>
+      body {
+        margin: 0;
+        font: 16px/1.5 sans-serif;
+        color: #111827;
+        background: #ffffff;
+      }
+      main {
+        padding: 16px;
+      }
+      h1 {
+        font-size: 24px;
+        margin: 0 0 16px;
+      }
+      nav ul {
+        list-style: none;
+        margin: 0 0 16px;
+        padding: 0;
+      }
+      nav a {
+        display: block;
+        padding: 10px 0;
+        color: #1d4ed8;
+      }
+      .tools {
+        display: flex;
+        gap: 12px;
+        margin-bottom: 16px;
+      }
+      /* 32px to look at, 48px to hit: the pseudo-element carries the target. */
+      .tool {
+        position: relative;
+        width: 32px;
+        height: 32px;
+        padding: 0;
+        border: 1px solid #6b7280;
+        border-radius: 6px;
+        background: #ffffff;
+      }
+      .tool::after {
+        content: '';
+        position: absolute;
+        top: -8px;
+        right: -8px;
+        bottom: -8px;
+        left: -8px;
+      }
+      .opt {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        min-height: 48px;
+      }
+      .pair {
+        display: flex;
+        gap: 8px;
+      }
+      .pair button {
+        width: 120px;
+        height: 48px;
+        border: 1px solid #6b7280;
+        background: #ffffff;
+        font: inherit;
+      }
+    </style>
+  </head>
+  <body>
+    <main>
+      <h1>Invoices</h1>
+      <nav>
+        <ul>
+          <li><a href="#open">Open invoices</a></li>
+          <li><a href="#paid">Paid invoices</a></li>
+        </ul>
+      </nav>
+      <p>
+        See the <a href="#terms">terms of payment</a> before you send a
+        reminder.
+      </p>
+      <div class="tools">
+        <button type="button" class="tool" aria-label="Edit"></button>
+        <button type="button" class="tool" aria-label="Delete"></button>
+      </div>
+      <label class="opt"><input type="checkbox" /> Remind me weekly</label>
+      <div class="pair">
+        <button type="button">Approve</button>
+        <button type="button">Reject</button>
+      </div>
+    </main>
+  </body>
+</html>

@@ -282,6 +282,47 @@
     }
   }
 
+  // What a thumb hits: links, buttons, ARIA widgets and the non-typing inputs.
+  // Text fields have their own rules, and a disabled control is not hit.
+  const TAPPABLE =
+    'a[href], button, summary, [role="button"], [role="link"], [role="tab"], [role="menuitem"], [role="checkbox"], [role="radio"], [role="switch"], input[type="checkbox"], input[type="radio"], input[type="button"], input[type="submit"], input[type="reset"], input[type="image"]'
+  // The box a tap lands in: the element's own, its labels' (a checkbox is
+  // hit through its label), and the absolutely positioned ::before and
+  // ::after that extend a small control's hit area.
+  const tapAreaOf = (element, style, rect) => {
+    const box = {
+      left: rect.left,
+      top: rect.top,
+      right: rect.right,
+      bottom: rect.bottom,
+    }
+    const grow = (left, top, width, height) => {
+      box.left = Math.min(box.left, left)
+      box.top = Math.min(box.top, top)
+      box.right = Math.max(box.right, left + width)
+      box.bottom = Math.max(box.bottom, top + height)
+    }
+    for (const label of element.labels ?? []) {
+      const own = label.getBoundingClientRect()
+      grow(own.left, own.top, own.width, own.height)
+    }
+    if (style.position !== 'static') {
+      for (const pseudo of ['::before', '::after']) {
+        const extra = getComputedStyle(element, pseudo)
+        if (extra.position !== 'absolute' || extra.content === 'none') continue
+        const left =
+          rect.left + parseFloat(style.borderLeftWidth) + parseFloat(extra.left)
+        const top =
+          rect.top + parseFloat(style.borderTopWidth) + parseFloat(extra.top)
+        const width = parseFloat(extra.width)
+        const height = parseFloat(extra.height)
+        if ([left, top, width, height].every(Number.isFinite))
+          grow(left, top, width, height)
+      }
+    }
+    return [box.right - box.left, box.bottom - box.top]
+  }
+
   const ids = new Map()
   const elements = []
   // Elements with text of their own, for the occlusion pass once every
@@ -309,6 +350,10 @@
     const id = elements.length
     ids.set(element, id)
     if (text) texted.push(element)
+    const tappable = element.matches(TAPPABLE)
+    const [tapWidth, tapHeight] = tappable
+      ? tapAreaOf(element, style, rect)
+      : [0, 0]
     if (style.backgroundImage.includes('url('))
       recordBackgrounds(element, style)
     elements.push({
@@ -384,6 +429,10 @@
       textAlign: style.textAlign,
       textTransform: style.textTransform,
       lines: text ? linesOf(element) : 0,
+      display: style.display,
+      tappable,
+      tapWidth: Math.round(tapWidth),
+      tapHeight: Math.round(tapHeight),
       borderRadius: parseFloat(style.borderTopLeftRadius) || 0,
       padding: [
         parseFloat(style.paddingTop),

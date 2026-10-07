@@ -2,6 +2,12 @@
 
 ## [Unreleased]
 
+- New rule, `warn`: `touch-target`. On a screen 480px wide or less, a link,
+  button or ARIA widget whose hit area (box, label and absolutely positioned
+  `::before`/`::after`) is under 44x44px, or that partly overlaps another
+  target. Links inside a sentence are exempt. It may report on phone screens of
+  projects that passed before. The probe now reads `display` and the tap area.
+
 - New rule, `warn`: `focus-invisible` (keyboard focus that changes nothing
   visible). The capture now presses Tab through the first 30 focusable elements
   after the probe and compares each with its unfocused look; a ring painted on

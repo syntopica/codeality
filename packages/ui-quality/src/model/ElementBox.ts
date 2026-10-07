@@ -66,6 +66,17 @@ export type ElementBox = {
   textTransform: string
   /** Lines the element's own text is laid out on; 0 without text. */
   lines: number
+  /** Computed `display`. */
+  display: string
+  /**
+   * A link, button, tab, menu item, checkbox, radio or switch: something a
+   * thumb hits. Text fields, which have their own rules, are not.
+   */
+  tappable: boolean
+  /** For a tappable, the width in px it can be hit across: its box, label and absolute ::before/::after; 0 otherwise. */
+  tapWidth: number
+  /** For a tappable, the height in px it can be hit across; 0 otherwise. */
+  tapHeight: number
   /** The top-left corner radius in px. */
   borderRadius: number
   /** Padding in px: top, right, bottom, left. */

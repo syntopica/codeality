@@ -1,0 +1,79 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Small tap targets</title>
+    <style>
+      body {
+        margin: 0;
+        font: 16px/1.5 sans-serif;
+        color: #111827;
+        background: #ffffff;
+      }
+      main {
+        padding: 16px;
+      }
+      h1 {
+        font-size: 24px;
+        margin: 0 0 16px;
+      }
+      nav ul {
+        list-style: none;
+        margin: 0 0 16px;
+        padding: 0;
+      }
+      nav a {
+        color: #1d4ed8;
+      }
+      .tools {
+        display: flex;
+        margin-bottom: 16px;
+      }
+      .tool {
+        width: 32px;
+        height: 32px;
+        padding: 0;
+        border: 1px solid #6b7280;
+        border-radius: 6px;
+        background: #ffffff;
+      }
+      .pair {
+        display: flex;
+      }
+      .pair button {
+        width: 120px;
+        height: 48px;
+        border: 1px solid #6b7280;
+        background: #ffffff;
+        font: inherit;
+      }
+      .pair button + button {
+        margin-left: -24px;
+      }
+    </style>
+  </head>
+  <body>
+    <main>
+      <h1>Invoices</h1>
+      <nav>
+        <ul>
+          <li><a href="#open">Open invoices</a></li>
+          <li><a href="#paid">Paid invoices</a></li>
+        </ul>
+      </nav>
+      <p>
+        See the <a href="#terms">terms of payment</a> before you send a
+        reminder.
+      </p>
+      <div class="tools">
+        <button type="button" class="tool" aria-label="Edit"></button>
+        <button type="button" class="tool" aria-label="Delete"></button>
+      </div>
+      <div class="pair">
+        <button type="button">Approve</button>
+        <button type="button">Reject</button>
+      </div>
+    </main>
+  </body>
+</html>
