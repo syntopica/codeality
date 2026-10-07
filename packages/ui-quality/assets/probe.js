@@ -182,6 +182,26 @@
     return painted.stroke !== 'none' ? 'stroke' : ''
   }
 
+  // The widest blur of the visible outer shadows: 3px for Tailwind's
+  // shadow-sm, 6px and up from shadow-md. Inset and transparent layers paint
+  // no elevation.
+  const SHADOW_LAYERS = /,(?![^(]*\))/
+  const SHADOW_COLOR =
+    /(?:rgba?|hsla?|oklch|oklab|lab|lch|color)\([^)]*\)|#[\da-f]+/i
+  const shadowBlurOf = (style) => {
+    if (style.boxShadow === 'none') return 0
+    let widest = 0
+    for (const layer of style.boxShadow.split(SHADOW_LAYERS)) {
+      if (layer.includes('inset')) continue
+      const color = layer.match(SHADOW_COLOR)
+      const rgba = color ? toRgba(color[0]) : null
+      if (!rgba || rgba[3] === 0) continue
+      const lengths = layer.replace(SHADOW_COLOR, '').match(/-?[\d.]+px/g) ?? []
+      widest = Math.max(widest, parseFloat(lengths[2] ?? '0'))
+    }
+    return widest
+  }
+
   const isTextEntry = (element) => {
     if (element.isContentEditable)
       return !element.parentElement || !element.parentElement.isContentEditable
@@ -274,6 +294,7 @@
         style.transitionDuration.split(',').some((d) => parseFloat(d) > 0),
       svgDigest: svgDigestOf(element),
       svgPaint: svgPaintOf(element),
+      shadowBlur: shadowBlurOf(style),
       isControl: isControl(element),
       fontSize: parseFloat(style.fontSize),
       isTextEntry: isTextEntry(element),

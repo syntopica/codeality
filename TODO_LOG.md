@@ -1,5 +1,22 @@
 ### 2026-10-07
 
+- [x] ui-quality `ghost-elevation` (warn): owner said yes and asked for Codex;
+      Codex (`codex exec -s read-only`, verdict D1 option B, confidence high)
+      chose reporting only shadows larger than shadcn's default. Probe field
+      `shadowBlur` (widest visible outer blur); the rule fires on a box with a
+      full visible border, blur over `GHOST_SHADOW_BLUR` (3px, Tailwind
+      shadow-sm) and no fixed/absolute ancestor or dialog. Evidence:
+      `cli.elevation.integration.test.ts` reports only `main > section.ghost`;
+      threshold 1000 drops it, threshold 0 adds `section.resting` while the
+      popover stays excluded.
+- [x] verticagtm: removed the `vitest@<4.1.11` and `@vitest/mocker@<4.1.11`
+      overrides (Codex D3 option A, confidence high). They rewrote the vitest
+      peer ranges of test-quality, jest-dom and @vitest/eslint-plugin to 4.1.11
+      against a direct `vitest@^5.0.3`. `pnpm peers check` no longer lists
+      vitest; `pnpm check:ci` exit 0; verticagtm da9c36b8 pushed. Codex D2
+      (option A, medium) confirmed publishing eslint-plugin-code-policy 0.8.0 at
+      error severity.
+
 - [x] Release 2026-10-07 (b4a0c2f, annotated tags pushed): published
       `@syntopica/ui-quality@0.3.0`, `@syntopica/db-quality@0.4.0` and
       `@syntopica/quality-config@0.12.1` (runs 37631196044, 37631206196,

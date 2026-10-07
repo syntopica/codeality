@@ -47,6 +47,8 @@ export type ElementBox = {
   svgDigest: string
   /** For an svg, `fill` or `stroke` by how its first shape is painted; empty otherwise. */
   svgPaint: string
+  /** The widest blur, in px, of the visible outer box-shadows; 0 without one. */
+  shadowBlur: number
   isControl: boolean
   /** Computed font size in CSS pixels. */
   fontSize: number

@@ -1,0 +1,69 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>Cards with borders and shadows</title>
+    <style>
+      body {
+        margin: 0;
+        font: 16px/1.4 sans-serif;
+        color: #000000;
+        background: #ffffff;
+      }
+      main {
+        padding: 24px;
+        display: grid;
+        gap: 16px;
+      }
+      section {
+        padding: 16px;
+        border-radius: 8px;
+      }
+      .ghost {
+        border: 1px solid #d4d4d8;
+        box-shadow:
+          0 10px 15px -3px rgb(0 0 0 / 0.1),
+          0 4px 6px -4px rgb(0 0 0 / 0.1);
+      }
+      .resting {
+        border: 1px solid #d4d4d8;
+        box-shadow:
+          0 1px 3px 0 rgb(0 0 0 / 0.1),
+          0 1px 2px -1px rgb(0 0 0 / 0.1);
+      }
+      .lifted {
+        box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.1);
+      }
+      .popover {
+        position: absolute;
+        top: 8px;
+        right: 8px;
+        padding: 8px;
+        border: 1px solid #d4d4d8;
+        background: #ffffff;
+        box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.1);
+      }
+      .popover p {
+        border: 1px solid #d4d4d8;
+        box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1);
+      }
+    </style>
+  </head>
+  <body>
+    <main>
+      <section class="ghost">
+        <h2>Revenue</h2>
+        <p>Up 4% on last week.</p>
+      </section>
+      <section class="resting">
+        <h2>Orders</h2>
+        <p>128 this week.</p>
+      </section>
+      <section class="lifted">
+        <h2>Returns</h2>
+        <p>3 this week.</p>
+      </section>
+      <div class="popover"><p>Filter by date</p></div>
+    </main>
+  </body>
+</html>

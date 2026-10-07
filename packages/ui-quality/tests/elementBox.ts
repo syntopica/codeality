@@ -35,6 +35,7 @@ export const elementBox = (
   transitionAll: false,
   svgDigest: '',
   svgPaint: '',
+  shadowBlur: 0,
   scrollHeight: 20,
   clientHeight: 20,
   isControl: false,

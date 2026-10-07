@@ -2,6 +2,11 @@
 
 ## [Unreleased]
 
+- `ghost-elevation` (warn): a bordered box in the page flow whose shadow blurs
+  over 3px, past Tailwind's `shadow-sm`, so shadcn's resting Card and Input
+  pass. Dialogs, popovers and anything inside a fixed or absolute layer are left
+  alone.
+
 ## 0.3.0
 
 - New rules: `empty-dialog` (an open dialog or drawer offering nothing but its

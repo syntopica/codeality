@@ -129,11 +129,6 @@ needs.
   CTAs that show after scrolling, roster card buttons on hover, selected states
   in the budget form. Left as well: capture after a scroll, and
   `:hover`/`:focus`/ selected states of repeated controls.
-- [!] `ghost-elevation`: border plus shadow on one card. Owner decision first:
-  shadcn/ui's default `Card` and `Input` are `border` plus
-  `shadow-sm`/`shadow-xs`, so the rule as written fires on every shadcn app.
-  Question: report it everywhere, only on cards whose shadow is larger than
-  `shadow-sm`, or drop it? Needs a `boxShadow` probe field either way.
 - [ ] 49 more candidates, tiered by value and false-positive risk, with exact
       triggers and sources (Impeccable's detector registry, Vercel Web Interface
       Guidelines, Krehel's better-* skills, WCAG 2.2, Carbon, the OpenAI GPT-5.5
