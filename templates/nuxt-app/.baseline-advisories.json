@@ -1,0 +1,34 @@
+{
+  "GHSA-858h-whjf-mvg5": {
+    "reason": "simple-git <4.0.1, reached only through nuxt > @nuxt/devtools 3.4.2, which asks for ^3 and imports the default export that simple-git 4 removed, so forcing 4.x breaks nuxt dev. Devtools runs only on a developer machine against the local repository, with fixed git arguments, never untrusted input. Unblock: @nuxt/devtools 4 leaving beta.",
+    "expires": "2026-12-31"
+  },
+  "GHSA-86w9-cpqp-85rv": {
+    "reason": "node-forge <=1.4.0 (high) has no patched release; 1.4.0 is the latest. Reached only through nuxt > nitropack > listhen, which uses it to mint a self-signed certificate for the local dev server, never to verify a signature from untrusted input. Unblock: a node-forge release past 1.4.0.",
+    "expires": "2026-12-31"
+  },
+  "GHSA-g4wm-2vf7-vfgr": {
+    "reason": "simple-git <4.0.1, reached only through nuxt > @nuxt/devtools 3.4.2, which asks for ^3 and imports the default export that simple-git 4 removed, so forcing 4.x breaks nuxt dev. Devtools runs only on a developer machine against the local repository, with fixed git arguments, never untrusted input. Unblock: @nuxt/devtools 4 leaving beta.",
+    "expires": "2026-12-31"
+  },
+  "GHSA-hp3w-g68c-fv3c": {
+    "reason": "sprintf-js <=1.1.3 (moderate) has no patched release; 1.1.3 is the latest. Reached only through @lhci/cli > @lhci/utils > js-yaml 3 > argparse 1, which formats its own CLI help strings. Lighthouse runs in CI against our own built templates. Unblock: @lhci moving to js-yaml 4.",
+    "expires": "2026-12-31"
+  },
+  "GHSA-v5rq-49vh-5v5c": {
+    "reason": "simple-git <4.0.1, reached only through nuxt > @nuxt/devtools 3.4.2, which asks for ^3 and imports the default export that simple-git 4 removed, so forcing 4.x breaks nuxt dev. Devtools runs only on a developer machine against the local repository, with fixed git arguments, never untrusted input. Unblock: @nuxt/devtools 4 leaving beta.",
+    "expires": "2026-12-31"
+  },
+  "GHSA-vfj7-8cjw-p6xm": {
+    "reason": "braces <=3.0.3 (high) has no patched release; 3.0.3 is the latest. Reached through micromatch in lint and type-coverage tooling that only expands this project's own glob patterns. Unblock: a braces release past 3.0.3, or micromatch moving off it.",
+    "expires": "2026-12-31"
+  },
+  "GHSA-w5hq-g745-h8pq": {
+    "reason": "uuid <11.1.1 (moderate), reached only through @lhci/cli > uuid 8.3.2. @lhci/cli 0.15.1 is its latest release, so nothing inside its range reaches the patched line. Lighthouse runs against this project's own build, never untrusted input. Unblock: an @lhci/cli release on uuid 11.",
+    "expires": "2026-12-31"
+  },
+  "GHSA-x6jw-m9v5-85vh": {
+    "reason": "simple-git <4.0.1, reached only through nuxt > @nuxt/devtools 3.4.2, which asks for ^3 and imports the default export that simple-git 4 removed, so forcing 4.x breaks nuxt dev. Devtools runs only on a developer machine against the local repository, with fixed git arguments, never untrusted input. Unblock: @nuxt/devtools 4 leaving beta.",
+    "expires": "2026-12-31"
+  }
+}

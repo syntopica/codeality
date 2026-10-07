@@ -6,5 +6,33 @@
   "GHSA-g7r4-m6w7-qqqr": {
     "reason": "esbuild >=0.27.3 <0.28.1 (low), reached through eslint-plugin-code-policy's own tsup and vitest toolchains. tsup 8.5.1 declares esbuild ^0.27.0, so no resolution inside that range can reach the patched 0.28.1. Build-time only, never shipped. Unblock: tsup publishing a release that widens past ^0.27.0.",
     "expires": "2026-11-30"
+  },
+  "GHSA-v5rq-49vh-5v5c": {
+    "reason": "simple-git <4.0.1, reached only through nuxt > @nuxt/devtools 3.4.2, which asks for ^3 and imports the default export that simple-git 4 removed, so forcing 4.x breaks nuxt dev. Devtools runs only on a developer machine against the local repository, with fixed git arguments, never untrusted input. Unblock: @nuxt/devtools 4 leaving beta.",
+    "expires": "2026-12-31"
+  },
+  "GHSA-x6jw-m9v5-85vh": {
+    "reason": "simple-git <4.0.1, reached only through nuxt > @nuxt/devtools 3.4.2, which asks for ^3 and imports the default export that simple-git 4 removed, so forcing 4.x breaks nuxt dev. Devtools runs only on a developer machine against the local repository, with fixed git arguments, never untrusted input. Unblock: @nuxt/devtools 4 leaving beta.",
+    "expires": "2026-12-31"
+  },
+  "GHSA-g4wm-2vf7-vfgr": {
+    "reason": "simple-git <4.0.1, reached only through nuxt > @nuxt/devtools 3.4.2, which asks for ^3 and imports the default export that simple-git 4 removed, so forcing 4.x breaks nuxt dev. Devtools runs only on a developer machine against the local repository, with fixed git arguments, never untrusted input. Unblock: @nuxt/devtools 4 leaving beta.",
+    "expires": "2026-12-31"
+  },
+  "GHSA-858h-whjf-mvg5": {
+    "reason": "simple-git <4.0.1, reached only through nuxt > @nuxt/devtools 3.4.2, which asks for ^3 and imports the default export that simple-git 4 removed, so forcing 4.x breaks nuxt dev. Devtools runs only on a developer machine against the local repository, with fixed git arguments, never untrusted input. Unblock: @nuxt/devtools 4 leaving beta.",
+    "expires": "2026-12-31"
+  },
+  "GHSA-86w9-cpqp-85rv": {
+    "reason": "node-forge <=1.4.0 (high) has no patched release; 1.4.0 is the latest. Reached only through nuxt > nitropack > listhen, which uses it to mint a self-signed certificate for the local dev server, never to verify a signature from untrusted input. Unblock: a node-forge release past 1.4.0.",
+    "expires": "2026-12-31"
+  },
+  "GHSA-vfj7-8cjw-p6xm": {
+    "reason": "braces <=3.0.3 (high) has no patched release; 3.0.3 is the latest. Reached through micromatch and chokidar in lint and build tooling (eslint-plugin-boundaries, @next/eslint-plugin-next, tsc-alias) that only expand our own glob patterns. Unblock: a braces release past 3.0.3, or micromatch moving off it.",
+    "expires": "2026-12-31"
+  },
+  "GHSA-hp3w-g68c-fv3c": {
+    "reason": "sprintf-js <=1.1.3 (moderate) has no patched release; 1.1.3 is the latest. Reached only through @lhci/cli > @lhci/utils > js-yaml 3 > argparse 1, which formats its own CLI help strings. Lighthouse runs in CI against our own built templates. Unblock: @lhci moving to js-yaml 4.",
+    "expires": "2026-12-31"
   }
 }

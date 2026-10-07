@@ -1,0 +1,6 @@
+{
+  "GHSA-vfj7-8cjw-p6xm": {
+    "reason": "braces <=3.0.3 (high) has no patched release; 3.0.3 is the latest. Reached through micromatch in lint and type-coverage tooling that only expands this project's own glob patterns. Unblock: a braces release past 3.0.3, or micromatch moving off it.",
+    "expires": "2026-12-31"
+  }
+}

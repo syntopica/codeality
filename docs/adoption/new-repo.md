@@ -36,6 +36,30 @@ Everything not listed stays blocked, which is the point: no dependency runs a
 postinstall you did not decide about. CI needs this too - pnpm errors on
 un-decided build scripts under `--frozen-lockfile`.
 
+### Start the security gate green
+
+A copied template brings its `.baseline-advisories.json`: expiring waivers for
+the advisories that have no patched release anywhere in its dependency tree. The
+ones that do have a fix but sit under `@lhci/cli`, which has no newer release,
+need overrides in the same `pnpm-workspace.yaml`, or `check:security` fails on
+day one (measured 2026-10-07 on a fresh resolution of every template):
+
+```yaml
+# pnpm-workspace.yaml
+overrides:
+  'tmp@<0.2.6': ^0.2.6 # GHSA-ph9p-34f9-6g65, via @lhci/cli>inquirer
+  'basic-ftp@<6.2.1': ^6.2.1 # GHSA-c475-qrg2-pj4r, via @lhci/cli>lighthouse
+  # extract-zip has no patched release; @puppeteer/browsers 3 dropped it.
+  '@puppeteer/browsers@<3.2.1': ^3.2.1 # via @lhci/cli>lighthouse
+```
+
+`ts-package` and `nestjs-app` do not run Lighthouse and need none of them.
+
+`check:ci` does not run the audit, on purpose: advisories are published daily,
+so an audit inside `check:ci` would turn an unchanged commit red overnight.
+`check:security` runs it in its own CI job; run `pnpm check:security` locally
+before a release to see the same result.
+
 ### Next.js 16.3+ with the TypeScript alias needs one config flag
 
 This repo aliases `typescript` to `npm:@typescript/typescript6` (the TS7 native
