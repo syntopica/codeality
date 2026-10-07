@@ -1,0 +1,77 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Motion and clicks done right</title>
+    <style>
+      body {
+        margin: 0;
+        font: 16px/24px sans-serif;
+        color: #111827;
+        background: #ffffff;
+      }
+      main {
+        padding: 24px;
+      }
+      h1 {
+        font-size: 24px;
+        margin: 0 0 24px;
+      }
+      @keyframes turn {
+        to {
+          transform: rotate(360deg);
+        }
+      }
+      .spinner {
+        width: 24px;
+        height: 24px;
+        margin-bottom: 24px;
+        border: 3px solid #d1d5db;
+        border-top-color: #2563eb;
+        border-radius: 50%;
+      }
+      .panel {
+        width: 240px;
+        height: 40px;
+        margin-bottom: 24px;
+        background: #e5e7eb;
+      }
+      .panel:hover {
+        height: 80px;
+      }
+      .save {
+        display: block;
+        margin-bottom: 24px;
+        padding: 8px 16px;
+        border: 1px solid #1d4ed8;
+        background: #1d4ed8;
+        color: #ffffff;
+        font: inherit;
+      }
+      .save:hover {
+        background: #1e40af;
+      }
+      @media (prefers-reduced-motion: no-preference) {
+        .spinner {
+          animation: turn 1s linear infinite;
+        }
+      }
+      .panel {
+        transition: opacity 0.2s ease;
+      }
+      .save {
+        transition: background-color 0.15s ease;
+      }
+    </style>
+  </head>
+  <body>
+    <main>
+      <h1>Activity</h1>
+      <div class="spinner"></div>
+      <div class="panel"></div>
+      <button class="save" type="button">Save</button>
+      <a class="open" href="/report">Open the report</a>
+    </main>
+  </body>
+</html>
