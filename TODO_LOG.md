@@ -1,5 +1,18 @@
 ### 2026-10-07
 
+- [x] ui-quality `disable` entries take `message`, a substring the finding's
+      message must contain, so one third-party `console-error` (Turnstile's
+      picture-in-picture violation) is kept without disabling the rule on the
+      route. Evidence: `tests/config/isDisabled.test.ts` (message match and
+      mismatch), config parse test; ui-quality 157 tests, lint, type-check
+      clean.
+- [x] ui-quality `slow-request` per-request disable: already possible, now
+      documented. The finding's subject is the request (`POST /api/track`), so
+      `disable[].selector` matches its URL, and the new `message` field matches
+      anything in the message. A server action is named only by its Next.js
+      action id; the function name (`trackRosterAccess`) never reaches the
+      browser, so matching by name is not possible from the capture.
+
 - [x] db-quality passes every file it writes (`codeality-db.json`,
       `package.json`, bench README, `.codeality-db-bench.json`,
       `.codeality-db-perf.json`) through the project's own
