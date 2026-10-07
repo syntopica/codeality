@@ -1,5 +1,14 @@
 ### 2026-10-07
 
+- [x] ui-quality reports `dark-scheme-ignored` (warn, once per run) when a dark
+      screenshot is byte-identical to its light twin (`screenshotDigest`,
+      SHA-256 of the capture), naming how many screens and which routes, and
+      pointing at `routes[].localStorage`/init scripts or dropping `dark`.
+      Evidence: `schemeDuplicateFinding.test.ts`;
+      `cli.dark-scheme.integration.test.ts` (fixed.html with both schemes
+      reports it, broken.html with a dark stylesheet does not); ui-quality 171
+      tests pass. Integration fixtures without dark styles now run light only.
+
 - [x] ui-quality turns on axe's `target-size` (WCAG 2.2 AA 2.5.8): axe-core 4.13
       ships it `enabled: false`, so the default `AxeBuilder` run never reported
       it; now enabled through run options (`AXE_OPT_IN_RULES`). Evidence:

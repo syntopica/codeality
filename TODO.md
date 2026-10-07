@@ -100,11 +100,6 @@ needs.
   interaction: sticky CTAs that show after scrolling, roster card buttons on
   hover, selected states in the budget form. Left as well: capture after a
   scroll, and `:hover`/`:focus`/ selected states of repeated controls.
-- [ ] **Dark runs duplicate light on class-themed apps.** 2026-10-01, every
-      InteliFactu `*.dark.png` equals its light twin because the theme follows a
-      stored preference, not `prefers-color-scheme`. Smallest step: detect
-      identical light/dark captures and warn once, or let `colorSchemes` name a
-      class or `localStorage` key to set.
 - [ ] **Clipped text inside a `<select>` passes.** 2026-10-01, InteliFactu's
       Empresa select at 1920px cuts the descenders of "AJN Hostelería ESPJ ·
       E67686287" and `text-clipped` stays silent. Smallest step: compare a
