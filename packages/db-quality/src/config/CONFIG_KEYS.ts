@@ -3,6 +3,7 @@ export const CONFIG_KEYS = new Set([
   'supabase',
   'prisma',
   'drizzle',
+  'kysely',
   'sqlite',
   'postgrest',
   'audit',

@@ -1,5 +1,6 @@
 import { configSection } from '@/config/configSection.js'
 import { drizzleSectionFrom } from '@/config/drizzleSectionFrom.js'
+import { kyselySectionFrom } from '@/config/kyselySectionFrom.js'
 import { postgrestSectionFrom } from '@/config/postgrestSectionFrom.js'
 import { sqliteSectionFrom } from '@/config/sqliteSectionFrom.js'
 import type { StackSections } from '@/config/StackSections.js'
@@ -25,6 +26,8 @@ export const stackSectionsFrom = (
   }
   const drizzle = configSection(raw, 'drizzle')
   if (drizzle) stacks.drizzle = drizzleSectionFrom(drizzle)
+  const kysely = configSection(raw, 'kysely')
+  if (kysely) stacks.kysely = kyselySectionFrom(kysely)
   const sqlite = configSection(raw, 'sqlite')
   if (sqlite) stacks.sqlite = sqliteSectionFrom(sqlite)
   const postgrest = configSection(raw, 'postgrest')

@@ -2,5 +2,5 @@ import type { DbQualityConfig } from '@/config/DbQualityConfig.js'
 
 export type StackSections = Pick<
   DbQualityConfig,
-  'supabase' | 'prisma' | 'drizzle' | 'sqlite' | 'postgrest'
+  'supabase' | 'prisma' | 'drizzle' | 'kysely' | 'sqlite' | 'postgrest'
 >

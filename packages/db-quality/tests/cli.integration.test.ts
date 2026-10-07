@@ -68,4 +68,49 @@ describe('codeality-db', () => {
     expect(postgrest.status).toBe(3)
     expect(postgrest.stderr).toMatch(/typescript.*PostgREST rules/)
   })
+  it('checks a Kysely project: the code lint and the compiled migrations', () => {
+    const fixture = new URL('fixtures/kysely', import.meta.url).pathname
+    const check = run(['--project', fixture, 'check'], tmpdir())
+    expect(check.status).toBe(1)
+    expect(check.stdout).toMatch(/BDB320\/inline-references/)
+    expect(check.stdout).toMatch(/BDB320\/migration-fails-on-sqlite/)
+    expect(check.stdout).toMatch(/BDB100\/prefer-robust-stmts postgres:/)
+    const root = mkdtempSync(join(tmpdir(), 'dbq-kysely-'))
+    mkdirSync(join(root, 'src'))
+    writeFileSync(
+      join(root, 'src/repo.ts'),
+      "declare const db: any\ndb.deleteFrom('membership').execute()\ndb.deleteFrom('membership').where('id', '=', 1).execute()\n",
+    )
+    writeFileSync(
+      join(root, 'codeality-db.json'),
+      JSON.stringify({ schemaVersion: 2, kysely: { roots: ['src'] } }),
+    )
+    const lint = run(['check'], root)
+    expect(lint.status).toBe(1)
+    expect(lint.stdout).toMatch(/src\/repo.ts:2: BDB310\/delete-without-where/)
+    expect(lint.stdout).toMatch(/1 findings/)
+  }, 60_000)
+  it('fails with exit 3 when the project cannot resolve kysely', () => {
+    const root = mkdtempSync(join(tmpdir(), 'dbq-kysely-'))
+    writeFileSync(join(root, 'm.ts'), 'export const migrations = {}\n')
+    writeFileSync(
+      join(root, 'codeality-db.json'),
+      JSON.stringify({
+        schemaVersion: 2,
+        kysely: {
+          roots: [],
+          migrations: { module: 'm.ts', dialects: ['sqlite'] },
+        },
+      }),
+    )
+    // pnpm puts its store on NODE_PATH, where kysely would be found anyway.
+    const { NODE_PATH: _, ...env } = process.env
+    const missing = spawnSync('node', [bin, 'check'], {
+      cwd: root,
+      encoding: 'utf8',
+      env,
+    })
+    expect(missing.status).toBe(3)
+    expect(missing.stderr).toMatch(/kysely is not installed/)
+  })
 })

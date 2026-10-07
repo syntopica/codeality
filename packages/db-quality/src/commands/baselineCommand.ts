@@ -1,8 +1,10 @@
 import { existsSync } from 'node:fs'
 import { join } from 'node:path'
 
+import { acceptEditsFrom } from '@/baseline/acceptEditsFrom.js'
 import { BASELINE_FILENAME } from '@/baseline/BASELINE_FILENAME.js'
 import { baselineActionFrom } from '@/baseline/baselineActionFrom.js'
+import { recordKyselyStep } from '@/baseline/recordKyselyStep.js'
 import { renderClassified } from '@/baseline/renderClassified.js'
 import { runCheck } from '@/check/runCheck.js'
 import { sqliteQueriesNotice } from '@/check/sqliteQueriesNotice.js'
@@ -22,8 +24,10 @@ export const baselineCommand = (argv: string[], io: CommandIo): number => {
   try {
     const { values, positionals } = parseCommandArgs(argv, {
       'check-stale': { type: 'boolean' },
+      'accept-edit': { type: 'string' },
     })
     const action = baselineActionFrom(positionals)
+    const acceptEdits = acceptEditsFrom(values, action)
     if (action === 'create' && existsSync(join(io.root, BASELINE_FILENAME))) {
       throw new ConfigError(
         `${BASELINE_FILENAME} exists; use "baseline update" to rewrite it`,
@@ -34,6 +38,7 @@ export const baselineCommand = (argv: string[], io: CommandIo): number => {
     if (notice) io.stderr(`${notice}\n`)
     const skipped = sqliteQueriesNotice(io.runner, io.root, config)
     if (skipped) io.stderr(`${skipped}\n`)
+    recordKyselyStep(io, config, action, acceptEdits)
     const findings = runCheck({
       root: io.root,
       config,

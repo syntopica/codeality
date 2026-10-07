@@ -1,0 +1,13 @@
+{
+  "schemaVersion": 2,
+  "kysely": {
+    "roots": ["db"],
+    "objectNames": ["db", "trx"],
+    "migrations": {
+      "module": "db/migrations/migrationList.ts",
+      "export": "migrationList",
+      "dialects": ["postgres", "mysql", "sqlite"],
+      "moneyColumns": true
+    }
+  }
+}

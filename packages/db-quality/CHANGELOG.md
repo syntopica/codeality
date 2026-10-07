@@ -2,6 +2,23 @@
 
 ## [Unreleased]
 
+- Kysely support, additive (`schemaVersion` stays 2). A `kysely` section
+  (`roots`, `objectNames` default `["db", "trx"]`, optional `migrations` with
+  `module` or `folder`, `export`, `dialects`, `moneyColumns`) is proposed by
+  `init` when `kysely` is a dependency.
+- `BDB310/update-without-where`, `BDB310/delete-without-where` and
+  `BDB310/dynamic-raw-sql`: ESLint rules of this package, run over
+  `kysely.roots` from `assets/kysely-eslint.config.mjs` like the Drizzle ones.
+- Kysely migrations are compiled per dialect with a compile-only Kysely (the
+  project's own, through `jiti`, now a dependency): squawk on the PostgreSQL
+  SQL, the SQLite SQL applied with `sqlite3` and checked with `BDB401`-`BDB403`,
+  and the `BDB320` rules `migration-without-down`, `migration-order`,
+  `migration-edited`, `native-enum`, `float-money` (opt-in),
+  `inline-references`, `migration-fails-on-sqlite` and
+  `migration-does-not-compile`.
+- `baseline create|update` record `.codeality-db-kysely.json`; an edited
+  released migration is refused unless named with `--accept-edit`.
+
 - `perf snapshot` taken over an earlier snapshot records each statement's window
   mean between the two (`windowMeanMs`, additive; `schemaVersion` stays 1), and
   `perf diff` and the gate's `perf` stage compare against it instead of the

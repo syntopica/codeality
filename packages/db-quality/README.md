@@ -1,10 +1,11 @@
 # @syntopica/db-quality
 
 Database quality gate for the projects in this estate: lints Supabase
-migrations, Prisma schemas, Drizzle code and SQLite files without a database,
-audits a live Supabase project, carries existing debt in a baseline and runs
-everything as one gate with honest exit codes. Brings to databases what
-`@syntopica/eslint-config`, `cargo-baseline` and `codeality-py` bring to code.
+migrations, Prisma schemas, Drizzle and Kysely code, Kysely migrations and
+SQLite files without a database, audits a live Supabase project, carries
+existing debt in a baseline and runs everything as one gate with honest exit
+codes. Brings to databases what `@syntopica/eslint-config`, `cargo-baseline` and
+`codeality-py` bring to code.
 
 - **Design spec:**
   [docs/superpowers/specs/2026-09-25-db-quality-design.md](https://github.com/syntopica/codeality/blob/main/docs/superpowers/specs/2026-09-25-db-quality-design.md)
@@ -19,10 +20,12 @@ pnpm add -D @syntopica/db-quality squawk-cli prisma-lint eslint eslint-plugin-dr
 
 Install only the peers your stacks need: `squawk-cli` for Supabase migrations,
 `prisma-lint` for Prisma, the three ESLint packages for Drizzle, `typescript`
-for the PostgREST rules (`postgrest.roots`). The Supabase CLI, `sqlite3`, `uvx`
-and `psql` are external executables; `psql` is required by the `perf` commands
-and the gate's `perf` stage, and a missing one fails with exit 3 rather than
-skipping silently.
+for the PostgREST rules (`postgrest.roots`). Kysely needs `eslint` and
+`typescript-eslint`, plus `squawk-cli` when its migrations target PostgreSQL;
+`kysely` itself is the project's own dependency and is never installed by this
+package. The Supabase CLI, `sqlite3`, `uvx` and `psql` are external executables;
+`psql` is required by the `perf` commands and the gate's `perf` stage, and a
+missing one fails with exit 3 rather than skipping silently.
 
 ## Usage
 
@@ -51,6 +54,15 @@ a dependency:
   "supabase": { "migrations": "supabase/migrations" },
   "prisma": { "schema": "prisma/schema.prisma" },
   "drizzle": { "roots": ["src"], "objectNames": ["db", "tx"] },
+  "kysely": {
+    "roots": ["src"],
+    "objectNames": ["db", "trx"],
+    "migrations": {
+      "module": "src/db/migrations/migrationList.ts",
+      "export": "migrationList",
+      "dialects": ["postgres", "mysql", "sqlite"]
+    }
+  },
   "sqlite": {
     "files": ["data/app.db"],
     "queries": {
@@ -89,7 +101,8 @@ database password. `postgrest.roots` names the directories scanned for `.ts` and
 `.tsx` files. The `perf` values above are the built-in defaults except `inGate`,
 which `init` always writes as `false` — the gate measures nothing until a
 project reaches phase 4. `sqlite.queries` is optional and never written by
-`init`; see [SQLite query files](#sqlite-query-files).
+`init`; see [SQLite query files](#sqlite-query-files). The `kysely` section is
+described under [Kysely](#kysely).
 
 Every file `codeality-db` writes (`codeality-db.json`, `package.json`, the bench
 README, `.codeality-db-bench.json`, `.codeality-db-perf.json`) is passed through
@@ -109,6 +122,8 @@ the project's own `prettier --write` afterwards, so a pre-commit that runs
 | `BDB100/<rule>`    | squawk                      | as squawk   | migration lock and schema hazards, Supabase profile                                                                       |
 | `BDB200/<rule>`    | prisma-lint                 | warn        | relation field without an index                                                                                           |
 | `BDB300/<rule>`    | eslint-plugin-drizzle       | error       | `delete` or `update` without `.where()`                                                                                   |
+| `BDB310/<rule>`    | Kysely ESLint rules         | error       | `updateTable`/`deleteFrom` without `.where()`, dynamic raw SQL; see [Kysely](#kysely)                                     |
+| `BDB320/<rule>`    | Kysely migrations           | error/warn  | migration rules on the compiled SQL; see [Kysely](#kysely)                                                                |
 | `BDB401`-`BDB403`  | sqlite3                     | error/warn  | integrity, dangling foreign keys, table without primary key                                                               |
 | `BDB404`-`BDB406`  | SQLite query files          | warn        | optional-parameter guard, comma-list `instr()`, full scan of a large table; see [SQLite query files](#sqlite-query-files) |
 | `BDB500/<name>`    | Supabase advisors           | as Supabase | splinter security and performance lints on the live project                                                               |
@@ -150,6 +165,93 @@ each disabled rule a written reason. Under `schemaVersion: 2` a bare string
 `disable` entry is a configuration error whose message shows the object form
 instead. The strictness is opted into by bumping the schema version yourself;
 installing 0.2.0 alone changes nothing for a `schemaVersion: 1` project.
+
+## Kysely
+
+A `kysely` section is proposed by `init` when `package.json` depends on
+`kysely`: `roots` are the directories among `src`, `server`, `app`, `lib` and
+`db` that exist, `objectNames` defaults to `["db", "trx"]`, and `migrations` is
+filled in only when exactly one `migrations/index.ts` or
+`migrations/migrationList.ts` exists under the roots; otherwise `init` says it
+left it out. Additive: `schemaVersion` stays 2. `kysely.databaseType` is
+reserved for a later type-drift audit and not read yet.
+
+### Code rules
+
+`check` runs ESLint over `kysely.roots` with a config shipped in this package
+(`assets/kysely-eslint.config.mjs`), the same way as the Drizzle one: from the
+project root, with `--no-config-lookup`, so the project's own ESLint setup is
+neither read nor changed. The rules are this package's own; there is no plugin
+to install.
+
+| Code                          | Rule                 | What it proves                                                                                                                                                                       |
+| ----------------------------- | -------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| `BDB310/update-without-where` | update-without-where | a chain rooted at `<objectName>.updateTable(...)` reaches `execute`, `executeTakeFirst` or `executeTakeFirstOrThrow` with no `where`, `whereRef`, `$if` or `$call` after it          |
+| `BDB310/delete-without-where` | delete-without-where | the same for `deleteFrom`                                                                                                                                                            |
+| `BDB310/dynamic-raw-sql`      | dynamic-raw-sql      | `sql.raw`, `sql.lit`, `sql.id`, `sql.ref` or `sql.table` called with an argument that is not a literal, a `const` bound to one, or a member of a `const` object or array of literals |
+
+A chain is recognised whether it is awaited, returned or written inside a `trx`
+callback, and when the instance is reached as `this.db`. A chain split across
+variables is not followed, and `$if` or `$call` counts as a guard because the
+callback may add the `where`: each rule reports only what it can prove. `sql` is
+matched by name. A `sql` tagged template binds its `${}` values as parameters
+and is never reported. A deliberate whole-table write or a validated identifier
+is suppressed with a `disable` entry or an ESLint directive naming the rule and
+a reason.
+
+### Migrations
+
+With `kysely.migrations`, `check` loads the project's migrations and compiles
+each one per dialect, without a database. `module` names a file whose `export`
+(default `migrations`) is a `Record<string, Migration>`; a project using
+`FileMigrationProvider` sets `"folder": "<dir>"` instead, and every file's
+`up`/`down` (or its default export) is loaded in name order. `dialects` lists
+the engines the project supports, any of `postgres`, `mysql`, `sqlite`; without
+it, the dialects are inferred from the installed drivers (`pg`, `mysql2`,
+`better-sqlite3`), and a project with none of them is a configuration error.
+
+The migrations run in a separate Node process, through `jiti`, with the
+project's own `kysely`: every `up` in order, then every `down` in reverse,
+against a Kysely instance built from the dialect's real adapter, introspector
+and query compiler and a driver that records each query and returns no rows. A
+missing `kysely` exits 3. Then:
+
+- **PostgreSQL**: each migration's SQL goes through squawk (`BDB100/<rule>`,
+  reported on the migration) with `require-lock-timeout`,
+  `require-statement-timeout` and `require-concurrent-index-creation` excluded.
+  `prefer-robust-stmts` stays on, unlike under Supabase: on MySQL the same
+  migrations run outside any transaction.
+- **SQLite**: the migrations are applied in order to a scratch database in a
+  temporary directory with the `sqlite3` shell, one transaction per migration,
+  then `BDB401`-`BDB403` run on the result. A statement SQLite refuses is
+  `BDB320/migration-fails-on-sqlite`, naming the statement.
+- **MySQL/MariaDB**: no static linter exists; the SQL is hashed and checked by
+  the rules below.
+
+| Code                                | Severity | What it proves                                                                                                                                                    |
+| ----------------------------------- | -------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `BDB320/migration-without-down`     | warn     | a migration with no `down`                                                                                                                                        |
+| `BDB320/migration-order`            | error    | a name that does not sort after the one declared before it, or a new migration sorting before a released one                                                      |
+| `BDB320/migration-edited`           | error    | a released migration whose compiled SQL no longer matches `.codeality-db-kysely.json`                                                                             |
+| `BDB320/native-enum`                | warn     | `create type ... as enum` or an `enum(` column type, when more than one dialect is configured                                                                     |
+| `BDB320/float-money`                | warn     | with `"moneyColumns": true`: a column named `*amount*`, `*price*`, `*total*` or `*fee*` typed `real`, `float`, `double`, or `numeric`/`decimal` without a scale   |
+| `BDB320/inline-references`          | error    | with `mysql` configured: a column-level `.references()` in a `create table` or `alter table`, which MySQL 8.4 parses and ignores; use `addForeignKeyConstraint()` |
+| `BDB320/migration-fails-on-sqlite`  | error    | SQLite refuses the compiled SQL, or the migration throws while compiling for SQLite                                                                               |
+| `BDB320/migration-does-not-compile` | error    | the migration throws while compiling for PostgreSQL or MySQL                                                                                                      |
+
+The findings carry the path of the module (or the migration's file) and the line
+that names the migration; the `subject` is the migration's name.
+
+`.codeality-db-kysely.json` maps each released migration's name to a SHA-256 of
+what it compiles to, per dialect, so reformatting the TypeScript never trips
+`migration-edited` and changing what runs always does. `baseline create` and
+`baseline update` write it alongside the baseline: a new migration is added, a
+newly configured dialect is added to a released one, and an edited migration is
+refused (exit 2) unless it is named with
+`baseline update --accept-edit <name>[,<name>]`.
+
+Limitation: the capturing driver returns no rows, so a migration that branches
+on data it reads only has its empty-database path compiled, checked and hashed.
 
 ## PostgREST rules
 

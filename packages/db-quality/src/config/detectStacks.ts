@@ -1,6 +1,7 @@
 import { existsSync } from 'node:fs'
 import { join } from 'node:path'
 
+import { detectKysely } from '@/config/detectKysely.js'
 import { findSqliteFiles } from '@/config/findSqliteFiles.js'
 import { hasPostgrestSources } from '@/config/hasPostgrestSources.js'
 import { hasSupabaseJsDependency } from '@/config/hasSupabaseJsDependency.js'
@@ -18,6 +19,7 @@ export const detectStacks = (root: string): StackSections => {
   const postgrestRoots = ['src', 'app', 'supabase/functions'].filter(
     (name) => isDirectory(join(root, name)) && hasPostgrestSources(root, name),
   )
+  const kysely = detectKysely(root)
   return {
     ...(isDirectory(join(root, 'supabase/migrations'))
       ? { supabase: { migrations: 'supabase/migrations' } }
@@ -28,6 +30,7 @@ export const detectStacks = (root: string): StackSections => {
     ...(hasDrizzle
       ? { drizzle: { roots: drizzleRoots, objectNames: ['db', 'tx'] } }
       : {}),
+    ...(kysely ? { kysely } : {}),
     ...(sqliteFiles.length > 0 ? { sqlite: { files: sqliteFiles } } : {}),
     ...(hasSupabaseJsDependency(root) && postgrestRoots.length > 0
       ? { postgrest: { roots: postgrestRoots } }

@@ -112,25 +112,17 @@ needs.
 
 ## db-quality
 
-- [ ] **Kysely support** (filed 2026-09-30; first consumer is the new
-      `~/p/compratuentrada` ticketing app, which chose Kysely for one schema
-      over MySQL/MariaDB, PostgreSQL and SQLite). 0.3.0 detects Supabase,
-      Prisma, Drizzle and SQLite only. Scope, mirroring `adapters/drizzle/`: (1)
-      lint rules in an ESLint asset - `updateTable`/`deleteFrom` without
-      `.where`, `sql.raw`/`sql.ref` with a non-literal argument; (2) compile the
-      project's Kysely migrations to SQL per dialect with a compile-only Kysely
-      and feed the existing squawk and SQLite rules, require a `down`, hash
-      applied migrations; (3) optional audit: `kysely-codegen` against a live DB
-      diffed with the hand-written `Database` interface. `eslint-plugin-kysely`
-      1.0.7 exists but is single-maintainer, unreleased since 2025-04, ~1k
-      downloads/month - do not wrap it. Design:
-      `docs/superpowers/specs/2026-09-30-db-quality-kysely-design.md`. Smallest
-      next step: its implementation plan. Add to it a cross-dialect rule
-      `kysely.inline-references`: an inline column `.references()` compiles to a
-      column-level `REFERENCES`, which MySQL 8.4 parses and silently ignores (no
-      FK created); MariaDB and SQLite enforce it. Seen in compratuentrada
-      f4ba7e2, caught only by the mysql:8.4 CI leg, fixed with a table-level
-      `addForeignKeyConstraint` in 37d1c05.
+- [~] **Kysely support** (2026-10-07): config section `kysely`, `BDB310/<rule>`
+  ESLint rules (`update-without-where`, `delete-without-where`,
+  `dynamic-raw-sql`), `BDB320/<rule>` migration rules compiled per dialect by a
+  compile-only Kysely (squawk on PostgreSQL, applied with `sqlite3`,
+  cross-dialect rules including `inline-references`), and
+  `.codeality-db-kysely.json` with `baseline update --accept-edit`. Next step:
+  acceptance on `~/p/compratuentrada` (`codeality-db check` exit 0, then exit 1
+  after a deliberate `db.deleteFrom('membership').execute()`), then release as
+  0.5.0 (0.4.0 is already published).
+- [ ] **Kysely type drift** (`kysely.databaseType`, spec section 3): deferred
+      until a consumer has a live database in CI; the config key is reserved.
 
 ## Cross-project (filed 2026-09-09 from two consumer backlog runs)
 

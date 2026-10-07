@@ -1,4 +1,5 @@
 import { runDrizzleLint } from '@/adapters/drizzle/runDrizzleLint.js'
+import { runKyselyChecks } from '@/adapters/kysely/runKyselyChecks.js'
 import { runPrismaLint } from '@/adapters/prisma/runPrismaLint.js'
 import { runSqliteChecks } from '@/adapters/sqlite/runSqliteChecks.js'
 import { runSqliteQueryChecks } from '@/adapters/sqlite/runSqliteQueryChecks.js'
@@ -32,6 +33,10 @@ export const runCheck = ({ root, config, runner }: CheckContext): Finding[] => {
   if (config.drizzle)
     findings.push(
       ...runDrizzleLint(runner, root, config.drizzle, config.disable),
+    )
+  if (config.kysely)
+    findings.push(
+      ...runKyselyChecks(runner, root, config.kysely, config.disable),
     )
   if (config.sqlite) {
     findings.push(
