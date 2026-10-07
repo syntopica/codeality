@@ -9,5 +9,6 @@ export const isDisabled = (
     (entry) =>
       (entry.rule === finding.rule || entry.rule === '*') &&
       (entry.route === null || entry.route === finding.route) &&
-      (entry.selector === null || finding.subject.includes(entry.selector)),
+      (entry.selector === null || finding.subject.includes(entry.selector)) &&
+      (entry.message === null || finding.message.includes(entry.message)),
   )

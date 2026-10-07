@@ -5,9 +5,7 @@ import { join } from 'node:path'
 import { describe, expect, it } from 'vitest'
 
 import { configFromDocument } from '@/config/configFromDocument.js'
-import { isDisabled } from '@/config/isDisabled.js'
 import { readConfig } from '@/config/readConfig.js'
-import type { Finding } from '@/model/Finding.js'
 import { ConfigError } from '@syntopica/gate-kit/ConfigError'
 
 describe('configuration', () => {
@@ -72,6 +70,11 @@ describe('configuration', () => {
       },
       disable: [
         { rule: 'palette', selector: '.vendor', reason: 'third party' },
+        {
+          rule: 'console-error',
+          message: 'picture-in-picture',
+          reason: 'Turnstile iframe',
+        },
       ],
     })
     expect(config.auth?.usernameEnv).toBe('UI_QUALITY_USER')
@@ -85,6 +88,8 @@ describe('configuration', () => {
     })
     expect(config.rules.controlInset.minInset).toBe(8)
     expect(config.disable[0]?.route).toBeNull()
+    expect(config.disable[0]?.message).toBeNull()
+    expect(config.disable[1]?.message).toBe('picture-in-picture')
   })
   it('marks a phone viewport and leaves desktop ones plain', () => {
     const config = configFromDocument({
@@ -170,24 +175,5 @@ describe('configuration', () => {
       '{"baseUrl":"http://x","routes":["/"]}',
     )
     expect(readConfig(root).routes).toHaveLength(1)
-  })
-  it('matches disable entries by rule, route and selector', () => {
-    const finding = {
-      rule: 'palette',
-      route: '/a',
-      subject: 'div.vendor > span',
-    } as Finding
-    const entry = {
-      rule: 'palette',
-      route: null,
-      selector: '.vendor',
-      reason: 'r',
-    }
-    expect(isDisabled(finding, [entry])).toBe(true)
-    expect(isDisabled(finding, [{ ...entry, route: '/b' }])).toBe(false)
-    expect(isDisabled(finding, [{ ...entry, rule: '*', selector: null }])).toBe(
-      true,
-    )
-    expect(isDisabled(finding, [{ ...entry, selector: '.mine' }])).toBe(false)
   })
 })

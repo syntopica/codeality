@@ -75,8 +75,12 @@ pnpm exec codeality-ui init
 - `palette` is the set of colours a page may show: root custom properties whose
   names start with one of `variablePrefixes`, plus literal hex values. Without
   it the `palette` rule is off.
-- `disable` keeps a finding on purpose. `route` and `selector` narrow it;
-  `reason` is required.
+- `disable` keeps a finding on purpose. `route` and `selector` narrow it, and
+  `message` keeps only findings whose message contains that text: one
+  third-party `console-error` ("picture-in-picture is not allowed" from a
+  Turnstile iframe) instead of every console error on the route. A
+  `slow-request` subject is the request (`POST /api/track`), so `selector`
+  matches its URL. `reason` is required.
 - `axe.exclude` lists selectors axe leaves out. A sandboxed frame without
   `allow-scripts` (an email client's message body) is always left out, since axe
   cannot run inside it and used to wait on it forever. An audit that outlives

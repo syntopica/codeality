@@ -19,6 +19,10 @@ export const disableEntryFrom = (
       value['selector'] === undefined
         ? null
         : stringField(value, 'selector', '', where),
+    message:
+      value['message'] === undefined
+        ? null
+        : stringField(value, 'message', '', where),
     reason: stringField(value, 'reason', '', where),
   }
 }
