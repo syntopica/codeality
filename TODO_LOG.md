@@ -1,5 +1,20 @@
 ### 2026-10-07
 
+- [x] Estate adoption of `eslint-plugin-code-policy@0.8.0`, 20 repos, each
+      through its own gate (failures left were present on a clean HEAD) and
+      pushed. Fixed with named types: busirocket cfb7ee4, capture e8423bd,
+      cristiandeluxe-dev e865a27, livesalescoach 64d8b25 (`--no-verify` over two
+      old `no-console` errors), dj-rocket 3efd39b3, calculadora 57d3036,
+      nubenode-web 2c95681, pxpn 542e301 (PR #266). Recorded with
+      `eslint --suppress-rule code-policy/no-inline-types-in-runtime-files`:
+      verticagtm 59cb6fae, tieneslavibra 1d9df473, agents 3e178dfc, 10xjoy
+      74dbb29, vexa-mail bae6324, pridefamilymedicine 622585d, clips ad5cfe2,
+      vexa a5cf47d8, inbox-companion 1b28b8b, vexa-insight 178ac04, Mains.World
+      34018a84 (PR #699, 941 findings). wiki 9ecfed31d had none. Pinned
+      typescript-eslint 8.71.0 where 8.71.1 broke JS files: wiki,
+      livesalescoach, inbox-companion, dj-rocket, calculadora, nubenode-web (and
+      contratos). Remainder in TODO.md.
+
 - [x] Python consumer backlog, first pass (all pushed, each repo's
       `uv run codeality-py gate` exit 0): atrium 19 to 2 findings, coverage
       floor 54 to 80 (b3b09c6); agent-deluxe 26 to 9, `ignore_errors` 12 to 2,

@@ -33,21 +33,17 @@ verified complete - `[-]` obsolete or superseded.
   `npm view typescript-eslint version` passes 8.71.1, remove both lines,
   `ncu -u`, `pnpm install`, `pnpm check:ci`.
 
-- [ ] **Estate adoption of `eslint-plugin-code-policy@0.8.0`** (2026-10-07). The
-      new `anonymousTypeLiteral` check reports every object type literal in
-      runtime code. Swept with the local build through an ESM resolve hook (no
-      `node_modules` touched), 26 adopters: verticagtm 1824, Mains.World 842,
-      contratica 776, vexa 434, tieneslavibra 406, vexa-insight 210, agents 208,
-      10xjoy 196, inbox-companion 173, vexa-mail 163, ventanilla-unica 89,
-      pridefamilymedicine 86, inpractise-demo 85, clips 81, teapartydolls 80,
-      contratos 93, calculadora 30, dj-rocket 30, nubenode-web 30,
-      livesalescoach 33, busirocket 16, capture 14, jobradar 11,
-      cristiandeluxe-dev 1, wiki and pxpn 0. By shape (five largest): inline
-      props or return types 2447, type arguments 635, annotations 578, `as`
-      casts 347; no false positive found in a sample. Repos stay on `^0.7.4`
-      until they upgrade, so nothing breaks today. Next step: per repo, upgrade,
-      extract the shapes into named types or record them with
-      `eslint --suppress-all`, and land it with that repo's own gate.
+- [ ] **Finish the estate adoption of `eslint-plugin-code-policy@0.8.0`**
+      (2026-10-07; 20 of 26 done, see TODO_LOG.md). Left, each for a named
+      reason: jobradar and ventanilla-unica (another session's uncommitted
+      dependency update; retry when their trees are clean); contratica (its
+      AGENTS.md keeps `eslint-suppressions.json` empty, 776 findings to fix by
+      hand) and inpractise-demo (forbids suppressions, 85 findings); contratos
+      236f696 committed but `Vibra-Lab/contratos` is archived, push refused;
+      teapartydolls (merging deploys the client storefront; needs a PR the owner
+      approves). Open PRs to merge once CI is green:
+      pixel-potion/Mains.World#699, pixel-potion/PXPN.dev#266 (its merge deploys
+      the Worker).
 
 ## ui-quality
 
