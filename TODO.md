@@ -84,13 +84,13 @@ needs.
 - [~] **Interaction states are never captured.** 2026-10-01, the TienesLaVibra
   phone menu opened onto a drawer with no links and every rule passed, because
   capture only sees the resting page. `routes[].click` now clicks selectors in
-  order before measuring (`click-failed` when one matches nothing). Left: an
-  `empty-dialog` rule, an open `[role=dialog]` or drawer with no link, button or
-  input besides its own close control. 2026-10-03, TienesLaVibra public pages:
-  colour defects seen in code but never measured because they only appear on
-  interaction: sticky CTAs that show after scrolling, roster card buttons on
-  hover, selected states in the budget form. Left as well: capture after a
-  scroll, and `:hover`/`:focus`/ selected states of repeated controls.
+  order before measuring (`click-failed` when one matches nothing), and
+  `empty-dialog` (2026-10-07) reports an open dialog or drawer with nothing but
+  its close control. 2026-10-03, TienesLaVibra public pages: colour defects seen
+  in code but never measured because they only appear on interaction: sticky
+  CTAs that show after scrolling, roster card buttons on hover, selected states
+  in the budget form. Left as well: capture after a scroll, and
+  `:hover`/`:focus`/ selected states of repeated controls.
 - [ ] `placeholder-fit`: placeholder text wider than its input's text box by
       over 20% ("Buscar rosters, categ…" at 390px). Needs `placeholder` plus a
       canvas `measureText` with the computed font.

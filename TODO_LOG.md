@@ -1,5 +1,12 @@
 ### 2026-10-07
 
+- [~] ui-quality `empty-dialog` (warn): an open `dialog[open]`,
+  dialog/alertdialog role or `aria-modal` element with no link, button or field
+  besides a close control (by text or `aria-label`: close, cerrar, cancel, ×).
+  Probe gains `isDialog` and `label`. Evidence: `cli.dialog.integration.test.ts`
+  (drawer opened by `routes[].click`, reported with `#empty`, passed with its
+  links), `emptyDialog.test.ts`; ui-quality 185 tests. The interaction-states
+  item stays open for scroll and hover/focus capture.
 - [x] ui-quality `check` reads `baseUrl/sitemap.xml` (one level of a sitemap
       index, up to 10 children, 10 s timeout, file: URLs too) and reports
       `route-uncovered` (warn) once per first-segment template (`/artistas/*`,
