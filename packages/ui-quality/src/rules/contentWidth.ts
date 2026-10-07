@@ -1,14 +1,18 @@
+import { hasDataLayout } from '@/rules/hasDataLayout.js'
 import { inkEdgesOf } from '@/rules/inkEdgesOf.js'
 import type { Rule } from '@/rules/Rule.js'
 
 // The ink inside the main region against the width the region offers. A
 // `max-w-6xl` list centred in a 1660px workspace leaves a quarter of a wide
-// screen empty; on a data page that is space the table could have used.
+// screen empty; on a data page that is space the table could have used. A
+// reading or sign-in page keeps a narrow measure on purpose, so a main region
+// with no table and no repeated rows is left alone.
 export const contentWidth: Rule = (snapshot, context) => {
   const { minRatio, minViewport } = context.options.contentWidth
   if (snapshot.viewportWidth < minViewport) return []
   const main = snapshot.elements.find((element) => element.isMain)
   if (!main || main.width === 0) return []
+  if (!hasDataLayout(main, snapshot.elements)) return []
   const edges = inkEdgesOf(main, snapshot.elements)
   if (!edges) return []
   const span = edges.right - edges.left
