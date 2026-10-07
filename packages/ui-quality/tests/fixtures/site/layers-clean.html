@@ -1,0 +1,146 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta
+      name="theme-color"
+      content="#111827"
+      media="(prefers-color-scheme: dark)"
+    />
+    <meta name="color-scheme" content="light dark" />
+    <title>Layers done right</title>
+    <style>
+      body {
+        margin: 0;
+        font: 16px/24px sans-serif;
+        color: #111827;
+        background: #ffffff;
+      }
+      @media (prefers-color-scheme: dark) {
+        body {
+          color: #f9fafb;
+          background: #111827;
+        }
+      }
+      main {
+        padding: 24px;
+      }
+      h1 {
+        font-size: 24px;
+        margin: 0 0 24px;
+      }
+      .wrap {
+        position: relative;
+        box-sizing: border-box;
+        width: 200px;
+        height: 40px;
+        margin-bottom: 96px;
+        padding: 8px;
+        background: #e5e7eb;
+      }
+      .menu {
+        position: absolute;
+        top: 44px;
+        left: 0;
+        width: 200px;
+        height: 80px;
+        margin: 0;
+        padding: 8px;
+        list-style: none;
+        box-sizing: border-box;
+        background: #374151;
+        color: #ffffff;
+      }
+      .layer {
+        position: relative;
+        height: 24px;
+      }
+      .log {
+        margin-top: 24px;
+      }
+      .log p {
+        height: 48px;
+        margin: 0;
+        border-bottom: 1px solid #6b7280;
+      }
+      :root {
+        color-scheme: light dark;
+      }
+      .log {
+        height: 400px;
+        overflow-y: auto;
+      }
+    </style>
+  </head>
+  <body>
+    <main>
+      <h1>Conversation</h1>
+      <div class="wrap">
+        Account
+        <ul class="menu" role="menu">
+          <li>Profile</li>
+          <li>Sign out</li>
+        </ul>
+      </div>
+      <select>
+        <option>One</option>
+      </select>
+      <div class="layer" style="z-index: 1">Layer 1</div>
+      <div class="layer" style="z-index: 2">Layer 2</div>
+      <div class="layer" style="z-index: 3">Layer 3</div>
+      <div class="log" role="log">
+        <p>Message 0</p>
+        <p>Message 1</p>
+        <p>Message 2</p>
+        <p>Message 3</p>
+        <p>Message 4</p>
+        <p>Message 5</p>
+        <p>Message 6</p>
+        <p>Message 7</p>
+        <p>Message 8</p>
+        <p>Message 9</p>
+        <p>Message 10</p>
+        <p>Message 11</p>
+        <p>Message 12</p>
+        <p>Message 13</p>
+        <p>Message 14</p>
+        <p>Message 15</p>
+        <p>Message 16</p>
+        <p>Message 17</p>
+        <p>Message 18</p>
+        <p>Message 19</p>
+        <p>Message 20</p>
+        <p>Message 21</p>
+        <p>Message 22</p>
+        <p>Message 23</p>
+        <p>Message 24</p>
+        <p>Message 25</p>
+        <p>Message 26</p>
+        <p>Message 27</p>
+        <p>Message 28</p>
+        <p>Message 29</p>
+        <p>Message 30</p>
+        <p>Message 31</p>
+        <p>Message 32</p>
+        <p>Message 33</p>
+        <p>Message 34</p>
+        <p>Message 35</p>
+        <p>Message 36</p>
+        <p>Message 37</p>
+        <p>Message 38</p>
+        <p>Message 39</p>
+        <p>Message 40</p>
+        <p>Message 41</p>
+        <p>Message 42</p>
+        <p>Message 43</p>
+        <p>Message 44</p>
+        <p>Message 45</p>
+        <p>Message 46</p>
+        <p>Message 47</p>
+        <p>Message 48</p>
+        <p>Message 49</p>
+      </div>
+    </main>
+  </body>
+</html>

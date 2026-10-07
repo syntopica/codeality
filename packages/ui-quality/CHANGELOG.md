@@ -35,6 +35,46 @@
   whose header does not stick) and `row-height-scale` (body rows more than 2px
   apart, or a header row more than 8px off them).
 
+- New rules, `warn`: `clipped-popover` (a menu, listbox or tooltip cut off by an
+  `overflow: hidden` ancestor), `z-index-sprawl` (more than 6 distinct layers,
+  or one from 1000 up; options `rules.z-index-sprawl.maxLayers` and `.ceiling`),
+  `dark-scheme-incomplete` (a dark page without `color-scheme: dark`, with a
+  light native field, or without a dark `theme-color`) and `page-scroll-thread`
+  (a long live region that grows the page instead of scrolling in a pane).
+
+- New rules, all `warn`: `off-scale-spacing` (at least 3 distinct padding,
+  vertical margin or gap values in the main region that are not multiples of
+  4px), `heading-rhythm` (2 or more headings with no more space above than
+  below), `group-gap-ratio` (a form whose field groups are not at least twice as
+  far apart as a label is from its field), `text-cramped` (text under 8px, or
+  6px in a box under 24px tall, from a left or right edge that a border or a
+  fill draws), `gray-on-color` (mid-grey text on a coloured fill, in OKLCH) and
+  `line-length` (a wrapped paragraph over 80ch). They may report on projects
+  that passed before. The probe now also reads margins, gap, glyph extents, the
+  measure in `ch`, cursor, role, transitions, `z-index`, gradients, shadows,
+  `color-scheme`, `theme-color`, the document height and the running animations,
+  and the capture reads the animations that run with motion not reduced (the
+  screens are captured with it reduced).
+
+- New rules, `warn`: `ascii-ellipsis` (`...` instead of `…`),
+  `placeholder-as-label` (a field named only by its placeholder),
+  `time-without-datetime` (a relative time or date in a cell with no
+  `<time datetime>` and no `title`) and the opt-in `label-punctuation` (a
+  trailing colon or a required asterisk on a label). New top-level config
+  `enable` lists the opt-in rules a project switches on; the only one is
+  `label-punctuation`.
+
+- New rules, `warn`: `clickable-non-semantic` (a pointer cursor on something
+  that is not a link, button or ARIA widget), `reduced-motion-ignored` (an
+  animation that moves, or loops opacity for over a second, still running with
+  reduced motion on) and `layout-animation` (a transition on width, height, top,
+  left, margin or padding, or a control transitioning for over 300ms).
+
+- New rules, `warn`: `id-first-column` (UUIDs or opaque tokens leading a table
+  of more than 5 rows), `sticky-table-header` (a table over 1.5 viewport heights
+  whose header does not stick) and `row-height-scale` (body rows more than 2px
+  apart, or a header row more than 8px off them).
+
 - New rules, all `warn`: `off-scale-spacing` (at least 3 distinct padding,
   vertical margin or gap values in the main region that are not multiples of
   4px), `heading-rhythm` (2 or more headings with no more space above than

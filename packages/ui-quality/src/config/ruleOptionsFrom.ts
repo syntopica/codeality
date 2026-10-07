@@ -19,5 +19,6 @@ export const ruleOptionsFrom = (value: unknown): RuleOptions => {
     contentWidth: read('content-width', RULE_DEFAULTS.contentWidth),
     palette: read('palette', RULE_DEFAULTS.palette),
     slowRequest: read('slow-request', RULE_DEFAULTS.slowRequest),
+    zIndexSprawl: read('z-index-sprawl', RULE_DEFAULTS.zIndexSprawl),
   }
 }

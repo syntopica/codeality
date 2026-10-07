@@ -100,6 +100,10 @@ pnpm exec codeality-ui init
   convention every design system shares. The only one is `label-punctuation`
   (`"enable": ["label-punctuation"]`): a label with a trailing colon or an
   asterisk for a required field. An unknown id is a configuration error.
+- `rules.z-index-sprawl` takes `maxLayers` (6) and `ceiling` (1000): the most
+  distinct positive `z-index` values a screen may use, and the value from which
+  one is reported by itself. A project whose own scale starts in the thousands
+  raises `ceiling`.
 - `disable` keeps a finding on purpose. `route` and `selector` narrow it, and
   `message` keeps only findings whose message contains that text: one
   third-party `console-error` ("picture-in-picture is not allowed" from a
@@ -176,6 +180,10 @@ pnpm exec codeality-ui init
 | `id-first-column`        | a table or grid of more than 5 rows whose first column is a UUID or a token of 20 characters or more in at least 80% of the rows; order and invoice numbers are not judged                                                                                                                     |
 | `sticky-table-header`    | a `table` taller than 1.5 viewport heights whose header cells (or the row, section or table around them) are not `position: sticky`                                                                                                                                                            |
 | `row-height-scale`       | body rows of one table that differ in height by more than 2px, or a header row more than 8px off the body rows; rows with a cell on two lines or more and rows with an unusual cell count are left out                                                                                         |
+| `clipped-popover`        | an absolutely positioned `role=menu`, `listbox` or `tooltip` that reaches past an ancestor with `overflow: hidden` or `clip` between it and its containing block                                                                                                                               |
+| `z-index-sprawl`         | more than `maxLayers` (6) distinct positive `z-index` values on a screen, or a value from `ceiling` (1000) up; one finding per screen and one per kind of element past the ceiling                                                                                                             |
+| `dark-scheme-incomplete` | in the dark capture of a page whose canvas turns dark: no `color-scheme: dark` on the root, a native input, select or textarea still painting a light fill, or no `meta[name=theme-color]` that applies to the dark scheme                                                                     |
+| `page-scroll-thread`     | a `role=log` or `aria-live` region of over 20 children that does not scroll, with no scrolling ancestor, on a document taller than 3 viewport heights                                                                                                                                          |
 | `slow-request`           | a document, fetch or server action over `maxMs` (1000ms) while the page loaded; a GET is timed again and must still be over it                                                                                                                                                                 |
 | `sort-broken`            | a sortable header that, clicked twice, leaves its column out of order or never reverses it                                                                                                                                                                                                     |
 | `filter-broken`          | the main search, given a word shown in a row, drops that row, keeps every row, or does not restore on clear                                                                                                                                                                                    |

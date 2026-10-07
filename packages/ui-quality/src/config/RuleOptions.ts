@@ -5,4 +5,5 @@ export type RuleOptions = {
   contentWidth: { minRatio: number; minViewport: number }
   palette: { maxDeltaE: number }
   slowRequest: { maxMs: number }
+  zIndexSprawl: { maxLayers: number; ceiling: number }
 }

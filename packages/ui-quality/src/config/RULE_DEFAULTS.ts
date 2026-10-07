@@ -7,4 +7,5 @@ export const RULE_DEFAULTS: RuleOptions = {
   contentWidth: { minRatio: 0.8, minViewport: 1280 },
   palette: { maxDeltaE: 5 },
   slowRequest: { maxMs: 1000 },
+  zIndexSprawl: { maxLayers: 6, ceiling: 1000 },
 }
