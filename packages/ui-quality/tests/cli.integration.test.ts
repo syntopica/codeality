@@ -24,13 +24,14 @@ const io = (root: string) => {
   }
 }
 
-const project = (routes: unknown[]): string => {
+const project = (routes: unknown[], colorSchemes = ['light']): string => {
   const root = mkdtempSync(join(tmpdir(), 'uiq-'))
   writeFileSync(
     join(root, CONFIG),
     JSON.stringify({
       baseUrl: `file://${site}`,
       routes,
+      colorSchemes,
       viewports: [
         { width: 1920, height: 1080 },
         { width: 1440, height: 900 },
@@ -64,7 +65,7 @@ describe('codeality-ui', () => {
     expect(existsSync(join(root, CONFIG))).toBe(true)
   })
   it('finds every planted defect on the broken inbox', async () => {
-    const root = project(['/broken.html'])
+    const root = project(['/broken.html'], ['light', 'dark'])
     const run = io(root)
     expect(await runCli(['check', '--json'], run.io)).toBe(1)
     const { findings } = JSON.parse(run.out.join('')) as {
@@ -104,7 +105,7 @@ describe('codeality-ui', () => {
     const run = io(fixed)
     expect(await runCli(['check'], run.io)).toBe(0)
     expect(run.out.join('')).toContain('0 findings')
-    const broken = project(['/broken.html'])
+    const broken = project(['/broken.html'], ['light', 'dark'])
     expect(await runCli(['baseline', 'create'], io(broken).io)).toBe(0)
     expect(await runCli(['baseline', 'create'], io(broken).io)).toBe(2)
     const check = io(broken)

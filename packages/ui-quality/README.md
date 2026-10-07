@@ -111,6 +111,7 @@ pnpm exec codeality-ui init
 | `console-error`       | the page logged a console error or threw while loading (missing translation, duplicate key)                                                                                           |
 | `click-failed`        | a configured click found nothing to click, so the screen behind it was not measured                                                                                                   |
 | `capture-failed`      | a route's page could not be loaded or measured on two attempts (a navigation aborted by a dev-server reload); the run carries on                                                      |
+| `dark-scheme-ignored` | the dark capture of a screen is byte for byte its light one: the app themes by a class or stored preference, so the dark pass measured nothing new; reported once per run             |
 | `input-zoom`          | a field the user types into sets text under 16px below 1024px wide, so iOS Safari zooms the page on focus                                                                             |
 | `slow-request`        | a document, fetch or server action over `maxMs` (1000ms) while the page loaded; a GET is timed again and must still be over it                                                        |
 | `sort-broken`         | a sortable header that, clicked twice, leaves its column out of order or never reverses it                                                                                            |

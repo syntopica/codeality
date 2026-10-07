@@ -18,6 +18,7 @@ export const snapshotOf = (
   },
   axe: [],
   screenshot: '/tmp/inbox.png',
+  screenshotDigest: 'digest',
   consoleErrors: [],
   clickFailures: [],
   requests: [],

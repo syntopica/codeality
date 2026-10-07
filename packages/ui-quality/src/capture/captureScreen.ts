@@ -2,6 +2,7 @@ import { auditAccessibility } from '@/capture/auditAccessibility.js'
 import { checkAction } from '@/capture/checkAction.js'
 import { clickThrough } from '@/capture/clickThrough.js'
 import { exerciseScreen } from '@/capture/exerciseScreen.js'
+import { fileDigest } from '@/capture/fileDigest.js'
 import { openRoute } from '@/capture/openRoute.js'
 import { recordConsoleErrors } from '@/capture/recordConsoleErrors.js'
 import { recordRequests } from '@/capture/recordRequests.js'
@@ -59,6 +60,7 @@ export const captureScreen = async ({
     screen,
     axe,
     screenshot,
+    screenshotDigest: fileDigest(screenshot),
     consoleErrors: consoleLog.errors,
     clickFailures,
     requests,

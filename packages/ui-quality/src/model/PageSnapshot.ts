@@ -9,6 +9,8 @@ export type PageSnapshot = ProbeResult & {
   screen: Screen
   axe: AxeViolation[]
   screenshot: string
+  /** SHA-256 of the screenshot, to tell two schemes that rendered alike. */
+  screenshotDigest: string
   /** Console errors and uncaught exceptions logged while the page loaded. */
   consoleErrors: string[]
   /** The configured clicks that found nothing to click, with the reason. */

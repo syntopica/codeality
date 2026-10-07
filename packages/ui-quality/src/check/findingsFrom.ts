@@ -1,6 +1,7 @@
 import type { CapturedScreen } from '@/capture/CapturedScreen.js'
 import type { FailedCapture } from '@/capture/FailedCapture.js'
 import { captureFailedFinding } from '@/check/captureFailedFinding.js'
+import { schemeDuplicateFinding } from '@/check/schemeDuplicateFinding.js'
 import { isDisabled } from '@/config/isDisabled.js'
 import type { UiQualityConfig } from '@/config/UiQualityConfig.js'
 import type { Finding } from '@/model/Finding.js'
@@ -21,4 +22,7 @@ export const findingsFrom = (
       ),
     ),
     ...failed.map(captureFailedFinding),
+    ...[schemeDuplicateFinding(captured)].filter(
+      (finding): finding is Finding => finding !== null,
+    ),
   ]).filter((finding) => !isDisabled(finding, config.disable))
