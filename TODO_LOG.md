@@ -1,5 +1,12 @@
 ### 2026-10-07
 
+- [x] ui-quality `oversized-list` landed as `pagination-missing` on lists: a
+      main region with no table whose largest repeated collection holds over 150
+      items (`MAX_UNPAGED_ITEMS`) and shows no next-page control is reported as
+      `pagination-missing main list`, next to the table's 300-row rule.
+      Evidence: fixture `list.html` (200 conversations reported, `#short` 20
+      not), `unpagedFailureOf.test.ts`; ui-quality 190 tests.
+
 - [x] ui-quality `placeholder-fit` (warn): an empty field whose placeholder
       (canvas `measureText` with the computed font) is over 20% wider than its
       content box (client width less horizontal padding). Probe gains

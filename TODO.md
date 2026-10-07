@@ -97,8 +97,6 @@ needs.
 - [ ] `mixed-icon-family`: filled and outline icons in one repeated column (a
       Font Awesome WhatsApp glyph beside a Lucide envelope). Needs the svg's
       fill/stroke attributes.
-- [ ] `oversized-list`: one list over N rows (200 conversations, a 13,161px
-      page) with no pagination control after it.
 - [ ] `ghost-elevation` and `transition-all`: border plus shadow on one card;
       `transition-property: all`. Need `boxShadow` and `transitionProperty`.
 - [ ] 49 more candidates, tiered by value and false-positive risk, with exact
