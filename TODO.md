@@ -58,6 +58,17 @@ verified complete - `[-]` obsolete or superseded.
       extract the shapes into named types or record them with
       `eslint --suppress-all`, and land it with that repo's own gate.
 
+- [ ] **Template `prepare` scripts race on `.git/hooks`** (2026-10-07). Every
+      template runs `lefthook install && baseline-env-init` as `prepare`, and
+      pnpm runs them in parallel against the one repository, so two can replace
+      the same hook at once: CI run for a8653b0 failed
+      `pnpm install --frozen-lockfile` with
+      `could not replace the hook: remove .git/hooks/pre-push: no such file or directory`
+      (green on re-run), and a local install failed the same way in astro-site.
+      Next step: skip `lefthook install` in the templates when they run inside
+      this workspace (the root already installs the hooks), keeping it for a
+      scaffolded project.
+
 ## ui-quality
 
 Rule candidates from the 2026-10-01 review of the TienesLaVibra admin inbox by
