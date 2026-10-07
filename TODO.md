@@ -100,10 +100,6 @@ needs.
   interaction: sticky CTAs that show after scrolling, roster card buttons on
   hover, selected states in the budget form. Left as well: capture after a
   scroll, and `:hover`/`:focus`/ selected states of repeated controls.
-- [ ] **Clipped text inside a `<select>` passes.** 2026-10-01, InteliFactu's
-      Empresa select at 1920px cuts the descenders of "AJN Hostelería ESPJ ·
-      E67686287" and `text-clipped` stays silent. Smallest step: compare a
-      select's line-height plus padding against its content box height.
 - [ ] `placeholder-fit`: placeholder text wider than its input's text box by
       over 20% ("Buscar rosters, categ…" at 390px). Needs `placeholder` plus a
       canvas `measureText` with the computed font.

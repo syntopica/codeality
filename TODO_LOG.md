@@ -1,5 +1,14 @@
 ### 2026-10-07
 
+- [x] ui-quality `text-clipped` reports a select whose content box (client
+      height less vertical padding) is over 1px shorter than one line of its
+      font (canvas `fontBoundingBox` ascent+descent, probed for selects only).
+      Confirmed first in Chromium that it clips the option text to the content
+      box (28px select with 9px padding: text cut top and bottom). Evidence:
+      `cli.select.integration.test.ts` (tight select reported with a 10px box,
+      roomy one not), unit case in `textClipped.test.ts`; ui-quality 173 tests
+      pass.
+
 - [x] ui-quality reports `dark-scheme-ignored` (warn, once per run) when a dark
       screenshot is byte-identical to its light twin (`screenshotDigest`,
       SHA-256 of the capture), naming how many screens and which routes, and
