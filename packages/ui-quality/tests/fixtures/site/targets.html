@@ -1,0 +1,38 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>Icon buttons too small to tap alone</title>
+    <style>
+      body {
+        margin: 0;
+        font: 16px/1.4 sans-serif;
+        color: #000000;
+        background: #ffffff;
+      }
+      main {
+        padding: 24px;
+      }
+      .tools {
+        display: flex;
+      }
+      button {
+        width: 16px;
+        height: 16px;
+        padding: 0;
+        border: 1px solid #000000;
+        background: #ffffff;
+      }
+    </style>
+  </head>
+  <body>
+    <main>
+      <h1>Toolbar</h1>
+      <!-- Two 16px buttons touching: neither has 24px of its own to hit. -->
+      <div class="tools">
+        <button type="button" aria-label="Edit"></button>
+        <button type="button" aria-label="Delete"></button>
+      </div>
+    </main>
+  </body>
+</html>
