@@ -1,5 +1,18 @@
 ### 2026-10-07
 
+- [x] db-quality `sqlite.queries` follow-ups (Vexa): `exclude` root-relative
+      globs (`readQueryFiles` via `node:path` `matchesGlob`, validated in
+      `sqliteQueriesSectionFrom`), and with `database` set a BDB404 whose
+      statement plans with no scan is dropped (`planScansNothing`,
+      `dropIndexedGuards`). Evidence: integration fixture `jobs_guarded.sql`
+      reports BDB404 statically and none with dev.db (test fails with the drop
+      disabled); exclude test returns []; db-quality 347 tests pass, lint and
+      type-check clean.
+- [x] db-quality BDB406 no longer reports a `DELETE`/`UPDATE` with no `WHERE`
+      (`isWholeTableWrite`, skipped in `queryPlanFindings`). Evidence: fixtures
+      `DELETE FROM jobs;` and `UPDATE jobs SET state = 'a';` against a 2000-row
+      table produce no finding; unit test `isWholeTableWrite.test.ts`.
+
 - [x] ui-quality `listOfTable` reads the header as textContent, the text
       `hasText` matches. The cause was not the tab-joined cells as filed: React
       renders `<th>`s with no whitespace between them, so textContent is
