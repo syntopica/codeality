@@ -93,9 +93,6 @@
     "@next/eslint-plugin-next": {
       "optional": true
     },
-    "@vitest/eslint-plugin": {
-      "optional": true
-    },
     "eslint-config-next": {
       "optional": true
     },
@@ -103,9 +100,6 @@
       "optional": true
     },
     "eslint-plugin-boundaries": {
-      "optional": true
-    },
-    "eslint-plugin-code-policy": {
       "optional": true
     },
     "eslint-plugin-jsx-a11y": {
@@ -120,13 +114,7 @@
     "eslint-plugin-react-refresh": {
       "optional": true
     },
-    "eslint-plugin-sonarjs": {
-      "optional": true
-    },
     "eslint-plugin-tailwindcss": {
-      "optional": true
-    },
-    "eslint-plugin-testing-library": {
       "optional": true
     },
     "eslint-plugin-unicorn": {

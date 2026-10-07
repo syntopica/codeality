@@ -31,6 +31,14 @@ export const createViteReactConfig = (options: ViteReactConfigOptions = {}) => [
       },
     },
   },
+  // TypeScript props are the validation. `react/prop-types` cannot see through
+  // `forwardRef`'s generic, so every ref-forwarding primitive that
+  // destructures its props (shadcn's whole `ui/` folder) reported
+  // "'className' is missing in props validation".
+  {
+    files: ['**/*.{ts,tsx}'],
+    rules: { 'react/prop-types': 'off' },
+  },
   {
     files: ['**/*.{ts,tsx,js,jsx}'],
     plugins: {

@@ -87,7 +87,10 @@ The list is transitive: `/code-quality` also pulls in what `/testing` needs, and
 
 `/code-quality` composes `/testing` unconditionally, so
 `eslint-plugin-testing-library` is required there even in a project with no
-tests.
+tests. Its four peers are therefore declared as required rather than optional:
+with `auto-install-peers=true` (the templates' `.npmrc`) pnpm installs them, and
+without it the install warns, instead of ESLint dying at config load with
+`Cannot find module '@vitest/eslint-plugin'`.
 
 ## CLI helper
 
