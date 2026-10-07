@@ -148,6 +148,40 @@
     return measure.measureText(placeholder).width
   }
 
+  // Which icon an svg draws, whatever its size or classes: its markup with
+  // the presentational attributes removed, hashed (djb2).
+  const NOISE = [
+    'class',
+    'style',
+    'width',
+    'height',
+    'id',
+    'aria-hidden',
+    'focusable',
+    'role',
+  ]
+  const svgDigestOf = (element) => {
+    if (element.tagName.toLowerCase() !== 'svg') return ''
+    const copy = element.cloneNode(true)
+    for (const node of [copy, ...copy.querySelectorAll('*')])
+      for (const name of NOISE) node.removeAttribute(name)
+    let hash = 5381
+    for (const char of copy.outerHTML.replace(/\s+/g, ' '))
+      hash = ((hash * 33) ^ char.charCodeAt(0)) >>> 0
+    return hash.toString(16)
+  }
+  // Whether an svg's first shape is filled or only stroked: a solid glyph or
+  // an outline one.
+  const SHAPES = 'path, circle, rect, ellipse, line, polyline, polygon'
+  const svgPaintOf = (element) => {
+    if (element.tagName.toLowerCase() !== 'svg') return ''
+    const shape = element.querySelector(SHAPES)
+    if (!shape) return ''
+    const painted = getComputedStyle(shape)
+    if (painted.fill !== 'none') return 'fill'
+    return painted.stroke !== 'none' ? 'stroke' : ''
+  }
+
   const isTextEntry = (element) => {
     if (element.isContentEditable)
       return !element.parentElement || !element.parentElement.isContentEditable
@@ -235,6 +269,11 @@
         parseFloat(style.paddingLeft) -
         parseFloat(style.paddingRight),
       placeholderWidth: placeholderWidthOf(element, style),
+      transitionAll:
+        style.transitionProperty.split(',').some((p) => p.trim() === 'all') &&
+        style.transitionDuration.split(',').some((d) => parseFloat(d) > 0),
+      svgDigest: svgDigestOf(element),
+      svgPaint: svgPaintOf(element),
       isControl: isControl(element),
       fontSize: parseFloat(style.fontSize),
       isTextEntry: isTextEntry(element),

@@ -1,0 +1,85 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="utf-8" />
+    <title>Icons in a sidebar and a contact list</title>
+    <style>
+      body {
+        margin: 0;
+        font: 16px/1.4 sans-serif;
+        color: #000000;
+        background: #ffffff;
+      }
+      main {
+        padding: 24px;
+      }
+      a {
+        color: #000000;
+        display: inline-flex;
+        gap: 8px;
+        align-items: center;
+        min-height: 32px;
+      }
+      svg {
+        width: 20px;
+        height: 20px;
+      }
+      .outline {
+        fill: none;
+        stroke: #000000;
+        stroke-width: 2;
+      }
+      .solid {
+        fill: #000000;
+      }
+      .card {
+        border: 1px solid #000000;
+        padding: 8px;
+        transition: all 200ms;
+      }
+    </style>
+  </head>
+  <body>
+    <!-- Clientes and Contactos draw one icon, at two sizes. -->
+    <nav>
+      <a href="#clientes"
+        ><svg class="outline" viewBox="0 0 24 24">
+          <circle cx="12" cy="8" r="4" />
+          <path d="M4 20c0-4 4-6 8-6s8 2 8 6" /></svg
+        >Clientes</a
+      >
+      <a href="#contactos"
+        ><svg class="outline" style="width: 24px" viewBox="0 0 24 24">
+          <circle cx="12" cy="8" r="4" />
+          <path d="M4 20c0-4 4-6 8-6s8 2 8 6" /></svg
+        >Contactos</a
+      >
+      <a href="#plantillas"
+        ><svg class="outline" viewBox="0 0 24 24">
+          <rect x="4" y="4" width="16" height="16" /></svg
+        >Plantillas</a
+      >
+    </nav>
+    <main>
+      <h1>Contacto</h1>
+      <!-- A solid brand glyph beside an outline envelope. -->
+      <ul>
+        <li>
+          <a href="#whatsapp"
+            ><svg class="solid" viewBox="0 0 24 24">
+              <circle cx="12" cy="12" r="10" /></svg
+            >WhatsApp</a
+          >
+        </li>
+        <li>
+          <a href="#email"
+            ><svg class="outline" viewBox="0 0 24 24">
+              <path d="M3 6h18v12H3z M3 6l9 7 9-7" /></svg
+            >Email</a
+          >
+        </li>
+      </ul>
+      <div class="card">Animates everything</div>
+    </main>
+  </body>
+</html>

@@ -41,6 +41,12 @@ export type ElementBox = {
   contentWidth: number
   /** The width of the placeholder an empty field shows; 0 when it shows none. */
   placeholderWidth: number
+  /** A `transition-property: all` with a duration: every property change animates. */
+  transitionAll: boolean
+  /** For an svg, a hash of its markup less presentational attributes; empty otherwise. */
+  svgDigest: string
+  /** For an svg, `fill` or `stroke` by how its first shape is painted; empty otherwise. */
+  svgPaint: string
   isControl: boolean
   /** Computed font size in CSS pixels. */
   fontSize: number
