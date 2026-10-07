@@ -195,10 +195,6 @@ needs.
       ignoring `.codeality-db-*.json` and formatting the config once. Next step:
       emit prettier-shaped JSON (short arrays inline) and unwrapped Markdown, or
       have `init` add the ignore line.
-- [ ] `no-inline-types-in-runtime-files` misses anonymous type literals
-      (`{ a: string }[]` in a `const` annotation); the 0.2.0 final review found
-      two in `summarizeExplain.ts` that lint passed. Next step: extend the rule
-      to `TSTypeLiteral` in annotations and assertions, with a test.
 - [ ] db-quality 0.4.0: make `perf diff` usable as a CI gate. It compares the
       window mean against the cumulative mean since the stats reset, so it
       measures production drift, not the commit: on 2026-09-26 a simulated

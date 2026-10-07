@@ -1,5 +1,15 @@
 ### 2026-10-07
 
+- [x] `no-inline-types-in-runtime-files` reports anonymous object types in
+      runtime code (annotations, assertions, parameters, return types, type
+      arguments; outermost literal only; `declare global`/`declare module`
+      exempt) as `anonymousTypeLiteral`. It found 28 in this repo's packages and
+      1 in `templates/nextjs-app/app/layout.tsx`, all extracted to named type
+      files. Evidence: rule tests 30 pass (8 new), `pnpm check:ci` 56/56 tasks,
+      `pnpm check:quality` 6 gates. Estate impact not measured yet: sweep the
+      adopting repos before publishing the plugin, since
+      `({ children }: { children: ReactNode })` is a common shape.
+
 - [x] db-quality `sqlite.queries` follow-ups (Vexa): `exclude` root-relative
       globs (`readQueryFiles` via `node:path` `matchesGlob`, validated in
       `sqliteQueriesSectionFrom`), and with `database` set a BDB404 whose
