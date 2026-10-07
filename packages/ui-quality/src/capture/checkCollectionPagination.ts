@@ -3,6 +3,7 @@ import type { Page } from 'playwright'
 import { collectionPaginationFailureOf } from '@/behaviour/collectionPaginationFailureOf.js'
 import { collectionItems } from '@/capture/collectionItems.js'
 import { gotoSettled } from '@/capture/gotoSettled.js'
+import { isPagerAddress } from '@/capture/isPagerAddress.js'
 import { itemsAfterClick } from '@/capture/itemsAfterClick.js'
 import { MIN_COLLECTION_ITEMS } from '@/capture/MIN_COLLECTION_ITEMS.js'
 import { NEXT_PAGE_NAME } from '@/capture/NEXT_PAGE_NAME.js'
@@ -27,6 +28,15 @@ export const checkCollectionPagination = async (
     (await pageTwoLinkOf(page, main))
   if (!next) return []
   const start = page.url()
+  // A "next" link that leaves the route (the next article) is not a pager,
+  // unless a numbered "2" beside it says the region is paged.
+  const href = await next.getAttribute('href')
+  if (
+    href !== null &&
+    !isPagerAddress(start, href) &&
+    !(await pageTwoLinkOf(page, main))
+  )
+    return []
   const second = await itemsAfterClick(page, main, next)
   const nextUrl = page.url()
   const previous = await pageControlOf(page, main, PREVIOUS_PAGE_NAME, 'prev')

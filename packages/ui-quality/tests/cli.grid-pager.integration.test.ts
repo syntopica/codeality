@@ -53,4 +53,7 @@ describe('codeality-ui pagination on a card grid with no table', () => {
       'pagination-broken next page',
     ])
   })
+  it('leaves a next-article link alone when no numbered page backs it', async () => {
+    expect(await paginationFindings('/article.html')).toEqual([])
+  })
 })

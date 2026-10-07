@@ -1,0 +1,41 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="utf-8" />
+    <title>An article with related posts</title>
+    <style>
+      body {
+        margin: 0;
+        font: 16px/1.4 sans-serif;
+        color: #000000;
+        background: #ffffff;
+      }
+      main {
+        padding: 24px;
+      }
+      a {
+        color: #000000;
+      }
+    </style>
+  </head>
+  <body>
+    <main>
+      <!-- Each article lists the same related posts, and its "Siguiente"
+           opens the next article rather than a second page of the list. -->
+      <h1>Post article-next</h1>
+      <p>Body of the post.</p>
+      <ul>
+        <li>
+          <a href="posts/alba.html"><h3>Alba</h3></a>
+        </li>
+        <li>
+          <a href="posts/bruno.html"><h3>Bruno</h3></a>
+        </li>
+        <li>
+          <a href="posts/carla.html"><h3>Carla</h3></a>
+        </li>
+      </ul>
+      <a href="article-next.html" rel="next">Siguiente</a>
+    </main>
+  </body>
+</html>

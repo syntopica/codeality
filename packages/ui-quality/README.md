@@ -132,12 +132,14 @@ A main region with no table is paged through its largest repeated collection:
 the visible siblings of one tag that each hold a heading or a worded link, such
 as the cards of a grid, outside navigation. Each item is known by its first
 link's address, else its heading. The pager is found as above, or by a link
-named "2"; following it may load another document. `pagination-broken` fires
-when the next page shows only items the first page showed (whether or not its
-address changed), when over half of its items were already on the first page,
-the mark of an unstable order under `LIMIT`/`OFFSET`, or when "previous page"
-does not bring back the first page's items. The route's address is restored
-afterwards.
+named "2"; following it may load another document. A "next" link whose address
+leaves the route (the next article, `/blog/b` from `/blog/a`, rather than
+`?page=2` or `/blog/page/2`) is not taken for a pager unless a link named "2"
+sits beside it. `pagination-broken` fires when the next page shows only items
+the first page showed (whether or not its address changed), when over half of
+its items were already on the first page, the mark of an unstable order under
+`LIMIT`/`OFFSET`, or when "previous page" does not bring back the first page's
+items. The route's address is restored afterwards.
 
 `action-silent` answers every request other than GET, HEAD and OPTIONS with HTTP
 500 before it leaves the browser, so nothing is written even against production,
