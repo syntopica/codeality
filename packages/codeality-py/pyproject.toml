@@ -33,7 +33,7 @@ Issues = "https://github.com/syntopica/codeality/issues"
 [dependency-groups]
 dev = [
   "deptry>=0.20,<1",
-  "mypy>=1.11,<2",
+  "mypy>=1.11,<3",
   "pip-audit>=2.7,<3",
   "pytest>=8,<10",
   "pytest-cov>=5,<8",

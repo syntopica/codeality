@@ -13,8 +13,8 @@ clap = { version = "4", features = ["derive"] }
 proc-macro2 = { version = "1", features = ["span-locations"] }
 regex = "1"
 serde = { version = "1", features = ["derive"] }
-syn = { version = "2", features = ["full", "visit", "parsing", "printing"] }
-toml = "0.8"
+syn = { version = "3", features = ["full", "visit", "parsing", "printing"] }
+toml = "1"
 walkdir = "2"
 
 [lints.clippy]

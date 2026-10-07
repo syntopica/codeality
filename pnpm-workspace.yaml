@@ -30,21 +30,21 @@ minimumReleaseAgeExclude:
   - '@nestjs/core@12.0.4 || 12.1.2'
   - '@nestjs/platform-express@12.0.4 || 12.1.2'
   - '@nestjs/schematics@12.0.4'
-  - '@next/env@16.3.8'
-  - '@next/eslint-plugin-next@16.3.8'
-  - '@next/swc-darwin-arm64@16.3.8'
-  - '@next/swc-darwin-x64@16.3.8'
-  - '@next/swc-linux-arm64-gnu@16.3.8'
-  - '@next/swc-linux-arm64-musl@16.3.8'
-  - '@next/swc-linux-x64-gnu@16.3.8'
-  - '@next/swc-linux-x64-musl@16.3.8'
-  - '@next/swc-win32-arm64-msvc@16.3.8'
-  - '@next/swc-win32-x64-msvc@16.3.8'
+  - '@next/env@16.3.8 || 16.4.0'
+  - '@next/eslint-plugin-next@16.3.8 || 16.4.0'
+  - '@next/swc-darwin-arm64@16.3.8 || 16.4.0'
+  - '@next/swc-darwin-x64@16.3.8 || 16.4.0'
+  - '@next/swc-linux-arm64-gnu@16.3.8 || 16.4.0'
+  - '@next/swc-linux-arm64-musl@16.3.8 || 16.4.0'
+  - '@next/swc-linux-x64-gnu@16.3.8 || 16.4.0'
+  - '@next/swc-linux-x64-musl@16.3.8 || 16.4.0'
+  - '@next/swc-win32-arm64-msvc@16.3.8 || 16.4.0'
+  - '@next/swc-win32-x64-msvc@16.3.8 || 16.4.0'
   - '@vitest/coverage-v8@5.0.3'
   - '@vitest/mocker@5.0.3'
   - '@vitest/spy@5.0.3'
   - dependency-cruiser@18.5.0
-  - eslint-config-next@16.3.8
+  - eslint-config-next@16.3.8 || 16.4.0
   - ignore@7.0.11
   - jscpd-darwin-arm64@5.4.0
   - jscpd-darwin-x64@5.4.0
@@ -54,10 +54,13 @@ minimumReleaseAgeExclude:
   - jscpd-linux-x64-musl@5.4.0
   - jscpd-windows-arm64-msvc@5.4.0
   - jscpd-windows-x64-msvc@5.4.0
-  - knip@6.39.0
-  - next@16.3.8
+  - knip@6.39.0 || 6.40.0
+  - next@16.3.8 || 16.4.0
   - tsc-alias@1.9.7
   - vitest@5.0.3
+  - '@astrojs/internal-helpers@0.12.0'
+  - '@astrojs/markdown-satteri@0.4.3'
+  - astro@7.3.6
 patchedDependencies:
   eslint-plugin-react: patches/eslint-plugin-react.patch
 # Security overrides: `pnpm audit --audit-level=high` findings that survived
@@ -105,3 +108,14 @@ overrides:
   'sharp@<0.35.4': ^0.35.4 # GHSA-rgj7-g3m4-5g8c, via templates__nextjs-app>next
   # GHSA-w27v-7q3p-w38r and GHSA-4vpr-x523-8j87, both patched in 4.1.0.
   'svgo@>=4.0.0 <4.1.0': ^4.1.0 # via astro and nestjs>webpack>cssnano
+  'basic-ftp@<6.2.1': ^6.2.1 # GHSA-c475-qrg2-pj4r, via @lhci/cli>lighthouse>puppeteer-core>proxy-agent>get-uri
+  # GHSA-r5fr-rjxr-66jc, GHSA-f23m-r3pf-42rh and GHSA-xxjr-mmjv-4gpg, all
+  # patched in 4.18.1, the same major chevrotain already resolves.
+  'lodash@>=4.0.0 <4.18.1': ^4.18.1 # via db-quality>prisma-lint>@mrleebo/prisma-ast>chevrotain
+  # typescript-eslint 8.71.1 broke no-unused-vars on files its parser does not
+  # own (.js/.mjs through espree): `isTypeOnlyReference` tests
+  # `!ref.isValueReference`, which is undefined on eslint-scope references, so
+  # every variable reads as "only used as a type". Fixed on main (issue 12980)
+  # but unreleased; drop these two lines once 8.71.2 ships.
+  'typescript-eslint@8.71.1': 8.71.0
+  '@typescript-eslint/eslint-plugin@8.71.1': 8.71.0

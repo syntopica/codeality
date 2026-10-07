@@ -2,7 +2,7 @@
   "name": "@syntopica/test-quality",
   "version": "0.1.1",
   "private": false,
-  "packageManager": "pnpm@12.8.1",
+  "packageManager": "pnpm@12.9.1",
   "license": "MIT",
   "description": "Test-suite cost audit: find where a vitest suite spends its time and memory (DOM environments for DOM-free tests, files run twice, uncached local gates, hooks that repeat a gate)",
   "repository": {
@@ -46,10 +46,10 @@
     "@syntopica/gate-kit": "workspace:*",
     "@syntopica/quality-config": "workspace:*",
     "@syntopica/tsconfig": "workspace:*",
-    "@types/node": "^26.6.3",
+    "@types/node": "^26.6.4",
     "@vitest/coverage-v8": "^5.0.3",
-    "eslint": "^10.11.0",
-    "publint": "^0.3.24",
+    "eslint": "^10.12.0",
+    "publint": "^0.3.25",
     "tsup": "^8.5.1",
     "typescript": "npm:@typescript/typescript6@^6.0.2",
     "vitest": "^5.0.3"

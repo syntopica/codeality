@@ -2,7 +2,7 @@
   "name": "@syntopica/ui-quality",
   "version": "0.2.0",
   "private": false,
-  "packageManager": "pnpm@12.8.1",
+  "packageManager": "pnpm@12.9.1",
   "license": "MIT",
   "description": "Design gate for rendered web UIs: drive the real routes in Playwright, light and dark, at several widths, and report contrast, clipping, misaligned columns, cramped controls, wasted width and off-palette colours",
   "repository": {
@@ -49,11 +49,11 @@
     "@syntopica/gate-kit": "workspace:*",
     "@syntopica/quality-config": "workspace:*",
     "@syntopica/tsconfig": "workspace:*",
-    "@types/node": "^26.6.3",
+    "@types/node": "^26.6.4",
     "@vitest/coverage-v8": "^5.0.3",
-    "eslint": "^10.11.0",
+    "eslint": "^10.12.0",
     "playwright": "^1.63.0",
-    "publint": "^0.3.24",
+    "publint": "^0.3.25",
     "tsup": "^8.5.1",
     "typescript": "npm:@typescript/typescript6@^6.0.2",
     "vitest": "^5.0.3"

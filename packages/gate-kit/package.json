@@ -2,7 +2,7 @@
   "name": "@syntopica/gate-kit",
   "version": "0.0.0",
   "private": true,
-  "packageManager": "pnpm@12.8.1",
+  "packageManager": "pnpm@12.9.1",
   "license": "MIT",
   "description": "Plumbing the codeality gate CLIs share: configuration errors, exit codes, argument parsing and the fingerprint baseline. Bundled into each CLI, never published.",
   "type": "module",
@@ -21,9 +21,9 @@
   "devDependencies": {
     "@syntopica/eslint-config": "workspace:*",
     "@syntopica/tsconfig": "workspace:*",
-    "@types/node": "^26.6.3",
+    "@types/node": "^26.6.4",
     "@vitest/coverage-v8": "^5.0.3",
-    "eslint": "^10.11.0",
+    "eslint": "^10.12.0",
     "eslint-plugin-regexp": "^3.3.1",
     "typescript": "npm:@typescript/typescript6@^6.0.2",
     "vitest": "^5.0.3"

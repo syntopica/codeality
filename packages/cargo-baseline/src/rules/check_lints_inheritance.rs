@@ -20,7 +20,7 @@ pub fn check_lints_inheritance(info: &CrateInfo) -> Vec<Diagnostic> {
 
         let manifest: toml::Value = match std::fs::read_to_string(&manifest_path)
             .ok()
-            .and_then(|raw| raw.parse().ok())
+            .and_then(|raw| toml::from_str(&raw).ok())
         {
             Some(manifest) => manifest,
             None => {

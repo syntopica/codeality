@@ -14,9 +14,8 @@ impl CrateInfo {
         let manifest_path = dir.join("Cargo.toml");
         let raw = std::fs::read_to_string(&manifest_path)
             .with_context(|| format!("reading {}", manifest_path.display()))?;
-        let manifest: toml::Value = raw
-            .parse()
-            .with_context(|| format!("parsing {}", manifest_path.display()))?;
+        let manifest: toml::Value =
+            toml::from_str(&raw).with_context(|| format!("parsing {}", manifest_path.display()))?;
 
         let is_workspace_root = manifest.get("workspace").is_some();
 
