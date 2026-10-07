@@ -2,6 +2,8 @@
 
 ## [Unreleased]
 
+## 0.7.0
+
 - New rules, all `warn`: `off-scale-spacing` (at least 3 distinct padding,
   vertical margin or gap values in the main region that are not multiples of
   4px), `heading-rhythm` (2 or more headings with no more space above than
