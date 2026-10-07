@@ -5,7 +5,7 @@ build-backend = "hatchling.build"
 [project]
 name = "greeting-service"
 version = "0.1.0"
-description = "A Python package on the BusiRocket baseline"
+description = "A Python package on the Syntopica baseline"
 readme = "README.md"
 requires-python = ">=3.12"
 license = { text = "MIT" }

@@ -34,9 +34,9 @@ flexibility, and shared defaults over per-project reinvention.
 ## Repository structure
 
 Shared **@syntopica/\*** packages (ESLint, Prettier, TypeScript,
-`create-baseline`) are maintained in separate GitHub repositories under
-[BusiRocket](https://github.com/BusiRocket) and published to npm. This monorepo
-holds **templates** and **documentation** only.
+`create-baseline`) are maintained under `packages/` in
+[syntopica/codeality](https://github.com/syntopica/codeality) and published to
+npm from there, beside the **templates** and **documentation**.
 
 ```text
 engineering-baseline/

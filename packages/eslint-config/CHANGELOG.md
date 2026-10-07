@@ -1,4 +1,4 @@
-# @busirocket/eslint-config
+# @syntopica/eslint-config
 
 > Reconstructed from this repository's git history, which starts at the monorepo
 > migration. Each entry names the commit that introduced the version.

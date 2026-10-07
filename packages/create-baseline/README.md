@@ -1,7 +1,7 @@
 # @syntopica/create-baseline
 
 Small CLI to print install commands and verify that your project lists the
-`@busirocket` baseline config packages (`eslint-config`, `prettier-config`,
+`@syntopica` baseline config packages (`eslint-config`, `prettier-config`,
 `tsconfig`, `quality-config`) and optionally checks for a flat ESLint config
 file and the quality-gate config files (`knip.config.ts`/`.js`, `lefthook.yml`,
 `renovate.json`).

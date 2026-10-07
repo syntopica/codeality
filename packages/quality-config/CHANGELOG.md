@@ -1,4 +1,4 @@
-# @busirocket/quality-config
+# @syntopica/quality-config
 
 ## [Unreleased]
 

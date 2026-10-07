@@ -1,4 +1,4 @@
-"""A Python package on the BusiRocket baseline."""
+"""A Python package on the Syntopica baseline."""
 
 from greeting_service.greeting import Greeting
 

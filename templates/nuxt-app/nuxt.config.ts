@@ -18,7 +18,7 @@ export default defineNuxtConfig({
   },
   eslint: {
     config: {
-      // Let our shared @busirocket flat-config layers own JS/TS/Vue linting;
+      // Let our shared @syntopica flat-config layers own JS/TS/Vue linting;
       // @nuxt/eslint then contributes only Nuxt-aware rules and auto-import globals.
       standalone: false,
     },

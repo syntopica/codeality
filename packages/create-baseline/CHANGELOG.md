@@ -1,4 +1,4 @@
-# @busirocket/create-baseline
+# @syntopica/create-baseline
 
 ## [Unreleased]
 

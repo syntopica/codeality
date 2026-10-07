@@ -1,6 +1,6 @@
 # python-package
 
-A Python package on the BusiRocket baseline: `src/` layout, uv, ruff, mypy
+A Python package on the Syntopica baseline: `src/` layout, uv, ruff, mypy
 strict, deptry, pip-audit, pytest with coverage, and `codeality-py` for the
 structural rules.
 

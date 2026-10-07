@@ -1,6 +1,6 @@
 # my-nestjs-app
 
-NestJS service scaffolded on the BusiRocket engineering baseline.
+NestJS service scaffolded on the Syntopica engineering baseline.
 
 ## Stack
 
