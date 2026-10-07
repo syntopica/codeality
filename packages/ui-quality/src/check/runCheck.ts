@@ -9,9 +9,9 @@ export const runCheck = async (
   config: UiQualityConfig,
   log: (text: string) => void,
 ): Promise<CheckResult> => {
-  const captured = await captureScreens(root, config, log)
+  const { captured, failed } = await captureScreens(root, config, log)
   return {
-    findings: findingsFrom(captured, config),
+    findings: findingsFrom(captured, failed, config),
     screens: captured.map(({ snapshot }) => ({
       route: snapshot.screen.route,
       screen: screenLabel(snapshot.screen),

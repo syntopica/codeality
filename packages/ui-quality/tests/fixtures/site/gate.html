@@ -1,0 +1,29 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>Account</title>
+    <script>
+      // Signed-in only: without the session login.html writes, bounce to it.
+      if (localStorage.getItem('session') !== 'yes')
+        location.replace('login.html')
+    </script>
+    <style>
+      body {
+        margin: 0;
+        font: 16px/1.4 sans-serif;
+        color: #000000;
+        background: #ffffff;
+      }
+      main {
+        padding: 24px;
+      }
+    </style>
+  </head>
+  <body>
+    <main>
+      <h1>Account</h1>
+      <p>Signed in.</p>
+    </main>
+  </body>
+</html>

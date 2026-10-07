@@ -6,5 +6,5 @@ export const USAGE = `usage: codeality-ui [--project <dir>] <command> [options]
 
 Screenshots and the last report land in .codeality-ui/ (report.json, screens/).
 
-exit codes: 0 passed, 1 findings, 2 invalid usage or configuration, 3 browser or page failure
+exit codes: 0 passed, 1 findings, 2 invalid usage or configuration, 3 browser failure (a page that fails twice is a capture-failed finding)
 `

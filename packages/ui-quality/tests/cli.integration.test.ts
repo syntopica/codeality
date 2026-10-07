@@ -150,6 +150,19 @@ describe('codeality-ui', () => {
     // Every control that changes nothing is waited out in full, so the
     // broken page takes longer than one that works.
   }, 120_000)
+  it('finds the table again when its header cells have no space between them', async () => {
+    // Read as innerText, a header rendered with no whitespace between its
+    // cells matched no table, so the search saw no rows at all and reported a
+    // missing empty state instead of the search that does not filter.
+    const tight = io(project(['/table.html#broken-tight']))
+    expect(await runCli(['check', '--json'], tight.io)).toBe(1)
+    const { findings } = JSON.parse(tight.out.join('')) as {
+      findings: { rule: string; subject: string }[]
+    }
+    expect(
+      findings.map((finding) => `${finding.rule} ${finding.subject}`).sort(),
+    ).toEqual(['filter-broken search box', 'sort-broken column "Amount"'])
+  }, 120_000)
   it('searches for nothing, pages the table and fails a save, and reports what the user is not told', async () => {
     const silent = io(project(['/table.html#silent']))
     expect(await runCli(['check', '--json'], silent.io)).toBe(1)

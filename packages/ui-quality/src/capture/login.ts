@@ -2,6 +2,7 @@ import { gotoSettled } from '@/capture/gotoSettled.js'
 import type { Page } from 'playwright'
 
 import { credentialFrom } from '@/capture/credentialFrom.js'
+import { firstInSelectorOrder } from '@/capture/firstInSelectorOrder.js'
 import type { AuthConfig } from '@/config/AuthConfig.js'
 
 export const login = async (
@@ -10,18 +11,17 @@ export const login = async (
   auth: AuthConfig,
 ): Promise<void> => {
   await gotoSettled(page, baseUrl + auth.loginPath)
-  await page
-    .locator(auth.usernameSelector)
-    .first()
-    .fill(credentialFrom(auth.usernameEnv))
-  await page
-    .locator(auth.passwordSelector)
-    .first()
-    .fill(credentialFrom(auth.passwordEnv))
+  await (
+    await firstInSelectorOrder(page, auth.usernameSelector)
+  ).fill(credentialFrom(auth.usernameEnv))
+  await (
+    await firstInSelectorOrder(page, auth.passwordSelector)
+  ).fill(credentialFrom(auth.passwordEnv))
+  const submit = await firstInSelectorOrder(page, auth.submitSelector)
   await Promise.all([
     page.waitForURL((url) => !url.pathname.endsWith(auth.loginPath), {
       timeout: 30_000,
     }),
-    page.locator(auth.submitSelector).first().click(),
+    submit.click(),
   ])
 }

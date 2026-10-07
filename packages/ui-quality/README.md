@@ -88,32 +88,33 @@ pnpm exec codeality-ui init
 
 ## Rules
 
-| Rule                  | Reports                                                                                                                        |
-| --------------------- | ------------------------------------------------------------------------------------------------------------------------------ |
-| `a11y/<id>`           | every axe-core violation, contrast included; serious and critical ones are errors                                              |
-| `text-clipped`        | text cut by its own or an ancestor's overflow with no ellipsis                                                                 |
-| `text-hard-cut`       | texts in one column that pile up at one length with no ellipsis: cut upstream                                                  |
-| `row-misaligned`      | repeated rows whose n-th cell starts at a different x                                                                          |
-| `control-inset`       | a bordered input less than `minInset` (4px) from the edge of the bar or card it sits in                                        |
-| `edge-misaligned`     | the header's content and the main content start or end up to `maxOffset` (240px) apart                                         |
-| `content-width`       | the main column using less than `minRatio` (80%) of its region at `minViewport` (1280px) up                                    |
-| `palette`             | a text, fill or border colour farther than `maxDeltaE` (5) from every palette colour                                           |
-| `blank-route`         | no element matches the main selector, or the main region paints nothing                                                        |
-| `horizontal-overflow` | the page is wider than its viewport                                                                                            |
-| `fixed-overflow`      | a fixed or sticky element taller than the window that cannot scroll: content unreachable                                       |
-| `icon-contrast`       | an icon-only button or link under 3:1 against its background, `<body>` and `<html>` fills included (WCAG 1.4.11)               |
-| `raw-placeholder`     | a bracketed lower-case stand-in such as `[media message]` shown as content                                                     |
-| `bare-url`            | a web address shown as plain text outside any link                                                                             |
-| `console-error`       | the page logged a console error or threw while loading (missing translation, duplicate key)                                    |
-| `click-failed`        | a configured click found nothing to click, so the screen behind it was not measured                                            |
-| `input-zoom`          | a field the user types into sets text under 16px below 1024px wide, so iOS Safari zooms the page on focus                      |
-| `slow-request`        | a document, fetch or server action over `maxMs` (1000ms) while the page loaded; a GET is timed again and must still be over it |
-| `sort-broken`         | a sortable header that, clicked twice, leaves its column out of order or never reverses it                                     |
-| `filter-broken`       | the main search, given a word shown in a row, drops that row, keeps every row, or does not restore on clear                    |
-| `empty-state-missing` | a search nothing matches empties the table and shows nothing in its place                                                      |
-| `pagination-broken`   | an enabled "next page" leaves the same rows or cards, repeats over half of them, or "previous page" does not bring them back   |
-| `pagination-missing`  | the main table renders over 300 body rows with no pager and no virtual scrolling                                               |
-| `action-silent`       | the first form of the main region, submitted while every write fails, changes nothing the user can see                         |
+| Rule                  | Reports                                                                                                                          |
+| --------------------- | -------------------------------------------------------------------------------------------------------------------------------- |
+| `a11y/<id>`           | every axe-core violation, contrast included; serious and critical ones are errors                                                |
+| `text-clipped`        | text cut by its own or an ancestor's overflow with no ellipsis                                                                   |
+| `text-hard-cut`       | texts in one column that pile up at one length with no ellipsis: cut upstream                                                    |
+| `row-misaligned`      | repeated rows whose n-th cell starts at a different x                                                                            |
+| `control-inset`       | a bordered input less than `minInset` (4px) from the edge of the bar or card it sits in                                          |
+| `edge-misaligned`     | the header's content and the main content start or end up to `maxOffset` (240px) apart                                           |
+| `content-width`       | the main column using less than `minRatio` (80%) of its region at `minViewport` (1280px) up                                      |
+| `palette`             | a text, fill or border colour farther than `maxDeltaE` (5) from every palette colour                                             |
+| `blank-route`         | no element matches the main selector, or the main region paints nothing                                                          |
+| `horizontal-overflow` | the page is wider than its viewport                                                                                              |
+| `fixed-overflow`      | a fixed or sticky element taller than the window that cannot scroll: content unreachable                                         |
+| `icon-contrast`       | an icon-only button or link under 3:1 against its background, `<body>` and `<html>` fills included (WCAG 1.4.11)                 |
+| `raw-placeholder`     | a bracketed lower-case stand-in such as `[media message]` shown as content                                                       |
+| `bare-url`            | a web address shown as plain text outside any link                                                                               |
+| `console-error`       | the page logged a console error or threw while loading (missing translation, duplicate key)                                      |
+| `click-failed`        | a configured click found nothing to click, so the screen behind it was not measured                                              |
+| `capture-failed`      | a route's page could not be loaded or measured on two attempts (a navigation aborted by a dev-server reload); the run carries on |
+| `input-zoom`          | a field the user types into sets text under 16px below 1024px wide, so iOS Safari zooms the page on focus                        |
+| `slow-request`        | a document, fetch or server action over `maxMs` (1000ms) while the page loaded; a GET is timed again and must still be over it   |
+| `sort-broken`         | a sortable header that, clicked twice, leaves its column out of order or never reverses it                                       |
+| `filter-broken`       | the main search, given a word shown in a row, drops that row, keeps every row, or does not restore on clear                      |
+| `empty-state-missing` | a search nothing matches empties the table and shows nothing in its place                                                        |
+| `pagination-broken`   | an enabled "next page" leaves the same rows or cards, repeats over half of them, or "previous page" does not bring them back     |
+| `pagination-missing`  | the main table renders over 300 body rows with no pager and no virtual scrolling                                                 |
+| `action-silent`       | the first form of the main region, submitted while every write fails, changes nothing the user can see                           |
 
 The behaviour rules come from using the screen once per route, after it is
 measured. On the first table of the main region: the search box is found by
@@ -155,4 +156,5 @@ codeality-ui [--project <dir>] baseline create|update|check [--check-stale]
 
 With `.codeality-ui-baseline.json` present, `check` fails only on findings the
 baseline does not carry. Exit codes: 0 passed, 1 findings, 2 invalid usage or
-configuration, 3 browser or page failure.
+configuration, 3 browser failure. A single page that fails twice is a
+`capture-failed` finding, not an exit 3.

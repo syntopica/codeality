@@ -57,7 +57,7 @@
       // box ignores what is typed into it. With #silent the search works but
       // an empty result says nothing, "Next" does nothing and a failed save
       // is swallowed.
-      const broken = location.hash === '#broken'
+      const broken = location.hash.startsWith('#broken')
       const silent = location.hash === '#silent'
       const PAGE_SIZE = 3
       let page = 1
@@ -103,6 +103,14 @@
               `<tr><td>${customer.name}</td><td>${customer.amount.toFixed(2)} €</td></tr>`,
           )
           .join('')
+      }
+      // With #broken-tight the header cells also sit with no whitespace between
+      // them, as React renders them: textContent reads "NameAmount" while
+      // innerText reads "Name<TAB>Amount".
+      if (location.hash === '#broken-tight') {
+        document.querySelector('thead tr').innerHTML =
+          '<th><button type="button" data-key="name">Name</button></th>' +
+          '<th><button type="button" data-key="amount">Amount</button></th>'
       }
       for (const button of document.querySelectorAll('th button')) {
         button.addEventListener('click', () => {

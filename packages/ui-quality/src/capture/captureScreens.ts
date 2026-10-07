@@ -1,22 +1,26 @@
 import { assertCredentials } from '@/capture/assertCredentials.js'
-import type { CapturedScreen } from '@/capture/CapturedScreen.js'
-import { captureScreen } from '@/capture/captureScreen.js'
+import type { CaptureRun } from '@/capture/CaptureRun.js'
+import { captureWithRetry } from '@/capture/captureWithRetry.js'
 import { ensureScreensDir } from '@/capture/ensureScreensDir.js'
 import { initScriptsOf } from '@/capture/initScriptsOf.js'
 import { loadPlaywright } from '@/capture/loadPlaywright.js'
 import { openScreenPage } from '@/capture/openScreenPage.js'
 import { probeSource } from '@/capture/probeSource.js'
+import { recordCapture } from '@/capture/recordCapture.js'
 import { screenContextOptions } from '@/capture/screenContextOptions.js'
 import { statePathOf } from '@/capture/statePathOf.js'
 import type { UiQualityConfig } from '@/config/UiQualityConfig.js'
 import { screenLabel } from '@/model/screenLabel.js'
 
-/** Every route at every viewport in every colour scheme, one browser for the run. */
+/**
+ * Every route at every viewport in every colour scheme, one browser for the
+ * run. A screen that fails twice is recorded and the run carries on.
+ */
 export const captureScreens = async (
   root: string,
   config: UiQualityConfig,
   log: (text: string) => void,
-): Promise<CapturedScreen[]> => {
+): Promise<CaptureRun> => {
   const statePath = statePathOf(root, config.auth)
   assertCredentials(config.auth, statePath)
   const session = config.auth && statePath
@@ -26,9 +30,9 @@ export const captureScreens = async (
   const initScripts = initScriptsOf(root, config.initScripts)
   const browser = await chromium.launch()
   try {
-    const captured: CapturedScreen[] = []
-    for (const colorScheme of config.colorSchemes) {
-      for (const viewport of config.viewports) {
+    const run: CaptureRun = { captured: [], failed: [] }
+    for (const [schemeIndex, colorScheme] of config.colorSchemes.entries()) {
+      for (const [viewportIndex, viewport] of config.viewports.entries()) {
         const { context, page } = await openScreenPage(
           browser,
           screenContextOptions(viewport, colorScheme, session, devices),
@@ -36,11 +40,11 @@ export const captureScreens = async (
         )
         // Sort and search once per route: they behave the same at every size
         // and in both schemes, and each costs several reloads.
-        const exercise = captured.length < config.routes.length
+        const exercise = schemeIndex === 0 && viewportIndex === 0
         for (const route of config.routes) {
           const screen = { route: route.path, viewport, colorScheme }
           log(`capturing ${route.path} ${screenLabel(screen)}\n`)
-          const snapshot = await captureScreen({
+          const outcome = await captureWithRetry({
             page,
             baseUrl: config.baseUrl,
             auth: config.auth,
@@ -53,12 +57,12 @@ export const captureScreens = async (
             slowRequestMs: config.rules.slowRequest.maxMs,
             axe: config.axe,
           })
-          captured.push({ route, snapshot })
+          recordCapture(run, route, screen, outcome)
         }
         await context.close()
       }
     }
-    return captured
+    return run
   } finally {
     await browser.close()
   }

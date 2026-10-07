@@ -1,0 +1,44 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>Sign in</title>
+    <style>
+      body {
+        margin: 0;
+        font: 16px/1.4 sans-serif;
+        color: #000000;
+        background: #ffffff;
+      }
+      main {
+        padding: 24px;
+      }
+      .trap {
+        position: absolute;
+        left: -9999px;
+      }
+    </style>
+  </head>
+  <body>
+    <main>
+      <h1>Sign in</h1>
+      <!-- A spam trap: off-screen but rendered, and first in the DOM. A
+           login that types into it is a bot, so the form refuses it. -->
+      <form>
+        <input class="trap" type="text" name="companyWebsite" tabindex="-1" />
+        <input type="email" name="email" aria-label="Email" />
+        <input type="password" name="password" aria-label="Password" />
+        <button type="submit">Sign in</button>
+      </form>
+    </main>
+    <script>
+      document.querySelector('form').addEventListener('submit', (event) => {
+        event.preventDefault()
+        const form = event.target
+        if (form.companyWebsite.value !== '' || form.email.value === '') return
+        localStorage.setItem('session', 'yes')
+        location.href = 'gate.html'
+      })
+    </script>
+  </body>
+</html>
