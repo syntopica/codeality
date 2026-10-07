@@ -112,7 +112,9 @@ describe('codeality-ui', () => {
     expect(check.out.join('')).toMatch(/0 new, \d+ known, 0 resolved/)
     expect(await runCli(['baseline', 'check'], io(broken).io)).toBe(0)
     expect(await runCli(['baseline', 'update'], io(broken).io)).toBe(0)
-  })
+    // Five full captures in a row: 17 s on a laptop, over 60 s on a shared
+    // CI runner.
+  }, 240_000)
   it('reads tokens stored as bare HSL triplets into the palette', async () => {
     const run = io(project(['/triplets.html']))
     expect(await runCli(['check', '--json'], run.io)).toBe(0)
