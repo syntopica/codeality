@@ -1,5 +1,17 @@
 ### 2026-10-07
 
+- [x] Published the releases blocked on expired npm trusted publishers:
+      `eslint-plugin-code-policy@0.8.0`, `@syntopica/eslint-config@0.9.0`,
+      `@syntopica/tsconfig@0.3.1`, `@syntopica/prettier-config@0.2.2` and
+      `@syntopica/create-baseline@0.10.1`. Each trusted publisher was deleted
+      and recreated on npmjs.com (syntopica/codeality, publish.yml, no
+      environment, npm publish) through chrome-cli, the owner confirming each
+      write with a security key, then published from its tag with
+      `gh workflow run publish.yml --ref <pkg>@<version>`. prettier-config 0.2.1
+      and create-baseline 0.10.0 were superseded before publishing (0.2.2 keeps
+      AGENTS.md/CLAUDE.md line breaks for next dev's agent block). Evidence:
+      `pnpm release:check` reports all 9 packages ok.
+
 - [x] ui-quality `ghost-elevation` (warn): owner said yes and asked for Codex;
       Codex (`codex exec -s read-only`, verdict D1 option B, confidence high)
       chose reporting only shadows larger than shadcn's default. Probe field
