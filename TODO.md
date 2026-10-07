@@ -91,14 +91,11 @@ needs.
   CTAs that show after scrolling, roster card buttons on hover, selected states
   in the budget form. Left as well: capture after a scroll, and
   `:hover`/`:focus`/ selected states of repeated controls.
-- [ ] `duplicate-nav-icon`: two navigation items drawing the same icon (Clientes
-      and Contactos share one, as do Plantillas and Canales). Needs a hash of
-      each svg's markup.
-- [ ] `mixed-icon-family`: filled and outline icons in one repeated column (a
-      Font Awesome WhatsApp glyph beside a Lucide envelope). Needs the svg's
-      fill/stroke attributes.
-- [ ] `ghost-elevation` and `transition-all`: border plus shadow on one card;
-      `transition-property: all`. Need `boxShadow` and `transitionProperty`.
+- [!] `ghost-elevation`: border plus shadow on one card. Owner decision first:
+  shadcn/ui's default `Card` and `Input` are `border` plus
+  `shadow-sm`/`shadow-xs`, so the rule as written fires on every shadcn app.
+  Question: report it everywhere, only on cards whose shadow is larger than
+  `shadow-sm`, or drop it? Needs a `boxShadow` probe field either way.
 - [ ] 49 more candidates, tiered by value and false-positive risk, with exact
       triggers and sources (Impeccable's detector registry, Vercel Web Interface
       Guidelines, Krehel's better-* skills, WCAG 2.2, Carbon, the OpenAI GPT-5.5

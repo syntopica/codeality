@@ -1,5 +1,23 @@
 ### 2026-10-07
 
+- [x] ui-quality `duplicate-nav-icon` (warn): links or buttons under `nav` whose
+      first svg has the same markup digest (djb2 of the svg with
+      class/style/size/id/aria attributes removed) and different names
+      (aria-label or text) are reported once per icon. Evidence:
+      `cli.icons.integration.test.ts` reports `Clientes / Contactos` (same icon
+      at 20px and 24px) and not Plantillas.
+- [x] ui-quality `mixed-icon-family` (warn): a repeated sibling group outside
+      `nav` whose items each draw exactly one svg mixes filled and stroke-only
+      first shapes (computed `fill`/`stroke`). Navigation is excluded because a
+      filled icon there usually marks the active entry. Evidence: same
+      integration test reports the solid WhatsApp glyph beside the outline
+      envelope (`main > ul`).
+- [x] ui-quality `transition-all` (warn): `transition-property: all` with a
+      non-zero duration, one finding per element signature. Evidence:
+      `cli.icons.integration.test.ts` reports `main > div.card`; ui-quality 191
+      tests pass. `ghost-elevation` from the same item is parked `[!]` for an
+      owner decision (shadcn's default Card/Input are border plus shadow).
+
 - [x] ui-quality `oversized-list` landed as `pagination-missing` on lists: a
       main region with no table whose largest repeated collection holds over 150
       items (`MAX_UNPAGED_ITEMS`) and shows no next-page control is reported as
