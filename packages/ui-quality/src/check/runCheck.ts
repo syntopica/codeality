@@ -4,6 +4,8 @@ import { findingsFrom } from '@/check/findingsFrom.js'
 import { routesMatching } from '@/config/routesMatching.js'
 import type { UiQualityConfig } from '@/config/UiQualityConfig.js'
 import { screenLabel } from '@/model/screenLabel.js'
+import { sitemapPages } from '@/sitemap/sitemapPages.js'
+import { uncoveredRouteFindings } from '@/sitemap/uncoveredRouteFindings.js'
 
 export const runCheck = async (
   root: string,
@@ -18,8 +20,17 @@ export const runCheck = async (
     log,
     routeGlob === null,
   )
+  // A run of selected routes leaves the rest uncovered on purpose.
+  const uncovered =
+    routeGlob === null
+      ? uncoveredRouteFindings(
+          config.baseUrl,
+          await sitemapPages(config.baseUrl),
+          config.routes,
+        )
+      : []
   return {
-    findings: findingsFrom(captured, failed, scoped),
+    findings: findingsFrom(captured, failed, scoped, uncovered),
     screens: captured.map(({ snapshot }) => ({
       route: snapshot.screen.route,
       screen: screenLabel(snapshot.screen),

@@ -14,6 +14,7 @@ export const findingsFrom = (
   captured: CapturedScreen[],
   failed: FailedCapture[],
   config: UiQualityConfig,
+  siteFindings: Finding[] = [],
 ): Finding[] =>
   mergeFindings([
     ...captured.flatMap(({ route, snapshot }) =>
@@ -22,6 +23,7 @@ export const findingsFrom = (
       ),
     ),
     ...failed.map(captureFailedFinding),
+    ...siteFindings,
     ...[schemeDuplicateFinding(captured)].filter(
       (finding): finding is Finding => finding !== null,
     ),
