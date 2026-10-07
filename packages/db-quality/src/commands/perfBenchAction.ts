@@ -6,6 +6,7 @@ import { runBench } from '@/bench/runBench.js'
 import { writeBenchRecord } from '@/bench/writeBenchRecord.js'
 import type { PerfActionIo } from '@/commands/PerfActionIo.js'
 import { PACKAGE_VERSION } from '@/packageVersion.js'
+import { runProjectPrettier } from '@/tools/runProjectPrettier.js'
 import { ExitCode } from '@syntopica/gate-kit/ExitCode'
 
 export const perfBenchAction = ({
@@ -29,6 +30,7 @@ export const perfBenchAction = ({
       host: target.host,
       entries: result.entries,
     })
+    runProjectPrettier(io.runner, io.root, [BENCH_RECORD_FILENAME])
     io.stdout(
       `recorded ${String(Object.keys(result.entries).length)} bench queries in ${BENCH_RECORD_FILENAME}\n`,
     )

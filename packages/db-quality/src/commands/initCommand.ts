@@ -6,6 +6,8 @@ import { applyInit } from '@/init/applyInit.js'
 import { planInit } from '@/init/planInit.js'
 import { renderAdoptionPhase } from '@/init/renderAdoptionPhase.js'
 import { renderInitPlan } from '@/init/renderInitPlan.js'
+import { writtenPaths } from '@/init/writtenPaths.js'
+import { runProjectPrettier } from '@/tools/runProjectPrettier.js'
 import { ConfigError } from '@syntopica/gate-kit/ConfigError'
 import { ExitCode } from '@syntopica/gate-kit/ExitCode'
 import { parseCommandArgs } from '@syntopica/gate-kit/parseCommandArgs'
@@ -31,6 +33,7 @@ export const initCommand = (argv: string[], io: CommandIo): number => {
         throw new ConfigError('conflicts remain; resolve them or pass --force')
       }
       applyInit(io.root, plan)
+      runProjectPrettier(io.runner, io.root, writtenPaths(plan))
     }
     const config = ((): DbQualityConfig | undefined => {
       try {

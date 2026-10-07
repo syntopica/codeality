@@ -91,6 +91,12 @@ which `init` always writes as `false` — the gate measures nothing until a
 project reaches phase 4. `sqlite.queries` is optional and never written by
 `init`; see [SQLite query files](#sqlite-query-files).
 
+Every file `codeality-db` writes (`codeality-db.json`, `package.json`, the bench
+README, `.codeality-db-bench.json`, `.codeality-db-perf.json`) is passed through
+the project's own `prettier --write` afterwards, so a pre-commit that runs
+`prettier --check` accepts it as written. The project's Prettier config and
+`.prettierignore` decide the shape; without Prettier the files stay as written.
+
 ## Findings
 
 | Code               | Source                      | Severity    | What it means                                                                                                             |
