@@ -1,5 +1,11 @@
 ### 2026-10-07
 
+- [x] Release (64ef582, annotated tags pushed): `@syntopica/ui-quality@0.6.0`
+      (tier 2 start, layout-shift read fix, run 37683250803),
+      `@syntopica/quality-config@0.13.1` (knip preset hints, run 37683149534),
+      `@syntopica/create-baseline@0.10.3` pinning it (run 37683341911).
+      `pnpm check:ci` exit 0 before tagging; `pnpm release:check` exit 0.
+
 - [x] ui-quality tier 2 opened (unreleased): `focus-invisible` from a keyboard
       Tab pass (7c630e6), `touch-target` on phone screens (40328df),
       `radius-sprawl` and opt-in `card-radius-admin` (3c5f62d). The composition
