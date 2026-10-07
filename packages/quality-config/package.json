@@ -53,10 +53,11 @@
   },
   "scripts": {
     "fix": "pnpm run lint:fix",
-    "lint": "eslint src bin --max-warnings 0",
-    "lint:fix": "eslint src bin --fix",
-    "lint:suppress": "eslint src bin --suppress-all",
-    "lint:prune": "eslint src bin --prune-suppressions",
+    "lint": "eslint src bin tests --max-warnings 0",
+    "lint:fix": "eslint src bin tests --fix",
+    "lint:suppress": "eslint src bin tests --suppress-all",
+    "lint:prune": "eslint src bin tests --prune-suppressions",
+    "test": "vitest run",
     "type-check": "tsc --noEmit -p tsconfig.json",
     "publish:check": "baseline-licenses && publint --strict && attw --pack . --profile node16 --ignore-rules cjs-resolves-to-esm internal-resolution-error"
   },
@@ -90,6 +91,7 @@
     "eslint-plugin-regexp": "^3.3.1",
     "knip": "^6.40.0",
     "publint": "^0.3.25",
-    "typescript": "npm:@typescript/typescript6@^6.0.2"
+    "typescript": "npm:@typescript/typescript6@^6.0.2",
+    "vitest": "^5.0.3"
   }
 }

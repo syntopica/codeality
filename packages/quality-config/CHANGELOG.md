@@ -2,6 +2,19 @@
 
 ## [Unreleased]
 
+### Patch Changes
+
+- fix: `createKnipConfig` no longer leaves configuration hints in a CLI-shaped
+  `ts-package` consumer. A caller-supplied `entry` now drops the preset's
+  default `src/index.ts` when that file does not exist (it is kept when it does,
+  so a library with both an index and a CLI behaves as before), and
+  `dependency-cruiser`, `lefthook`, `jscpd` and `type-coverage` are added to
+  `ignoreDependencies` only when no `package.json` script names their binary
+  directly. When a script does (`"prepare": "lefthook install"`,
+  `"deps:graph": "depcruise src"`), knip resolves the package itself and the
+  entry used to be a permanent `Remove from ignoreDependencies` hint. New
+  optional `cwd` option (defaults to the process cwd) for the project root.
+
 ## 0.13.0
 
 ### Minor Changes

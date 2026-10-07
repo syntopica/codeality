@@ -5,7 +5,9 @@
 // config without casting it first.
 import type { KnipConfiguration } from 'knip'
 
+import { existingEntries } from './existingEntries'
 import { FRAMEWORK_ENTRIES, type KnipFramework } from './knip-framework'
+import { runnerDependenciesToIgnore } from './runnerDependenciesToIgnore'
 
 // Every template installs these as peer dependencies of
 // @syntopica/eslint-config: the config factories (base.ts and friends)
@@ -30,26 +32,6 @@ import { FRAMEWORK_ENTRIES, type KnipFramework } from './knip-framework'
 // not a gate failure. Do not filter the list consumer-side to silence it: the
 // filter would drift the moment this list changes, and the cost of being wrong
 // is a dependency that silently stops being checked.
-// The tools this package's own runners spawn through `pnpm exec`:
-// `baseline-dupes` spawns `jscpd`, `baseline-type-coverage` spawns
-// `type-coverage`, `baseline-deps-graph` spawns `depcruise`,
-// `baseline-hooks-install` spawns `lefthook`. A project that
-// wires the runner into its scripts never names the underlying tool anywhere
-// knip can see, so knip reports a real dependency as unused. Found in
-// a consumer the moment its `type-coverage` script became
-// `baseline-type-coverage`.
-//
-// `dependency-cruiser` is on the list even though a project calling
-// `depcruise` directly resolves it fine: there knip emits a `Remove from
-// ignoreDependencies` hint, which is a hint and not a gate failure, and the
-// cost of leaving it off is a real dependency silently reported as dead.
-const BASELINE_RUNNER_DEPENDENCIES = [
-  'jscpd',
-  'type-coverage',
-  'dependency-cruiser',
-  'lefthook',
-]
-
 const ESLINT_PEER_DEPENDENCIES = [
   '@eslint/js',
   'eslint-config-prettier',
@@ -104,7 +86,9 @@ export const createKnipConfig = (options: {
   /**
    * Extra entry globs, merged with the framework preset's `entry`. Same
    * reasoning as `project`, for a root nobody's plugin registers - a worker,
-   * a CLI, a script the app spawns.
+   * a CLI, a script the app spawns. A preset entry that is a literal path
+   * missing from the project (`ts-package`'s `src/index.ts` in a CLI package)
+   * is dropped once this is set, so it cannot become a "no matches" hint.
    */
   entry?: string[]
   /**
@@ -122,12 +106,17 @@ export const createKnipConfig = (options: {
    * only this does.
    */
   drizzle?: false
+  /** The project root, for the checks that read it. Defaults to the cwd. */
+  cwd?: string
 }): KnipConfiguration => {
+  const cwd = options.cwd ?? process.cwd()
   const { entry, project, includeEntryExports } =
     FRAMEWORK_ENTRIES[options.framework]
 
   return {
-    entry: [...entry, ...(options.entry ?? [])],
+    entry: options.entry
+      ? [...existingEntries(entry, cwd), ...options.entry]
+      : entry,
     project: [...project, ...(options.project ?? [])],
     ...(options.ignore ? { ignore: options.ignore } : {}),
     ...(options.drizzle === false ? { drizzle: false } : {}),
@@ -151,7 +140,7 @@ export const createKnipConfig = (options: {
     ignoreExportsUsedInFile: true,
     ignoreBinaries: ['gitleaks', ...(options.ignoreBinaries ?? [])],
     ignoreDependencies: [
-      ...BASELINE_RUNNER_DEPENDENCIES,
+      ...runnerDependenciesToIgnore(cwd),
       ...ESLINT_PEER_DEPENDENCIES,
       ...(options.ignoreDependencies ?? []),
     ],
