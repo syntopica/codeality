@@ -3,6 +3,15 @@
 > Reconstructed from this repository's git history, which starts at the monorepo
 > migration. Each entry names the commit that introduced the version.
 
+## [Unreleased]
+
+## 0.2.1
+
+### Patch Changes
+
+- chore: package links and the README point at `syntopica/codeality`; the
+  published 0.x still named the old `BusiRocket` repositories.
+
 ## 0.2.0
 
 ### Minor Changes

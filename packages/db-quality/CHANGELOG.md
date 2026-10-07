@@ -1,5 +1,18 @@
 # Changelog
 
+## [Unreleased]
+
+## 0.4.0
+
+- `sqlite.queries.exclude` takes root-relative globs of query files to leave
+  out.
+- With a database configured, a `BDB404` whose statement plans without a scan is
+  dropped, and `BDB406` skips an `UPDATE` or `DELETE` with no `WHERE`, which
+  scans the table by design.
+- `init`, `perf bench --record` and `perf snapshot` run the project's own
+  `prettier --write` over the files they write, so a pre-commit running
+  `prettier --check` accepts them.
+
 ## 0.3.0
 
 - `sqlite.queries` (`paths`, optional `database`, `minRows` default 10000):

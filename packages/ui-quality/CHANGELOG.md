@@ -1,5 +1,35 @@
 # Changelog
 
+## [Unreleased]
+
+## 0.3.0
+
+- New rules: `empty-dialog` (an open dialog or drawer offering nothing but its
+  close control), `placeholder-fit` (a placeholder over 20% wider than its
+  field), `pagination-missing` now also covers a repeated list or card grid of
+  over 150 items with no pager, `duplicate-nav-icon`, `mixed-icon-family` and
+  `transition-all`.
+- `dark-scheme-ignored`: the dark capture of a screen is byte for byte its light
+  one, so the app themes by a class or stored preference; reported once per run.
+- `route-uncovered`: pages listed in `baseUrl/sitemap.xml` (and one level of a
+  sitemap index) under a first path segment no configured route renders. Child
+  sitemaps are read only from the site under test, without following redirects,
+  and a sitemap over 50 MB is ignored.
+- axe's `target-size` (WCAG 2.2 AA, 24px) is switched on, so projects upgrading
+  will see new `a11y/target-size` findings.
+- `text-clipped` reports a select whose content box is shorter than one line of
+  its font.
+- `check --routes <glob>` measures only the matching configured routes; a
+  selected run does not require the auth credentials up front.
+- `disable[].message` keeps only the findings whose message contains that text.
+- `content-width` applies only to a main region that lays out data (a table, or
+  three or more row items); reading pages and lone forms keep their measure.
+- A "next" link that leaves the route (the next article) is no longer taken for
+  a pager unless a link named "2" sits beside it.
+- The table search finds React tables (no whitespace between cells), login skips
+  hidden honeypot fields, and a screen that fails twice becomes a
+  `capture-failed` finding instead of ending the run.
+
 ## 0.2.0
 
 - `viewports[].mobile` emulates a phone (touch, pixel ratio 3, the iPhone Safari

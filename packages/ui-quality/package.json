@@ -1,6 +1,6 @@
 {
   "name": "@syntopica/ui-quality",
-  "version": "0.2.0",
+  "version": "0.3.0",
   "private": false,
   "packageManager": "pnpm@12.9.1",
   "license": "MIT",

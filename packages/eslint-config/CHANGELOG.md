@@ -3,6 +3,22 @@
 > Reconstructed from this repository's git history, which starts at the monorepo
 > migration. Each entry names the commit that introduced the version.
 
+## [Unreleased]
+
+## 0.9.0
+
+### Minor Changes
+
+- fix: `/code-quality` imports `@vitest/eslint-plugin`,
+  `eslint-plugin-testing-library`, `eslint-plugin-sonarjs` and
+  `eslint-plugin-code-policy` unconditionally, so they are now required peers.
+  As optional peers a missing one only showed up as ESLint dying at config load.
+- fix: `react/prop-types` is off for TypeScript files in `/nextjs` and
+  `/vite-react`. It cannot see through `forwardRef`'s generic and reported every
+  ref-forwarding primitive that destructures its props (shadcn's `ui/` folder);
+  the TypeScript props are the validation.
+- chore: package links point at `syntopica/codeality`.
+
 ## 0.8.0
 
 ### Minor Changes

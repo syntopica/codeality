@@ -31,6 +31,22 @@ verified complete - `[-]` obsolete or superseded.
   `npm view typescript-eslint version` passes 8.71.1, remove both lines,
   `ncu -u`, `pnpm install`, `pnpm check:ci`.
 
+- [ ] **Estate adoption of `eslint-plugin-code-policy@0.8.0`** (2026-10-07). The
+      new `anonymousTypeLiteral` check reports every object type literal in
+      runtime code. Swept with the local build through an ESM resolve hook (no
+      `node_modules` touched), 26 adopters: verticagtm 1824, Mains.World 842,
+      contratica 776, vexa 434, tieneslavibra 406, vexa-insight 210, agents 208,
+      10xjoy 196, inbox-companion 173, vexa-mail 163, ventanilla-unica 89,
+      pridefamilymedicine 86, inpractise-demo 85, clips 81, teapartydolls 80,
+      contratos 93, calculadora 30, dj-rocket 30, nubenode-web 30,
+      livesalescoach 33, busirocket 16, capture 14, jobradar 11,
+      cristiandeluxe-dev 1, wiki and pxpn 0. By shape (five largest): inline
+      props or return types 2447, type arguments 635, annotations 578, `as`
+      casts 347; no false positive found in a sample. Repos stay on `^0.7.4`
+      until they upgrade, so nothing breaks today. Next step: per repo, upgrade,
+      extract the shapes into named types or record them with
+      `eslint --suppress-all`, and land it with that repo's own gate.
+
 ## ui-quality
 
 Rule candidates from the 2026-10-01 review of the TienesLaVibra admin inbox by

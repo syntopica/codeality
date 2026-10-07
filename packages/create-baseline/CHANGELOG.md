@@ -1,20 +1,36 @@
 # @busirocket/create-baseline
 
-## Unreleased
+## [Unreleased]
+
+## 0.10.0
 
 ### Minor Changes
 
-- feat: the estate report covers the Python projects.
+- feat!: the scaffolders and `--check` use the `@syntopica` scope. Templates
+  install `@syntopica/eslint-config`, `@syntopica/tsconfig`,
+  `@syntopica/prettier-config` and `@syntopica/quality-config`, and the tsconfig
+  conformance check expects a `@syntopica/tsconfig` preset, so a repository
+  still on the `@busirocket` packages reports as non-conformant until it moves.
+- feat!: the Python checks follow the rename to `codeality-py`: the quality
+  group depends on `syntopica-codeality-py`, the workflow runs
+  `codeality-py gate`, and the lock check reads `python-versions.json`, split
+  out of `baseline-versions.json` so `--check` no longer expects a Python
+  release among the npm packages.
+- feat: the estate report covers the Python projects. `baseline-estate` prints a
+  second table for every project whose pyproject.toml depends on
+  `syntopica-codeality-py`, found up to three levels deep. Four columns: the
+  quality group is declared, a workflow runs `codeality-py gate` on push, its
+  actions are pinned by commit, and uv.lock pins the current release.
+- fix: a nested Python project's workflow is written at the repository root as
+  `quality-<project>.yml`, where GitHub reads it, on the checked-out branch
+  rather than always `main`.
+- build(security): generated CI workflows check out with
+  `persist-credentials: false`.
+- chore: templates pin the current releases of the shared packages.
 
-  `baseline-estate` prints a second table for every project whose pyproject.toml
-  depends on `busirocket-baseline-py`, found up to three levels deep because the
-  adoption sweep proved Python lives nested inside repositories about something
-  else. Four columns: the quality group is declared, a workflow runs
-  `baseline-py gate` on push, its actions are pinned by commit, and uv.lock pins
-  the current release. The audit that added it found ten gates green on one
-  laptop and zero running anywhere else, which the JavaScript table could not
-  see. `baseline-versions.json` now carries the Python release for the lock
-  check.
+## 0.9.0
+
+### Minor Changes
 
 - feat: two tsconfig conformance checks, and a `tscfg` column in the estate
   matrix.
@@ -32,10 +48,6 @@
   per shape: a single-project root extends a preset directly, a solution root
   must not, because `baseline-type-coverage` walks its `references` and a root
   that extends instead of referencing hides every project behind one.
-
-## 0.9.0
-
-### Minor Changes
 
 - feat: `--check` asserts the gates are wired, not merely installed.
 

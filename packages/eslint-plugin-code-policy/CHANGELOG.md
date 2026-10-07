@@ -1,5 +1,18 @@
 # eslint-plugin-code-policy
 
+## [Unreleased]
+
+## 0.8.0
+
+### Minor Changes
+
+- feat: `no-inline-types-in-runtime-files` reports an object type literal
+  written into runtime code - an annotation, assertion, parameter, return type
+  or type argument such as `({ children }: { children: ReactNode })`. Only the
+  outermost literal counts; literals inside named types and ambient
+  augmentations are left alone. Existing code will see new errors
+  (`anonymousTypeLiteral`): name the shape in its own type file.
+
 ## 0.7.4
 
 ### Patch Changes

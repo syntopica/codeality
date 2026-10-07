@@ -1,5 +1,17 @@
 # @busirocket/quality-config
 
+## [Unreleased]
+
+## 0.12.1
+
+### Patch Changes
+
+- fix: knip findings every template reported. `gitleaks`, a system binary the
+  baseline wires into `secrets:check`, is ignored by default; the nextjs preset
+  no longer lists `middleware` and `proxy`, which knip's Next plugin registers;
+  the Vite presets no longer list `src/main`, which `index.html` already
+  reaches.
+
 ## 0.12.0
 
 ### Minor Changes
