@@ -1,35 +1,10 @@
-import { mkdtempSync, writeFileSync } from 'node:fs'
-import { tmpdir } from 'node:os'
-import { join } from 'node:path'
-import { fileURLToPath } from 'node:url'
-
 import { describe, expect, it } from 'vitest'
 
-import { runCli } from '@/cli/runCli.js'
-
-const site = fileURLToPath(new URL('fixtures/site', import.meta.url))
+import { fixtureFindings } from './fixtureFindings.js'
 
 describe('codeality-ui select text', () => {
   it('reports the select too short for its line and passes the roomy one', async () => {
-    const root = mkdtempSync(join(tmpdir(), 'uiq-'))
-    writeFileSync(
-      join(root, 'codeality-ui.json'),
-      JSON.stringify({
-        baseUrl: `file://${site}`,
-        routes: ['/select.html'],
-        viewports: [{ width: 1440, height: 900 }],
-        colorSchemes: ['light'],
-      }),
-    )
-    const out: string[] = []
-    await runCli(['check', '--json'], {
-      root,
-      stdout: (text: string) => out.push(text),
-      stderr: () => undefined,
-    })
-    const { findings } = JSON.parse(out.join('')) as {
-      findings: { rule: string; message: string }[]
-    }
+    const findings = await fixtureFindings({ routes: ['/select.html'] })
     const clipped = findings.filter(
       (finding) =>
         finding.rule === 'text-clipped' && finding.message.includes('select'),
