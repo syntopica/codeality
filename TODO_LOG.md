@@ -1,5 +1,14 @@
 ### 2026-10-07
 
+- [x] db-quality passes every file it writes (`codeality-db.json`,
+      `package.json`, bench README, `.codeality-db-bench.json`,
+      `.codeality-db-perf.json`) through the project's own
+      `prettier --write --ignore-unknown` (`runProjectPrettier`); no Prettier
+      means files stay as written. Evidence:
+      `initCommand.prettier.integration.test.ts` (printWidth 40, proseWrap
+      always) passes and fails with the call disabled; db-quality 348 tests,
+      lint, type-check clean.
+
 - [x] `no-inline-types-in-runtime-files` reports anonymous object types in
       runtime code (annotations, assertions, parameters, return types, type
       arguments; outermost literal only; `declare global`/`declare module`

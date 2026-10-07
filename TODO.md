@@ -187,14 +187,6 @@ needs.
       f4ba7e2, caught only by the mysql:8.4 CI leg, fixed with a table-level
       `addForeignKeyConstraint` in 37d1c05.
 
-- [ ] The files `codeality-db` writes (`codeality-db.json` from `init`,
-      `.codeality-db-bench.json`, `db-quality/bench/README.md`) are
-      `JSON.stringify` / hard-wrapped text that prettier reformats, so a
-      consumer whose pre-commit runs `prettier --check` refuses the commit. Hit
-      in verticagtm on 2026-09-26 adopting 0.2.0; worked around there by
-      ignoring `.codeality-db-*.json` and formatting the config once. Next step:
-      emit prettier-shaped JSON (short arrays inline) and unwrapped Markdown, or
-      have `init` add the ignore line.
 - [ ] db-quality 0.4.0: make `perf diff` usable as a CI gate. It compares the
       window mean against the cumulative mean since the stats reset, so it
       measures production drift, not the commit: on 2026-09-26 a simulated
