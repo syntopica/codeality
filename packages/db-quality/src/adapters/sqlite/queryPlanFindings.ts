@@ -1,5 +1,6 @@
 import { attemptSqlite } from '@/adapters/sqlite/attemptSqlite.js'
 import { fullScanMessage } from '@/adapters/sqlite/fullScanMessage.js'
+import { isWholeTableWrite } from '@/adapters/sqlite/isWholeTableWrite.js'
 import { queryPlan } from '@/adapters/sqlite/queryPlan.js'
 import type { QueryPlanContext } from '@/adapters/sqlite/QueryPlanContext.js'
 import { scannedTables } from '@/adapters/sqlite/scannedTables.js'
@@ -30,6 +31,7 @@ export const queryPlanFindings = (
   return files.flatMap((file) => {
     const reported = new Set<string>()
     return file.statements.flatMap((statement) => {
+      if (isWholeTableWrite(statement)) return []
       const details = attemptSqlite(() =>
         queryPlan(runner, root, database, statement.text),
       )

@@ -35,16 +35,19 @@ describe('runSqliteQueryChecks', () => {
       runSqliteQueryChecks(
         absent,
         project(),
-        { paths: ['nope'], minRows: 1 },
+        { paths: ['nope'], exclude: [], minRows: 1 },
         [],
       ),
     ).toThrow(ConfigError)
   })
   it('honours the disable list for the static rules', () => {
     expect(
-      runSqliteQueryChecks(absent, project(), { paths: ['sql'], minRows: 1 }, [
-        { code: 'BDB404', reason: 'test' },
-      ]),
+      runSqliteQueryChecks(
+        absent,
+        project(),
+        { paths: ['sql'], exclude: [], minRows: 1 },
+        [{ code: 'BDB404', reason: 'test' }],
+      ),
     ).toEqual([])
   })
   it('raises ToolMissingError when a database is configured and sqlite3 is absent', () => {
@@ -52,7 +55,7 @@ describe('runSqliteQueryChecks', () => {
       runSqliteQueryChecks(
         absent,
         project(),
-        { paths: ['sql'], database: 'app.db', minRows: 1 },
+        { paths: ['sql'], exclude: [], database: 'app.db', minRows: 1 },
         [],
       ),
     ).toThrow(ToolMissingError)

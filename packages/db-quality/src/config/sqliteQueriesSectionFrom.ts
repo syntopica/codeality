@@ -9,6 +9,7 @@ export const sqliteQueriesSectionFrom = (
 ): SqliteQueriesConfig => {
   const paths = raw['paths']
   const database = raw['database']
+  const exclude = raw['exclude'] ?? []
   const minRows = raw['minRows'] ?? SQLITE_QUERY_MIN_ROWS
   expectConfig(
     isStringList(paths),
@@ -17,6 +18,10 @@ export const sqliteQueriesSectionFrom = (
   expectConfig(
     (paths as string[]).length > 0,
     'sqlite.queries.paths must name at least one directory',
+  )
+  expectConfig(
+    isStringList(exclude),
+    'sqlite.queries.exclude must be a list of strings',
   )
   expectConfig(
     database === undefined || typeof database === 'string',
@@ -28,6 +33,7 @@ export const sqliteQueriesSectionFrom = (
   )
   return {
     paths: paths as string[],
+    exclude: exclude as string[],
     ...(database === undefined ? {} : { database: database as string }),
     minRows: minRows as number,
   }

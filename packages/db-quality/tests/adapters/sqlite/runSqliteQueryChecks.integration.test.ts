@@ -14,6 +14,7 @@ const installed = !spawnRunner('sqlite3', ['--version'], { cwd: process.cwd() })
   .missing
 
 const JOBS_LIST = 'sql/jobs_list.sql'
+const JOBS_GUARDED = 'sql/jobs_guarded.sql'
 const queries = {
   [JOBS_LIST]: [
     '-- the shape Vexa shipped',
@@ -30,6 +31,12 @@ const queries = {
   ].join('\n'),
   'sql/nested/by_state.sql': 'SELECT created FROM jobs ORDER BY state;',
   'sql/small.sql': 'SELECT * FROM tiny;',
+  // A guard beside a filter that already seeks the primary key.
+  [JOBS_GUARDED]:
+    'SELECT id FROM jobs WHERE id = ?2 AND (?1 IS NULL OR state = ?1);',
+  // Whole-table writes on purpose: no filter, so no index could help.
+  'sql/clear_replayed.sql': 'DELETE FROM jobs;',
+  'sql/reset_state.sql': "UPDATE jobs SET state = 'a';",
   'sql/unplannable.sql': [
     'SELECT * FROM table_only_the_app_creates WHERE id = ?1;',
     'SELECT FROM WHERE;',
@@ -73,6 +80,7 @@ describe.skipIf(!installed)(
         root,
         {
           paths: ['sql'],
+          exclude: [],
           minRows: 1000,
           ...(database === undefined ? {} : { database }),
         },
@@ -91,7 +99,12 @@ describe.skipIf(!installed)(
       const findings = runSqliteQueryChecks(
         spawnRunner,
         root,
-        { paths: ['sql'], database: join(root, 'dev.db'), minRows: 1000 },
+        {
+          paths: ['sql'],
+          exclude: [],
+          database: join(root, 'dev.db'),
+          minRows: 1000,
+        },
         [],
       ).filter((f) => f.code === 'BDB406')
       expect(findings[0]?.message).toMatch(
@@ -106,7 +119,7 @@ describe.skipIf(!installed)(
         runSqliteQueryChecks(
           spawnRunner,
           root,
-          { paths: ['sql'], database: 'dev.db', minRows: 5000 },
+          { paths: ['sql'], exclude: [], database: 'dev.db', minRows: 5000 },
           [],
         ).map((f) => f.code),
       ).toEqual(['BDB404', 'BDB405'])
@@ -114,19 +127,39 @@ describe.skipIf(!installed)(
         runSqliteQueryChecks(
           spawnRunner,
           root,
-          { paths: ['sql'], database: 'dev.db', minRows: 1 },
+          { paths: ['sql'], exclude: [], database: 'dev.db', minRows: 1 },
           [{ code: 'BDB406', reason: 'test' }],
         ).map((f) => f.code),
       ).toEqual(['BDB404', 'BDB405'])
     })
     it('runs the static rules alone without a readable database', () => {
       const statics = [
+        [JOBS_GUARDED, '1', 'BDB404', '?1'],
         [JOBS_LIST, '3', 'BDB404', '?1'],
         [JOBS_LIST, '3', 'BDB405', '?1'],
       ]
       expect(run()).toEqual(statics)
       expect(run('missing.db')).toEqual(statics)
       expect(run('bad.db')).toEqual(statics)
+    })
+    it('drops a guard whose statement still seeks an index', () => {
+      expect(run('dev.db').map(([path]) => path)).not.toContain(JOBS_GUARDED)
+      expect(run().map(([path]) => path)).toContain(JOBS_GUARDED)
+    })
+    it('leaves out the files an exclude glob names', () => {
+      expect(
+        runSqliteQueryChecks(
+          spawnRunner,
+          root,
+          {
+            paths: ['sql'],
+            exclude: ['sql/nested/**', 'sql/jobs_*.sql'],
+            database: 'dev.db',
+            minRows: 1000,
+          },
+          [],
+        ),
+      ).toEqual([])
     })
     it('says on stderr why the plan check was skipped', () => {
       const notice = (database: string): string | undefined =>

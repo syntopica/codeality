@@ -14,7 +14,10 @@ describe('sqliteSectionFrom', () => {
         schemaVersion: 2,
         sqlite: { files: [], queries: { paths: ['sql'] } },
       }).sqlite,
-    ).toEqual({ files: [], queries: { paths: ['sql'], minRows: 10000 } })
+    ).toEqual({
+      files: [],
+      queries: { paths: ['sql'], exclude: [], minRows: 10000 },
+    })
   })
   it('keeps the database and a given minRows', () => {
     expect(
@@ -22,7 +25,12 @@ describe('sqliteSectionFrom', () => {
         files: [],
         queries: { paths: ['sql'], database: '~/dev.db', minRows: 50 },
       }).queries,
-    ).toEqual({ paths: ['sql'], database: '~/dev.db', minRows: 50 })
+    ).toEqual({
+      paths: ['sql'],
+      exclude: [],
+      database: '~/dev.db',
+      minRows: 50,
+    })
   })
   it.each([
     [{ files: 'a.db' }, /sqlite.files must be a list of strings/],

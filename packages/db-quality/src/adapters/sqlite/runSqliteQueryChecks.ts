@@ -1,3 +1,5 @@
+import { dropIndexedGuards } from '@/adapters/sqlite/dropIndexedGuards.js'
+import { planScansNothing } from '@/adapters/sqlite/planScansNothing.js'
 import { probeQueryDatabase } from '@/adapters/sqlite/probeQueryDatabase.js'
 import { queryPlanFindings } from '@/adapters/sqlite/queryPlanFindings.js'
 import { readQueryFiles } from '@/adapters/sqlite/readQueryFiles.js'
@@ -15,25 +17,25 @@ export const runSqliteQueryChecks = (
   queries: SqliteQueriesConfig,
   disabled: DisableEntry[],
 ): Finding[] => {
-  const files = readQueryFiles(root, queries.paths)
+  const files = readQueryFiles(root, queries.paths, queries.exclude)
   const findings = SQLITE_QUERY_RULES.filter(
     (rule) => !isDisabled(rule.code, disabled),
   ).flatMap((rule) => rule.run(files))
   if (queries.database === undefined) return findings
   const probe = probeQueryDatabase(runner, root, queries.database)
   if ('unavailable' in probe) return findings
+  const context = {
+    runner,
+    root,
+    database: probe.path,
+    tables: probe.tables,
+    minRows: queries.minRows,
+    disabled,
+  }
   return [
-    ...findings,
-    ...queryPlanFindings(
-      {
-        runner,
-        root,
-        database: probe.path,
-        tables: probe.tables,
-        minRows: queries.minRows,
-        disabled,
-      },
-      files,
+    ...dropIndexedGuards(findings, files, (statement) =>
+      planScansNothing(context, statement),
     ),
+    ...queryPlanFindings(context, files),
   ]
 }

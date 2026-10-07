@@ -55,6 +55,7 @@ a dependency:
     "files": ["data/app.db"],
     "queries": {
       "paths": ["src/sql"],
+      "exclude": ["src/sql/migrations/**"],
       "database": "~/dev/app-copy.db",
       "minRows": 10000
     }
@@ -184,6 +185,8 @@ them. `sqlite.queries.paths` names directories, relative to the project root,
 walked recursively for `*.sql`; each file is split into statements, comments
 removed, and only statements starting with `SELECT`, `WITH`, `UPDATE`, `DELETE`,
 `INSERT` or `REPLACE` are considered. Findings carry the line of the match.
+`sqlite.queries.exclude` takes root-relative globs of files to leave out, such
+as one-shot data migrations that scan on purpose (`src/sql/migrations/**`).
 
 | Code     | Rule                     | What it proves                                                                                                                                                                                    |
 | -------- | ------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
@@ -204,6 +207,11 @@ the statement's `FROM`/`JOIN`. Rows are counted once per table per run, the
 default `minRows` is 10000, and there is at most one finding per file, table and
 scan kind. When the same plan also sorts the rows in a temporary B-tree for
 `ORDER BY`, the message says so.
+
+With a database, `BDB404` is also checked against the plan: a guard beside a
+filter that already seeks an index (`id = ?2 AND (?1 IS NULL OR ...)`) scans
+nothing, so it is not reported. An `UPDATE` or `DELETE` with no `WHERE` writes
+the whole table by definition and is not reported as a `BDB406` scan.
 
 A statement `sqlite3` cannot plan is skipped rather than failed: a table the
 application creates at run time, a module the shell lacks, syntax the shell
