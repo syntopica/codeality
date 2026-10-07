@@ -4,6 +4,7 @@ import { bareUrl } from '@/rules/bareUrl.js'
 import { behaviourBroken } from '@/rules/behaviourBroken.js'
 import { blankRoute } from '@/rules/blankRoute.js'
 import { brokenImage } from '@/rules/brokenImage.js'
+import { cardRadiusAdmin } from '@/rules/cardRadiusAdmin.js'
 import { clickFailed } from '@/rules/clickFailed.js'
 import { consoleError } from '@/rules/consoleError.js'
 import { contentHiddenAtRest } from '@/rules/contentHiddenAtRest.js'
@@ -24,6 +25,7 @@ import { nestedCards } from '@/rules/nestedCards.js'
 import { numericAlignment } from '@/rules/numericAlignment.js'
 import { palette } from '@/rules/palette.js'
 import { placeholderFit } from '@/rules/placeholderFit.js'
+import { radiusSprawl } from '@/rules/radiusSprawl.js'
 import { rawPlaceholder } from '@/rules/rawPlaceholder.js'
 import { rowMisaligned } from '@/rules/rowMisaligned.js'
 import type { Rule } from '@/rules/Rule.js'
@@ -48,6 +50,7 @@ export const RULES: Rule[] = [
   behaviourBroken,
   blankRoute,
   brokenImage,
+  cardRadiusAdmin,
   clickFailed,
   consoleError,
   contentHiddenAtRest,
@@ -67,6 +70,7 @@ export const RULES: Rule[] = [
   numericAlignment,
   palette,
   placeholderFit,
+  radiusSprawl,
   rawPlaceholder,
   rowMisaligned,
   slowRequest,

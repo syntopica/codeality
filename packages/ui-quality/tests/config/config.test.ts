@@ -66,6 +66,7 @@ describe('configuration', () => {
       ],
       viewports: [{ width: 800, height: 600 }],
       colorSchemes: ['dark'],
+      register: 'product',
       palette: {
         variablePrefixes: ['--brand-'],
         colors: ['#fff'],
@@ -97,6 +98,7 @@ describe('configuration', () => {
       focus: '#search',
     })
     expect(config.palette?.accent).toBe('#2563eb')
+    expect(config.register).toBe('product')
     expect(config.rules.controlInset.minInset).toBe(8)
     expect(config.disable[0]?.route).toBeNull()
     expect(config.disable[0]?.message).toBeNull()
@@ -149,6 +151,10 @@ describe('configuration', () => {
       'mobile must be a boolean',
     ],
     [{ baseUrl: 'x', routes: ['/'], palette: { colors: ['pink'] } }, '#rgb'],
+    [
+      { baseUrl: 'x', routes: ['/'], register: 'admin' },
+      'register must be "product" or "brand"',
+    ],
     [
       { baseUrl: 'x', routes: ['/'], palette: { accent: 'blue' } },
       'palette.accent must be a #rgb or #rrggbb value',

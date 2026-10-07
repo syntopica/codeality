@@ -2,6 +2,12 @@
 
 ## [Unreleased]
 
+- New rules, both `warn`: `radius-sprawl` (more than 4 distinct corner radii in
+  the main region, pills and circles aside) and `card-radius-admin` (a card with
+  a corner radius over 8px), which runs only with the new top-level config
+  `"register": "product"` (`"brand"` leaves it off). The probe now resolves a
+  percentage `border-radius` against the box's width.
+
 - New rule, `warn`: `touch-target`. On a screen 480px wide or less, a link,
   button or ARIA widget whose hit area (box, label and absolutely positioned
   `::before`/`::after`) is under 44x44px, or that partly overlaps another

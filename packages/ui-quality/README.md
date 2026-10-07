@@ -92,6 +92,10 @@ pnpm exec codeality-ui init
   it the `palette` rule is off. `palette.accent` (`#rgb` or `#rrggbb`) names the
   colour of the one primary action for `accent-overuse`; without it that rule
   takes the most saturated filled button for the accent.
+- `register` (`"product"` or `"brand"`) says what the project is. Only
+  `"product"` switches on `card-radius-admin`, which holds cards to 8px of
+  corner radius; a brand surface chooses its own, and without the setting the
+  rule is off.
 - `disable` keeps a finding on purpose. `route` and `selector` narrow it, and
   `message` keeps only findings whose message contains that text: one
   third-party `console-error` ("picture-in-picture is not allowed" from a
@@ -150,6 +154,8 @@ pnpm exec codeality-ui init
 | `text-occlusion`         | text whose first line is painted over, at its centre, by an opaque element that is not its ancestor or descendant and covers over 20% of its box; an open dialog and its backdrop are left alone; on-screen texts only, at most 400 sampled                                              |
 | `focus-invisible`        | an element that the Tab pass (the first 30 focusable elements) focuses without any visible change: no outline, box-shadow, border, background or text colour change on it, an ancestor within three levels or an adjacent sibling, once running transitions end                          |
 | `touch-target`           | on a screen 480px wide or less, a link, button, tab, checkbox or other widget whose hit area (box, label, absolute `::before`/`::after`) is under 44x44px, or that partly overlaps another; links inside a sentence are exempt                                                           |
+| `radius-sprawl`          | more than 4 distinct corner radii among the main region's boxes, pills and circles aside; one finding per screen                                                                                                                                                                         |
+| `card-radius-admin`      | a card with a corner radius over 8px; only with `"register": "product"` in the config                                                                                                                                                                                                    |
 | `slow-request`           | a document, fetch or server action over `maxMs` (1000ms) while the page loaded; a GET is timed again and must still be over it                                                                                                                                                           |
 | `sort-broken`            | a sortable header that, clicked twice, leaves its column out of order or never reverses it                                                                                                                                                                                               |
 | `filter-broken`          | the main search, given a word shown in a row, drops that row, keeps every row, or does not restore on clear                                                                                                                                                                              |

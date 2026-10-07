@@ -7,6 +7,7 @@ import { expectConfig } from '@/config/expectConfig.js'
 import { isRecord } from '@/config/isRecord.js'
 import { listFrom } from '@/config/listFrom.js'
 import { paletteFrom } from '@/config/paletteFrom.js'
+import { registerFrom } from '@/config/registerFrom.js'
 import { routeFrom } from '@/config/routeFrom.js'
 import { ruleOptionsFrom } from '@/config/ruleOptionsFrom.js'
 import { stringField } from '@/config/stringField.js'
@@ -34,6 +35,7 @@ export const configFromDocument = (document: unknown): UiQualityConfig => {
     ),
     colorSchemes: colorSchemesFrom(document['colorSchemes']),
     palette: paletteFrom(document['palette']),
+    register: registerFrom(document['register']),
     rules: ruleOptionsFrom(document['rules']),
     disable: listFrom(document['disable'], [], 'disable', disableEntryFrom),
     axe: axeConfigFrom(document['axe']),

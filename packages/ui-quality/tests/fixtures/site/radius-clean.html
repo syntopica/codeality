@@ -1,0 +1,62 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Corner radii on a scale</title>
+    <style>
+      body {
+        margin: 0;
+        font: 16px/1.5 sans-serif;
+        color: #111827;
+        background: #ffffff;
+      }
+      main {
+        padding: 24px;
+        max-width: 960px;
+      }
+      h1 {
+        font-size: 24px;
+        margin: 0 0 16px;
+      }
+      .card {
+        border: 1px solid #d1d5db;
+        padding: 16px;
+        margin: 0 0 16px;
+      }
+      .r4 {
+        border-radius: 4px;
+      }
+      .r8 {
+        border-radius: 8px;
+      }
+      .pill {
+        display: inline-block;
+        padding: 2px 12px;
+        border-radius: 9999px;
+        background: #e5e7eb;
+      }
+      .avatar {
+        width: 32px;
+        height: 32px;
+        border-radius: 50%;
+        background: #9ca3af;
+      }
+    </style>
+  </head>
+  <body>
+    <main>
+      <h1>Overview</h1>
+      <section class="card r8">
+        <h2>Revenue</h2>
+        <p>Month to date <span class="pill">on track</span></p>
+        <div class="avatar"></div>
+      </section>
+      <div
+        class="r4"
+        style="background: #e5e7eb; height: 24px; margin-bottom: 8px"
+      ></div>
+      <div class="r8" style="background: #e5e7eb; height: 24px"></div>
+    </main>
+  </body>
+</html>

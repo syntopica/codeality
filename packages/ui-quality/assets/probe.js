@@ -323,6 +323,15 @@
     return [box.right - box.left, box.bottom - box.top]
   }
 
+  // The top-left corner radius in px; a percentage is of the box's width.
+  const radiusOf = (style, rect) => {
+    const value = style.borderTopLeftRadius
+    const length = parseFloat(value) || 0
+    return value.endsWith('%')
+      ? Math.round((length * rect.width) / 100)
+      : length
+  }
+
   const ids = new Map()
   const elements = []
   // Elements with text of their own, for the occlusion pass once every
@@ -433,7 +442,7 @@
       tappable,
       tapWidth: Math.round(tapWidth),
       tapHeight: Math.round(tapHeight),
-      borderRadius: parseFloat(style.borderTopLeftRadius) || 0,
+      borderRadius: radiusOf(style, rect),
       padding: [
         parseFloat(style.paddingTop),
         parseFloat(style.paddingRight),
