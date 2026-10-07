@@ -91,9 +91,6 @@ needs.
   CTAs that show after scrolling, roster card buttons on hover, selected states
   in the budget form. Left as well: capture after a scroll, and
   `:hover`/`:focus`/ selected states of repeated controls.
-- [ ] `placeholder-fit`: placeholder text wider than its input's text box by
-      over 20% ("Buscar rosters, categ…" at 390px). Needs `placeholder` plus a
-      canvas `measureText` with the computed font.
 - [ ] `duplicate-nav-icon`: two navigation items drawing the same icon (Clientes
       and Contactos share one, as do Plantillas and Canales). Needs a hash of
       each svg's markup.

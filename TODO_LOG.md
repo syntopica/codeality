@@ -1,5 +1,13 @@
 ### 2026-10-07
 
+- [x] ui-quality `placeholder-fit` (warn): an empty field whose placeholder
+      (canvas `measureText` with the computed font) is over 20% wider than its
+      content box (client width less horizontal padding). Probe gains
+      `contentWidth` and `placeholderWidth`. Evidence:
+      `cli.placeholder.integration.test.ts` reports only the 160px field with a
+      long hint (not the short hint, not the filled field);
+      `placeholderFit.test.ts`; ui-quality 188 tests.
+
 - [~] ui-quality `empty-dialog` (warn): an open `dialog[open]`,
   dialog/alertdialog role or `aria-modal` element with no link, button or field
   besides a close control (by text or `aria-label`: close, cerrar, cancel, ×).
