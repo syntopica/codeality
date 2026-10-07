@@ -1,5 +1,35 @@
 ### 2026-10-07
 
+- [x] `@syntopica/eslint-config`: the four peers `/code-quality` imports
+      unconditionally (`@vitest/eslint-plugin`, `eslint-plugin-testing-library`,
+      `eslint-plugin-sonarjs`, `eslint-plugin-code-policy`) are no longer
+      optional, so `auto-install-peers` installs them and a plain install warns,
+      instead of ESLint dying at config load. README says why.
+- [x] `react/prop-types` off for `**/*.{ts,tsx}` in the nextjs and vite-react
+      layers. A/B on a shadcn-style `forwardRef` `TableCell` in each template:
+      before `'className' is missing in props validation`, after 0.
+- [x] knip on the templates: `gitleaks` is ignored by default in
+      `createKnipConfig` (the baseline writes it into every `secrets:check`; all
+      eight templates reported it unlisted), the nextjs preset drops
+      `{,src/}{middleware,proxy}.ts` (knip's Next plugin registers both) and the
+      Vite presets drop `src/main.*` (reached through index.html). A dead file
+      in vite-react still reports. Remaining hints are the documented
+      `ignoreDependencies` ones.
+- [x] knip 6.35 and `vite.config.ts`'s default export: fixed on 2026-09-21
+      (`46bf2e3`), every framework-owned preset sets
+      `includeEntryExports:     false`; `pnpm knip:templates` green on knip
+      6.40.
+- [x] commitlint and `todo:`: backlog commits are `docs(todo):`, documented in
+      `docs/standards/quality-gates.md` (`todo` would need a changelog mapping
+      for a change with nothing to release).
+- [x] `docs/adoption/existing-repo.md` gains "The first `check:ci` on a
+      repository older than the baseline": TS4111 sweep, tool directories out of
+      Prettier/ESLint, the suppressions ratchet, and the knip findings.
+- [x] CI follow-ups after the Chromium fix: the drizzle ESLint integration test
+      gets 60 s (cold ESLint passed 5 s on the runner), and zizmor's
+      `ref-version-mismatch` on `upload-artifact` (`# v7` on a v7.0.1 commit) is
+      fixed in the python template and in codeality-py's CI asset.
+
 - [x] cargo-baseline passes its own check again: `child_paths` moved to
       `src/engine/child_paths.rs`.
       `cargo run -p cargo-baseline -- baseline     check` 0 errors, `cargo test`
