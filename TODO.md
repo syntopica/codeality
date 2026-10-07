@@ -7,14 +7,15 @@ verified complete - `[-]` obsolete or superseded.
 
 ## Python baseline
 
-- [ ] Third pass on the Python consumers' accepted backlog. After the 2026-10-07
-      passes: DJCenterDeluxe 55 findings (4 `BPY006` are test-local fixture
-      SQL), djplayerdeluxe 51 and 29 ignored modules (hardware backends, the
-      `utils` package needs a name), agent-deluxe 8 and `[mypy-agent]` (a
-      login-error scan whose `str` branch can never run; typing it rewrites the
-      scan), qlctool 4, atrium 2. Each repo's TODO.md names the first step. The
-      wiki's own gate is red before any upgrade (62 ruff errors), so it is still
-      on codeality-py 0.2.4.
+- [ ] Remaining Python backlog after three passes (every gate exit 0):
+      agent-deluxe, qlctool and atrium at 0. DJCenterDeluxe 28: 8 `BPY004`
+      classes need characterisation tests before splitting, 9 `BPY002` spiders
+      and caches run by path, 4 scripts under `veoplan/`, `scrapers/` and
+      `spotify/` would need `python -m` invocation (owner call), 4 test-fixture
+      SQL. djplayerdeluxe 44 and 29 ignored Qt/hardware modules (typing them
+      changes the None path), backend families chosen by try/except import,
+      `sievem` shared by symlink. Each repo's TODO.md names the step and the
+      latent bugs found.
 
 ## Estate
 
@@ -29,9 +30,14 @@ verified complete - `[-]` obsolete or superseded.
   `npm view typescript-eslint version` passes 8.71.1, remove both lines,
   `ncu -u`, `pnpm install`, `pnpm check:ci`.
 
-- [~] **Merge pixel-potion/TeaPartyDolls.com#55** (code-policy 0.8.0, 80 inline
-  types named, `bun run check` and 514 tests green). The last repo of the 0.8.0
-  adoption; its merge deploys the client storefront, so it waits for the owner.
+- [ ] **The `ts-package` knip preset leaves configuration hints in consumers**
+      (2026-10-07, jobradar after quality-config 0.13): "Remove from
+      ignoreDependencies" for `dependency-cruiser` and `lefthook`, and "Refine
+      entry pattern (no matches)" for `src/index.ts` when the package's entry is
+      elsewhere (`src/cli/main.ts`). Hints do not fail the gate, but every
+      adopter sees them. Next step: in `packages/quality-config/src/knip.ts`,
+      add the default entry only when it exists and drop runner dependencies
+      knip already resolves, with a fixture for a CLI-shaped package.
 
 ## ui-quality
 

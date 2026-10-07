@@ -1,5 +1,20 @@
 ### 2026-10-07
 
+- [x] Python consumers, third pass (gates re-run on clean `origin` worktrees,
+      all exit 0): agent-deluxe 8 to 0 and `[mypy-agent]` gone, floor 35 to 42
+      (5602689; dcb3802 and 7a40a27 tracked the `invoice_agents/logs/` package
+      that `.gitignore`'s `logs/` had hidden, so a clean checkout failed to
+      import); qlctool 4 to 0 (ad31c82); atrium 2 to 0 (2261ed5, `--help`
+      byte-identical); DJCenterDeluxe 55 to 28 (b0e6d72); djplayerdeluxe 51 to
+      44, `utils` renamed `runtime_services` (6f27e82). wiki gate green on 0.2.5
+      (0dd884007: six one-liner scripts in `tools/` made entrypoints).
+
+- [x] teapartydolls#55 merged and deployed (Workers Builds green, site 200).
+      jobradar: boards committed (3c163f2), every dependency to latest
+      (5092741), five dev-tool advisories overridden and braces
+      GHSA-vfj7-8cjw-p6xm waived until 2027-01-07 (e70323b); `check:ci` and
+      `check:security` exit 0.
+
 - [x] code-policy 0.8.0 adoption, the six left (no suppressions): contratica 786
       named (67c2acd8, `pnpm check:all` green, 540 tests), inpractise-demo 85
       (06be819), jobradar 11 (51eadb1) and ventanilla-unica 89 (cc7edf1, 1343
