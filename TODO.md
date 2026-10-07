@@ -122,8 +122,6 @@ needs.
       page) with no pagination control after it.
 - [ ] `ghost-elevation` and `transition-all`: border plus shadow on one card;
       `transition-property: all`. Need `boxShadow` and `transitionProperty`.
-- [ ] Enable axe's `target-size` (WCAG 2.2 AA) and check whether the default
-      AxeBuilder run already includes it.
 - [ ] 49 more candidates, tiered by value and false-positive risk, with exact
       triggers and sources (Impeccable's detector registry, Vercel Web Interface
       Guidelines, Krehel's better-* skills, WCAG 2.2, Carbon, the OpenAI GPT-5.5

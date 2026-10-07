@@ -1,5 +1,14 @@
 ### 2026-10-07
 
+- [x] ui-quality turns on axe's `target-size` (WCAG 2.2 AA 2.5.8): axe-core 4.13
+      ships it `enabled: false`, so the default `AxeBuilder` run never reported
+      it; now enabled through run options (`AXE_OPT_IN_RULES`). Evidence:
+      `cli.target-size.integration.test.ts` reports `a11y/target-size` on two
+      touching 16px buttons and fails with the option removed; it also caught a
+      19.6px `<summary>` in the clean `fixed.html` fixture, padded to 24px+.
+      ui-quality 167 tests pass. Consumers will see new `a11y/target-size`
+      findings on upgrade: note it in the CHANGELOG.
+
 - [x] ui-quality grid pagination ignores a "next" link whose address leaves the
       route (`isPagerAddress`: same path with another query, or a path below it)
       unless a numbered "2" link backs it. Evidence: new fixture `article.html`
