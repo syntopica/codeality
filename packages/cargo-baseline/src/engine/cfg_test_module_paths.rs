@@ -1,6 +1,7 @@
 use std::collections::HashSet;
-use std::path::{Path, PathBuf};
+use std::path::PathBuf;
 
+use crate::engine::child_paths::child_paths;
 use crate::engine::file_context::FileContext;
 use crate::engine::is_cfg_test_item::is_cfg_test_item;
 
@@ -50,27 +51,11 @@ pub fn cfg_test_module_paths(files: &[FileContext]) -> HashSet<PathBuf> {
     }
 }
 
-fn child_paths(declaring: &Path, name: &str) -> Vec<PathBuf> {
-    let Some(parent) = declaring.parent() else {
-        return Vec::new();
-    };
-    let stem = declaring
-        .file_stem()
-        .map(|s| s.to_string_lossy().into_owned());
-    let directory = match stem.as_deref() {
-        Some("mod" | "lib" | "main") | None => parent.to_path_buf(),
-        Some(stem) => parent.join(stem),
-    };
-    vec![
-        directory.join(format!("{name}.rs")),
-        directory.join(name).join("mod.rs"),
-    ]
-}
-
 #[cfg(test)]
 #[allow(clippy::unwrap_used)]
 mod tests {
     use super::*;
+    use std::path::Path;
 
     fn ctx(path: &str, src: &str) -> FileContext {
         FileContext::parse(Path::new(path), src.into()).unwrap()
