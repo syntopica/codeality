@@ -13,6 +13,7 @@ import { horizontalOverflow } from '@/rules/horizontalOverflow.js'
 import { iconContrast } from '@/rules/iconContrast.js'
 import { inputZoom } from '@/rules/inputZoom.js'
 import { palette } from '@/rules/palette.js'
+import { placeholderFit } from '@/rules/placeholderFit.js'
 import { rawPlaceholder } from '@/rules/rawPlaceholder.js'
 import { rowMisaligned } from '@/rules/rowMisaligned.js'
 import type { Rule } from '@/rules/Rule.js'
@@ -36,6 +37,7 @@ export const RULES: Rule[] = [
   iconContrast,
   inputZoom,
   palette,
+  placeholderFit,
   rawPlaceholder,
   rowMisaligned,
   slowRequest,

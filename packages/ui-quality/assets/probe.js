@@ -140,6 +140,14 @@
     return metrics.fontBoundingBoxAscent + metrics.fontBoundingBoxDescent
   }
 
+  // The width of the placeholder an empty field shows; 0 when it shows none.
+  const placeholderWidthOf = (element, style) => {
+    const placeholder = element.getAttribute('placeholder')
+    if (!placeholder || element.value || !measure) return 0
+    measure.font = style.font
+    return measure.measureText(placeholder).width
+  }
+
   const isTextEntry = (element) => {
     if (element.isContentEditable)
       return !element.parentElement || !element.parentElement.isContentEditable
@@ -222,6 +230,11 @@
         parseFloat(style.paddingTop) -
         parseFloat(style.paddingBottom),
       lineBoxHeight: lineBoxOf(element, style),
+      contentWidth:
+        element.clientWidth -
+        parseFloat(style.paddingLeft) -
+        parseFloat(style.paddingRight),
+      placeholderWidth: placeholderWidthOf(element, style),
       isControl: isControl(element),
       fontSize: parseFloat(style.fontSize),
       isTextEntry: isTextEntry(element),

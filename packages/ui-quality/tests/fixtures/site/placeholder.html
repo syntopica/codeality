@@ -1,0 +1,41 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="utf-8" />
+    <title>Search fields and their hints</title>
+    <style>
+      body {
+        margin: 0;
+        font: 16px/1.4 sans-serif;
+        color: #000000;
+        background: #ffffff;
+      }
+      main {
+        padding: 24px;
+      }
+      input {
+        font: inherit;
+        border: 1px solid #000000;
+        padding: 8px;
+      }
+    </style>
+  </head>
+  <body>
+    <main>
+      <h1>Buscar</h1>
+      <!-- 160px of field for a hint about twice as long. -->
+      <input
+        aria-label="Buscar"
+        style="width: 160px"
+        placeholder="Buscar rosters, categorías y artistas"
+      />
+      <input aria-label="Ciudad" style="width: 160px" placeholder="Ciudad" />
+      <input
+        aria-label="Filled"
+        style="width: 160px"
+        placeholder="Buscar rosters, categorías y artistas"
+        value="Alba"
+      />
+    </main>
+  </body>
+</html>

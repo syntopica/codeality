@@ -37,6 +37,10 @@ export type ElementBox = {
   contentHeight: number
   /** One line of a select's font, which Chromium clips to the content box; 0 for other elements. */
   lineBoxHeight: number
+  /** `clientWidth` less horizontal padding: the box a field's text is laid in. */
+  contentWidth: number
+  /** The width of the placeholder an empty field shows; 0 when it shows none. */
+  placeholderWidth: number
   isControl: boolean
   /** Computed font size in CSS pixels. */
   fontSize: number

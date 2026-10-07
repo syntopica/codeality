@@ -30,6 +30,8 @@ export const elementBox = (
   clientWidth: 100,
   contentHeight: 20,
   lineBoxHeight: 0,
+  contentWidth: 100,
+  placeholderWidth: 0,
   scrollHeight: 20,
   clientHeight: 20,
   isControl: false,
