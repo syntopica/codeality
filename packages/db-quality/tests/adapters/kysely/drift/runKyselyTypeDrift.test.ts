@@ -1,4 +1,11 @@
-import { mkdirSync, mkdtempSync, rmSync, writeFileSync } from 'node:fs'
+import {
+  existsSync,
+  mkdirSync,
+  mkdtempSync,
+  rmSync,
+  writeFileSync,
+} from 'node:fs'
+import { tmpdir } from 'node:os'
 import { join } from 'node:path'
 
 import { afterEach, beforeEach, describe, expect, it } from 'vitest'
@@ -22,6 +29,10 @@ const runnerWriting =
     if (outFile === undefined) throw new Error('missing --out-file')
     expect(options.env?.['CODEALITY_DB_URL']).toBe(DB_URL)
     expect(args.join(' ')).not.toContain(DB_URL)
+    expect(
+      options.cwd.startsWith(join(tmpdir(), 'codeality-db-codegen-')),
+    ).toBe(true)
+    expect(existsSync(join(options.cwd, 'package.json'))).toBe(true)
 
     writeFileSync(outFile, dbTypes)
     return { status: 0, stdout: '', stderr: '', missing: false }
