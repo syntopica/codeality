@@ -37,6 +37,16 @@ better-ui, frontend-design). Shipped from that review: `edge-misaligned`,
 reading nested rows and length spikes. Each item below names the probe fields it
 needs.
 
+- [ ] **`ragged-column` (candidate, 2026-10-08).** Stacked blocks in one column
+      stop at different right edges. On the inpractise-demo lab review page
+      (1440px) the h1 (`max-w-4xl`) and the disclosure note (`max-w-3xl`) ended
+      ~350px and ~430px short of the full-width stat card directly below them;
+      the owner spotted it, `check` reported nothing (`edge-misaligned` compares
+      only header vs main). Probe needs, per main-column child: box right edge
+      and whether it is prose (a `<p>` with loose text at a reading measure is
+      exempt, like `line-length`). Report when a non-prose block (heading, note,
+      callout) sits between full-width siblings and ends more than ~15% of the
+      column width short.
 - [x] **`ui-quality@0.2.0` published 2026-10-07** (run 37538934323). The two
       earlier runs failed with OIDC token exchange 404 because the package's
       trusted publisher on npmjs.com showed `Status: Expired`; it was deleted
