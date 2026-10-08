@@ -6,7 +6,7 @@ import { kyselySectionFrom } from '@/config/kyselySectionFrom.js'
 const MODULE = 'src/db/migrations/migrationList.ts'
 
 describe('kyselySectionFrom', () => {
-  it('fills the defaults: db and trx, the migrations export and moneyColumns off', () => {
+  it('fills the defaults: db and trx, the migrations export, moneyColumns off', () => {
     expect(kyselySectionFrom({ roots: ['src'] })).toEqual({
       roots: ['src'],
       objectNames: ['db', 'trx'],
@@ -19,12 +19,13 @@ describe('kyselySectionFrom', () => {
       migrations: { module: MODULE, export: 'migrations', moneyColumns: false },
     })
   })
-  it('keeps every explicit value, the reserved databaseType included', () => {
+  it('keeps every explicit value, including databaseType and databaseTypeIgnores', () => {
     expect(
       kyselySectionFrom({
         roots: ['src', 'server'],
         objectNames: ['conn'],
-        databaseType: 'src/db/Database.ts',
+        databaseType: 'src/db/Database.ts#Database',
+        databaseTypeIgnores: ['session'],
         migrations: {
           folder: 'migrations',
           export: 'ignored',
@@ -35,7 +36,8 @@ describe('kyselySectionFrom', () => {
     ).toEqual({
       roots: ['src', 'server'],
       objectNames: ['conn'],
-      databaseType: 'src/db/Database.ts',
+      databaseType: 'src/db/Database.ts#Database',
+      databaseTypeIgnores: ['session'],
       migrations: {
         folder: 'migrations',
         export: 'ignored',
@@ -48,6 +50,12 @@ describe('kyselySectionFrom', () => {
     [{}, /kysely.roots/],
     [{ roots: ['src'], objectNames: 'db' }, /kysely.objectNames/],
     [{ roots: ['src'], databaseType: 1 }, /kysely.databaseType/],
+    [{ roots: ['src'], databaseType: '#Database' }, /invalid value/],
+    [{ roots: ['src'], databaseType: 'src/db/Database.ts#' }, /invalid value/],
+    [
+      { roots: ['src'], databaseTypeIgnores: 'session' },
+      /kysely.databaseTypeIgnores/,
+    ],
     [{ roots: ['src'], migrations: [] }, /migrations must be an object/],
     [{ roots: ['src'], migrations: {} }, /exactly one of "module" or "folder"/],
     [
@@ -77,6 +85,9 @@ describe('kyselySectionFrom', () => {
     expect(
       configFromDocument({ schemaVersion: 2, kysely: { roots: ['src'] } })
         .kysely,
-    ).toEqual({ roots: ['src'], objectNames: ['db', 'trx'] })
+    ).toEqual({
+      roots: ['src'],
+      objectNames: ['db', 'trx'],
+    })
   })
 })

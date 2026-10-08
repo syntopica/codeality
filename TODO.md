@@ -80,9 +80,6 @@ needs.
 
 ## db-quality
 
-- [ ] **Kysely type drift** (`kysely.databaseType`, spec section 3): deferred
-      until a consumer has a live database in CI; the config key is reserved.
-
 ## Cross-project (filed 2026-09-09 from two consumer backlog runs)
 
 ## Routed from `~/p/TODO.md` (2026-10-03)

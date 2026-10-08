@@ -1,5 +1,14 @@
 ### 2026-10-08
 
+- [x] **Kysely type drift (`BDB330`)**: `audit --db-url` compares the live
+      schema (kysely-codegen 0.20.0 via npx) with `kysely.databaseType` through
+      the project's TypeScript; `kysely.databaseTypeIgnores` for tables kept out
+      on purpose. Evidence: db-quality 512 tests, `pnpm check:ci` green; live
+      against compratuentrada (local PostgreSQL, 17 migrations): 1 true finding
+      (`membership.scope_type` varchar declared as a literal union), and an
+      added table, added column, renamed column and dropped `NOT NULL` each
+      reported. Code generated on max-lane (Sonnet).
+
 - [x] ui-quality 0.7.0 published (run 37693554087, tag pushed): every remaining
       candidate in `docs/rule-candidates.md` shipped, 29 rules at `warn` (tier 2
       rest and tier 3), none rejected; `label-punctuation` opt-in through the

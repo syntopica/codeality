@@ -5,10 +5,14 @@ import { ToolMissingError } from '@/tools/ToolMissingError.js'
 
 /**
  * The project's typescript, else the one installed next to this package.
- * An optional peer: only the PostgREST rules need it, so it is never imported
- * statically and its absence is exit 3, not a crash of every command.
+ * An optional peer: only the PostgREST rules and the Kysely type drift audit
+ * need it, so it is never imported statically and its absence is exit 3, not
+ * a crash of every command.
  */
-export const loadTypeScript = (bases: string[]): TypeScriptModule => {
+export const loadTypeScript = (
+  bases: string[],
+  hint = 'install typescript in the project to run the PostgREST rules',
+): TypeScriptModule => {
   for (const base of bases) {
     try {
       return createRequire(base)('typescript') as TypeScriptModule
@@ -17,8 +21,5 @@ export const loadTypeScript = (bases: string[]): TypeScriptModule => {
         throw error
     }
   }
-  throw new ToolMissingError(
-    'typescript',
-    'install typescript in the project to run the PostgREST rules',
-  )
+  throw new ToolMissingError('typescript', hint)
 }

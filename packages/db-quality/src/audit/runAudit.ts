@@ -1,3 +1,4 @@
+import { runKyselyTypeDrift } from '@/adapters/kysely/drift/runKyselyTypeDrift.js'
 import { runSoda } from '@/adapters/soda/runSoda.js'
 import { runAdvisors } from '@/adapters/supabase/runAdvisors.js'
 import { runInspect } from '@/adapters/supabase/runInspect.js'
@@ -22,6 +23,17 @@ export const runAudit = ({
     findings.push(
       ...runAdvisors(runner, root, target, config.disable),
       ...runInspect(runner, root, target, config),
+    )
+  }
+  if (plan.kysely && 'dbUrl' in target && config.kysely !== undefined) {
+    findings.push(
+      ...runKyselyTypeDrift({
+        runner,
+        root,
+        kysely: config.kysely,
+        dbUrl: target.dbUrl,
+        disabled: config.disable,
+      }),
     )
   }
   return findings.sort(compareFindings)

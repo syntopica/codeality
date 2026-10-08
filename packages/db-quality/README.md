@@ -124,6 +124,7 @@ the project's own `prettier --write` afterwards, so a pre-commit that runs
 | `BDB300/<rule>`    | eslint-plugin-drizzle       | error       | `delete` or `update` without `.where()`                                                                                   |
 | `BDB310/<rule>`    | Kysely ESLint rules         | error       | `updateTable`/`deleteFrom` without `.where()`, dynamic raw SQL; see [Kysely](#kysely)                                     |
 | `BDB320/<rule>`    | Kysely migrations           | error/warn  | migration rules on the compiled SQL; see [Kysely](#kysely)                                                                |
+| `BDB330/<rule>`    | Kysely type drift (audit)   | error       | the live schema and the hand-written Kysely `Database` type disagree; see [Type drift](#type-drift)                       |
 | `BDB401`-`BDB403`  | sqlite3                     | error/warn  | integrity, dangling foreign keys, table without primary key                                                               |
 | `BDB404`-`BDB406`  | SQLite query files          | warn        | optional-parameter guard, comma-list `instr()`, full scan of a large table; see [SQLite query files](#sqlite-query-files) |
 | `BDB500/<name>`    | Supabase advisors           | as Supabase | splinter security and performance lints on the live project                                                               |
@@ -174,8 +175,8 @@ A `kysely` section is proposed by `init` when `package.json` depends on
 filled in only when exactly one `migrations/index.ts` or
 `migrations/migrationList.ts` exists under the roots, with the `dialects` the
 installed drivers imply written out; otherwise `init` says it left it out.
-Additive: `schemaVersion` stays 2. `kysely.databaseType` is reserved for a later
-type-drift audit and not read yet.
+Additive: `schemaVersion` stays 2. `kysely.databaseType` turns on the live
+[type drift](#type-drift) audit.
 
 ### Code rules
 
@@ -273,6 +274,49 @@ refused (exit 2) unless it is named with
 
 Limitation: the capturing driver returns no rows, so a migration that branches
 on data it reads only has its empty-database path compiled, checked and hashed.
+
+### Type drift
+
+When `kysely.databaseType` is set, `codeality-db audit --db-url <url>`
+introspects the live database with `kysely-codegen` and compares it, table by
+table and column by column, against the hand-written `Database` type using the
+TypeScript compiler API.
+
+Configuration:
+
+- `kysely.databaseType`: `"<root-relative module path>#<export name>"`, for
+  example `"src/db/Database.ts#Database"`. Without `#`, the export name defaults
+  to `Database`. Required to run this audit.
+- `kysely.databaseTypeIgnores`: table names that exist in the live database on
+  purpose but are deliberately absent from the hand-written type, for example
+  tables owned by an auth library. Defaults to `[]`.
+
+Run it with `codeality-db audit --db-url <url>` against a database with every
+migration applied, such as the one a CI job migrates before its tests. The first
+run downloads `kysely-codegen@0.20.0` and the driver (`pg@8` or `mysql2@3`)
+through `npx`; the URL reaches it only through the environment, never the
+command line. PostgreSQL is read from the `public` schema. It only runs against
+a `--db-url` target whose scheme `kysely-codegen` supports (`postgres`,
+`postgresql` or `mysql`); a linked target or an unsupported scheme is reported
+as skipped, not as an error.
+
+| Code                                | Severity | Reported when                                                                                    |
+| ----------------------------------- | -------- | ------------------------------------------------------------------------------------------------ |
+| `BDB330/table-missing-in-type`      | error    | a table exists in the database but not in the declared type, and is not in `databaseTypeIgnores` |
+| `BDB330/table-missing-in-database`  | error    | a table is declared in the type but does not exist in the database                               |
+| `BDB330/column-missing-in-type`     | error    | a column exists in the database but not on the declared table                                    |
+| `BDB330/column-missing-in-database` | error    | a column is declared on the table but does not exist in the database                             |
+| `BDB330/column-type-drift`          | error    | a shared column's live SELECT type is not assignable to the declared SELECT type                 |
+
+A declared type narrower than the column is drift too: a `varchar` declared as a
+union of string literals reads back as `string`. Constrain the column (a `CHECK`
+or an enum type) or accept the finding in the baseline.
+
+Limitation: the live types are `kysely-codegen`'s defaults for the `pg` and
+`mysql2` drivers (for example PostgreSQL `numeric` and `int8` read as `string`,
+timestamps as `Date`). A project that installs custom type parsers on its driver
+must declare the wider union itself; this audit only reads the database, it does
+not know about parsers configured in application code.
 
 ## PostgREST rules
 

@@ -5,10 +5,16 @@ import { isSupabaseHost } from '@/audit/isSupabaseHost.js'
 import { configFromDocument } from '@/config/configFromDocument.js'
 import { ConfigError } from '@syntopica/gate-kit/ConfigError'
 
+const LOCALHOST_DB_URL = 'postgresql://me@localhost/db'
+
 const plain = configFromDocument({ schemaVersion: 1 })
 const withSoda = configFromDocument({
   schemaVersion: 1,
   audit: { soda: 'soda' },
+})
+const withKysely = configFromDocument({
+  schemaVersion: 1,
+  kysely: { roots: ['src'], databaseType: 'src/db/Database.ts' },
 })
 
 describe('isSupabaseHost', () => {
@@ -30,6 +36,7 @@ describe('auditPlan', () => {
     expect(auditPlan(plain, { linked: true })).toEqual({
       supabase: true,
       soda: false,
+      kysely: false,
       skipped: [],
     })
     expect(auditPlan(withSoda, { linked: true }).skipped).toEqual([
@@ -37,8 +44,8 @@ describe('auditPlan', () => {
     ])
   })
   it('runs Soda alone against a plain Postgres and everything against a Supabase URL', () => {
-    const local = auditPlan(withSoda, { dbUrl: 'postgresql://me@localhost/db' })
-    expect(local).toMatchObject({ supabase: false, soda: true })
+    const local = auditPlan(withSoda, { dbUrl: LOCALHOST_DB_URL })
+    expect(local).toMatchObject({ supabase: false, soda: true, kysely: false })
     expect(local.skipped).toEqual([
       'supabase: skipped, --db-url is not a Supabase project host',
     ])
@@ -49,12 +56,45 @@ describe('auditPlan', () => {
     ).toEqual({
       supabase: true,
       soda: true,
+      kysely: false,
       skipped: [],
     })
   })
-  it('refuses a target nothing can audit', () => {
+  it('runs the Kysely type drift audit when databaseType is set and the URL supports it', () => {
+    const result = auditPlan(withKysely, {
+      dbUrl: LOCALHOST_DB_URL,
+    })
+    expect(result).toMatchObject({ kysely: true })
+    expect(result.skipped).toEqual([
+      'supabase: skipped, --db-url is not a Supabase project host',
+    ])
+  })
+  it('skips Kysely for a linked target', () => {
+    expect(auditPlan(withKysely, { linked: true }).skipped).toContain(
+      'kysely type drift: skipped, a linked target carries no database URL; pass --db-url',
+    )
+  })
+  it('skips Kysely for an unsupported URL scheme', () => {
     expect(() =>
-      auditPlan(plain, { dbUrl: 'postgresql://me@localhost/db' }),
-    ).toThrow(ConfigError)
+      auditPlan(withKysely, { dbUrl: 'mongodb://me@localhost/db' }),
+    ).toThrow(/no Kysely type drift can run/)
+    const both = configFromDocument({
+      schemaVersion: 1,
+      audit: { soda: 'soda' },
+      kysely: { roots: ['src'], databaseType: 'src/db/Database.ts' },
+    })
+    expect(
+      auditPlan(both, { dbUrl: 'mongodb://me@localhost/db' }).skipped,
+    ).toContain(
+      'kysely type drift: skipped, mongodb is not a postgres or mysql URL',
+    )
+  })
+  it('refuses a target nothing can audit', () => {
+    expect(() => auditPlan(plain, { dbUrl: LOCALHOST_DB_URL })).toThrow(
+      /nothing to audit: not a Supabase host, audit\.soda is not configured and no Kysely type drift can run/,
+    )
+    expect(() => auditPlan(plain, { dbUrl: LOCALHOST_DB_URL })).toThrow(
+      ConfigError,
+    )
   })
 })

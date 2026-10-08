@@ -2,6 +2,16 @@
 
 ## [Unreleased]
 
+- `audit --db-url` checks Kysely type drift (`BDB330`) when the new
+  `kysely.databaseType` (`"<path>#<export>"`, export `Database` by default)
+  names the hand-written `Database` type: `kysely-codegen` introspects the live
+  database, and the project's own TypeScript checks table by table and column by
+  column that every column's SELECT type fits the declared one. Five codes:
+  `table-missing-in-type`, `table-missing-in-database`,
+  `column-missing-in-type`, `column-missing-in-database`, `column-type-drift`.
+  `kysely.databaseTypeIgnores` lists tables kept out of the type on purpose,
+  such as an auth library's.
+
 ## 0.5.1
 
 - Kysely migrations load through the project's `tsconfig.json` path aliases

@@ -116,12 +116,21 @@ Limitation, stated in the README: a migration that branches on data it reads
 sees empty results under the capturing driver, so only the empty-database path
 is compiled.
 
-### 3. Type drift (live, in `audit`, later)
+### 3. Type drift (live, in `audit`) - shipped 2026-10-08
 
-Optional and out of the first release: run `kysely-codegen` against the
-`--db-url` database and diff the generated interface with the project's
-hand-written `Database` type. Deferred until a consumer has a live database in
-CI; recorded here so the config key (`kysely.databaseType`) is reserved.
+`kysely.databaseType` (`"<path>#<export>"`) names the hand-written `Database`
+type. `audit --db-url` runs `kysely-codegen` (through `npx`, from the system
+temporary directory so a project's own `kysely`/`pg` do not stop npx installing
+them next to it; the URL travels in `CODEALITY_DB_URL`, never argv), writes a
+probe importing the generated `DB` and the declared type into a scratch
+directory inside the project, and walks both with the project's TypeScript:
+tables and columns missing on either side, and every shared column checked with
+`SelectType<Declared> <- SelectType<Live>` assignability in a generated check
+file (`BDB330/<rule>`). `kysely.databaseTypeIgnores` names tables kept out of
+the type on purpose. Validated against compratuentrada on a local PostgreSQL 18
+with its 17 migrations applied (one true finding: a `varchar` declared as a
+literal union), and with deliberate drift: an added table and column, a renamed
+column and a dropped `NOT NULL` were each reported.
 
 ## Integration
 
