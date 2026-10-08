@@ -2,6 +2,8 @@
 
 ## [Unreleased]
 
+## 0.6.0
+
 - `audit --db-url` checks Kysely type drift (`BDB330`) when the new
   `kysely.databaseType` (`"<path>#<export>"`, export `Database` by default)
   names the hand-written `Database` type: `kysely-codegen` introspects the live
