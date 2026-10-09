@@ -46,7 +46,18 @@ needs.
       and whether it is prose (a `<p>` with loose text at a reading measure is
       exempt, like `line-length`). Report when a non-prose block (heading, note,
       callout) sits between full-width siblings and ends more than ~15% of the
-      column width short.
+      column width short. Second case 2026-10-09, same app: transcript prose
+      capped at `70ch` (later `96ch`) under a full-width sticky player card, and
+      the report page at `max-w-4xl` on a 1920px screen; the owner flagged both,
+      `check` passed. So the prose exemption must not apply when the prose sits
+      under a full-width sibling card of the same column: report it there.
+- [ ] **`interaction-shift` (candidate, 2026-10-09).** A toolbar that changes
+      height when a tab or segmented control is pressed moves everything below
+      it. inpractise-demo's transcript console was 204px in one view and 254px
+      in another (filter row and review controls appearing); the owner called it
+      CLS. Probe: for each `[role=group]` of `aria-pressed` buttons, press every
+      option and record the height of its nearest sticky or card ancestor;
+      report a delta over 4px.
 - [x] **`ui-quality@0.2.0` published 2026-10-07** (run 37538934323). The two
       earlier runs failed with OIDC token exchange 404 because the package's
       trusted publisher on npmjs.com showed `Status: Expired`; it was deleted
