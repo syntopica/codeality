@@ -17,6 +17,15 @@ verified complete - `[-]` obsolete or superseded.
 
 ## Estate
 
+- [~] **`check:ci` queues behind a host admission wrapper** (2026-10-11).
+  Decided 2026-10-11 (owner via Codex adjudication): one heavy suite per host,
+  two test workers each. Done: `check:ci` runs `check:ci:run` through
+  `heavy-suite` when it is on the PATH, and directly otherwise (CI included);
+  `turbo.json` passes `HEAVY_SUITE_ADMITTED`, `HEAVY_SUITE_WORKERS` and
+  `VITEST_MAX_WORKERS` through strict env mode, so the cap reaches each vitest
+  run. Remaining: turbo still runs up to ten package tasks at once inside one
+  admitted run; decide whether the wrapped gate also takes `--concurrency=2`.
+
 - [!] **Drop the typescript-eslint 8.71.1 overrides once 8.71.2 ships**
   (2026-10-07). 8.71.1 reports every variable in a `.js`/`.mjs` file as "only
   used as a type" (`isTypeOnlyReference` tests `!ref.isValueReference`,

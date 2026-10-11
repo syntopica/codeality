@@ -1,5 +1,13 @@
 ### 2026-10-11
 
+- [~] **`check:ci` queues behind a host admission wrapper.** Decided 2026-10-11
+  (owner via Codex adjudication): one heavy suite per host, two test workers
+  each. Evidence: `pnpm check:ci` exit 0 in 3 min 44 s through the wrapper (it
+  delayed the start at load 18 on 16 threads), turbo
+  `Tasks: 58 successful, 58 total`; `turbo run test --dry=json` lists the three
+  variables under `globalCacheInputs` pass-through. Item stays open in `TODO.md`
+  for the turbo concurrency question.
+
 - [x] **ui-quality 0.8.0 released.** Approved by the owner on 2026-10-11 ("sí").
       Ships the error-only severity (breaking) and the `narrow-page`,
       `ragged-column` and `interaction-shift` rules. Release commit `17ee9d6`,
