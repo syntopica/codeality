@@ -8,13 +8,21 @@ import {
 import { tmpdir } from 'node:os'
 import { join } from 'node:path'
 
-import { afterEach, beforeEach, describe, expect, it } from 'vitest'
+import { afterAll, afterEach, beforeEach, describe, expect, it } from 'vitest'
 
 import { runKyselyTypeDrift } from '@/adapters/kysely/drift/runKyselyTypeDrift.js'
 import type { KyselyConfig } from '@/config/KyselyConfig.js'
 import type { CommandRunner } from '@/tools/CommandRunner.js'
 
 const PACKAGE_ROOT = join(__dirname, '..', '..', '..', '..')
+// Each project sits inside the package so the probe resolves `kysely` and
+// `typescript` from its node_modules, but under node_modules/.cache rather
+// than tests/: a run killed half-way (turbo cancelling a sibling task) never
+// reaches afterEach, and a leftover under tests/ failed the next lint.
+const SCRATCH = join(PACKAGE_ROOT, 'node_modules', '.cache', 'db-quality-drift')
+// Each test builds a TypeScript program over the probe, which takes 5-10 s
+// on a loaded machine against vitest's 5 s default.
+const DRIFT_TEST_TIMEOUT_MS = 60_000
 const DB_URL = 'postgresql://u:p@localhost:5432/d'
 
 let root: string
@@ -74,7 +82,8 @@ export type Database = {
 `
 
 beforeEach(() => {
-  root = mkdtempSync(join(PACKAGE_ROOT, 'tests', '.tmp-drift-'))
+  mkdirSync(SCRATCH, { recursive: true })
+  root = mkdtempSync(join(SCRATCH, 'project-'))
   writeFileSync(
     join(root, 'tsconfig.json'),
     JSON.stringify({
@@ -96,7 +105,11 @@ afterEach(() => {
   rmSync(root, { recursive: true, force: true })
 })
 
-describe('runKyselyTypeDrift', () => {
+afterAll(() => {
+  rmSync(SCRATCH, { recursive: true, force: true })
+})
+
+describe('runKyselyTypeDrift', { timeout: DRIFT_TEST_TIMEOUT_MS }, () => {
   it('reports nothing when the live and declared schemas match', () => {
     const findings = runKyselyTypeDrift({
       runner: runnerWriting(DB_D_TS),

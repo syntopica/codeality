@@ -99,19 +99,6 @@ needs.
       2026-10-06: `initScripts` in the config, run per context; covered by the
       desktop-shell integration test.
 
-## db-quality
-
-- [ ] **`runKyselyTypeDrift` first test times out under load.** In a full
-      `pnpm check:ci` on 2026-10-11, "reports nothing when the live and declared
-      schemas match" took 9698 ms against vitest's 5000 ms default; run alone it
-      passes 5/5. Next step: give the suite an explicit timeout, or find what
-      the first test warms up. A timed-out run also leaves `tests/.tmp-drift-*`
-      behind (the temp root is `mkdtempSync` under `tests/`), and the next
-      `pnpm check:ci` then fails `db-quality#lint` with "was not found by the
-      project service" on its `check.ts`, `db.d.ts` and `probe.ts` (seen
-      2026-10-11, twice). Next step: create the temp root under `os.tmpdir()` or
-      add `tests/.tmp-*` to the ESLint ignores.
-
 ## Cross-project (filed 2026-09-09 from two consumer backlog runs)
 
 ## Routed from `~/p/TODO.md` (2026-10-03)

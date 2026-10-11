@@ -1,3 +1,12 @@
+### 2026-10-11
+
+- [x] **`runKyselyTypeDrift` timed out under load and left temp dirs behind**:
+      the suite now runs with a 60 s timeout, and its projects live under
+      `node_modules/.cache/db-quality-drift/` (removed in `afterAll`) instead of
+      `tests/.tmp-drift-*`, which a killed run left for the next lint to trip
+      on. Evidence: the test failed 3 of 5 full local gates at load 70-87 before
+      the change; passes alone and in the gate after it.
+
 ### 2026-10-08
 
 - [x] **Kysely type drift (`BDB330`)**: `audit --db-url` compares the live
