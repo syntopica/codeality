@@ -112,6 +112,10 @@ overrides:
   # GHSA-r5fr-rjxr-66jc, GHSA-f23m-r3pf-42rh and GHSA-xxjr-mmjv-4gpg, all
   # patched in 4.18.1, the same major chevrotain already resolves.
   'lodash@>=4.0.0 <4.18.1': ^4.18.1 # via db-quality>prisma-lint>@mrleebo/prisma-ast>chevrotain
+  # GHSA-xw65-4hp5-5hc7, GHSA-8r5x-fm3f-whwj and GHSA-p8wg-vrv2-v86f, all
+  # patched in 4.7.10. eslint-plugin-boundaries 7.2.0 and @boundaries/elements
+  # 3.1.1, the latest of both, pin handlebars to exactly 4.7.9.
+  'handlebars@<4.7.10': ^4.7.10 # via eslint-plugin-boundaries>@boundaries/elements
   # typescript-eslint 8.71.1 broke no-unused-vars on files its parser does not
   # own (.js/.mjs through espree): `isTypeOnlyReference` tests
   # `!ref.isValueReference`, which is undefined on eslint-scope references, so
