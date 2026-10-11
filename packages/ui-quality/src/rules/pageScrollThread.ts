@@ -27,7 +27,7 @@ export const pageScrollThread: Rule = (snapshot) => {
     return [
       {
         rule: 'page-scroll-thread',
-        severity: 'warn',
+        severity: 'error',
         message: `a thread of ${String((children.get(thread.id) ?? []).length)} items grows the page to ${String(snapshot.documentHeight)}px instead of scrolling in a pane; give it a fixed height and overflow-y: auto`,
         subject: thread.selector,
         identity: thread.signature,

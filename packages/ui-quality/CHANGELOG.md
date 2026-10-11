@@ -2,13 +2,26 @@
 
 ## [Unreleased]
 
-- New rule, `warn`: `ragged-column`, for blocks stacked in one column that stop
-  at different right edges, such as a capped heading or note over a full-width
+- **Breaking:** the warning severity is gone. Every finding is an `error`,
+  `Severity` is `'error'` alone, and `--json` reports `"severity": "error"` on
+  every finding. Rules that warned before, the AI-made tells, `moderate` and
+  `minor` axe violations, `dark-scheme-ignored` and `route-uncovered` included,
+  now say so. `check` already failed on any finding, so its exit code does not
+  change; a consumer that filtered findings by severity sees them all. A finding
+  kept on purpose goes under `disable`.
+- New rule: `ragged-column`, for blocks stacked in one column that stop at
+  different right edges, such as a capped heading or note over a full-width
   card. It may report on projects that passed before.
-- New behaviour check, `warn`: `interaction-shift`. On the first screen of each
-  route, every toggle group (`role=group` of `aria-pressed` buttons) in the main
-  region is pressed through, and a bar around it that changes height by over 4px
-  is reported. The option pressed before is pressed again afterwards.
+- New behaviour check: `interaction-shift`. On the first screen of each route,
+  every toggle group (`role=group` of `aria-pressed` buttons) in the main region
+  is pressed through, and a bar around it that changes height by over 4px is
+  reported. The option pressed before is pressed again afterwards.
+- New rule: `narrow-page`, for a whole page capped to a narrow column on a wide
+  screen: at 1600px up, content spanning under 55% of the screen less any side
+  panel, on a page with a card-like surface or a data layout. A `max-w-4xl`
+  report spans 51% at 1600px and 43% at 1920px; a 1280px container spans 75% and
+  63%. Reading pages and lone forms keep their measure, and a data page
+  `content-width` already reports is not reported twice.
 
 ## 0.7.0
 

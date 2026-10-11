@@ -21,7 +21,7 @@ export const placeholderAsLabel: Rule = (snapshot) =>
     return [
       {
         rule: 'placeholder-as-label',
-        severity: 'warn',
+        severity: 'error',
         message:
           'a field is named only by its placeholder, which disappears when typing starts; add a visible label',
         subject: field.selector,

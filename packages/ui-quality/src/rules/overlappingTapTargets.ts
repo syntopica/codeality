@@ -21,7 +21,7 @@ export const overlappingTapTargets = (
     return [
       {
         rule: 'touch-target',
-        severity: 'warn',
+        severity: 'error',
         message: `this tap target overlaps ${other.selector}, so a thumb may hit either; separate them`,
         subject: target.selector,
         identity: `overlap ${target.signature}`,

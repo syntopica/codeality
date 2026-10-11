@@ -32,16 +32,16 @@ verified complete - `[-]` obsolete or superseded.
 ## ui-quality
 
 The candidates of the 2026-10-01 review and the 2026-10-08/09 inpractise-demo
-findings have shipped (`ragged-column`, `interaction-shift`, unreleased on
-`main`; see `TODO_LOG.md`). Two halves of those findings are left:
+findings have shipped (`ragged-column`, `interaction-shift`, `narrow-page`,
+unreleased on `main`; see `TODO_LOG.md`). One half of those findings is left,
+plus the release:
 
-- [ ] **A whole page capped narrow on a wide screen (2026-10-09).** The
-      inpractise-demo report page at `max-w-4xl` on a 1920px screen; the owner
-      flagged it. `ragged-column` only judges a block next to one filling the
-      column, and `content-width` only pages with a table or repeated rows, so
-      neither reports a reading-width page with nothing full-width in it. Next
-      step: decide the trigger (a main column under some share of a viewport of
-      1600px and up, prose aside?) against a fixture before writing it.
+- [ ] **Release ui-quality with the warning level removed.** Decided 2026-10-11
+      (owner): no warnings, error or nothing. Every ui-quality finding is now an
+      error (breaking, recorded under `Unreleased` in its CHANGELOG); the
+      release itself is the owner's to authorize. Next step: owner approval,
+      then a minor bump (pre-1.0, breaking), `pnpm check:ci`,
+      `pnpm release:check`, publish.
 - [ ] **`interaction-shift` for tabs.** The owner's case was "a tab or segmented
       control"; the shipped probe presses `role=group` sets of `aria-pressed`
       buttons only, as the candidate specified. Next step: press `role=tab`

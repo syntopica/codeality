@@ -23,7 +23,7 @@ export const nestedCards: Rule = (snapshot) => {
   }
   return [...inner].map(([outer, nested]) => ({
     rule: 'nested-cards',
-    severity: 'warn',
+    severity: 'error',
     message: `this card holds ${String(nested.length)} card${nested.length === 1 ? '' : 's'} inside it (${nested[0]?.selector ?? ''}); drop the inner border, shadow or fill and separate with space or a divider`,
     subject: outer.selector,
     identity: outer.signature,

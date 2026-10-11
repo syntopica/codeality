@@ -7,7 +7,7 @@ export const darkFinding = (
   identity: string,
 ): RawFinding => ({
   rule: 'dark-scheme-incomplete',
-  severity: 'warn',
+  severity: 'error',
   message,
   subject,
   identity,

@@ -8,7 +8,7 @@ const rulesOf = async (route: string): Promise<string[]> =>
   ).map((finding) => finding.rule)
 
 describe('codeality-ui dark scheme', () => {
-  it('warns when the dark pass renders the light page again', async () => {
+  it('reports when the dark pass renders the light page again', async () => {
     expect(await rulesOf('/fixed.html')).toEqual(['dark-scheme-ignored'])
   }, 120_000)
   it('stays quiet on a page that honours prefers-color-scheme', async () => {

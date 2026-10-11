@@ -23,7 +23,7 @@ describe('focusInvisible', () => {
       ruleContext(),
     )
     expect(findings.map((finding) => finding.subject)).toEqual(['button.ghost'])
-    expect(findings[0]?.severity).toBe('warn')
+    expect(findings[0]?.severity).toBe('error')
   })
   it('stays quiet without a Tab pass', () => {
     expect(focusInvisible(snapshotOf([]), ruleContext())).toEqual([])

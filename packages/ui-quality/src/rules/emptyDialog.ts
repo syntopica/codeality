@@ -19,7 +19,7 @@ export const emptyDialog: Rule = (snapshot) =>
     )
     .map((dialog) => ({
       rule: 'empty-dialog',
-      severity: 'warn',
+      severity: 'error',
       message:
         'an open dialog or drawer offers no link, button or field besides closing it',
       subject: dialog.selector,

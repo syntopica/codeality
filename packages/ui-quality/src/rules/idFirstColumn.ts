@@ -24,7 +24,7 @@ export const idFirstColumn: Rule = (snapshot) => {
       return [
         {
           rule: 'id-first-column',
-          severity: 'warn',
+          severity: 'error',
           message: `the first column shows opaque ids (${first.text}); lead with a name a person can scan and move the id to a later column`,
           subject: first.selector,
           identity: parent?.selector ?? first.selector,

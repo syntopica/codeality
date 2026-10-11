@@ -13,7 +13,7 @@ export const rowHeightScale: Rule = (snapshot) =>
     return [
       {
         rule: 'row-height-scale',
-        severity: 'warn',
+        severity: 'error',
         message: `${fault}; give the rows one height`,
         subject: table.selector,
         identity: table.selector,

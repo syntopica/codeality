@@ -11,7 +11,7 @@ export const smallTapTargets = (targets: ElementBox[]): RawFinding[] =>
     )
     .map((target) => ({
       rule: 'touch-target',
-      severity: 'warn',
+      severity: 'error',
       message: `${String(Math.round(target.tapWidth))}x${String(Math.round(target.tapHeight))}px tap target on a phone, under ${String(MIN_TAP_TARGET)}x${String(MIN_TAP_TARGET)}px; pad it or extend its hit area`,
       subject: target.selector,
       identity: `small ${target.signature}`,

@@ -22,7 +22,7 @@ export const grayOnColor: Rule = (snapshot) => {
     return [
       {
         rule: 'gray-on-color',
-        severity: 'warn',
+        severity: 'error',
         message:
           'grey text on a coloured background looks muddy; use a darker or lighter shade of the background colour, or white or black',
         subject: element.selector,

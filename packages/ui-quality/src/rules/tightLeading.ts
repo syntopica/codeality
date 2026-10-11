@@ -14,7 +14,7 @@ export const tightLeading: Rule = (snapshot) =>
     return [
       {
         rule: 'tight-leading',
-        severity: 'warn',
+        severity: 'error',
         message: `text wraps onto ${String(element.lines)} lines at a line height of ${leading.toFixed(2)} (${String(element.lineHeight)}px on ${String(element.fontSize)}px); give wrapped text at least ${String(MIN_LEADING)}`,
         subject: element.selector,
         identity: element.signature,

@@ -20,7 +20,7 @@ export const lineLength: Rule = (snapshot) =>
     return [
       {
         rule: 'line-length',
-        severity: 'warn',
+        severity: 'error',
         message: `a paragraph is set ${String(Math.round(element.measureCh))} characters wide; cap its width near ${String(MAX_MEASURE_CH)}ch (max-width: 70ch)`,
         subject: element.selector,
         identity: element.signature,

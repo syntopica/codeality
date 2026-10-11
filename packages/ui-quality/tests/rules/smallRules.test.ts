@@ -47,7 +47,7 @@ describe('blankRoute, horizontalOverflow and axeFindings', () => {
     expect(findings.map((finding) => [finding.rule, finding.severity])).toEqual(
       [
         ['a11y/color-contrast', 'error'],
-        ['a11y/region', 'warn'],
+        ['a11y/region', 'error'],
       ],
     )
     expect(findings[0]?.message).toContain('2 element(s); e.g. 1.1:1')

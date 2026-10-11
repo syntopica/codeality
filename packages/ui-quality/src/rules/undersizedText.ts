@@ -20,7 +20,7 @@ export const undersizedText: Rule = (snapshot) =>
     return [
       {
         rule: 'undersized-text',
-        severity: 'warn',
+        severity: 'error',
         message: `${String(element.fontSize)}px text is under the ${String(floor)}px floor for ${functional ? 'controls, labels and cells' : 'running text'}; raise it or drop the text`,
         subject: element.selector,
         identity: element.signature,

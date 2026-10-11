@@ -9,7 +9,7 @@ import type { Rule } from '@/rules/Rule.js'
 export const reducedMotionIgnored: Rule = (snapshot) =>
   snapshot.animations.filter(ignoresReducedMotion).map((animation) => ({
     rule: 'reduced-motion-ignored',
-    severity: 'warn',
+    severity: 'error',
     message: `${animation.infinite ? 'an endless' : 'a running'} ${animation.properties.join('/')} animation keeps going with reduced motion on; switch it off under prefers-reduced-motion`,
     subject: animation.selector,
     identity: animation.signature,

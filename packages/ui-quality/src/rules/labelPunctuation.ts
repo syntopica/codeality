@@ -13,7 +13,7 @@ export const labelPunctuation: Rule = (snapshot, context) => {
     return [
       {
         rule: 'label-punctuation',
-        severity: 'warn',
+        severity: 'error',
         message: `a label has ${fault}; leave the colon off and mark the optional fields instead`,
         subject: element.selector,
         identity: element.signature,

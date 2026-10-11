@@ -6,6 +6,7 @@ import type { Rule } from '@/rules/Rule.js'
 import { SPACING_RULES } from '@/rules/SPACING_RULES.js'
 import { STRUCTURE_RULES } from '@/rules/STRUCTURE_RULES.js'
 import { TABLE_RULES } from '@/rules/TABLE_RULES.js'
+import { WIDTH_RULES } from '@/rules/WIDTH_RULES.js'
 import { accentOveruse } from '@/rules/accentOveruse.js'
 import { axeFindings } from '@/rules/axeFindings.js'
 import { bareUrl } from '@/rules/bareUrl.js'
@@ -16,7 +17,6 @@ import { cardRadiusAdmin } from '@/rules/cardRadiusAdmin.js'
 import { clickFailed } from '@/rules/clickFailed.js'
 import { consoleError } from '@/rules/consoleError.js'
 import { contentHiddenAtRest } from '@/rules/contentHiddenAtRest.js'
-import { contentWidth } from '@/rules/contentWidth.js'
 import { controlInset } from '@/rules/controlInset.js'
 import { duplicateNavIcon } from '@/rules/duplicateNavIcon.js'
 import { edgeMisaligned } from '@/rules/edgeMisaligned.js'
@@ -34,7 +34,6 @@ import { numericAlignment } from '@/rules/numericAlignment.js'
 import { palette } from '@/rules/palette.js'
 import { placeholderFit } from '@/rules/placeholderFit.js'
 import { radiusSprawl } from '@/rules/radiusSprawl.js'
-import { raggedColumn } from '@/rules/raggedColumn.js'
 import { rawPlaceholder } from '@/rules/rawPlaceholder.js'
 import { rowMisaligned } from '@/rules/rowMisaligned.js'
 import { slowRequest } from '@/rules/slowRequest.js'
@@ -59,7 +58,6 @@ export const RULES: Rule[] = [
   clickFailed,
   consoleError,
   contentHiddenAtRest,
-  contentWidth,
   controlInset,
   duplicateNavIcon,
   edgeMisaligned,
@@ -77,7 +75,6 @@ export const RULES: Rule[] = [
   palette,
   placeholderFit,
   radiusSprawl,
-  raggedColumn,
   rawPlaceholder,
   rowMisaligned,
   slowRequest,
@@ -94,6 +91,7 @@ export const RULES: Rule[] = [
   ...SPACING_RULES,
   ...STRUCTURE_RULES,
   ...TABLE_RULES,
+  ...WIDTH_RULES,
   ...AI_TELL_RULES,
   ...COPY_RULES,
   ...INTERACTION_RULES,

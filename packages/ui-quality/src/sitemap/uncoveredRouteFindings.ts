@@ -4,7 +4,7 @@ import { fingerprintFinding } from '@/model/fingerprintFinding.js'
 import { routeTemplate } from '@/sitemap/routeTemplate.js'
 
 /**
- * One warning per sitemap template no configured route renders: a gate that
+ * One finding per sitemap template no configured route renders: a gate that
  * lists the admin pages alone never sees the public grid that broke.
  */
 export const uncoveredRouteFindings = (
@@ -23,7 +23,7 @@ export const uncoveredRouteFindings = (
   }
   return [...groups].map(([template, paths]) => ({
     rule: 'route-uncovered',
-    severity: 'warn',
+    severity: 'error',
     route: template,
     screens: [],
     message: `sitemap.xml lists ${String(paths.length)} page(s) under ${template} (${paths[0] ?? template}) and no configured route renders one; add one to routes`,

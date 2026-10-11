@@ -11,7 +11,7 @@ import type { Rule } from '@/rules/Rule.js'
 // A coloured halo around a box or a word (offset 0 0, blur 8px and up) is how
 // a dark "futuristic" page announces itself, and on a dark surface any
 // coloured blur glows. A grey drop shadow, or a ring with no blur, is not
-// one. Advisory.
+// one.
 export const glowShadow: Rule = (snapshot) => {
   const { elements } = snapshot
   const canvas = pageBackdropOf(snapshot.rootBackgrounds)
@@ -30,7 +30,7 @@ export const glowShadow: Rule = (snapshot) => {
     return [
       {
         rule: 'glow-shadow',
-        severity: 'warn',
+        severity: 'error',
         message:
           'a coloured glow (a blurred shadow with no offset, or any coloured blur on a dark surface); use a neutral shadow or none',
         subject: element.selector,

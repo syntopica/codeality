@@ -5,7 +5,7 @@ import { isEyebrow } from '@/rules/isEyebrow.js'
 import type { Rule } from '@/rules/Rule.js'
 
 // A small spaced-out line of capitals above a big heading ("FEATURES",
-// "WHY US") is the eyebrow every template puts over its hero. Advisory.
+// "WHY US") is the eyebrow every template puts over its hero.
 export const eyebrowLabel: Rule = (snapshot) => {
   const children = childrenIndex(snapshot.elements)
   return snapshot.elements.flatMap((label) => {
@@ -21,7 +21,7 @@ export const eyebrowLabel: Rule = (snapshot) => {
     return [
       {
         rule: 'eyebrow-label',
-        severity: 'warn',
+        severity: 'error',
         message: `"${label.text}" is a small capitalised label over a ${next.tag}; let the heading stand alone`,
         subject: label.selector,
         identity: label.signature,

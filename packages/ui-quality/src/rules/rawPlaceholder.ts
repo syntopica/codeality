@@ -7,7 +7,7 @@ export const rawPlaceholder: Rule = (snapshot) =>
     .filter((element) => PLACEHOLDER_PATTERN.test(element.text))
     .map((element): RawFinding => ({
       rule: 'raw-placeholder',
-      severity: 'warn',
+      severity: 'error',
       message: `"${element.text}" is an implementation placeholder shown as content; render a label in the interface language`,
       subject: element.selector,
       identity: element.signature,

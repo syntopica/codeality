@@ -21,7 +21,7 @@ export const headingRhythm: Rule = (snapshot) => {
   if (loose.length < MIN_ARRHYTHMIC_HEADINGS) return []
   return loose.map(({ heading, gaps }) => ({
     rule: 'heading-rhythm',
-    severity: 'warn',
+    severity: 'error',
     message: `${heading.tag} has ${String(gaps.above)}px above it and ${String(gaps.below)}px below; a heading sits closer to what it introduces than to what came before`,
     subject: heading.selector,
     identity: heading.signature,

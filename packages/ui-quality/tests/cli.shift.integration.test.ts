@@ -16,7 +16,7 @@ describe('codeality-ui interaction-shift', () => {
     expect(shifts.map((finding) => finding.subject)).toEqual([
       'toggle group "View"',
     ])
-    expect(shifts[0]?.severity).toBe('warn')
+    expect(shifts[0]?.severity).toBe('error')
     expect(on('/shift-clean.html')).toEqual([])
   }, 120_000)
 })

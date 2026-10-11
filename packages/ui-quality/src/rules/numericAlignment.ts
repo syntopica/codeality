@@ -28,7 +28,7 @@ export const numericAlignment: Rule = (snapshot, context) => {
       if (!fault || !first) continue
       findings.push({
         rule: 'numeric-alignment',
-        severity: 'warn',
+        severity: 'error',
         message: `column ${String(column + 1)} holds numbers, but ${fault}; right-align it and set font-variant-numeric: tabular-nums`,
         subject: first.selector,
         identity: `${parent?.selector ?? ''}|${String(column)}`,

@@ -1,0 +1,68 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>A report page that uses the screen</title>
+    <style>
+      body {
+        margin: 0;
+        font: 16px/1.5 sans-serif;
+        color: #111827;
+        background: #ffffff;
+      }
+      main {
+        max-width: 1280px;
+        margin: 0 auto;
+        padding: 40px;
+        box-sizing: border-box;
+      }
+      h1 {
+        margin: 12px 0 16px;
+        font-size: 30px;
+      }
+      .intro {
+        max-width: 640px;
+      }
+      .sections {
+        display: grid;
+        grid-template-columns: 2fr 1fr;
+        gap: 24px;
+        margin-top: 32px;
+      }
+      .card {
+        padding: 24px;
+        border: 1px solid #d1d5db;
+        border-radius: 8px;
+      }
+      .card li {
+        padding-top: 16px;
+        border-top: 1px solid #d1d5db;
+      }
+    </style>
+  </head>
+  <body>
+    <main>
+      <p>Reopen this answer</p>
+      <h1>Is the evidence still current?</h1>
+      <p class="intro">
+        This reopens one of your own answers by request id and checks each
+        quoted revision against the transcripts as they stand today.
+      </p>
+      <div class="sections">
+        <section class="card">
+          <h2>Evidence read at answer time</h2>
+          <ul>
+            <li>Revision 41 of the March call: current revision.</li>
+            <li>
+              Revision 17 of the April call: superseded since this answer.
+            </li>
+          </ul>
+        </section>
+        <section class="card">
+          <h2>Request details</h2>
+          <p>Build 2026.10.11, request 7f3a, server time 412ms.</p>
+        </section>
+      </div>
+    </main>
+  </body>
+</html>

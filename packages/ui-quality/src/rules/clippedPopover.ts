@@ -18,7 +18,7 @@ export const clippedPopover: Rule = (snapshot) =>
     return [
       {
         rule: 'clipped-popover',
-        severity: 'warn',
+        severity: 'error',
         message: `a ${layer.role} extends past ${clip.selector}, which clips it (overflow ${clip.overflowX === 'visible' ? clip.overflowY : clip.overflowX}); render it outside that box or let it overflow`,
         subject: layer.selector,
         identity: layer.signature,

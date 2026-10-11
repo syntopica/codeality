@@ -14,7 +14,7 @@ export const clickableNonSemantic: Rule = (snapshot) =>
     return [
       {
         rule: 'clickable-non-semantic',
-        severity: 'warn',
+        severity: 'error',
         message: `${element.tag} shows a pointer cursor but is not a link, button or widget with a role; use a <button> or <a href>`,
         subject: element.selector,
         identity: element.signature,

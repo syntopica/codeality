@@ -12,7 +12,7 @@ export const unstableMediaSize: Rule = (snapshot, context) => {
     .filter((media) => !media.sized)
     .map((media) => ({
       rule: 'unstable-media-size',
-      severity: 'warn',
+      severity: 'error',
       message: `this ${media.tag} has no width and height attributes, aspect-ratio or CSS height, so the content below it shifts when it loads; give it its dimensions`,
       subject: media.selector,
       identity: media.signature,
@@ -20,7 +20,7 @@ export const unstableMediaSize: Rule = (snapshot, context) => {
   if (snapshot.layoutShift > MAX_LAYOUT_SHIFT)
     findings.push({
       rule: 'unstable-media-size',
-      severity: 'warn',
+      severity: 'error',
       message: `the layout shifted by ${String(snapshot.layoutShift)} (cumulative layout shift) while the page loaded, over ${String(MAX_LAYOUT_SHIFT)}; reserve the space of media and late content before it arrives`,
       subject: context.route.main,
       identity: 'layout-shift',

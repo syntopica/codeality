@@ -46,7 +46,7 @@ export const raggedColumn: Rule = (snapshot) => {
       return [
         {
           rule: 'ragged-column',
-          severity: 'warn',
+          severity: 'error',
           message: `this block ends ${String(Math.round(shortfall))}px (${String(Math.round((shortfall / width) * 100))}%) short of the ${String(Math.round(width))}px column that ${full.selector} next to it fills; give the column one width`,
           subject: block.selector,
           identity: block.signature,

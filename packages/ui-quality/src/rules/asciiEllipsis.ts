@@ -15,7 +15,7 @@ export const asciiEllipsis: Rule = (snapshot) =>
     return [
       {
         rule: 'ascii-ellipsis',
-        severity: 'warn',
+        severity: 'error',
         message: `"${element.text}" spells an ellipsis with three full stops; use the single character …`,
         subject: element.selector,
         identity: element.signature,

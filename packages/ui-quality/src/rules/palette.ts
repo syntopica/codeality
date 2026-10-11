@@ -17,7 +17,7 @@ export const palette: Rule = (snapshot, context) => {
       const hex = rgbaToHex(color)
       findings.push({
         rule: 'palette',
-        severity: 'warn',
+        severity: 'error',
         message: `${kind} ${hex} is not in the palette (nearest ${rgbaToHex(nearest.rgba)}, deltaE ${nearest.distance.toFixed(1)})`,
         subject: element.selector,
         identity: `${kind}:${hex}`,

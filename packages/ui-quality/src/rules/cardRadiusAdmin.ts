@@ -18,7 +18,7 @@ export const cardRadiusAdmin: Rule = (snapshot, context) => {
     )
     .map((card) => ({
       rule: 'card-radius-admin',
-      severity: 'warn',
+      severity: 'error',
       message: `this card has a ${String(Math.round(card.borderRadius))}px corner radius; a product UI keeps cards to ${String(MAX_CARD_RADIUS)}px or less`,
       subject: card.selector,
       identity: card.signature,

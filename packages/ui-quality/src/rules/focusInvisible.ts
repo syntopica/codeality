@@ -11,7 +11,7 @@ export const focusInvisible: Rule = (snapshot) =>
     return [
       {
         rule: 'focus-invisible',
-        severity: 'warn',
+        severity: 'error',
         message: `keyboard focus on this ${element.tag} changes nothing visible (no outline, ring, border, fill or colour change); add a :focus-visible style`,
         subject: element.selector,
         identity: element.signature,

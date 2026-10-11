@@ -11,7 +11,7 @@ export const layoutAnimation: Rule = (snapshot) =>
     if (element.layoutTransition)
       findings.push({
         rule: 'layout-animation',
-        severity: 'warn' as const,
+        severity: 'error' as const,
         message:
           'a transition animates layout (width, height, top, left, margin or padding); animate transform or opacity instead',
         subject: element.selector,
@@ -23,7 +23,7 @@ export const layoutAnimation: Rule = (snapshot) =>
     )
       findings.push({
         rule: 'layout-animation',
-        severity: 'warn' as const,
+        severity: 'error' as const,
         message: `a control transitions for ${String(element.transitionMs)}ms; keep it to ${String(MAX_CONTROL_TRANSITION_MS)}ms or less`,
         subject: element.selector,
         identity: `duration:${element.signature}`,

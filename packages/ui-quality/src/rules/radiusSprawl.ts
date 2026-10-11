@@ -15,7 +15,7 @@ export const radiusSprawl: Rule = (snapshot) => {
   return [
     {
       rule: 'radius-sprawl',
-      severity: 'warn',
+      severity: 'error',
       message: `the main region uses ${String(radii.length)} corner radii (${radii.map(String).join(', ')}px); keep to a scale of ${String(MAX_RADII)} or fewer`,
       subject: main?.selector ?? 'main',
       identity: 'radius-scale',

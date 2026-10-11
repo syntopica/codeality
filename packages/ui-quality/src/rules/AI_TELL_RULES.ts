@@ -6,7 +6,7 @@ import { purpleGradient } from '@/rules/purpleGradient.js'
 import type { Rule } from '@/rules/Rule.js'
 import { sideStripeAccent } from '@/rules/sideStripeAccent.js'
 
-/** The advisory rules for what makes a screen look machine-made: gradients, glows, stripes, eyebrows and pulses. */
+/** The rules for what makes a screen look machine-made: gradients, glows, stripes, eyebrows and pulses. */
 export const AI_TELL_RULES: Rule[] = [
   eyebrowLabel,
   glowShadow,

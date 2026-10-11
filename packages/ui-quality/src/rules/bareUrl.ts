@@ -21,7 +21,7 @@ export const bareUrl: Rule = (snapshot) =>
     )
     .map((element): RawFinding => ({
       rule: 'bare-url',
-      severity: 'warn',
+      severity: 'error',
       message: `"${element.text.slice(0, 60)}" shows a web address that is not a link; wrap it in <a href>`,
       subject: element.selector,
       identity: element.signature,

@@ -13,7 +13,7 @@ export const transitionAll: Rule = (snapshot) => {
     })
     .map((element) => ({
       rule: 'transition-all',
-      severity: 'warn',
+      severity: 'error',
       message:
         'transition-property is all, so every property change animates, layout included; name the properties that should move (colors, opacity, transform)',
       subject: element.selector,

@@ -22,7 +22,7 @@ export const textCramped: Rule = (snapshot) => {
     return [
       {
         rule: 'text-cramped',
-        severity: 'warn',
+        severity: 'error',
         message: `text sits ${String(Math.min(...tight))}px from the edge of its box; keep at least ${String(textInsetFloor(box))}px of padding`,
         subject: box.selector,
         identity: box.signature,

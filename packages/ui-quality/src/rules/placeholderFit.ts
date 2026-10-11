@@ -14,7 +14,7 @@ export const placeholderFit: Rule = (snapshot) =>
     )
     .map((element) => ({
       rule: 'placeholder-fit',
-      severity: 'warn',
+      severity: 'error',
       message: `the placeholder needs ${String(Math.round(element.placeholderWidth))}px and the field shows ${String(Math.round(element.contentWidth))}px at ${String(snapshot.viewportWidth)}px; shorten it or widen the field`,
       subject: element.selector,
       identity: element.selector,

@@ -20,7 +20,7 @@ export const edgeMisaligned: Rule = (snapshot, context) => {
   if (offsets.length === 0) return []
   const finding: RawFinding = {
     rule: 'edge-misaligned',
-    severity: 'warn',
+    severity: 'error',
     message: `header and main content edges differ by ${offsets.map(({ side, offset }) => `${String(offset)}px on the ${side}`).join(' and ')} at ${String(snapshot.viewportWidth)}px; put both on the same container`,
     subject: main.selector,
     identity: 'banner-main',

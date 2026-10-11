@@ -26,7 +26,7 @@ export const offScaleSpacing: Rule = (snapshot) => {
   return [
     {
       rule: 'off-scale-spacing',
-      severity: 'warn',
+      severity: 'error',
       message: `the main region sets ${String(sorted.length)} spacing values off the ${String(SPACING_STEP)}px scale (${sorted.map(String).join(', ')}px); round them to multiples of ${String(SPACING_STEP)}`,
       subject: main?.selector ?? 'main',
       identity: 'spacing-scale',

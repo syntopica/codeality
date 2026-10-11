@@ -10,7 +10,7 @@ export const contentHiddenAtRest: Rule = (snapshot) => {
   return [
     {
       rule: 'content-hidden-at-rest',
-      severity: 'warn',
+      severity: 'error',
       message: `${String(Math.round((hidden / total) * 100))}% of the main region's text (${String(hidden)} of ${String(total)} characters) is laid out but invisible at rest, at opacity 0 or visibility hidden; show it without waiting for an animation`,
       subject: selector,
       identity: 'content-hidden-at-rest',

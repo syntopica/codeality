@@ -6,8 +6,8 @@ import { stripeSideOf } from '@/rules/stripeSideOf.js'
 
 // A card with one thick coloured border on its left or right edge is the
 // "callout" a template reaches for. The side stripe is the tell, not the
-// callout, so quotations and authored content are left alone. Advisory;
-// a design system that does this on purpose lists it under `disable`.
+// callout, so quotations and authored content are left alone. A
+// design system that does this on purpose lists it under `disable`.
 export const sideStripeAccent: Rule = (snapshot) => {
   const { elements } = snapshot
   const canvas = pageBackdropOf(snapshot.rootBackgrounds)
@@ -18,7 +18,7 @@ export const sideStripeAccent: Rule = (snapshot) => {
     return [
       {
         rule: 'side-stripe-accent',
-        severity: 'warn',
+        severity: 'error',
         message: `a card with a ${side}-edge accent stripe; mark it with an icon, a heading or a tinted fill instead`,
         subject: box.selector,
         identity: box.signature,

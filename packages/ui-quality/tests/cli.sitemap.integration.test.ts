@@ -53,7 +53,7 @@ const uncoveredOf = async (argv: string[]): Promise<string[]> => {
 }
 
 describe('codeality-ui sitemap coverage', () => {
-  it('warns once per sitemap template no configured route renders', async () => {
+  it('reports once per sitemap template no configured route renders', async () => {
     const uncovered = await uncoveredOf([])
     expect(uncovered.map((line) => line.split(' ')[0])).toEqual([
       '/artistas/*',

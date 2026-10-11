@@ -14,7 +14,8 @@ repeat them, both as of 2026-10-01 and updated on 2026-10-07:
   `accent-overuse`, `text-occlusion` and the open halves of
   `unstable-media-size` (layout shift) and `broken-image` (CSS backgrounds).
   Tier 1 is now empty, and so are tiers 2 and 3 (third batch below). Shipped on
-  2026-10-11 from the root `TODO.md`: `ragged-column` and `interaction-shift`.
+  2026-10-11 from the root `TODO.md`: `ragged-column`, `interaction-shift` and
+  `narrow-page`.
 - **Covered by an existing check**, so not shipped as their own rule:
   `zoom-disabled` is axe's `meta-viewport` (on by default, `wcag2aa`, which
   fires on `user-scalable=no` and on `maximum-scale` under 2), reported as
@@ -200,11 +201,11 @@ Shipped on 2026-10-07 (third batch), as built. Nothing in this tier is open.
   children, on a document over 3 viewport heights tall, when neither it nor an
   ancestor scrolls vertically.
 
-## Tier 3: AI-made tells (advisory, `warning` severity)
+## Tier 3: AI-made tells
 
-All shipped on 2026-10-07 (third batch), `warn`. They exist for the
-`design-quality` "AI-made tells" section of the rubric (§10), which was judged
-by eye. As built:
+All shipped on 2026-10-07 (third batch), as warnings; errors since 2026-10-11,
+when the warning level was removed. They exist for the `design-quality` "AI-made
+tells" section of the rubric (§10), which was judged by eye. As built:
 
 - `gradient-text`: `background-clip: text` (or `-webkit-`) over a gradient, on
   an element with text.

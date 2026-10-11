@@ -18,7 +18,7 @@ export const ghostElevation: Rule = (snapshot) => {
     })
     .map((element) => ({
       rule: 'ghost-elevation',
-      severity: 'warn',
+      severity: 'error',
       message: `a ${String(element.shadowBlur)}px shadow on a bordered box draws its edge twice; keep the border or the shadow (up to shadow-sm, ${String(GHOST_SHADOW_BLUR)}px, is not reported)`,
       subject: element.selector,
       identity: element.signature,

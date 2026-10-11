@@ -1,5 +1,26 @@
 ### 2026-10-11
 
+- [x] **A whole page capped narrow on a wide screen (2026-10-09), shipped as
+      `narrow-page`.** Decided 2026-10-11 (owner via Codex adjudication):
+      trigger on wide viewports when the main content is materially capped and
+      leaves unused space beside it, prose measure excluded. At 1600px up, the
+      ink of the main region spanning under 55% of the viewport less any side
+      panel (siblings of main or its ancestors sharing its row), on a page with
+      a card-like surface without fields or a data layout; a data page that
+      `content-width` already reports is skipped. Threshold from measurements of
+      every fixture at 1600 and 1920px: the `max-w-4xl` report 51% / 43%, a
+      1280px container 75% / 63%, 960px pages 60% / 50%. Evidence:
+      `tests/rules/narrowPage.test.ts` (6),
+      `tests/cli.narrow.integration.test.ts` on `narrow.html` (both widths),
+      `narrow-clean.html` and `narrow-reading.html` (none).
+- [x] **Warning severity removed from ui-quality.** Decided 2026-10-11 (owner):
+      no warnings, error or nothing. `Severity` is `'error'` alone; the 58 rules
+      and check findings that warned now error, `WARN_BEHAVIOURS` and
+      `BLOCKING_IMPACTS` (axe `moderate`/`minor` as warnings) are deleted, and
+      the "advisory" wording is gone from the AI-tell rules and docs. `check`
+      already exited 1 on any finding, so the gate's exit code is unchanged;
+      only the reported severity is. Release left to the owner (`TODO.md`).
+
 - [x] **`ragged-column` (candidate 2026-10-08/09)**: a block in the main region
       that starts on its column's left edge, sits alone in its row next to a
       block filling the column, and ends over 15% of the column short while its

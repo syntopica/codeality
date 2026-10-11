@@ -4,7 +4,7 @@ import { viewportLabel } from '@/model/viewportLabel.js'
 import { toFinding } from '@/report/toFinding.js'
 
 /**
- * One warning for the run when a dark capture is byte for byte its light
+ * One finding for the run when a dark capture is byte for byte its light
  * twin: an app themed by a class or a stored preference ignores
  * `prefers-color-scheme`, so the dark pass measured the light page again.
  */
@@ -36,7 +36,7 @@ export const schemeDuplicateFinding = (
   return toFinding(
     {
       rule: 'dark-scheme-ignored',
-      severity: 'warn',
+      severity: 'error',
       message: `the dark capture is identical to the light one on ${String(twins.length)} of ${String(dark.length)} screens (${routes.slice(0, 5).join(', ')}${routes.length > 5 ? ', ...' : ''}): the page ignores prefers-color-scheme, so the dark pass measured nothing new. Set the theme the app reads (routes[].localStorage or an init script), or drop "dark" from colorSchemes`,
       subject: 'colorSchemes',
       identity: 'dark',

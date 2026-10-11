@@ -21,7 +21,7 @@ export const contentWidth: Rule = (snapshot, context) => {
   return [
     {
       rule: 'content-width',
-      severity: 'warn',
+      severity: 'error',
       message: `content spans ${String(span)}px of the ${String(main.width)}px main region (${String(Math.round(ratio * 100))}%, minimum ${String(Math.round(minRatio * 100))}%) at ${String(snapshot.viewportWidth)}px`,
       subject: main.selector,
       identity: 'main',

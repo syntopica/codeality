@@ -15,7 +15,7 @@ export const slowRequest: Rule = (snapshot, { options }) =>
       const name = `${request.method} ${request.path}${request.action ? ` (server action ${request.action.slice(0, 12)})` : ''}`
       return {
         rule: 'slow-request',
-        severity: 'warn',
+        severity: 'error',
         message: `${name} took ${String(request.durationMs)}ms while the page loaded${request.retimedMs === undefined ? '' : ` and ${String(request.retimedMs)}ms again`}, over ${String(options.slowRequest.maxMs)}ms; the screen waits on it to show its data`,
         subject: name,
         identity: name,

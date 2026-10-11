@@ -23,7 +23,7 @@ export const stickyTableHeader: Rule = (snapshot) => {
     return [
       {
         rule: 'sticky-table-header',
-        severity: 'warn',
+        severity: 'error',
         message: `a table ${String(table.height)}px tall scrolls its column names out of sight; make the header row position: sticky`,
         subject: table.selector,
         identity: table.selector,

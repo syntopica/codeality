@@ -17,7 +17,7 @@ export const timeWithoutDatetime: Rule = (snapshot) =>
     return [
       {
         rule: 'time-without-datetime',
-        severity: 'warn',
+        severity: 'error',
         message: `"${element.text}" is a time with no <time datetime> and no title carrying the exact moment`,
         subject: element.selector,
         identity: element.signature,

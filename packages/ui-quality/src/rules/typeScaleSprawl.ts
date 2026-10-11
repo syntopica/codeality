@@ -20,7 +20,7 @@ export const typeScaleSprawl: Rule = (snapshot) => {
   if (sizes.length > MAX_TYPE_SIZES)
     findings.push({
       rule: 'type-scale-sprawl',
-      severity: 'warn',
+      severity: 'error',
       message: `the main region uses ${String(sizes.length)} font sizes (${sizes.map((size) => `${String(size)}px`).join(', ')}), over ${String(MAX_TYPE_SIZES)}; settle on a smaller scale`,
       subject: main.selector,
       identity: 'size-count',
@@ -31,7 +31,7 @@ export const typeScaleSprawl: Rule = (snapshot) => {
   } of nearSizesOf(texts))
     findings.push({
       rule: 'type-scale-sprawl',
-      severity: 'warn',
+      severity: 'error',
       message: `${String(low)}px and ${String(high)}px text side by side are too close to read as two steps; use one size, or two that differ clearly`,
       subject: elements[parent]?.selector ?? main.selector,
       identity: 'near-sizes',

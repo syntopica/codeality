@@ -27,7 +27,7 @@ const capture = (
 })
 
 describe('schemeDuplicateFinding', () => {
-  it('warns once when dark captures equal their light twins', () => {
+  it('reports once when dark captures equal their light twins', () => {
     const finding = schemeDuplicateFinding([
       capture('/a', 'light', 'x'),
       capture('/b', 'light', 'y'),

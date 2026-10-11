@@ -33,7 +33,7 @@ export const accentOveruse: Rule = (snapshot, context) => {
     .filter(([, accented]) => accented.length > 1)
     .map(([region, accented]) => ({
       rule: 'accent-overuse',
-      severity: 'warn',
+      severity: 'error',
       message: `${String(accented.length)} buttons here are filled with the accent ${rgbaToHex(accent)} (${accented.map((button) => button.text || button.label || button.selector).join(', ')}); keep one primary action and draw the rest as secondary`,
       subject: region.selector,
       identity: region.signature,

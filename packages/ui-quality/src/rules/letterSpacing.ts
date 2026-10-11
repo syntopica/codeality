@@ -12,7 +12,7 @@ export const letterSpacing: Rule = (snapshot) =>
     return [
       {
         rule: 'letter-spacing',
-        severity: 'warn',
+        severity: 'error',
         message: `${fault}; set it back to normal`,
         subject: element.selector,
         identity: element.signature,

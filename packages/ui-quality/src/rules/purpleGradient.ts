@@ -18,7 +18,7 @@ export const purpleGradient: Rule = (snapshot, context) => {
     return [
       {
         rule: 'purple-gradient',
-        severity: 'warn',
+        severity: 'error',
         message:
           'a large surface is painted with a purple gradient, the look of an unstyled template; take the colours from the product palette',
         subject: surface.selector,

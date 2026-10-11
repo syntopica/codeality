@@ -24,7 +24,7 @@ export const textOcclusion: Rule = (snapshot) => {
     return [
       {
         rule: 'text-occlusion',
-        severity: 'warn',
+        severity: 'error',
         message: `"${element.text.slice(0, 40)}" is painted over by ${occluder.selector}; move one of them or give the text room`,
         subject: element.selector,
         identity: element.signature,

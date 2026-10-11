@@ -24,7 +24,7 @@ export const duplicateNavIcon: Rule = (snapshot) => {
     .filter(([, names]) => names.size > 1)
     .map(([digest, names]) => ({
       rule: 'duplicate-nav-icon',
-      severity: 'warn',
+      severity: 'error',
       message: `${[...names].map((name) => `"${name}"`).join(', ')} draw the same icon in the navigation; give each its own`,
       subject: [...names].join(' / '),
       identity: digest,

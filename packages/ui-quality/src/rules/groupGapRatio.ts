@@ -26,7 +26,7 @@ export const groupGapRatio: Rule = (snapshot) => {
     return [
       {
         rule: 'group-gap-ratio',
-        severity: 'warn',
+        severity: 'error',
         message: `fields are ${String(outer)}px apart but each label is ${String(inner)}px from its own field; keep the space between groups at least ${String(MIN_GROUP_RATIO)}x the space inside one`,
         subject: form.selector,
         identity: form.selector,

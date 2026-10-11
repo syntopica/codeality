@@ -27,7 +27,7 @@ export const mixedIconFamily: Rule = (snapshot) => {
     return [
       {
         rule: 'mixed-icon-family',
-        severity: 'warn',
+        severity: 'error',
         message:
           'one repeated group mixes filled and outline icons, which reads as two icon sets; draw them from one family',
         subject: parent.selector,
