@@ -5,6 +5,8 @@
  * No CSS, Tailwind or Astro plugins here — use /frontend or /astro.
  */
 
+import managedBlocksPlugin from './managedBlocksPlugin.mjs'
+
 /** @type {import('prettier').Config} */
 export default {
   trailingComma: 'all',
@@ -17,18 +19,14 @@ export default {
   // rocket-agents, a Node CLI, prettier refused to start with
   // "Cannot find package 'postcss'". A CSS plugin belongs with the frontend
   // variants, which is what the note above already claimed.
-  plugins: ['prettier-plugin-organize-imports'],
+  // `managedBlocksPlugin` keeps the BEGIN/END blocks that `turbo` and
+  // `next dev` own in AGENTS.md and CLAUDE.md verbatim; the rest of those
+  // files wraps like any other Markdown.
+  plugins: ['prettier-plugin-organize-imports', managedBlocksPlugin],
   overrides: [
     {
       files: '*.md',
       options: { proseWrap: 'always' },
-    },
-    // `next dev` writes its agent-rules block into AGENTS.md or CLAUDE.md as
-    // long lines and rewrites it whenever the block differs byte for byte, so
-    // wrapping it at 80 columns starts a loop: Prettier wraps, Next unwraps.
-    {
-      files: ['AGENTS.md', 'CLAUDE.md'],
-      options: { proseWrap: 'preserve' },
     },
   ],
 }

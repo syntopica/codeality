@@ -101,6 +101,12 @@ needs.
 
 ## db-quality
 
+- [ ] **`runKyselyTypeDrift` first test times out under load.** In a full
+      `pnpm check:ci` on 2026-10-11, "reports nothing when the live and declared
+      schemas match" took 9698 ms against vitest's 5000 ms default; run alone it
+      passes 5/5. Next step: give the suite an explicit timeout, or find what
+      the first test warms up.
+
 ## Cross-project (filed 2026-09-09 from two consumer backlog runs)
 
 ## Routed from `~/p/TODO.md` (2026-10-03)

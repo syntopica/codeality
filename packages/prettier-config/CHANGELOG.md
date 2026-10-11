@@ -5,6 +5,15 @@
 
 ## [Unreleased]
 
+## 0.3.0
+
+### Minor Changes
+
+- feat: Markdown keeps `<!-- BEGIN:name -->` ... `<!-- END:name -->` blocks byte
+  for byte, so the agent-rules blocks `turbo` and `next dev` rewrite stop
+  looping with Prettier. The rest of `AGENTS.md` and `CLAUDE.md` wraps again
+  (`proseWrap: always`); 0.2.2 preserved those whole files.
+
 ## 0.2.2
 
 ### Patch Changes

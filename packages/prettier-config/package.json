@@ -1,6 +1,6 @@
 {
   "name": "@syntopica/prettier-config",
-  "version": "0.2.2",
+  "version": "0.3.0",
   "private": false,
   "packageManager": "pnpm@12.9.1",
   "license": "MIT",
@@ -30,7 +30,8 @@
   "scripts": {
     "fix": "prettier --write \"*.mjs\" --list-different",
     "format:check": "prettier --check \"*.mjs\"",
-    "publish:check": "baseline-licenses && publint --strict && attw --pack . --profile node16"
+    "publish:check": "baseline-licenses && publint --strict && attw --pack . --profile node16",
+    "test": "node --test tests/"
   },
   "devDependencies": {
     "@arethetypeswrong/cli": "^0.18.5",

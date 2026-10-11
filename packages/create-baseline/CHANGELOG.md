@@ -2,6 +2,13 @@
 
 ## [Unreleased]
 
+## 0.10.4
+
+### Patch Changes
+
+- fix: pin `@syntopica/prettier-config` `^0.3.0`, which keeps managed BEGIN/END
+  blocks verbatim and wraps the rest of `AGENTS.md` and `CLAUDE.md`.
+
 ## 0.10.3
 
 ### Patch Changes

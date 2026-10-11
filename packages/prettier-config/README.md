@@ -37,6 +37,14 @@ import base from '@syntopica/prettier-config'
 export default { ...base }
 ```
 
+## Managed Markdown blocks
+
+Markdown wraps at 80 columns (`proseWrap: always`), except between
+`<!-- BEGIN:name -->` and `<!-- END:name -->`, which is kept byte for byte.
+Tools such as `turbo` and `next dev` write their agent-rules blocks into
+`AGENTS.md` or `CLAUDE.md` that way and rewrite them whenever they differ, so
+wrapping them would start a loop.
+
 ## Repository
 
 Source and issues:
