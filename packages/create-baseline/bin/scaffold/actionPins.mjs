@@ -21,7 +21,7 @@ export const ACTION_PINS = {
   },
   setupPnpm: {
     uses: 'pnpm/action-setup@ea17c68df8912ef543352723c149a84f56e3d413',
-    tag: 'v6',
+    tag: 'v6.1.0',
   },
   actionlint: {
     uses: 'raven-actions/actionlint@3d39aea434753780c3b3d4a1a31c854b4dbf49d7',
