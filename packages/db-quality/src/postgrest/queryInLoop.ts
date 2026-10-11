@@ -4,7 +4,7 @@ import type { PostgrestRule } from '@/postgrest/PostgrestRule.js'
 export const queryInLoop: PostgrestRule = {
   code: 'BDB804',
   name: 'query-in-loop',
-  severity: 'warn',
+  severity: 'error',
   run: (chain) =>
     chain.inLoop
       ? makePostgrestFinding(

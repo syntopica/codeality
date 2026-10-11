@@ -112,27 +112,31 @@ the project's own `prettier --write` afterwards, so a pre-commit that runs
 
 ## Findings
 
-| Code               | Source                      | Severity    | What it means                                                                                                             |
-| ------------------ | --------------------------- | ----------- | ------------------------------------------------------------------------------------------------------------------------- |
-| `BDB001`           | permissive-policy           | warn        | a policy uses `using (true)` or `with check (true)`                                                                       |
-| `BDB002`           | rls-enabled-no-policy       | warn        | RLS on, no policy in any migration: service role only                                                                     |
-| `BDB003`           | table-without-rls           | warn        | a `public` table never enables row level security                                                                         |
-| `BDB004`           | auth-uid-not-wrapped        | warn        | `auth.uid()` in a policy without `(select ...)`: evaluated per row                                                        |
-| `BDB005`           | definer-without-search-path | warn        | `SECURITY DEFINER` function without `set search_path`                                                                     |
-| `BDB100/<rule>`    | squawk                      | as squawk   | migration lock and schema hazards, Supabase profile                                                                       |
-| `BDB200/<rule>`    | prisma-lint                 | warn        | relation field without an index                                                                                           |
-| `BDB300/<rule>`    | eslint-plugin-drizzle       | error       | `delete` or `update` without `.where()`                                                                                   |
-| `BDB310/<rule>`    | Kysely ESLint rules         | error       | `updateTable`/`deleteFrom` without `.where()`, dynamic raw SQL; see [Kysely](#kysely)                                     |
-| `BDB320/<rule>`    | Kysely migrations           | error/warn  | migration rules on the compiled SQL; see [Kysely](#kysely)                                                                |
-| `BDB330/<rule>`    | Kysely type drift (audit)   | error       | the live schema and the hand-written Kysely `Database` type disagree; see [Type drift](#type-drift)                       |
-| `BDB401`-`BDB403`  | sqlite3                     | error/warn  | integrity, dangling foreign keys, table without primary key                                                               |
-| `BDB404`-`BDB406`  | SQLite query files          | warn        | optional-parameter guard, comma-list `instr()`, full scan of a large table; see [SQLite query files](#sqlite-query-files) |
-| `BDB500/<name>`    | Supabase advisors           | as Supabase | splinter security and performance lints on the live project                                                               |
-| `BDB601`, `BDB602` | Supabase inspect            | warn        | never-scanned index, table bloat over `audit.bloatThreshold`                                                              |
-| `BDB700/<check>`   | Soda Core                   | error/warn  | a failed or warned data check from `<audit.soda>/checks.yml`                                                              |
-| `BDB801`-`BDB805`  | PostgREST rules             | warn        | query-chain rules on `.ts`/`.tsx` under `postgrest.roots`; see [PostgREST rules](#postgrest-rules)                        |
-| `BDB901`-`BDB904`  | perf diff                   | error/warn  | live regressions, slow queries, sequential scans, temp spill; see [Performance](#performance)                             |
-| `BDB911`-`BDB913`  | perf bench                  | error/warn  | bench query regressions, plan degradation, stale planner estimates; see [Performance](#performance)                       |
+Every finding is an error and fails the gate; there is no warning level. A
+finding kept on purpose goes in the baseline or under `disable` with a written
+reason.
+
+| Code               | Source                      | What it means                                                                                                             |
+| ------------------ | --------------------------- | ------------------------------------------------------------------------------------------------------------------------- |
+| `BDB001`           | permissive-policy           | a policy uses `using (true)` or `with check (true)`                                                                       |
+| `BDB002`           | rls-enabled-no-policy       | RLS on, no policy in any migration: service role only                                                                     |
+| `BDB003`           | table-without-rls           | a `public` table never enables row level security                                                                         |
+| `BDB004`           | auth-uid-not-wrapped        | `auth.uid()` in a policy without `(select ...)`: evaluated per row                                                        |
+| `BDB005`           | definer-without-search-path | `SECURITY DEFINER` function without `set search_path`                                                                     |
+| `BDB100/<rule>`    | squawk                      | migration lock and schema hazards, Supabase profile                                                                       |
+| `BDB200/<rule>`    | prisma-lint                 | relation field without an index                                                                                           |
+| `BDB300/<rule>`    | eslint-plugin-drizzle       | `delete` or `update` without `.where()`                                                                                   |
+| `BDB310/<rule>`    | Kysely ESLint rules         | `updateTable`/`deleteFrom` without `.where()`, dynamic raw SQL; see [Kysely](#kysely)                                     |
+| `BDB320/<rule>`    | Kysely migrations           | migration rules on the compiled SQL; see [Kysely](#kysely)                                                                |
+| `BDB330/<rule>`    | Kysely type drift (audit)   | the live schema and the hand-written Kysely `Database` type disagree; see [Type drift](#type-drift)                       |
+| `BDB401`-`BDB403`  | sqlite3                     | integrity, dangling foreign keys, table without primary key                                                               |
+| `BDB404`-`BDB406`  | SQLite query files          | optional-parameter guard, comma-list `instr()`, full scan of a large table; see [SQLite query files](#sqlite-query-files) |
+| `BDB500/<name>`    | Supabase advisors           | splinter security and performance lints on the live project                                                               |
+| `BDB601`, `BDB602` | Supabase inspect            | never-scanned index, table bloat over `audit.bloatThreshold`                                                              |
+| `BDB700/<check>`   | Soda Core                   | a failed or warned data check from `<audit.soda>/checks.yml`                                                              |
+| `BDB801`-`BDB805`  | PostgREST rules             | query-chain rules on `.ts`/`.tsx` under `postgrest.roots`; see [PostgREST rules](#postgrest-rules)                        |
+| `BDB901`-`BDB904`  | perf diff                   | live regressions, slow queries, sequential scans, temp spill; see [Performance](#performance)                             |
+| `BDB911`-`BDB913`  | perf bench                  | bench query regressions, plan degradation, stale planner estimates; see [Performance](#performance)                       |
 
 Disable a code for a project with an object naming the reason:
 
@@ -151,10 +155,11 @@ the old bare string form (`"disable": ["BDB100/prefer-bigint-over-int"]`); see
 
 ## Strict mode
 
-`schemaVersion: 2` removes the `info` severity: every finding is now `error` or
-`warn`, and every finding fails the gate unless the baseline already records it
-or a `disable` entry names it with a written reason. Two codes changed severity
-in 0.2.0, independent of `schemaVersion`: `BDB002` (RLS enabled, no policy) and
+`schemaVersion: 2` removes the `info` severity, and every finding fails the gate
+unless the baseline already records it or a `disable` entry names it with a
+written reason. There is no `warn` severity either: every finding is an `error`,
+whatever the configuration's `schemaVersion`. Two codes changed severity in
+0.2.0, independent of `schemaVersion`: `BDB002` (RLS enabled, no policy) and
 `BDB601` (an index that has never been scanned) moved from `info` to `warn`.
 Their fingerprints did not change, so a `BDB002` already carried in a baseline
 stays known.
@@ -250,16 +255,16 @@ and returns no rows. A missing `kysely` exits 3. Then:
 - **MySQL/MariaDB**: no static linter exists; the SQL is hashed and checked by
   the rules below.
 
-| Code                                | Severity | What it proves                                                                                                                                                    |
-| ----------------------------------- | -------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `BDB320/migration-without-down`     | warn     | a migration with no `down`                                                                                                                                        |
-| `BDB320/migration-order`            | error    | a name that does not sort after the one declared before it, or a new migration sorting before a released one                                                      |
-| `BDB320/migration-edited`           | error    | a released migration whose compiled SQL no longer matches `.codeality-db-kysely.json`                                                                             |
-| `BDB320/native-enum`                | warn     | `create type ... as enum` or an `enum(` column type, when more than one dialect is configured                                                                     |
-| `BDB320/float-money`                | warn     | with `"moneyColumns": true`: a column named `*amount*`, `*price*`, `*total*` or `*fee*` typed `real`, `float`, `double`, or `numeric`/`decimal` without a scale   |
-| `BDB320/inline-references`          | error    | with `mysql` configured: a column-level `.references()` in a `create table` or `alter table`, which MySQL 8.4 parses and ignores; use `addForeignKeyConstraint()` |
-| `BDB320/migration-fails-on-sqlite`  | error    | SQLite refuses the compiled SQL, or the migration throws while compiling for SQLite                                                                               |
-| `BDB320/migration-does-not-compile` | error    | the migration throws while compiling for PostgreSQL or MySQL                                                                                                      |
+| Code                                | What it proves                                                                                                                                                    |
+| ----------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `BDB320/migration-without-down`     | a migration with no `down`                                                                                                                                        |
+| `BDB320/migration-order`            | a name that does not sort after the one declared before it, or a new migration sorting before a released one                                                      |
+| `BDB320/migration-edited`           | a released migration whose compiled SQL no longer matches `.codeality-db-kysely.json`                                                                             |
+| `BDB320/native-enum`                | `create type ... as enum` or an `enum(` column type, when more than one dialect is configured                                                                     |
+| `BDB320/float-money`                | with `"moneyColumns": true`: a column named `*amount*`, `*price*`, `*total*` or `*fee*` typed `real`, `float`, `double`, or `numeric`/`decimal` without a scale   |
+| `BDB320/inline-references`          | with `mysql` configured: a column-level `.references()` in a `create table` or `alter table`, which MySQL 8.4 parses and ignores; use `addForeignKeyConstraint()` |
+| `BDB320/migration-fails-on-sqlite`  | SQLite refuses the compiled SQL, or the migration throws while compiling for SQLite                                                                               |
+| `BDB320/migration-does-not-compile` | the migration throws while compiling for PostgreSQL or MySQL                                                                                                      |
 
 The findings carry the path of the module (or the migration's file) and the line
 that names the migration; the `subject` is the migration's name.
@@ -300,13 +305,13 @@ a `--db-url` target whose scheme `kysely-codegen` supports (`postgres`,
 `postgresql` or `mysql`); a linked target or an unsupported scheme is reported
 as skipped, not as an error.
 
-| Code                                | Severity | Reported when                                                                                    |
-| ----------------------------------- | -------- | ------------------------------------------------------------------------------------------------ |
-| `BDB330/table-missing-in-type`      | error    | a table exists in the database but not in the declared type, and is not in `databaseTypeIgnores` |
-| `BDB330/table-missing-in-database`  | error    | a table is declared in the type but does not exist in the database                               |
-| `BDB330/column-missing-in-type`     | error    | a column exists in the database but not on the declared table                                    |
-| `BDB330/column-missing-in-database` | error    | a column is declared on the table but does not exist in the database                             |
-| `BDB330/column-type-drift`          | error    | a shared column's live SELECT type is not assignable to the declared SELECT type                 |
+| Code                                | Reported when                                                                                    |
+| ----------------------------------- | ------------------------------------------------------------------------------------------------ |
+| `BDB330/table-missing-in-type`      | a table exists in the database but not in the declared type, and is not in `databaseTypeIgnores` |
+| `BDB330/table-missing-in-database`  | a table is declared in the type but does not exist in the database                               |
+| `BDB330/column-missing-in-type`     | a column exists in the database but not on the declared table                                    |
+| `BDB330/column-missing-in-database` | a column is declared on the table but does not exist in the database                             |
+| `BDB330/column-type-drift`          | a shared column's live SELECT type is not assignable to the declared SELECT type                 |
 
 A declared type narrower than the column is drift too: a `varchar` declared as a
 union of string literals reads back as `string`. Constrain the column (a `CHECK`
@@ -472,15 +477,15 @@ is dropped; and, for a superuser, `COPY ... TO PROGRAM`, `lo_export`,
 a dedicated role that is not a superuser, has no `REPLICATION`, and can only
 read; point `--db-url` at it for `perf`.
 
-| Code     | Layer | Rule                                                                                                                                         | Severity |
-| -------- | ----- | -------------------------------------------------------------------------------------------------------------------------------------------- | -------- |
-| `BDB901` | live  | query-regressed: mean time grew by `perf.regressionPercent` or more and by at least 5 ms, at least `perf.minCalls` calls, at least 5 ms mean | error    |
-| `BDB902` | live  | slow-query: mean time at or above `perf.slowMs`, at least `perf.minCalls` calls                                                              | warn     |
-| `BDB903` | live  | seq-scan-table: a table with at least `perf.seqScanRows` live rows and more sequential than index scans in the window                        | warn     |
-| `BDB904` | live  | temp-spill: a statement wrote temp blocks in the window, at least `perf.minCalls` calls: a sort or hash spilled to disk                      | warn     |
-| `BDB911` | bench | bench-regressed: median grew by `perf.regressionPercent` or more and by at least 5 ms                                                        | error    |
-| `BDB912` | bench | bench-plan-degraded: a new sequential scan on a table with at least `perf.seqScanRows` rows, or an index scan that became one                | error    |
-| `BDB913` | bench | bench-estimate-off: the planner's row estimate is off by a factor of 100 or more on a plan node with at least 1000 estimated or actual rows  | warn     |
+| Code     | Layer | Rule                                                                                                                                         |
+| -------- | ----- | -------------------------------------------------------------------------------------------------------------------------------------------- |
+| `BDB901` | live  | query-regressed: mean time grew by `perf.regressionPercent` or more and by at least 5 ms, at least `perf.minCalls` calls, at least 5 ms mean |
+| `BDB902` | live  | slow-query: mean time at or above `perf.slowMs`, at least `perf.minCalls` calls                                                              |
+| `BDB903` | live  | seq-scan-table: a table with at least `perf.seqScanRows` live rows and more sequential than index scans in the window                        |
+| `BDB904` | live  | temp-spill: a statement wrote temp blocks in the window, at least `perf.minCalls` calls: a sort or hash spilled to disk                      |
+| `BDB911` | bench | bench-regressed: median grew by `perf.regressionPercent` or more and by at least 5 ms                                                        |
+| `BDB912` | bench | bench-plan-degraded: a new sequential scan on a table with at least `perf.seqScanRows` rows, or an index scan that became one                |
+| `BDB913` | bench | bench-estimate-off: the planner's row estimate is off by a factor of 100 or more on a plan node with at least 1000 estimated or actual rows  |
 
 Live and bench findings are never carried in `.codeality-db-baseline.json`: they
 are measurements, and a measurement nobody likes is fixed at the source, not

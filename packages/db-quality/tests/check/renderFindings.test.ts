@@ -5,7 +5,7 @@ import { renderFindingsJson } from '@/check/renderFindingsJson.js'
 
 const finding = {
   code: 'BDB001',
-  severity: 'warn' as const,
+  severity: 'error' as const,
   path: 'm/a.sql',
   line: 3,
   message: 'policy is permissive',

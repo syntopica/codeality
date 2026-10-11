@@ -4,7 +4,7 @@ import { fingerprintFinding } from '@/model/fingerprintFinding.js'
 
 const base = {
   code: 'BDB001',
-  severity: 'warn' as const,
+  severity: 'error' as const,
   path: 'supabase/migrations/a.sql',
   message: 'm',
   subject: 'public.t',

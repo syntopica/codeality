@@ -21,6 +21,6 @@ describe('rlsEnabledNoPolicy', () => {
       rlsEnabledNoPolicy
         .run(set)
         .map((f) => [f.path, f.line, f.subject, f.severity]),
-    ).toEqual([['m/a.sql', 5, 'public.service_only', 'warn']])
+    ).toEqual([['m/a.sql', 5, 'public.service_only', 'error']])
   })
 })

@@ -1,4 +1,3 @@
-import { ADVISOR_SEVERITY } from '@/adapters/supabase/ADVISOR_SEVERITY.js'
 import type { AdvisorReport } from '@/adapters/supabase/AdvisorReport.js'
 import type { DisableEntry } from '@/config/DisableEntry.js'
 import { isDisabled } from '@/config/isDisabled.js'
@@ -19,7 +18,7 @@ export const parseAdvisorReport = (
         : ''
     const partial = {
       code,
-      severity: ADVISOR_SEVERITY[entry.level],
+      severity: 'error' as const,
       path: 'supabase',
       line: 0,
       message: entry.detail.replaceAll('\\`', '`'),

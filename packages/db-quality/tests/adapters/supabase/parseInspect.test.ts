@@ -29,7 +29,7 @@ describe('parseIndexStats', () => {
     })
     expect(
       parseIndexStats(stdout, []).map((f) => [f.code, f.subject, f.severity]),
-    ).toEqual([['BDB601', 'public.a_idx', 'warn']])
+    ).toEqual([['BDB601', 'public.a_idx', 'error']])
     expect(
       parseIndexStats(stdout, [{ code: 'BDB601', reason: 'test' }]),
     ).toEqual([])

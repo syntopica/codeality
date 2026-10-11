@@ -23,7 +23,7 @@ export const parsePrismaLintReport = (
     if (isDisabled(code, disabled)) return []
     const partial = {
       code,
-      severity: 'warn' as const,
+      severity: 'error' as const,
       path: violation.fileName,
       line: violation.location.startLine,
       message: violation.message,

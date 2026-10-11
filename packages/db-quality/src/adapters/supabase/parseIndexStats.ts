@@ -19,7 +19,7 @@ export const parseIndexStats = (
     .map((row) => {
       const partial = {
         code: 'BDB601',
-        severity: 'warn' as const,
+        severity: 'error' as const,
         path: 'supabase',
         line: 0,
         message: `index has never been scanned (${row.size})`,

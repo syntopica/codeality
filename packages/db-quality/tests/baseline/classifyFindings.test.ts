@@ -6,7 +6,7 @@ import { classifyFindings } from '@syntopica/gate-kit/classifyFindings'
 
 const finding = (fingerprint: string): Finding => ({
   code: 'BDB001',
-  severity: 'warn',
+  severity: 'error',
   path: 'a',
   line: 1,
   message: 'm',

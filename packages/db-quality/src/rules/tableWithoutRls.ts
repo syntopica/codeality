@@ -6,7 +6,7 @@ import type { SqlRule } from '@/rules/SqlRule.js'
 export const tableWithoutRls: SqlRule = {
   code: 'BDB003',
   name: 'table-without-rls',
-  severity: 'warn',
+  severity: 'error',
   run: (set) => {
     const enabled = rlsEnabledTables(set)
     return [...createdTables(set)]

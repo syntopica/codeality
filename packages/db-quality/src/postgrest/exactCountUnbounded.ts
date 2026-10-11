@@ -5,7 +5,7 @@ import type { PostgrestRule } from '@/postgrest/PostgrestRule.js'
 export const exactCountUnbounded: PostgrestRule = {
   code: 'BDB805',
   name: 'exact-count-unbounded',
-  severity: 'warn',
+  severity: 'error',
   run: (chain) => {
     const options = chainSelectCall(chain)?.args[1] ?? ''
     if (!options.includes('count:exact') || options.includes('head:true'))

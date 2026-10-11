@@ -40,7 +40,7 @@ describe('parseSodaResults', () => {
       ],
       [
         'BDB700/missing_count(id) = 0',
-        'warn',
+        'error',
         'users.id',
         'db-quality/soda/checks.yml',
         'check warned: missing_count(id) = 0',

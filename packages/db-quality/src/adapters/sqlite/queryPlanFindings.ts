@@ -46,7 +46,7 @@ export const queryPlanFindings = (
           return sqliteFinding(
             {
               code: 'BDB406',
-              severity: 'warn',
+              severity: 'error',
               file: file.path,
               line: statement.line,
               subject: scan.table,

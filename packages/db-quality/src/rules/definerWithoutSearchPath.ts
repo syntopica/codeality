@@ -6,7 +6,7 @@ import { qualifiedName } from '@/sql/qualifiedName.js'
 export const definerWithoutSearchPath: SqlRule = {
   code: 'BDB005',
   name: 'definer-without-search-path',
-  severity: 'warn',
+  severity: 'error',
   run: (set) =>
     set.flatMap((file) =>
       file.statements.flatMap((statement) => {

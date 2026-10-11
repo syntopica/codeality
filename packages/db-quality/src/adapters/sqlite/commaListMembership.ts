@@ -5,7 +5,7 @@ import type { SqlRule } from '@/rules/SqlRule.js'
 export const commaListMembership: SqlRule = {
   code: 'BDB405',
   name: 'comma-list-membership',
-  severity: 'warn',
+  severity: 'error',
   // instr(',' || ?1 || ',', ',' || col || ','): membership in a comma-joined
   // list, which no index can answer.
   run: (set) =>

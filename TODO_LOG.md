@@ -1,5 +1,22 @@
 ### 2026-10-11
 
+- [x] **Warning severity removed from db-quality.** Decided 2026-10-11 (owner
+      via Codex adjudication, u3): extend "no warnings, error or nothing" to
+      db-quality. Inventory: 26 emitters of `warn` (the five Supabase SQL rules,
+      prisma-lint, three Kysely migration rules, `BDB403`-`BDB406`,
+      `BDB601`/`BDB602`, five PostgREST rules, perf `BDB902`-`BDB904`, bench
+      `BDB913`, squawk warnings, advisor `WARN`/`INFO` through
+      `ADVISOR_SEVERITY`, Soda `warn` outcomes); no consumer read the field: the
+      gate already failed on any finding, the text renderer omits it, the
+      fingerprint excludes it, and the five consumer repos (vexa, verticagtm,
+      compratuentrada, teapartydolls, atrium) call the CLI for its exit code.
+      All were actionable findings, so all became `error`; `Severity` is
+      `'error'` alone and `ADVISOR_SEVERITY` is deleted. Measurements (the bench
+      record's medians, the perf snapshot) were never findings and carry no
+      severity. Evidence:
+      `pnpm turbo run type-check lint test build --filter=@syntopica/db-quality --force`,
+      518 tests passed.
+
 - [x] **A whole page capped narrow on a wide screen (2026-10-09), shipped as
       `narrow-page`.** Decided 2026-10-11 (owner via Codex adjudication):
       trigger on wide viewports when the main content is materially capped and

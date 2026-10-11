@@ -5,7 +5,7 @@ import type { Finding } from '@/model/Finding.js'
 
 const make = (path: string, line: number, code: string): Finding => ({
   code,
-  severity: 'warn',
+  severity: 'error',
   path,
   line,
   message: '',

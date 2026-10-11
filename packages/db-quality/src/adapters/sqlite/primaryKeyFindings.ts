@@ -24,7 +24,7 @@ export const primaryKeyFindings = (
       : sqliteFinding(
           {
             code: 'BDB403',
-            severity: 'warn',
+            severity: 'error',
             file,
             subject: row.name,
             message: 'table has no primary key',

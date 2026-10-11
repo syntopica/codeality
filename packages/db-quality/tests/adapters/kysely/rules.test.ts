@@ -13,13 +13,13 @@ const codes = (findings: Finding[]): string[][] =>
   findings.map((f) => [f.code, f.subject, f.severity])
 
 describe('Kysely migration rules', () => {
-  it('migration-without-down warns on a migration with no down, unless disabled', () => {
+  it('migration-without-down reports a migration with no down, unless disabled', () => {
     const migrations = [
       locatedFixture('a', {}),
       locatedFixture('b', {}, { hasDown: false }),
     ]
     expect(codes(withoutDownFindings(migrations, []))).toEqual([
-      ['BDB320/migration-without-down', 'b', 'warn'],
+      ['BDB320/migration-without-down', 'b', 'error'],
     ])
     expect(
       withoutDownFindings(migrations, [
@@ -61,8 +61,8 @@ describe('Kysely migration rules', () => {
     expect(
       codes(nativeEnumFindings([pg, mysql, quoted], ['postgres', 'mysql'], [])),
     ).toEqual([
-      ['BDB320/native-enum', 'e', 'warn'],
-      ['BDB320/native-enum', 'm', 'warn'],
+      ['BDB320/native-enum', 'e', 'error'],
+      ['BDB320/native-enum', 'm', 'error'],
     ])
   })
   it('float-money flags floats and unscaled decimals on money-named columns, once per column', () => {

@@ -14,7 +14,7 @@ export const withoutDownFindings = (
       kyselyFinding(
         {
           rule: 'migration-without-down',
-          severity: 'warn',
+          severity: 'error',
           migration,
           message: 'migration has no down(): it cannot be rolled back',
           context: 'no down',

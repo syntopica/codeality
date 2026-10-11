@@ -9,7 +9,7 @@ describe('parsePrismaLintReport', () => {
   it('maps a violation to a BDB200 finding', () => {
     expect(parsePrismaLintReport(stderr, [])[0]).toMatchObject({
       code: 'BDB200/require-field-index',
-      severity: 'warn',
+      severity: 'error',
       path: 'prisma/schema.prisma',
       line: 730,
       subject: 'updatedBy',

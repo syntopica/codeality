@@ -6,7 +6,7 @@ import type { SqlRule } from '@/rules/SqlRule.js'
 export const authUidNotWrapped: SqlRule = {
   code: 'BDB004',
   name: 'auth-uid-not-wrapped',
-  severity: 'warn',
+  severity: 'error',
   run: (set) =>
     set.flatMap((file) =>
       file.statements

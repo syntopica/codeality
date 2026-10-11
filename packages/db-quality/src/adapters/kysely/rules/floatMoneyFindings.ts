@@ -19,7 +19,7 @@ export const floatMoneyFindings = (
       kyselyFinding(
         {
           rule: 'float-money',
-          severity: 'warn',
+          severity: 'error',
           migration,
           message: `money column "${column}" is typed ${type}: binary floats and unscaled decimals round money; use numeric/decimal with a scale, or integer cents`,
           context: column,

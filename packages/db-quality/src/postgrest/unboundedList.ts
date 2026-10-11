@@ -6,7 +6,7 @@ import type { PostgrestRule } from '@/postgrest/PostgrestRule.js'
 export const unboundedList: PostgrestRule = {
   code: 'BDB802',
   name: 'unbounded-list',
-  severity: 'warn',
+  severity: 'error',
   run: (chain, context) => {
     if (
       !chainSelectCall(chain) ||

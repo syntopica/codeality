@@ -21,13 +21,13 @@ describe('parseAdvisorReport', () => {
       subject: 'public.example_view',
     })
     expect(findings[0]?.message).not.toContain('\\`')
-    expect(findings[1]?.severity).toBe('warn')
+    expect(findings[1]?.severity).toBe('error')
   })
   it('leaves the subject empty without metadata', () => {
     const bare =
       '{"results":[{"name":"auth_otp_long_expiry","title":"t","level":"INFO","detail":"d"}]}'
     expect(parseAdvisorReport(bare, [])[0]).toMatchObject({
-      severity: 'warn',
+      severity: 'error',
       subject: '',
     })
   })

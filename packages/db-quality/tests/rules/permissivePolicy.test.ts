@@ -21,7 +21,7 @@ describe('permissivePolicy', () => {
     ])
     expect(findings[0]).toMatchObject({
       code: 'BDB001',
-      severity: 'warn',
+      severity: 'error',
       path: 'm/permissive.sql',
     })
     expect(findings[0]?.fingerprint).toMatch(/^[0-9a-f]{16}$/)

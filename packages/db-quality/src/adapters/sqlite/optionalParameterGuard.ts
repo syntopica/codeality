@@ -5,7 +5,7 @@ import type { SqlRule } from '@/rules/SqlRule.js'
 export const optionalParameterGuard: SqlRule = {
   code: 'BDB404',
   name: 'optional-parameter-guard',
-  severity: 'warn',
+  severity: 'error',
   // `?1 IS NULL OR col = ?1` and `col = ?1 OR ?1 IS NULL`, for every parameter
   // spelling SQLite binds: ?, ?NNN, :name, @name and $name.
   run: (set) =>

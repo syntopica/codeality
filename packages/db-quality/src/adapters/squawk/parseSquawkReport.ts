@@ -26,8 +26,7 @@ export const parseSquawkReport = (
     const statement = file ? statementAtLine(file, entry.line) : undefined
     const partial = {
       code,
-      severity:
-        entry.level === 'Error' ? ('error' as const) : ('warn' as const),
+      severity: 'error' as const,
       path: entry.file,
       line: entry.line,
       message: entry.message,

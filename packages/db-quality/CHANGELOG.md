@@ -2,6 +2,18 @@
 
 ## [Unreleased]
 
+- **Breaking:** the warning severity is gone. Every finding is an `error`,
+  `Severity` is `'error'` alone, and `--json` reports `"severity": "error"` on
+  every finding. The codes that warned before (`BDB001`-`BDB005`, prisma-lint,
+  the Kysely migration rules `migration-without-down`, `native-enum` and
+  `float-money`, `BDB403`-`BDB406`, `BDB601`, `BDB602`, `BDB801`-`BDB805`,
+  `BDB902`-`BDB904`, `BDB913`), squawk warnings, Supabase advisor `WARN` and
+  `INFO` entries and Soda checks that warned now say so. Every finding already
+  failed the gate, so exit codes do not change, and the fingerprint never
+  carried the severity, so a baseline stays valid; a consumer that filtered
+  findings by severity sees them all. A finding kept on purpose goes in the
+  baseline or under `disable` with a written reason.
+
 ## 0.6.1
 
 ### Patch Changes

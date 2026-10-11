@@ -5,7 +5,7 @@ import type { PostgrestRule } from '@/postgrest/PostgrestRule.js'
 export const starSelect: PostgrestRule = {
   code: 'BDB801',
   name: 'select-star',
-  severity: 'warn',
+  severity: 'error',
   run: (chain) => {
     const select = chainSelectCall(chain)
     if (!select) return undefined

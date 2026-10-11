@@ -16,8 +16,7 @@ export const parseSodaResults = (
     if (isDisabled(code, disabled)) return []
     const partial = {
       code,
-      severity:
-        check.outcome === 'fail' ? ('error' as const) : ('warn' as const),
+      severity: 'error' as const,
       path: `${sodaDir}/checks.yml`,
       line: 0,
       message: `check ${check.outcome === 'fail' ? 'failed' : 'warned'}: ${check.name}`,

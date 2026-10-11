@@ -21,7 +21,7 @@ describe('parseSquawkReport', () => {
     expect(findings).toHaveLength(2)
     expect(findings[0]).toMatchObject({
       code: 'BDB100/prefer-bigint-over-int',
-      severity: 'warn',
+      severity: 'error',
       line: 47,
       subject: 'prefer-bigint-over-int',
     })

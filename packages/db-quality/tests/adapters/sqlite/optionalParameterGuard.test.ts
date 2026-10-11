@@ -27,7 +27,7 @@ describe('optionalParameterGuard', () => {
     ])
     expect(optionalParameterGuard.run(set)[0]).toMatchObject({
       code: 'BDB404',
-      severity: 'warn',
+      severity: 'error',
       path: 'jobs_list.sql',
     })
   })

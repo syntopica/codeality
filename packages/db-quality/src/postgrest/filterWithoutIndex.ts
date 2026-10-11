@@ -5,7 +5,7 @@ import type { PostgrestRule } from '@/postgrest/PostgrestRule.js'
 export const filterWithoutIndex: PostgrestRule = {
   code: 'BDB803',
   name: 'filter-without-index',
-  severity: 'warn',
+  severity: 'error',
   run: (chain, context) => {
     if (chain.root !== 'from') return undefined
     const knowledge = context.knowledge.get(`public.${chain.target}`)

@@ -4,7 +4,7 @@ import { runStage } from '@/gate/runStage.js'
 
 const finding = {
   code: 'BDB001',
-  severity: 'warn' as const,
+  severity: 'error' as const,
   path: 'a',
   line: 1,
   message: 'm',

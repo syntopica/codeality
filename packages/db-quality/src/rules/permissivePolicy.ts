@@ -6,7 +6,7 @@ import type { SqlRule } from '@/rules/SqlRule.js'
 export const permissivePolicy: SqlRule = {
   code: 'BDB001',
   name: 'permissive-policy',
-  severity: 'warn',
+  severity: 'error',
   run: (set) =>
     set.flatMap((file) =>
       file.statements

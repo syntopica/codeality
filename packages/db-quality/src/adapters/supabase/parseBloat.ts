@@ -16,7 +16,7 @@ export const parseBloat = (
     .map((row) => {
       const partial = {
         code: 'BDB602',
-        severity: 'warn' as const,
+        severity: 'error' as const,
         path: 'supabase',
         line: 0,
         message: `bloat factor ${row.bloat}, ${row.waste} wasted`,

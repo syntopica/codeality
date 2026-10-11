@@ -25,7 +25,7 @@ export const nativeEnumFindings = (
       kyselyFinding(
         {
           rule: 'native-enum',
-          severity: 'warn',
+          severity: 'error',
           migration,
           message: `a native enum does not port across ${dialects.join(', ')}: use a text column with a check constraint, or a lookup table`,
           context: 'native enum',
