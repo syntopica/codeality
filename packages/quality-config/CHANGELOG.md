@@ -2,6 +2,18 @@
 
 ## [Unreleased]
 
+- fix: `createKnipConfig` no longer fails a template whose `check:quality` runs
+  `pnpm type-coverage`. A word that only runs another `package.json` script
+  (`pnpm <script>`, `pnpm run <script>`) is no longer read as naming the binary,
+  so `type-coverage` stays ignored instead of reported unused.
+- fix: `lefthook` is left out of `ignoreDependencies` when a Lefthook
+  configuration file exists, since knip's Lefthook plugin then resolves it
+  itself (from `CI`, or from the installed git hooks).
+- fix: an ESLint peer another installed dependency declares as its own peer
+  (`typescript-eslint`, hosted by `eslint-plugin-astro`) is no longer ignored:
+  knip counts it as used, so the entry was a `Remove from ignoreDependencies`
+  hint.
+
 ## 0.13.1
 
 ### Patch Changes

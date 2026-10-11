@@ -7,6 +7,7 @@ import type { KnipConfiguration } from 'knip'
 
 import { existingEntries } from './existingEntries'
 import { FRAMEWORK_ENTRIES, type KnipFramework } from './knip-framework'
+import { peersOfListedDependencies } from './peersOfListedDependencies'
 import { runnerDependenciesToIgnore } from './runnerDependenciesToIgnore'
 
 // Every template installs these as peer dependencies of
@@ -31,7 +32,10 @@ import { runnerDependenciesToIgnore } from './runnerDependenciesToIgnore'
 // `<package>  knip.config.ts  Remove from ignoreDependencies`. That is a hint,
 // not a gate failure. Do not filter the list consumer-side to silence it: the
 // filter would drift the moment this list changes, and the cost of being wrong
-// is a dependency that silently stops being checked.
+// is a dependency that silently stops being checked. The one filter applied
+// here mirrors knip's own rule: a package another installed dependency
+// declares as a peer (`eslint-plugin-astro` hosts `typescript-eslint`) is
+// counted as used by knip, so it is not ignored.
 const ESLINT_PEER_DEPENDENCIES = [
   '@eslint/js',
   'eslint-config-prettier',
@@ -110,6 +114,7 @@ export const createKnipConfig = (options: {
   cwd?: string
 }): KnipConfiguration => {
   const cwd = options.cwd ?? process.cwd()
+  const hostedPeers = peersOfListedDependencies(cwd)
   const { entry, project, includeEntryExports } =
     FRAMEWORK_ENTRIES[options.framework]
 
@@ -141,7 +146,9 @@ export const createKnipConfig = (options: {
     ignoreBinaries: ['gitleaks', ...(options.ignoreBinaries ?? [])],
     ignoreDependencies: [
       ...runnerDependenciesToIgnore(cwd),
-      ...ESLINT_PEER_DEPENDENCIES,
+      ...ESLINT_PEER_DEPENDENCIES.filter(
+        (dependency) => !hostedPeers.has(dependency),
+      ),
       ...(options.ignoreDependencies ?? []),
     ],
     rules: {
