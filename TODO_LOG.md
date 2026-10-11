@@ -1,5 +1,12 @@
 ### 2026-10-11
 
+- [x] **`narrow-page` threshold kept at 0.55.** Decided 2026-10-11 (owner via
+      Codex adjudication, u2): keep `NARROW_PAGE_RATIO` at 0.55; a 960px data
+      column at 1920px uses half the width, which is what the rule is for.
+      Evidence: `src/rules/NARROW_PAGE_RATIO.ts` unchanged at 0.55;
+      `pnpm exec vitest run tests/rules/narrowPage.test.ts tests/cli.narrow.integration.test.ts`
+      in `packages/ui-quality`, 7 tests passed.
+
 - [x] **Warning and info severities removed from test-quality.** Decided
       2026-10-11 (owner via Codex adjudication, u3): extend "no warnings, error
       or nothing" to test-quality. Inventory: `warning` from

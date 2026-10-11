@@ -36,12 +36,24 @@ findings have shipped (`ragged-column`, `interaction-shift`, `narrow-page`,
 unreleased on `main`; see `TODO_LOG.md`). One half of those findings is left,
 plus the release:
 
-- [ ] **Release ui-quality with the warning level removed.** Decided 2026-10-11
-      (owner): no warnings, error or nothing. Every ui-quality finding is now an
-      error (breaking, recorded under `Unreleased` in its CHANGELOG); the
-      release itself is the owner's to authorize. Next step: owner approval,
-      then a minor bump (pre-1.0, breaking), `pnpm check:ci`,
-      `pnpm release:check`, publish.
+- [~] **Release ui-quality, db-quality and test-quality with the warning level
+  removed.** Decided 2026-10-11 (owner): no warnings, error or nothing. Decided
+  2026-10-11 (owner via Codex adjudication, u3): the same for db-quality and
+  test-quality, one release each. Decided 2026-10-11 (owner via Codex
+  adjudication, u1): prepare a minor pre-1.0 release, publish only after the
+  owner approves the verified packages. Decided 2026-10-11 (owner via Codex
+  adjudication, u2): keep `NARROW_PAGE_RATIO` at 0.55. Prepared: all three
+  CHANGELOGs carry the breaking change under `Unreleased`, versions are not
+  bumped (a bump without its tag and npm version fails `pnpm release:check`),
+  `pnpm check:ci` and `pnpm release:check` exit 0, and the narrow-page suites
+  pass (7 tests). Direct consumers pin older ranges (Vexa ui-quality 0.2.0;
+  db-quality `^0.3.0`/`^0.6.0`/`0.2.1`; test-quality `^0.1.x`), so none upgrades
+  on publish alone. Next step, on owner approval, per package: bump ui-quality
+  0.7.0 -> 0.8.0, db-quality 0.6.1 -> 0.7.0, test-quality 0.1.2 -> 0.2.0, rename
+  `Unreleased` to the version, `pnpm sync-versions`, `pnpm check:ci`, commit,
+  `git tag -a <name>@<version> -m ...`, push with the tag,
+  `gh workflow run publish.yml -f package=<name>`, `gh run watch`,
+  `pnpm release:check`.
 - [ ] **`interaction-shift` for tabs.** The owner's case was "a tab or segmented
       control"; the shipped probe presses `role=group` sets of `aria-pressed`
       buttons only, as the candidate specified. Next step: press `role=tab`
