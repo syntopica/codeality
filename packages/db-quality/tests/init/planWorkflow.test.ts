@@ -14,6 +14,10 @@ const fixturePath = fileURLToPath(
   new URL('../fixtures/init/db-quality-0.1.0.yml', import.meta.url),
 )
 
+const fixture021Path = fileURLToPath(
+  new URL('../fixtures/init/db-quality-0.2.1.yml', import.meta.url),
+)
+
 const withWorkflow = (content: string): string => {
   const root = mkdtempSync(join(tmpdir(), 'dbq-'))
   mkdirSync(join(root, '.github/workflows'), { recursive: true })
@@ -39,6 +43,14 @@ describe('planWorkflow', () => {
     const plan = planWorkflow(root, false)
     expect(plan.disposition).toBe('merge')
     expect(plan.detail).toBe('upgraded from the 0.1.0 workflow')
+    expect(plan.content).toBe(readFileSync(assetPath('db-quality.yml'), 'utf8'))
+  })
+
+  it('upgrades a workflow it shipped as 0.2.1 without --force', () => {
+    const root = withWorkflow(readFileSync(fixture021Path, 'utf8'))
+    const plan = planWorkflow(root, false)
+    expect(plan.disposition).toBe('merge')
+    expect(plan.detail).toBe('upgraded from the 0.2.1 workflow')
     expect(plan.content).toBe(readFileSync(assetPath('db-quality.yml'), 'utf8'))
   })
 

@@ -2,6 +2,9 @@
 
 ## [Unreleased]
 
+- The generated CI workflow pins `actions/checkout` v7, `actions/setup-node` v7,
+  `pnpm/action-setup` v6.1.0 and `zizmorcore/zizmor-action` v0.6.4.
+
 ## 0.10.4
 
 ### Patch Changes

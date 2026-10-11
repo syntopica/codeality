@@ -4,6 +4,15 @@ All notable changes to `syntopica-codeality-py` are documented here. The format
 follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/) and the project
 adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [Unreleased]
+
+### Changed
+
+- The workflow `init` writes pins `actions/checkout` v7, `astral-sh/setup-uv`
+  v10.3.0 and `actions/upload-artifact` v7.0.2. An existing `quality.yml` from
+  an earlier release now differs and reports a conflict; rerun `init --force` to
+  take the new pins.
+
 ## 0.2.5
 
 ### Fixed

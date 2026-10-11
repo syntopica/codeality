@@ -2,6 +2,10 @@
 
 ## [Unreleased]
 
+- The workflow `init` writes pins `actions/checkout` v7, `actions/setup-node` v7
+  and `pnpm/action-setup` v6.1.0. A project still on the workflow shipped from
+  0.2.1 to 0.6.0 is upgraded in place without `--force`, like the 0.1.0 one.
+
 ## 0.6.0
 
 - `audit --db-url` checks Kysely type drift (`BDB330`) when the new
