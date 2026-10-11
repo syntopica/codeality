@@ -34,6 +34,7 @@ import { numericAlignment } from '@/rules/numericAlignment.js'
 import { palette } from '@/rules/palette.js'
 import { placeholderFit } from '@/rules/placeholderFit.js'
 import { radiusSprawl } from '@/rules/radiusSprawl.js'
+import { raggedColumn } from '@/rules/raggedColumn.js'
 import { rawPlaceholder } from '@/rules/rawPlaceholder.js'
 import { rowMisaligned } from '@/rules/rowMisaligned.js'
 import { slowRequest } from '@/rules/slowRequest.js'
@@ -76,6 +77,7 @@ export const RULES: Rule[] = [
   palette,
   placeholderFit,
   radiusSprawl,
+  raggedColumn,
   rawPlaceholder,
   rowMisaligned,
   slowRequest,

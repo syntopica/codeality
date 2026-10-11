@@ -26,78 +26,27 @@ verified complete - `[-]` obsolete or superseded.
   `^8.71.0`. Consumers of `@syntopica/eslint-config` that resolve 8.71.1 hit the
   same wall on their JS files. Next step: when
   `npm view typescript-eslint version` passes 8.71.1, remove both lines,
-  `ncu -u`, `pnpm install`, `pnpm check:ci`.
+  `ncu -u`, `pnpm install`, `pnpm check:ci`. Rechecked 2026-10-11:
+  `npm view typescript-eslint version` and the plugin both still answer 8.71.1.
 
 ## ui-quality
 
-Rule candidates from the 2026-10-01 review of the TienesLaVibra admin inbox by
-Codex and five design skills (impeccable, web-design-guidelines, ui-ux-pro-max,
-better-ui, frontend-design). Shipped from that review: `edge-misaligned`,
-`fixed-overflow`, `icon-contrast`, `raw-placeholder`, and `text-hard-cut`
-reading nested rows and length spikes. Each item below names the probe fields it
-needs.
+The candidates of the 2026-10-01 review and the 2026-10-08/09 inpractise-demo
+findings have shipped (`ragged-column`, `interaction-shift`, unreleased on
+`main`; see `TODO_LOG.md`). Two halves of those findings are left:
 
-- [ ] **`ragged-column` (candidate, 2026-10-08).** Stacked blocks in one column
-      stop at different right edges. On the inpractise-demo lab review page
-      (1440px) the h1 (`max-w-4xl`) and the disclosure note (`max-w-3xl`) ended
-      ~350px and ~430px short of the full-width stat card directly below them;
-      the owner spotted it, `check` reported nothing (`edge-misaligned` compares
-      only header vs main). Probe needs, per main-column child: box right edge
-      and whether it is prose (a `<p>` with loose text at a reading measure is
-      exempt, like `line-length`). Report when a non-prose block (heading, note,
-      callout) sits between full-width siblings and ends more than ~15% of the
-      column width short. Second case 2026-10-09, same app: transcript prose
-      capped at `70ch` (later `96ch`) under a full-width sticky player card, and
-      the report page at `max-w-4xl` on a 1920px screen; the owner flagged both,
-      `check` passed. So the prose exemption must not apply when the prose sits
-      under a full-width sibling card of the same column: report it there.
-- [ ] **`interaction-shift` (candidate, 2026-10-09).** A toolbar that changes
-      height when a tab or segmented control is pressed moves everything below
-      it. inpractise-demo's transcript console was 204px in one view and 254px
-      in another (filter row and review controls appearing); the owner called it
-      CLS. Probe: for each `[role=group]` of `aria-pressed` buttons, press every
-      option and record the height of its nearest sticky or card ancestor;
-      report a delta over 4px.
-- [x] **`ui-quality@0.2.0` published 2026-10-07** (run 37538934323). The two
-      earlier runs failed with OIDC token exchange 404 because the package's
-      trusted publisher on npmjs.com showed `Status: Expired`; it was deleted
-      and recreated (syntopica/codeality, publish.yml, no environment) and is
-      `Pending validation` until this first publish. An expired trusted
-      publisher reads as a 404, not as an auth error.
-- [x] **axe hangs forever on a sandboxed srcdoc iframe.** 2026-10-06, Vexa
-      reader: `new AxeBuilder({ page }).analyze()` in `captureScreen.ts` has no
-      timeout and no frame exclusion. On the email body frame (`srcdoc`,
-      `sandbox` without `allow-scripts`) it never returns: the list-only page
-      finished in 3.4 s, the same page with the reader open timed out at 40 s,
-      and `.exclude('iframe')` finished at once. The first full run sat 10 min
-      on one route and died with
-      `browserContext.newPage: Target page, context     or browser has been closed`.
-      Smallest fix: a config `axe.exclude` list (selectors) plus a per-screen
-      timeout that records a finding instead of hanging; add a fixture page with
-      a script-less sandboxed iframe. Done 2026-10-06: sandboxed frames without
-      `allow-scripts` are always excluded, `axe.exclude` and `axe.timeoutMs`
-      added; `tests/cli.desktop-shell.integration.test.ts` times out at 60 s
-      without the exclusion and passes with it.
-
-- [x] **`icon-contrast` composites over white when the page colour is on body.**
-      2026-10-06, Vexa dark mode: the probe collects
-      `document.body.querySelectorAll('*')`, so body's own dark
-      `background-color` and gradient are never seen and translucent ancestors
-      are blended over white. Reported 1.52:1 and 2.63:1; rendered pixels
-      measure 5.9:1 and 5.4:1. Smallest fix: include `document.body` (and
-      `html`) in the probe's backdrop chain in `assets/probe.js` / `backdropOf`,
-      with a fixture whose dark background sits on body. Done 2026-10-06: the
-      probe returns `rootBackgrounds` (html, body) and
-      `backdropOf`/`imageBehind` use them;
-      `tests/rules/iconContrastCanvas.test.ts`.
-
-- [x] **No init-script hook to stub a desktop shell.** 2026-10-06, Vexa (Tauri):
-      the frontend renders only with a `window.__TAURI_INTERNALS__` IPC stub,
-      and the config has no way to inject one, so the run needed a separate Vite
-      config prepending the stub via `transformIndexHtml`. Smallest step: a
-      config `initScripts: [path]` passed to `context.addInitScript`. Done
-      2026-10-06: `initScripts` in the config, run per context; covered by the
-      desktop-shell integration test.
+- [ ] **A whole page capped narrow on a wide screen (2026-10-09).** The
+      inpractise-demo report page at `max-w-4xl` on a 1920px screen; the owner
+      flagged it. `ragged-column` only judges a block next to one filling the
+      column, and `content-width` only pages with a table or repeated rows, so
+      neither reports a reading-width page with nothing full-width in it. Next
+      step: decide the trigger (a main column under some share of a viewport of
+      1600px and up, prose aside?) against a fixture before writing it.
+- [ ] **`interaction-shift` for tabs.** The owner's case was "a tab or segmented
+      control"; the shipped probe presses `role=group` sets of `aria-pressed`
+      buttons only, as the candidate specified. Next step: press `role=tab`
+      options of a `role=tablist` the same way, and measure the bar around the
+      tab list, not the panel (a panel of another height is expected).
 
 ## Cross-project (filed 2026-09-09 from two consumer backlog runs)
 

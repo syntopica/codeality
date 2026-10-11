@@ -1,5 +1,35 @@
 ### 2026-10-11
 
+- [x] **`ragged-column` (candidate 2026-10-08/09)**: a block in the main region
+      that starts on its column's left edge, sits alone in its row next to a
+      block filling the column, and ends over 15% of the column short while its
+      edge shows (border, shadow, distinct fill, or text wrapping there).
+      Paragraphs keep their measure unless the full-width neighbour is a card;
+      tables are left out. No probe change: the snapshot already carries boxes,
+      padding, lines and fills. A first cut, judging box width alone, reported
+      the `<table>` of `table.html` and broke 4 integration tests; requiring a
+      visible edge fixed that. Evidence: `tests/rules/raggedColumn.test.ts` (6),
+      `tests/cli.ragged.integration.test.ts` on `ragged.html` and its clean
+      twin.
+- [x] **`interaction-shift` (candidate 2026-10-09)**: a behaviour check run with
+      the others on the first screen of each route. Every `role=group` of
+      `aria-pressed` buttons in the main region (4 groups, 6 options at most) is
+      pressed through; the nearest sticky or surface ancestor's height is read
+      after each press, a spread over 4px is reported at `warn`, and the option
+      on before is pressed again. Evidence:
+      `tests/behaviour/interactionShiftFailureOf.test.ts`,
+      `tests/cli.shift.integration.test.ts` on `shift.html` (a filter row shown
+      with `display`) and its twin (`visibility`). The page-wide narrow cap and
+      tabs stay in `TODO.md`.
+- [x] Moved four items already closed and verified earlier out of the active
+      backlog: `ui-quality@0.2.0` published 2026-10-07 (run 37538934323, after
+      recreating the expired trusted publisher); axe no longer hangs on a
+      script-less sandboxed `srcdoc` frame (2026-10-06, `axe.exclude`,
+      `axe.timeoutMs`, `tests/cli.desktop-shell.integration.test.ts`);
+      `icon-contrast` reads the `html`/`body` fills (2026-10-06,
+      `tests/rules/iconContrastCanvas.test.ts`); config `initScripts` for a
+      desktop-shell IPC stub (2026-10-06, the desktop-shell integration test).
+
 - [x] **`runKyselyTypeDrift` timed out under load and left temp dirs behind**:
       the suite now runs with a 60 s timeout, and its projects live under
       `node_modules/.cache/db-quality-drift/` (removed in `afterAll`) instead of

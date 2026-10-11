@@ -13,7 +13,8 @@ repeat them, both as of 2026-10-01 and updated on 2026-10-07:
   `content-hidden-at-rest`; then `nested-cards`, `type-scale-sprawl`,
   `accent-overuse`, `text-occlusion` and the open halves of
   `unstable-media-size` (layout shift) and `broken-image` (CSS backgrounds).
-  Tier 1 is now empty, and so are tiers 2 and 3 (third batch below).
+  Tier 1 is now empty, and so are tiers 2 and 3 (third batch below). Shipped on
+  2026-10-11 from the root `TODO.md`: `ragged-column` and `interaction-shift`.
 - **Covered by an existing check**, so not shipped as their own rule:
   `zoom-disabled` is axe's `meta-viewport` (on by default, `wcag2aa`, which
   fires on `user-scalable=no` and on `maximum-scale` under 2), reported as

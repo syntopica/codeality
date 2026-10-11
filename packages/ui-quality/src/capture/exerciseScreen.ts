@@ -3,6 +3,7 @@ import type { Page } from 'playwright'
 import { checkCollectionPagination } from '@/capture/checkCollectionPagination.js'
 import { checkEmptyState } from '@/capture/checkEmptyState.js'
 import { checkFiltering } from '@/capture/checkFiltering.js'
+import { checkInteractionShift } from '@/capture/checkInteractionShift.js'
 import { checkPagination } from '@/capture/checkPagination.js'
 import { checkSorting } from '@/capture/checkSorting.js'
 import { firstDataTable } from '@/capture/firstDataTable.js'
@@ -18,7 +19,9 @@ import type { BehaviourFailure } from '@/model/BehaviourFailure.js'
  * rather than reported: the click rules already own that failure. So is a
  * main region a modal dialog covers. Search and empty results read every
  * table of a grouped list. A main region with no table is paged through
- * its repeated collection, a card grid or a list, instead.
+ * its repeated collection, a card grid or a list, instead. Before any of
+ * it, every toggle group is pressed through to see the bar around it keep
+ * its height.
  */
 export const exerciseScreen = async (
   page: Page,
@@ -26,8 +29,14 @@ export const exerciseScreen = async (
 ): Promise<BehaviourFailure[]> => {
   const failures: BehaviourFailure[] = []
   if (await mainIsCovered(page, main).catch(() => true)) return failures
+  failures.push(...(await checkInteractionShift(page, main).catch(() => [])))
   const table = await firstDataTable(page, main)
-  if (!table) return await checkCollectionPagination(page, main).catch(() => [])
+  if (!table) {
+    failures.push(
+      ...(await checkCollectionPagination(page, main).catch(() => [])),
+    )
+    return failures
+  }
   const list = await listOfTable(page, main, table)
   failures.push(...(await checkFiltering(page, main, list).catch(() => [])))
   failures.push(...(await checkEmptyState(page, main, list).catch(() => [])))

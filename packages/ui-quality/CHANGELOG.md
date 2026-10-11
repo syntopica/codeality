@@ -2,6 +2,14 @@
 
 ## [Unreleased]
 
+- New rule, `warn`: `ragged-column`, for blocks stacked in one column that stop
+  at different right edges, such as a capped heading or note over a full-width
+  card. It may report on projects that passed before.
+- New behaviour check, `warn`: `interaction-shift`. On the first screen of each
+  route, every toggle group (`role=group` of `aria-pressed` buttons) in the main
+  region is pressed through, and a bar around it that changes height by over 4px
+  is reported. The option pressed before is pressed again afterwards.
+
 ## 0.7.0
 
 - New rules, all `warn`: `off-scale-spacing` (at least 3 distinct padding,

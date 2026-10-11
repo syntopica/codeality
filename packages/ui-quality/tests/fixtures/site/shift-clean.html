@@ -1,0 +1,69 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>A console whose toolbar keeps its height</title>
+    <style>
+      body {
+        margin: 0;
+        font: 16px/1.5 sans-serif;
+        color: #111827;
+        background: #ffffff;
+      }
+      main {
+        padding: 24px;
+      }
+      .console {
+        position: sticky;
+        top: 0;
+        padding: 16px;
+        background: #f3f4f6;
+      }
+      button {
+        font: inherit;
+        color: #111827;
+        background: #ffffff;
+        border: 1px solid #6b7280;
+        padding: 4px 12px;
+      }
+      [aria-pressed='true'] {
+        background: #dbeafe;
+      }
+      .review {
+        visibility: hidden;
+        padding-top: 16px;
+      }
+      .console[data-view='review'] .review {
+        visibility: visible;
+      }
+    </style>
+  </head>
+  <body>
+    <main>
+      <h1>Transcript</h1>
+      <div class="console" data-view="read">
+        <div role="group" aria-label="View">
+          <button type="button" aria-pressed="true" data-view="read">
+            Read
+          </button>
+          <button type="button" aria-pressed="false" data-view="review">
+            Review
+          </button>
+        </div>
+        <div class="review">
+          <label>Filter <input type="text" /></label>
+        </div>
+      </div>
+      <p>The caller opened with the account number.</p>
+    </main>
+    <script>
+      const bar = document.querySelector('.console')
+      for (const button of bar.querySelectorAll('[aria-pressed]'))
+        button.addEventListener('click', () => {
+          for (const other of bar.querySelectorAll('[aria-pressed]'))
+            other.setAttribute('aria-pressed', String(other === button))
+          bar.dataset.view = button.dataset.view
+        })
+    </script>
+  </body>
+</html>
