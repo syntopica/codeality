@@ -2,6 +2,10 @@
 
 ## [Unreleased]
 
+## 0.13.2
+
+### Patch Changes
+
 - fix: `createKnipConfig` no longer fails a template whose `check:quality` runs
   `pnpm type-coverage`. A word that only runs another `package.json` script
   (`pnpm <script>`, `pnpm run <script>`) is no longer read as naming the binary,

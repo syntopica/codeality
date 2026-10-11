@@ -2,6 +2,12 @@
 
 ## [Unreleased]
 
+## 0.10.5
+
+### Patch Changes
+
+- fix: pin `@syntopica/quality-config` `^0.13.2`, whose knip preset stops
+  reporting `type-coverage`, `lefthook` and hosted ESLint peers wrongly.
 - The generated CI workflow pins `actions/checkout` v7, `actions/setup-node` v7,
   `pnpm/action-setup` v6.1.0 and `zizmorcore/zizmor-action` v0.6.4.
 
