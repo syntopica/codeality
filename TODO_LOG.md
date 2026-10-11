@@ -766,6 +766,8 @@
 
 Closed work from `TODO.md`, grouped by year and month.
 
+<!-- tadu:log v1 since 2026-10-12 -->
+
 ## 2026-09
 
 ## 2026-08
