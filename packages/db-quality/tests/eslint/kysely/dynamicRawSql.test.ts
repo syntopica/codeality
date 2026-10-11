@@ -4,8 +4,13 @@ import { join } from 'node:path'
 
 import { RuleTester } from 'eslint'
 import tseslint from 'typescript-eslint'
+import { vi } from 'vitest'
 
 import { dynamicRawSql } from '@/eslint/kysely/dynamicRawSql.js'
+
+// Typed linting builds a TypeScript program per case, which takes 5-10 s on
+// a loaded machine or a CI runner against vitest's 5 s default.
+vi.setConfig({ testTimeout: 60_000 })
 
 const tester = new RuleTester({
   languageOptions: { parser: tseslint.parser },

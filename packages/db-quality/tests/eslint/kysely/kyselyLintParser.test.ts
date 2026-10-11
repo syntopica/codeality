@@ -46,7 +46,9 @@ const lint = async (root: string): Promise<Record<string, string[]>> => {
   )
 }
 
-describe('kyselyLintParser', () => {
+// Typed linting builds a TypeScript program per case, which takes 5-10 s on
+// a loaded machine or a CI runner against vitest's 5 s default.
+describe('kyselyLintParser', { timeout: 60_000 }, () => {
   it('types the files the tsconfig includes and parses the rest untyped', async () => {
     const root = project('{ "include": ["typed.ts", "TABLES.ts"] }\n')
     expect(await lint(root)).toEqual({

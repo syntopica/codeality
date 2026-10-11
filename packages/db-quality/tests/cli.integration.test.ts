@@ -13,7 +13,10 @@ const bin = new URL('../bin/codeality-db.mjs', import.meta.url).pathname
 const run = (args: string[], cwd: string): SpawnSyncReturns<string> =>
   spawnSync('node', [bin, ...args], { cwd, encoding: 'utf8' })
 
-describe('codeality-db', () => {
+// Each case spawns the built CLI, and several build a TypeScript program,
+// which takes 5-10 s on a loaded machine or a CI runner against vitest's 5 s
+// default.
+describe('codeality-db', { timeout: 60_000 }, () => {
   beforeAll(() => {
     execFileSync('pnpm', ['build'], {
       cwd: new URL('..', import.meta.url).pathname,
