@@ -1,5 +1,15 @@
 ### 2026-10-11
 
+- [x] **ui-quality 0.8.0 released.** Approved by the owner on 2026-10-11 ("sí").
+      Ships the error-only severity (breaking) and the `narrow-page`,
+      `ragged-column` and `interaction-shift` rules. Release commit `17ee9d6`,
+      annotated tag `ui-quality@0.8.0`, published by
+      https://github.com/syntopica/codeality/actions/runs/38173478148 (OIDC
+      trusted publishing, signed provenance). Evidence:
+      `npm view @syntopica/ui-quality@0.8.0 version` prints `0.8.0`;
+      `pnpm release:check` reports `ok @syntopica/ui-quality@0.8.0`. db-quality
+      and test-quality stay unreleased: not approved.
+
 - [x] **`narrow-page` threshold kept at 0.55.** Decided 2026-10-11 (owner via
       Codex adjudication, u2): keep `NARROW_PAGE_RATIO` at 0.55; a 960px data
       column at 1920px uses half the width, which is what the rule is for.
