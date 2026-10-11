@@ -2,6 +2,8 @@
 
 ## [Unreleased]
 
+## 0.8.0
+
 - **Breaking:** the warning severity is gone. Every finding is an `error`,
   `Severity` is `'error'` alone, and `--json` reports `"severity": "error"` on
   every finding. Rules that warned before, the AI-made tells, `moderate` and
