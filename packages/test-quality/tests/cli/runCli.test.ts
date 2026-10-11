@@ -44,15 +44,20 @@ describe('runCli', () => {
     expect(
       await runCli(['--project', '/elsewhere', 'check', '--json'], io),
     ).toBe(1)
-    const { findings } = JSON.parse(io.out.join('')) as {
-      findings: { rule: string }[]
+    const { schemaVersion, findings, observations } = JSON.parse(
+      io.out.join(''),
+    ) as {
+      schemaVersion: number
+      findings: { rule: string; severity: string }[]
+      observations: { name: string }[]
     }
-    expect(findings.map((f) => f.rule)).toEqual([
-      'duplicate-file-run',
-      'dom-environment-unused',
-      'uncached-hook-lint',
-      'hook-runs-full-gate',
+    expect(schemaVersion).toBe(2)
+    expect(findings.map((f) => [f.rule, f.severity])).toEqual([
+      ['duplicate-file-run', 'error'],
+      ['dom-environment-unused', 'error'],
+      ['uncached-hook-lint', 'error'],
     ])
+    expect(observations.map((o) => o.name)).toEqual(['hook-runs-full-gate'])
   })
 
   it('check passes a clean project', async () => {
@@ -121,14 +126,40 @@ describe('runCli', () => {
       ['--environment', 'node', A, '/r/b.test.ts'],
     ])
     const text = io.out.join('')
-    expect(text).toContain('warning environment-dominates')
+    expect(text).toContain('error environment-dominates')
+    expect(text).toContain('suite-run: vitest exited 0')
     expect(text).toContain(`1.50 s ${A}`)
     expect(text).toContain('peaked at 300 MB, mean 200 MB')
     expect(text).toContain('1 of 2 candidate files pass under node')
   })
 
-  it('measure without node candidates and nothing to warn about exits 0', async () => {
-    const io = commandIoFor({}, [], [vitestRun({})])
-    expect(await runCli(['measure', '--json'], io)).toBe(0)
+  it('measure with nothing to fix exits 0 and still prints its measurements', async () => {
+    const io = commandIoFor({}, [], [vitestRun({ rssSamplesMb: [100] })])
+    expect(await runCli(['measure'], io)).toBe(0)
+    const text = io.out.join('')
+    expect(text).toContain(
+      'memory-use: vitest and its workers peaked at 100 MB',
+    )
+    expect(text).toMatch(/no findings\n$/)
+  })
+
+  it('check reports a hook that runs the whole gate without failing on it', async () => {
+    const io = commandIoFor(
+      {
+        '/repo/package.json': JSON.stringify({
+          scripts: {
+            'check:ci': 'eslint . --cache',
+            test: 'vitest run',
+          },
+        }),
+        '/repo/lefthook.yml': LEFTHOOK,
+      },
+      [{ file: A, project: 'node', environment: 'node' }],
+      [],
+    )
+    expect(await runCli(['check'], io)).toBe(0)
+    expect(io.out.join('')).toMatch(
+      /^hook-runs-full-gate: the pre-push hook runs[\s\S]*no findings\n$/,
+    )
   })
 })

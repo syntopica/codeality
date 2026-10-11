@@ -15,7 +15,7 @@ export const environmentDominates = (
   return [
     {
       rule: 'environment-dominates',
-      severity: 'warning',
+      severity: 'error',
       message: `building test environments is ${String(environment)}% of the work; running tests is ${String(tests)}%`,
       evidence: Object.entries(breakdown?.phases ?? {}).map(
         ([phase, share]) => `${phase} ${String(share)}%`,

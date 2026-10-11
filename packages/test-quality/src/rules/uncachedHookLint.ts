@@ -21,7 +21,7 @@ export const uncachedHookLint = (
   return [
     {
       rule: 'uncached-hook-lint',
-      severity: 'warning',
+      severity: 'error',
       message: `the ${hook} hook runs lint or format steps with no cache`,
       evidence,
     },

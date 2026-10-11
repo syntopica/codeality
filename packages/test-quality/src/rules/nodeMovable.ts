@@ -13,7 +13,7 @@ export const nodeMovable = (
   return [
     {
       rule: 'dom-environment-unused',
-      severity: 'warning',
+      severity: 'error',
       message: `${String(passing.length)} of ${String(candidateCount)} candidate files pass under node and still run under a DOM environment`,
       evidence: passing,
     },

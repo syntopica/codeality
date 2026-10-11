@@ -2,6 +2,17 @@
 
 ## [Unreleased]
 
+- **Breaking:** the warning and info severities are gone. Every finding is an
+  `error` and fails the command: `duplicate-file-run`, `dom-environment-unused`,
+  `uncached-hook-lint` and `environment-dominates`, which warned before, now say
+  so. The readings that asked for no change (`suite-run`, `slowest-files`,
+  `memory-use`, `hook-runs-full-gate`), which were `info` findings, are now
+  observations: printed first in the text output without a severity, and under a
+  new `observations` key in `--json`, as `{ name, message, evidence }`. The JSON
+  output moves to `schemaVersion: 2`. Exit codes do not change: a warning failed
+  the command before and an info did not, which is what a finding and an
+  observation do now.
+
 ## 0.1.2
 
 - `duplicate-file-run` lists each file's projects in sorted order. Vitest

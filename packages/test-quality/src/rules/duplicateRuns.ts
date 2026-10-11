@@ -19,7 +19,7 @@ export const duplicateRuns = (files: TestFile[]): Finding[] => {
   return [
     {
       rule: 'duplicate-file-run',
-      severity: 'warning',
+      severity: 'error',
       message: `${String(repeated.length)} of ${String(projects.size)} test files run more than once`,
       evidence: repeated.map(
         ([file, names]) => `${file} (${names.toSorted().join(', ')})`,

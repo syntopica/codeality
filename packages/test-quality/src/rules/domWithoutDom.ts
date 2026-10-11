@@ -15,7 +15,7 @@ export const domWithoutDom = (
   return [
     {
       rule: 'dom-environment-unused',
-      severity: 'warning',
+      severity: 'error',
       message: `${String(candidates.length)} of ${String(domFileCount)} files run under ${DOM_ENVIRONMENTS.join('/')} but name no DOM API; run \`codeality-test measure --node-candidates\` to confirm which pass under node`,
       evidence: candidates,
     },

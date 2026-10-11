@@ -4,6 +4,10 @@ Test-suite cost audit for vitest projects: finds where a suite spends its time
 and memory on work that is not testing. Each finding is a measurement or a
 reading of the project's own config, with the evidence that makes it checkable.
 
+Every finding is an error and fails the command; there is no warning level. What
+asks for no change (timings, memory, what a hook runs) is printed as an
+observation beside the findings and never fails anything.
+
 Built from one suite's diagnosis (verticagtm, 2026-10-04): building a jsdom
 window per file was 61-72% of the work while two thirds of the files never
 touched it, a `projects` split ran every file twice without failing, and the
@@ -32,22 +36,29 @@ codeality-test measure [--json] [--node-candidates] [--top <n>] [-- <vitest args
 which project and environment, and reads `package.json` with `lefthook.yml` or
 `.husky/`:
 
-| rule                     | severity | meaning                                                                                         |
-| ------------------------ | -------- | ----------------------------------------------------------------------------------------------- |
-| `duplicate-file-run`     | warning  | a file two projects both run; with `extends: true` a project's `include` is added to the root's |
-| `dom-environment-unused` | warning  | a file under jsdom/happy-dom whose source names no DOM API: a candidate for node                |
-| `uncached-hook-lint`     | warning  | ESLint or Prettier reached from a git hook without `--cache`                                    |
-| `hook-runs-full-gate`    | info     | a hook reaches the static gate and the whole suite                                              |
+| finding                  | meaning                                                                                         |
+| ------------------------ | ----------------------------------------------------------------------------------------------- |
+| `duplicate-file-run`     | a file two projects both run; with `extends: true` a project's `include` is added to the root's |
+| `dom-environment-unused` | a file under jsdom/happy-dom whose source names no DOM API: a candidate for node                |
+| `uncached-hook-lint`     | ESLint or Prettier reached from a git hook without `--cache`                                    |
+
+| observation           | meaning                                            |
+| --------------------- | -------------------------------------------------- |
+| `hook-runs-full-gate` | a hook reaches the static gate and the whole suite |
 
 `measure` runs the suite once, with vitest's JSON reporter beside the default
 one, sampling the resident memory of vitest and every worker once a second:
 
-| rule                     | severity | meaning                                                                   |
-| ------------------------ | -------- | ------------------------------------------------------------------------- |
-| `environment-dominates`  | warning  | environment setup is over 40% of the work and outweighs the tests         |
-| `slowest-files`          | info     | the `--top` slowest files (default 10)                                    |
-| `memory-use`             | info     | peak and mean RSS of the run                                              |
-| `dom-environment-unused` | warning  | with `--node-candidates`: candidates that pass under `--environment node` |
+| finding                  | meaning                                                                   |
+| ------------------------ | ------------------------------------------------------------------------- |
+| `environment-dominates`  | environment setup is over 40% of the work and outweighs the tests         |
+| `dom-environment-unused` | with `--node-candidates`: candidates that pass under `--environment node` |
+
+| observation     | meaning                                    |
+| --------------- | ------------------------------------------ |
+| `suite-run`     | vitest's exit code and the run's wall time |
+| `slowest-files` | the `--top` slowest files (default 10)     |
+| `memory-use`    | peak and mean RSS of the run               |
 
 The candidate list is deliberately broad on the DOM side: a file that names
 `window`, `render`, `@testing-library/...` and the like is never proposed, and
@@ -60,5 +71,12 @@ for the cached local gate.
 
 ## Exit codes
 
-`0` no warnings, `1` warnings, `2` invalid usage or configuration (including a
-project vitest cannot list), `3` anything else.
+`0` no findings, `1` findings (observations never count), `2` invalid usage or
+configuration (including a project vitest cannot list), `3` anything else.
+
+## JSON
+
+`--json` prints
+`{ "schemaVersion": 2, "findings": [...], "observations": [...] }`. A finding is
+`{ rule, severity: "error", message, evidence }`; an observation is
+`{ name, message, evidence }` and has no severity.

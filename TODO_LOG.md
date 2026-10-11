@@ -1,5 +1,22 @@
 ### 2026-10-11
 
+- [x] **Warning and info severities removed from test-quality.** Decided
+      2026-10-11 (owner via Codex adjudication, u3): extend "no warnings, error
+      or nothing" to test-quality. Inventory: `warning` from
+      `duplicate-file-run`, `dom-environment-unused` (check and measure),
+      `uncached-hook-lint`, `environment-dominates`; `info` from `suite-run`,
+      `slowest-files`, `memory-use`, `hook-runs-full-gate`. The one consumer of
+      the field inside the package was `writeFindings`, which failed the command
+      on a warning; outside it, verticagtm and career-hub run
+      `codeality-test check` for its exit code. The split: a reading that names
+      something to change is a finding, now `error`; a reading that asks for no
+      change (timings, memory, and what a hook runs, which the rule itself
+      documents as "not a defect on its own") is an `Observation` with no
+      severity, in its own `observations` list and `src/observations/`. JSON
+      moves to `schemaVersion: 2`; exit codes are unchanged. Evidence:
+      `pnpm turbo run type-check lint test build --filter=@syntopica/test-quality --force`,
+      43 tests passed.
+
 - [x] **Warning severity removed from db-quality.** Decided 2026-10-11 (owner
       via Codex adjudication, u3): extend "no warnings, error or nothing" to
       db-quality. Inventory: 26 emitters of `warn` (the five Supabase SQL rules,

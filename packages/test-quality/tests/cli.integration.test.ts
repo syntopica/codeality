@@ -6,6 +6,7 @@ import { fileURLToPath } from 'node:url'
 import { afterAll, beforeAll, describe, expect, it } from 'vitest'
 
 import type { Finding } from '@/model/Finding.js'
+import type { Observation } from '@/model/Observation.js'
 
 const bin = fileURLToPath(new URL('../bin/codeality-test.mjs', import.meta.url))
 const fixture = fileURLToPath(new URL('fixtures/suite', import.meta.url))
@@ -13,7 +14,11 @@ const fixture = fileURLToPath(new URL('fixtures/suite', import.meta.url))
 const audit = (
   command: string,
   args: string[] = [],
-): { status: number | null; rules: Finding[] } => {
+): {
+  status: number | null
+  rules: Finding[]
+  observations: Observation[]
+} => {
   const run = spawnSync(
     'node',
     [bin, '--project', fixture, command, '--json', ...args],
@@ -21,9 +26,14 @@ const audit = (
       encoding: 'utf8',
     },
   )
+  const report = JSON.parse(run.stdout) as {
+    findings: Finding[]
+    observations: Observation[]
+  }
   return {
     status: run.status,
-    rules: (JSON.parse(run.stdout) as { findings: Finding[] }).findings,
+    rules: report.findings,
+    observations: report.observations,
   }
 }
 
@@ -42,8 +52,10 @@ describe('codeality-test', () => {
   })
 
   it('check finds the doubled include, the DOM-free file and the cold hook', () => {
-    const { status, rules } = audit('check')
+    const { status, rules, observations } = audit('check')
     expect(status).toBe(1)
+    expect(new Set(rules.map((f) => f.severity))).toEqual(new Set(['error']))
+    expect(observations.map((o) => o.name)).toEqual(['hook-runs-full-gate'])
     const byRule = Object.fromEntries(rules.map((f) => [f.rule, f.evidence]))
     // The root include reaches both projects, so both files run twice.
     expect(byRule['duplicate-file-run']).toEqual([
@@ -60,16 +72,17 @@ describe('codeality-test', () => {
   }, 60_000)
 
   it('measure runs the suite and confirms the candidate under node', () => {
-    const { rules } = audit('measure', [
+    const { rules, observations } = audit('measure', [
       '--node-candidates',
       '--',
       '--project',
       'node',
     ])
+    const byName = Object.fromEntries(observations.map((o) => [o.name, o]))
+    expect(byName['suite-run']?.message).toMatch(/^vitest exited 0 after/)
+    expect(byName['slowest-files']?.evidence).toHaveLength(2)
+    expect(byName['memory-use']?.message).toMatch(/peaked at \d+ MB/)
     const byRule = Object.fromEntries(rules.map((f) => [f.rule, f]))
-    expect(byRule['suite-run']?.message).toMatch(/^vitest exited 0 after/)
-    expect(byRule['slowest-files']?.evidence).toHaveLength(2)
-    expect(byRule['memory-use']?.message).toMatch(/peaked at \d+ MB/)
     expect(byRule['dom-environment-unused']?.message).toBe(
       '1 of 1 candidate files pass under node and still run under a DOM environment',
     )
