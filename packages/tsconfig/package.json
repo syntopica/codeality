@@ -42,7 +42,7 @@
   },
   "devDependencies": {
     "@arethetypeswrong/cli": "^0.18.5",
-    "prettier": "^3.9.9",
+    "prettier": "^3.9.10",
     "publint": "^0.3.25"
   }
 }
