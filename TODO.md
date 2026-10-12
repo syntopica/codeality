@@ -45,6 +45,51 @@ findings have shipped (`ragged-column`, `interaction-shift`, `narrow-page`,
 unreleased on `main`; see `TODO_LOG.md`). One half of those findings is left,
 plus the release:
 
+- [ ] **False positives from the InteliFactu interaction-state sweep**
+      (2026-10-12, workspace build d0c9743; screenshots under the sweep's
+      scratchpad `cq/.codeality-ui/screens/`, routes in
+      `~/p/intelifactu/codeality-ui.json`, each kept there by a `disable` with
+      its reason). Smallest next step: one near-miss fixture per item.
+  - PDF.js text layer (`.textLayer span`, transparent selectable glyphs over a
+    rendered page) fires `undersized-text`, `ascii-ellipsis` (form leaders
+    "Ejercicio ......"), `bare-url` and `type-scale-sprawl` (4.2-11px sizes).
+    Routes `/app?view=administraciones&company=2&screen=modelos-viewer`,
+    `...notificaciones-viewer`,
+    `/app?view=bank&company=2&screen=documents-viewer`. Skip text whose `color`
+    is transparent or whose ancestor is `.textLayer`.
+  - `undersized-text` on `span#recharts_measurement_span` (Recharts' off-screen
+    width probe, never painted). Route `/app?view=administraciones`.
+  - `raw-placeholder` snake_case shape on a supplier invoice number
+    "a52529ccf174_817" (`td.max-w-32`, `/app?view=invoices`). Require
+    letter-only words around the underscore before calling it an identifier.
+  - `time-without-datetime` on Spanish NIFs "45643725H", "26746886W",
+    "76033704M" (`/app?view=fiscal`, `/app?view=reports&screen=aging`): eight
+    digits and a letter parse as a time.
+  - `text-hard-cut` with only 2 texts at 67 chars (AEAT casilla captions,
+    `th.py-1.pr-1`, `/app?view=modelos&company=2`) and with fixed-width codes (4
+    invoice numbers at 35 chars, `/app?view=reports`). Require 3 or more, and
+    skip texts with no spaces.
+  - `ragged-column` on short `self-start` controls and tabs (buttons "Abrir",
+    "Añadir línea", the form-section tab `h2.self-start`). Skip buttons and
+    elements narrower than their content's single line.
+  - `list-dangling-rule` on virtualised rows (`div.absolute.left-0` inside a
+    scrolling table body, `/app?view=administraciones&screen=deudas`): the
+    scroller is an ancestor, not the list itself.
+  - `text-occlusion` and `text-cramped` (2px) on the last viewer-list row that
+    scrolls under a sticky pager of the same scroller
+    (`/app?view=bank&company=2&screen=documents-viewer`).
+  - `row-height-scale` on the react-day-picker calendar (`.rdp-root table`,
+    weekday caption row 19px vs 36px day cells,
+    `/app?view=documentos&company=2&screen=viewer-dates`).
+  - `numeric-alignment` on columns of dates and reference codes (invoice
+    numbers, AEAT references "A10600265300615322T"): identifiers are not
+    quantities. Skip columns whose values carry letters or date separators.
+  - `off-scale-spacing` assumes a 4px grid; Tailwind half steps (6px, 10px) are
+    the project's token set. Take the step from config, or accept 2px.
+  - False negative: `crowded-meta-line` did not fire on the Modelos formula line
+    ("Otras operaciones con in…", 3 children, 320px aside) because the visible
+    text is over 12 characters; the casilla label was still unreadable.
+
 - [ ] **`label-wrap`: the misaligned icon half, and line-clamp for
       `crowded-meta-line`** (2026-10-12, deferred from the Modelos panel rules).
       `label-wrap` measures the wrap only; an icon centred against a two-line
