@@ -289,9 +289,13 @@ fix in the same loop, with no server.
 **Will it rewrite my code?** No. `--write` adds missing config files and
 scripts. The fixing is done by you or your agent, one finding at a time.
 
-**Are the token savings measured?** Not yet. The argument is the mechanism:
-smaller, findable units mean less to read per change. A before/after measurement
-on a real repository is in progress.
+**Are the token savings measured?** Partly, and honestly. On a codebase that was
+already tidy (no file over 174 lines), splitting it into one unit per file did
+not reduce what an agent spent: each file was smaller, but the agent opened more
+of them. The numbers and method are in
+[docs/evidence](./docs/evidence/2026-10-12-agent-token-measurement.md). The case
+the argument is really about - large multi-responsibility files - is being
+measured next.
 
 **Can I adopt one piece at a time?** Yes. Every package installs and runs on its
 own; start with the core and add the optional gates when you need them.
