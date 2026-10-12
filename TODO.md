@@ -45,6 +45,34 @@ findings have shipped (`ragged-column`, `interaction-shift`, `narrow-page`,
 unreleased on `main`; see `TODO_LOG.md`). One half of those findings is left,
 plus the release:
 
+- [ ] **Misses the owner caught by eye on InteliFactu's fiscal review**
+      (2026-10-12, fixed there in 918be511 and 85616f03; route
+      `/app?view=fiscal&company=5`). Smallest next step: one fixture per item.
+  - `date-locale` exists but never saw the ISO dates: they sit in a tray's rows,
+    rendered only after clicking a tray counter. The sweep has to open
+    disclosure triggers (a row of counters whose click mounts a list) before it
+    snapshots.
+  - Select caret inset: a native `<select>` whose arrow sits within ~8px of its
+    right border while the text inset is the same 8px. Candidate rule
+    `cramped-select-caret`: compare the select's right padding with its left,
+    and flag appearance-auto selects with under 1.25rem of right room.
+  - Truncated text with slack: "Comisiones banc..." cut to a fixed `w-28` while
+    the same row had hundreds of free pixels in a `flex-1` sibling.
+    `text-clipped` needs a slack check: clipped text whose row has more free
+    width than the text is missing.
+  - Repeated row label: the same text button ("Documentos candidatos") on every
+    row of a list, a column of identical words. Candidate rule
+    `repeated-row-action`: 4 or more rows carrying a byte-identical button label
+    should be an icon with a tooltip.
+  - Row hover read as zebra striping in a static screenshot: the first row was
+    shaded because the pointer rested there. Captures should park the pointer
+    outside the viewport before the shot.
+  - Rule rows listing a company scope that the page's own company picker already
+    fixed (every row said "VeoPlan ESPJ" on VeoPlan's screen), and a select
+    offering other companies than the selected one. Candidate rule
+    `redundant-column`: a column whose value is identical on every row and equal
+    to a breadcrumb or picker value on the page.
+
 - [ ] **False positives from the InteliFactu interaction-state sweep**
       (2026-10-12, workspace build d0c9743; screenshots under the sweep's
       scratchpad `cq/.codeality-ui/screens/`, routes in
