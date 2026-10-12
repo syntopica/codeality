@@ -122,18 +122,85 @@ warning instead of throwing. All six edit runs were correct.
 
 Mean cost of the three tasks fell 9% (from $0.338 to $0.308); tokens were flat.
 
-## Conclusion across the three subjects
+## Fourth subject: the whole of ccmanager, refactored strictly
 
-| subject     | starting point               | tokens, edit task | cost, three tasks |
-| ----------- | ---------------------------- | ----------------: | ----------------: |
-| private CLI | already tidy (max 174 lines) |              +70% |              +12% |
-| ai-digest   | 1039-line god file           |              -20% |               -6% |
-| ccmanager   | 1546-line god class          |               -2% |               -9% |
+The same commit `46fe720`, this time with every source file brought under the
+rules, as a team would after adopting codeality in full. Claude (Opus) did the
+refactor in six waves against a strict judge: `code-policy` recommended plus
+`view-logic-separation`, `max-lines` 100, `max-lines-per-function` 50,
+`complexity` 10, `max-depth` 4 and `max-params` 4, all as errors, tests
+excluded. After every wave `tsc --noEmit` and the project's own ESLint were
+clean and 1042 of 1042 vitest tests passed.
+
+Judge errors went from 993 to 18. The 18 left are forced by keeping behaviour
+and tests unchanged: 15 `src/utils/*` files kept as facades because the tests
+import and mock those paths, and 3 public method signatures with 5-6 parameters.
+
+|                     | before | after |
+| ------------------- | -----: | ----: |
+| source files        |     92 |  1342 |
+| code lines          |  18303 | 26311 |
+| largest file, lines |   1449 |   175 |
+
+Five tasks, five runs per task per tree, 50 runs in total:
+
+- **t1** - explain every step of creating a worktree, with its file.
+- **t2** - explain how a session is detected as busy, waiting or idle.
+- **t3** - explain how the main menu builds its items, numbering and groups.
+- **t4** - edit: skip the session-data copy with a warning instead of throwing
+  when the Claude projects directory is missing, updating tests.
+- **t5** - edit: rename the "New Worktree" menu entry to "Create Worktree" and
+  raise the name generator timeout from 30 to 45 seconds, updating tests.
+
+All 20 edit runs were correct, checked by diffing each run against its tree.
+
+| task | before |  after | after / before | mean turns before / after | mean cost before / after |
+| ---- | -----: | -----: | -------------: | ------------------------: | -----------------------: |
+| t1   |  98627 |  98400 |           1.00 |                8.8 / 15.4 |          $0.099 / $0.112 |
+| t2   |  96403 |  95319 |           0.99 |                9.0 / 12.0 |          $0.091 / $0.090 |
+| t3   |  88688 |  96746 |           1.09 |                6.0 / 14.8 |          $0.113 / $0.101 |
+| t4   | 173862 | 171104 |           0.98 |               11.6 / 11.0 |          $0.110 / $0.094 |
+| t5   |  76566 | 101483 |           1.33 |                 9.0 / 8.6 |          $0.063 / $0.075 |
+
+Mean cost of the five tasks: $0.476 before, $0.472 after (-1%). Spread within a
+cell is large: t1 before ranged from 79k to 180k tokens across its five runs.
+
+## Runtime cost of the same refactor
+
+The structural rules split code into more files; they do not make a module
+import less of the code it reaches. Measured on both ccmanager trees, Node
+26.11.1, Bun's `--compile` build as ccmanager ships it, timings interleaved over
+40 rounds on a loaded machine:
+
+|                                               |           before |            after |
+| --------------------------------------------- | ---------------: | ---------------: |
+| own modules loaded by `cli.js --version`      |        86 of ~92 |     968 of ~1342 |
+| bundle, minified (gzip)                       | 1424 KB (429 KB) | 1478 KB (444 KB) |
+| compiled binary                               |          72.3 MB |          72.3 MB |
+| startup, `node dist/cli.js --version`, median |           366 ms |           442 ms |
+| startup, compiled binary `--version`, median  |            58 ms |            60 ms |
+| `tsc` build                                   |            3.5 s |            7.0 s |
+
+Unbundled, many small files start 21% slower (a first run on a busier machine
+gave 32%): Node resolves and loads each file separately. Bundled, as the shipped
+binary is, the difference is 3% in size and time. Loading only what a command
+needs takes lazy `import()` at the entry point, which no structural rule asks
+for.
+
+## Conclusion across the four subjects
+
+| subject               | starting point               | tokens, edit tasks | cost, all tasks |
+| --------------------- | ---------------------------- | -----------------: | --------------: |
+| private CLI           | already tidy (max 174 lines) |               +70% |            +12% |
+| ai-digest             | 1039-line god file           |               -20% |             -6% |
+| ccmanager, one file   | 1546-line god class          |                -2% |             -9% |
+| ccmanager, whole repo | 18k lines, max 1449 lines    |       -2% and +33% |             -1% |
 
 "Fewer tokens" is not a claim these measurements support: token counts moved in
-both directions. What they do show is a modest, consistent cost reduction when
-the rules are applied to a god file (6-9%), and a cost increase when they are
-applied to code that was already well structured. Three runs per cell show the
-direction, not a precise percentage.
+both directions. The 6-9% cost reduction seen with three runs per cell did not
+hold up on the largest test, five runs per cell over the whole repository, which
+came out flat. What the rules buy an agent here is not a cheaper session but the
+same cost on code that is smaller per file, typed, deduplicated and gated; nor
+do they make the program faster, and unbundled they make it start slower.
 
 Raw per-run JSON was kept in the session scratchpad, not committed.
