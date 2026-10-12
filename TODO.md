@@ -45,6 +45,16 @@ findings have shipped (`ragged-column`, `interaction-shift`, `narrow-page`,
 unreleased on `main`; see `TODO_LOG.md`). One half of those findings is left,
 plus the release:
 
+- [ ] **New rule: a crowded meta line that CSS-ellipsizes its own content**
+      (2026-10-12, InteliFactu Documentos viewer list, owner report). One row
+      line held date + category chip + account name + amount at ~600px; the
+      account name rendered as "Caix..." and "VEOPLAN ESPJ Op..." while
+      `text-hard-cut` stayed silent because the cut is
+      `text-overflow: ellipsis`, not upstream. Measure: a flex row of 3+ inline
+      items where an ellipsized child shows fewer than ~12 visible characters
+      (scrollWidth > clientWidth) at rest. Smallest next step: a fixture with
+      that row and a failing test in `packages/ui-quality/tests`.
+
 - [~] **Release ui-quality, db-quality and test-quality with the warning level
   removed.** ui-quality 0.8.0 is out (2026-10-11, logged); db-quality and
   test-quality wait on owner approval. Decided 2026-10-11 (owner): no warnings,
