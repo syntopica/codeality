@@ -55,6 +55,20 @@ plus the release:
       (scrollWidth > clientWidth) at rest. Smallest next step: a fixture with
       that row and a failing test in `packages/ui-quality/tests`.
 
+- [ ] **New rules from the InteliFactu Modelos casilla panel** (2026-10-12,
+      owner report on a `lang="es"` page; no current rule fired): (a)
+      `date-locale`: visible ISO dates (`2026-09-30`) on a page whose
+      `<html lang>` is not `en`/ISO-first; `DATE_TEXT` already matches them. (b)
+      `money-without-unit`: a column of decimal amounts (`4,20`, `10,50`) in a
+      list with no currency symbol or unit header anywhere in the list. (c)
+      `backdrop-dismiss`: in `behaviour`, after opening a modal layer
+      (`isModalLayer`), click the backdrop outside the panel and press Escape;
+      flag when neither closes it. (d) `list-dangling-rule`: a list whose last
+      item ends in a border followed by nothing (no total, no footer). (e)
+      monospace used for proportional prose (names, labels) inside a sans UI.
+      Smallest next step: one fixture page with all five and failing tests in
+      `packages/ui-quality/tests`.
+
 - [~] **Release ui-quality, db-quality and test-quality with the warning level
   removed.** ui-quality 0.8.0 is out (2026-10-11, logged); db-quality and
   test-quality wait on owner approval. Decided 2026-10-11 (owner): no warnings,
