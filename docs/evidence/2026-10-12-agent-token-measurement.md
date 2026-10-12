@@ -95,11 +95,45 @@ total tokens rose on the explanation task. Reading a 919-line file once is cheap
 in turns but expensive to cache; reading many small files costs more turns, each
 one mostly cheap cache reads.
 
-## Conclusion across both subjects
+## Third subject: a god file inside a larger repository
 
-"Fewer tokens" is not a dependable claim for the structural rules. With a god
-file, the edit task used 20% fewer tokens and the three tasks cost 6% less; with
-an already tidy codebase, the same rules cost 12% more. Three runs per cell is
-enough to see the direction, not to quote a precise percentage.
+[kbwo/ccmanager](https://github.com/kbwo/ccmanager) (MIT, commit `46fe720`),
+about 20,000 lines of TypeScript. Only its largest file was restructured, the
+way a team adopting the rules on a messy repository would start:
+`src/services/worktreeService.ts`, a 1546-line class. Codex turned it into a
+123-line facade plus 32 files under `src/services/worktree/` (largest 98 lines),
+judged by `code-policy` plus `max-lines` 100; verified independently: judge,
+`tsc --noEmit` and the project's own ESLint all clean, 1042 of 1042 vitest tests
+passing, no file outside that scope touched.
+
+Note: `code-policy` alone reported only 10 problems on the 1546-line file,
+because a class counts as one unit. `max-lines`, which
+`@syntopica/eslint-config` sets to 100, is what flags a god class.
+
+Tasks, all about worktrees: t1 explain how a worktree is created; t2 explain how
+its base branch is resolved; t3 edit the session-data copy to skip with a
+warning instead of throwing. All six edit runs were correct.
+
+| task | before |  after | after / before | mean turns before / after | mean cost before / after |
+| ---- | -----: | -----: | -------------: | ------------------------: | -----------------------: |
+| t1   |  91843 |  98031 |           1.07 |                8.3 / 12.0 |          $0.100 / $0.102 |
+| t2   | 126624 | 126223 |           1.00 |               10.0 / 11.7 |          $0.137 / $0.118 |
+| t3   | 165725 | 161937 |           0.98 |               11.0 / 10.3 |          $0.101 / $0.089 |
+
+Mean cost of the three tasks fell 9% (from $0.338 to $0.308); tokens were flat.
+
+## Conclusion across the three subjects
+
+| subject     | starting point               | tokens, edit task | cost, three tasks |
+| ----------- | ---------------------------- | ----------------: | ----------------: |
+| private CLI | already tidy (max 174 lines) |              +70% |              +12% |
+| ai-digest   | 1039-line god file           |              -20% |               -6% |
+| ccmanager   | 1546-line god class          |               -2% |               -9% |
+
+"Fewer tokens" is not a claim these measurements support: token counts moved in
+both directions. What they do show is a modest, consistent cost reduction when
+the rules are applied to a god file (6-9%), and a cost increase when they are
+applied to code that was already well structured. Three runs per cell show the
+direction, not a precise percentage.
 
 Raw per-run JSON was kept in the session scratchpad, not committed.
