@@ -289,13 +289,12 @@ fix in the same loop, with no server.
 **Will it rewrite my code?** No. `--write` adds missing config files and
 scripts. The fixing is done by you or your agent, one finding at a time.
 
-**Are the token savings measured?** Partly, and honestly. On a codebase that was
-already tidy (no file over 174 lines), splitting it into one unit per file did
-not reduce what an agent spent: each file was smaller, but the agent opened more
-of them. The numbers and method are in
-[docs/evidence](./docs/evidence/2026-10-12-agent-token-measurement.md). The case
-the argument is really about - large multi-responsibility files - is being
-measured next.
+**Are the token savings measured?** Yes, and the honest answer is "it depends".
+On a public repository with a 1039-line god file, the restructured version made
+an agent's edit task use 20% fewer tokens and cut the cost of three tasks by 6%.
+On a codebase that was already tidy, the same rules made the agent open more
+files and cost 12% more. Method and numbers:
+[docs/evidence](./docs/evidence/2026-10-12-agent-token-measurement.md).
 
 **Can I adopt one piece at a time?** Yes. Every package installs and runs on its
 own; start with the core and add the optional gates when you need them.

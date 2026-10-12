@@ -63,4 +63,43 @@ where reading one unit forces reading hundreds of unrelated lines. That is the
 case the token argument was made for, and it needs its own measurement before
 the claim is made or dropped.
 
+## Second subject: a public repository with a god file
+
+[khromov/ai-digest](https://github.com/khromov/ai-digest) (MIT, commit
+`0dfe6ba`), whose `src/digest.ts` is 1039 lines. Before: 39 `code-policy`
+violations. Codex restructured a copy to zero violations as a mechanical move,
+with no test, config or package file touched; it was then verified
+independently: `tsc --noEmit` clean, 50 of 50 jest tests passing.
+
+|                                                          | before | after |
+| -------------------------------------------------------- | -----: | ----: |
+| source files                                             |      4 |    47 |
+| code lines                                               |   1380 |  1451 |
+| largest file                                             |    919 |   270 |
+| avg size of the file holding a function (approx. tokens) |   3647 |   431 |
+
+Same method as above, with the repository's own `CLAUDE.md` removed from both
+trees. Tasks: t1 explain which files are included or skipped and where; t2
+explain the Claude and OpenAI token estimate; t3 edit the 10MB limit to 20MB and
+the binary-file placeholder text, updating tests. All six edit runs were
+correct.
+
+| task | before | after | after / before | mean turns before / after | mean cost before / after |
+| ---- | -----: | ----: | -------------: | ------------------------: | -----------------------: |
+| t1   |  63225 | 83166 |           1.32 |                  5 / 13.7 |          $0.120 / $0.112 |
+| t2   |  67622 | 65476 |           0.97 |                 6.3 / 8.0 |          $0.065 / $0.063 |
+| t3   |  81139 | 65039 |           0.80 |                10.7 / 8.7 |          $0.069 / $0.063 |
+
+Across the three tasks the mean cost fell 6% (from $0.254 to $0.238), while
+total tokens rose on the explanation task. Reading a 919-line file once is cheap
+in turns but expensive to cache; reading many small files costs more turns, each
+one mostly cheap cache reads.
+
+## Conclusion across both subjects
+
+"Fewer tokens" is not a dependable claim for the structural rules. With a god
+file, the edit task used 20% fewer tokens and the three tasks cost 6% less; with
+an already tidy codebase, the same rules cost 12% more. Three runs per cell is
+enough to see the direction, not to quote a precise percentage.
+
 Raw per-run JSON was kept in the session scratchpad, not committed.
