@@ -1,0 +1,79 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>A crowded meta line</title>
+    <style>
+      body {
+        margin: 0;
+        font: 16px/24px sans-serif;
+        color: #111827;
+        background: #ffffff;
+      }
+      main {
+        padding: 24px;
+      }
+      ul {
+        margin: 0;
+        padding: 0;
+        list-style: none;
+      }
+      .column {
+        width: 300px;
+        border: 1px solid #d1d5db;
+        padding: 8px;
+      }
+      .wide {
+        width: 720px;
+      }
+      li {
+        padding: 8px 0;
+      }
+      .meta {
+        display: flex;
+        gap: 8px;
+        white-space: nowrap;
+      }
+      .account {
+        flex: 1;
+        min-width: 0;
+        overflow: hidden;
+        text-overflow: ellipsis;
+      }
+    </style>
+  </head>
+  <body>
+    <main>
+      <h1>Documentos</h1>
+      <div class="column">
+        <ul>
+          <li>
+            <div class="meta">
+              <span>23/09/2026</span>
+              <span>Tarjetas</span>
+              <span class="account">CaixaBank Empresas 2140</span>
+              <span>-1.355,55 €</span>
+            </div>
+          </li>
+          <li>
+            <div class="meta">
+              <span>23/09/2026</span>
+              <span>Tarjetas</span>
+              <span class="account">VEOPLAN ESPJ Operaciones corrientes</span>
+              <span>-1.355,55 €</span>
+            </div>
+          </li>
+          <li>
+            <div class="meta">
+              <span>23/09/2026</span>
+              <span>Tarjetas</span>
+              <span class="account">Wise Business Cuenta EUR principal</span>
+              <span>-1.355,55 €</span>
+            </div>
+          </li>
+        </ul>
+      </div>
+    </main>
+  </body>
+</html>

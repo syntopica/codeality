@@ -1,0 +1,48 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>A label squeezed onto two lines</title>
+    <style>
+      body {
+        margin: 0;
+        font: 16px/24px sans-serif;
+        color: #111827;
+        background: #ffffff;
+      }
+      main {
+        padding: 24px;
+      }
+      ul {
+        margin: 0;
+        padding: 0;
+        list-style: none;
+      }
+      dl {
+        display: grid;
+        grid-template-columns: 80px 1fr;
+        gap: 8px 16px;
+        width: 600px;
+        margin: 0;
+      }
+      .fitted {
+        grid-template-columns: max-content 1fr;
+      }
+      dd {
+        margin: 0;
+      }
+    </style>
+  </head>
+  <body>
+    <main>
+      <h1>Casilla 29</h1>
+      <dl>
+        <dt>Presentado en la AEAT</dt>
+        <dd>Sin dato</dd>
+        <dt>Casilla</dt>
+        <dd>29</dd>
+      </dl>
+    </main>
+  </body>
+</html>

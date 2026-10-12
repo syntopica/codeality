@@ -1,3 +1,25 @@
+### 2026-10-12
+
+- [x] 2026-10-12 — **ui-quality:** Rules for the defects found by eye on the
+      InteliFactu Documentos list and Modelos casilla panel (owner report).
+  - Result: nine new rules, `crowded-meta-line`, `date-locale`,
+    `money-without-unit`, `list-dangling-rule`, `monospace-prose`,
+    `unbreakable-overflow`, `redundant-total`, `label-wrap` (wrap half only) and
+    `untranslated-text`; a new behaviour check `modal-dismiss` (backdrop click
+    and Escape, reopened with the route's clicks); `fixed-overflow` extended to
+    a sticky or fixed box taller than the space below its pin; `raw-placeholder`
+    extended to identifiers (`taxRate`, `vat_rate`, `purchase:7905`).
+    text-clipped missed the formula because it measures the element's box, not
+    its glyphs, and stops at a scroller (a panel with `overflow-y: auto`
+    computes `overflow-x: auto`). Probe reads `<html lang>`, the body font and
+    `top`. Every rule is an error. The icon half of `label-wrap` and line-clamp
+    stay open in `TODO.md`.
+  - Evidence: `tests/cli.data-display.integration.test.ts` (one failing page and
+    one near-miss twin per rule, 27 tests);
+    `pnpm --filter @syntopica/ui-quality test` 100 files, 359 tests passed with
+    coverage thresholds; `lint`, `type-check`, `lint:fast`, `dupes` and
+    `prettier --check` clean.
+
 ### 2026-10-11
 
 - [~] **`check:ci` queues behind a host admission wrapper.** Decided 2026-10-11

@@ -1,0 +1,50 @@
+/**
+ * English words a product shows as labels, each with the languages in which
+ * the same spelling is native and so not a leak ("date" is French, "total"
+ * Spanish too). "total", "error", "status" and "name" are left out: they are
+ * native in too many languages to tell anything.
+ */
+export const ENGLISH_UI_WORDS: ReadonlyMap<string, readonly string[]> = new Map(
+  [
+    ['rate', []],
+    ['amount', []],
+    ['date', ['fr']],
+    ['none', []],
+    ['null', []],
+    ['undefined', []],
+    ['nan', []],
+    ['other', []],
+    ['calculation', []],
+    ['purchase', []],
+    ['purchases', []],
+    ['sale', ['fr']],
+    ['sales', []],
+    ['invoice', []],
+    ['invoices', []],
+    ['settings', []],
+    ['loading', []],
+    ['submit', []],
+    ['cancel', []],
+    ['save', []],
+    ['delete', []],
+    ['edit', []],
+    ['search', []],
+    ['unknown', []],
+    ['pending', []],
+    ['paid', []],
+    ['draft', []],
+    ['true', []],
+    ['false', []],
+    ['yes', []],
+    ['no', ['it', 'pt', 'es']],
+    ['tax', []],
+    ['taxes', []],
+    ['income', []],
+    ['expense', []],
+    ['expenses', []],
+    ['balance', ['fr', 'it', 'pt', 'es']],
+    ['description', ['fr']],
+    ['quantity', []],
+    ['price', []],
+  ],
+)

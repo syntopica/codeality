@@ -19,6 +19,10 @@ export type ProbeResult = {
   documentHeight: number
   /** The root's computed `color-scheme`, `normal` when it sets none. */
   rootColorScheme: string
+  /** The `<html lang>`, lower-cased; empty when the page sets none. */
+  lang: string
+  /** The first family of the `<body>` computed `font-family`, lower-cased. */
+  bodyFontFamily: string
   /** A `meta[name=theme-color]` applies to this colour scheme: it has no `media`, or its media matches. */
   hasThemeColor: boolean
   /** Visible images and videos, at most 200. */

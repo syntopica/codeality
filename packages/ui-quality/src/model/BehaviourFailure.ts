@@ -8,6 +8,7 @@ export type BehaviourFailure = {
     | 'pagination-missing'
     | 'action-silent'
     | 'interaction-shift'
+    | 'modal-dismiss'
   /** The control: a column header, the search box, a pager, a form or a toggle group. */
   subject: string
   message: string

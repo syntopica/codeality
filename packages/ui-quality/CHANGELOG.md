@@ -2,6 +2,20 @@
 
 ## [Unreleased]
 
+- New rules: `crowded-meta-line`, `date-locale`, `money-without-unit`,
+  `list-dangling-rule`, `monospace-prose`, `unbreakable-overflow`,
+  `redundant-total`, `label-wrap` and `untranslated-text`, for list and panel
+  defects found by eye on a Spanish admin screen. They may report on projects
+  that passed before. The probe now also reads `<html lang>`, the body's font
+  family and each element's computed `top`.
+- New behaviour check: `modal-dismiss`. A dialog the route's clicks leave open
+  is clicked on its backdrop and sent Escape, reopened by replaying the clicks
+  in between and afterwards; it is reported when either leaves it open.
+- `fixed-overflow` now also reports a sticky or fixed box taller than the space
+  below where it is pinned, not only one whose content overflows it.
+- `raw-placeholder` now also reports a code identifier shown as a label
+  (`taxRate`, `vat_rate`, `purchase:7905`).
+
 ## 0.8.0
 
 - **Breaking:** the warning severity is gone. Every finding is an `error`,

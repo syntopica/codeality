@@ -13,6 +13,8 @@ export const snapshotOf = (
   documentWidth: 1440,
   documentHeight: 900,
   rootColorScheme: 'normal',
+  lang: 'en',
+  bodyFontFamily: 'sans-serif',
   hasThemeColor: false,
   media: [],
   hiddenText: { total: 0, hidden: 0, selector: '' },

@@ -40,7 +40,7 @@ export const captureScreen = async ({
   )
   imageLog.stop()
   const reading = await readProbedPage(page, probe, route.main)
-  const behaviour = exercise ? await exerciseScreen(page, route.main) : []
+  const behaviour = exercise ? await exerciseScreen(page, route) : []
   consoleLog.stop()
   requestLog.stop()
   // After the recorders stop: the failures it injects are not the site's.

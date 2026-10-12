@@ -27,6 +27,8 @@ export type ElementBox = {
   overflowX: string
   overflowY: string
   position: string
+  /** Computed `top` in px; 0 for `auto`. Where a sticky box sticks. */
+  insetTop: number
   /** Computed `flex-wrap`: a wrapping container lays its children out in lines, not rows. */
   flexWrap: string
   textOverflow: string

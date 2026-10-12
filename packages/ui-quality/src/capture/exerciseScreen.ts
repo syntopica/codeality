@@ -4,11 +4,13 @@ import { checkCollectionPagination } from '@/capture/checkCollectionPagination.j
 import { checkEmptyState } from '@/capture/checkEmptyState.js'
 import { checkFiltering } from '@/capture/checkFiltering.js'
 import { checkInteractionShift } from '@/capture/checkInteractionShift.js'
+import { checkModalDismiss } from '@/capture/checkModalDismiss.js'
 import { checkPagination } from '@/capture/checkPagination.js'
 import { checkSorting } from '@/capture/checkSorting.js'
 import { firstDataTable } from '@/capture/firstDataTable.js'
 import { listOfTable } from '@/capture/listOfTable.js'
 import { mainIsCovered } from '@/capture/mainIsCovered.js'
+import type { RouteConfig } from '@/config/RouteConfig.js'
 import type { BehaviourFailure } from '@/model/BehaviourFailure.js'
 
 /**
@@ -21,13 +23,17 @@ import type { BehaviourFailure } from '@/model/BehaviourFailure.js'
  * table of a grouped list. A main region with no table is paged through
  * its repeated collection, a card grid or a list, instead. Before any of
  * it, every toggle group is pressed through to see the bar around it keep
- * its height.
+ * its height. First of all, an open dialog is closed by its backdrop and by
+ * Escape, and opened again with the route's clicks.
  */
 export const exerciseScreen = async (
   page: Page,
-  main: string,
+  { main, click }: RouteConfig,
 ): Promise<BehaviourFailure[]> => {
-  const failures: BehaviourFailure[] = []
+  const failures: BehaviourFailure[] = await checkModalDismiss(
+    page,
+    click,
+  ).catch(() => [])
   if (await mainIsCovered(page, main).catch(() => true)) return failures
   failures.push(...(await checkInteractionShift(page, main).catch(() => [])))
   const table = await firstDataTable(page, main)

@@ -1,0 +1,75 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>A drawer that ignores its backdrop</title>
+    <style>
+      body {
+        margin: 0;
+        font: 16px/24px sans-serif;
+        color: #111827;
+        background: #ffffff;
+      }
+      main {
+        padding: 24px;
+      }
+      ul {
+        margin: 0;
+        padding: 0;
+        list-style: none;
+      }
+      button {
+        font: inherit;
+        padding: 8px 16px;
+      }
+      .overlay {
+        position: fixed;
+        inset: 0;
+        background: rgba(0, 0, 0, 0.5);
+      }
+      .panel {
+        position: fixed;
+        top: 0;
+        right: 0;
+        bottom: 0;
+        width: 400px;
+        padding: 24px;
+        box-sizing: border-box;
+        background: #ffffff;
+      }
+      [hidden] {
+        display: none;
+      }
+    </style>
+  </head>
+  <body>
+    <main>
+      <h1>Modelos</h1>
+      <button type="button" id="open">Ver casilla 29</button>
+    </main>
+    <div class="layer" hidden>
+      <div class="overlay"></div>
+      <div
+        class="panel"
+        role="dialog"
+        aria-modal="true"
+        aria-label="Casilla 29"
+      >
+        <h2>Casilla 29</h2>
+        <button type="button" id="close">Cerrar</button>
+        <a href="#documentos">Ver documentos</a>
+      </div>
+    </div>
+    <script>
+      const layer = document.querySelector('.layer')
+      const close = () => {
+        layer.hidden = true
+      }
+      document.querySelector('#open').addEventListener('click', () => {
+        layer.hidden = false
+      })
+      document.querySelector('#close').addEventListener('click', close)
+    </script>
+  </body>
+</html>

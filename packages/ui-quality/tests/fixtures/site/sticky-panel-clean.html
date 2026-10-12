@@ -1,0 +1,91 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>A sticky panel that scrolls</title>
+    <style>
+      body {
+        margin: 0;
+        font: 16px/24px sans-serif;
+        color: #111827;
+        background: #ffffff;
+      }
+      main {
+        padding: 24px;
+      }
+      ul {
+        margin: 0;
+        padding: 0;
+        list-style: none;
+      }
+      .layout {
+        display: grid;
+        grid-template-columns: 1fr 320px;
+        gap: 24px;
+        align-items: start;
+      }
+      .content {
+        height: 3000px;
+      }
+      .side {
+        position: sticky;
+        top: 16px;
+        padding: 16px;
+        border: 1px solid #d1d5db;
+      }
+      .scrolls {
+        max-height: calc(100vh - 32px);
+        overflow-y: auto;
+        box-sizing: border-box;
+      }
+      .side li {
+        padding: 8px 0;
+      }
+    </style>
+  </head>
+  <body>
+    <main>
+      <h1>Modelos</h1>
+      <div class="layout">
+        <div class="content">Contenido</div>
+        <aside class="side scrolls">
+          <ul>
+            <li>Documento 1</li>
+            <li>Documento 2</li>
+            <li>Documento 3</li>
+            <li>Documento 4</li>
+            <li>Documento 5</li>
+            <li>Documento 6</li>
+            <li>Documento 7</li>
+            <li>Documento 8</li>
+            <li>Documento 9</li>
+            <li>Documento 10</li>
+            <li>Documento 11</li>
+            <li>Documento 12</li>
+            <li>Documento 13</li>
+            <li>Documento 14</li>
+            <li>Documento 15</li>
+            <li>Documento 16</li>
+            <li>Documento 17</li>
+            <li>Documento 18</li>
+            <li>Documento 19</li>
+            <li>Documento 20</li>
+            <li>Documento 21</li>
+            <li>Documento 22</li>
+            <li>Documento 23</li>
+            <li>Documento 24</li>
+            <li>Documento 25</li>
+            <li>Documento 26</li>
+            <li>Documento 27</li>
+            <li>Documento 28</li>
+            <li>Documento 29</li>
+            <li>Documento 30</li>
+            <li>Documento 31</li>
+            <li>Documento 32</li>
+          </ul>
+        </aside>
+      </div>
+    </main>
+  </body>
+</html>

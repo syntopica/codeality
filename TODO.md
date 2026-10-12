@@ -45,32 +45,14 @@ findings have shipped (`ragged-column`, `interaction-shift`, `narrow-page`,
 unreleased on `main`; see `TODO_LOG.md`). One half of those findings is left,
 plus the release:
 
-- [ ] **New rule: a crowded meta line that CSS-ellipsizes its own content**
-      (2026-10-12, InteliFactu Documentos viewer list, owner report). One row
-      line held date + category chip + account name + amount at ~600px; the
-      account name rendered as "Caix..." and "VEOPLAN ESPJ Op..." while
-      `text-hard-cut` stayed silent because the cut is
-      `text-overflow: ellipsis`, not upstream. Measure: a flex row of 3+ inline
-      items where an ellipsized child shows fewer than ~12 visible characters
-      (scrollWidth > clientWidth) at rest. Smallest next step: a fixture with
-      that row and a failing test in `packages/ui-quality/tests`.
-
-- [ ] **New rules from the InteliFactu Modelos casilla panel** (2026-10-12,
-      owner report on a `lang="es"` page; no current rule fired): (a)
-      `date-locale`: visible ISO dates (`2026-09-30`) on a page whose
-      `<html lang>` is not `en`/ISO-first; `DATE_TEXT` already matches them. (b)
-      `money-without-unit`: a column of decimal amounts (`4,20`, `10,50`) in a
-      list with no currency symbol or unit header anywhere in the list. (c)
-      `backdrop-dismiss`: in `behaviour`, after opening a modal layer
-      (`isModalLayer`), click the backdrop outside the panel and press Escape;
-      flag when neither closes it. (d) `list-dangling-rule`: a list whose last
-      item ends in a border followed by nothing (no total, no footer). (e)
-      monospace used for proportional prose (names, labels) inside a sans UI.
-      (f) an unbreakable string (a formula `152+03+06+...`) overflowing its
-      panel and clipped at the edge by a scroll container; check why the
-      existing clip rules missed it. (g) a footer "Total" that only repeats a
-      single row above it. Smallest next step: one fixture page with all five
-      and failing tests in `packages/ui-quality/tests`.
+- [ ] **`label-wrap`: the misaligned icon half, and line-clamp for
+      `crowded-meta-line`** (2026-10-12, deferred from the Modelos panel rules).
+      `label-wrap` measures the wrap only; an icon centred against a two-line
+      label is not measured, and `crowded-meta-line` reads
+      `text-overflow: ellipsis` only, not `-webkit-line-clamp`. Smallest next
+      step: have the probe read `-webkit-line-clamp`, and add a fixture with an
+      svg beside a wrapped `dt` to measure the icon's centre against the label's
+      first line.
 
 - [~] **Release ui-quality, db-quality and test-quality with the warning level
   removed.** ui-quality 0.8.0 is out (2026-10-11, logged); db-quality and

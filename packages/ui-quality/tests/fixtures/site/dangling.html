@@ -1,0 +1,58 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>A rule under the last item</title>
+    <style>
+      body {
+        margin: 0;
+        font: 16px/24px sans-serif;
+        color: #111827;
+        background: #ffffff;
+      }
+      main {
+        padding: 24px;
+      }
+      ul {
+        margin: 0;
+        padding: 0;
+        list-style: none;
+      }
+      .card {
+        width: 400px;
+        padding: 16px;
+        margin-bottom: 24px;
+        border: 1px solid #d1d5db;
+        border-radius: 8px;
+      }
+      .ruled li {
+        padding: 8px 0;
+        border-bottom: 1px solid #e5e7eb;
+      }
+      .divided li + li {
+        border-top: 1px solid #e5e7eb;
+      }
+      .divided li {
+        padding: 8px 0;
+      }
+      .footer {
+        padding-top: 8px;
+        font-weight: 600;
+      }
+    </style>
+  </head>
+  <body>
+    <main>
+      <h1>Documentos</h1>
+      <section class="card">
+        <h2>Casilla 29</h2>
+        <ul class="ruled">
+          <li>CUOTA 07/2026</li>
+          <li>CUOTA 08/2026</li>
+          <li>CUOTA 09/2026</li>
+        </ul>
+      </section>
+    </main>
+  </body>
+</html>

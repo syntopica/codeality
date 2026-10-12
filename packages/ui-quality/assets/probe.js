@@ -542,6 +542,7 @@
       overflowX: style.overflowX,
       overflowY: style.overflowY,
       position: style.position,
+      insetTop: parseFloat(style.top) || 0,
       flexWrap: style.flexWrap,
       textOverflow: style.textOverflow,
       scrollWidth: element.scrollWidth,
@@ -850,6 +851,13 @@
     documentWidth: document.documentElement.scrollWidth,
     documentHeight: document.documentElement.scrollHeight,
     rootColorScheme: rootStyle.colorScheme,
+    lang: (document.documentElement.lang || '').trim().toLowerCase(),
+    bodyFontFamily: getComputedStyle(document.body)
+      .fontFamily.split(',')[0]
+      .replace(/["']/g, '')
+      .trim()
+      .toLowerCase()
+      .slice(0, 40),
     hasThemeColor: [
       ...document.querySelectorAll('meta[name="theme-color"]'),
     ].some((meta) => {
