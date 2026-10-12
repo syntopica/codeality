@@ -289,14 +289,14 @@ fix in the same loop, with no server.
 **Will it rewrite my code?** No. `--write` adds missing config files and
 scripts. The fixing is done by you or your agent, one finding at a time.
 
-**Are the token savings measured?** Yes, on four codebases, and the honest
-answer is "roughly even". Splitting a single 1000-1500-line god file made the
-agent's work 6-9% cheaper over three runs per task; refactoring a whole
-18,000-line repository under the strict rules came out at -1% over 50 runs, and
-a codebase that was already tidy got 12% more expensive. Total tokens moved in
-both directions. The same evidence covers runtime: bundled, the split code
-starts as fast as before; unbundled Node starts about 20% slower. Method and
-numbers: [docs/evidence](./docs/evidence/2026-10-12-agent-token-measurement.md).
+**Are the token savings measured?** Yes, and the honest answer is "no savings".
+Over 170 agent runs on four codebases, including 72 runs of hard tasks scored by
+hidden tests written before the runs, the strictly structured code cost the
+agent about the same (between 9% less and 12% more) and was changed correctly
+just as often. Modern coding agents search and read line ranges, so a god file
+costs them little. At runtime, bundled code starts as fast as before; unbundled
+Node starts about 20% slower. Method and numbers:
+[docs/evidence](./docs/evidence/2026-10-12-agent-token-measurement.md).
 
 **Can I adopt one piece at a time?** Yes. Every package installs and runs on its
 own; start with the core and add the optional gates when you need them.

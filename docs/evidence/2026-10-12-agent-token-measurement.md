@@ -181,26 +181,101 @@ import less of the code it reaches. Measured on both ccmanager trees, Node
 | startup, compiled binary `--version`, median  |            58 ms |            60 ms |
 | `tsc` build                                   |            3.5 s |            7.0 s |
 
-Unbundled, many small files start 21% slower (a first run on a busier machine
-gave 32%): Node resolves and loads each file separately. Bundled, as the shipped
-binary is, the difference is 3% in size and time. Loading only what a command
-needs takes lazy `import()` at the entry point, which no structural rule asks
-for.
+The machine above ran a load average of 40-114 from other work, so the startup
+timings were repeated on an otherwise idle Apple M1 laptop (load 3-7, Node
+26.5.0, 40 interleaved rounds, the same builds):
 
-## Conclusion across the four subjects
+|                                               | before |  after |
+| --------------------------------------------- | -----: | -----: |
+| startup, `node dist/cli.js --version`, median | 359 ms | 443 ms |
+| startup, compiled binary `--version`, median  |  65 ms |  68 ms |
 
-| subject               | starting point               | tokens, edit tasks | cost, all tasks |
-| --------------------- | ---------------------------- | -----------------: | --------------: |
-| private CLI           | already tidy (max 174 lines) |               +70% |            +12% |
-| ai-digest             | 1039-line god file           |               -20% |             -6% |
-| ccmanager, one file   | 1546-line god class          |                -2% |             -9% |
-| ccmanager, whole repo | 18k lines, max 1449 lines    |       -2% and +33% |             -1% |
+Unbundled, many small files start 21-23% slower: Node resolves and loads each
+file separately. Bundled, as the shipped binary is, the difference is 3% in size
+and time. Loading only what a command needs takes lazy `import()` at the entry
+point, which no structural rule asks for.
 
-"Fewer tokens" is not a claim these measurements support: token counts moved in
-both directions. The 6-9% cost reduction seen with three runs per cell did not
-hold up on the largest test, five runs per cell over the whole repository, which
-came out flat. What the rules buy an agent here is not a cheaper session but the
-same cost on code that is smaller per file, typed, deduplicated and gated; nor
-do they make the program faster, and unbundled they make it start slower.
+## Second round on ccmanager: hard tasks, scored by hidden tests
+
+The rounds above have three weaknesses that a skeptic would name: total tokens
+are dominated by the conversation being re-sent on every turn (cache reads were
+80-90% of them), the edit tasks were easy enough that every run succeeded, and
+the agent could not run the tests. Traces of four of those runs also showed that
+Claude Code does not read a god file whole: it searched, then read
+`worktreeService.ts` at `offset=335 limit=70`. When it did read a whole
+27k-character component, the split tree read 41% fewer characters but needed 15
+tool calls instead of 6.
+
+The design of this round was reviewed by Codex before any run, and its
+corrections were adopted:
+
+- **Hidden acceptance tests written and frozen before the runs** (13 tests in
+  three files, SHA-256 recorded), importing only paths with the same API in both
+  trees. Each failed on both untouched trees for the intended reason; four guard
+  tests passed on both.
+- **Correctness first.** A run passes when the hidden tests, the full existing
+  suite and `tsc --noEmit` all pass.
+- **Real working conditions.** Bash allowed for tests, typecheck and git; a
+  git-initialised copy per run; 60 turns per task, 120 for the long session.
+- **Paired runs**: each before/after pair ran at the same time, arm order
+  randomised.
+- **Separate metrics**: code read (characters returned by file reads and
+  searches), test and shell output, fresh context, total tokens and cost.
+
+Tasks, given verbatim to the agent:
+
+- **include** - stop `.worktreeinclude` copying from following symlinks out of
+  the source or through a symlinked destination directory.
+- **branch** - make generated branch names valid git refs, free of ref-path
+  prefix conflicts, within the length budget.
+- **merge** - leave no merge or rebase in progress after a conflict, without
+  aborting an unrelated operation.
+- **long** - all of the above as five numbered edits in one session.
+
+72 runs: ten pairs per task, six for the long session. Claude Code 2.1.296,
+Sonnet.
+
+| task    | pass before / after | hidden tests before / after | cost after / before (95% CI) | code read after / before (95% CI) | total tokens after / before |
+| ------- | ------------------: | --------------------------: | ---------------------------: | --------------------------------: | --------------------------: |
+| include |        9/10 / 10/10 |                 100% / 100% |            1.12 [0.98, 1.20] |                 1.09 [0.58, 2.12] |                        1.20 |
+| branch  |         0/10 / 0/10 |                   86% / 86% |            1.01 [0.91, 1.40] |                 1.92 [1.13, 3.35] |                        1.06 |
+| merge   |        10/10 / 9/10 |                 100% / 100% |            0.96 [0.84, 1.14] |                 0.71 [0.30, 1.70] |                        1.05 |
+| long    |           6/6 / 6/6 |                 100% / 100% |            1.08 [0.94, 1.22] |                 0.85 [0.36, 1.83] |                        0.92 |
+
+Ratios are of medians; intervals are bootstrap 95%. Notes on the scoring:
+
+- Every branch run, in both trees, failed the same hidden test: the 60-character
+  budget after deduplication, which the prompt states only as "keep the existing
+  length budgets". The test was frozen, so it was not relaxed after the fact.
+- `returnToMenu.test.ts`, a terminal end-to-end test, failed in 41 runs; run
+  serially afterwards it also failed on both untouched trees, so it was excluded
+  as environmental. The two remaining failures (one per tree) are the same
+  timing-sensitive `App.test.tsx` case, in tasks that do not touch it.
+- When the agent sent a command to the background, the session reported several
+  results; usage was summed across them.
+
+On these tasks the strict layout made no difference to whether the agent got the
+change right, and cost between 4% less and 12% more. The one difference outside
+the noise is that the agent read about twice as much code in the split tree for
+the branch task, whose logic is spread over many small files.
+
+## Conclusion
+
+| subject                       | starting point               | tokens, edit tasks | cost, all tasks | correctness |
+| ----------------------------- | ---------------------------- | -----------------: | --------------: | ----------: |
+| private CLI                   | already tidy (max 174 lines) |               +70% |            +12% |        same |
+| ai-digest                     | 1039-line god file           |               -20% |             -6% |        same |
+| ccmanager, one file           | 1546-line god class          |                -2% |             -9% |        same |
+| ccmanager, whole repo         | 18k lines, max 1449 lines    |       -2% and +33% |             -1% |        same |
+| ccmanager, hard hidden-tested | same                         |        -8% to +20% |     -4% to +12% |        same |
+
+"Fewer tokens" is not a claim these measurements support, and neither is "the
+agent makes fewer mistakes": with a modern coding agent that searches and reads
+line ranges, a god file costs it little, and on hard tasks scored by hidden
+tests both layouts were equally correct. The 6-9% cost reduction seen with three
+runs per cell did not hold up with more runs. The strict layout costs an agent
+about the same, sometimes a little more, and an unbundled Node program starts
+about 20% slower. Whatever case there is for the rules, it is not measured here
+as agent tokens, agent accuracy or runtime speed.
 
 Raw per-run JSON was kept in the session scratchpad, not committed.
