@@ -66,8 +66,11 @@ plus the release:
       flag when neither closes it. (d) `list-dangling-rule`: a list whose last
       item ends in a border followed by nothing (no total, no footer). (e)
       monospace used for proportional prose (names, labels) inside a sans UI.
-      Smallest next step: one fixture page with all five and failing tests in
-      `packages/ui-quality/tests`.
+      (f) an unbreakable string (a formula `152+03+06+...`) overflowing its
+      panel and clipped at the edge by a scroll container; check why the
+      existing clip rules missed it. (g) a footer "Total" that only repeats a
+      single row above it. Smallest next step: one fixture page with all five
+      and failing tests in `packages/ui-quality/tests`.
 
 - [~] **Release ui-quality, db-quality and test-quality with the warning level
   removed.** ui-quality 0.8.0 is out (2026-10-11, logged); db-quality and
