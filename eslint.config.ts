@@ -9,6 +9,10 @@ import { createNodeConfig } from '@syntopica/eslint-config/node'
 // first (ESLint walks up from the linted file to the nearest config), so
 // this file only ever applies where nothing closer exists.
 export default [
+  // The README's before/after fixture: `before/` fails on purpose, and both
+  // are linted under the vite-react-app template's config, which is how
+  // docs/examples/user-list/README.md reproduces the quoted output.
+  { ignores: ['docs/examples/**'] },
   ...createBaseConfig({ tsconfigRootDir: import.meta.dirname }),
   ...createNodeConfig(),
   ...createDataFilesConfig(),
