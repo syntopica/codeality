@@ -1,4 +1,4 @@
-<!-- HERO IMAGE: docs/assets/hero.png (prompt in docs/marketing/image-prompts.md) -->
+<p align="center"><img src="docs/assets/hero.png" width="100%" alt="codeality turns chaotic AI-generated code into small, clean files"></p>
 
 <h1 align="center">codeality</h1>
 
@@ -41,7 +41,7 @@ tokens go.
 
 ## Before / after
 
-<!-- BEFORE/AFTER IMAGE: docs/assets/before-after.png -->
+<p align="center"><img src="docs/assets/before-after.png" width="100%" alt="Before: one giant file, N+1 requests, tokens drained. After: small files, one request, tokens saved"></p>
 
 **Before** - what an agent produces left alone (`src/UserList.tsx`, one file):
 
@@ -85,18 +85,21 @@ export function UserList({ ids }: { ids: string[] }) {
 export const unusedLegacyHelper = () => {} // dead export
 ```
 
-**What codeality tells the agent:**
+**What codeality tells the agent** (real `eslint` output on that file, excerpt):
 
 ```text
 src/UserList.tsx
-  error  File contains multiple top-level declarations (found 5). Extract them
-         into separate files to enforce atomic file structure.      code-policy/atomic-file
-  error  Strict View Separation: The hook "useEffect" is forbidden in a view
-         component. Extract your state/effects to a separate useUserList hook.
-                                                                     code-policy/view-logic-separation
-knip     Unused export: unusedLegacyHelper
-jscpd    Clone found: src/UserList.tsx:6-9 <-> src/admin/utils.ts:12-15
+   3:1   error    Inline types (interfaces or type aliases) are not permitted within runtime files. Please extract this type into its own dedicated file (e.g., UserProps.ts or UserState.ts) according to the Atomic File architecture  code-policy/no-inline-types-in-runtime-files
+   6:1   error    Top-level declaration "formatName" is not exported. The Primary Unit Rule forbids hidden internal helpers or types at the module scope  code-policy/no-hidden-top-level-declarations
+  13:3   warning  Strict View Separation: The hook "useEffect" is forbidden in a view component. Extract your state/effects to a separate useUserList hook  code-policy/view-logic-separation
+  17:15  error    Unsafe assignment of an `any` value  @typescript-eslint/no-unsafe-assignment
+  37:14  error    File contains multiple primary exported units (found 2). The Atomic File Rule requires exactly one primary exported unit  code-policy/one-primary-unit
+
+✖ 19 problems (16 errors, 3 warnings)
 ```
+
+On top of that, knip flags `unusedLegacyHelper` as an unused export and jscpd
+flags `formatName` as a clone of the copy in `src/admin/utils.ts`.
 
 **After** - what the agent produces once the gate is green:
 
@@ -133,14 +136,72 @@ less.
 
 ## Why it works with agents
 
+<p align="center"><img src="docs/assets/agent-loop.png" width="420" alt="The agent writes, the gates reject with a fix, the agent repairs until clean"></p>
+
 - **Error messages are instructions.** Every rule says what to extract and where
   it goes. The agent fixes it without asking you.
 - **Gates, not guidelines.** A `CLAUDE.md` saying "write clean code" is a wish.
   A red `check:all` is a fact the agent cannot talk its way around.
-- **One unit per file** is the cheapest context an agent can get: the file name
-  is the index, `grep` finds it, and a change touches one small file.
 - **Debt is carried, not ignored.** Adopt on a messy repo today; existing
   findings go into a baseline and only new ones fail.
+
+## What strict rules buy you
+
+Every rule here costs the agent a few seconds once and pays back on every
+session after it.
+
+### Less context, fewer tokens
+
+- **Atomic files** (one exported unit per file) mean the agent loads the 20
+  lines it needs, not the 900 around them. Reading is most of what an agent
+  spends.
+- **The file name is the index.** `useUserList.ts` holds `useUserList`. The
+  agent finds code with `ls` and `grep` instead of reading files to discover
+  what is in them.
+- **Predictable placement** (`file-kind-placement`): hooks, types, views and
+  services each have a home. The agent knows where code lives and where new code
+  goes, so there is no `utils.ts` dumping ground to scan.
+- **No dead code** (knip): nothing unused for the agent to read, keep in sync,
+  or copy as an example.
+
+### Smaller blast radius, fewer broken edits
+
+- **A change touches one small file.** Fewer lines in play means fewer
+  accidental edits to code next door, and search-and-replace edits match exactly
+  once.
+- **Public entry points only** (`public-api-imports`,
+  `no-cross-module-deep-imports`): callers depend on a module's front door, so
+  the agent can rewrite its internals without breaking anything outside.
+- **No import cycles** (dependency-cruiser): each module can be understood and
+  changed on its own, and load-order bugs disappear.
+- **One copy of everything** (jscpd): a bug fixed once is fixed everywhere. No
+  more agent patching one copy and missing the other two.
+- **Types in their own files**: one definition reused across the codebase,
+  instead of a slightly different `User` redefined in every file that needs one.
+- **Strict TypeScript**: an API the agent invented fails the type check, not
+  production.
+
+### Easier to review, safe to parallelize
+
+- **Small diffs.** A pull request made of 30-line files reads in minutes; one
+  that rewrites half of a 900-line file does not.
+- **Fewer merge conflicts.** Several agents or worktrees working at once rarely
+  touch the same small file.
+- **Views without logic** (`view-logic-separation`): components only render, so
+  logic lives in hooks you test without a DOM, and markup changes never break
+  behaviour.
+
+### Faster loops, better product
+
+- **Fast tests** (test-quality): no DOM booted for pure functions, no file run
+  twice. The agent's check-fix loop gets shorter.
+- **Eyes for the UI** (ui-quality): an agent cannot see the page it built. The
+  gate renders it in light and dark at several widths and reports contrast,
+  clipping and off-palette colours.
+- **Sound database** (db-quality): migrations and schemas linted before they
+  reach production.
+- **Checks at commit time** (lefthook): problems surface in seconds on the
+  agent's machine, not ten minutes later in CI.
 
 ## What gets checked
 
