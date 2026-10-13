@@ -2,6 +2,13 @@
 
 ## [Unreleased]
 
+### Patch Changes
+
+- fix: the baseline counts occurrences. Each fingerprint is recorded as often as
+  it was reported, but the check compared membership, so a baselined violation
+  that started occurring more often passed as known. Every occurrence beyond the
+  recorded count is now new, and every fixed occurrence is reported as resolved.
+
 - **Breaking:** the warning severity is gone. Every finding is an `error`,
   `Severity` is `'error'` alone, and `--json` reports `"severity": "error"` on
   every finding. The codes that warned before (`BDB001`-`BDB005`, prisma-lint,

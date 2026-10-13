@@ -2,6 +2,13 @@
 
 ## [Unreleased]
 
+### Patch Changes
+
+- fix: the baseline counts occurrences. Each fingerprint is recorded as often as
+  it was reported, but the check compared membership, so a baselined violation
+  that started occurring more often passed as known. Every occurrence beyond the
+  recorded count is now new, and every fixed occurrence is reported as resolved.
+
 - New rules: `crowded-meta-line`, `date-locale`, `money-without-unit`,
   `list-dangling-rule`, `monospace-prose`, `unbreakable-overflow`,
   `redundant-total`, `label-wrap` and `untranslated-text`, for list and panel
