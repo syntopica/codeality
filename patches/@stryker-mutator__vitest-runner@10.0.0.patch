@@ -1,5 +1,5 @@
 diff --git a/dist/src/stryker-setup.js b/dist/src/stryker-setup.js
-index aecfacbe47b285c272c47e54b3d66a716adfdc41..019840f4739ab8ebfb82037c9f8a95a9aee9a5ed 100644
+index aecfacbe47b285c272c47e54b3d66a716adfdc41..577017bce04e2398d0b406fef09652fa91da63c2 100644
 --- a/dist/src/stryker-setup.js
 +++ b/dist/src/stryker-setup.js
 @@ -63,7 +63,7 @@ function collectTestName({ name, suite, }) {
@@ -7,12 +7,12 @@ index aecfacbe47b285c272c47e54b3d66a716adfdc41..019840f4739ab8ebfb82037c9f8a95a9
          currentSuite = currentSuite.suite;
      }
 -    return nameParts.join(' ').trim();
-+    return nameParts.map((part) => part.trim()).filter((part) => part !== '').join(' > ');
++    return nameParts.filter((part) => part !== '').join(' > ');
  }
  function toRawTestId(test) {
      return `${test.file?.filepath ?? 'unknown.js'}#${collectTestName(test)}`;
 diff --git a/dist/src/test-helpers.js b/dist/src/test-helpers.js
-index 56cc786f30c524ae18ce87eef1a67fdf26b703c5..9ff802143e51b8995927760562f5cf6bf95db0ed 100644
+index 56cc786f30c524ae18ce87eef1a67fdf26b703c5..d3855338a6d3741ce691d1d87ecee7f105a01405 100644
 --- a/dist/src/test-helpers.js
 +++ b/dist/src/test-helpers.js
 @@ -8,7 +8,7 @@ export function collectTestName({ name, suite, }) {
@@ -20,7 +20,7 @@ index 56cc786f30c524ae18ce87eef1a67fdf26b703c5..9ff802143e51b8995927760562f5cf6b
          currentSuite = currentSuite.suite;
      }
 -    return nameParts.join(' ').trim();
-+    return nameParts.map((part) => part.trim()).filter((part) => part !== '').join(' > ');
++    return nameParts.filter((part) => part !== '').join(' > ');
  }
  export function toRawTestId(test) {
      return `${test.file?.filepath ?? 'unknown.js'}#${collectTestName(test)}`;

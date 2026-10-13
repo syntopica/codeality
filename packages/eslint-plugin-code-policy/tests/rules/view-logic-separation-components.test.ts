@@ -25,6 +25,17 @@ runRuleTest('view-logic-separation component detection', rule, {
       code: `export const useThing = () => React.useState(0)`,
       filename: THING_FILE,
     },
+    // Only .tsx files hold views; a component-shaped function in .ts is not one.
+    {
+      code: `
+        export function Widget() {
+          const [value] = useState(0)
+          const reset = () => value
+          return reset
+        }
+      `,
+      filename: '/src/components/widget.ts',
+    },
   ],
   invalid: [
     {
