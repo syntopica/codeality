@@ -10,6 +10,17 @@
  * imports it by design. knip 6.35 started applying `includeEntryExports` to
  * the files its own plugins register, so a blanket `true` failed the gate in
  * six of the eight templates with exports no project can remove.
+ *
+ * A trailing `!` marks a pattern as production code for `knip --production`,
+ * which keeps only marked entries and marked project files: the runtime roots
+ * and sources carry it, framework and build configuration does not. Without
+ * the mark, production mode treated every source file as outside the project
+ * and reported runtime dependencies - `vue`, `zod`, `@nestjs/core` - as unused.
+ * Tests sitting beside the sources are excluded from production through
+ * PRODUCTION_PROJECT_EXCLUSIONS. Configuration stays unmarked - knip drops a
+ * plugin's config files from production whatever their mark - so a Vite plugin
+ * imported only by `vite.config.*` and declared in `dependencies` is reported
+ * there, rightly: it is a build tool.
  */
 export type KnipFramework =
   | 'astro'
@@ -27,13 +38,13 @@ export const FRAMEWORK_ENTRIES: Record<
   { entry: string[]; project: string[]; includeEntryExports: boolean }
 > = {
   astro: {
-    entry: ['src/pages/**/*.{astro,ts,tsx}', 'astro.config.*'],
-    project: ['src/**/*.{astro,ts,tsx}'],
+    entry: ['src/pages/**/*.{astro,ts,tsx}!', 'astro.config.*'],
+    project: ['src/**/*.{astro,ts,tsx}!'],
     includeEntryExports: false,
   },
   nestjs: {
-    entry: ['src/main.ts', 'src/**/*.module.ts'],
-    project: ['src/**/*.ts'],
+    entry: ['src/main.ts!', 'src/**/*.module.ts!'],
+    project: ['src/**/*.ts!'],
     includeEntryExports: true,
   },
   // The App Router lives at either `app/` or `src/app/`, and the proxy follows
@@ -51,15 +62,15 @@ export const FRAMEWORK_ENTRIES: Record<
   // "Refine entry pattern (no matches)" hint in a project that has neither.
   nextjs: {
     entry: [
-      '{,src/}app/**/{page,layout,loading,error,global-error,not-found,route,template,default,sitemap,robots,manifest,icon,apple-icon,opengraph-image,twitter-image}.{ts,tsx}',
+      '{,src/}app/**/{page,layout,loading,error,global-error,not-found,route,template,default,sitemap,robots,manifest,icon,apple-icon,opengraph-image,twitter-image}.{ts,tsx}!',
       'next.config.*',
     ],
-    project: ['{,src/}app/**/*.{ts,tsx}', 'src/**/*.{ts,tsx}'],
+    project: ['{,src/}app/**/*.{ts,tsx}!', 'src/**/*.{ts,tsx}!'],
     includeEntryExports: false,
   },
   nuxt: {
-    entry: ['app/**/*.vue', 'server/**/*.ts', 'nuxt.config.*'],
-    project: ['app/**/*.{ts,vue}', 'server/**/*.ts'],
+    entry: ['app/**/*.vue!', 'server/**/*.ts!', 'nuxt.config.*'],
+    project: ['app/**/*.{ts,vue}!', 'server/**/*.ts!'],
     includeEntryExports: false,
   },
   // TanStack Start has no index.html and no src/main.tsx: the router is the
@@ -70,37 +81,37 @@ export const FRAMEWORK_ENTRIES: Record<
   // becoming "Refine entry pattern" hints.
   'tanstack-start': {
     entry: [
-      'src/router.{ts,tsx}',
-      'src/routes/**/*.{ts,tsx}',
-      'src/{server,start,client}.{ts,tsx}',
+      'src/router.{ts,tsx}!',
+      'src/routes/**/*.{ts,tsx}!',
+      'src/{server,start,client}.{ts,tsx}!',
       'vite.config.*',
     ],
-    project: ['src/**/*.{ts,tsx}'],
+    project: ['src/**/*.{ts,tsx}!'],
     includeEntryExports: false,
   },
   tauri: {
     // The scaffolded tauri-app frontend is React, so its entry is
     // src/main.tsx, not src/main.ts; keep both extensions so a plain-TS
     // Tauri frontend also matches.
-    entry: ['src/main.{ts,tsx}', 'vite.config.*'],
-    project: ['src/**/*.{ts,tsx}'],
+    entry: ['src/main.{ts,tsx}!', 'vite.config.*'],
+    project: ['src/**/*.{ts,tsx}!'],
     includeEntryExports: false,
   },
   'ts-package': {
-    entry: ['src/index.ts'],
-    project: ['src/**/*.ts'],
+    entry: ['src/index.ts!'],
+    project: ['src/**/*.ts!'],
     includeEntryExports: true,
   },
   // `src/main.*` is reached through index.html's module script; listing it as
   // well was a "Remove redundant entry pattern" hint in both Vite templates.
   'vite-react': {
-    entry: ['index.html', 'vite.config.*'],
-    project: ['src/**/*.{ts,tsx}'],
+    entry: ['index.html!', 'vite.config.*'],
+    project: ['src/**/*.{ts,tsx}!'],
     includeEntryExports: false,
   },
   'vite-vue': {
-    entry: ['index.html', 'vite.config.*'],
-    project: ['src/**/*.{ts,vue}'],
+    entry: ['index.html!', 'vite.config.*'],
+    project: ['src/**/*.{ts,vue}!'],
     includeEntryExports: false,
   },
 }

@@ -6,8 +6,10 @@
 import type { KnipConfiguration } from 'knip'
 
 import { existingEntries } from './existingEntries'
+import { FRAMEWORK_RUNTIME_PACKAGES } from './FRAMEWORK_RUNTIME_PACKAGES'
 import { FRAMEWORK_ENTRIES, type KnipFramework } from './knip-framework'
 import { peersOfListedDependencies } from './peersOfListedDependencies'
+import { PRODUCTION_PROJECT_EXCLUSIONS } from './PRODUCTION_PROJECT_EXCLUSIONS'
 import { runnerDependenciesToIgnore } from './runnerDependenciesToIgnore'
 
 // Every template installs these as peer dependencies of
@@ -85,6 +87,10 @@ export const createKnipConfig = (options: {
    * dependency reached only from there reports as unused. This is a merge, not
    * a replacement: the preset's globs stay, so a project cannot silently opt
    * out of scanning the directories the framework does own.
+   *
+   * Add a trailing `!` to a glob that holds runtime code
+   * (`'components/**\/*.tsx!'`): `knip --production` analyses only marked
+   * globs, so an unmarked one drops out of that run.
    */
   project?: string[]
   /**
@@ -93,6 +99,8 @@ export const createKnipConfig = (options: {
    * a CLI, a script the app spawns. A preset entry that is a literal path
    * missing from the project (`ts-package`'s `src/index.ts` in a CLI package)
    * is dropped once this is set, so it cannot become a "no matches" hint.
+   * Mark a runtime root with a trailing `!` (`'src/cli/main.ts!'`) so
+   * `knip --production` starts from it too; leave scripts and tooling unmarked.
    */
   entry?: string[]
   /**
@@ -122,7 +130,11 @@ export const createKnipConfig = (options: {
     entry: options.entry
       ? [...existingEntries(entry, cwd), ...options.entry]
       : entry,
-    project: [...project, ...(options.project ?? [])],
+    project: [
+      ...project,
+      ...(options.project ?? []),
+      ...PRODUCTION_PROJECT_EXCLUSIONS,
+    ],
     ...(options.ignore ? { ignore: options.ignore } : {}),
     ...(options.drizzle === false ? { drizzle: false } : {}),
     // Without this, exports of entry files are never checked, so a dead export
@@ -146,6 +158,7 @@ export const createKnipConfig = (options: {
     ignoreBinaries: ['gitleaks', ...(options.ignoreBinaries ?? [])],
     ignoreDependencies: [
       ...runnerDependenciesToIgnore(cwd),
+      ...(FRAMEWORK_RUNTIME_PACKAGES[options.framework] ?? []),
       ...ESLINT_PEER_DEPENDENCIES.filter(
         (dependency) => !hostedPeers.has(dependency),
       ),

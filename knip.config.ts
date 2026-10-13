@@ -2,8 +2,18 @@ import type { KnipConfig } from 'knip'
 
 // Templates are scaffolding: their exports are consumed by the projects
 // generated from them, not from inside this repo. Only dependency findings
-// are meaningful here.
-const TEMPLATE_GLOB = ['**/*.{ts,tsx,vue,astro}']
+// are meaningful here, so every source file is an entry.
+//
+// The trailing `!` marks them as production code for `knip --production`,
+// minus the tests and the build configuration that never ship; the default run
+// strips the marks and ignores the `!...!` negations, so it sees every source
+// file, tests included. Package `src/` and `bin/` patterns below carry the same
+// mark; their `tests/` globs do not, so production mode leaves tests out.
+const TEMPLATE_GLOB = [
+  '**/*.{ts,tsx,vue,astro}!',
+  '!**/*.{test,spec}.{ts,tsx}!',
+  '!**/{vite,vitest,playwright,astro,nuxt,next,tailwind,postcss,eslint,knip}.config.*!',
+]
 
 // Each template installs these as peer dependencies of
 // @syntopica/eslint-config: the config factories (base.ts and friends)
@@ -51,8 +61,8 @@ const config: KnipConfig = {
       ],
     },
     'packages/*': {
-      entry: ['src/index.ts', 'src/*.ts', 'bin/*.mjs'],
-      project: ['src/**/*.ts'],
+      entry: ['src/index.ts!', 'src/*.ts!', 'bin/*.mjs!'],
+      project: ['src/**/*.ts!'],
     },
     'packages/tsconfig': {
       // nextjs.json declares the Next TypeScript plugin by name, which knip
@@ -63,13 +73,13 @@ const config: KnipConfig = {
     'packages/eslint-plugin-code-policy': {
       // A workspace-specific key replaces rather than merges with the
       // `packages/*` wildcard, so entry/project are repeated here.
-      entry: ['src/index.ts', 'src/*.ts'],
+      entry: ['src/index.ts!', 'src/*.ts!'],
       // This is the one package whose tests live outside `src`. They are in
       // scope so the dependencies only they pull in (the parser the rule
       // tester runs on) count as used instead of being reported as unused
       // devDependencies; knip's vitest plugin supplies the test files
       // themselves as entry points.
-      project: ['src/**/*.ts', 'tests/**/*.ts'],
+      project: ['src/**/*.ts!', 'tests/**/*.ts'],
       // Fixtures are read from disk by path, never imported, so knip cannot
       // see a consumer and reports every one of them as an unused file. They
       // live at the package root, not under tests/, because file-kind-placement
@@ -83,24 +93,24 @@ const config: KnipConfig = {
     },
     'packages/gate-kit': {
       // Consumed through the `./*` export map by the gate CLIs, which bundle it.
-      entry: ['src/*.ts'],
-      project: ['src/**/*.ts', 'tests/**/*.ts'],
+      entry: ['src/*.ts!'],
+      project: ['src/**/*.ts!', 'tests/**/*.ts'],
     },
     'packages/ui-quality': {
-      entry: ['bin/*.mjs'],
-      project: ['src/**/*.ts', 'tests/**/*.ts'],
+      entry: ['bin/*.mjs!'],
+      project: ['src/**/*.ts!', 'tests/**/*.ts'],
     },
     'packages/test-quality': {
       // The inventory probe in assets/ is run with node inside the audited
       // project, so knip sees it only as an entry.
-      entry: ['src/cli.ts', 'bin/*.mjs', 'assets/*.mjs'],
-      project: ['src/**/*.ts', 'tests/**/*.ts'],
+      entry: ['src/cli.ts!', 'bin/*.mjs!', 'assets/*.mjs!'],
+      project: ['src/**/*.ts!', 'tests/**/*.ts'],
     },
     'packages/db-quality': {
       // A workspace-specific key replaces rather than merges with the
       // `packages/*` wildcard, so entry/project are repeated here.
-      entry: ['src/cli.ts', 'bin/*.mjs'],
-      project: ['src/**/*.ts', 'tests/**/*.ts'],
+      entry: ['src/cli.ts!', 'bin/*.mjs!'],
+      project: ['src/**/*.ts!', 'tests/**/*.ts'],
       // The adapters spawn these as executables through the command runner
       // (`runSquawk` -> squawk, `runPrismaLint` -> prisma-lint) or load them
       // from the shipped ESLint config in assets/, which knip does not parse

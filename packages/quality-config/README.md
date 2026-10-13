@@ -34,6 +34,16 @@ Add `knip` and/or `dependency-cruiser` for the gates you use.
 | `@syntopica/quality-config/type-coverage`      | Minimum non-`any` type coverage threshold |
 | `@syntopica/quality-config/lefthook`           | Shared git hook pipeline                  |
 
+### `knip --production`
+
+Every preset marks its runtime entries and source globs with knip's production
+suffix (`!`) and leaves configuration files unmarked, and tests, mocks and
+stories are excluded in production mode only. `knip --production` then starts
+from the code that ships: a dependency only a test imports, or a build plugin in
+`dependencies`, is reported there, while the default run is unchanged. A
+`project` or `entry` glob you pass that holds runtime code needs the `!` too
+(`'components/**/*.tsx!'`); unmarked, it is left out of the production run.
+
 ### Module boundaries on the resolved graph
 
 `createDepCruiserConfig({ moduleRoots: ['src/features'] })` treats each child of

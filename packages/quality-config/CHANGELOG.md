@@ -7,6 +7,12 @@
 - feat: `createDepCruiserConfig({ moduleRoots })` adds
   `no-deep-cross-module-import`: under each named root, a module may reach
   another only through its `index`, judged on resolved paths. Opt-in.
+- feat: `createKnipConfig` supports `knip --production`. Each preset marks its
+  runtime entries and sources as production code and excludes tests, mocks and
+  stories in that mode, so it no longer reports runtime dependencies (`vue`,
+  `zod`, `@nestjs/core`) as unused. Framework packages read only by their config
+  (`astro`, `nuxt`) are ignored in production mode only. The default run is
+  unchanged.
 
 ## 0.13.2
 

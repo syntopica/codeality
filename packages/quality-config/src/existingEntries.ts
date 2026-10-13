@@ -11,9 +11,13 @@ const GLOB_CHARACTERS = /[*?{}[\]!]/u
  * pattern (no matches)" hint the caller cannot silence.
  */
 export const existingEntries = (entries: string[], cwd: string): string[] =>
-  entries.filter(
-    (entry) =>
-      GLOB_CHARACTERS.test(entry) ||
+  entries.filter((entry) => {
+    // A trailing `!` marks a production entry, not a glob: `src/index.ts!` is
+    // still the literal `src/index.ts`.
+    const path = entry.replace(/!$/u, '')
+    return (
+      GLOB_CHARACTERS.test(path) ||
       // eslint-disable-next-line security/detect-non-literal-fs-filename -- the entry is the preset's own literal, resolved against the project root
-      existsSync(join(cwd, entry)),
-  )
+      existsSync(join(cwd, path))
+    )
+  })

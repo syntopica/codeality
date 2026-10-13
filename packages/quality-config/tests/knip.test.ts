@@ -18,7 +18,7 @@ describe('createKnipConfig', () => {
       framework: 'ts-package',
       cwd: emptyProject(),
     })
-    expect(config.entry).toEqual(['src/index.ts'])
+    expect(config.entry).toEqual(['src/index.ts!'])
   })
 
   it('replaces a missing default entry with the caller entry', () => {
@@ -39,6 +39,36 @@ describe('createKnipConfig', () => {
       entry: ['src/cli/main.ts'],
       cwd: dir,
     })
-    expect(config.entry).toEqual(['src/index.ts', 'src/cli/main.ts'])
+    expect(config.entry).toEqual(['src/index.ts!', 'src/cli/main.ts'])
+  })
+
+  it('marks runtime entries and sources for production and leaves config unmarked', () => {
+    const config = createKnipConfig({
+      framework: 'vite-vue',
+      cwd: emptyProject(),
+    })
+    expect(config.entry).toEqual(['index.html!', 'vite.config.*'])
+    expect(config.project).toContain('src/**/*.{ts,vue}!')
+  })
+
+  it('excludes tests and stories from production only', () => {
+    const config = createKnipConfig({
+      framework: 'nestjs',
+      cwd: emptyProject(),
+    })
+    const exclusions = (config.project as string[]).filter((pattern) =>
+      pattern.startsWith('!'),
+    )
+    expect(exclusions.length).toBeGreaterThan(0)
+    for (const pattern of exclusions) expect(pattern.endsWith('!')).toBe(true)
+  })
+
+  it('ignores the framework package in production mode only', () => {
+    const config = createKnipConfig({ framework: 'astro', cwd: emptyProject() })
+    expect(config.ignoreDependencies).toContain('astro!')
+    expect(
+      createKnipConfig({ framework: 'vite-vue', cwd: emptyProject() })
+        .ignoreDependencies,
+    ).not.toContain('vue!')
   })
 })
