@@ -136,7 +136,7 @@ as under `one-primary-unit` above.
 
 ---
 
-### `code-policy/view-logic-separation` — no logic in TSX views (error)
+### `code-policy/view-logic-separation` — no logic in TSX views (warn)
 
 `.tsx` view components must not contain state management, side effects, or
 handler logic. These belong in custom hooks.
@@ -351,5 +351,38 @@ export default [
 ]
 ```
 
-Never disable `code-policy/view-logic-separation` or `code-policy/atomic-file`
-project-wide — these are the load-bearing rules.
+To keep every check except the atomic-file layout (one exported unit per file,
+no hidden helpers, types in their own files, kind-based placement, view/hook
+split), use `createCodeQualityConfig({ atomic: false })`. Size and complexity
+caps, SonarJS, the test rules and the import-boundary rules stay. Measured on
+agent-driven changes, the layout cost more to keep and did not change
+correctness ([evidence](../evidence/2026-10-12-agent-token-measurement.md)), so
+choosing it is a trade-off, not a lapse.
+
+## Startup cost of many small files
+
+A Node CLI or server that ships its source unbundled loads every file at start.
+Measured on a 968-module strict tree, launch to first menu took 506 ms unbundled
+against 420 ms for the original layout, and 204 ms against 202 ms once both were
+bundled into one file. So ship one bundled entry; the layout then costs nothing
+at startup. The gate CLIs here do exactly that through `cliTsupOptions` in
+`packages/gate-kit`; for another package:
+
+```ts
+// tsup.config.ts
+import { defineConfig } from 'tsup'
+
+export default defineConfig({
+  entry: ['src/cli.ts'],
+  format: ['esm'],
+  target: 'node22',
+  // Inline the package's own modules; leave dependencies to node_modules.
+  bundle: true,
+  clean: true,
+  sourcemap: true,
+})
+```
+
+Point `bin` at `dist/cli.js`. A lazy entry (`await import('./app.js')` after the
+flags are parsed) also makes `--version` and `--help` about six times faster,
+but does not help a normal launch, which needs the whole app.

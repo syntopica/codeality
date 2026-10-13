@@ -175,37 +175,21 @@ Moved verbatim from `~/p/TODO.md` on 2026-10-03; the routing table in
 
 ## Rule precision and tooling roadmap (Codex tools review, 2026-10-13)
 
-- [ ] `is-exempt-entry-filename.ts` and `no-mixed-barrel` match
-      `endsWith('index.js')`, so `reindex.js` or `myindex.ts` with two exports
-      is exempt. Smallest step: match exact basenames (`index`, `*.config`,
-      `.d.ts`) with fixtures for `reindex.js`, `myindex.ts`,
-      `.mjs`/`.mts`/`.cts`.
-- [ ] `public-api-imports` checks only `ImportDeclaration` strings:
-      `export { x } from 'pkg/src/private'`, `import('pkg/src/private')` and
-      `@pkg/internal/private` pass, and a declared `./src/public` export fails;
-      `no-cross-module-deep-imports` counts `../` instead of resolving owners.
-      Smallest step: cover export-from and literal dynamic imports, then move
-      ownership to resolved dependency-cruiser rules.
-- [ ] `view-logic-separation` flags a top-level custom `useThing` in a `.tsx` as
-      a view, and misses `React.useState` and JSX arrow handlers. Smallest step:
-      exclude `use*` declarations from component detection and resolve namespace
-      hook calls, with fixtures.
-- [ ] `one-primary-unit` messages still say "exactly one" while the rule allows
-      zero; presets `strict`/`react`/`next` equal `recommended`. Smallest step:
-      align messages with at-most-one, and decide whether to ship distinct
-      safety / architecture / atomic profiles (atomic opt-in).
-- [ ] Diagnostics lack a common schema (rule, location, observed value,
-      threshold, fix, rerun command) across code-policy, db, ui and test gates.
-      Smallest step: define the JSON shape in gate-kit and adopt it in one tool.
-- [ ] Baselines compare fingerprint membership only, so a known violation can
-      worsen (longer file, wider UI overflow) without failing. Smallest step:
-      adversarial fixtures that record which worsenings pass today.
-- [ ] Generated lefthook runs oxlint and ESLint in parallel, so the fast pass
-      does not short-circuit the slow one; OXLINT.md says oxlint has no type
-      information, which upstream no longer holds. Smallest step: oxlint/ESLint
-      diagnostic parity matrix, then decide serial ordering.
-- [ ] Opt-in pilots, each with its own measurement: released TypeScript 7 `tsc`
-      beside the TS6 API, Knip production mode, `strict-boolean-expressions`,
-      Vitest related-tests hook, a bundled-CLI recipe for consumers, Stryker on
-      changed rules, packed-consumer smoke fixtures. Smallest step: TS7 parity
-      run on the plain-TS templates.
+- [ ] Baselines still miss a baselined finding whose measured value grows (a
+      longer file, a wider overflow): fingerprints exclude the value on purpose,
+      pinned by `packages/gate-kit/tests/classifyFindings.worsening.test.ts`.
+      Smallest step: an optional `observed` per baseline entry for measured
+      rules, compared on check.
+- [ ] The shared diagnostics shape (`packages/gate-kit/src/Diagnostic.ts`) is
+      emitted only by `codeality-ui check --json`. Smallest step: add
+      `diagnostics` to `codeality-db` `--json` output.
+- [ ] `knip --production` reports 22 unused dependencies, all false (`vue` in
+      the Vue template): the shared preset marks no production entries. Smallest
+      step: suffix template entry patterns with `!` and rerun.
+- [ ] ESLint's `--suppress-all` records errors only, so a warn-level rule
+      (`view-logic-separation`) cannot be bulk-suppressed on adoption. Smallest
+      step: confirm against ESLint 10 docs and document the workaround.
+- [ ] `patches/@stryker-mutator__vitest-runner@10.0.0.patch` restores mutation
+      testing on Vitest 5. Smallest step: drop it when
+      stryker-mutator/stryker-js#6210 ships, after `pnpm mutation` still scores
+      89.98 or more without it.

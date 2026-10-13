@@ -1,5 +1,59 @@
 ### 2026-10-13
 
+- [x] 2026-10-13 — **code-policy:** Rule precision fixes from the Codex tools
+      review.
+  - Result: exemptions match whole file names (`reindex.js`, `myindex.ts`,
+    `homepage.tsx`, `myproxy.ts` no longer exempt; `.mjs`/`.mts` barrels
+    recognised); `public-api-imports` and `no-cross-module-deep-imports` check
+    `export from`, `export *` and literal `import()`, plus `allowedSubpaths`;
+    `view-logic-separation` skips `useXxx` hooks and sees `React.useState`,
+    `memo` and `forwardRef`; `one-primary-unit` message says at most one; five
+    missing rule pages written; docs URLs point at this repository.
+  - Evidence: dc8a74b; 289 plugin tests; `pnpm check:ci` passed.
+- [x] 2026-10-13 — **Presets:** Distinct boundary preset and an atomic opt-out.
+  - Result: `configs.boundaries` (three import rules) and
+    `createCodeQualityConfig({ atomic: false })`; default unchanged.
+  - Evidence: 8f06b56; `tests/configs.test.ts`; probe lint of one file gave four
+    code-policy rules with `atomic: true`, only `public-api-imports` with false.
+- [x] 2026-10-13 — **Baselines:** Occurrence counting in `classifyFindings`.
+  - Result: each fingerprint occurrence beyond the recorded count is new, each
+    fixed one is resolved; the value-growth gap stays open in TODO.md.
+  - Evidence: cb35d97; `classifyFindings.worsening.test.ts`; db-quality 518 and
+    ui-quality 359 tests pass.
+- [x] 2026-10-13 — **Diagnostics:** Shared `Diagnostic` shape in gate-kit,
+      emitted by `codeality-ui check --json` with a shell-quoted `rerun`.
+  - Evidence: 016db46, 84c44ed; `report.test.ts`, `shellQuoted.test.ts` runs a
+    hostile route through `sh -c` and gets it back verbatim.
+- [-] 2026-10-13 — **Hooks:** Pipe oxlint before ESLint in pre-commit.
+  - Resolution: measured on the ts-package template with lefthook 2.2.1: a
+    failing file 0.5 s instead of 2.5 s, a clean file 2.2 s instead of 1.7 s;
+    clean commits dominate, so the hook stays parallel. OXLINT.md records the
+    numbers and the type-aware oxlint caveat (8457615).
+- [x] 2026-10-13 — **Mutation testing:** Stryker scored 3% on Vitest 5 because
+      the runner's test-name filter matched nothing (stryker-js#6210).
+  - Result: pnpm patch joins names with ' > ' untrimmed; new contract tests kill
+    new survivors.
+  - Evidence: 83cc0a2, b9fbb96; `pnpm mutation` 89.98 (break 89), was 3.37.
+- [x] 2026-10-13 — **Packaging:** `publish:check` lints with the packed tarball
+      of `eslint-plugin-code-policy`, every preset as ESM and CJS.
+  - Evidence: f56ff7f; deleting the `./configs/boundaries` export makes it fail
+    with `ERR_PACKAGE_PATH_NOT_EXPORTED`.
+- [x] 2026-10-13 — **Boundaries:** `createDepCruiserConfig({ moduleRoots })`
+      judges cross-module imports on resolved paths.
+  - Evidence: 37ffe8a; `moduleBoundaryRules.test.ts` cruises a fixture and gets
+    exactly the deep import, not the index or same-module edges.
+- [x] 2026-10-13 — **test-quality:** `check` reports DOM-free candidates as an
+      observation; only `measure --node-candidates` fails on them.
+  - Evidence: 436c95d; 43 tests including the CLI integration test.
+- [-] 2026-10-13 — **Pilots:** TS7, Knip production, strict-boolean-expressions,
+  Vitest related hook, bundled-CLI recipe.
+  - Resolution: TS7 `tsc` already runs in the plain-TS templates through
+    `@typescript/native`; Knip production mode moved to TODO.md (needs `!`
+    entries); `strict-boolean-expressions` gave 59 reports in 1388 files, none a
+    bug (each treats `''` as absent on purpose), so it stays off; a Vitest
+    related hook is not added, since T4 measured no token saving from faster
+    gates; the bundling recipe is in `docs/standards/code-quality.md`.
+
 - [x] 2026-10-13 — **Docs:** Corrected the overclaims and stale facts the Codex
       value review found, except the README hero line.
   - Result: README body claims enforcement with its measured cost (no token or
