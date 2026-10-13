@@ -3,7 +3,9 @@ import { join } from 'node:path'
 
 import { BASELINE_FILENAME } from '@/baseline/BASELINE_FILENAME.js'
 import { baselineActionFrom } from '@/baseline/baselineActionFrom.js'
+import { recordedMeasurements } from '@/baseline/recordedMeasurements.js'
 import { renderClassified } from '@/baseline/renderClassified.js'
+import { UI_MEASUREMENT_POLICY } from '@/baseline/UI_MEASUREMENT_POLICY.js'
 import { runCheck } from '@/check/runCheck.js'
 import { writeReport } from '@/check/writeReport.js'
 import type { CommandIo } from '@/commands/CommandIo.js'
@@ -39,6 +41,7 @@ export const baselineCommand = async (
         schemaVersion: 1,
         toolVersion: PACKAGE_VERSION,
         entries: result.findings.map((finding) => finding.fingerprint),
+        measurements: recordedMeasurements(result.findings),
       })
       io.stdout(
         `recorded ${String(result.findings.length)} findings in ${BASELINE_FILENAME}\n`,
@@ -48,6 +51,7 @@ export const baselineCommand = async (
     const classified = classifyFindings(
       result.findings,
       readBaseline(io.root, BASELINE_FILENAME, 'codeality-ui'),
+      UI_MEASUREMENT_POLICY,
     )
     io.stdout(`${renderClassified(classified)}\n`)
     const stale =

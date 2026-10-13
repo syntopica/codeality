@@ -42,9 +42,9 @@ describe('baseline', () => {
     expect(renderClassified(classified)).toMatch(
       /^1 new, 1 known, 1 resolved\n/,
     )
-    expect(renderClassified({ new: [], known: [], resolved: [] })).toBe(
-      '0 new, 0 known, 0 resolved',
-    )
+    expect(
+      renderClassified({ new: [], known: [], worsened: [], resolved: [] }),
+    ).toBe('0 new, 0 known, 0 resolved')
     writeFileSync(
       join(root, '.codeality-ui-baseline.json'),
       '{"schemaVersion":2}',

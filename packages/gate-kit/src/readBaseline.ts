@@ -3,6 +3,7 @@ import { join } from 'node:path'
 
 import type { BaselineFile } from './BaselineFile.js'
 import { ConfigError } from './ConfigError.js'
+import { readBaselineMeasurements } from './readBaselineMeasurements.js'
 
 /** Reads `filename` under `root`; `tool` names the CLI that creates it. */
 export const readBaseline = (
@@ -26,5 +27,14 @@ export const readBaseline = (
     schemaVersion: 1,
     toolVersion: document.toolVersion ?? '',
     entries: [...document.entries].sort(),
+    ...(document.measurements === undefined
+      ? {}
+      : {
+          measurements: readBaselineMeasurements(
+            document.measurements,
+            document.entries,
+            filename,
+          ),
+        }),
   }
 }

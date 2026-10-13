@@ -1,5 +1,23 @@
 ### 2026-10-13
 
+- [x] 2026-10-13 — **gate-kit / ui-quality:** Baselines catch a carried finding
+      whose measured value grew.
+  - Result: `horizontal-overflow` (`overflow-excess-px/v1`) and `a11y/*`
+    (`affected-elements/v1`) carry a numeric measurement per screen, kept at the
+    worst through grouping and merging and surfaced as `observed`/`threshold`;
+    the baseline gains an optional validated `measurements` map, and
+    `classifyFindings` takes a policy that fails a known finding risen past its
+    tolerance (1 px, exact count) against the recorded value. Count-only
+    baselines and DB stay unchanged.
+  - Evidence: five CLI captures of one build gave identical values; end to end,
+    +43 px exits 1 (`1 new (1 worse than recorded)`), +1 px exits 0; gate-kit 21
+    and ui-quality 367 tests passed.
+- [x] 2026-10-13 — **Templates:** `@tailwindcss/vite` moved to `devDependencies`
+      in the three Vite templates.
+  - Result: root `knip --production` reports no unused dependency.
+  - Evidence: 43909aa; vue-app and vite-react-app build; per-template knip
+    exit 0.
+
 - [x] 2026-10-13 — **db-quality:** `--json` emits the shared diagnostics.
   - Result: `check`, `audit`, `gate`, `perf diff` and `perf bench` add
     `diagnostics` beside their existing fields; gate stages keep their findings

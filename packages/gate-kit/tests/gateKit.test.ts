@@ -34,6 +34,7 @@ describe('gate-kit', () => {
     expect(classified).toEqual({
       new: [{ fingerprint: 'c' }],
       known: [{ fingerprint: 'a' }],
+      worsened: [],
       resolved: ['b'],
     })
     writeFileSync(join(root, 'b.json'), '{"schemaVersion":2}')

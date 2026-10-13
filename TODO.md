@@ -175,16 +175,6 @@ Moved verbatim from `~/p/TODO.md` on 2026-10-03; the routing table in
 
 ## Rule precision and tooling roadmap (Codex tools review, 2026-10-13)
 
-- [ ] Baselines still miss a baselined finding whose measured value grows (a
-      longer file, a wider overflow): fingerprints exclude the value on purpose,
-      pinned by `packages/gate-kit/tests/classifyFindings.worsening.test.ts`.
-      Codex review (2026-10-13): no finding carries a structured measurement
-      yet, and UI aggregation keeps only the first example, so a baseline
-      extension alone would compare nothing. Smallest step: a UI pilot that
-      keeps overflow excess (px) and affected axe-node count as numeric fields
-      through `groupRawFindings` and `mergeFindings`, then measure same-build
-      capture noise before any baseline `measurements` extension. DB perf and
-      bench keep their own records.
 - [!] `patches/@stryker-mutator__vitest-runner@10.0.0.patch` restores mutation
   testing on Vitest 5 (`' > '` join, empty `describe('')` names kept). Blocked
   on upstream: 10.0.0 is still the latest release. Smallest step: drop it when a

@@ -9,6 +9,11 @@ export const horizontalOverflow: Rule = (snapshot) =>
           message: `the page is ${String(snapshot.documentWidth)}px wide in a ${String(snapshot.viewportWidth)}px viewport and scrolls sideways`,
           subject: 'html',
           identity: 'document',
+          measurement: {
+            metric: 'overflow-excess-px/v1',
+            observed: snapshot.documentWidth - snapshot.viewportWidth,
+            threshold: 1,
+          },
         },
       ]
     : []

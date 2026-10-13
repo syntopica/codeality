@@ -268,9 +268,16 @@ file-based gates), `message`, `fingerprint`, optional `observed`, `threshold`
 and `fix`, and `rerun`, the command that checks that finding again.
 
 With `.codeality-ui-baseline.json` present, `check` fails only on findings the
-baseline does not carry. Exit codes: 0 passed, 1 findings, 2 invalid usage or
-configuration, 3 browser failure. A single page that fails twice is a
-`capture-failed` finding, not an exit 3.
+baseline does not carry, or carries at a better value. Two rules are measured:
+`horizontal-overflow` (excess width in px, tolerance 1) and the `a11y/*` axe
+rules (affected elements, exact). `baseline create|update` records each value
+per screen under `measurements`, and a carried finding that rises past its
+tolerance on any screen is reported as new, `worse than recorded`. The
+comparison is always against the recorded value, so it cannot creep. A baseline
+written without measurements is compared by count until it is updated; an older
+`codeality-ui` rewriting the file drops them. Exit codes: 0 passed, 1 findings,
+2 invalid usage or configuration, 3 browser failure. A single page that fails
+twice is a `capture-failed` finding, not an exit 3.
 
 `--routes <glob>` measures only the configured routes whose path matches
 (`/admin/**`, or `'/!(admin)**'` for everything else). A full run with `auth`

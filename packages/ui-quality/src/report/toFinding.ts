@@ -17,4 +17,7 @@ export const toFinding = (raw: RawFinding, screen: Screen): Finding => ({
     screen.colorScheme,
     raw.identity,
   ),
+  ...(raw.measurement
+    ? { measurements: [{ ...raw.measurement, screen: screenLabel(screen) }] }
+    : {}),
 })

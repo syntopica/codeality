@@ -11,5 +11,9 @@ export const axeFindings: Rule = (snapshot) =>
       message: `${violation.help}: ${String(violation.nodes.length)} element(s)${example ? `; e.g. ${example.summary}` : ''}`,
       subject: example?.target ?? '',
       identity: violation.id,
+      measurement: {
+        metric: 'affected-elements/v1',
+        observed: violation.nodes.length,
+      },
     }
   })

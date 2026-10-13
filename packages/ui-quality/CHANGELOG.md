@@ -4,6 +4,11 @@
 
 ### Minor Changes
 
+- feat: `horizontal-overflow` and the `a11y/*` rules carry a numeric measurement
+  per screen (`measurements` in `--json` findings, `observed` and `threshold` in
+  diagnostics), kept at its worst through grouping and merging. The baseline
+  records it, and `check` fails a carried finding that grew past its tolerance
+  (1 px, exact element count).
 - feat: `check --json` adds `schemaVersion` and `diagnostics`, the shape shared
   by the codeality gates, beside the existing `findings`; each diagnostic
   carries a `rerun` command scoped to its route.

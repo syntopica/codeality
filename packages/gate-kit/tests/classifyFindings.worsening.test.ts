@@ -38,10 +38,10 @@ describe('classifyFindings worsening', () => {
     expect(classified.new).toEqual([{ fingerprint: 'c' }])
   })
 
-  // Known gap: a fingerprint excludes the measured value on purpose (a line
-  // count, an overflow width), so a baselined finding that grows keeps its
-  // fingerprint and stays known. Closing it needs the value in the baseline.
-  it('does not see a baselined finding whose measured value grew', () => {
+  // Without a measurement policy the count is all that is compared: a
+  // fingerprint excludes the measured value on purpose, so a finding that grows
+  // stays known. The policy cases are in classifyFindings.measurements.test.ts.
+  it('does not see a grown value without a measurement policy', () => {
     const before = { fingerprint: 'max-lines|src/a.ts', observed: 120 }
     const after = { ...before, observed: 400 }
     expect(
