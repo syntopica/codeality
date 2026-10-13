@@ -2,6 +2,8 @@
 
 ## [Unreleased]
 
+## 0.2.0
+
 ### Minor Changes
 
 - fix: `check` no longer fails on DOM-free files under jsdom/happy-dom. A source

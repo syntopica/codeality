@@ -2,6 +2,8 @@
 
 ## [Unreleased]
 
+## 0.9.0
+
 ### Minor Changes
 
 - feat: `horizontal-overflow` and the `a11y/*` rules carry a numeric measurement

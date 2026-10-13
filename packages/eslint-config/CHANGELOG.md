@@ -5,6 +5,8 @@
 
 ## [Unreleased]
 
+## 0.10.0
+
 ### Minor Changes
 
 - feat: `createCodeQualityConfig({ atomic: false })` composes code-policy's new

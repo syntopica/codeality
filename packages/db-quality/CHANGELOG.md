@@ -2,6 +2,8 @@
 
 ## [Unreleased]
 
+## 0.7.0
+
 ### Minor Changes
 
 - feat: `--json` output of `check`, `audit`, `gate`, `perf diff` and

@@ -1,6 +1,6 @@
 {
   "name": "@syntopica/quality-config",
-  "version": "0.13.2",
+  "version": "0.14.0",
   "private": false,
   "packageManager": "pnpm@12.9.1",
   "license": "MIT",

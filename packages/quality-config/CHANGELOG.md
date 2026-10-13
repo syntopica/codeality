@@ -2,6 +2,8 @@
 
 ## [Unreleased]
 
+## 0.14.0
+
 ### Minor Changes
 
 - feat: `createDepCruiserConfig({ moduleRoots })` adds

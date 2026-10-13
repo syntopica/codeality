@@ -2,6 +2,15 @@
 
 ## [Unreleased]
 
+## 0.10.6
+
+### Patch Changes
+
+- fix: pin `@syntopica/eslint-config` `^0.10.0`, `@syntopica/quality-config`
+  `^0.14.0` and `eslint-plugin-code-policy` `^0.9.0`: the `boundaries` preset
+  with `atomic: false`, `knip --production` support and the opt-in dependency
+  cruiser module boundaries.
+
 ## 0.10.5
 
 ### Patch Changes

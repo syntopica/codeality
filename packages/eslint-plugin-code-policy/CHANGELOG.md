@@ -2,8 +2,19 @@
 
 ## [Unreleased]
 
+## 0.9.0
+
 ### Minor Changes
 
+- fix: `one-primary-unit` recognises every Next.js special file by its whole
+  name: `global-error`, `global-not-found`, `template`, `default`, `forbidden`,
+  `unauthorized`, `proxy`, `instrumentation` and the metadata image routes
+  (`opengraph-image`, `twitter-image`, `icon`, `apple-icon`) join `page`,
+  `layout`, `loading`, `error`, `not-found`, `route` and `middleware`. Found by
+  running the build against the adopting repositories.
+- note: with `view-logic-separation` at `error`, vendored shadcn/ui components
+  that call `React.useState` or `React.useEffect` are now reported; the rule saw
+  only bare `useState` before.
 - feat: `configs.boundaries` (also
   `eslint-plugin-code-policy/configs/boundaries`) enables only
   `public-api-imports`, `no-cross-module-deep-imports` and `no-mixed-barrel`,
