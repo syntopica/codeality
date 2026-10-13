@@ -28,7 +28,7 @@ listed in `package.json` under `peerDependencies` / `peerDependenciesMeta`.
 ## Install
 
 ```bash
-pnpm add -D @syntopica/eslint-config@^0.1.0 eslint typescript
+pnpm add -D @syntopica/eslint-config eslint typescript
 ```
 
 Add peers for the stacks you use (React, Next.js, Astro, and so on). The
@@ -95,7 +95,7 @@ without it the install warns, instead of ESLint dying at config load with
 ## CLI helper
 
 ```bash
-pnpm dlx @syntopica/create-baseline@^0.1.0 --check
+pnpm dlx @syntopica/create-baseline --check
 ```
 
 `--soft` prints install commands; `--hard` also requires `eslint.config.*` in

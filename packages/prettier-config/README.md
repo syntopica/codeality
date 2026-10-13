@@ -15,7 +15,7 @@ Peer plugins are listed in `package.json` (`prettier-plugin-organize-imports`,
 ## Install
 
 ```bash
-pnpm add -D @syntopica/prettier-config@^0.1.0 prettier
+pnpm add -D @syntopica/prettier-config prettier
 ```
 
 Add optional peers for Astro or Tailwind when you use those stacks.

@@ -11,7 +11,7 @@ Vite + React, Node).
 ## Install
 
 ```bash
-pnpm add -D @syntopica/tsconfig@^0.1.0 typescript
+pnpm add -D @syntopica/tsconfig typescript
 ```
 
 ## Exports

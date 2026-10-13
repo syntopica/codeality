@@ -8,7 +8,7 @@ on). Enable TypeScript and ESM where the template allows.
 ## 2. Add baseline packages
 
 ```bash
-pnpm add -D @syntopica/eslint-config@^0.1.0 @syntopica/prettier-config@^0.1.0 @syntopica/tsconfig@^0.1.0
+pnpm add -D @syntopica/eslint-config @syntopica/prettier-config @syntopica/tsconfig
 ```
 
 Add framework peers as required by the ESLint layers you will import (see
@@ -133,7 +133,7 @@ Add `@syntopica/quality-config` and generate the per-project config files from
 its factories, instead of copying JSON by hand:
 
 ```bash
-pnpm add -D @syntopica/quality-config@^0.1.0 knip dependency-cruiser lefthook
+pnpm add -D @syntopica/quality-config knip dependency-cruiser lefthook
 ```
 
 ```ts
@@ -162,9 +162,10 @@ pnpm dlx @syntopica/create-baseline --check
 
 `--check` asserts the gates are **wired**, not merely installed: `lint` fails on
 warnings, every gate is reachable from what CI actually runs, a workflow fires
-on push, actions are pinned to commit SHAs, coverage is produced and thresacme,
-lefthook reached `.git/hooks`, and the installed ranges can resolve the pinned
-baseline. Run it in CI; run `--fix` locally to repair the mechanical half.
+on push, actions are pinned to commit SHAs, coverage is produced and
+thresholded, lefthook reached `.git/hooks`, and the installed ranges can resolve
+the pinned baseline. Run it in CI; run `--fix` locally to repair the mechanical
+half.
 
 Waive a finding by id in `baseline.exceptions.json`:
 

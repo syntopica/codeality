@@ -32,18 +32,17 @@ pnpm add --save-dev eslint-plugin-code-policy
 yarn add --dev eslint-plugin-code-policy
 ```
 
-### Full stack baseline (recommended for VibraComet projects)
+### Full stack baseline
 
-This plugin ships **rules and small presets** only. For the full shared ESLint
-baseline (TypeScript ESLint, imports, security, framework layers, and optional
-`code-policy` wiring), use the published config package:
+This plugin ships **rules and one preset** only. For the full shared ESLint
+baseline (TypeScript ESLint, imports, security, framework layers, and
+`code-policy` wiring), use **`@syntopica/eslint-config`** from the same
+repository (`packages/eslint-config`, its `PUBLIC_API.md`, and `docs/adoption/`
+for migration steps).
 
-- **`@vibracomet/eslint-config`** — published from the `engineering-baseline`
-  repository (`packages/eslint-config`, `PUBLIC_API.md`, and `docs/adoption/`
-  for migration steps).
-
-Install it alongside this plugin when you want parity with the monorepo
-templates.
+The plugin does not configure a parser. To lint `.ts` and `.tsx` files on its
+own, add `typescript-eslint`'s parser and a `files` pattern, or use
+`@syntopica/eslint-config`, which does both.
 
 ---
 
@@ -57,21 +56,12 @@ import codePolicy from 'eslint-plugin-code-policy'
 export default [codePolicy.configs.recommended]
 ```
 
-### Choosing a preset
+### Presets
 
-| Preset        | Import path                      | Best for               |
-| ------------- | -------------------------------- | ---------------------- |
-| `recommended` | `codePolicy.configs.recommended` | Any TypeScript project |
-| `strict`      | `codePolicy.configs.strict`      | Maximum enforcement    |
-| `react`       | `codePolicy.configs.react`       | React (Vite, CRA, …)   |
-| `next`        | `codePolicy.configs.next`        | Next.js App Router     |
-
-```js
-// Next.js example
-import codePolicy from 'eslint-plugin-code-policy'
-
-export default [codePolicy.configs.next]
-```
+`recommended` is the only distinct preset. `strict`, `react` and `next` are
+exported under their own names but currently enable exactly the same rules at
+the same severities as `recommended`. Next.js special files and reserved exports
+are handled by the rules themselves, whichever preset you pick.
 
 ### Manual rule configuration
 
@@ -90,7 +80,8 @@ export default [
       'code-policy/file-kind-placement': 'error',
       'code-policy/public-api-imports': 'error',
       'code-policy/no-cross-module-deep-imports': 'error',
-      'code-policy/view-logic-separation': 'error',
+      'code-policy/no-mixed-barrel': 'error',
+      'code-policy/view-logic-separation': 'warn',
     },
   },
 ]
@@ -102,10 +93,13 @@ export default [
 
 ### `code-policy/one-primary-unit`
 
-> **Enforce exactly one top-level exported declaration per file.**
+> **Forbid more than one top-level exported unit per file.**
 
-Each file must export exactly one top-level unit — a function, class, constant,
-or type. This focuses the identity of every module.
+A file that exports two or more top-level units (functions, classes, constants
+or types) is reported. A file with no export is not reported by this rule, and a
+class counts as one unit however many methods it has; pair it with
+`no-hidden-top-level-declarations` and a size cap such as `max-lines` to bound
+what a single unit can hold.
 
 **Exemptions (automatically skipped)**
 
@@ -156,8 +150,13 @@ to.
 
 > **Ensure files strictly follow kind-based naming and folder placement.**
 
-Ensures types are placed in `types/`, contexts in `contexts/`, and hooks start
-with `use`. Strict architectural adherence is enforced at a structural level.
+Detects a file's kind from its name and requires the matching folder: `use*`
+files belong in `hooks/`, `format*` and `*Formatter` in `formatters/`,
+`validate*` and `*Validator` in `validators/`, `map*`, `*Mapper` and
+`*Transformer` in `mappers/`, and `select*` and `*Selector` in `selectors/`.
+PascalCase `.tsx`/`.jsx` components are exempt, and `utils/` and `helpers/`
+folders are rejected unless `allowGenericFolders` is set. The check reads names
+only; it does not verify what the code does.
 
 **Options**
 
@@ -184,9 +183,10 @@ with `use`. Strict architectural adherence is enforced at a structural level.
 
 > **Prevent importing directly from internal module subpaths.**
 
-When consuming a package or module, you must import from its public API (the
-root / index), not from a deep internal path. Deep imports couple you to
-internal implementation details.
+Reports a static, non-relative import whose path contains one of the configured
+substrings (default `/src/`). It is a pattern check: it does not resolve the
+import or know what a package actually exports, so an internal path that does
+not contain a banned substring passes.
 
 **❌ Incorrect**
 
@@ -226,8 +226,9 @@ import { formatDate } from '@myorg/utils'
 > monorepo.**
 
 In a monorepo, relative paths like `../../core/src/utils/helper` skip the `core`
-module's public API entirely. This rule detects that pattern by counting `../`
-traversal depth and checking for internal directory names in the descent.
+module's public API entirely. This rule detects that pattern in static relative
+import strings by counting `../` traversal depth and checking for internal
+directory names in the descent. It does not resolve paths.
 
 **❌ Incorrect**
 
@@ -258,6 +259,17 @@ import { helper } from '@myorg/core'
 | --------------------- | ---------- | --------- | ------------------------------------------------ |
 | `minParentTraversals` | `number`   | `2`       | Minimum `../` segments before the rule activates |
 | `internalDirs`        | `string[]` | `['src']` | Directory names that indicate internal code      |
+
+---
+
+### `code-policy/no-mixed-barrel`
+
+> **Forbid `index.*` files that mix re-exports with inline declarations.**
+
+An `index.ts`, `index.tsx` or `index.js` that re-exports from other modules must
+not also declare and export its own code. Keep the barrel a pure list of
+re-exports, or move the declarations to their own files. An index file without
+re-exports is not checked.
 
 ---
 
@@ -315,6 +327,9 @@ export function UserCard({ userId }: UserCardProps) {
 }
 ```
 
+This rule is a `warn` in `recommended`; run ESLint with `--max-warnings 0` if
+warnings should fail the gate.
+
 **What triggers this rule (inside `.tsx` files)**
 
 - Calling React hooks: `useState`, `useEffect`, `useReducer`, `useCallback`,
@@ -327,35 +342,26 @@ export function UserCard({ userId }: UserCardProps) {
 
 ### `recommended`
 
-Enables all five rules as errors. Best starting point for any TypeScript
-project.
+Enables eight rules. Best starting point for any TypeScript project.
 
 ```js
-// Rules enabled:
 'code-policy/one-primary-unit': 'error'
 'code-policy/no-hidden-top-level-declarations': 'error'
 'code-policy/no-inline-types-in-runtime-files': 'error'
 'code-policy/file-kind-placement': 'error'
-'code-policy/view-logic-separation': 'error'
 'code-policy/public-api-imports': 'error'
 'code-policy/no-cross-module-deep-imports': 'error'
+'code-policy/no-mixed-barrel': 'error'
+'code-policy/view-logic-separation': 'warn'
 ```
 
-### `strict`
+The deprecated `atomic-file` and `no-inline-types` rules are still registered
+for compatibility and are off.
 
-Extends `recommended`. Intended for projects that want zero tolerance for
-architectural deviation. Reserved for additional strictness overrides in future
-versions.
+### `strict`, `react`, `next`
 
-### `react`
-
-Extends `recommended` with React-specific adjustments.
-
-### `next`
-
-Extends `recommended`. Correctly handles Next.js App Router special files
-(`page.tsx`, `layout.tsx`, `route.ts`, etc.) and reserved exports (`metadata`,
-`GET`, `POST`, …), preventing false positives.
+Aliases of `recommended` with the same rule map, kept so that configs naming
+them keep working. They are reserved for future stack-specific adjustments.
 
 ---
 
@@ -380,7 +386,7 @@ barrel files by design re-export multiple things.
 Use ESLint's standard inline disable comment:
 
 ```ts
-// eslint-disable-next-line code-policy/atomic-file
+// eslint-disable-next-line code-policy/one-primary-unit -- reason
 ```
 
 Or add file overrides in your `eslint.config.mjs`:
@@ -389,7 +395,7 @@ Or add file overrides in your `eslint.config.mjs`:
 {
   files: ['src/legacy/**'],
   rules: {
-    'code-policy/atomic-file': 'off',
+    'code-policy/one-primary-unit': 'off',
   },
 }
 ```
@@ -398,7 +404,8 @@ Or add file overrides in your `eslint.config.mjs`:
 
 The rules are language-agnostic at the ESLint AST level. TypeScript-specific
 nodes are handled gracefully. You can use the plugin on `.js` files, though some
-rules (like `no-inline-types`) are most meaningful in TypeScript codebases.
+rules (like `no-inline-types-in-runtime-files`) are most meaningful in
+TypeScript codebases.
 
 ---
 

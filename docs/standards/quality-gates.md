@@ -616,7 +616,7 @@ each adopting repository's own CI.
 **Threshold:** seven checks, all errors except hooks: `--max-warnings 0` present
 and not a numeric budget; every gate reachable from what CI actually runs; a
 workflow that fires on push or pull request; every action pinned to a commit
-SHA; coverage produced and thresacme; lefthook installed into `.git/hooks`
+SHA; coverage produced and thresholded; lefthook installed into `.git/hooks`
 (warning); dependency ranges able to resolve the pinned baseline.
 
 **Why:** the previous `--check` asserted that four packages appeared in

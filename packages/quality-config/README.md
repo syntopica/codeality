@@ -19,7 +19,7 @@ files/exports/dependencies (knip), module boundaries and dependency cycles
 ## Install
 
 ```bash
-pnpm add -D @syntopica/quality-config@^0.1.0 typescript
+pnpm add -D @syntopica/quality-config typescript
 ```
 
 Add `knip` and/or `dependency-cruiser` for the gates you use.

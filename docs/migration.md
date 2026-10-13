@@ -13,7 +13,7 @@ or from older `@repo/*` workspace names to published `@syntopica/eslint-config`,
 ## 1. Install packages
 
 ```bash
-pnpm add -D @syntopica/eslint-config@^0.1.0 @syntopica/prettier-config@^0.1.0 @syntopica/tsconfig@^0.1.0
+pnpm add -D @syntopica/eslint-config @syntopica/prettier-config @syntopica/tsconfig
 ```
 
 Use `npm install -D` with the same spec if you use npm.
@@ -45,7 +45,7 @@ Extend `@syntopica/tsconfig/*` from your `tsconfig.json` (for example
 pnpm exec create-baseline --check
 ```
 
-Or `npx @syntopica/create-baseline@^0.1.0 --check` outside this monorepo.
+Or `npx @syntopica/create-baseline --check` outside this monorepo.
 
 ## Naming note
 

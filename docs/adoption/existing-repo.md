@@ -33,7 +33,7 @@
 ## 3. Install baseline packages
 
 ```bash
-pnpm add -D @syntopica/eslint-config@^0.1.0 @syntopica/prettier-config@^0.1.0 @syntopica/tsconfig@^0.1.0
+pnpm add -D @syntopica/eslint-config @syntopica/prettier-config @syntopica/tsconfig
 ```
 
 Install the packages each ESLint subpath needs. `@syntopica/eslint-config` ships
@@ -136,7 +136,7 @@ pnpm exec create-baseline --fix     # locally, to repair the mechanical half
 `--check` asserts the gates are **wired**, not merely installed: the
 `--max-warnings 0` flag, every gate reachable from what CI actually runs, a
 workflow that fires on push, actions pinned to SHAs, coverage produced and
-thresacme, lefthook installed into `.git/hooks`, and dependency ranges able to
+thresholded, lefthook installed into `.git/hooks`, and dependency ranges able to
 resolve the pinned baseline. Waive a finding by id in `baseline.exceptions.json`
 with a `reason` and an optional, enforced `expires`.
 

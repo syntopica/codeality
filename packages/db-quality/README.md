@@ -158,11 +158,10 @@ the old bare string form (`"disable": ["BDB100/prefer-bigint-over-int"]`); see
 `schemaVersion: 2` removes the `info` severity, and every finding fails the gate
 unless the baseline already records it or a `disable` entry names it with a
 written reason. There is no `warn` severity either: every finding is an `error`,
-whatever the configuration's `schemaVersion`. Two codes changed severity in
-0.2.0, independent of `schemaVersion`: `BDB002` (RLS enabled, no policy) and
-`BDB601` (an index that has never been scanned) moved from `info` to `warn`.
-Their fingerprints did not change, so a `BDB002` already carried in a baseline
-stays known.
+whatever the configuration's `schemaVersion`. `BDB002` (RLS enabled, no policy)
+and `BDB601` (an index that has never been scanned) were `info` before 0.2.0 and
+now fail like every other finding. Their fingerprints did not change, so a
+`BDB002` already carried in a baseline stays known.
 
 A `schemaVersion: 1` file keeps working exactly as before: its `disable` entries
 stay bare strings, and every command prints one line to stderr saying that
@@ -521,8 +520,10 @@ terminal.
 
 ## Adoption in phases
 
-No step below turns a green gate red by itself; a family of findings exists only
-once its section is in the configuration file:
+A family of findings exists only once its section is in the configuration file.
+Each step that adds one can surface findings at once, so run `baseline update`
+in the same change, as phase 1 does; phase 4 can fail the gate on its first run
+if a regression already exists:
 
 | phase | what the adopter does                                                                                               | what changes in the gate                                                                                                                                                             |
 | ----- | ------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |

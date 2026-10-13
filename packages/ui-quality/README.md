@@ -6,9 +6,13 @@ defects a person sees at a glance and a code review does not: unreadable text,
 text cut mid-word, columns that do not line up, fields glued to their container,
 a content column that wastes a wide screen, colours from outside the palette.
 
-It measures; it does not judge. Taste, hierarchy and what a screen is missing
-belong to the `design-quality` agent skill, which reads this tool's report and
-screenshots instead of measuring again.
+It measures rendered pixels and DOM; it does not look at the screen as a whole.
+Some rules are accessibility or functional defects (contrast, clipped text, a
+form that fails silently); others encode design conventions with numeric
+thresholds (corner radius, gradients, palette, eyebrow labels) and are opt-in or
+tunable for that reason. Taste, hierarchy and what a screen is missing belong to
+the `design-quality` agent skill, which reads this tool's report and screenshots
+instead of measuring again.
 
 ## Install
 
@@ -236,11 +240,14 @@ its items were already on the first page, the mark of an unstable order under
 items. The route's address is restored afterwards.
 
 `action-silent` answers every request other than GET, HEAD and OPTIONS with HTTP
-500 before it leaves the browser, so nothing is written even against production,
-then submits the form. Any new text, a new `role="alert"` or `aria-invalid`
-field, a dialog or a change of address counts as telling the user; a form the
-browser refuses for its own validation passes. Console errors and requests from
-that step are not recorded, since the failure is injected.
+500 before it leaves the browser, so the form's own write never reaches the
+server, then submits the form. GET requests, WebSocket messages and the other
+interactions of a capture are not blocked, so point captures with side effects
+at a disposable environment rather than production. Any new text, a new
+`role="alert"` or `aria-invalid` field, a dialog or a change of address counts
+as telling the user; a form the browser refuses for its own validation passes.
+Console errors and requests from that step are not recorded, since the failure
+is injected.
 
 Findings are fingerprinted on rule, route, element and, for colour rules only,
 colour scheme; viewports and pixel values are left out, so a defect seen at

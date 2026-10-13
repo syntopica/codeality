@@ -6,9 +6,9 @@
 
 <p align="center">
 Your agent writes fast. codeality makes it write <i>clean</i>: one unit per file,
-no hidden helpers, no inline types, no duplicated blocks, no dead exports, no
+no hidden helpers, no inline types, duplication under 1%, no dead exports, no
 import cycles - enforced by gates whose messages tell the agent what to fix.
-You set it up once; the agent does the fixing.
+You decide the rules once; the agent does the fixing.
 </p>
 
 <p align="center">
@@ -23,14 +23,14 @@ pnpm dlx @syntopica/create-baseline --soft    # print the install line for what 
 pnpm check:ci && pnpm check:quality           # then hand these two to your agent
 ```
 
-Nothing you already have is overwritten: `--write` only adds files and scripts
-that are missing.
+Existing config files and script values are kept: `--write` adds the files that
+are missing and adds missing scripts to `package.json`.
 
 ---
 
 ## The problem
 
-AI agents ship code that works and rots. Session after session they:
+AI agents ship code that works and drifts. Session after session they:
 
 - pile a component, its hook, its types and three helpers into one 900-line
   file;
@@ -38,8 +38,10 @@ AI agents ship code that works and rots. Session after session they:
 - leave exports nobody imports;
 - reach for `any` when a type gets in the way.
 
-The next session has to read all of it to change one line. That is where your
-tokens go.
+Each change is small and each one passes review, so the structure you agreed on
+erodes without anyone deciding to give it up. In a measured chain of twenty
+changes, an agent working without a gate grew the largest file by 400 lines and
+added fifty new rule violations; with the gate, it added none.
 
 ## Before / after
 
@@ -134,14 +136,14 @@ export function UserList({ users }: UserListProps) {
 }
 ```
 
-Small files with one job each. The next agent opens the 15-line file it needs
-instead of the whole feature. Both versions are in
+Small files with one job each. This shows the layout the rules produce, not a
+saving: agents search and read line ranges, so splitting a file did not make
+them read less (see the FAQ). Both versions are in
 [`docs/examples/user-list`](./docs/examples/user-list) with the commands to
 reproduce the lint result.
 
 One honest note: the gates forced the split, not the batched request. Replacing
-the N+1 loop with one `fetchUsersWithTeams` call was the agent's design choice -
-but in a 10-line service file it is a choice the agent can actually see.
+the N+1 loop with one `fetchUsersWithTeams` call was the agent's design choice.
 
 ## Why it works with agents
 
@@ -150,59 +152,61 @@ but in a 10-line service file it is a choice the agent can actually see.
 - **Error messages are instructions.** The structural rules name the declaration
   and the kind of file it belongs in. The agent fixes it without asking you.
 - **Gates, not guidelines.** A `CLAUDE.md` saying "write clean code" is a wish.
-  A red `check:ci` is a fact the agent cannot talk its way around.
+  A red required CI check is a fact the agent has to fix. Local hooks can be
+  skipped and rules disabled, so make the CI job required and review changes to
+  the rules and to the debt baselines.
 - **Adopt on a messy repo today.** `lint:suppress` records existing ESLint
   errors so only new ones fail; see the
   [existing-repo guide](./docs/adoption/existing-repo.md) for warnings and the
   other gates.
 
-## What strict rules buy you
+## What you get, and what it costs
 
-Every rule here costs the agent a few seconds once and pays back on every
-session after it.
+### Measured
 
-### Less context, fewer tokens
+- **The structure you chose holds.** Over twenty successive agent changes, the
+  ungated code gained fifty violations and a 400-line larger file; the gated
+  code gained none, whether the tree started strict or only new code had to
+  comply.
+- **It costs agent time.** Keeping the rules made the agent about a quarter more
+  expensive over those twenty changes on an already strict tree, and two and a
+  half times as expensive when the rules applied only to new code in a tree of
+  god files. Correctness was the same either way.
+- **No token saving.** Splitting code into small files did not make agents read
+  less or make fewer mistakes. Unbundled Node code starts about 20% slower;
+  bundled, it starts as fast as before.
 
-- **Atomic files** (one exported unit per file) mean the agent loads the 20
-  lines it needs, not the 900 around them. Reading is most of what an agent
-  spends.
-- **The file name is the index.** `useUserList.ts` holds `useUserList`. The
-  agent finds code with `ls` and `grep` instead of reading files to discover
-  what is in them.
-- **Predictable placement** (`file-kind-placement`): hooks go in `hooks/`,
-  formatters in `formatters/`, mappers in `mappers/`, and `utils/` or `helpers/`
-  folders are rejected outright. The agent knows where code lives and where new
-  code goes.
-- **No dead code** (knip): nothing unused for the agent to read, keep in sync,
-  or copy as an example.
+All of it is in the
+[measurement write-up](./docs/evidence/2026-10-12-agent-token-measurement.md).
 
-### Smaller blast radius, fewer broken edits
+### What each gate enforces
 
-- **A change touches one small file.** Fewer lines in play means fewer
-  accidental edits to code next door, and search-and-replace edits are far more
-  likely to match exactly once.
-- **Public entry points only** (`public-api-imports`,
-  `no-cross-module-deep-imports`): callers depend on a module's front door, so
-  the agent can rewrite its internals without breaking anything outside.
-- **No import cycles** (dependency-cruiser): each module can be understood and
-  changed on its own.
-- **One copy of every block** (jscpd): a bug fixed once is fixed everywhere,
-  instead of the agent patching one copy and missing the other two.
-- **Types in their own files**: one definition reused across the codebase,
-  instead of a slightly different `User` redefined in every file that needs one.
+- **One exported unit per file** (`one-primary-unit`) and **no hidden
+  module-level helpers** (`no-hidden-top-level-declarations`). A file with more
+  than one exported unit fails; a class counts as one unit however many methods
+  it has, so size caps (100 code lines per file) do the rest.
+- **Predictable placement** (`file-kind-placement`): files named as hooks,
+  formatters, validators, mappers or selectors must sit in the matching folder,
+  and `utils/` or `helpers/` folders are rejected.
+- **Types apart from runtime code** (`no-inline-types-in-runtime-files`).
+- **Entry-point imports** (`public-api-imports`,
+  `no-cross-module-deep-imports`): imports matching configured patterns, such as
+  `/src/` or a deep relative path into another module, are rejected. These are
+  pattern checks, not a resolved public API.
+- **No import cycles or orphans** (dependency-cruiser).
+- **Duplication under a threshold** (jscpd): clones of 70 tokens or more, with
+  at most 1% of the code duplicated.
+- **No dead code** (knip): unused files, exports and dependencies.
 - **Strict TypeScript**: an API the agent invented fails the type check, not
   production.
+- **Views without logic** (`view-logic-separation`): React hooks and handlers in
+  a component are reported, so state and effects move into a hook.
 
-### Easier to review, safer to parallelize
+Whether this layout makes human review faster or merge conflicts rarer has not
+been measured. Adopt it because you want these conventions enforced, not for a
+promised saving.
 
-- **Small diffs.** A pull request made of 30-line files reads in minutes; one
-  that rewrites half of a 900-line file does not.
-- **Fewer merge conflicts.** Several agents or worktrees working at once are
-  less likely to touch the same small file.
-- **Views without logic** (`view-logic-separation`): components render, hooks
-  hold state and effects, so the logic can be tested without rendering markup.
-
-### Faster loops, better product (optional gates)
+### Optional gates
 
 - **Cheaper test suites** (test-quality): finds DOM environments booted for
   files that never touch the DOM, and files that two projects both run.
@@ -213,6 +217,8 @@ session after it.
   schemas linted before they reach production.
 - **Checks at commit time** (lefthook): problems surface in seconds on the
   agent's machine, not minutes later in CI.
+
+These do not depend on the structural rules; each can be adopted on its own.
 
 ## Give this to your agent
 
@@ -277,20 +283,23 @@ uvx --from syntopica-codeality-py codeality-py gate --project .
 
 ## How it fits with your tools
 
-ESLint checks one file at a time; codeality adds the structural rules ESLint
-does not ship (one unit per file, placement, entry points) and the whole-tree
-checks it cannot do (duplication, dead code, import graph) through knip, jscpd
-and dependency-cruiser. If you use Biome for formatting, keep it. SonarQube is a
-hosted analysis platform; codeality is a set of local gates an agent can run and
-fix in the same loop, with no server.
+codeality does not replace your linters; it composes them. Type safety comes
+from typescript-eslint, duplication from jscpd, dead code from knip, the import
+graph from dependency-cruiser, and smells from SonarJS. What codeality adds is
+the structural rules (one unit per file, placement, entry-point patterns), one
+maintained configuration of all of it, debt baselines, and `create-baseline`,
+which checks that every gate is actually wired into CI. If your own ESLint,
+Biome or knip setup already does what you need, keep it and take only the pieces
+you are missing.
 
 ## FAQ
 
-**Will it rewrite my code?** No. `--write` adds missing config files and
-scripts. The fixing is done by you or your agent, one finding at a time.
+**Will it rewrite my code?** No. `--write` adds missing config files and adds
+missing scripts to `package.json`; it does not create your ESLint, TypeScript or
+Prettier setup. The fixing is done by you or your agent, one finding at a time.
 
 **Are the token savings measured?** Yes, and the honest answer is "no savings".
-Over 300 agent runs on four codebases, including hard tasks and a chain of
+Over 300 agent runs on three codebases, including hard tasks and a chain of
 twenty successive changes scored by hidden tests written before the runs, the
 strictly structured code was changed correctly just as often and cost the agent
 about the same or more (up to a quarter more over the chain). Modern coding
@@ -301,11 +310,12 @@ code none. Ship a bundled build and the split code starts as fast as before.
 Method and numbers:
 [docs/evidence](./docs/evidence/2026-10-12-agent-token-measurement.md).
 
-**Can I adopt one piece at a time?** Yes. Every package installs and runs on its
-own; start with the core and add the optional gates when you need them.
+**Can I adopt one piece at a time?** Yes. Each public package can be adopted
+separately, with the peers its README lists; start with the core and add the
+optional gates when you need them.
 
 **Does it work without an AI agent?** Yes. The gates do not know who wrote the
-code. Agents just benefit most, because they read so much of it.
+code.
 
 ## Docs
 

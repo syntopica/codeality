@@ -1,3 +1,19 @@
+### 2026-10-13
+
+- [x] 2026-10-13 — **Docs:** Corrected the overclaims and stale facts the Codex
+      value review found, except the README hero line.
+  - Result: README body claims enforcement with its measured cost (no token or
+    accuracy saving, unmeasured review and merge benefits, CI must be required);
+    plugin README lists the eight recommended rules and their severities, says
+    the presets are aliases, drops `@vibracomet`, describes `one-primary-unit`,
+    placement and import rules by what they check; create-baseline README
+    documents `--write` output, `--check`, `--fix` and exceptions; db-quality
+    and ui-quality prose matches current behaviour; `@^0.1.0` install ranges
+    removed; "thresacme" scrub artifact restored to "thresholded".
+  - Evidence: `pnpm format:check` passes; claims checked against
+    `src/configs/*.ts`, `src/utils/detect-file-kind.ts`,
+    `bin/scaffold/writeMissing.mjs`, `src/model/Severity.ts`.
+
 ### 2026-10-12
 
 - [x] 2026-10-12 — **ui-quality:** Rules for the defects found by eye on the
