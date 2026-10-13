@@ -5,19 +5,19 @@ are **private** and may change without a major bump.
 
 ## Stable exports (semver)
 
-| Export subpath                                 | Purpose                                                           |
-| ---------------------------------------------- | ----------------------------------------------------------------- |
-| `@syntopica/eslint-config/base`                | Core JS/TS correctness, imports, promise, security, Prettier last |
-| `@syntopica/eslint-config/nextjs`              | Next.js App Router + React + frontend boundaries                  |
-| `@syntopica/eslint-config/vite-react`          | Vite + React + frontend boundaries                                |
-| `@syntopica/eslint-config/astro`               | Astro + TS + frontend boundaries                                  |
-| `@syntopica/eslint-config/node`                | Node globals + unicorn prefer-node-protocol                       |
-| `@syntopica/eslint-config/nestjs`              | Node preset + NestJS decorator-aware rule tweaks                  |
-| `@syntopica/eslint-config/code-quality`        | Sonar + code-policy structural rules                              |
-| `@syntopica/eslint-config/accessibility`       | jsx-a11y                                                          |
-| `@syntopica/eslint-config/tailwind`            | Tailwind CSS plugin                                               |
-| `@syntopica/eslint-config/frontend-boundaries` | `eslint-plugin-boundaries` layer map only                         |
-| `@syntopica/eslint-config/testing`             | Vitest + Testing Library rules for test files                     |
+| Export subpath                                 | Purpose                                                                                 |
+| ---------------------------------------------- | --------------------------------------------------------------------------------------- |
+| `@syntopica/eslint-config/base`                | Core JS/TS correctness, imports, promise, security, Prettier last                       |
+| `@syntopica/eslint-config/nextjs`              | Next.js App Router + React + frontend boundaries                                        |
+| `@syntopica/eslint-config/vite-react`          | Vite + React + frontend boundaries                                                      |
+| `@syntopica/eslint-config/astro`               | Astro + TS + frontend boundaries                                                        |
+| `@syntopica/eslint-config/node`                | Node globals + unicorn prefer-node-protocol                                             |
+| `@syntopica/eslint-config/nestjs`              | Node preset + NestJS decorator-aware rule tweaks                                        |
+| `@syntopica/eslint-config/code-quality`        | Sonar + code-policy structural rules; `{ atomic: false }` keeps only the boundary rules |
+| `@syntopica/eslint-config/accessibility`       | jsx-a11y                                                                                |
+| `@syntopica/eslint-config/tailwind`            | Tailwind CSS plugin                                                                     |
+| `@syntopica/eslint-config/frontend-boundaries` | `eslint-plugin-boundaries` layer map only                                               |
+| `@syntopica/eslint-config/testing`             | Vitest + Testing Library rules for test files                                           |
 
 Each entry resolves to **TypeScript source** (`*.ts`) published in the package.
 Consumers load flat config with **ESM** and a TypeScript-aware runner (for

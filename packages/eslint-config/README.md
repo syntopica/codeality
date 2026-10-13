@@ -92,6 +92,24 @@ with `auto-install-peers=true` (the templates' `.npmrc`) pnpm installs them, and
 without it the install warns, instead of ESLint dying at config load with
 `Cannot find module '@vitest/eslint-plugin'`.
 
+### Without the atomic-file layout
+
+`createCodeQualityConfig({ atomic: false })` keeps the size and complexity caps,
+SonarJS, the test rules and the import-boundary rules, and drops the atomic-file
+layout (one exported unit per file, no hidden helpers, types in their own files,
+kind-based placement, view/hook split). The default stays `atomic: true`.
+Measured on agent-driven changes, the layout cost more to keep and did not
+change correctness
+([evidence](../../docs/evidence/2026-10-12-agent-token-measurement.md)), so it
+is a choice to make, not a requirement for the other checks.
+
+```ts
+export default [
+  ...createBaseConfig({ tsconfigRootDir: import.meta.dirname }),
+  ...createCodeQualityConfig({ atomic: false }),
+]
+```
+
 ## CLI helper
 
 ```bash

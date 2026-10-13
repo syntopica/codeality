@@ -4,6 +4,10 @@
 
 ### Minor Changes
 
+- feat: `configs.boundaries` (also
+  `eslint-plugin-code-policy/configs/boundaries`) enables only
+  `public-api-imports`, `no-cross-module-deep-imports` and `no-mixed-barrel`,
+  without the atomic-file layout.
 - fix: exemptions match the file's whole name. `reindex.js`, `myindex.ts`,
   `homepage.tsx` and `myproxy.ts` were exempt as barrels, Next pages or Next's
   proxy because the check compared path suffixes; they are now ordinary modules,

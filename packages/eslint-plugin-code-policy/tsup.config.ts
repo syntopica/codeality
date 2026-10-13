@@ -6,6 +6,7 @@ export default defineConfig({
   entry: [
     'src/index.ts',
     'src/configs/recommended.ts',
+    'src/configs/boundaries.ts',
     'src/configs/strict.ts',
     'src/configs/react.ts',
     'src/configs/next.ts',

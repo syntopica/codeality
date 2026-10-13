@@ -1,3 +1,4 @@
+import boundaries from '@/configs/boundaries.js'
 import next from '@/configs/next.js'
 import react from '@/configs/react.js'
 import recommended from '@/configs/recommended.js'
@@ -36,6 +37,7 @@ const plugin = {
   },
   configs: {
     recommended,
+    boundaries,
     strict,
     react,
     next,

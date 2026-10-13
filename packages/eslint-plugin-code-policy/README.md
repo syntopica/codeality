@@ -58,10 +58,13 @@ export default [codePolicy.configs.recommended]
 
 ### Presets
 
-`recommended` is the only distinct preset. `strict`, `react` and `next` are
-exported under their own names but currently enable exactly the same rules at
-the same severities as `recommended`. Next.js special files and reserved exports
-are handled by the rules themselves, whichever preset you pick.
+`recommended` enables every rule below. `boundaries` enables only the three
+import-boundary rules (`public-api-imports`, `no-cross-module-deep-imports`,
+`no-mixed-barrel`), for projects that want module entry points enforced without
+the atomic-file layout. `strict`, `react` and `next` are exported under their
+own names but currently enable exactly the same rules at the same severities as
+`recommended`. Next.js special files and reserved exports are handled by the
+rules themselves, whichever preset you pick.
 
 ### Manual rule configuration
 

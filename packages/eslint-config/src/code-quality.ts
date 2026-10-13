@@ -11,8 +11,18 @@ import codePolicy from 'eslint-plugin-code-policy'
 import { createCodeQualitySonarConfig } from './code-quality-sonar'
 import { createTestingConfig } from './testing'
 
-export const createCodeQualityConfig = () => [
-  codePolicy.configs.recommended,
+/**
+ * `atomic: false` keeps the size, complexity, SonarJS, testing and
+ * import-boundary checks but drops the atomic-file layout (one exported unit
+ * per file, no hidden helpers, types in their own files, kind-based placement,
+ * view/hook split). Measured on agent-driven changes, that layout cost more to
+ * keep and did not change correctness, so it is a choice, not a default
+ * requirement: docs/evidence/2026-10-12-agent-token-measurement.md.
+ */
+export const createCodeQualityConfig = ({
+  atomic = true,
+}: { atomic?: boolean } = {}) => [
+  atomic ? codePolicy.configs.recommended : codePolicy.configs.boundaries,
   {
     files: ['**/*.{ts,tsx,js,jsx}'],
     rules: {
@@ -78,7 +88,7 @@ export const createCodeQualityConfig = () => [
       // (`useX`, `formatX`, `mapX`, ...), so a test colocated with its
       // subject inherits the subject's folder and passes; what this actually
       // forbids is the `tests/utils/` + `tests/helpers/` junk drawer.
-      'code-policy/file-kind-placement': 'error',
+      ...(atomic ? { 'code-policy/file-kind-placement': 'error' } : {}),
       // Test files legitimately colocate inline fixture types, builders, and
       // local helpers next to the cases that use them; the atomic-file/one-unit
       // discipline targets production architecture, not test scaffolding.

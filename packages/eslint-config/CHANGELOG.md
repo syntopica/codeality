@@ -5,6 +5,14 @@
 
 ## [Unreleased]
 
+### Minor Changes
+
+- feat: `createCodeQualityConfig({ atomic: false })` composes code-policy's new
+  `boundaries` preset instead of `recommended`: size and complexity caps,
+  SonarJS, test rules and import-boundary rules stay, the atomic-file layout
+  goes. Calling it with no argument is unchanged. Needs
+  `eslint-plugin-code-policy` with the `boundaries` preset.
+
 ## 0.9.0
 
 ### Minor Changes
