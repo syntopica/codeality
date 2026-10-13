@@ -1,4 +1,5 @@
 import type { Finding } from '@/model/Finding.js'
+import { shellQuoted } from '@/report/shellQuoted.js'
 import type { Diagnostic } from '@syntopica/gate-kit/Diagnostic'
 
 /** A finding in the shared gate diagnostics shape, rerun on its own route. */
@@ -9,5 +10,5 @@ export const findingDiagnostic = (finding: Finding): Diagnostic => ({
   location: { route: finding.route },
   message: finding.message,
   fingerprint: finding.fingerprint,
-  rerun: `codeality-ui check --routes '${finding.route}'`,
+  rerun: `codeality-ui check --routes ${shellQuoted(finding.route)}`,
 })
