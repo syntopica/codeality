@@ -10,9 +10,12 @@
 // with no branches worth mutating, and including them would spend minutes
 // killing mutants that only prove a re-export re-exports.
 //
-// Not a CI gate: a full run takes minutes, and a surviving mutant is a
-// question for a human ("is this branch worth a test?") rather than a build
-// failure. Run it when changing a rule's logic:  pnpm run mutation
+// Not a CI gate: a full run takes minutes, so it runs on demand when a rule's
+// logic changes:  pnpm run mutation
+// Each surviving mutant is a question for a human ("is this branch worth a
+// test?"), but the run as a whole fails below `thresholds.break`. A sudden
+// collapse of the score means the harness broke, not the tests: check one
+// survivor by hand before writing tests for it.
 export default {
   packageManager: 'pnpm',
   // Named explicitly. Stryker discovers plugins by scanning node_modules, and
