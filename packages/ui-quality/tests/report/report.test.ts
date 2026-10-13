@@ -40,7 +40,24 @@ describe('report', () => {
     expect(renderFindings(findings)).toBe(
       '/inbox [1440x900 light] error palette: m\n    at s\n1 findings',
     )
-    expect(JSON.parse(renderFindingsJson(findings))).toEqual({ findings })
+    const json = JSON.parse(renderFindingsJson(findings)) as {
+      findings: unknown
+      schemaVersion: number
+      diagnostics: Record<string, unknown>[]
+    }
+    expect(json.findings).toEqual(findings)
+    expect(json.schemaVersion).toBe(1)
+    expect(json.diagnostics).toEqual([
+      {
+        tool: 'codeality-ui',
+        rule: 'palette',
+        severity: 'error',
+        location: { route: '/inbox' },
+        message: 'm',
+        fingerprint: findings[0]?.fingerprint,
+        rerun: "codeality-ui check --routes '/inbox'",
+      },
+    ])
     expect(
       renderFindings([{ ...findings[0], subject: '' } as never]),
     ).not.toContain('at ')

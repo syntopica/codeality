@@ -2,6 +2,12 @@
 
 ## [Unreleased]
 
+### Minor Changes
+
+- feat: `check --json` adds `schemaVersion` and `diagnostics`, the shape shared
+  by the codeality gates, beside the existing `findings`; each diagnostic
+  carries a `rerun` command scoped to its route.
+
 ### Patch Changes
 
 - fix: the baseline counts occurrences. Each fingerprint is recorded as often as

@@ -261,6 +261,12 @@ codeality-ui [--project <dir>] check [--json] [--routes <glob>]
 codeality-ui [--project <dir>] baseline create|update|check [--check-stale]
 ```
 
+`check --json` prints `{ findings, schemaVersion, diagnostics }`. `findings` is
+this tool's own shape; `diagnostics` is the shape shared by the codeality gates:
+`tool`, `rule`, `severity`, `location` (`route` here; `path` and `line` in
+file-based gates), `message`, `fingerprint`, optional `observed`, `threshold`
+and `fix`, and `rerun`, the command that checks that finding again.
+
 With `.codeality-ui-baseline.json` present, `check` fails only on findings the
 baseline does not carry. Exit codes: 0 passed, 1 findings, 2 invalid usage or
 configuration, 3 browser failure. A single page that fails twice is a
