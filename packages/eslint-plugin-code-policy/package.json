@@ -85,7 +85,7 @@
     "lint:prune": "eslint src tests --prune-suppressions",
     "type-check": "tsc --noEmit -p tsconfig.json",
     "test": "vitest run --coverage",
-    "publish:check": "baseline-licenses && publint --strict && attw --pack . --profile node16",
+    "publish:check": "baseline-licenses && publint --strict && attw --pack . --profile node16 && node scripts/pack-smoke.mjs",
     "mutation": "stryker run"
   },
   "keywords": [
