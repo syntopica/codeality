@@ -3,13 +3,13 @@ import type { BaselineMeasurement } from './BaselineMeasurement.js'
 /** Whether a parsed value is a measurement with a finite `observed`. */
 export const isBaselineMeasurement = (
   value: unknown,
-): value is BaselineMeasurement => {
-  if (typeof value !== 'object' || value === null) return false
-  const { metric, context, observed } = value as Record<string, unknown>
-  return (
-    typeof metric === 'string' &&
-    typeof context === 'string' &&
-    typeof observed === 'number' &&
-    Number.isFinite(observed)
-  )
-}
+): value is BaselineMeasurement =>
+  typeof value === 'object' &&
+  value !== null &&
+  'metric' in value &&
+  typeof value.metric === 'string' &&
+  'context' in value &&
+  typeof value.context === 'string' &&
+  'observed' in value &&
+  typeof value.observed === 'number' &&
+  Number.isFinite(value.observed)

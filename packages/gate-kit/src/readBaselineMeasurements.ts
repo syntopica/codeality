@@ -15,22 +15,26 @@ export const readBaselineMeasurements = (
   if (typeof value !== 'object' || value === null || Array.isArray(value))
     throw new ConfigError(`${filename}: "measurements" is not an object`)
   const known = new Set(entries)
-  for (const [fingerprint, records] of Object.entries(value)) {
+  const measurements: Record<string, BaselineMeasurement[]> = {}
+  for (const fingerprint of Object.keys(value)) {
+    const records: unknown = Reflect.get(value, fingerprint)
     if (!known.has(fingerprint))
       throw new ConfigError(
         `${filename}: measurements for ${fingerprint}, which is not an entry`,
       )
-    if (!Array.isArray(records) || !records.every(isBaselineMeasurement))
+    const list: unknown[] = Array.isArray(records) ? records : [null]
+    if (!list.every(isBaselineMeasurement))
       throw new ConfigError(
         `${filename}: malformed measurements for ${fingerprint}`,
       )
     // Two records of one metric at one context would make the comparison
     // depend on their order.
-    const places = records.map(({ metric, context }) => `${metric}|${context}`)
+    const places = list.map(({ metric, context }) => `${metric}|${context}`)
     if (new Set(places).size !== places.length)
       throw new ConfigError(
         `${filename}: duplicate measurements for ${fingerprint}`,
       )
+    measurements[fingerprint] = list
   }
-  return value as Record<string, BaselineMeasurement[]>
+  return measurements
 }
