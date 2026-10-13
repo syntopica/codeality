@@ -3,6 +3,7 @@ import type { TSESTree } from '@typescript-eslint/utils'
 import { createRule } from '@/utils/create-rule.js'
 import { getEnclosingComponent } from '@/utils/get-enclosing-component.js'
 import { isComponentNode } from '@/utils/is-component-node.js'
+import { reactHookCallName } from '@/utils/react-hook-call-name.js'
 
 type Options = []
 
@@ -68,8 +69,8 @@ export default createRule<Options, MessageIds>({
       },
 
       CallExpression(node: TSESTree.CallExpression) {
-        if (node.callee.type === 'Identifier') {
-          const name = node.callee.name
+        const name = reactHookCallName(node.callee)
+        if (name) {
           if (
             /^use(?:State|Effect|Reducer|Callback|Memo|Ref|ImperativeHandle|LayoutEffect|DebugValue|DeferredValue|Transition|Id|SyncExternalStore|InsertionEffect|Query|Mutation)$/.test(
               name,

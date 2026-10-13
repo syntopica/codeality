@@ -2,6 +2,8 @@ import rule from '@/rules/no-cross-module-deep-imports.js'
 import { runRuleTest } from '@tests/rule-testers/runRuleTest.js'
 import { describe, expect, it } from 'vitest'
 
+const HELPER_PATH = '../../core/src/utils/helper'
+
 describe('no-cross-module-deep-imports metadata', () => {
   it('declares the exact rule contract', () => {
     expect(rule.name).toBe('no-cross-module-deep-imports')
@@ -11,7 +13,7 @@ describe('no-cross-module-deep-imports metadata', () => {
       docs: {
         description:
           'Forbid relative imports that bypass the public API of another module within the monorepo by importing directly from its internal directories.',
-        url: 'https://github.com/VibraComet/eslint-plugin-code-policy/blob/main/packages/eslint-plugin-code-policy/docs/rules/no-cross-module-deep-imports.md',
+        url: 'https://github.com/syntopica/codeality/blob/main/packages/eslint-plugin-code-policy/docs/rules/no-cross-module-deep-imports.md',
       },
       schema: [
         {
@@ -85,8 +87,8 @@ runRuleTest('no-cross-module-deep-imports', rule, {
   invalid: [
     // classic cross-module deep import
     {
-      code: `import { helper } from '../../core/src/utils/helper'`,
-      errors: [deepImportError('../../core/src/utils/helper')],
+      code: `import { helper } from '${HELPER_PATH}'`,
+      errors: [deepImportError(HELPER_PATH)],
     },
     // three levels up, then into src
     {
@@ -98,6 +100,19 @@ runRuleTest('no-cross-module-deep-imports', rule, {
       code: `import { x } from '../../other-module/lib/internal'`,
       options: [{ internalDirs: ['lib'] }],
       errors: [deepImportError('../../other-module/lib/internal')],
+    },
+    // re-exports and literal dynamic imports take the same edge
+    {
+      code: `export { helper } from '${HELPER_PATH}'`,
+      errors: [deepImportError(HELPER_PATH)],
+    },
+    {
+      code: `export * from '${HELPER_PATH}'`,
+      errors: [deepImportError(HELPER_PATH)],
+    },
+    {
+      code: `const mod = import('${HELPER_PATH}')`,
+      errors: [{ ...deepImportError(HELPER_PATH), column: 13 }],
     },
     // minParentTraversals: 1 — even one level up into src is flagged
     {

@@ -15,7 +15,7 @@ describe('file-kind-placement metadata', () => {
       docs: {
         description:
           'Enforce that atomic units are placed within their corresponding feature-local semantic folders.',
-        url: 'https://github.com/VibraComet/eslint-plugin-code-policy/blob/main/packages/eslint-plugin-code-policy/docs/rules/file-kind-placement.md',
+        url: 'https://github.com/syntopica/codeality/blob/main/packages/eslint-plugin-code-policy/docs/rules/file-kind-placement.md',
       },
       schema: [
         {

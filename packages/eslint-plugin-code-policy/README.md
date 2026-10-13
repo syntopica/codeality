@@ -183,10 +183,11 @@ only; it does not verify what the code does.
 
 > **Prevent importing directly from internal module subpaths.**
 
-Reports a static, non-relative import whose path contains one of the configured
-substrings (default `/src/`). It is a pattern check: it does not resolve the
-import or know what a package actually exports, so an internal path that does
-not contain a banned substring passes.
+Reports a static, non-relative module edge (`import`, `export ... from`,
+`export * from`, `import('literal')`) whose path contains one of the configured
+`bannedSubpaths` (default `/src/`) and none of the `allowedSubpaths`. It is a
+pattern check: it does not resolve the import or know what a package actually
+exports, so an internal path that does not contain a banned substring passes.
 
 **❌ Incorrect**
 
@@ -214,9 +215,10 @@ import { formatDate } from '@myorg/utils'
 }
 ```
 
-| Option           | Type       | Default     | Description                                 |
-| ---------------- | ---------- | ----------- | ------------------------------------------- |
-| `bannedSubpaths` | `string[]` | `['/src/']` | Segments that signal a deep internal import |
+| Option            | Type       | Default     | Description                                            |
+| ----------------- | ---------- | ----------- | ------------------------------------------------------ |
+| `bannedSubpaths`  | `string[]` | `['/src/']` | Segments that signal a deep internal import            |
+| `allowedSubpaths` | `string[]` | `[]`        | Segments a package deliberately exposes; never flagged |
 
 ---
 
@@ -227,8 +229,9 @@ import { formatDate } from '@myorg/utils'
 
 In a monorepo, relative paths like `../../core/src/utils/helper` skip the `core`
 module's public API entirely. This rule detects that pattern in static relative
-import strings by counting `../` traversal depth and checking for internal
-directory names in the descent. It does not resolve paths.
+module edges (imports, re-exports and literal dynamic imports) by counting `../`
+traversal depth and checking for internal directory names in the descent. It
+does not resolve paths.
 
 **❌ Incorrect**
 
@@ -332,9 +335,14 @@ warnings should fail the gate.
 
 **What triggers this rule (inside `.tsx` files)**
 
-- Calling React hooks: `useState`, `useEffect`, `useReducer`, `useCallback`,
-  `useMemo`, `useRef`, and more
-- Declaring inline functions/handlers directly inside a view component body
+- Calling React hooks, directly or as `React.useState`: `useState`, `useEffect`,
+  `useReducer`, `useCallback`, `useMemo`, `useRef`, and more
+- Declaring named functions/handlers directly inside a view component body
+
+A view is a module-scope function, or one passed to a module-scope `memo` or
+`forwardRef`. A function named `useXxx` is a custom hook and is not checked,
+even in a `.tsx` file. Arrow functions written inline in JSX attributes are not
+reported.
 
 ---
 

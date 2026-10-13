@@ -11,7 +11,7 @@ describe('no-hidden-top-level-declarations metadata', () => {
       docs: {
         description:
           'Disallow non-exported top-level functions, classes, constants, interfaces, and type aliases.',
-        url: 'https://github.com/VibraComet/eslint-plugin-code-policy/blob/main/packages/eslint-plugin-code-policy/docs/rules/no-hidden-top-level-declarations.md',
+        url: 'https://github.com/syntopica/codeality/blob/main/packages/eslint-plugin-code-policy/docs/rules/no-hidden-top-level-declarations.md',
       },
       schema: [],
       messages: {

@@ -11,13 +11,13 @@ describe('one-primary-unit metadata', () => {
       type: 'problem',
       docs: {
         description:
-          'A file must contain exactly one primary top-level exported unit.',
-        url: 'https://github.com/VibraComet/eslint-plugin-code-policy/blob/main/packages/eslint-plugin-code-policy/docs/rules/one-primary-unit.md',
+          'A file must not export more than one primary top-level unit.',
+        url: 'https://github.com/syntopica/codeality/blob/main/packages/eslint-plugin-code-policy/docs/rules/one-primary-unit.md',
       },
       schema: [],
       messages: {
         multiplePrimaryUnits:
-          'File contains multiple primary exported units (found {{count}}). The Atomic File Rule requires exactly one primary exported unit.',
+          'File contains multiple primary exported units (found {{count}}). The Atomic File Rule allows at most one primary exported unit per file; move this one to its own file.',
       },
     })
   })
@@ -127,6 +127,28 @@ runRuleTest('one-primary-unit', rule, {
     },
   ],
   invalid: [
+    // Exemptions match the file's whole name: `reindex.js` is not a barrel,
+    // `homepage.tsx` is not a Next page and `myproxy.ts` is not Next's proxy.
+    {
+      code: `export function a() {}\nexport function b() {}`,
+      filename: '/src/search/reindex.js',
+      errors: [multiplePrimaryUnitsError(2, 8)],
+    },
+    {
+      code: `export function a() {}\nexport function b() {}`,
+      filename: '/src/search/myindex.ts',
+      errors: [multiplePrimaryUnitsError(2, 8)],
+    },
+    {
+      code: `export const metadata = {}\nexport function HomePage() {}`,
+      filename: '/src/app/homepage.tsx',
+      errors: [multiplePrimaryUnitsError(2, 8)],
+    },
+    {
+      code: `export function a() {}\nexport function b() {}`,
+      filename: '/src/net/myproxy.ts',
+      errors: [multiplePrimaryUnitsError(2, 8)],
+    },
     {
       code: `export const { first, second } = source`,
       filename: '/src/state/pair.ts',

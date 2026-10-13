@@ -1,6 +1,7 @@
 import type { TSESTree } from '@typescript-eslint/utils'
 
 import { createRule } from '@/utils/create-rule.js'
+import { isIndexFilename } from '@/utils/is-index-filename.js'
 
 type Options = []
 
@@ -26,11 +27,7 @@ export default createRule<Options, MessageIds>({
     const filename = context.filename || context.physicalFilename || ''
 
     // Only applies to barrel/index files
-    if (
-      !filename.endsWith('index.ts') &&
-      !filename.endsWith('index.tsx') &&
-      !filename.endsWith('index.js')
-    ) {
+    if (!isIndexFilename(filename)) {
       return {}
     }
 

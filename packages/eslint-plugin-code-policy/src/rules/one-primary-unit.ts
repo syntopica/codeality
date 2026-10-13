@@ -4,6 +4,8 @@ import { boundIdentifierNames } from '@/utils/bound-identifier-names.js'
 import { createRule } from '@/utils/create-rule.js'
 import { isExemptEntryFilename } from '@/utils/is-exempt-entry-filename.js'
 import { isFactoryDestructuring } from '@/utils/is-factory-destructuring.js'
+import { isNextProxyFilename } from '@/utils/is-next-proxy-filename.js'
+import { isNextRouterFilename } from '@/utils/is-next-router-filename.js'
 import { isSchemaDerivedType } from '@/utils/is-schema-derived-type.js'
 import { localValueNames } from '@/utils/local-value-names.js'
 import { NEXT_RESERVED_EXPORTS } from '@/utils/next-reserved-exports.js'
@@ -19,29 +21,23 @@ export default createRule<Options, MessageIds>({
     type: 'problem',
     docs: {
       description:
-        'A file must contain exactly one primary top-level exported unit.',
+        'A file must not export more than one primary top-level unit.',
     },
     schema: [],
     messages: {
       multiplePrimaryUnits:
-        'File contains multiple primary exported units (found {{count}}). The Atomic File Rule requires exactly one primary exported unit.',
+        'File contains multiple primary exported units (found {{count}}). The Atomic File Rule allows at most one primary exported unit per file; move this one to its own file.',
     },
   },
   defaultOptions: [],
   create(context) {
     const filename = context.filename || context.physicalFilename || ''
 
-    if (
-      isExemptEntryFilename(filename) ||
-      filename.endsWith('proxy.ts') // Exempt explicit configuration or typings
-    ) {
+    if (isExemptEntryFilename(filename) || isNextProxyFilename(filename)) {
       return {}
     }
 
-    const isNextJsRouterFile =
-      /(?:page|layout|loading|error|not-found)\.(?:tsx|jsx|js|ts)$|route\.(?:ts|js)$|middleware\.(?:ts|js)$/.test(
-        filename,
-      )
+    const isNextJsRouterFile = isNextRouterFilename(filename)
 
     return {
       Program(node: TSESTree.Program) {

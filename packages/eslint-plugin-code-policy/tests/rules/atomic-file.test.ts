@@ -11,7 +11,7 @@ describe('atomic-file metadata', () => {
       docs: {
         description:
           'Enforce atomic file structure (exactly one top-level unit per file)',
-        url: 'https://github.com/VibraComet/eslint-plugin-code-policy/blob/main/packages/eslint-plugin-code-policy/docs/rules/atomic-file.md',
+        url: 'https://github.com/syntopica/codeality/blob/main/packages/eslint-plugin-code-policy/docs/rules/atomic-file.md',
       },
       deprecated: true,
       replacedBy: [

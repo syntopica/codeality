@@ -1,4 +1,5 @@
 import { createRule } from '@/utils/create-rule.js'
+import { moduleSourceVisitors } from '@/utils/module-source-visitors.js'
 
 /**
  * no-cross-module-deep-imports
@@ -68,36 +69,32 @@ export default createRule<Options, MessageIds>({
     const minParentTraversals = options?.minParentTraversals ?? 2
     const internalDirs = options?.internalDirs ?? ['src']
 
-    return {
-      ImportDeclaration(node) {
-        const importPath = node.source.value
+    return moduleSourceVisitors((node, importPath) => {
+      if (!importPath.startsWith('.')) return // ignore absolute/alias imports
 
-        if (!importPath.startsWith('.')) return // ignore absolute/alias imports
+      // Count leading `../` segments
+      const parts = importPath.split('/')
+      let parentCount = 0
+      for (const part of parts) {
+        if (part === '..') parentCount++
+        else break
+      }
 
-        // Count leading `../` segments
-        const parts = importPath.split('/')
-        let parentCount = 0
-        for (const part of parts) {
-          if (part === '..') parentCount++
-          else break
-        }
+      if (parentCount < minParentTraversals) return
 
-        if (parentCount < minParentTraversals) return
+      // Check if any of the non-`..` segments is an internal dir
+      const descendantParts = parts.slice(parentCount)
+      const hasInternalSegment = descendantParts.some((p) =>
+        internalDirs.includes(p),
+      )
 
-        // Check if any of the non-`..` segments is an internal dir
-        const descendantParts = parts.slice(parentCount)
-        const hasInternalSegment = descendantParts.some((p) =>
-          internalDirs.includes(p),
-        )
-
-        if (hasInternalSegment) {
-          context.report({
-            node,
-            messageId: 'deepImport',
-            data: { importPath },
-          })
-        }
-      },
-    }
+      if (hasInternalSegment) {
+        context.report({
+          node,
+          messageId: 'deepImport',
+          data: { importPath },
+        })
+      }
+    })
   },
 })

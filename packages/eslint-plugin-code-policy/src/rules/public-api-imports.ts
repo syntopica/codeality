@@ -1,10 +1,10 @@
-import type { TSESTree } from '@typescript-eslint/utils'
-
 import { createRule } from '@/utils/create-rule.js'
+import { moduleSourceVisitors } from '@/utils/module-source-visitors.js'
 
 type Options = [
   {
     bannedSubpaths?: string[]
+    allowedSubpaths?: string[]
   }?,
 ]
 
@@ -26,6 +26,10 @@ export default createRule<Options, MessageIds>({
             type: 'array',
             items: { type: 'string' },
           },
+          allowedSubpaths: {
+            type: 'array',
+            items: { type: 'string' },
+          },
         },
         additionalProperties: false,
       },
@@ -38,25 +42,21 @@ export default createRule<Options, MessageIds>({
   defaultOptions: [{}],
   create(context, [options]) {
     const bannedSubpaths = options?.bannedSubpaths ?? ['/src/']
+    const allowedSubpaths = options?.allowedSubpaths ?? []
 
-    return {
-      ImportDeclaration(node: TSESTree.ImportDeclaration) {
-        const importPath = node.source.value
-
-        if (importPath.startsWith('.')) return // Ignore relative imports within the same package
-
-        for (const subpath of bannedSubpaths) {
-          // If the import is an absolute/alias import and contains the banned subpath
-          if (importPath.includes(subpath)) {
-            context.report({
-              node,
-              messageId: 'deepImportNotAllowed',
-              data: { importPath },
-            })
-            break
-          }
-        }
-      },
-    }
+    return moduleSourceVisitors((node, importPath) => {
+      if (importPath.startsWith('.')) return // Ignore relative imports within the same package
+      // A subpath the package deliberately exports, such as `pkg/src/public`.
+      if (allowedSubpaths.some((allowed) => importPath.includes(allowed))) {
+        return
+      }
+      if (bannedSubpaths.some((subpath) => importPath.includes(subpath))) {
+        context.report({
+          node,
+          messageId: 'deepImportNotAllowed',
+          data: { importPath },
+        })
+      }
+    })
   },
 })

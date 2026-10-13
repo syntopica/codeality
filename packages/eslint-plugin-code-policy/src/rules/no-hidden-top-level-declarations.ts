@@ -2,6 +2,7 @@ import type { TSESTree } from '@typescript-eslint/utils'
 
 import { boundIdentifierNames } from '@/utils/bound-identifier-names.js'
 import { createRule } from '@/utils/create-rule.js'
+import { isNextProxyFilename } from '@/utils/is-next-proxy-filename.js'
 
 type Options = []
 
@@ -41,7 +42,7 @@ export default createRule<Options, MessageIds>({
       // measured in consumer-p, whose config does exactly that.
       filename.endsWith('.dependency-cruiser.cjs') ||
       filename.endsWith('.vue') || // SFC <script setup> bindings are reactive state, never exported
-      filename.endsWith('proxy.ts') // Exempt explicit configuration or typings
+      isNextProxyFilename(filename) // Exempt explicit configuration or typings
     ) {
       return {}
     }

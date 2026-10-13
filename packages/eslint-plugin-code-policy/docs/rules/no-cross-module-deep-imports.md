@@ -13,8 +13,9 @@ traversal depth and checking for internal directory names in the descent.
 
 ## Rule Details
 
-The rule only examines **relative** imports (starting with `./` or `../`). It
-activates when:
+The rule only examines **relative** module edges (starting with `./` or `../`):
+imports, `export ... from`, `export * from` and literal `import()`. It activates
+when:
 
 1. The import path contains at least `minParentTraversals` levels of `../`
    (default: 2).

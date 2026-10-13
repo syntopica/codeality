@@ -9,6 +9,11 @@ runRuleTest('no-mixed-barrel', rule, {
     requireData: true,
   },
   valid: [
+    // `reindex.ts` merely ends in "index"; it is not a barrel.
+    {
+      code: `export { a } from './a'\nexport const b = 1`,
+      filename: '/src/search/reindex.ts',
+    },
     // Pure barrel — only re-exports from other modules
     {
       code: `
@@ -54,6 +59,19 @@ runRuleTest('no-mixed-barrel', rule, {
   ],
 
   invalid: [
+    // A `.mts` barrel is a barrel too.
+    {
+      code: `export { a } from './a'\nexport const b = 1`,
+      filename: '/src/feature/index.mts',
+      errors: [
+        {
+          messageId: 'mixedBarrel',
+          data: { kind: 'value' },
+          line: 2,
+          column: 1,
+        },
+      ],
+    },
     // Mixed: remote re-export + inline type declaration
     {
       code: `

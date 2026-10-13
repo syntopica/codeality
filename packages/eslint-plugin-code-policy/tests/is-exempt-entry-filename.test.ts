@@ -12,14 +12,24 @@ describe('isExemptEntryFilename', () => {
     'src/index.ts',
     'src/components/index.tsx',
     'lib/index.js',
+    'lib/index.mjs',
+    'src/index.mts',
+    'src\\win\\index.ts',
+    'types/env.d.mts',
+    'vitest.config.mts',
   ])('returns true for %s', (filename) => {
     expect(isExemptEntryFilename(filename)).toBe(true)
   })
 
-  it.each(['src/formatDate.ts', 'src/UserCard.tsx', 'proxy.ts', 'indexer.ts'])(
-    'returns false for %s',
-    (filename) => {
-      expect(isExemptEntryFilename(filename)).toBe(false)
-    },
-  )
+  it.each([
+    'src/formatDate.ts',
+    'src/UserCard.tsx',
+    'proxy.ts',
+    'indexer.ts',
+    'src/reindex.js',
+    'src/myindex.ts',
+    'src/index.test.ts',
+  ])('returns false for %s', (filename) => {
+    expect(isExemptEntryFilename(filename)).toBe(false)
+  })
 })

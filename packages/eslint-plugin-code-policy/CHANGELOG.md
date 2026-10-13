@@ -2,6 +2,24 @@
 
 ## [Unreleased]
 
+### Minor Changes
+
+- fix: exemptions match the file's whole name. `reindex.js`, `myindex.ts`,
+  `homepage.tsx` and `myproxy.ts` were exempt as barrels, Next pages or Next's
+  proxy because the check compared path suffixes; they are now ordinary modules,
+  so `one-primary-unit` and `no-mixed-barrel` can report them. `index.mjs`,
+  `index.mts` and `*.d.mts` are now recognised.
+- feat: `public-api-imports` and `no-cross-module-deep-imports` check
+  `export ... from`, `export * from` and `import('literal')` as well as
+  `import`. New `allowedSubpaths` option on `public-api-imports` for subpaths a
+  package deliberately exposes.
+- fix: `view-logic-separation` no longer treats a `useXxx` custom hook in a
+  `.tsx` file as a view, and now reports `React.useState`-style calls and hooks
+  inside components wrapped in `memo` or `forwardRef`.
+- docs: `one-primary-unit` says what it checks (at most one exported unit); rule
+  documentation URLs point at this repository, and the five rules without a page
+  now have one.
+
 ## 0.8.0
 
 ### Minor Changes

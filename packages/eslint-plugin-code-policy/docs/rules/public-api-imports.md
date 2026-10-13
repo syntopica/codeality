@@ -12,9 +12,12 @@ internal implementation details that can change without notice.
 
 ## Rule Details
 
-The rule checks every `import` statement. If the import path is **non-relative**
-(absolute or aliased) and contains any of the `bannedSubpaths` segments, the
-rule reports the import.
+The rule checks every static module edge: `import`, `export ... from`,
+`export * from` and `import('literal')`. If the path is **non-relative**
+(absolute or aliased), contains one of the `bannedSubpaths` segments and none of
+the `allowedSubpaths` segments, the rule reports it. It compares strings: it
+does not resolve the import or read the target package's `exports`, and a
+computed `import(path)` cannot be checked.
 
 Relative imports (`./`, `../`) are ignored -- those are governed by the
 `no-cross-module-deep-imports` rule instead.
@@ -40,14 +43,16 @@ import { formatDate } from '@myorg/utils'
 ```js
 {
   'code-policy/public-api-imports': ['error', {
-    bannedSubpaths: ['/src/'] // default
+    bannedSubpaths: ['/src/'], // default
+    allowedSubpaths: ['/src/public/'] // default: []
   }]
 }
 ```
 
-| Option           | Type       | Default     | Description                                                                                                         |
-| ---------------- | ---------- | ----------- | ------------------------------------------------------------------------------------------------------------------- |
-| `bannedSubpaths` | `string[]` | `['/src/']` | Path segments that signal a deep internal import. If any segment appears in the import path, the import is flagged. |
+| Option            | Type       | Default     | Description                                                                                                                      |
+| ----------------- | ---------- | ----------- | -------------------------------------------------------------------------------------------------------------------------------- |
+| `bannedSubpaths`  | `string[]` | `['/src/']` | Path segments that signal a deep internal import. If any segment appears in the import path, the import is flagged.              |
+| `allowedSubpaths` | `string[]` | `[]`        | Path segments a package deliberately exposes. A path containing one is never flagged, even if it also contains a banned segment. |
 
 ## When Not To Use It
 

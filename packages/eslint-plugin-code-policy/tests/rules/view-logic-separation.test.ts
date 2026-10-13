@@ -13,7 +13,7 @@ describe('view-logic-separation metadata', () => {
       docs: {
         description:
           'Enforces strict separation of logic from views. React views (.tsx) must not contain state, lifecycle effects, or inline handler declarations. Move logic to a custom hook.',
-        url: 'https://github.com/VibraComet/eslint-plugin-code-policy/blob/main/packages/eslint-plugin-code-policy/docs/rules/view-logic-separation.md',
+        url: 'https://github.com/syntopica/codeality/blob/main/packages/eslint-plugin-code-policy/docs/rules/view-logic-separation.md',
       },
       schema: [],
       messages: {
