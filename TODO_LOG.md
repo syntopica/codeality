@@ -1,5 +1,38 @@
 ### 2026-10-13
 
+- [x] 2026-10-13 — **db-quality:** `--json` emits the shared diagnostics.
+  - Result: `check`, `audit`, `gate`, `perf diff` and `perf bench` add
+    `diagnostics` beside their existing fields; gate stages keep their findings
+    and the top level flattens them in stage order; database findings
+    (`postgres`, `supabase`) carry no location; `rerun` is a fixed command per
+    producer, with `--db-url "$DB_URL"` instead of the URL.
+  - Evidence: ef8b8bf; 525 db-quality tests passed.
+- [x] 2026-10-13 — **quality-config:** `knip --production` reports real
+      findings.
+  - Result: presets mark runtime entries and sources with `!`, exclude tests,
+    mocks and stories in production only, and ignore `astro`/`nuxt` in
+    production only; `existingEntries` strips the mark; root config marks
+    package and template sources. Root production run went from 22 dependency
+    reports to 3, all `@tailwindcss/vite` (a build plugin declared in
+    `dependencies`, a true finding left for the templates to decide); default
+    run output identical.
+  - Evidence: f412b33; `tests/knip.production.test.ts` runs real knip; 8
+    templates exit 0 in default mode.
+- [x] 2026-10-13 — **Docs:** warn-level suppression on adoption.
+  - Result: `docs/adoption/existing-repo.md` says to keep the promotion to
+    `error` in the config, with the override and `--suppress-rule` command;
+    demoting back to `warn` brings the violations back.
+  - Evidence: ESLint 10.12.0 `suppressions-service.js:246-258` counts severity 2
+    only; scratch probe: warn `--suppress-all` wrote `{}`, error
+    `--suppress-rule` exit 0, demoted to warn exit non-zero.
+- [x] 2026-10-13 — **Stryker:** runner patch keeps empty `describe('')` names.
+  - Result: the patch joins every suite name with `' > '` without filtering,
+    which is the full name Vitest 5.0.3 matches (`" > leaf"` for an empty
+    suite); `stryker.config.mjs` comment now says the run fails below
+    `thresholds.break`.
+  - Evidence: f6cea15; probe of Vitest 5.0.3 task chain; `pnpm mutation` 89.98,
+    6.63 tests per mutant.
+
 - [x] 2026-10-13 — **code-policy:** Rule precision fixes from the Codex tools
       review.
   - Result: exemptions match whole file names (`reindex.js`, `myindex.ts`,

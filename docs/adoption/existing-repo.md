@@ -225,6 +225,23 @@ config, which both clears the immediate blocker and folds those rules into the
 same suppress/prune ratchet as everything else (recommended - it also makes new
 violations on those rules fail loud instead of silently piling up as warnings).
 
+Keep the promotion in the config for good; do not raise a rule to `error` only
+for the recording run. ESLint 10 applies suppressions to error-severity messages
+alone, so a rule demoted back to `warn` reports every recorded violation again
+and fails `--max-warnings 0` (checked on ESLint 10.12.0). The override and the
+suppressions file go in the same commit:
+
+```js
+export default [
+  ...baselineConfig,
+  { rules: { 'code-policy/view-logic-separation': 'error' } },
+]
+```
+
+```sh
+pnpm exec eslint . --suppress-rule code-policy/view-logic-separation
+```
+
 Rules an adopting repo typically needs to promote:
 
 - `code-policy/view-logic-separation`

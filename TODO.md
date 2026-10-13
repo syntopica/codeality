@@ -178,18 +178,15 @@ Moved verbatim from `~/p/TODO.md` on 2026-10-03; the routing table in
 - [ ] Baselines still miss a baselined finding whose measured value grows (a
       longer file, a wider overflow): fingerprints exclude the value on purpose,
       pinned by `packages/gate-kit/tests/classifyFindings.worsening.test.ts`.
-      Smallest step: an optional `observed` per baseline entry for measured
-      rules, compared on check.
-- [ ] The shared diagnostics shape (`packages/gate-kit/src/Diagnostic.ts`) is
-      emitted only by `codeality-ui check --json`. Smallest step: add
-      `diagnostics` to `codeality-db` `--json` output.
-- [ ] `knip --production` reports 22 unused dependencies, all false (`vue` in
-      the Vue template): the shared preset marks no production entries. Smallest
-      step: suffix template entry patterns with `!` and rerun.
-- [ ] ESLint's `--suppress-all` records errors only, so a warn-level rule
-      (`view-logic-separation`) cannot be bulk-suppressed on adoption. Smallest
-      step: confirm against ESLint 10 docs and document the workaround.
-- [ ] `patches/@stryker-mutator__vitest-runner@10.0.0.patch` restores mutation
-      testing on Vitest 5. Smallest step: drop it when
-      stryker-mutator/stryker-js#6210 ships, after `pnpm mutation` still scores
-      89.98 or more without it.
+      Codex review (2026-10-13): no finding carries a structured measurement
+      yet, and UI aggregation keeps only the first example, so a baseline
+      extension alone would compare nothing. Smallest step: a UI pilot that
+      keeps overflow excess (px) and affected axe-node count as numeric fields
+      through `groupRawFindings` and `mergeFindings`, then measure same-build
+      capture noise before any baseline `measurements` extension. DB perf and
+      bench keep their own records.
+- [!] `patches/@stryker-mutator__vitest-runner@10.0.0.patch` restores mutation
+  testing on Vitest 5 (`' > '` join, empty `describe('')` names kept). Blocked
+  on upstream: 10.0.0 is still the latest release. Smallest step: drop it when a
+  release fixing stryker-mutator/stryker-js#6210 ships and `pnpm mutation` still
+  scores 89.98 or more without it.
