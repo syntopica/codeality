@@ -17,6 +17,15 @@ becomes the one people argue with rather than the one that catches real breaks
 early. Measured on this repository: `correctness` reported nothing, the two
 wider categories reported 19 findings, none of which ESLint considers a problem.
 
-oxlint does not replace ESLint. It has no type information, so it cannot see
-`no-floating-promises`, `no-unnecessary-condition`, or anything else in
-`strictTypeChecked` - which is most of what the baseline actually enforces.
+oxlint does not replace ESLint. The pass configured here runs without type
+information (oxlint's type-aware mode is a separate engine, `oxlint-tsgolint`,
+not enabled here), so it cannot see `no-floating-promises`,
+`no-unnecessary-condition`, or anything else in `strictTypeChecked` - which is
+most of what the baseline actually enforces.
+
+The generated pre-commit hook runs oxlint and ESLint in parallel, not oxlint
+first. Piping them was measured on 2026-10-13 against the `ts-package` template,
+one staged file, lefthook 2.2.1: a file oxlint rejects finished in 0.5 s instead
+of 2.5 s, but a clean file - the usual commit - took 2.2 s instead of 1.7 s.
+oxlint's `correctness` set rarely fires, so the parallel hook is the faster one
+in practice.
