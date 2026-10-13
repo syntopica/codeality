@@ -183,6 +183,7 @@ overrides:
   '@typescript-eslint/eslint-plugin@8.71.1': 8.71.0
 
 patchedDependencies:
+  '@stryker-mutator/vitest-runner@10.0.0': 7fafb35818cd76543d0c005132fe2b8e6fed3c52a39180616659246431acafeb
   eslint-plugin-react: fdc0d4d107280af5a112492a6f5a6181acb084243f353cfbc03e240528360dd1
 
 importers:
@@ -485,7 +486,7 @@ importers:
         version: 10.0.0(@types/node@26.6.5)
       '@stryker-mutator/vitest-runner':
         specifier: ^10.0.0
-        version: 10.0.0(@stryker-mutator/core@10.0.0(@types/node@26.6.5))(vitest@5.0.3)
+        version: 10.0.0(patch_hash=7fafb35818cd76543d0c005132fe2b8e6fed3c52a39180616659246431acafeb)(@stryker-mutator/core@10.0.0(@types/node@26.6.5))(vitest@5.0.3)
       '@syntopica/tsconfig':
         specifier: workspace:*
         version: link:../tsconfig
@@ -15015,7 +15016,7 @@ snapshots:
 
   '@stryker-mutator/util@10.0.0': {}
 
-  '@stryker-mutator/vitest-runner@10.0.0(@stryker-mutator/core@10.0.0(@types/node@26.6.5))(vitest@5.0.3)':
+  '@stryker-mutator/vitest-runner@10.0.0(patch_hash=7fafb35818cd76543d0c005132fe2b8e6fed3c52a39180616659246431acafeb)(@stryker-mutator/core@10.0.0(@types/node@26.6.5))(vitest@5.0.3)':
     dependencies:
       '@stryker-mutator/api': 10.0.0
       '@stryker-mutator/core': 10.0.0(@types/node@26.6.5)

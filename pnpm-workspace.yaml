@@ -62,6 +62,11 @@ minimumReleaseAgeExclude:
   - '@astrojs/markdown-satteri@0.4.3'
   - astro@7.3.6
 patchedDependencies:
+  # Vitest 5 matches testNamePattern against the chain joined by ' > '; the
+  # runner joins with a space, so every covered mutant ran zero tests and
+  # survived (code-policy scored 3% instead of 89%+). Drop when
+  # stryker-mutator/stryker-js#6210 ships.
+  '@stryker-mutator/vitest-runner@10.0.0': patches/@stryker-mutator__vitest-runner@10.0.0.patch
   eslint-plugin-react: patches/eslint-plugin-react.patch
 # Security overrides: `pnpm audit --audit-level=high` findings that survived
 # `pnpm dedupe`. Each pins the transitive edge forward to the patched line
