@@ -23,7 +23,7 @@ export const checkCommand = (argv: string[], io: CommandIo): number => {
       runner: io.runner,
     })
     io.stdout(
-      `${values['json'] === true ? renderFindingsJson(findings) : renderFindings(findings)}\n`,
+      `${values['json'] === true ? renderFindingsJson(findings, 'codeality-db check --json') : renderFindings(findings)}\n`,
     )
     return findings.length > 0 ? ExitCode.FINDINGS : ExitCode.OK
   } catch (error) {

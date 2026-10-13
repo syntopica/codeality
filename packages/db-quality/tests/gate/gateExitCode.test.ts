@@ -9,6 +9,7 @@ const result = (status: StageResult['status']): StageResult => ({
   status,
   durationSeconds: 0,
   detail: '',
+  diagnostics: [],
 })
 
 describe('gateExitCode', () => {

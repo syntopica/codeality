@@ -36,7 +36,9 @@ describe('gateCommand', () => {
     expect(gateCommand(['--json'], io)).toBe(0)
     const report = JSON.parse(io.out.join('')) as {
       stages: { name: string; status: string }[]
+      diagnostics: unknown[]
     }
+    expect(report.diagnostics).toEqual([])
     expect(report.stages.map((s) => [s.name, s.status])).toEqual([
       ['check', 'passed'],
       ['audit', 'skipped-not-applicable'],

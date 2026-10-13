@@ -12,6 +12,7 @@ export const perfDiffAction = ({
   target,
   session,
   json,
+  rerunFlags,
 }: PerfActionIo): number => {
   const previous = readPerfSnapshot(io.root)
   const current = takePerfSnapshot(
@@ -21,6 +22,8 @@ export const perfDiffAction = ({
     new Date().toISOString(),
   )
   const diff = diffSnapshots(previous, current, config.perf, config.disable)
-  io.stdout(`${json ? renderPerfDiffJson(diff) : renderPerfDiff(diff)}\n`)
+  io.stdout(
+    `${json ? renderPerfDiffJson(diff, rerunFlags) : renderPerfDiff(diff)}\n`,
+  )
   return diff.findings.length > 0 ? ExitCode.FINDINGS : ExitCode.OK
 }

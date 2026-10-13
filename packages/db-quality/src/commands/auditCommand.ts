@@ -6,6 +6,7 @@ import { renderFindingsJson } from '@/check/renderFindingsJson.js'
 import type { CommandIo } from '@/commands/CommandIo.js'
 import { legacyConfigNotice } from '@/config/legacyConfigNotice.js'
 import { readConfig } from '@/config/readConfig.js'
+import { targetRerunFlags } from '@/report/targetRerunFlags.js'
 import { ExitCode } from '@syntopica/gate-kit/ExitCode'
 import { parseCommandArgs } from '@syntopica/gate-kit/parseCommandArgs'
 import { reportCommandError } from '@syntopica/gate-kit/reportCommandError'
@@ -33,7 +34,14 @@ export const auditCommand = (argv: string[], io: CommandIo): number => {
       target,
     })
     io.stdout(
-      `${values['json'] === true ? renderFindingsJson(findings) : renderFindings(findings)}\n`,
+      `${
+        values['json'] === true
+          ? renderFindingsJson(
+              findings,
+              `codeality-db audit${values['linked'] === true ? ' --linked' : targetRerunFlags(true)} --json`,
+            )
+          : renderFindings(findings)
+      }\n`,
     )
     return findings.length > 0 ? ExitCode.FINDINGS : ExitCode.OK
   } catch (error) {

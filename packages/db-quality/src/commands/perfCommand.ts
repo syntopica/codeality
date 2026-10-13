@@ -8,6 +8,7 @@ import { perfActionFrom } from '@/perf/perfActionFrom.js'
 import { QUERY_TIMEOUT_MS } from '@/perf/QUERY_TIMEOUT_MS.js'
 import { psqlSession } from '@/postgres/psqlSession.js'
 import { requirePostgresTarget } from '@/postgres/requirePostgresTarget.js'
+import { targetRerunFlags } from '@/report/targetRerunFlags.js'
 import { parseCommandArgs } from '@syntopica/gate-kit/parseCommandArgs'
 import { reportCommandError } from '@syntopica/gate-kit/reportCommandError'
 
@@ -35,6 +36,7 @@ export const perfCommand = (argv: string[], io: CommandIo): number => {
       session,
       json: values['json'] === true,
       record: values['record'] === true,
+      rerunFlags: targetRerunFlags(values['db-url'] !== undefined),
     }
     if (action === 'snapshot') return perfSnapshotAction(actionIo)
     if (action === 'diff') return perfDiffAction(actionIo)

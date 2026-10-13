@@ -35,6 +35,7 @@ describe('runCli', () => {
     expect(JSON.parse(io.out.join(''))).toEqual({
       schemaVersion: 1,
       findings: [],
+      diagnostics: [],
     })
     expect(runCli(['--project'], io)).toBe(2)
   })

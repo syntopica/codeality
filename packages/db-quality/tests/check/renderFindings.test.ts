@@ -24,9 +24,22 @@ describe('renderFindings', () => {
     expect(renderFindings([])).toBe('0 findings')
   })
   it('renders the JSON document', () => {
-    expect(JSON.parse(renderFindingsJson([finding]))).toEqual({
+    expect(
+      JSON.parse(renderFindingsJson([finding], 'codeality-db check --json')),
+    ).toEqual({
       schemaVersion: 1,
       findings: [finding],
+      diagnostics: [
+        {
+          tool: 'codeality-db',
+          rule: 'BDB001',
+          severity: 'error',
+          location: { path: 'm/a.sql', line: 3 },
+          message: 'policy is permissive',
+          fingerprint: 'abcd',
+          rerun: 'codeality-db check --json',
+        },
+      ],
     })
   })
 })

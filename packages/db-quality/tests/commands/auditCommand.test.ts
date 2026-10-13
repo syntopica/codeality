@@ -65,6 +65,7 @@ describe('auditCommand', () => {
     expect(JSON.parse(io.out.join(''))).toEqual({
       schemaVersion: 1,
       findings: [],
+      diagnostics: [],
     })
   })
 })

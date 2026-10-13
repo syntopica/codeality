@@ -11,4 +11,6 @@ export type PerfActionIo = {
   session: PsqlSession
   json: boolean
   record: boolean
+  /** `--db-url` as a rerun must repeat it, without the URL itself. */
+  rerunFlags: string
 }

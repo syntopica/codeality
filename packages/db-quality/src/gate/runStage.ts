@@ -4,14 +4,24 @@ import { renderFindings } from '@/check/renderFindings.js'
 import type { Stage } from '@/gate/Stage.js'
 import type { StageResult } from '@/gate/StageResult.js'
 import type { StageStatus } from '@/gate/StageStatus.js'
+import type { Finding } from '@/model/Finding.js'
+import { findingDiagnostic } from '@/report/findingDiagnostic.js'
 
 export const runStage = (stage: Stage): StageResult => {
   const started = performance.now()
-  const done = (status: StageStatus, detail: string): StageResult => ({
+  const rerun = stage.rerun ?? (() => 'codeality-db gate --json')
+  const done = (
+    status: StageStatus,
+    detail: string,
+    findings: Finding[] = [],
+  ): StageResult => ({
     name: stage.name,
     status,
     durationSeconds: (performance.now() - started) / 1000,
     detail,
+    diagnostics: findings.map((finding) =>
+      findingDiagnostic(finding, rerun(finding)),
+    ),
   })
   try {
     const outcome = stage.run()
@@ -20,7 +30,7 @@ export const runStage = (stage: Stage): StageResult => {
       return done('skipped-not-applicable', outcome.skipped)
     return outcome.length === 0
       ? done('passed', '')
-      : done('findings', renderFindings(outcome))
+      : done('findings', renderFindings(outcome), outcome)
   } catch (error) {
     return done(
       'failed-to-run',

@@ -74,6 +74,7 @@ describe('checkCommand', () => {
     expect(JSON.parse(io.out.join(''))).toEqual({
       schemaVersion: 1,
       findings: [],
+      diagnostics: [],
     })
   })
   it('says the plan check was skipped and still reports the static query rules', () => {

@@ -6,12 +6,19 @@ describe('renderGateReport', () => {
   it('prints one line per stage and the detail of the ones that did not pass', () => {
     expect(
       renderGateReport([
-        { name: 'check', status: 'passed', durationSeconds: 1.234, detail: '' },
+        {
+          name: 'check',
+          status: 'passed',
+          durationSeconds: 1.234,
+          detail: '',
+          diagnostics: [],
+        },
         {
           name: 'audit',
           status: 'failed-to-run',
           durationSeconds: 0.5,
           detail: 'supabase advisors failed: X: status 403',
+          diagnostics: [],
         },
       ]),
     ).toBe(
@@ -26,6 +33,7 @@ describe('renderGateReport', () => {
           status: 'skipped-not-applicable',
           durationSeconds: 0.01,
           detail: 'no --db-url and no linked project',
+          diagnostics: [],
         },
       ]),
     ).toBe(

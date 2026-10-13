@@ -105,7 +105,8 @@ describe('renderPerfDiffJson', () => {
       PERF_DEFAULTS,
       [],
     )
-    expect(JSON.parse(renderPerfDiffJson(diff))).toEqual({
+    expect(diff.findings).not.toHaveLength(0)
+    expect(JSON.parse(renderPerfDiffJson(diff, ''))).toEqual({
       schemaVersion: 1,
       from: PREVIOUS_AT,
       to: CURRENT_AT,
@@ -113,6 +114,16 @@ describe('renderPerfDiffJson', () => {
       lostMs: diff.lostMs,
       improvements: diff.improvements,
       findings: diff.findings,
+      // A database finding has no file, and the rerun repeats the diff.
+      diagnostics: diff.findings.map((finding) => ({
+        tool: 'codeality-db',
+        rule: finding.code,
+        severity: finding.severity,
+        location: {},
+        message: finding.message,
+        fingerprint: finding.fingerprint,
+        rerun: 'codeality-db perf diff --json',
+      })),
     })
   })
 })

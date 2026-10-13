@@ -26,7 +26,15 @@ export const gateCommand = (argv: string[], io: CommandIo): number => {
     )
     const report =
       values['json'] === true
-        ? JSON.stringify({ schemaVersion: 1, stages: results }, null, 2)
+        ? JSON.stringify(
+            {
+              schemaVersion: 1,
+              stages: results,
+              diagnostics: results.flatMap((result) => result.diagnostics),
+            },
+            null,
+            2,
+          )
         : renderGateReport(results)
     io.stdout(`${report}\n`)
     return gateExitCode(results)

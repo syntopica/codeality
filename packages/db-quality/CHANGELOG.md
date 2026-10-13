@@ -2,6 +2,12 @@
 
 ## [Unreleased]
 
+### Minor Changes
+
+- feat: `--json` output of `check`, `audit`, `gate`, `perf diff` and
+  `perf bench` adds `diagnostics`, the shape shared by the codeality gates, each
+  with a fixed `rerun` command that never embeds a path or a database URL.
+
 ### Patch Changes
 
 - fix: the baseline counts occurrences. Each fingerprint is recorded as often as

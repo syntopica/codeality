@@ -40,6 +40,15 @@ codeality-db perf snapshot|diff|bench [--db-url <url>] [--json] [--record]   # r
 
 `--project <dir>` before the command runs against another directory.
 
+With `--json`, `check`, `audit`, `gate`, `perf diff` and `perf bench` add a
+`diagnostics` array beside their existing fields, in the shape every codeality
+gate shares: `tool`, `rule`, `severity`, `location` (`path` and `line`; empty
+for a finding about the live database), `message`, `fingerprint` and `rerun`.
+`rerun` is a fixed command for the subcommand that produced the finding; it
+never contains a path or a database URL. A run given `--db-url` reruns with
+`--db-url "$DB_URL"`, so set `DB_URL` to the same target. `gate --json` also
+carries each stage's diagnostics on the stage.
+
 ## Configuration
 
 `codeality-db.json`, written by `init` from the stacks it detects. This example

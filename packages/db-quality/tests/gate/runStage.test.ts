@@ -49,4 +49,28 @@ describe('runStage', () => {
     expect(result.status).toBe('skipped-not-applicable')
     expect(result.detail).toBe('no --db-url and no linked project')
   })
+  it('turns findings into diagnostics with the stage rerun, and nothing else into one', () => {
+    const result = runStage({
+      name: 'audit',
+      run: () => [finding],
+      rerun: () => 'codeality-db audit --linked --json',
+    })
+    expect(result.diagnostics).toEqual([
+      {
+        tool: 'codeality-db',
+        rule: 'BDB001',
+        severity: 'error',
+        location: { path: 'a', line: 1 },
+        message: 'm',
+        fingerprint: 'x',
+        rerun: 'codeality-db audit --linked --json',
+      },
+    ])
+    expect(
+      runStage({ name: 's', run: () => [finding] }).diagnostics[0]?.rerun,
+    ).toBe('codeality-db gate --json')
+    expect(
+      runStage({ name: 's', run: () => ({ skipped: 'why' }) }).diagnostics,
+    ).toEqual([])
+  })
 })

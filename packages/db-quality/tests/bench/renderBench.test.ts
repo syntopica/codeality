@@ -92,16 +92,25 @@ describe('renderBench', () => {
 
 describe('renderBenchJson', () => {
   it('renders schemaVersion 1 with the entries, the record and the findings, pretty-printed', () => {
-    expect(JSON.parse(renderBenchJson(result, recorded))).toEqual({
+    expect(JSON.parse(renderBenchJson(result, recorded, ''))).toEqual({
       schemaVersion: 1,
       entries: result.entries,
       recorded: recorded.entries,
       improvements: result.improvements,
       findings: result.findings,
+      diagnostics: result.findings.map((finding) => ({
+        tool: 'codeality-db',
+        rule: finding.code,
+        severity: finding.severity,
+        location: { path: finding.path, line: finding.line },
+        message: finding.message,
+        fingerprint: finding.fingerprint,
+        rerun: 'codeality-db perf bench --json',
+      })),
     })
   })
   it('records null when there is no reference', () => {
-    expect(JSON.parse(renderBenchJson(result, undefined))).toMatchObject({
+    expect(JSON.parse(renderBenchJson(result, undefined, ''))).toMatchObject({
       recorded: null,
     })
   })

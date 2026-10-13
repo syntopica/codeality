@@ -16,6 +16,7 @@ export const perfBenchAction = ({
   session,
   json,
   record,
+  rerunFlags,
 }: PerfActionIo): number => {
   const recorded = record ? undefined : readBenchRecord(io.root)
   const result = runBench(session, io.root, recorded, {
@@ -37,7 +38,7 @@ export const perfBenchAction = ({
     return ExitCode.OK
   }
   io.stdout(
-    `${json ? renderBenchJson(result, recorded) : renderBench(result, recorded)}\n`,
+    `${json ? renderBenchJson(result, recorded, rerunFlags) : renderBench(result, recorded)}\n`,
   )
   return result.findings.length > 0 ? ExitCode.FINDINGS : ExitCode.OK
 }

@@ -7,6 +7,7 @@ import type { CheckContext } from '@/check/CheckContext.js'
 import { runCheck } from '@/check/runCheck.js'
 import { perfStage } from '@/gate/perfStage.js'
 import type { Stage } from '@/gate/Stage.js'
+import { perfRerun } from '@/report/perfRerun.js'
 import { classifyFindings } from '@syntopica/gate-kit/classifyFindings'
 import { readBaseline } from '@syntopica/gate-kit/readBaseline'
 
@@ -30,11 +31,12 @@ export const gateStages = (context: CheckContext): Stage[] => {
       : { name: 'check', run: () => runCheck(context) },
     {
       name: 'audit',
+      rerun: () => 'codeality-db audit --linked --json',
       run: () =>
         context.config.audit.inGate && linked
           ? runAudit({ ...context, target: { linked: true } })
           : 'not-applicable',
     },
-    perfStage(context),
+    { ...perfStage(context), rerun: (finding) => perfRerun(finding, '') },
   ]
 }
