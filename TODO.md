@@ -159,3 +159,25 @@ plus the release:
 
 Moved verbatim from `~/p/TODO.md` on 2026-10-03; the routing table in
 `~/p/TODO_LOG.md` (entry of that date) records each move.
+
+## Positioning and documentation (Codex value review, 2026-10-13)
+
+- [ ] README and package docs overclaim against
+      `docs/evidence/2026-10-12-agent-token-measurement.md`: hero "Zero effort
+      ... Fewer tokens", "pays back on every session", "Less context, fewer
+      tokens", "Agents just benefit most", "fewer broken edits", gates that
+      "cannot be talked around", "one copy of every block". Smallest step: owner
+      picks the new hero, then rewrite those sections to claim enforcement with
+      its measured cost.
+- [ ] Stale package docs: `eslint-plugin-code-policy/README.md` names
+      `@vibracomet/eslint-config` and says recommended has five error rules (it
+      has eight, `view-logic-separation` is `warn`, strict/react/next maps are
+      identical); install lines pin `@^0.1.0` in create-baseline, eslint-config,
+      prettier-config and quality-config READMEs; the FAQ says four codebases
+      (three repositories, four subjects). Smallest step: correct each line
+      against its manifest and `src/configs/recommended.ts`.
+- [ ] Untested claims worth measuring, in Codex's order: blind human review time
+      on strict vs original patches; a lighter cap/complexity/boundary gate
+      against the full structural gate; first-run adoption on clean fixtures;
+      per-rule false-positive rate in report-only mode. Smallest step: design
+      the human review pilot (6-10 reviewers, paired patches).
