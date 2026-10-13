@@ -1,5 +1,16 @@
 ### 2026-10-13
 
+- [x] 2026-10-13 — **Release:** eslint-plugin-code-policy 0.9.0, eslint-config
+      0.10.0, quality-config 0.14.0, db-quality 0.7.0, ui-quality 0.9.0,
+      test-quality 0.2.0, create-baseline 0.10.6.
+  - Result: estate sweep of the plugin build over 15 adopting repos found one
+    false positive (`global-not-found.tsx` in tieneslavibra), fixed in 45107dd
+    before publishing; the remaining new errors are the intended wider detection
+    (verticagtm 19 and vexa-mail 9 `view-logic-separation` on vendored shadcn
+    components, vexa-insight 1 dynamic `import()` deep import).
+  - Evidence: f656967, annotated tags, publish runs 38350806895 to 38351172399
+    green, `pnpm release:check` 9 packages fully released.
+
 - [x] 2026-10-13 — **gate-kit / ui-quality:** Baselines catch a carried finding
       whose measured value grew.
   - Result: `horizontal-overflow` (`overflow-excess-px/v1`) and `a11y/*`
