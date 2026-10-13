@@ -34,6 +34,15 @@ Add `knip` and/or `dependency-cruiser` for the gates you use.
 | `@syntopica/quality-config/type-coverage`      | Minimum non-`any` type coverage threshold |
 | `@syntopica/quality-config/lefthook`           | Shared git hook pipeline                  |
 
+### Module boundaries on the resolved graph
+
+`createDepCruiserConfig({ moduleRoots: ['src/features'] })` treats each child of
+`src/features` as a module and fails any file in one module that reaches a file
+of another module other than its `index`. It runs on resolved paths, so an
+alias, a re-export or a relative `../../` are all caught the same way, which
+code-policy's `public-api-imports` and `no-cross-module-deep-imports` cannot do
+from the import string. Off unless roots are named.
+
 ### `baseline-env-init`
 
 Seeds a gitignored `.env` from the committed `.env.example`, so a freshly cloned

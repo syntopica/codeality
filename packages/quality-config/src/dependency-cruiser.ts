@@ -1,5 +1,7 @@
 import type { IConfiguration, IForbiddenRuleType } from 'dependency-cruiser'
 
+import { moduleBoundaryRules } from './moduleBoundaryRules'
+
 // Next.js App Router file conventions. Next loads each of these by filename at
 // build or request time, so nothing imports them and having no importer is
 // their normal state rather than a defect.
@@ -109,12 +111,16 @@ const REPO_SCOPE_RULES: IForbiddenRuleType[] = [
  * the framework-convention ones built in here. Use it for directories a
  * repo-wide run cannot judge - typically a workspace whose path aliases only
  * resolve under its own tsconfig, cruised separately at `scope: 'workspace'`.
+ *
+ * `moduleRoots` (opt-in) names directories whose children are modules, such
+ * as `src/features`: a module may reach another only through its `index`.
  */
 export const createDepCruiserConfig = (
   options: {
     tsConfigPath?: string
     scope?: 'repo' | 'workspace'
     orphanExemptions?: string[]
+    moduleRoots?: string[]
   } = {},
 ): IConfiguration => ({
   forbidden: [
@@ -130,6 +136,7 @@ export const createDepCruiserConfig = (
       to: {},
     },
     ...(options.scope === 'workspace' ? [] : REPO_SCOPE_RULES),
+    ...moduleBoundaryRules(options.moduleRoots ?? []),
   ],
   options: {
     doNotFollow: { path: 'node_modules' },

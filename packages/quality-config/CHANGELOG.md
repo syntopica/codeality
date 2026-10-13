@@ -2,6 +2,12 @@
 
 ## [Unreleased]
 
+### Minor Changes
+
+- feat: `createDepCruiserConfig({ moduleRoots })` adds
+  `no-deep-cross-module-import`: under each named root, a module may reach
+  another only through its `index`, judged on resolved paths. Opt-in.
+
 ## 0.13.2
 
 ### Patch Changes
