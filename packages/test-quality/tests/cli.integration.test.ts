@@ -55,14 +55,19 @@ describe('codeality-test', () => {
     const { status, rules, observations } = audit('check')
     expect(status).toBe(1)
     expect(new Set(rules.map((f) => f.severity))).toEqual(new Set(['error']))
-    expect(observations.map((o) => o.name)).toEqual(['hook-runs-full-gate'])
+    expect(observations.map((o) => o.name)).toEqual([
+      'dom-environment-candidates',
+      'hook-runs-full-gate',
+    ])
     const byRule = Object.fromEntries(rules.map((f) => [f.rule, f.evidence]))
     // The root include reaches both projects, so both files run twice.
     expect(byRule['duplicate-file-run']).toEqual([
       expect.stringMatching(/src\/dom\.test\.mjs \(dom, node\)$/),
       expect.stringMatching(/src\/pure\.test\.mjs \(dom, node\)$/),
     ])
-    expect(byRule['dom-environment-unused']).toEqual([
+    // A source scan is a guess: reported, but only `measure` can fail on it.
+    expect(byRule['dom-environment-unused']).toBeUndefined()
+    expect(observations[0]?.evidence).toEqual([
       expect.stringMatching(/src\/pure\.test\.mjs$/),
     ])
     expect(byRule['uncached-hook-lint']).toEqual([

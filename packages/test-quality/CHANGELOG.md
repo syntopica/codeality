@@ -2,6 +2,13 @@
 
 ## [Unreleased]
 
+### Minor Changes
+
+- fix: `check` no longer fails on DOM-free files under jsdom/happy-dom. A source
+  scan is a guess, so it is now the `dom-environment-candidates` observation;
+  `dom-environment-unused` stays a failing finding only from
+  `measure --node-candidates`, after a node run confirms the files pass.
+
 - **Breaking:** the warning and info severities are gone. Every finding is an
   `error` and fails the command: `duplicate-file-run`, `dom-environment-unused`,
   `uncached-hook-lint` and `environment-dominates`, which warned before, now say

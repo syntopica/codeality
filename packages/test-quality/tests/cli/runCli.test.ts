@@ -54,10 +54,12 @@ describe('runCli', () => {
     expect(schemaVersion).toBe(2)
     expect(findings.map((f) => [f.rule, f.severity])).toEqual([
       ['duplicate-file-run', 'error'],
-      ['dom-environment-unused', 'error'],
       ['uncached-hook-lint', 'error'],
     ])
-    expect(observations.map((o) => o.name)).toEqual(['hook-runs-full-gate'])
+    expect(observations.map((o) => o.name)).toEqual([
+      'dom-environment-candidates',
+      'hook-runs-full-gate',
+    ])
   })
 
   it('check passes a clean project', async () => {

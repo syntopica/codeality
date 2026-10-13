@@ -36,15 +36,15 @@ codeality-test measure [--json] [--node-candidates] [--top <n>] [-- <vitest args
 which project and environment, and reads `package.json` with `lefthook.yml` or
 `.husky/`:
 
-| finding                  | meaning                                                                                         |
-| ------------------------ | ----------------------------------------------------------------------------------------------- |
-| `duplicate-file-run`     | a file two projects both run; with `extends: true` a project's `include` is added to the root's |
-| `dom-environment-unused` | a file under jsdom/happy-dom whose source names no DOM API: a candidate for node                |
-| `uncached-hook-lint`     | ESLint or Prettier reached from a git hook without `--cache`                                    |
+| finding              | meaning                                                                                         |
+| -------------------- | ----------------------------------------------------------------------------------------------- |
+| `duplicate-file-run` | a file two projects both run; with `extends: true` a project's `include` is added to the root's |
+| `uncached-hook-lint` | ESLint or Prettier reached from a git hook without `--cache`                                    |
 
-| observation           | meaning                                            |
-| --------------------- | -------------------------------------------------- |
-| `hook-runs-full-gate` | a hook reaches the static gate and the whole suite |
+| observation                  | meaning                                                                     |
+| ---------------------------- | --------------------------------------------------------------------------- |
+| `dom-environment-candidates` | files under jsdom/happy-dom whose source names no DOM API: guesses for node |
+| `hook-runs-full-gate`        | a hook reaches the static gate and the whole suite                          |
 
 `measure` runs the suite once, with vitest's JSON reporter beside the default
 one, sampling the resident memory of vitest and every worker once a second:
