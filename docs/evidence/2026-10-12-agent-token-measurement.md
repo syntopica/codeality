@@ -259,6 +259,114 @@ change right, and cost between 4% less and 12% more. The one difference outside
 the noise is that the agent read about twice as much code in the split tree for
 the branch task, whose logic is spread over many small files.
 
+## Third round: keeping the rules and removing their costs
+
+The second round left three measured costs of the strict layout: an unbundled
+Node build starts about 20% slower, the agent read about twice as much code on
+the branch task, and the gates take longer. Five ways of removing them while
+keeping every rule were proposed, reviewed by Codex before any run, and tested.
+
+### Startup (no agent runs)
+
+Six builds of ccmanager, timed on an otherwise idle Apple M1 laptop, 25
+randomised interleaved rounds. "Menu" is the time from launch to the first
+rendered menu in a pseudo-terminal; bundled means a single file built with
+`bun build --target=node`.
+
+| build                                 | own modules on `--version` | `--version`, unbundled | `--version`, bundled | menu, unbundled | menu, bundled |
+| ------------------------------------- | -------------------------: | ---------------------: | -------------------: | --------------: | ------------: |
+| original                              |                         86 |                 351 ms |               135 ms |          420 ms |        202 ms |
+| original, entry loads app lazily      |                          1 |                  62 ms |                93 ms |          421 ms |        211 ms |
+| strict                                |                        968 |                 436 ms |               136 ms |          506 ms |        204 ms |
+| strict, entry loads app lazily        |                          3 |                  60 ms |                94 ms |          507 ms |        215 ms |
+| strict, type-only imports enforced    |                        911 |                 442 ms |               136 ms |          507 ms |        204 ms |
+| strict, lazy entry and type-only both |                          3 |                  60 ms |                94 ms |          509 ms |        215 ms |
+
+- **Bundling removes the cost entirely**: 202 ms against 204 ms to a usable
+  menu, and either build starts twice as fast as the original did unbundled.
+  "Ship one bundled file" is a rule that keeps the strict layout and loses
+  nothing.
+- **A lazy entry point** (`import()` of the app after flags are parsed) makes
+  `--version` and `--help` six times faster in both trees, but not a normal
+  launch, which needs the whole app.
+- **Enforcing type-only imports** (`verbatimModuleSyntax`,
+  `consistent-type-imports`) stopped 57 empty modules from loading and saved no
+  measurable time.
+
+### Navigation (agent runs)
+
+- **Grouping by feature** was not run: in the second round's traces the agent
+  already worked inside one directory for the branch task
+  (`services/worktreeNameGenerator/`, 24 of its 29 source-file reads). The extra
+  reading came from opening many small files in that directory, not from
+  crossing directories.
+- **A generated file map**: every directory with three or more source files got
+  a `CLAUDE.md` listing each file with its exported declaration (111 maps), and
+  a root `CLAUDE.md` pointing at them. Ten paired branch runs against the strict
+  tree without maps: cost ratio 1.00 [0.86, 1.39], code read 1.01 [0.76, 1.24],
+  hidden tests identical. The map made no difference.
+
+### Gates
+
+Measured on the M1 laptop, five runs each:
+
+| check                                 | original | strict |
+| ------------------------------------- | -------: | -----: |
+| `tsc --noEmit`                        |   2.05 s | 2.34 s |
+| `tsc --noEmit --incremental`, warm    |   1.29 s | 1.40 s |
+| `tsgo` (TypeScript 7 preview)         |   0.34 s | 0.41 s |
+| full `vitest --run`                   |   14.5 s | 14.5 s |
+| `vitest related` for the changed file |   3.66 s | 4.01 s |
+
+A mutation in the branch deduplication was caught by `vitest related` with the
+same three failures as the full suite. So the strict layout adds about 0.3 s to
+a check, and the fast commands cut checks by four to six times. Six paired long
+sessions on the strict tree, one arm told to use the fast commands while
+working: cost ratio 1.07 [0.91, 1.32], all twelve runs correct. Waiting for a
+check does not cost tokens, so faster gates save wall-clock time, not money.
+
+### Decay over twenty changes (agent runs)
+
+The case for strict rules is that they stop a codebase from decaying, which a
+single task cannot show. Twenty successive tasks were written for ccmanager
+(branch naming, `.worktreeinclude` copying, worktree locking and pruning, merge
+safety, search syntax, session cleanup), each building on the previous ones and
+each with a hidden acceptance test frozen before any run. A reference
+implementation and a separate blind one both passed all twenty. The agent ran
+the twenty tasks in order on its own output, a fresh session per task, in three
+arms:
+
+- **A**: the original tree, checked only by typecheck and the existing tests.
+- **B**: the strict tree, plus the strict judge as a ratchet: no new violation
+  in any file, existing ones accepted.
+- **C**: the original tree with the same ratchet, so new code must be strict
+  while the god files stay.
+
+A task was accepted when typecheck, the existing suite and (B, C) the ratchet
+passed, with up to two repair sessions fed the check output. Hidden tests were
+scored with the agent stopped and never shown to it. Two chains for A and B, one
+for C, 100 tasks in all.
+
+| chain | accepted | hidden tests passed | regressions | repair sessions | cost, 20 tasks | new judge violations | largest file |        files |
+| ----- | -------: | ------------------: | ----------: | --------------: | -------------: | -------------------: | -----------: | -----------: |
+| A1    |    20/20 |               20/20 |           0 |               2 |          $4.15 |                  +42 | 1449 to 1842 |     92 to 94 |
+| A2    |    20/20 |               20/20 |           0 |               2 |          $3.88 |                  +54 | 1449 to 1866 |     92 to 94 |
+| B1    |    20/20 |               20/20 |           0 |               1 |          $4.91 |                    0 |   175 to 175 | 1342 to 1388 |
+| B2    |    20/20 |               20/20 |           0 |               2 |          $5.10 |                    0 |   175 to 175 | 1342 to 1399 |
+| C1    |    20/20 |               20/20 |           0 |               8 |         $10.10 |                   -6 | 1449 to 1470 |    92 to 165 |
+
+- **The gate stops decay, and only the gate.** Without it the largest file grew
+  by 400 lines and fifty new violations appeared in twenty tasks; with it, none,
+  in either tree.
+- **Decay did not hurt the agent within twenty tasks.** Every chain got every
+  task right, broke nothing earlier, and the unguarded arm's last five tasks
+  cost about what its first five did ($0.89 and $0.90, $0.79 and $0.97).
+- **Keeping the rules costs agent money.** The strict tree cost 24% more over
+  the chain ($5.00 against $4.02 mean); retrofitting the rules onto a god-file
+  tree cost two and a half times as much ($10.10), since every change to a god
+  file had to be extracted into new strict files (73 of them).
+- Duplication stayed flat in every arm (jscpd within 0.3 points).
+
 ## Conclusion
 
 | subject                       | starting point               | tokens, edit tasks | cost, all tasks | correctness |
@@ -268,14 +376,28 @@ the branch task, whose logic is spread over many small files.
 | ccmanager, one file           | 1546-line god class          |                -2% |             -9% |        same |
 | ccmanager, whole repo         | 18k lines, max 1449 lines    |       -2% and +33% |             -1% |        same |
 | ccmanager, hard hidden-tested | same                         |        -8% to +20% |     -4% to +12% |        same |
+| ccmanager, 20-task chain      | same, strict tree            |                    |            +24% |        same |
+| ccmanager, 20-task chain      | same, rules on new code only |                    |           +151% |        same |
 
 "Fewer tokens" is not a claim these measurements support, and neither is "the
 agent makes fewer mistakes": with a modern coding agent that searches and reads
 line ranges, a god file costs it little, and on hard tasks scored by hidden
-tests both layouts were equally correct. The 6-9% cost reduction seen with three
-runs per cell did not hold up with more runs. The strict layout costs an agent
-about the same, sometimes a little more, and an unbundled Node program starts
-about 20% slower. Whatever case there is for the rules, it is not measured here
-as agent tokens, agent accuracy or runtime speed.
+tests both layouts were equally correct, over single tasks and over a chain of
+twenty. The 6-9% cost reduction seen with three runs per cell did not hold up
+with more runs.
+
+What the rules do measurably buy is that the structure holds. Over twenty
+changes, the unguarded tree's largest file grew by 400 lines and gained fifty
+violations; the gated trees gained none. That is the gate, not the layout: the
+rules hold only while a check enforces them. Its price is agent cost, about a
+quarter more on a tree that is already strict and two and a half times as much
+when the rules are applied to new code in a god-file tree. Within twenty changes
+the unguarded tree's decay had not yet made the agent slower or less accurate,
+so this is a bet on longer horizons and on human readers, which these runs do
+not measure.
+
+Of the remedies tried, one removes a cost outright: shipping a bundled build
+erases the startup penalty. Lazy entry points, type-only imports, generated file
+maps and faster checks changed nothing an agent pays for.
 
 Raw per-run JSON was kept in the session scratchpad, not committed.

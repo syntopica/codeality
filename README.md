@@ -290,12 +290,15 @@ fix in the same loop, with no server.
 scripts. The fixing is done by you or your agent, one finding at a time.
 
 **Are the token savings measured?** Yes, and the honest answer is "no savings".
-Over 170 agent runs on four codebases, including 72 runs of hard tasks scored by
-hidden tests written before the runs, the strictly structured code cost the
-agent about the same (between 9% less and 12% more) and was changed correctly
-just as often. Modern coding agents search and read line ranges, so a god file
-costs them little. At runtime, bundled code starts as fast as before; unbundled
-Node starts about 20% slower. Method and numbers:
+Over 300 agent runs on four codebases, including hard tasks and a chain of
+twenty successive changes scored by hidden tests written before the runs, the
+strictly structured code was changed correctly just as often and cost the agent
+about the same or more (up to a quarter more over the chain). Modern coding
+agents search and read line ranges, so a god file costs them little. What the
+gates did measurably do is hold the structure: over twenty changes the unguarded
+code's largest file grew by 400 lines and gained fifty violations, the gated
+code none. Ship a bundled build and the split code starts as fast as before.
+Method and numbers:
 [docs/evidence](./docs/evidence/2026-10-12-agent-token-measurement.md).
 
 **Can I adopt one piece at a time?** Yes. Every package installs and runs on its
