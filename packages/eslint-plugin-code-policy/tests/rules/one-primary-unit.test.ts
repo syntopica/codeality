@@ -48,6 +48,16 @@ runRuleTest('one-primary-unit', rule, {
       code: `export default function Page() { return null }`,
       filename: '/src/app/dashboard/page.tsx',
     },
+    // Next special files beyond page/layout carry reserved exports too.
+    ...[
+      'global-not-found.tsx',
+      'global-error.tsx',
+      'opengraph-image.tsx',
+      'instrumentation.ts',
+    ].map((name) => ({
+      code: `export const metadata = {}\nexport default function Special() { return null }`,
+      filename: `/src/app/${name}`,
+    })),
     // index.ts barrels are exempt (re-export aggregation).
     {
       code: `export { a } from './a'\nexport { b } from './b'`,
