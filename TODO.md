@@ -72,7 +72,10 @@ plus the release:
   - Select caret inset: a native `<select>` whose arrow sits within ~8px of its
     right border while the text inset is the same 8px. Candidate rule
     `cramped-select-caret`: compare the select's right padding with its left,
-    and flag appearance-auto selects with under 1.25rem of right room.
+    and flag appearance-auto selects with under 1.25rem of right room. Seen
+    again 2026-10-14 on tieneslavibra's council province filter (`px-3` select,
+    caret flush to the border; replaced by a combobox in abb29406), so two
+    consumers now: worth building next.
   - Truncated text with slack: "Comisiones banc..." cut to a fixed `w-28` while
     the same row had hundreds of free pixels in a `flex-1` sibling.
     `text-clipped` needs a slack check: clipped text whose row has more free
