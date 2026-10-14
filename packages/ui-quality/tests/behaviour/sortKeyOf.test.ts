@@ -6,6 +6,7 @@ describe('sortKeyOf', () => {
   it('reads dates, amounts in either locale and empty cells', () => {
     expect(sortKeyOf('19/09/2026')).toBe(20260919)
     expect(sortKeyOf('2026-09-19')).toBe(20260919)
+    expect(sortKeyOf('2026-09')).toBe(20260900)
     expect(sortKeyOf('2.359,50 €')).toBe(2359.5)
     expect(sortKeyOf('18,00 US$')).toBe(18)
     expect(sortKeyOf('$1,234.56')).toBe(1234.56)

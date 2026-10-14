@@ -12,5 +12,6 @@ export const sortKeyOf = (cell: string): SortKey => {
     return Number(`${year}${month.padStart(2, '0')}${day.padStart(2, '0')}`)
   if (/^\d{4}-\d{2}-\d{2}/.test(text))
     return Number(text.slice(0, 10).replaceAll('-', ''))
+  if (/^\d{4}-\d{2}$/.test(text)) return Number(`${text.replace('-', '')}00`)
   return numberOf(text) ?? text
 }
