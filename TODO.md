@@ -45,6 +45,23 @@ findings have shipped (`ragged-column`, `interaction-shift`, `narrow-page`,
 unreleased on `main`; see `TODO_LOG.md`). One half of those findings is left,
 plus the release:
 
+- [ ] **`sort-broken` fires on a server-sorted board that sorts correctly.**
+      TienesLaVibra `/admin/councils` (2026-10-14): the "Ayuntamiento / Evento"
+      header is a `<Link>` to `?sort=nombre`; clicking it twice in Playwright
+      gives A..Z then Z..A, and the probe's own comparator accepts both orders,
+      yet the probe reports "out of order both times" on the first screen (1920
+      light) only, every run. Suspect the read lands during the RSC navigation
+      after the filter probe's restore. Next step: log the keys
+      `orderAfterClick` reads on that page.
+- [ ] **A count over a list of years reads as one grouped number.** A cell
+      showing "1" over "2026" (two block lines) has innerText "1\n2026", which
+      `AMOUNT_TEXT` takes as 12026, so a correct "Años" column was flagged
+      `sort-broken`. Worked around in the consumer ("1 año"); the probe could
+      read block lines separately.
+- [ ] **`touch-target` overlap with a sticky header.** Rows scrolled under a
+      sticky `<thead>` in the phone capture are reported as overlapping its sort
+      buttons; only the visible, unobscured part is a tap target.
+
 - [ ] **Misses the owner caught by eye on InteliFactu's fiscal review**
       (2026-10-12, fixed there in 918be511 and 85616f03; route
       `/app?view=fiscal&company=5`). Smallest next step: one fixture per item.
