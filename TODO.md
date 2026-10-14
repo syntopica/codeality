@@ -45,6 +45,14 @@ findings have shipped (`ragged-column`, `interaction-shift`, `narrow-page`,
 unreleased on `main`; see `TODO_LOG.md`). One half of those findings is left,
 plus the release:
 
+- [ ] **Navigation waits for `load`, so one stuck image hangs a capture.**
+      `gotoSettled` and `login` (`waitForURL` default) wait for the `load` event
+      before the bounded `networkidle` settle. TienesLaVibra `/admin/leads`
+      (2026-10-15) keeps per-lead `/api/admin/avatar?phone=...` image requests
+      open past commit locally, and a propose run against production never
+      reached a screenshot. Smallest step: reproduce with a fixture page whose
+      image never finishes, then navigate on `domcontentloaded` and bound the
+      wait for `load` like `networkidle`.
 - [ ] **`sort-broken` fires on a server-sorted board that sorts correctly.**
       TienesLaVibra `/admin/councils` (2026-10-14): the "Ayuntamiento / Evento"
       header is a `<Link>` to `?sort=nombre`; clicking it twice in Playwright
