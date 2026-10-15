@@ -108,6 +108,9 @@ pnpm exec codeality-ui init
   distinct positive `z-index` values a screen may use, and the value from which
   one is reported by itself. A project whose own scale starts in the thousands
   raises `ceiling`.
+- `rules.control-row-ragged` takes `tolerance` (2) and `maxGap` (48): how many
+  px the heights, centres or tops of controls on one line may differ by, and the
+  widest space between two controls still compared as one line.
 - `disable` keeps a finding on purpose. `route` and `selector` narrow it, and
   `message` keeps only findings whose message contains that text: one
   third-party `console-error` ("picture-in-picture is not allowed" from a
@@ -135,6 +138,7 @@ finding kept on purpose goes under `disable`.
 | `text-hard-cut`          | texts in one column that pile up at one length with no ellipsis: cut upstream                                                                                                                                                                                                                                                            |
 | `row-misaligned`         | repeated rows whose n-th cell starts at a different x                                                                                                                                                                                                                                                                                    |
 | `control-inset`          | a bordered input less than `minInset` (4px) from the edge of the bar or card it sits in                                                                                                                                                                                                                                                  |
+| `control-row-ragged`     | boxed fields, selects and buttons side by side on one line of one card whose heights or centres differ by more than `tolerance` (2px), whose textarea starts off their top, or whose fields mix font sizes; controls over `maxGap` (48px) apart, on another wrapped line or in another card are not compared                             |
 | `edge-misaligned`        | the header's content and the main content start or end up to `maxOffset` (240px) apart                                                                                                                                                                                                                                                   |
 | `content-width`          | the main column using less than `minRatio` (80%) of its region at `minViewport` (1280px) up, on a page with a table or repeated rows; a reading page or a lone form keeps its measure                                                                                                                                                    |
 | `ragged-column`          | a block on its column's left edge, alone in its row, next to one filling the column, ending over 15% short and showing it (border, shadow, fill or wrapped text); a paragraph keeps its measure unless that neighbour is a card; tables are left out                                                                                     |

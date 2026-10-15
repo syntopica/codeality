@@ -2,6 +2,14 @@
 
 ## [Unreleased]
 
+- New rule: `control-row-ragged`, on by default. Fields, selects and buttons
+  drawn as boxes side by side on one line of one card are reported when their
+  heights or centres differ by more than `tolerance` (2px), a multi-line
+  textarea starts off the others' top, or the fields use different font sizes:
+  an inline edit row where a helper text makes one cell taller and the field
+  centred in the next one drops. `rules.control-row-ragged` takes `tolerance`
+  and `maxGap` (48px). It may report on projects that passed before.
+
 ## 0.9.0
 
 ### Minor Changes

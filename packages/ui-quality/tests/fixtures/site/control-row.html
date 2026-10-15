@@ -1,0 +1,88 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>An inline edit row whose controls do not line up</title>
+    <style>
+      body {
+        margin: 0;
+        font: 14px/1.4 sans-serif;
+        color: #000000;
+        background: #ffffff;
+      }
+      main {
+        padding: 24px;
+      }
+      .card {
+        border: 1px solid #000000;
+        border-radius: 8px;
+        padding: 16px;
+      }
+      /* Vertica's inline edit row: the date cell is taller for its helper
+         text, so the text input, centred in its stretched cell, drops below
+         the top-aligned date input and select; the button is 36px. */
+      .edit {
+        display: grid;
+        grid-template-columns: 160px 1fr 160px auto;
+        gap: 8px;
+        align-items: start;
+      }
+      .centred {
+        display: flex;
+        align-items: center;
+        align-self: stretch;
+      }
+      input,
+      .trigger {
+        box-sizing: border-box;
+        height: 32px;
+        border: 1px solid #000000;
+        background: #ffffff;
+        font: 14px sans-serif;
+        padding: 0 8px;
+        width: 100%;
+      }
+      input[type='date'] {
+        font-size: 12px;
+      }
+      .helper {
+        margin: 4px 0 0;
+        font-size: 12px;
+      }
+      .save {
+        height: 36px;
+        border: 0;
+        background: #000000;
+        color: #ffffff;
+        font: 14px sans-serif;
+        padding: 0 16px;
+      }
+    </style>
+  </head>
+  <body>
+    <main>
+      <h1>Milestones</h1>
+      <div class="card">
+        <div class="edit">
+          <div>
+            <input id="due" type="date" aria-label="Due" value="2026-10-16" />
+            <p class="helper">Local time</p>
+          </div>
+          <div class="centred">
+            <input id="title" aria-label="Title" value="Launch" />
+          </div>
+          <button
+            id="status"
+            class="trigger"
+            role="combobox"
+            aria-label="Status"
+            aria-expanded="false"
+          >
+            Planned
+          </button>
+          <button id="save" class="save">Save</button>
+        </div>
+      </div>
+    </main>
+  </body>
+</html>

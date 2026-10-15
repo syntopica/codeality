@@ -75,6 +75,7 @@ describe('configuration', () => {
       rules: {
         'content-width': { minRatio: 0.9 },
         'control-inset': { minInset: 8 },
+        'control-row-ragged': { tolerance: 4 },
       },
       disable: [
         { rule: 'palette', selector: '.vendor', reason: 'third party' },
@@ -100,6 +101,7 @@ describe('configuration', () => {
     expect(config.palette?.accent).toBe('#2563eb')
     expect(config.register).toBe('product')
     expect(config.rules.controlInset.minInset).toBe(8)
+    expect(config.rules.controlRowRagged).toEqual({ tolerance: 4, maxGap: 48 })
     expect(config.disable[0]?.route).toBeNull()
     expect(config.disable[0]?.message).toBeNull()
     expect(config.disable[1]?.message).toBe('picture-in-picture')

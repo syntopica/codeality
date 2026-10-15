@@ -15,6 +15,10 @@ export const ruleOptionsFrom = (value: unknown): RuleOptions => {
   return {
     rowMisaligned: read('row-misaligned', RULE_DEFAULTS.rowMisaligned),
     controlInset: read('control-inset', RULE_DEFAULTS.controlInset),
+    controlRowRagged: read(
+      'control-row-ragged',
+      RULE_DEFAULTS.controlRowRagged,
+    ),
     edgeMisaligned: read('edge-misaligned', RULE_DEFAULTS.edgeMisaligned),
     contentWidth: read('content-width', RULE_DEFAULTS.contentWidth),
     palette: read('palette', RULE_DEFAULTS.palette),

@@ -1,0 +1,82 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>An even edit row and a wrapped toolbar</title>
+    <style>
+      body {
+        margin: 0;
+        font: 14px/1.4 sans-serif;
+        color: #000000;
+        background: #ffffff;
+      }
+      main {
+        padding: 24px;
+      }
+      .card {
+        border: 1px solid #000000;
+        border-radius: 8px;
+        padding: 16px;
+        margin-bottom: 16px;
+      }
+      .edit {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+      }
+      input,
+      button {
+        box-sizing: border-box;
+        height: 32px;
+        border: 1px solid #000000;
+        background: #ffffff;
+        font: 14px sans-serif;
+        padding: 0 8px;
+      }
+      /* Two lines of a wrapping toolbar: 32px buttons on the first, a 40px
+         search and button on the second. Each line is even. */
+      .toolbar {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 8px;
+        width: 320px;
+      }
+      .toolbar .tall {
+        height: 40px;
+      }
+      .toolbar input.tall {
+        width: 200px;
+      }
+    </style>
+  </head>
+  <body>
+    <main>
+      <h1>Milestones</h1>
+      <div class="card">
+        <div class="edit">
+          <input id="due" type="date" aria-label="Due" value="2026-10-16" />
+          <input id="title" aria-label="Title" value="Launch" />
+          <button
+            id="status"
+            role="combobox"
+            aria-label="Status"
+            aria-expanded="false"
+          >
+            Planned
+          </button>
+          <button id="save">Save</button>
+        </div>
+      </div>
+      <div class="card">
+        <div class="toolbar">
+          <button>Bold</button>
+          <button>Italic</button>
+          <button>Underline</button>
+          <button>Strike</button>
+          <input class="tall" aria-label="Find" placeholder="Find" />
+          <button class="tall">Go</button>
+        </div>
+      </div>
+    </main>
+  </body>
+</html>

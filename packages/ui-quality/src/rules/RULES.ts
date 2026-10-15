@@ -1,4 +1,5 @@
 import { AI_TELL_RULES } from '@/rules/AI_TELL_RULES.js'
+import { CONTROL_RULES } from '@/rules/CONTROL_RULES.js'
 import { COPY_RULES } from '@/rules/COPY_RULES.js'
 import { DATA_DISPLAY_RULES } from '@/rules/DATA_DISPLAY_RULES.js'
 import { INTERACTION_RULES } from '@/rules/INTERACTION_RULES.js'
@@ -18,7 +19,6 @@ import { cardRadiusAdmin } from '@/rules/cardRadiusAdmin.js'
 import { clickFailed } from '@/rules/clickFailed.js'
 import { consoleError } from '@/rules/consoleError.js'
 import { contentHiddenAtRest } from '@/rules/contentHiddenAtRest.js'
-import { controlInset } from '@/rules/controlInset.js'
 import { duplicateNavIcon } from '@/rules/duplicateNavIcon.js'
 import { edgeMisaligned } from '@/rules/edgeMisaligned.js'
 import { emptyDialog } from '@/rules/emptyDialog.js'
@@ -59,7 +59,6 @@ export const RULES: Rule[] = [
   clickFailed,
   consoleError,
   contentHiddenAtRest,
-  controlInset,
   duplicateNavIcon,
   edgeMisaligned,
   emptyDialog,
@@ -88,6 +87,7 @@ export const RULES: Rule[] = [
   typeScaleSprawl,
   undersizedText,
   unstableMediaSize,
+  ...CONTROL_RULES,
   ...READABILITY_RULES,
   ...SPACING_RULES,
   ...STRUCTURE_RULES,
