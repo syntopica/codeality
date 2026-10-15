@@ -40,6 +40,13 @@ verified complete - `[-]` obsolete or superseded.
 
 ## ui-quality
 
+- [ ] **`check --routes` given twice silently keeps only the last glob**
+      (2026-10-15, verticagtm). `--routes /today --routes /plans/<id> ...` drove
+      only the last route, while `.codeality-ui/screens/` still held older
+      captures of the others, so a review sent stale screenshots as current.
+      Next step: accept a repeated `--routes` (union of globs) or exit 2 on a
+      repeat, with a test.
+
 The candidates of the 2026-10-01 review and the 2026-10-08/09 inpractise-demo
 findings have shipped (`ragged-column`, `interaction-shift`, `narrow-page`,
 unreleased on `main`; see `TODO_LOG.md`). One half of those findings is left,
