@@ -3,6 +3,7 @@
 public func checkSourceFile(_ file: SourceFile, _ config: SwiftConfig) throws -> [Finding] {
   guard file.role != .generated, file.role != .excluded else { return [] }
   let suppressions = parseSuppressions(file.text)
-  return ([parseErrorFinding(file)].compactMap { $0 } + ruleRegistry().flatMap { $0.check(file, config) })
+  return
+    ([parseErrorFinding(file)].compactMap { $0 } + ruleRegistry().flatMap { $0.check(file, config) })
     .filter { !isSuppressed($0, suppressions) }
 }

@@ -7,7 +7,10 @@ public struct BaselineFile: Equatable, Sendable {
   public let toolVersion: String
   public let sections: [String: [String: Int]]
 
-  public init(schemaVersion: Int = currentSchemaVersion, toolVersion: String = "", sections: [String: [String: Int]]) {
+  public init(
+    schemaVersion: Int = currentSchemaVersion, toolVersion: String = "",
+    sections: [String: [String: Int]]
+  ) {
     self.schemaVersion = schemaVersion
     self.toolVersion = toolVersion
     self.sections = sections

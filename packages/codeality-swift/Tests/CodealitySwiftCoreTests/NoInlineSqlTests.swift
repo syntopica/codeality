@@ -18,17 +18,23 @@ import Testing
   }
 
   @Test func aSqlLiteralIsAFinding() throws {
-    let found = try checkFile("Sources/q.swift", "let q = \"SELECT id, name FROM songs WHERE id = ?\"\n")
+    let found = try checkFile(
+      "Sources/q.swift", "let q = \"SELECT id, name FROM songs WHERE id = ?\"\n")
     #expect(found.map(\.code) == [.bsw005])
     #expect(found.first?.location.line == 1)
   }
 
   @Test func multiLineLiteralsAreReadWhole() throws {
-    #expect(try codes("Sources/q.swift", "let q = \"\"\"\n  SELECT id\n  FROM users\n  \"\"\"\n") == [.bsw005])
+    #expect(
+      try codes("Sources/q.swift", "let q = \"\"\"\n  SELECT id\n  FROM users\n  \"\"\"\n") == [
+        .bsw005
+      ])
   }
 
   @Test func interpolatedLiteralsUseTheirStaticParts() throws {
-    #expect(try codes("Sources/q.swift", "func q(_ t: String) -> String { \"SELECT id FROM \\(t)\" }\n") == [.bsw005])
+    #expect(
+      try codes("Sources/q.swift", "func q(_ t: String) -> String { \"SELECT id FROM \\(t)\" }\n")
+        == [.bsw005])
   }
 
   @Test func testsAreHeldToTheSameRule() throws {
@@ -36,17 +42,20 @@ import Testing
   }
 
   @Test func ordinaryStringsPass() throws {
-    #expect(try codes("Sources/s.swift", "let s = \"Select an option from the menu below\"\n").isEmpty)
+    #expect(
+      try codes("Sources/s.swift", "let s = \"Select an option from the menu below\"\n").isEmpty)
   }
 
   @Test func anInlineSuppressionCoversItsOwnLineOnly() throws {
-    let text = "let a = \"DELETE FROM users\" // codeality-swift: ignore[BSW005]\nlet b = \"DELETE FROM songs\"\n"
+    let text =
+      "let a = \"DELETE FROM users\" // codeality-swift: ignore[BSW005]\nlet b = \"DELETE FROM songs\"\n"
     let found = try checkFile("Tests/QTests.swift", text)
     #expect(found.map(\.location.line) == [2])
   }
 
   @Test func aFileWideSuppressionNeedsAReason() throws {
-    let with = "// codeality-swift: ignore-file[BSW005] reason: samples\nlet a = \"DELETE FROM users\"\n"
+    let with =
+      "// codeality-swift: ignore-file[BSW005] reason: samples\nlet a = \"DELETE FROM users\"\n"
     #expect(try codes("Tests/QTests.swift", with).isEmpty)
     let without = "// codeality-swift: ignore-file[BSW005]\nlet a = \"DELETE FROM users\"\n"
     #expect(try codes("Tests/QTests.swift", without) == [.bsw005])

@@ -5,7 +5,8 @@ final class Fixture {
   let root: String
 
   init() {
-    root = FileManager.default.temporaryDirectory
+    root =
+      FileManager.default.temporaryDirectory
       .appendingPathComponent("cs-fixture-\(UUID().uuidString)").path
     try? FileManager.default.createDirectory(atPath: root, withIntermediateDirectories: true)
   }

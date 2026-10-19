@@ -7,7 +7,9 @@ public func writeBaseline(projectRoot: String, _ baseline: BaselineFile) throws 
     "tool_version": packageVersion,
     "sections": baseline.sections,
   ]
-  var data = try JSONSerialization.data(withJSONObject: document, options: [.prettyPrinted, .sortedKeys])
+  var data = try JSONSerialization.data(
+    withJSONObject: document, options: [.prettyPrinted, .sortedKeys])
   data.append(contentsOf: Array("\n".utf8))
-  try data.write(to: URL(fileURLWithPath: projectRoot).appendingPathComponent(BaselineFile.fileName))
+  try data.write(
+    to: URL(fileURLWithPath: projectRoot).appendingPathComponent(BaselineFile.fileName))
 }

@@ -16,7 +16,10 @@ import Testing
     let files = collectSourceFiles(
       root: fixture.root, config: try loadConfig(projectRoot: fixture.root)
     ) { warnings.append($0) }
-    #expect(files == ["Runner/AppDelegate.swift", "Runner/Views/Beat.swift", "RunnerTests/BeatTests.swift"])
+    #expect(
+      files == [
+        "Runner/AppDelegate.swift", "Runner/Views/Beat.swift", "RunnerTests/BeatTests.swift",
+      ])
     #expect(warnings.isEmpty)
   }
 

@@ -4,6 +4,7 @@ import SwiftSyntax
 /// `Array<Beat>` is `Array`, `Foo.Bar` is `Bar`.
 func extendedTypeName(_ ext: ExtensionDeclSyntax) -> String {
   let description = ext.extendedType.trimmedDescription
-  let withoutGenerics = description.split(separator: "<", maxSplits: 1).first.map(String.init) ?? description
+  let withoutGenerics =
+    description.split(separator: "<", maxSplits: 1).first.map(String.init) ?? description
   return withoutGenerics.split(separator: ".").last.map(String.init) ?? withoutGenerics
 }

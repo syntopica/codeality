@@ -22,7 +22,8 @@ import Testing
 
   @Test func roundTripsSectionsAndCounts() throws {
     let fixture = Fixture()
-    try writeBaseline(projectRoot: fixture.root, BaselineFile(sections: ["structure": ["b": 1, "a": 2]]))
+    try writeBaseline(
+      projectRoot: fixture.root, BaselineFile(sections: ["structure": ["b": 1, "a": 2]]))
     #expect(try readBaseline(projectRoot: fixture.root)?.section("structure") == ["a": 2, "b": 1])
   }
 
@@ -33,9 +34,16 @@ import Testing
   }
 
   @Test func fingerprintsLeaveOutTheLineNumber() {
-    let a = fingerprint(section: "structure", code: "BSW005", path: "S/a.swift", context: "let q = x")
+    let a = fingerprint(
+      section: "structure", code: "BSW005", path: "S/a.swift", context: "let q = x")
     #expect(a.count == 16)
-    #expect(a == fingerprint(section: "structure", code: "BSW005", path: "S/a.swift", context: "let q = x"))
-    #expect(a != fingerprint(section: "structure", code: "BSW005", path: "S/b.swift", context: "let q = x"))
+    #expect(
+      a
+        == fingerprint(
+          section: "structure", code: "BSW005", path: "S/a.swift", context: "let q = x"))
+    #expect(
+      a
+        != fingerprint(
+          section: "structure", code: "BSW005", path: "S/b.swift", context: "let q = x"))
   }
 }

@@ -8,7 +8,8 @@ struct NoInlineSql: Rule {
     return visitor.found.filter { looksLikeSql(stringLiteralText($0)) }.map { literal in
       let location = file.converter.location(for: literal.positionAfterSkippingLeadingTrivia)
       return Finding(
-        code: code, message: "inline SQL; move this query into a .sql resource and load it from there",
+        code: code,
+        message: "inline SQL; move this query into a .sql resource and load it from there",
         location: Location(file.path, location.line, location.column))
     }
   }

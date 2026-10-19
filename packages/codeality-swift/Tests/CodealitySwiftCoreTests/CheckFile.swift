@@ -8,7 +8,8 @@ func checkFile(
   fixture.config(yaml)
   fixture.write(path, text)
   let config = try loadConfig(projectRoot: fixture.root)
-  return try checkSourceFile(try parseSourceFile(projectRoot: fixture.root, path: path, config: config), config)
+  return try checkSourceFile(
+    try parseSourceFile(projectRoot: fixture.root, path: path, config: config), config)
 }
 
 /// Just the codes.

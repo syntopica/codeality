@@ -7,6 +7,7 @@ struct ProjectOptions: ParsableArguments {
   var project: String?
 
   var root: String {
-    URL(fileURLWithPath: project ?? FileManager.default.currentDirectoryPath).standardizedFileURL.path
+    URL(fileURLWithPath: project ?? FileManager.default.currentDirectoryPath).standardizedFileURL
+      .path
   }
 }

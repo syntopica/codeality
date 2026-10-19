@@ -2,7 +2,8 @@ import SwiftSyntax
 
 /// Every top-level unit of [tree], walking into `#if` clauses and counting
 /// a name declared in several clauses once.
-public func topLevelUnits(_ tree: SourceFileSyntax, _ converter: SourceLocationConverter) -> [Unit] {
+public func topLevelUnits(_ tree: SourceFileSyntax, _ converter: SourceLocationConverter) -> [Unit]
+{
   var units: [Unit] = []
   func visit(_ items: CodeBlockItemListSyntax) {
     for item in items {

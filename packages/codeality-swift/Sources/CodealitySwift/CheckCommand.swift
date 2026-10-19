@@ -12,7 +12,9 @@ struct CheckCommand: AsyncParsableCommand {
   @Argument(help: "Restrict the report to these files or directories.") var paths: [String] = []
 
   func validate() throws {
-    guard ["text", "json"].contains(format) else { throw ValidationError("--format is text or json") }
+    guard ["text", "json"].contains(format) else {
+      throw ValidationError("--format is text or json")
+    }
   }
 
   func run() async throws {

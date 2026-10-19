@@ -28,7 +28,9 @@ import Testing
     let document = try #require(
       try JSONSerialization.jsonObject(with: Data(result.stdout.utf8)) as? [String: Any])
     #expect(
-      Set(document.keys) == ["schema_version", "tool", "roots", "scanned_files", "findings", "warnings", "summary"])
+      Set(document.keys) == [
+        "schema_version", "tool", "roots", "scanned_files", "findings", "warnings", "summary",
+      ])
     let finding = try #require((document["findings"] as? [[String: Any]])?.first)
     #expect(finding["code"] as? String == "BSW001")
     #expect((finding["fingerprint"] as? String)?.count == 16)

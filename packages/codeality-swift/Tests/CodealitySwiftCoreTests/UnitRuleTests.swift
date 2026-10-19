@@ -79,6 +79,12 @@ import Testing
 
   @Test func testsAndGeneratedFilesAreExempt() throws {
     #expect(try codes("Tests/ATests.swift", "struct A {}\nstruct B {}\n").isEmpty)
-    #expect(try codes("Sources/GeneratedPluginRegistrant.swift", "struct A {}\nstruct B {}\n").isEmpty)
+    #expect(
+      try codes("Sources/GeneratedPluginRegistrant.swift", "struct A {}\nstruct B {}\n").isEmpty)
+  }
+
+  @Test func aFreeFunctionMayLiveInItsUpperCamelFile() throws {
+    #expect(try codes("Sources/LoadConfig.swift", "func loadConfig() {}\n").isEmpty)
+    #expect(try codes("Sources/Config.swift", "func loadConfig() {}\n") == [.bsw002])
   }
 }

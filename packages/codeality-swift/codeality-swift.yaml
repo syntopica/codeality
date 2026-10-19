@@ -1,0 +1,4 @@
+# codeality-swift configuration - https://github.com/syntopica/codeality
+schema-version: 1
+roots: [Sources]
+test-roots: [Tests]
