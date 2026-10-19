@@ -49,7 +49,10 @@ Future<StageResult> duplicatesStage(
     if (run.missing || !reportFile.existsSync()) {
       return infrastructureFailure(name, StageKind.required, run);
     }
-    final report = parseJscpdReport(reportFile.readAsStringSync());
+    final report = parseJscpdReport(
+      reportFile.readAsStringSync(),
+      projectRoot: projectRoot,
+    );
     final section = baseline?.sections['duplicates'];
     final classified = classifyGateFindings(report.clones, section ?? const {});
     final threshold = config.duplicatesThreshold ?? JscpdDefaults.threshold;

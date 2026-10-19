@@ -53,6 +53,10 @@ void main() {
       );
       expect(result.status, StageStatus.findings);
       expect(result.findings, isNotEmpty);
+      expect(
+        result.findings.map((f) => f.location.path),
+        everyElement(startsWith('lib/')),
+      );
     },
   );
 

@@ -8,6 +8,9 @@ Map<String, Object?> jscpdConfig(DartConfig config, String outputDirectory) => {
   'minTokens': config.duplicatesMinTokens ?? JscpdDefaults.minTokens,
   'format': ['dart'],
   'gitignore': true,
+  // Absolute names, made project-relative by parseJscpdReport: jscpd
+  // otherwise names files relative to the root it scanned.
+  'absolute': true,
   'ignore': [
     ...JscpdDefaults.ignore,
     ...defaultGeneratedGlobs,
