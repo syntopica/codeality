@@ -1,0 +1,20 @@
+/// Every key `codeality-dart.yaml` accepts, as dotted paths.
+const Set<String> configSchema = {
+  'schema-version',
+  'source-roots',
+  'test-roots',
+  'respect-gitignore',
+  'coverage-threshold',
+  'test-budget-seconds',
+  'limits',
+  'limits.max-file-lines',
+  'limits.test-max-file-lines',
+  'roles',
+  'roles.entrypoint',
+  'roles.data',
+  'roles.generated',
+  'sql-globs',
+  'duplicates',
+  'duplicates.min-tokens',
+  'duplicates.threshold',
+};
