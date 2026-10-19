@@ -6,6 +6,9 @@
 **/.turbo/**
 **/dist/**
 **/build/**
+**/.build/**
+**/.swiftpm/**
+**/.dart_tool/**
 **/coverage/**
 pnpm-lock.yaml
 **/.lighthouseci/
