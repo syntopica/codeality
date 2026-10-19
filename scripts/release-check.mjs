@@ -4,6 +4,9 @@
 //   - a git tag `<unscoped-name>@<version>` exists, and is annotated
 //   - that exact version exists on the npm registry
 //   - CHANGELOG.md documents it (a `## <version>` heading)
+// The Dart packages (pubspec.yaml) are checked the same way against pub.dev,
+// tagged `<name>-v<version>`. codeality-swift has no registry: its tag
+// `codeality-swift-v<version>` is the release consumers build from.
 //
 // Deliberately NOT part of `check:ci`: it needs the network, and the commit
 // that bumps a version legitimately precedes its tag and its publish. Run it
@@ -11,7 +14,7 @@
 //
 // Usage:
 //   node scripts/release-check.mjs            check tags, npm and changelogs
-//   node scripts/release-check.mjs --no-npm   skip the registry check (offline)
+//   node scripts/release-check.mjs --no-npm   skip the npm and pub.dev checks (offline)
 
 import { execFile } from 'node:child_process'
 import { readdir, readFile } from 'node:fs/promises'
@@ -26,31 +29,65 @@ const __dirname = dirname(fileURLToPath(import.meta.url))
 const REPO_ROOT = resolve(__dirname, '..')
 const PACKAGES_DIR = resolve(REPO_ROOT, 'packages')
 
+async function readPackageJson(dir) {
+  try {
+    // `dir` comes from a directory listing of this repo's own packages/
+    // folder, not untrusted input.
+    // eslint-disable-next-line security/detect-non-literal-fs-filename
+    const pkg = JSON.parse(await readFile(resolve(dir, 'package.json'), 'utf8'))
+    if (!pkg.name || !pkg.version || pkg.private) return null
+    return { dir, name: pkg.name, version: pkg.version, registry: 'npm' }
+  } catch {
+    return null
+  }
+}
+
+async function readPubspec(dir) {
+  try {
+    // eslint-disable-next-line security/detect-non-literal-fs-filename
+    const text = await readFile(resolve(dir, 'pubspec.yaml'), 'utf8')
+    const name = /^name:\s*(\S+)/m.exec(text)?.[1]
+    const version = /^version:\s*(\S+)/m.exec(text)?.[1]
+    if (!name || !version || /^publish_to:\s*none/m.test(text)) return null
+    return { dir, name, version, registry: 'pub', tag: `${name}-v${version}` }
+  } catch {
+    return null
+  }
+}
+
+async function readSwiftPackage(dir) {
+  try {
+    const path = resolve(dir, 'Sources/CodealitySwiftCore/PackageVersion.swift')
+    // eslint-disable-next-line security/detect-non-literal-fs-filename
+    const text = await readFile(path, 'utf8')
+    const version = /packageVersion\s*=\s*"([^"]+)"/.exec(text)?.[1]
+    if (!version) return null
+    const name = 'codeality-swift'
+    return { dir, name, version, registry: null, tag: `${name}-v${version}` }
+  } catch {
+    return null
+  }
+}
+
 async function readPublishablePackages() {
   const entries = await readdir(PACKAGES_DIR, { withFileTypes: true })
   const packages = []
   for (const entry of entries) {
     if (!entry.isDirectory()) continue
     const dir = resolve(PACKAGES_DIR, entry.name)
-    let pkg
-    try {
-      // `entry.name` comes from a directory listing of this repo's own
-      // packages/ folder, not untrusted input.
-      // eslint-disable-next-line security/detect-non-literal-fs-filename
-      pkg = JSON.parse(await readFile(resolve(dir, 'package.json'), 'utf8'))
-    } catch {
-      continue /* directory without a package.json; skip */
-    }
-    if (!pkg.name || !pkg.version || pkg.private) continue
-    packages.push({ dir, name: pkg.name, version: pkg.version })
+    const pkg =
+      (await readPackageJson(dir)) ??
+      (await readPubspec(dir)) ??
+      (await readSwiftPackage(dir))
+    if (pkg) packages.push(pkg)
   }
   return packages.sort((a, b) => a.name.localeCompare(b.name))
 }
 
 // Tag convention in this repo: the unscoped package name, e.g.
 // `@syntopica/quality-config@0.1.0` is tagged `quality-config@0.1.0`.
-function tagFor({ name, version }) {
-  return `${name.replace(/^@[^/]+\//, '')}@${version}`
+function tagFor({ name, version, tag }) {
+  return tag ?? `${name.replace(/^@[^/]+\//, '')}@${version}`
 }
 
 async function readGitTags() {
@@ -88,6 +125,23 @@ async function readNpmVersions(name) {
   }
 }
 
+async function readPubVersions(name) {
+  try {
+    const response = await fetch(`https://pub.dev/api/packages/${name}`)
+    if (response.status === 404) return { versions: new Set() }
+    if (!response.ok) return { error: `HTTP ${response.status}` }
+    const body = await response.json()
+    return { versions: new Set(body.versions.map((v) => v.version)) }
+  } catch (err) {
+    return { error: String(err.message) }
+  }
+}
+
+const REGISTRIES = {
+  npm: { label: 'npm', read: readNpmVersions },
+  pub: { label: 'pub.dev', read: readPubVersions },
+}
+
 async function readChangelogVersions(dir) {
   let content
   try {
@@ -111,13 +165,14 @@ async function checkPackage(pkg, { tags, checkNpm }) {
   const tag = tagFor(pkg)
   if (!tags.has(tag)) problems.push(`no git tag \`${tag}\``)
 
-  if (checkNpm) {
-    const { versions, error } = await readNpmVersions(pkg.name)
-    if (error) problems.push(`npm lookup failed: ${error}`)
-    else if (!versions.size) problems.push('not published on npm')
+  const registry = REGISTRIES[pkg.registry]
+  if (checkNpm && registry) {
+    const { versions, error } = await registry.read(pkg.name)
+    if (error) problems.push(`${registry.label} lookup failed: ${error}`)
+    else if (!versions.size) problems.push(`not published on ${registry.label}`)
     else if (!versions.has(pkg.version))
       problems.push(
-        `npm has no ${pkg.version} (latest published: ${[...versions].at(-1)})`,
+        `${registry.label} has no ${pkg.version} (latest published: ${[...versions].at(-1)})`,
       )
   }
 
@@ -172,7 +227,7 @@ async function main() {
 
   console.log(
     `release-check: ${packages.length} packages fully released${
-      checkNpm ? '' : ' (npm check skipped)'
+      checkNpm ? '' : ' (registry checks skipped)'
     }.`,
   )
 }
