@@ -22,7 +22,7 @@ public func duplicatesStage(
     workingDirectory: projectRoot, environment: environment)
   let reportPath = scratch.appendingPathComponent("jscpd-report.json").path
   guard !run.missing, let text = try? String(contentsOfFile: reportPath, encoding: .utf8),
-    let report = try? parseJscpdReport(text)
+    let report = try? parseJscpdReport(text, projectRoot: projectRoot)
   else { return infrastructureFailure(name, .required, run) }
   let section = baseline?.sections["duplicates"]
   let classified = classifyGateFindings(report.clones, section ?? [:])

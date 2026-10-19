@@ -64,6 +64,7 @@ private let block = """
     let config = try loadConfig(projectRoot: fixture.root)
     let first = await duplicatesStage(projectRoot: fixture.root, config: config, baseline: nil)
     #expect(first.status == .findings)
+    #expect(first.findings.map(\.location.path).allSatisfy { $0.hasPrefix("Sources/") })
     let baseline = BaselineFile(sections: [
       "duplicates": fingerprintCounts(first.findings.map(\.fingerprint))
     ])
