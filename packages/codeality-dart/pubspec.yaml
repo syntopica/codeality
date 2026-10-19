@@ -1,0 +1,25 @@
+name: codeality_dart
+description: >-
+  Strict quality gate for Dart and Flutter projects: atomic-file rules,
+  analyzer and duplicate-code debt baselines, formatting, coverage and audit.
+version: 0.1.0
+repository: https://github.com/syntopica/codeality
+issue_tracker: https://github.com/syntopica/codeality/issues
+
+environment:
+  sdk: ^3.13.0
+
+executables:
+  codeality-dart: codeality_dart
+dependencies:
+  analyzer: ^14.5.0
+  args: ^2.7.0
+  crypto: ^3.0.7
+  glob: ^2.2.0
+  path: ^1.9.1
+  yaml: ^3.1.4
+  yaml_edit: ^2.2.4
+dev_dependencies:
+  coverage: ^1.16.0
+  lints: ^6.1.0
+  test: ^1.33.0
