@@ -27,7 +27,8 @@ import Testing
   }
 
   @Test func aMissingFileIsAConfigError() {
-    #expect(throws: ConfigError.self) { try loadConfig(projectRoot: Fixture().root) }
+    let fixture = Fixture()
+    #expect(throws: ConfigError.self) { try loadConfig(projectRoot: fixture.root) }
   }
 
   @Test func anotherSchemaVersionIsAConfigError() {

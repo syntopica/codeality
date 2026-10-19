@@ -9,7 +9,7 @@ struct CodealitySwift: AsyncParsableCommand {
     commandName: "codeality-swift",
     abstract: "Strict quality gate for Swift sources.",
     version: "codeality-swift \(packageVersion)",
-    subcommands: []
+    subcommands: [CheckCommand.self, BaselineCommand.self]
   )
 
   /// ArgumentParser exits 64 on usage errors; the codeality contract is 2.
@@ -21,6 +21,12 @@ struct CodealitySwift: AsyncParsableCommand {
       } else {
         try command.run()
       }
+    } catch let error as ConfigError {
+      FileHandle.standardError.write(Data("configuration error: \(error.message)\n".utf8))
+      Foundation.exit(CodealitySwiftCore.ExitCode.configuration.rawValue)
+    } catch let error as InfrastructureError {
+      FileHandle.standardError.write(Data("infrastructure error: \(error.message)\n".utf8))
+      Foundation.exit(CodealitySwiftCore.ExitCode.infrastructure.rawValue)
     } catch {
       let code = exitCode(for: error)
       if code == .success {
