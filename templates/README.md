@@ -2,7 +2,7 @@
 
 These folders are **validated starters** for Next.js, Vite + React, Vite + Vue,
 Nuxt 4, Astro, Tauri, a generic TypeScript package, a Python package, a Dart
-package and a Flutter app.
+package, a Flutter app and a Swift package.
 
 ## Published dependencies
 
@@ -49,3 +49,14 @@ codeality-dart gate
 `flutter-app` carries no platform folders; add the ones you need with
 `flutter create --platforms ios,android .`, which leaves the existing files
 alone.
+
+## swift-package
+
+A SwiftPM library whose quality chain is `codeality-swift gate`. Its
+`codeality-swift.yaml`, `.swift-format` and `.swiftlint.yml` are what
+`codeality-swift init` writes.
+
+```bash
+swift test
+codeality-swift gate
+```

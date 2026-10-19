@@ -56,6 +56,7 @@ private let dartWorkflow = """
         let config = try loadConfig(projectRoot: fixture.root)
         #expect(config.roots == ["ios/Runner"])
         #expect(config.entrypoint == ["ios/Runner/AppDelegate.swift"])
+    #expect(read(fixture, configFileName).contains("roots: ['ios/Runner']"))
         #expect(read(fixture, ".swift-format").contains("\"lineLength\""))
         #expect(read(fixture, ".swiftlint.yml").contains("line_length"))
     }

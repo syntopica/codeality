@@ -190,6 +190,40 @@ jobs:
             (cd "templates/$template" && dart run ../../packages/codeality-dart/bin/codeality_dart.dart gate)
           done
 
+  swift:
+    name: Swift
+    runs-on: ubuntu-latest
+    # The official image rather than swift-actions/setup-swift, whose latest
+    # release stops at Swift 6.2.1; pinned by digest. Swift 6 toolchains ship
+    # `swift format`, which the gate's format stage needs.
+    container: swift:6.4.1-noble@sha256:19cbe56bdaec1918f7cf5fdeba42b9bd55bdd8a6149c9990d0e0e3a89a127d63
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
+        with:
+          persist-credentials: false
+
+      # The duplicates stage runs jscpd through npx.
+      - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7
+        with:
+          node-version: 22
+          package-manager-cache: false
+
+      - uses: actions/cache@55cc8345863c7cc4c66a329aec7e433d2d1c52a9 # v6.1.0
+        with:
+          path: packages/codeality-swift/.build
+          key: swift-${{ runner.os }}-${{ runner.arch }}-${{ hashFiles('packages/codeality-swift/Package.resolved') }}
+
+      - name: Build and test codeality-swift
+        working-directory: packages/codeality-swift
+        run: |
+          swift build
+          swift test
+
+      - name: codeality-swift gate on itself and the template
+        run: |
+          packages/codeality-swift/.build/debug/codeality-swift gate --project packages/codeality-swift
+          packages/codeality-swift/.build/debug/codeality-swift gate --project templates/swift-package
+
   security:
     name: Security gates
     runs-on: ubuntu-latest
