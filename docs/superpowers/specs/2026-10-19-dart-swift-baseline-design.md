@@ -483,8 +483,9 @@ Following `packages/create-baseline/bin/python/`:
    runs analyze and the tests, and the owner keeps CI minutes down). The
    generated workflow runs the full gate for `apps/mobile`, the full gate for
    `packages/click_core` (not just its `dart test`), and the Swift gate. The
-   `lib/domain` import grep becomes an extra step of the `dart-apps-mobile` job,
-   unchanged. `actionlint` passes on the result.
+   `lib/domain` import grep moves unchanged into its own `domain-imports` job in
+   `ci.yml` (the generated workflow stays untouched, so re-running `init` stays
+   idempotent), and the build jobs need both. `actionlint` passes on the result.
 6. All three gates pass in stagebeat's CI on Ubuntu, and the run log shows each
    of the three jobs ran every required stage; a manual dispatch of one build
    job still resolves its `needs`.
