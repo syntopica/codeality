@@ -44,7 +44,10 @@ dev_dependencies:
 
   test('replacing the only dev dependency keeps block style', () {
     final root = repo.dartPackage('core');
-    repo.write('core/pubspec.yaml', 'name: core\ndev_dependencies:\n  lints: ^6.1.0\n');
+    repo.write(
+      'core/pubspec.yaml',
+      'name: core\ndev_dependencies:\n  lints: ^6.1.0\n',
+    );
     expect(
       planPubspec(root).content,
       'name: core\ndev_dependencies:\n  codeality_lints: ^0.1.0\n',
