@@ -9,7 +9,7 @@ import '../report/exit_code.dart';
 import 'baseline_command.dart';
 import 'check_command.dart';
 import 'gate_command.dart';
-import 'stub_command.dart';
+import 'init_command.dart';
 
 /// Run the CLI and return its exit code. Output goes to [out], diagnostics
 /// and usage errors to [err].
@@ -31,9 +31,7 @@ Future<int> runCli(
         ..addCommand(CheckCommand(out))
         ..addCommand(BaselineCommand(out))
         ..addCommand(GateCommand(out))
-        ..addCommand(
-          StubCommand('init', 'Merge codeality config into a project.'),
-        );
+        ..addCommand(InitCommand(out));
   try {
     final parsed = runner.parse(args);
     if (parsed.flag('version')) {
