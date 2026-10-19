@@ -30,6 +30,8 @@
     "README.md",
     "baseline-versions.json",
     "python-versions.json",
+    "dart-versions.json",
+    "swift-versions.json",
     "bin"
   ],
   "scripts": {
