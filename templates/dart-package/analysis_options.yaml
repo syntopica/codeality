@@ -1,0 +1,7 @@
+include: package:codeality_lints/analysis_options.yaml
+
+analyzer:
+  exclude:
+    - 'build/**'
+    - '**/*.g.dart'
+    - '**/*.freezed.dart'

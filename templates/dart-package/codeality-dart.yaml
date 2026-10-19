@@ -1,0 +1,4 @@
+# codeality-dart configuration - https://github.com/syntopica/codeality
+schema-version: 1
+source-roots: [lib]
+test-roots: [test]
