@@ -1,6 +1,7 @@
 import '../config/load_config.dart';
 import '../engine/check_project.dart';
 import '../gate/analyze_stage.dart';
+import '../gate/duplicates_stage.dart';
 import '../gate/stage_status.dart';
 import 'baseline_file.dart';
 import 'gate_finding_counts.dart';
@@ -24,6 +25,20 @@ Future<BaselineFile> recordSections(
       throw InfrastructureError('${stage.command}: ${stage.detail}');
     }
     result = result.withSection('analyzer', gateFindingCounts(stage.findings));
+  }
+  if (sections.contains('duplicates')) {
+    final stage = await duplicatesStage(
+      projectRoot,
+      loadConfig(projectRoot),
+      null,
+    );
+    if (stage.status == StageStatus.failedToRun) {
+      throw InfrastructureError('${stage.command}: ${stage.detail}');
+    }
+    result = result.withSection(
+      'duplicates',
+      gateFindingCounts(stage.findings),
+    );
   }
   return result;
 }

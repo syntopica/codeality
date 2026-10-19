@@ -2,6 +2,13 @@
 
 ## [Unreleased]
 
+### Minor Changes
+
+- feat: `jscpd.json` scans `dart` and `swift` too, and ignores generated Dart
+  (`*.g.dart`, `*.freezed.dart`) and Dart/Swift build output (`.dart_tool`,
+  `build`, `.build`). `codeality-dart` and `codeality-swift` embed these
+  defaults, kept in step by `pnpm sync-jscpd:check`.
+
 ## 0.14.0
 
 ### Minor Changes

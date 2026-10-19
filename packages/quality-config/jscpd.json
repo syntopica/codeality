@@ -1,7 +1,17 @@
 {
   "minTokens": 70,
   "threshold": 1,
-  "format": ["typescript", "tsx", "javascript", "jsx", "vue", "astro", "rust"],
+  "format": [
+    "typescript",
+    "tsx",
+    "javascript",
+    "jsx",
+    "vue",
+    "astro",
+    "rust",
+    "dart",
+    "swift"
+  ],
   "gitignore": true,
   "ignore": [
     "**/node_modules/**",
@@ -9,7 +19,12 @@
     "**/.next/**",
     "**/.output/**",
     "**/target/**",
-    "**/coverage/**"
+    "**/coverage/**",
+    "**/*.g.dart",
+    "**/*.freezed.dart",
+    "**/.build/**",
+    "**/build/**",
+    "**/.dart_tool/**"
   ],
   "reporters": ["console"]
 }
