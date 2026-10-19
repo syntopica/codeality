@@ -1,0 +1,10 @@
+name: codeality_lints
+description: >-
+  The Dart and Flutter lint set codeality-dart enforces: package:lints
+  recommended, flutter_lints, strict analyzer modes and a strict rule set,
+  inlined so the package has no dependencies.
+version: 0.1.0
+repository: https://github.com/syntopica/codeality/tree/main/packages/codeality-dart-lints
+
+environment:
+  sdk: ^3.9.0

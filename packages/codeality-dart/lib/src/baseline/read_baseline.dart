@@ -19,7 +19,7 @@ BaselineFile? readBaseline(String projectRoot) {
     );
   }
   if (document is! Map<String, Object?>) {
-    throw ConfigError('${BaselineFile.fileName} must be a JSON object');
+    throw const ConfigError('${BaselineFile.fileName} must be a JSON object');
   }
   final version = document['schema_version'];
   if (version != BaselineFile.currentSchemaVersion) {
@@ -30,7 +30,9 @@ BaselineFile? readBaseline(String projectRoot) {
   }
   final sections = document['sections'];
   if (sections is! Map<String, Object?>) {
-    throw ConfigError('${BaselineFile.fileName} has no "sections" object');
+    throw const ConfigError(
+      '${BaselineFile.fileName} has no "sections" object',
+    );
   }
   return BaselineFile(
     toolVersion: document['tool_version'] as String? ?? '',

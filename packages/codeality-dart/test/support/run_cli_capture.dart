@@ -15,5 +15,7 @@ Future<(int, String, String)> runCliCapture(List<String> args) async {
   final code = await runCli(args, out: outSink, err: errSink);
   await outSink.close();
   await errSink.close();
+  await out.close();
+  await err.close();
   return (code, await outText, await errText);
 }

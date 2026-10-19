@@ -1,0 +1,7 @@
+name: pure_fixture
+publish_to: none
+environment:
+  sdk: ^3.9.0
+dev_dependencies:
+  codeality_lints:
+    path: ../..

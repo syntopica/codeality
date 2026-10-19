@@ -2,10 +2,10 @@ import 'dart:io';
 
 import 'package:args/command_runner.dart';
 
-import '../report/exit_code.dart';
 import '../baseline/infrastructure_error.dart';
 import '../config/config_error.dart';
 import '../package_version.dart';
+import '../report/exit_code.dart';
 import 'baseline_command.dart';
 import 'check_command.dart';
 import 'gate_command.dart';

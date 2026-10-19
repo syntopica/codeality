@@ -10,8 +10,8 @@ import 'package:codeality_dart/src/report/render_gate_json.dart';
 import 'package:codeality_dart/src/report/render_gate_text.dart';
 import 'package:test/test.dart';
 
-final _result = GateResult([
-  const StageResult(
+final _result = const GateResult([
+  StageResult(
     name: 'format',
     kind: StageKind.required,
     command: 'dart format',
@@ -19,7 +19,7 @@ final _result = GateResult([
     exitCode: 0,
     duration: Duration(milliseconds: 1500),
   ),
-  const StageResult(
+  StageResult(
     name: 'analyze',
     kind: StageKind.required,
     command: 'dart analyze',

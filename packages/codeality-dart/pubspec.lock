@@ -57,6 +57,13 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "0.6.0"
+  codeality_lints:
+    dependency: "direct dev"
+    description:
+      path: "../codeality-dart-lints"
+      relative: true
+    source: path
+    version: "0.1.0"
   collection:
     dependency: transitive
     description:
@@ -145,14 +152,6 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "1.1.0"
-  lints:
-    dependency: "direct dev"
-    description:
-      name: lints
-      sha256: "12f842a479589fea194fe5c5a3095abc7be0c1f2ddfa9a0e76aed1dbd26a87df"
-      url: "https://pub.dev"
-    source: hosted
-    version: "6.1.0"
   logging:
     dependency: transitive
     description:

@@ -39,7 +39,7 @@ final class BaselineWriteCommand extends Command<int> {
     final root = projectRoot(argResults!);
     final existing = readBaseline(root);
     if (existing != null && !_overwrite) {
-      throw ConfigError(
+      throw const ConfigError(
         '${BaselineFile.fileName} already exists; use `baseline update`',
       );
     }

@@ -2,9 +2,9 @@ import 'dart:convert';
 
 import '../engine/check_result.dart';
 import '../package_version.dart';
-import 'report_schema_version.dart';
 import 'finding_document.dart';
 import 'findings_summary.dart';
+import 'report_schema_version.dart';
 
 /// The versioned machine-readable document. Only this goes to stdout.
 String renderJsonReport(CheckResult result) =>

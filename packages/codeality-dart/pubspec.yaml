@@ -21,5 +21,6 @@ dependencies:
   yaml_edit: ^2.2.4
 dev_dependencies:
   coverage: ^1.16.0
-  lints: ^6.1.0
+  codeality_lints:
+    path: ../codeality-dart-lints
   test: ^1.33.0

@@ -5,6 +5,6 @@ import 'render_finding_line.dart';
 String renderTextReport(CheckResult result) => [
   ...result.findings.map(renderFindingLine),
   for (final warning in result.warnings) 'warning: $warning',
-  '${result.findings.length} findings in ${result.scannedFiles} files under '
-      '${result.roots.join(', ')}',
+  ('${result.findings.length} findings in ${result.scannedFiles} files under '
+      '${result.roots.join(', ')}'),
 ].join('\n');
