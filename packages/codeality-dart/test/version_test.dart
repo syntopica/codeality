@@ -1,6 +1,6 @@
 import 'dart:io';
 
-import 'package:codeality_dart/src/version.dart';
+import 'package:codeality_dart/src/package_version.dart';
 import 'package:test/test.dart';
 import 'package:yaml/yaml.dart';
 

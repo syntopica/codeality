@@ -2,9 +2,8 @@ import 'package:path/path.dart' as p;
 
 import '../model/gate_finding.dart';
 import '../model/location.dart';
+import 'machine_severities.dart';
 import 'split_machine_record.dart';
-
-const Set<String> _severities = {'INFO', 'WARNING', 'ERROR'};
 
 /// Diagnostics from `dart analyze --format=machine`:
 /// `severity|type|code|absolute path|line|column|length|message`.
@@ -21,7 +20,7 @@ List<GateFinding> parseMachineOutput(String output, String projectRoot) => [
           _,
           final message,
         ]
-        when _severities.contains(severity))
+        when machineSeverities.contains(severity))
       GateFinding(
         code: code.toLowerCase(),
         message: '${severity.toLowerCase()}: $message',

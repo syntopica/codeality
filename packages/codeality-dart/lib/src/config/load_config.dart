@@ -8,8 +8,7 @@ import 'config_reader.dart';
 import 'dart_config.dart';
 import 'reject_duplicate_role_claims.dart';
 import 'reject_unknown_keys.dart';
-
-const int _supportedSchemaVersion = 1;
+import 'supported_schema_version.dart';
 
 /// Load `codeality-dart.yaml` from [projectRoot], or the defaults when it is
 /// absent.
@@ -34,11 +33,11 @@ DartConfig loadConfig(String projectRoot) {
   }
   rejectUnknownKeys(document);
   final read = ConfigReader(document);
-  final schemaVersion = read.integer('schema-version', _supportedSchemaVersion);
-  if (schemaVersion != _supportedSchemaVersion) {
+  final schemaVersion = read.integer('schema-version', supportedSchemaVersion);
+  if (schemaVersion != supportedSchemaVersion) {
     throw ConfigError(
       'codeality-dart.yaml has schema-version $schemaVersion; this release '
-      'reads schema-version $_supportedSchemaVersion',
+      'reads schema-version $supportedSchemaVersion',
     );
   }
   final roles = {

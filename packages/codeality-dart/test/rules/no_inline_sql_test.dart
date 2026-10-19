@@ -1,3 +1,5 @@
+// codeality-dart: ignore-file[BDT006] reason: SQL samples are the input under test.
+
 import 'package:codeality_dart/src/model/rule_code.dart';
 import 'package:codeality_dart/src/rules/looks_like_sql.dart';
 import 'package:codeality_dart/src/rules/no_inline_sql.dart';

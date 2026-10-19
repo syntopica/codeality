@@ -2,6 +2,7 @@ import '../baseline/baseline_file.dart';
 import 'classify_gate_findings.dart';
 import 'dart_for_project.dart';
 import 'fingerprint_analyzer_findings.dart';
+import 'highest_diagnostic_exit.dart';
 import 'infrastructure_failure.dart';
 import 'parse_machine_output.dart';
 import 'run_tool.dart';
@@ -9,8 +10,6 @@ import 'stage_kind.dart';
 import 'stage_result.dart';
 import 'stage_status.dart';
 import 'tool_run.dart';
-
-const int _highestDiagnosticExit = 3;
 
 /// `dart analyze --format=machine --fatal-infos`, after `pub get`, measured
 /// against the `analyzer` section of the baseline.
@@ -51,7 +50,7 @@ Future<StageResult> analyzeStage(
     projectRoot,
   );
   if (run.missing ||
-      run.exitCode > _highestDiagnosticExit ||
+      run.exitCode > highestDiagnosticExit ||
       (run.exitCode != 0 && parsed.isEmpty)) {
     return infrastructureFailure(name, StageKind.required, run);
   }

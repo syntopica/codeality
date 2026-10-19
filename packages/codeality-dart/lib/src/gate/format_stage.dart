@@ -1,6 +1,7 @@
 import '../config/dart_config.dart';
 import '../model/gate_finding.dart';
 import '../model/location.dart';
+import 'changed_file_pattern.dart';
 import 'dart_for_project.dart';
 import 'existing_roots.dart';
 import 'infrastructure_failure.dart';
@@ -8,8 +9,6 @@ import 'run_tool.dart';
 import 'stage_kind.dart';
 import 'stage_result.dart';
 import 'stage_status.dart';
-
-final RegExp _changed = RegExp(r'^Changed (.+)$', multiLine: true);
 
 /// `dart format --output=none --set-exit-if-changed` over the roots.
 Future<StageResult> formatStage(
@@ -34,7 +33,7 @@ Future<StageResult> formatStage(
     return infrastructureFailure(name, StageKind.required, run);
   }
   final findings = [
-    for (final match in _changed.allMatches(run.stdout))
+    for (final match in changedFilePattern.allMatches(run.stdout))
       GateFinding(
         code: 'format',
         message: 'not formatted; run dart format',

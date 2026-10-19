@@ -6,14 +6,13 @@ import '../config/dart_config.dart';
 import 'dart_for_project.dart';
 import 'infrastructure_failure.dart';
 import 'is_flutter_project.dart';
+import 'lcov_path.dart';
 import 'read_lcov_line_coverage.dart';
 import 'run_tool.dart';
 import 'stage_kind.dart';
 import 'stage_result.dart';
 import 'stage_status.dart';
 import 'tool_run.dart';
-
-const String _lcovPath = 'coverage/lcov.info';
 
 /// The test suite with line coverage, held to the configured floor. Running
 /// past the time budget is reported, not failed.
@@ -38,13 +37,13 @@ Future<StageResult> testStage(String projectRoot, DartConfig config) async {
   final run = await runTool(
     flutter ? tools.pub : tools.dart,
     flutter
-        ? ['test', '--coverage', '--coverage-path=$_lcovPath']
-        : ['test', '--coverage-path=$_lcovPath'],
+        ? ['test', '--coverage', '--coverage-path=$lcovPath']
+        : ['test', '--coverage-path=$lcovPath'],
     workingDirectory: projectRoot,
   );
   final elapsed = watch.elapsed;
   if (run.missing) return infrastructureFailure(name, StageKind.required, run);
-  final lcov = File(p.join(projectRoot, _lcovPath));
+  final lcov = File(p.join(projectRoot, lcovPath));
   final budget = elapsed.inSeconds > config.testBudgetSeconds
       ? '; over the ${config.testBudgetSeconds}s budget '
             '(${elapsed.inSeconds}s), profile the suite'

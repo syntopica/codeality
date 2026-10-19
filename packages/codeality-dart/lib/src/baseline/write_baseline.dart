@@ -3,7 +3,7 @@ import 'dart:io';
 
 import 'package:path/path.dart' as p;
 
-import '../version.dart';
+import '../package_version.dart';
 import 'baseline_file.dart';
 
 /// Write [baseline] with sorted keys so the file diffs cleanly.
