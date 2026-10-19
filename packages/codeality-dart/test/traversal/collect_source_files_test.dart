@@ -34,6 +34,22 @@ void main() {
     expect(files, ['lib/b.dart', 'lib/src/a.dart', 'test/a_test.dart']);
   });
 
+  test('platform-named folders inside a root are scanned', () {
+    write('lib/src/web/platform.dart');
+    write('lib/src/io/platform.dart');
+    write('lib/src/build/step.dart');
+    final files = collectSourceFiles(
+      project.path,
+      loadConfig(project.path),
+      warn: (_) {},
+    );
+    expect(files, [
+      'lib/src/build/step.dart',
+      'lib/src/io/platform.dart',
+      'lib/src/web/platform.dart',
+    ]);
+  });
+
   test('does not walk into a nested pubspec project', () {
     write('lib/a.dart');
     write('lib/nested/pubspec.yaml', 'name: nested\n');
@@ -59,10 +75,13 @@ void main() {
     expect(files, ['lib/a.dart']);
   });
 
-  test('skips default excluded directories', () {
+  test('skips tool folders anywhere and build or platform folders at the '
+      'project root', () {
+    write('codeality-dart.yaml', "source-roots: ['.']\n");
     write('lib/a.dart');
     write('lib/.dart_tool/x.dart');
-    write('lib/build/y.dart');
+    write('build/y.dart');
+    write('ios/z.dart');
     final files = collectSourceFiles(
       project.path,
       loadConfig(project.path),

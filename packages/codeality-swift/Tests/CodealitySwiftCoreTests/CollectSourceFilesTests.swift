@@ -23,6 +23,17 @@ import Testing
     #expect(warnings.isEmpty)
   }
 
+  @Test func aBuildFolderInsideARootIsScanned() throws {
+    let fixture = Fixture()
+    fixture.config("roots: [Sources]\n")
+    fixture.write("Sources/App/build/Step.swift", "")
+    fixture.write("build/Output.swift", "")
+    let files = collectSourceFiles(
+      root: fixture.root, config: try loadConfig(projectRoot: fixture.root)
+    ) { _ in }
+    #expect(files == ["Sources/App/build/Step.swift"])
+  }
+
   @Test func aMissingRootIsAWarning() throws {
     let fixture = Fixture()
     fixture.config("roots: [Sources]\n")

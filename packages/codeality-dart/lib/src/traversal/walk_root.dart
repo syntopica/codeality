@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:path/path.dart' as p;
 
 import 'default_excludes.dart';
+import 'project_root_excludes.dart';
 
 /// Project-relative POSIX paths of the `.dart` files under [root], skipping
 /// excluded directories and any directory that is its own pubspec project.
@@ -14,10 +15,14 @@ Iterable<String> walkRoot(String projectRoot, String root) sync* {
     final name = p.basename(entry.path);
     if (entry is Directory) {
       if (defaultExcludes.contains(name)) continue;
+      if (p.equals(directory.path, projectRoot) &&
+          projectRootExcludes.contains(name)) {
+        continue;
+      }
       if (File(p.join(entry.path, 'pubspec.yaml')).existsSync()) continue;
-      yield* walkRoot(projectRoot, p.posix.join(root, name));
+      yield* walkRoot(projectRoot, p.posix.normalize(p.posix.join(root, name)));
     } else if (entry is File && name.endsWith('.dart')) {
-      yield p.posix.join(root, name);
+      yield p.posix.normalize(p.posix.join(root, name));
     }
   }
 }

@@ -12,6 +12,7 @@ func walkRoot(projectRoot: String, root: String) -> [String] {
     guard FileManager.default.fileExists(atPath: path, isDirectory: &isDirectory) else { continue }
     if isDirectory.boolValue {
       if defaultExcludes.contains(name) { continue }
+      if root == "." && projectRootExcludes.contains(name) { continue }
       files += walkRoot(projectRoot: projectRoot, root: root + "/" + name)
     } else if name.hasSuffix(".swift") {
       files.append(root + "/" + name)
