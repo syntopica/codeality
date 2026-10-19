@@ -1,3 +1,19 @@
+### 2026-10-19
+
+- [x] 2026-10-19 — **TypeScript 7:** the seven workspace packages type-check
+      with the pinned native compiler instead of whatever global `tsc` the
+      machine had.
+  - Result: their `type-check` (and the plugin's declaration build) called a
+    bare `tsc`, but `@typescript/typescript6` ships only `tsc6`, so it resolved
+    to Homebrew's global TS 7.0.2 locally and to the runner image's global on
+    CI, unpinned. Each package now declares `@typescript/native`
+    (`npm:typescript@^7.0.2`) and calls
+    `node node_modules/@typescript/native/bin/tsc`, the layout in
+    `docs/typescript-7-migration.md`; `typescript` stays the 6.0.2 alias because
+    TS 7.0 has no API and typescript-eslint allows `<6.1.0`.
+  - Evidence: `pnpm run check:ci` exit 0; an injected `string` to `number`
+    assignment in gate-kit fails `type-check` with TS2322.
+
 ### 2026-10-13
 
 - [x] 2026-10-13 — **Release:** eslint-plugin-code-policy 0.9.0, eslint-config

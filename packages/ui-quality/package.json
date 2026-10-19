@@ -35,7 +35,7 @@
     "build": "tsup",
     "lint": "eslint src tests bin --max-warnings 0",
     "lint:fix": "eslint src tests bin --fix",
-    "type-check": "tsc --noEmit -p tsconfig.json",
+    "type-check": "node node_modules/@typescript/native/bin/tsc --noEmit -p tsconfig.json",
     "test": "vitest run --coverage",
     "publish:check": "baseline-licenses && publint --strict"
   },
@@ -50,6 +50,7 @@
     "@syntopica/quality-config": "workspace:*",
     "@syntopica/tsconfig": "workspace:*",
     "@types/node": "^26.6.5",
+    "@typescript/native": "npm:typescript@^7.0.2",
     "@vitest/coverage-v8": "^5.0.3",
     "eslint": "^10.12.0",
     "playwright": "^1.64.0",

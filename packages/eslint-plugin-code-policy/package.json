@@ -77,13 +77,13 @@
     "LICENSE"
   ],
   "scripts": {
-    "build": "tsup && tsc -p tsconfig.build.json && tsc-alias -p tsconfig.build.json && node scripts/emit-cjs-types.mjs",
+    "build": "tsup && node node_modules/@typescript/native/bin/tsc -p tsconfig.build.json && tsc-alias -p tsconfig.build.json && node scripts/emit-cjs-types.mjs",
     "dev": "tsup --watch",
     "lint": "eslint src tests --max-warnings 0",
     "lint:fix": "eslint src tests --fix",
     "lint:suppress": "eslint src tests --suppress-all",
     "lint:prune": "eslint src tests --prune-suppressions",
-    "type-check": "tsc --noEmit -p tsconfig.json",
+    "type-check": "node node_modules/@typescript/native/bin/tsc --noEmit -p tsconfig.json",
     "test": "vitest run --coverage",
     "publish:check": "baseline-licenses && publint --strict && attw --pack . --profile node16 && node scripts/pack-smoke.mjs",
     "mutation": "stryker run"
@@ -141,6 +141,7 @@
     "@types/node": "^26.6.5",
     "@typescript-eslint/parser": "^8.71.1",
     "@typescript-eslint/rule-tester": "^8.71.1",
+    "@typescript/native": "npm:typescript@^7.0.2",
     "@vitest/coverage-v8": "^5.0.3",
     "eslint": "^10.12.0",
     "eslint-plugin-regexp": "^3.3.1",

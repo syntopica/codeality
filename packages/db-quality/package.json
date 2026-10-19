@@ -37,7 +37,7 @@
     "lint:fix": "eslint src tests bin --fix",
     "lint:suppress": "eslint src tests bin --suppress-all",
     "lint:prune": "eslint src tests bin --prune-suppressions",
-    "type-check": "tsc --noEmit -p tsconfig.json",
+    "type-check": "node node_modules/@typescript/native/bin/tsc --noEmit -p tsconfig.json",
     "test": "vitest run --coverage",
     "publish:check": "baseline-licenses && publint --strict"
   },
@@ -75,6 +75,7 @@
     "@syntopica/tsconfig": "workspace:*",
     "@types/estree": "^1.0.9",
     "@types/node": "^26.6.5",
+    "@typescript/native": "npm:typescript@^7.0.2",
     "@vitest/coverage-v8": "^5.0.3",
     "eslint": "^10.12.0",
     "eslint-plugin-drizzle": "^0.2.3",
