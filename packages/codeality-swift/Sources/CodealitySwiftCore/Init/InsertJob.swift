@@ -1,7 +1,7 @@
 /// [workflow] with [jobText] inserted at the end of its `jobs:` block, as
 /// text, so every other line keeps its bytes and comments.
 func insertJob(_ workflow: String, _ jobText: String) -> String {
-  var lines = workflow.split(separator: "\n", omittingEmptySubsequences: false)
+  var lines = sourceLines(workflow)
   if lines.last == "" { lines.removeLast() }
   var end = jobsBlockEnd(lines)
   while end > 0 && lines[end - 1].allSatisfy(\.isWhitespace) && end < lines.count { end -= 1 }

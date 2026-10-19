@@ -1,7 +1,7 @@
 /// [workflow] without job [jobId]'s lines: its key line under `jobs:` and
 /// every following line indented deeper, or blank.
 func removeJob(_ workflow: String, _ jobId: String) -> String {
-  var lines = workflow.split(separator: "\n", omittingEmptySubsequences: false)
+  var lines = sourceLines(workflow)
   let key = lines.firstIndex {
     $0.trimmingCharacters(in: .whitespaces) == "\(jobId):" && $0.first == " "
   }
