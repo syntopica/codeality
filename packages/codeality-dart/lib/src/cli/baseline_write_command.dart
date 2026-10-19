@@ -5,18 +5,22 @@ import 'package:path/path.dart' as p;
 
 import '../baseline/baseline_file.dart';
 import '../baseline/read_baseline.dart';
-import '../baseline/structure_counts.dart';
+import '../baseline/record_sections.dart';
 import '../baseline/write_baseline.dart';
 import '../config/config_error.dart';
-import '../config/load_config.dart';
-import '../engine/check_project.dart';
 import '../report/exit_code.dart';
 import 'project_root.dart';
 
 /// `baseline create` (refuses to overwrite) and `baseline update`.
 final class BaselineWriteCommand extends Command<int> {
   BaselineWriteCommand(this._out, {required this._overwrite}) {
-    argParser.addOption('project', help: 'Project root.');
+    argParser
+      ..addOption('project', help: 'Project root.')
+      ..addMultiOption(
+        'sections',
+        allowed: ['structure', 'analyzer', 'duplicates'],
+        defaultsTo: ['structure', 'analyzer', 'duplicates'],
+      );
   }
 
   final IOSink _out;
@@ -39,15 +43,19 @@ final class BaselineWriteCommand extends Command<int> {
         '${BaselineFile.fileName} already exists; use `baseline update`',
       );
     }
-    final result = checkProject(root, loadConfig(root));
-    final baseline = (existing ?? const BaselineFile(sections: {})).withSection(
-      'structure',
-      structureCounts(result.findings),
+    final sections = argResults!.multiOption('sections');
+    final baseline = await recordSections(
+      root,
+      existing ?? const BaselineFile(sections: {}),
+      sections,
     );
     writeBaseline(root, baseline);
+    final counts = [
+      for (final section in sections)
+        '$section ${baseline.section(section).values.fold(0, (a, b) => a + b)}',
+    ];
     _out.writeln(
-      'recorded ${result.findings.length} structure findings in '
-      '${p.join(root, BaselineFile.fileName)}',
+      'recorded ${counts.join(', ')} in ${p.join(root, BaselineFile.fileName)}',
     );
     return ExitCode.ok.value;
   }

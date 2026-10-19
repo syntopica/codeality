@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:args/command_runner.dart';
 
 import '../report/exit_code.dart';
+import '../baseline/infrastructure_error.dart';
 import '../config/config_error.dart';
 import '../version.dart';
 import 'baseline_command.dart';
@@ -43,6 +44,9 @@ Future<int> runCli(
       return ExitCode.ok.value;
     }
     return await runner.runCommand(parsed) ?? ExitCode.ok.value;
+  } on InfrastructureError catch (error) {
+    err.writeln('infrastructure error: ${error.message}');
+    return ExitCode.infrastructure.value;
   } on ConfigError catch (error) {
     err.writeln('configuration error: ${error.message}');
     return ExitCode.configuration.value;

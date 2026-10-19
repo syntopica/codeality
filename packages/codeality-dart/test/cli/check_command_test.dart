@@ -90,6 +90,8 @@ void main() {
         'create',
         '--project',
         project.path,
+        '--sections',
+        'structure',
       ]);
       expect(created, 0);
       var (code, out, _) = await runCliCapture([
@@ -113,12 +115,21 @@ void main() {
   );
 
   test('baseline create refuses to overwrite; update does', () async {
-    await runCliCapture(['baseline', 'create', '--project', project.path]);
+    await runCliCapture([
+      'baseline',
+      'create',
+      '--project',
+      project.path,
+      '--sections',
+      'structure',
+    ]);
     final (again, _, err) = await runCliCapture([
       'baseline',
       'create',
       '--project',
       project.path,
+      '--sections',
+      'structure',
     ]);
     expect(again, 2);
     expect(err, contains('baseline update'));
@@ -127,6 +138,8 @@ void main() {
       'update',
       '--project',
       project.path,
+      '--sections',
+      'structure',
     ]);
     expect(updated, 0);
   });
@@ -166,4 +179,26 @@ void main() {
     expect(out, contains('lib/a.dart'));
     expect(out, isNot(contains('lib/z.dart')));
   });
+
+  test('baseline create records the analyzer section by default', () async {
+    write('pubspec.yaml', 'name: fixture\nenvironment:\n  sdk: ^3.13.0\n');
+    write('analysis_options.yaml', 'linter:\n  rules:\n    - avoid_print\n');
+    write('lib/good.dart', 'void good() {\n  print(1);\n}\n');
+    final (code, _, err) = await runCliCapture([
+      'baseline',
+      'create',
+      '--project',
+      project.path,
+      '--sections',
+      'structure,analyzer',
+    ]);
+    expect(code, 0, reason: err);
+    final text = File(p.join(project.path, '.codeality-dart-baseline.json'))
+        .readAsStringSync();
+    expect(text, contains('"analyzer"'));
+    expect(
+      RegExp(r'"analyzer": \{\s*"[0-9a-f]{16}": 1').hasMatch(text),
+      isTrue,
+    );
+  }, tags: ['integration']);
 }
