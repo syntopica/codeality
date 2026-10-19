@@ -28,6 +28,12 @@ private func stage(_ name: String, _ status: StageStatus, _ kind: StageKind = .r
       await runGate([{ stage("a", .failedToRun) }], failFast: false).exitCode == .infrastructure)
   }
 
+  @Test func anOptionalStageThatRanAndFailedExitsThree() async {
+    #expect(
+      await runGate([{ stage("a", .failedToRun, .optional) }], failFast: false).exitCode
+        == .infrastructure)
+  }
+
   @Test func anOptionalSkippedStageDoesNotFailTheGate() async {
     #expect(
       await runGate([{ stage("a", .skippedNotApplicable, .optional) }], failFast: false).exitCode

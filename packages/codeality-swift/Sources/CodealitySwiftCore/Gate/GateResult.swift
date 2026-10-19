@@ -2,10 +2,11 @@
 public struct GateResult: Sendable {
   public let stages: [StageResult]
 
-  /// A required stage that could not run is 3, never a skip; any findings
-  /// are 1; otherwise 0.
+  /// A stage that could not run is 3, never a skip - an optional stage too,
+  /// once its tool is installed: only a missing optional tool is skipped.
+  /// Any findings are 1; otherwise 0.
   public var exitCode: ExitCode {
-    if stages.contains(where: { $0.kind == .required && $0.status == .failedToRun }) {
+    if stages.contains(where: { $0.status == .failedToRun }) {
       return .infrastructure
     }
     if stages.contains(where: { $0.status == .findings }) { return .findings }
