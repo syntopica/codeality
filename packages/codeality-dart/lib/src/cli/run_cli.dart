@@ -3,7 +3,10 @@ import 'dart:io';
 import 'package:args/command_runner.dart';
 
 import '../report/exit_code.dart';
+import '../config/config_error.dart';
 import '../version.dart';
+import 'baseline_command.dart';
+import 'check_command.dart';
 import 'stub_command.dart';
 
 /// Run the CLI and return its exit code. Output goes to [out], diagnostics
@@ -23,8 +26,8 @@ Future<int> runCli(
           negatable: false,
           help: 'Print the version.',
         )
-        ..addCommand(StubCommand('check', 'Run the structural rules.'))
-        ..addCommand(StubCommand('baseline', 'Create, update or check debt.'))
+        ..addCommand(CheckCommand(out))
+        ..addCommand(BaselineCommand(out))
         ..addCommand(StubCommand('gate', 'Run every quality stage.'))
         ..addCommand(
           StubCommand('init', 'Merge codeality config into a project.'),
@@ -40,6 +43,9 @@ Future<int> runCli(
       return ExitCode.ok.value;
     }
     return await runner.runCommand(parsed) ?? ExitCode.ok.value;
+  } on ConfigError catch (error) {
+    err.writeln('configuration error: ${error.message}');
+    return ExitCode.configuration.value;
   } on UsageException catch (error) {
     err
       ..writeln(error.message)
