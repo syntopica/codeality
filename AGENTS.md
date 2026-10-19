@@ -9,7 +9,7 @@ Read `docs/README.md` inside that installed package first, then read the relevan
 This block is written and re-added by `turbo` before repository-scoped commands when an AI agent is detected. In the Turborepo source repository, its template is defined in `crates/turborepo-cli/src/cli/agent_guidance.rs`. Removing the managed block while updates are enabled means a later qualifying invocation will add it again. Set `"agentGuidance": false` in the root `turbo.json` or `turbo.jsonc` to opt out; this does not remove an existing block. Keep the block committed with your work to avoid an uncommitted change on the next agent invocation.
 <!-- END:turborepo-agent-rules -->
 
-<!-- tadu:rule v2 -->
+<!-- tadu:rule v3 -->
 
 ## Continuous TODO, Work Log, and History Coverage
 
@@ -46,7 +46,12 @@ parsing unchanged conversations more than once.
   - Resolution: Why it no longer applies, or what replaced it.
 ```
 
-Check the files with `tadu doctor .` when tadu is installed. Format: tadu spec
-v1, https://github.com/syntopica/tadu/blob/main/spec/todo-format-v1.md. The
+Close an item with `tadu close --match "<text>" --evidence "<proof>" --write`
+(`--resolution` for `[-]`, `--result` for the Result line); it moves the item
+and writes the entry in this shape. Run `tadu doctor .` after changing these
+files and before committing. If `tadu` is not on PATH, install it with
+`uv tool install git+https://github.com/syntopica/tadu`, or report that it is
+missing. Format: tadu spec v1,
+https://github.com/syntopica/tadu/blob/main/spec/todo-format-v1.md. The
 tadu-create and tadu-work skills automate these workflows and are optional.
 <!-- /tadu:rule -->
