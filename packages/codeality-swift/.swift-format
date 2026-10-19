@@ -1,8 +1,8 @@
 {
   "version": 1,
-  "lineLength": 120,
+  "lineLength": 100,
   "indentation": {
-    "spaces": 4
+    "spaces": 2
   },
   "respectsExistingLineBreaks": true,
   "lineBreakBeforeEachArgument": false

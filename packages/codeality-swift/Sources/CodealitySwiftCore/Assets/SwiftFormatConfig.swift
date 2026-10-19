@@ -1,14 +1,14 @@
-/// The `.swift-format` init writes: Xcode's 4-space indentation, 120
-/// columns, and swift-format's default rules otherwise.
+/// The `.swift-format` init writes: swift-format's own defaults (2-space
+/// indentation, 100 columns), which Flutter's generated Swift also follows.
 public let swiftFormatConfig = """
-    {
-      "version": 1,
-      "lineLength": 120,
-      "indentation": {
-        "spaces": 4
-      },
-      "respectsExistingLineBreaks": true,
-      "lineBreakBeforeEachArgument": false
-    }
+  {
+    "version": 1,
+    "lineLength": 100,
+    "indentation": {
+      "spaces": 2
+    },
+    "respectsExistingLineBreaks": true,
+    "lineBreakBeforeEachArgument": false
+  }
 
-    """
+  """

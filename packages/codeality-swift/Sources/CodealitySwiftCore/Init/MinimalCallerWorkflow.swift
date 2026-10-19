@@ -1,18 +1,18 @@
 /// The caller init writes when a repository has no CI of its own. The same
 /// text as codeality-dart's.
 let minimalCallerWorkflow = """
-    name: Quality
+  name: Quality
 
-    on:
-      push:
-        branches: [main]
-      pull_request:
+  on:
+    push:
+      branches: [main]
+    pull_request:
 
-    permissions:
-      contents: read
+  permissions:
+    contents: read
 
-    jobs:
-      codeality:
-        uses: ./.github/workflows/codeality.yml
+  jobs:
+    codeality:
+      uses: ./.github/workflows/codeality.yml
 
-    """
+  """
