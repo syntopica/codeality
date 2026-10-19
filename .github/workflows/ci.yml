@@ -142,6 +142,54 @@ jobs:
           uv sync --locked --all-extras --all-groups
           uv run codeality-py gate
 
+  dart:
+    name: Dart
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
+        with:
+          persist-credentials: false
+
+      # packages/codeality-dart and codeality-dart-lints are pub packages
+      # outside the pnpm workspace, like codeality-py. Flutter rather than the
+      # bare Dart SDK: the flutter-app template and the Flutter lint fixture
+      # need it, and its bundled `dart` serves the pure packages.
+      - uses: subosito/flutter-action@1a449444c387b1966244ae4d4f8c696479add0b2 # v2.23.0
+        with:
+          channel: stable
+          flutter-version: 3.47.6
+          cache: true
+
+      # The duplicates stage runs jscpd through npx; the audit stage needs
+      # osv-scanner, since `dart pub` has no audit command.
+      - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7
+        with:
+          node-version: 22
+
+      - name: Install osv-scanner
+        run: |
+          curl -sSfL -o "$RUNNER_TEMP/osv-scanner" \
+            https://github.com/google/osv-scanner/releases/download/v2.7.0/osv-scanner_linux_amd64
+          chmod +x "$RUNNER_TEMP/osv-scanner"
+          echo "$RUNNER_TEMP" >> "$GITHUB_PATH"
+
+      # The gate runs format, analyze --fatal-infos and the test suite with
+      # its coverage floor, so they are not repeated as separate steps.
+      - name: codeality-dart gate on itself
+        working-directory: packages/codeality-dart
+        run: |
+          dart pub get
+          dart run bin/codeality_dart.dart gate
+
+      - name: codeality_lints sets load and fire
+        run: packages/codeality-dart-lints/tool/verify_lints.sh
+
+      - name: codeality-dart gate on the templates
+        run: |
+          for template in dart-package flutter-app; do
+            (cd "templates/$template" && dart run ../../packages/codeality-dart/bin/codeality_dart.dart gate)
+          done
+
   security:
     name: Security gates
     runs-on: ubuntu-latest

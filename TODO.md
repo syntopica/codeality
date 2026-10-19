@@ -15,6 +15,17 @@ verified complete - `[-]` obsolete or superseded.
       list the latent bugs the characterisation tests pinned. Next step only if
       the hardware code is touched for another reason.
 
+## Dart and Swift baseline
+
+- [!] Owner: first pub.dev release of `codeality_lints` then `codeality_dart` is
+  manual (pub.dev cannot enable automated publishing for a package that does not
+  exist). Blocked on the owner's pub.dev login. Smallest step: in each of
+  `packages/codeality-dart-lints` and `packages/codeality-dart` run
+  `dart pub publish`, then on each package's Admin tab enable GitHub Actions
+  publishing (repository `syntopica/codeality`, tag pattern
+  `<name>-v{{version}}`, environment `pub.dev`); CLAUDE.md has the steps. Until
+  then consumers (stagebeat) pin both by git ref.
+
 ## Estate
 
 - [~] **`check:ci` queues behind a host admission wrapper** (2026-10-11).

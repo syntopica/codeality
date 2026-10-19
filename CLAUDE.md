@@ -46,6 +46,40 @@ Its own checks run through uv, not pnpm:
     uv run --project packages/codeality-py pytest packages/codeality-py/tests
     uv run --project packages/codeality-py codeality-py gate --project packages/codeality-py
 
+## The Dart packages publish to pub.dev, also without a token
+
+`packages/codeality-dart` (`codeality_dart`) and `packages/codeality-dart-lints`
+(`codeality_lints`) are pub packages outside the pnpm workspace. They publish
+through **pub.dev automated publishing (OIDC)** from
+`.github/workflows/publish-dart.yml`, which pub.dev triggers **only from a tag
+push** - there is no `workflow_dispatch`. Bump `version:` in the pubspec, add
+the `## <version>` CHANGELOG entry, then push the tag:
+
+    git tag codeality_dart-v0.1.1 && git push origin codeality_dart-v0.1.1
+
+The workflow checks the tag against the pubspec, runs the package's gate (or
+`tool/verify_lints.sh`), then publishes through the reusable
+`dart-lang/setup-dart` workflow in the `pub.dev` environment.
+
+**The first release of each package is manual, by the owner**: pub.dev cannot
+enable automated publishing for a package that does not exist yet. Run
+`dart pub publish` in each package directory, signed in to pub.dev, then on the
+package's Admin tab enable publishing from GitHub Actions with repository
+`syntopica/codeality`, tag pattern `codeality_dart-v{{version}}` (or
+`codeality_lints-v{{version}}`) and environment `pub.dev`. Publish
+`codeality_lints` first: the templates and `init` depend on it. The GitHub
+environment must exist:
+
+    gh api -X PUT repos/syntopica/codeality/environments/pub.dev
+
+Their own checks run through the Dart toolchain, not pnpm:
+
+    cd packages/codeality-dart && dart pub get && dart run bin/codeality_dart.dart gate
+    packages/codeality-dart-lints/tool/verify_lints.sh
+
+`pnpm sync-jscpd` regenerates the jscpd defaults `codeality-dart` embeds from
+`packages/quality-config/jscpd.json`; `check:ci` fails when they drift.
+
 ## Dependency updates
 
 Update to the **latest** versions, majors included — never `--target minor`:
