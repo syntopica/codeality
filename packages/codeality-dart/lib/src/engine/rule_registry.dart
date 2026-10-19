@@ -1,5 +1,8 @@
+import '../rules/barrel_only.dart';
 import '../rules/file_matches_unit.dart';
 import '../rules/max_file_lines.dart';
+import '../rules/no_grab_bag_names.dart';
+import '../rules/no_hand_written_part.dart';
 import '../rules/one_primary_unit.dart';
 import '../rules/rule.dart';
 
@@ -7,5 +10,8 @@ import '../rules/rule.dart';
 List<Rule> ruleRegistry() => [
   OnePrimaryUnit(),
   FileMatchesUnit(),
+  NoGrabBagNames(),
   MaxFileLines(),
+  BarrelOnly(),
+  NoHandWrittenPart(),
 ];
