@@ -3,20 +3,20 @@
 
 /// The shared jscpd defaults and the pinned jscpd version.
 public enum JscpdDefaults {
-  public static let version = "5.4.1"
-  public static let minTokens = 70
-  public static let threshold: Double = 1
-  public static let ignore: [String] = [
-    "**/node_modules/**",
-    "**/dist/**",
-    "**/.next/**",
-    "**/.output/**",
-    "**/target/**",
-    "**/coverage/**",
-    "**/*.g.dart",
-    "**/*.freezed.dart",
-    "**/.build/**",
-    "**/build/**",
-    "**/.dart_tool/**",
-  ]
+    public static let version = "5.4.1"
+    public static let minTokens = 70
+    public static let threshold: Double = 1
+    public static let ignore: [String] = [
+        "**/node_modules/**",
+        "**/dist/**",
+        "**/.next/**",
+        "**/.output/**",
+        "**/target/**",
+        "**/coverage/**",
+        "**/*.g.dart",
+        "**/*.freezed.dart",
+        "**/.build/**",
+        "**/build/**",
+        "**/.dart_tool/**",
+    ]
 }
