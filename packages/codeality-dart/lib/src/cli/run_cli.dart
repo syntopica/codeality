@@ -8,6 +8,7 @@ import '../config/config_error.dart';
 import '../version.dart';
 import 'baseline_command.dart';
 import 'check_command.dart';
+import 'gate_command.dart';
 import 'stub_command.dart';
 
 /// Run the CLI and return its exit code. Output goes to [out], diagnostics
@@ -29,7 +30,7 @@ Future<int> runCli(
         )
         ..addCommand(CheckCommand(out))
         ..addCommand(BaselineCommand(out))
-        ..addCommand(StubCommand('gate', 'Run every quality stage.'))
+        ..addCommand(GateCommand(out))
         ..addCommand(
           StubCommand('init', 'Merge codeality config into a project.'),
         );
