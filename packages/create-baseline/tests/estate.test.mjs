@@ -4,6 +4,7 @@ import { join } from 'node:path'
 
 import { beforeEach, describe, expect, it } from 'vitest'
 
+import { checkCoverageThresholds } from '../bin/conformance/checkCoverageThresholds.mjs'
 import { findConsumers } from '../bin/estate/findConsumers.mjs'
 import { formatEstate } from '../bin/estate/formatEstate.mjs'
 
@@ -86,6 +87,33 @@ describe('formatEstate', () => {
     const out = formatEstate(rows)
     expect(out).not.toContain('FAIL')
     expect(out).toContain('1 fully wired')
+  })
+
+  it('marks coverage failed when the test script is missing', () => {
+    const findings = checkCoverageThresholds({ scripts: {}, testConfig: null })
+    const out = formatEstate([{ name: 'missing', findings }])
+    expect(out.split('\n')[2].trim().split(/\s+/)).toEqual([
+      'missing',
+      'ok',
+      'ok',
+      'ok',
+      'ok',
+      'ok',
+      'FAIL',
+      'ok',
+      'ok',
+    ])
+    expect(out).toContain('1 consumers, 0 fully wired.')
+  })
+
+  it('keeps delegated workspace coverage informational', () => {
+    const findings = checkCoverageThresholds({
+      scripts: { 'check:ci': 'turbo run lint test build' },
+      testConfig: null,
+    })
+    const out = formatEstate([{ name: 'workspace', findings }])
+    expect(out).not.toContain('FAIL')
+    expect(out).toContain('1 consumers, 1 fully wired.')
   })
 
   // The report is most useful precisely when part of the estate is broken.

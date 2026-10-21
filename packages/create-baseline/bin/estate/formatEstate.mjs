@@ -12,7 +12,13 @@ const COLUMNS = [
       ![...ids].some((id) => id.startsWith('gate:')),
   ],
   ['tscfg', (ids) => ![...ids].some((id) => id.startsWith('tsconfig-'))],
-  ['cov', (ids) => !ids.has('coverage-run') && !ids.has('coverage-thresholds')],
+  [
+    'cov',
+    (ids) =>
+      !ids.has('coverage') &&
+      !ids.has('coverage-run') &&
+      !ids.has('coverage-thresholds'),
+  ],
   ['hooks', (ids) => !ids.has('hooks')],
   ['vers', (ids) => ![...ids].some((id) => id.startsWith('version:'))],
 ]

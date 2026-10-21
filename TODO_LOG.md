@@ -942,6 +942,25 @@ Closed work from `TODO.md`, grouped by year and month.
 
 ### 2026-10
 
+- [x] 2026-10-21 — **Estate:** **Make the estate coverage cell reflect fatal
+      coverage findings.** Reproduced 2026-10-21: calling `formatEstate` with
+      one synthetic row and `{ id: 'coverage', level: 'error' }` prints `cov ok`
+      while its footer says zero fully wired. The column checks only
+      `coverage-run` and `coverage-thresholds`; `checkCoverageThresholds` also
+      returns `coverage` for missing or unreadable test wiring. Smallest next
+      step: include every fatal coverage finding in the cell predicate and add a
+      synthetic formatter regression covering an absent test script, without
+      making informational workspace-delegation findings fail. No application
+      coverage result is implied by a green cell until corrected.
+  - Result: Fatal coverage findings now render FAIL in the estate coverage
+    column; informational workspace delegation remains nonfailing. Independent
+    read-only review returned no findings.
+  - Evidence: Regression failed before the fix (1 failed, 10 passed), then pnpm
+    --filter @syntopica/create-baseline exec vitest run tests/estate.test.mjs
+    --maxWorkers=1 passed 11/11; pnpm --filter @syntopica/create-baseline test
+    --maxWorkers=1 passed 200/200 tests with coverage; package lint and targeted
+    Prettier checks passed.
+
 - [x] 2026-10-21 — **Release:** Publish quality-config 0.15.0
   - Result: Released the custom-layout Knip fix and the existing Dart/Swift
     duplication configuration feature through GitHub OIDC. Updated the generated
