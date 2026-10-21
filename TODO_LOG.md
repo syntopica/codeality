@@ -942,6 +942,22 @@ Closed work from `TODO.md`, grouped by year and month.
 
 ### 2026-10
 
+- [x] 2026-10-22 — **Sticky-pager diagnostic fixture:** Preserve real visibility
+      and horizontal-inset findings while investigating the sweep observation.
+  - Result: Added a synthetic Chromium fixture with five measured scroll/layout
+    states. A covered intermediate row becomes exposed on further scrolling; a
+    layout reserving pager space exposes the final row, while an overlapping
+    pager permanently covers it at maximum scroll. Sixteen-pixel horizontal
+    insets stay clean and genuine two-pixel insets remain cramped. No production
+    rule or exemption changed; the original private-screen observation remains
+    pending.
+  - Evidence:
+    `pnpm --filter @syntopica/ui-quality exec vitest run tests/capture/stickyPager.integration.test.ts --maxWorkers=1`
+    passes the actual probe and both rules across all five captures. Targeted
+    ESLint, package type-check, Prettier and diff checks pass. The prior scratch
+    diagnostic independently measured twelve states; no private data or external
+    page was used.
+
 - [x] 2026-10-22 — **Scrolling list boundaries:** Stop inferring the logical
       list end across a genuinely scrolling ancestor.
   - Result: The frame traversal stops at vertical auto/scroll ancestors whose

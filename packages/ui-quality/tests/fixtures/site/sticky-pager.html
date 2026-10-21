@@ -1,0 +1,54 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>Synthetic scrolling pager</title>
+    <style>
+      * {
+        box-sizing: border-box;
+      }
+      body {
+        margin: 0;
+        font: 16px/24px sans-serif;
+      }
+      #scroller {
+        position: relative;
+        width: 400px;
+        height: 240px;
+        overflow-y: auto;
+        background: #ddd;
+      }
+      .row {
+        height: 48px;
+        padding: 12px var(--row-inset, 16px);
+        background: #fff;
+      }
+      #pager {
+        position: sticky;
+        bottom: 0;
+        height: 64px;
+        background: #123;
+        color: white;
+        padding: 16px;
+        margin-top: var(--pager-overlap, 0px);
+      }
+    </style>
+  </head>
+  <body>
+    <main>
+      <div id="scroller">
+        <div class="row" id="row0">Synthetic row 0</div>
+        <div class="row" id="row1">Synthetic row 1</div>
+        <div class="row" id="row2">Synthetic row 2</div>
+        <div class="row" id="row3">Synthetic row 3</div>
+        <div class="row" id="row4">Synthetic row 4</div>
+        <div class="row" id="row5">Synthetic row 5</div>
+        <div class="row" id="row6">Synthetic row 6</div>
+        <div class="row" id="row7">Synthetic row 7</div>
+        <div class="row" id="row8">Synthetic row 8</div>
+        <div class="row" id="row9">Synthetic row 9</div>
+        <div id="pager">Synthetic pager</div>
+      </div>
+    </main>
+  </body>
+</html>

@@ -116,9 +116,14 @@ plus the release:
   `cq/.codeality-ui/screens/`, routes in `~/p/intelifactu/codeality-ui.json`,
   each kept there by a `disable` with its reason). Smallest next step: one
   near-miss fixture per item.
-  - `text-occlusion` and `text-cramped` (2px) on the last viewer-list row that
-    scrolls under a sticky pager of the same scroller
-    (`/app?view=bank&company=2&screen=documents-viewer`).
+  - Recheck the original `text-occlusion` / `text-cramped` (2px) viewer-row
+    observation (`/app?view=bank&company=2&screen=documents-viewer`) before
+    calling it a false positive. The actual-probe sticky-pager fixture shows
+    recoverable intermediate coverage versus a permanently hidden final row;
+    genuine 2px horizontal insets remain cramped and 16px controls stay clean.
+    Sharing a scroller does not justify an exemption. Smallest next step:
+    recapture the original subject at its maximum scroll position and inspect
+    the horizontal inset separately; the private-screen case is unverified.
   - `row-height-scale` on the react-day-picker calendar (`.rdp-root table`,
     weekday caption row 19px vs 36px day cells,
     `/app?view=documentos&company=2&screen=viewer-dates`).
