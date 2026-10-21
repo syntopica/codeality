@@ -212,12 +212,18 @@ plus the release:
       compratuentrada). Extend the existing `test-quality` audit to report cold
       and warm lint/format times, full test wall time and phase shares, slowest
       files, unnecessary DOM environments, coverage overhead, worker count and
-      host load. Compare equivalent runs before recommending a change; keep CI's
-      cold checks and all tests and coverage thresholds. Evidence: in
+      host load. Where the installed Vitest supports it, run `vitest doctor` on
+      representative subsets as an opt-in diagnostic, record passing and failing
+      candidates, and confirm any recommendation against the full suite before
+      changing defaults. Compare equivalent runs before recommending a change;
+      keep CI's cold checks and all tests and coverage thresholds. Evidence: in
       compratuentrada, cached ESLint fell from 188.41 s to 7.99 s and Prettier
-      from 54.09 s to 14.69 s, while 991 Vitest files still took 357.11 s.
-      Smallest next step: define a portable, read-only report for one consumer
-      and validate its findings against this case before rolling it out.
+      from 54.09 s to 14.69 s, while 991 Vitest files still took 357.11 s. A
+      33-file `vitest doctor` sample recommended disabling isolation (9.01 s to
+      4.76 s), but a three-worker variant failed; this is not proof for the full
+      suite. Smallest next step: define a portable, read-only report for one
+      consumer and validate its findings against this case before rolling it
+      out.
 
 - [ ] **Remove stale root and template Knip hints** (2026-10-21). `pnpm knip`
       reports 40 configuration hints and exits 0; four templates report ESLint

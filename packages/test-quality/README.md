@@ -32,6 +32,23 @@ codeality-test measure [--json] [--node-candidates] [--top <n>] [-- <vitest args
 
 `--project <dir>` before the command runs against another directory.
 
+For a slow Vitest suite, run the installed Vitest's `doctor` command on a
+representative subset after `codeality-test check`, if that Vitest version
+supports it:
+
+```bash
+pnpm exec vitest doctor path/to/tests
+```
+
+`doctor` runs the tests repeatedly to compare worker pools, isolation and worker
+counts, so keep it out of the normal CI gate. Record the host load and both
+passing and failing candidates. Verify a proposed configuration on the full
+suite with its coverage thresholds before adopting it; a subset that passes
+without isolation cannot prove that unrelated tests do not leak state. For
+Vitest 5, also inspect tests that change `process.env`: an open
+[isolation issue](https://github.com/vitest-dev/vitest/issues/11423) reports
+`test.env` values leaking between files with `isolate: false`.
+
 `check` executes nothing. It asks the project's vitest which files it runs, in
 which project and environment, and reads `package.json` with `lefthook.yml` or
 `.husky/`:
