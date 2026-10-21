@@ -8,8 +8,8 @@ import { join } from 'node:path'
 const KNIP_BIN = join(import.meta.dirname, '../node_modules/knip/bin/knip.js')
 const FACTORY = join(import.meta.dirname, '../src/knip.ts')
 
-// Declared by every project that uses the baseline ESLint config, which is
-// what the preset's `ignoreDependencies` list is for.
+// Runner dependencies and synthetic ESLint packages. This fixture does not
+// load an ESLint configuration, so it explicitly exempts the latter below.
 const DEV_DEPENDENCIES = [
   '@eslint/js',
   'dependency-cruiser',
@@ -74,7 +74,7 @@ const cliPackage = (): string => {
   writeFileSync(
     join(dir, 'knip.config.ts'),
     `import { createKnipConfig } from ${JSON.stringify(FACTORY)}
-export default createKnipConfig({ framework: 'ts-package', entry: ['src/cli/main.ts'] })
+export default createKnipConfig({ framework: 'ts-package', entry: ['src/cli/main.ts'], ignoreDependencies: ['@eslint/js', 'eslint-config-prettier', 'eslint-plugin-promise', 'eslint-plugin-security', 'eslint-plugin-unused-imports', 'typescript-eslint'] })
 `,
   )
   installDependencies(dir)

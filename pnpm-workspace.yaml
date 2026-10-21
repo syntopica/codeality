@@ -1,6 +1,8 @@
 packages:
   - 'packages/*'
   - 'templates/*'
+minimumReleaseAge: 1440
+blockExoticSubdeps: true
 # Explicit supply-chain allowlist (pnpm 11 `allowBuilds`): only these vetted
 # native dependencies may run install/build scripts. Every other dependency's
 # install scripts stay blocked (no silent postinstall). Required for CI:

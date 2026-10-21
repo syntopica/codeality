@@ -5,39 +5,19 @@
 // config without casting it first.
 import type { KnipConfiguration } from 'knip'
 
-import { existingEntries } from './existingEntries'
 import { FRAMEWORK_RUNTIME_PACKAGES } from './FRAMEWORK_RUNTIME_PACKAGES'
 import { FRAMEWORK_ENTRIES, type KnipFramework } from './knip-framework'
+import { matchedPresetPatterns } from './matchedPresetPatterns'
 import { peersOfListedDependencies } from './peersOfListedDependencies'
 import { PRODUCTION_PROJECT_EXCLUSIONS } from './PRODUCTION_PROJECT_EXCLUSIONS'
+import { readListedDependencies } from './readListedDependencies'
 import { runnerDependenciesToIgnore } from './runnerDependenciesToIgnore'
 
-// Every template installs these as peer dependencies of
-// @syntopica/eslint-config: the config factories (base.ts and friends)
-// `import` them by bare specifier, and pnpm's isolated node_modules needs
-// each consumer to declare them directly for that import to resolve. No
-// template file ever imports these packages itself (they only import from
-// '@syntopica/eslint-config/*'), so knip can't see the real caller and
-// reports them as unused. Mirrors the same list and rationale in the
-// repo-root knip.config.ts for the `templates/*` workspace.
-//
-// Two packages that used to sit here - `@vitest/eslint-plugin` and
-// `eslint-plugin-testing-library` - were removed on 2026-08-24: knip resolved
-// the real caller in all eight templates, so the entries were redundant
-// everywhere and produced a hint no consumer could silence. The rest stay:
-// `eslint-config-prettier` is redundant in four of the eight and load-bearing
-// in the other four, which is exactly the case the list exists for. A consumer
-// whose layout hides a caller can add its own entries through
-// `ignoreDependencies`, which merges with this list rather than replacing it.
-//
-// Where an entry here IS redundant, knip says so:
-// `<package>  knip.config.ts  Remove from ignoreDependencies`. That is a hint,
-// not a gate failure. Do not filter the list consumer-side to silence it: the
-// filter would drift the moment this list changes, and the cost of being wrong
-// is a dependency that silently stops being checked. The one filter applied
-// here mirrors knip's own rule: a package another installed dependency
-// declares as a peer (`eslint-plugin-astro` hosts `typescript-eslint`) is
-// counted as used by knip, so it is not ignored.
+// Older shared ESLint configs require these packages as consumer-provided
+// peers. Their imports can be hidden from Knip. Apply that compatibility list
+// only to consumers declaring @syntopica/eslint-config; custom ESLint configs
+// have their own imports and must not inherit these dependency exemptions.
+// A peer of another installed dependency is already counted as used by Knip.
 const ESLINT_PEER_DEPENDENCIES = [
   '@eslint/js',
   'eslint-config-prettier',
@@ -85,7 +65,7 @@ export const createKnipConfig = (options: {
    * `app/`. An app whose code sits at the repo root (`components/`, `hooks/`,
    * `services/`, ...) is invisible to knip under that preset, and every
    * dependency reached only from there reports as unused. This is a merge, not
-   * a replacement: the preset's globs stay, so a project cannot silently opt
+   * a replacement: matching preset globs stay, so a project cannot silently opt
    * out of scanning the directories the framework does own.
    *
    * Add a trailing `!` to a glob that holds runtime code
@@ -96,9 +76,9 @@ export const createKnipConfig = (options: {
   /**
    * Extra entry globs, merged with the framework preset's `entry`. Same
    * reasoning as `project`, for a root nobody's plugin registers - a worker,
-   * a CLI, a script the app spawns. A preset entry that is a literal path
-   * missing from the project (`ts-package`'s `src/index.ts` in a CLI package)
-   * is dropped once this is set, so it cannot become a "no matches" hint.
+   * a CLI, a script the app spawns. Missing preset files and unmatched preset
+   * patterns are omitted. Caller patterns stay unchanged so a misspelled
+   * custom path still produces a Knip hint.
    * Mark a runtime root with a trailing `!` (`'src/cli/main.ts!'`) so
    * `knip --production` starts from it too; leave scripts and tooling unmarked.
    */
@@ -123,15 +103,16 @@ export const createKnipConfig = (options: {
 }): KnipConfiguration => {
   const cwd = options.cwd ?? process.cwd()
   const hostedPeers = peersOfListedDependencies(cwd)
+  const usesSharedEslint = readListedDependencies(cwd).includes(
+    '@syntopica/eslint-config',
+  )
   const { entry, project, includeEntryExports } =
     FRAMEWORK_ENTRIES[options.framework]
 
   return {
-    entry: options.entry
-      ? [...existingEntries(entry, cwd), ...options.entry]
-      : entry,
+    entry: [...matchedPresetPatterns(entry, cwd), ...(options.entry ?? [])],
     project: [
-      ...project,
+      ...matchedPresetPatterns(project, cwd),
       ...(options.project ?? []),
       ...PRODUCTION_PROJECT_EXCLUSIONS,
     ],
@@ -160,7 +141,7 @@ export const createKnipConfig = (options: {
       ...runnerDependenciesToIgnore(cwd),
       ...(FRAMEWORK_RUNTIME_PACKAGES[options.framework] ?? []),
       ...ESLINT_PEER_DEPENDENCIES.filter(
-        (dependency) => !hostedPeers.has(dependency),
+        (dependency) => usesSharedEslint && !hostedPeers.has(dependency),
       ),
       ...(options.ignoreDependencies ?? []),
     ],

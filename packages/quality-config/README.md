@@ -44,6 +44,17 @@ from the code that ships: a dependency only a test imports, or a build plugin in
 `project` or `entry` glob you pass that holds runtime code needs the `!` too
 (`'components/**/*.tsx!'`); unmarked, it is left out of the production run.
 
+Preset entry files that do not exist and preset patterns matching no files are
+omitted. A tooling package with only `scripts/` therefore does not inherit
+unmatched `src/` patterns. Pass its actual roots through `entry` and `project`;
+caller patterns are preserved so Knip can report mistakes in them. Paths resolve
+against `cwd`, which defaults to the process working directory.
+
+ESLint compatibility exemptions apply only when the project declares
+`@syntopica/eslint-config`. Projects with their own ESLint configuration retain
+unused-dependency checking for those packages and can add explicit
+`ignoreDependencies` entries when needed.
+
 ### Module boundaries on the resolved graph
 
 `createDepCruiserConfig({ moduleRoots: ['src/features'] })` treats each child of

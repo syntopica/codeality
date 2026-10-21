@@ -2,6 +2,13 @@
 
 ## [Unreleased]
 
+### Patch Changes
+
+- fix: omit missing preset entry files and source roots from Knip configuration,
+  while preserving caller-supplied patterns. Custom ESLint configurations no
+  longer inherit dependency exemptions intended for `@syntopica/eslint-config`
+  consumers.
+
 ### Minor Changes
 
 - feat: `jscpd.json` scans `dart` and `swift` too, and ignores generated Dart

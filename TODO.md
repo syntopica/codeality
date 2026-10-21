@@ -201,6 +201,20 @@ plus the release:
 
 ## Cross-project (filed 2026-09-09 from two consumer backlog runs)
 
+- [~] **Ship the custom-layout Knip configuration fix** (2026-10-21). Source
+  omits unmatched preset patterns and limits ESLint compatibility exemptions to
+  consumers declaring the shared ESLint config. The agents consumer passes with
+  the local source and strict configuration hints; its installed quality-config
+  0.14.0 still reports eight inherited hints. Smallest next step: after the
+  package release is approved, publish the package and update that consumer.
+  Existing root/template Knip hints remain a separate cleanup: `pnpm knip`
+  reports 40 hints and exits 0, and four templates retain ESLint/CSS
+  configuration hints. Validation:
+  `pnpm --filter @syntopica/quality-config test` passes 28 tests; package lint,
+  type-check and publish checks pass. Workspace supply-chain settings now
+  explicitly require a 1440-minute cooldown and block exotic transitive
+  dependencies; `pnpm install --frozen-lockfile --ignore-scripts` passes.
+
 - [ ] **quality-config bins assume pnpm:** `baseline-dupes` and
       `baseline-type-coverage` spawn `pnpm exec` (`pnpmCommand()`), so in a bun
       project (teleporte-web, 2026-10-19) the first run made pnpm 12 install
