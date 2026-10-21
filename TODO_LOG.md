@@ -942,6 +942,20 @@ Closed work from `TODO.md`, grouped by year and month.
 
 ### 2026-10
 
+- [x] 2026-10-22 — **Scrolling list boundaries:** Stop inferring the logical
+      list end across a genuinely scrolling ancestor.
+  - Result: The frame traversal stops at vertical auto/scroll ancestors whose
+    content exceeds the client height by more than the existing two-pixel slack.
+    Ordinary frames, nonoverflowing auto containers and distinct inner cards
+    retain their behavior. Immediate-list handling is unchanged; original
+    private-screen acceptance is not claimed.
+  - Evidence: Two virtual-spacer regressions failed before the fix and seven
+    controls passed.
+    `pnpm --filter @syntopica/ui-quality exec vitest run tests/rules/listDanglingRule.scrolling.test.ts tests/cli.data-display.integration.test.ts --maxWorkers=1`
+    passed 36 tests in two files. Package lint, type-check and build passed;
+    independent review returned no findings. CodeGraph sync, formatting, doctor
+    and diff checks passed.
+
 - [x] 2026-10-22 — **Column wrapping evidence:** Distinguish a container edge
       from its independently constrained text child.
   - Result: Wrapped text must share the candidate block's content-right boundary

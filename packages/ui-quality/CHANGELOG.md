@@ -2,6 +2,9 @@
 
 ## [Unreleased]
 
+- Fix: list-end divider inference stops at genuine scrolling ancestors,
+  preserving non-scrolling frames and distinct inner cards.
+
 - Fix: column wrapping evidence follows the candidate content edge instead of a
   separately constrained child, preserving painted edges and genuine wrapping.
 

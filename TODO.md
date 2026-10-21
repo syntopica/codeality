@@ -116,9 +116,6 @@ plus the release:
   `cq/.codeality-ui/screens/`, routes in `~/p/intelifactu/codeality-ui.json`,
   each kept there by a `disable` with its reason). Smallest next step: one
   near-miss fixture per item.
-  - `list-dangling-rule` on virtualised rows (`div.absolute.left-0` inside a
-    scrolling table body, `/app?view=administraciones&screen=deudas`): the
-    scroller is an ancestor, not the list itself.
   - `text-occlusion` and `text-cramped` (2px) on the last viewer-list row that
     scrolls under a sticky pager of the same scroller
     (`/app?view=bank&company=2&screen=documents-viewer`).

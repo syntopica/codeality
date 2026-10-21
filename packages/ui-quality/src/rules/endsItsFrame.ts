@@ -1,4 +1,5 @@
 import type { ElementBox } from '@/model/ElementBox.js'
+import { hasVerticalScrollingContent } from '@/rules/hasVerticalScrollingContent.js'
 import { isFrame } from '@/rules/isFrame.js'
 
 /**
@@ -16,6 +17,7 @@ export const endsItsFrame = (
     const parent = elements[box.parent]
     if (!parent) return false
     if ((children.get(parent.id) ?? []).at(-1) !== box) return false
+    if (hasVerticalScrollingContent(parent)) return false
     if (isFrame(parent)) return true
     box = parent
   }
