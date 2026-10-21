@@ -82,6 +82,8 @@
   // checkVisibility also sees what the box does not: content inside a closed
   // <details> keeps a layout box but is hidden by content-visibility.
   const isVisible = (element, style, rect) =>
+    // Recharts lays out its private width probe far above the document.
+    !(element.id === 'recharts_measurement_span' && rect.bottom < 0) &&
     element.checkVisibility({ checkOpacity: true, checkVisibilityCSS: true }) &&
     rect.width > 1 &&
     rect.height > 1 &&

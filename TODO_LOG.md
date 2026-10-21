@@ -942,6 +942,127 @@ Closed work from `TODO.md`, grouped by year and month.
 
 ### 2026-10
 
+- [x] 2026-10-22 — **UI repair validation:** Verify the combined navigation,
+      paint, spacing and rule-precision repairs on the frozen source tree.
+  - Result: The package gate covers the repaired client-document redirects,
+    unfinished resources, references, dates, hidden measurement text,
+    transparent PDF glyphs, intrinsic controls and two-pixel spacing. Existing
+    standalone ESLint compatibility and noninteractive column cases remain in
+    the active backlog.
+  - Evidence: `pnpm --filter @syntopica/ui-quality lint`,
+    `pnpm --filter @syntopica/ui-quality type-check`,
+    `pnpm --filter @syntopica/ui-quality build` and
+    `pnpm --filter @syntopica/ui-quality test --maxWorkers=1` all exited 0; 113
+    files and 430 tests passed with coverage. Root
+    `pnpm knip --treat-config-hints-as-errors` and its `--production` variant
+    passed; the two existing production binary warnings remain. Quality-config's
+    full suite passed 36 tests in ten files, with package lint/typecheck and
+    formatting. This is source validation, not npm publication or consumer
+    deployment.
+
+- [x] 2026-10-21 — **PDF selection-layer repairs:** Exclude unpainted
+      transparent glyphs from visible-copy and typography rules.
+  - Result: A shared paint classifier protects undersized-text, ascii-ellipsis,
+    bare-url and type-scale-sprawl without removing probe geometry or exempting
+    a CSS class. Opaque, clipped-background, shadow-painted and unknown-color
+    controls retain conservative checks.
+  - Evidence: The undersized-text regression and three remaining rule
+    regressions failed before their fixes.
+    `pnpm --filter @syntopica/ui-quality exec vitest run tests/rules/pdfSelectionText.test.ts tests/rules/undersizedText.paint.test.ts tests/rules/typography.test.ts tests/rules/typeScaleSprawl.test.ts tests/rules/copy.test.ts tests/rules/newRules.test.ts --maxWorkers=1`
+    passed 37 tests in six files. Independent review returned no findings.
+    Official PDF.js text_layer_builder.css declares selection spans transparent;
+    no production PDF or consumer deployment was tested.
+
+- [x] 2026-10-21 — **Column-width precision:** Preserve intrinsic button and tab
+      widths beside full-width content.
+  - Result: Native buttons and semantic button/tab controls share the existing
+    content-sized table exception. They remain in adjacency and row
+    calculations; noninteractive self-start sections remain a pending sweep
+    case.
+  - Evidence: Three control regressions failed before the fix;
+    `pnpm --filter @syntopica/ui-quality exec vitest run tests/rules/raggedColumn.test.ts --maxWorkers=1`
+    passed all nine tests, including capped heading, note and prose positives.
+    Targeted ESLint and independent review passed.
+
+- [x] 2026-10-21 — **Spacing precision:** Accept two-pixel token half steps
+      while retaining irregular-spacing detection.
+  - Result: The default spacing quantum is 2px. Existing exclusions and noise
+    thresholds remain unchanged; deliberately broken fixtures now use 5/9/13px
+    instead of legitimate 6/10/14px values. No token-configuration API was
+    added.
+  - Evidence: The mixed 6/10/14px screen regression failed before the fix.
+    Focused spacing and CLI tests passed 12 cases; the split unit fixtures
+    passed 11 cases and whole-package typecheck passed. The final combined
+    package gate is recorded in the 2026-10-22 validation entry.
+
+- [x] 2026-10-21 — **Verified interaction-sweep repairs:** **Keep dates, times
+      and reference columns outside quantity alignment requirements.** The sweep
+      applied quantity formatting to fiscal dates and identifiers.
+  - Result: The quantity-alignment check excludes recognized dates and clock
+    times before its existing numeric-share calculation. Existing alphanumeric
+    reference behavior and amount checks remain unchanged.
+  - Evidence: Four date/time regressions failed before the fix; pnpm --filter
+    @syntopica/ui-quality exec vitest run tests/rules/numericAlignment.test.ts
+    --maxWorkers=1 passes all 8 cases, including the previously accepted
+    reference control and genuine amount faults. Targeted ESLint passes.
+    Independent review returned no findings.
+
+- [x] 2026-10-21 — **Verified interaction-sweep repairs:** **Exclude the
+      offscreen Recharts text measurement helper from painted-text inspection.**
+      The sweep flagged the helper's small font as readable UI text.
+  - Result: The probe skips only the exact private measurement ID while its box
+    is entirely above the viewport; visible content with the same ID remains
+    inspected.
+  - Evidence: A real Chromium regression failed before the fix, then both
+    offscreen and visible control cases passed: pnpm --filter
+    @syntopica/ui-quality exec vitest run
+    tests/capture/probe.measurement.integration.test.ts --maxWorkers=1. Upstream
+    DOMUtils.ts confirms top -20000px placement
+    (https://raw.githubusercontent.com/recharts/recharts/main/src/util/DOMUtils.ts).
+    Independent review returned no findings.
+
+- [x] 2026-10-21 — **Verified UI rule repairs:** **Require sufficient prose
+      evidence for text-hard-cut.** The fiscal sweep reported two natural
+      67-character captions and four fixed-width 35-character codes.
+  - Result: Require at least three eligible texts, remove the two-text majority
+    exception, and exclude texts without internal whitespace. Positive fixtures
+    represent actual prose and three eligible cuts.
+  - Evidence: Both near-miss regressions failed before the fix; all 13
+    textHardCut tests pass afterward. Independent review returned no findings.
+    Other interaction-sweep findings remain pending.
+
+- [x] 2026-10-21 — **Verified UI rule repairs:** **Preserve alphanumeric invoice
+      references in raw-placeholder.** The fiscal sweep misclassified a supplier
+      invoice reference as snake_case.
+  - Result: Only letter-only snake_case words qualify as implementation labels;
+    camelCase and key-and-ID detection remain unchanged.
+  - Evidence: Three alphanumeric reference regressions failed before the fix;
+    all 18 newRules tests passed afterward, including four genuine identifier
+    controls. Independent review returned no findings.
+
+- [x] 2026-10-21 — **ui-quality:** **Navigation waits for `load`, so one stuck
+      image hangs a capture.** `gotoSettled` and `login` (`waitForURL` default)
+      wait for the `load` event before the bounded `networkidle` settle.
+      TienesLaVibra `/admin/leads` (2026-10-15) keeps per-lead
+      `/api/admin/avatar?phone=...` image requests open past commit locally, and
+      a propose run against production never reached a screenshot. Smallest
+      step: reproduce with a fixture page whose image never finishes, then
+      navigate on `domcontentloaded` and bound the wait for `load` like
+      `networkidle`.
+  - Result: Route navigation and login wait for DOMContentLoaded, then bound
+    load and network-idle settlement concurrently. Document navigation failures
+    still reject. Pending main-document redirects must reach DOM readiness
+    within the settle cap; latest failed redirects reject, while newer
+    successful navigation and same-document history redirects remain valid.
+  - Evidence: The real Chromium unfinished-image route fixture timed out before
+    the fix. Targeted navigation, existing CLI login and raw-placeholder tests
+    pass all 22 cases; the fixture covers route navigation, form login with an
+    unfinished image and failed document navigation. Independent review returned
+    no findings. The first complete frozen run exposed a client-auth redirect
+    race (415/416 tests passed). Two additional deterministic pending/aborted
+    redirect regressions failed before their corrections; all eight Chromium
+    navigation cases, ESLint and package typecheck then passed.
+
 - [x] 2026-10-21 — **Verified timestamp classification repair:** **Prevent
       eight-digit reference codes from being classified as relative times.** The
       fiscal interaction sweep recorded compact NIF-shaped values with H, W and

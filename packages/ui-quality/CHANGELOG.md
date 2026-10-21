@@ -2,6 +2,28 @@
 
 ## [Unreleased]
 
+- Fix: visible-copy and typography checks ignore unpainted transparent PDF
+  selection glyphs while retaining opaque, gradient and shadow-painted text.
+- Fix: column width checks preserve intrinsic button/tab widths, retaining
+  column adjacency and noninteractive content checks.
+- Fix: spacing defaults accept 2px token half steps; irregular spacing checks
+  and existing exclusions remain active.
+- Fix: route opening follows pending client document redirects within its
+  settling cap and rejects failed redirects while preserving SPA history
+  updates.
+- Fix: quantity alignment ignores recognized dates and clock times, preserving
+  amount checks and existing alphanumeric-reference behavior.
+- Fix: the capture probe excludes Recharts' private measurement span only while
+  it is entirely above the viewport; a visible element with that ID is still
+  inspected.
+- Fix: navigation and form login wait for DOM readiness, then bound resource
+  loading and network settling together so an unfinished image cannot stall
+  capture.
+- Fix: `raw-placeholder` preserves alphanumeric invoice references while
+  continuing to detect letter-only snake_case implementation labels.
+- Fix: `text-hard-cut` requires at least three eligible texts and ignores
+  unspaced reference codes before inferring a truncation limit.
+
 - Fix: `time-without-datetime` no longer treats compact eight-digit references
   with a letter suffix as relative durations. Spaced and explicitly named
   durations remain eligible.

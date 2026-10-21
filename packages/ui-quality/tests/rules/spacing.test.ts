@@ -11,7 +11,7 @@ import { snapshotOf } from '@tests/snapshotOf.js'
 const main = elementBox({ id: 0, tag: 'main', isMain: true, selector: 'main' })
 
 describe('isOffScaleSpacing', () => {
-  it('accepts multiples of 4, hairlines, a border neighbour and em fractions', () => {
+  it('accepts multiples of 2, hairlines, a border neighbour and em fractions', () => {
     expect(isOffScaleSpacing(8, false)).toBe(false)
     expect(isOffScaleSpacing(2, false)).toBe(false)
     expect(isOffScaleSpacing(3, true)).toBe(false)
@@ -19,8 +19,8 @@ describe('isOffScaleSpacing', () => {
   })
   it('rejects 3px without a border and values between steps', () => {
     expect(isOffScaleSpacing(3, false)).toBe(true)
-    expect(isOffScaleSpacing(6, false)).toBe(true)
-    expect(isOffScaleSpacing(14, true)).toBe(true)
+    expect(isOffScaleSpacing(5, false)).toBe(true)
+    expect(isOffScaleSpacing(13, true)).toBe(true)
   })
 })
 
@@ -34,16 +34,16 @@ describe('offScaleSpacing', () => {
     })
   it('reports three distinct off-scale values in main, once', () => {
     const findings = offScaleSpacing(
-      snapshotOf([main, padded(1, 6), padded(2, 10), padded(3, 14)]),
+      snapshotOf([main, padded(1, 5), padded(2, 9), padded(3, 13)]),
       ruleContext(),
     )
     expect(findings).toHaveLength(1)
-    expect(findings[0]?.message).toContain('6, 10, 14px')
+    expect(findings[0]?.message).toContain('5, 9, 13px')
   })
   it('needs three distinct values, inside main, outside authored content', () => {
     expect(
       offScaleSpacing(
-        snapshotOf([main, padded(1, 6), padded(2, 10), padded(3, 6)]),
+        snapshotOf([main, padded(1, 5), padded(2, 9), padded(3, 5)]),
         ruleContext(),
       ),
     ).toEqual([])
@@ -51,9 +51,9 @@ describe('offScaleSpacing', () => {
       offScaleSpacing(
         snapshotOf([
           main,
-          padded(1, 6),
-          padded(2, 10),
-          elementBox({ id: 3, padding: [14, 14, 14, 14] }),
+          padded(1, 5),
+          padded(2, 9),
+          elementBox({ id: 3, padding: [13, 13, 13, 13] }),
         ]),
         ruleContext(),
       ),
@@ -64,9 +64,9 @@ describe('offScaleSpacing', () => {
         snapshotOf([
           main,
           article,
-          padded(2, 6, { parent: 1 }),
-          padded(3, 10, { parent: 1 }),
-          padded(4, 14, { parent: 1 }),
+          padded(2, 5, { parent: 1 }),
+          padded(3, 9, { parent: 1 }),
+          padded(4, 13, { parent: 1 }),
         ]),
         ruleContext(),
       ),
@@ -76,8 +76,8 @@ describe('offScaleSpacing', () => {
     const margins = elementBox({
       id: 1,
       parent: 0,
-      margin: [6, 99, 10, 99],
-      gap: [14, 0],
+      margin: [5, 99, 9, 99],
+      gap: [13, 0],
     })
     expect(
       offScaleSpacing(snapshotOf([main, margins]), ruleContext()),
@@ -90,7 +90,7 @@ describe('offScaleSpacing', () => {
     })
     expect(
       offScaleSpacing(
-        snapshotOf([main, button, padded(3, 10), padded(4, 14)]),
+        snapshotOf([main, button, padded(3, 9), padded(4, 13)]),
         ruleContext(),
       ),
     ).toEqual([])

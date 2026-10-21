@@ -70,7 +70,7 @@ export const FRAMEWORK_ENTRIES: Record<
   },
   nuxt: {
     entry: ['app/**/*.vue!', 'server/**/*.ts!', 'nuxt.config.*'],
-    project: ['app/**/*.{ts,vue}!', 'server/**/*.ts!'],
+    project: ['app/**/*.{ts,vue,css}!', 'server/**/*.ts!'],
     includeEntryExports: false,
   },
   // TanStack Start has no index.html and no src/main.tsx: the router is the
@@ -94,7 +94,7 @@ export const FRAMEWORK_ENTRIES: Record<
     // src/main.tsx, not src/main.ts; keep both extensions so a plain-TS
     // Tauri frontend also matches.
     entry: ['src/main.{ts,tsx}!', 'vite.config.*'],
-    project: ['src/**/*.{ts,tsx}!'],
+    project: ['src/**/*.{ts,tsx,css}!'],
     includeEntryExports: false,
   },
   'ts-package': {
@@ -106,12 +106,12 @@ export const FRAMEWORK_ENTRIES: Record<
   // well was a "Remove redundant entry pattern" hint in both Vite templates.
   'vite-react': {
     entry: ['index.html!', 'vite.config.*'],
-    project: ['src/**/*.{ts,tsx}!'],
+    project: ['src/**/*.{ts,tsx,css}!'],
     includeEntryExports: false,
   },
   'vite-vue': {
     entry: ['index.html!', 'vite.config.*'],
-    project: ['src/**/*.{ts,vue}!'],
+    project: ['src/**/*.{ts,vue,css}!'],
     includeEntryExports: false,
   },
 }

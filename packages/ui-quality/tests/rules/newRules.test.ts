@@ -122,6 +122,28 @@ describe('iconContrast', () => {
 })
 
 describe('rawPlaceholder', () => {
+  it.each(['a52529ccf174_817', 'invoice_817', 'ab12_cd34'])(
+    'accepts the alphanumeric reference %s',
+    (text) => {
+      expect(
+        rawPlaceholder(
+          snapshotOf([elementBox({ id: 0, text })]),
+          ruleContext(),
+        ),
+      ).toEqual([])
+    },
+  )
+  it.each(['vat_rate', 'purchase_net_total', 'taxRate', 'purchase:7905'])(
+    'still reports the implementation identifier %s',
+    (text) => {
+      expect(
+        rawPlaceholder(
+          snapshotOf([elementBox({ id: 0, text })]),
+          ruleContext(),
+        ),
+      ).toHaveLength(1)
+    },
+  )
   it('reports a bracketed lower-case stand-in and accepts copy', () => {
     const elements = [
       elementBox({ id: 0, text: '[media message]' }),

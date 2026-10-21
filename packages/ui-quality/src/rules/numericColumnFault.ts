@@ -1,11 +1,13 @@
 import type { ElementBox } from '@/model/ElementBox.js'
+import { DATE_TEXT } from '@/rules/DATE_TEXT.js'
 import { isLeftAligned } from '@/rules/isLeftAligned.js'
 import { isNumericText } from '@/rules/isNumericText.js'
 import { MIN_NUMERIC_TEXT_LENGTH } from '@/rules/MIN_NUMERIC_TEXT_LENGTH.js'
 import { NUMERIC_SHARE } from '@/rules/NUMERIC_SHARE.js'
+import { TIME_TEXT } from '@/rules/TIME_TEXT.js'
 
 /**
- * What is wrong with a column of numbers, dates or times, or null when it is
+ * What is wrong with a column of quantities, or null when it is
  * not such a column or nothing is: values hung from the left edge, whose
  * digits do not line up by place, or digits of uneven width.
  */
@@ -18,7 +20,12 @@ export const numericColumnFault = (
     (box) => box.textLength >= MIN_NUMERIC_TEXT_LENGTH,
   )
   if (cells.length < minRows) return null
-  const numeric = cells.filter((box) => isNumericText(box.text))
+  const numeric = cells.filter(
+    (box) =>
+      !DATE_TEXT.test(box.text) &&
+      !TIME_TEXT.test(box.text) &&
+      isNumericText(box.text),
+  )
   if (numeric.length < cells.length * NUMERIC_SHARE) return null
   const faults: string[] = []
   if (isLeftAligned(numeric, tolerance))

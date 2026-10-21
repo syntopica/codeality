@@ -1,5 +1,6 @@
 import { childrenIndex } from '@/rules/childrenIndex.js'
 import { columnEdgesOf } from '@/rules/columnEdgesOf.js'
+import { hasContentSizedWidth } from '@/rules/hasContentSizedWidth.js'
 import { holdsContent } from '@/rules/holdsContent.js'
 import { isBlockInFlow } from '@/rules/isBlockInFlow.js'
 import { isCardLike } from '@/rules/isCardLike.js'
@@ -34,7 +35,7 @@ export const raggedColumn: Rule = (snapshot) => {
       const shortfall = edges.right - (block.x + block.width)
       if (shortfall <= width * RAGGED_SHORTFALL) return []
       if (!stacksOnLeftEdge(block, blocks, edges)) return []
-      if (block.display === 'table') return []
+      if (hasContentSizedWidth(block)) return []
       if (!holdsContent(block, elements)) return []
       if (!showsRightEdge(block, elements, canvas)) return []
       const full = [blocks[index - 1], blocks[index + 1]].find(

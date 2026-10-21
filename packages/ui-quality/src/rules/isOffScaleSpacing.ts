@@ -4,7 +4,7 @@ import { SPACING_STEP } from '@/rules/SPACING_STEP.js'
 import { WHOLE_PIXEL } from '@/rules/WHOLE_PIXEL.js'
 
 /**
- * Whether a spacing value is off the 4px scale. Hairlines (1px, 2px), a 3px
+ * Whether a spacing value is off the 2px scale. Hairlines (1px, 2px), a 3px
  * value next to a border and fractions (em and rem maths) are left alone.
  */
 export const isOffScaleSpacing = (

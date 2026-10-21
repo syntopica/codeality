@@ -63,14 +63,6 @@ findings have shipped (`ragged-column`, `interaction-shift`, `narrow-page`,
 unreleased on `main`; see `TODO_LOG.md`). One half of those findings is left,
 plus the release:
 
-- [ ] **Navigation waits for `load`, so one stuck image hangs a capture.**
-      `gotoSettled` and `login` (`waitForURL` default) wait for the `load` event
-      before the bounded `networkidle` settle. TienesLaVibra `/admin/leads`
-      (2026-10-15) keeps per-lead `/api/admin/avatar?phone=...` image requests
-      open past commit locally, and a propose run against production never
-      reached a screenshot. Smallest step: reproduce with a fixture page whose
-      image never finishes, then navigate on `domcontentloaded` and bound the
-      wait for `load` like `networkidle`.
 - [ ] **`sort-broken` fires on a server-sorted board that sorts correctly.**
       TienesLaVibra `/admin/councils` (2026-10-14): the "Ayuntamiento / Evento"
       header is a `<Link>` to `?sort=nombre`; clicking it twice in Playwright
@@ -124,25 +116,10 @@ plus the release:
   `cq/.codeality-ui/screens/`, routes in `~/p/intelifactu/codeality-ui.json`,
   each kept there by a `disable` with its reason). Smallest next step: one
   near-miss fixture per item.
-  - PDF.js text layer (`.textLayer span`, transparent selectable glyphs over a
-    rendered page) fires `undersized-text`, `ascii-ellipsis` (form leaders
-    "Ejercicio ......"), `bare-url` and `type-scale-sprawl` (4.2-11px sizes).
-    Routes `/app?view=administraciones&company=2&screen=modelos-viewer`,
-    `...notificaciones-viewer`,
-    `/app?view=bank&company=2&screen=documents-viewer`. Skip text whose `color`
-    is transparent or whose ancestor is `.textLayer`.
-  - `undersized-text` on `span#recharts_measurement_span` (Recharts' off-screen
-    width probe, never painted). Route `/app?view=administraciones`.
-  - `raw-placeholder` snake_case shape on a supplier invoice number
-    "a52529ccf174_817" (`td.max-w-32`, `/app?view=invoices`). Require
-    letter-only words around the underscore before calling it an identifier.
-  - `text-hard-cut` with only 2 texts at 67 chars (AEAT casilla captions,
-    `th.py-1.pr-1`, `/app?view=modelos&company=2`) and with fixed-width codes (4
-    invoice numbers at 35 chars, `/app?view=reports`). Require 3 or more, and
-    skip texts with no spaces.
-  - `ragged-column` on short `self-start` controls and tabs (buttons "Abrir",
-    "Añadir línea", the form-section tab `h2.self-start`). Skip buttons and
-    elements narrower than their content's single line.
+  - `ragged-column` still needs a near-miss fixture for noninteractive
+    `h2.self-start` sections and boxes narrower than their content's single
+    line. Native buttons and semantic button/tab controls now preserve their
+    intrinsic width; capped heading/card positives remain covered.
   - `list-dangling-rule` on virtualised rows (`div.absolute.left-0` inside a
     scrolling table body, `/app?view=administraciones&screen=deudas`): the
     scroller is an ancestor, not the list itself.
@@ -152,11 +129,6 @@ plus the release:
   - `row-height-scale` on the react-day-picker calendar (`.rdp-root table`,
     weekday caption row 19px vs 36px day cells,
     `/app?view=documentos&company=2&screen=viewer-dates`).
-  - `numeric-alignment` on columns of dates and reference codes (invoice
-    numbers, AEAT references "A10600265300615322T"): identifiers are not
-    quantities. Skip columns whose values carry letters or date separators.
-  - `off-scale-spacing` assumes a 4px grid; Tailwind half steps (6px, 10px) are
-    the project's token set. Take the step from config, or accept 2px.
   - False negative: `crowded-meta-line` did not fire on the Modelos formula line
     ("Otras operaciones con in…", 3 children, 320px aside) because the visible
     text is over 12 characters; the casilla label was still unreadable.
@@ -215,12 +187,17 @@ plus the release:
       consumer and validate its findings against this case before rolling it
       out.
 
-- [ ] **Remove stale root and template Knip hints** (2026-10-21). `pnpm knip`
-      reports 40 configuration hints and exits 0; four templates report ESLint
-      dependency/CSS configuration hints. These are separate from the
-      custom-layout consumer defaults fixed in quality-config 0.15.0. Smallest
-      next step: reproduce one workspace with strict configuration hints, then
-      remove only exemptions or patterns proven redundant there.
+- [~] **Remove stale root and template Knip hints** (2026-10-21). Root workspace
+  configuration now passes `pnpm knip --treat-config-hints-as-errors` with all
+  40 former hints removed; production strict mode also exits 0 and retains its
+  two pre-existing warning-only binaries. CSS source patterns for Vite React,
+  Vite Vue, Tauri and Nuxt now include CSS with production markers; four
+  real-Knip regression fixtures failed before and the quality-config suite now
+  passes 36 tests. Standalone Vite React strict mode retains one
+  `eslint-config-prettier` compatibility-exemption hint. Smallest next step:
+  reconcile that exemption against per-consumer ESLint loading without dropping
+  compatibility for older shared configs; check the other standalone template
+  gates as well. No package was published.
 
 ## Routed from `~/p/TODO.md` (2026-10-03)
 

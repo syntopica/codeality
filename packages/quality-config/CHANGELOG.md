@@ -2,6 +2,10 @@
 
 ## [Unreleased]
 
+- fix: include imported CSS in Vite React, Vite Vue, Tauri and Nuxt project
+  patterns so Knip follows compiled stylesheet imports in normal and production
+  analysis.
+
 - fix: resolve the consumer-installed jscpd and type-coverage CLI entries
   directly, including hoisted workspace dependencies, instead of requiring pnpm
   or invoking another package manager.

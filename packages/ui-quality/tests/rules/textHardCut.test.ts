@@ -7,9 +7,25 @@ import { rows } from '@tests/rows.js'
 import { ruleContext } from '@tests/ruleContext.js'
 import { snapshotOf } from '@tests/snapshotOf.js'
 
-const cut = (text: string): string => text.padEnd(40, 'x')
+const cut = (text: string): string => `${text} `.padEnd(40, 'x')
 
 describe('textHardCut', () => {
+  it('accepts two natural captions even when they fill most of a short column', () => {
+    const table = ['First caption', 'Other caption', 'short'].map((text) => [
+      { x: 0, text: text === 'short' ? text : text.padEnd(67, 'x') },
+    ])
+    expect(textHardCut(snapshotOf(rows(table)), ruleContext())).toEqual([])
+  })
+  it('accepts equal-length reference codes without spaces', () => {
+    const table = [
+      'AB-REFERENCE',
+      'CD-DOCUMENTS',
+      'EF-INVOICING',
+      'GH-CONTRACTS',
+    ].map((text) => [{ x: 0, text: text.padEnd(35, 'x') }])
+    expect(textHardCut(snapshotOf(rows(table)), ruleContext())).toEqual([])
+  })
+
   it('reports texts that tie at the longest length with no ellipsis', () => {
     const table = [cut('first'), cut('second'), cut('third'), 'short one'].map(
       (text) => [{ x: 0, text }],
@@ -80,7 +96,7 @@ describe('textHardCut', () => {
   })
   it('reads texts nested below the single wrapper of a row', () => {
     const elements: ElementBox[] = [elementBox({ id: 0, tag: 'ul' })]
-    ;[cut('one'), cut('two'), 'short'].forEach((text, row) => {
+    ;[cut('one'), cut('two'), cut('three'), 'short'].forEach((text, row) => {
       const id = elements.length
       const y = row * 40
       elements.push(

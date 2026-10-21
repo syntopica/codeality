@@ -1,5 +1,6 @@
 import type { RawFinding } from '@/model/RawFinding.js'
 import { ancestorsOf } from '@/rules/ancestorsOf.js'
+import { hasPaintedText } from '@/rules/hasPaintedText.js'
 import type { Rule } from '@/rules/Rule.js'
 import { URL_CONTAINING_TAGS } from '@/rules/URL_CONTAINING_TAGS.js'
 import { URL_TEXT_PATTERN } from '@/rules/URL_TEXT_PATTERN.js'
@@ -11,6 +12,7 @@ import { URL_TEXT_PATTERN } from '@/rules/URL_TEXT_PATTERN.js'
 // interactive control nested in another, which `nested-interactive` reports.
 export const bareUrl: Rule = (snapshot) =>
   snapshot.elements
+    .filter(hasPaintedText)
     .filter(
       (element) =>
         element.tag !== 'a' &&

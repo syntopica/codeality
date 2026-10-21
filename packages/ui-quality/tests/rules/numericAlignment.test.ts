@@ -26,6 +26,27 @@ const messagesOf = (elements: ElementBox[]) =>
   )
 
 describe('numericAlignment', () => {
+  it.each([
+    ['slash dates', ['1/2/2026', '12/12/2026', '02/03/2026', '3/11/2026']],
+    ['ISO dates', ['2026-01-01', '2026-02-02', '2026-03-03', '2026-04-04']],
+    ['dot dates', ['1.2.2026', '12.12.2026', '02.03.2026', '3.11.2026']],
+    ['clock times', ['09:30', '10:45', '11:30', '12:00']],
+    [
+      'reference codes',
+      [
+        'A10600265300615322T',
+        'B10600265300615322T',
+        'C10600265300615322T',
+        'D10600265300615322T',
+      ],
+    ],
+  ])('accepts %s without quantity alignment requirements', (_label, values) => {
+    const elements = rows(
+      values.map((text) => [{ x: 0, text, width: text.length * 8 }]),
+    ).map((box) => ({ ...box, textAlign: 'left', tabularDigits: false }))
+    expect(messagesOf(elements)).toEqual([])
+  })
+
   it('reports amounts hung from the left edge', () => {
     const [message] = messagesOf(
       table((amount) => ({ x: 200, width: amount.length * 8 })),

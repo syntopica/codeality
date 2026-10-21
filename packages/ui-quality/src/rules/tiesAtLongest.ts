@@ -5,7 +5,7 @@ import { TIES_PER_TEXT } from '@/rules/TIES_PER_TEXT.js'
 
 /**
  * Whether enough distinct texts tie at `longest` to read it as a limit: at
- * least three (or half the column), more on a long column, and more than sit
+ * least three, more on a long column, and more than sit
  * just below it.
  */
 export const tiesAtLongest = (
@@ -23,7 +23,7 @@ export const tiesAtLongest = (
   return (
     longest >= minLength &&
     pilesAtLongest(texts, longest) &&
-    distinct >= Math.max(2, Math.ceil(texts.length / TIES_PER_TEXT)) &&
-    (distinct >= MIN_DISTINCT_TIES || distinct * 2 >= texts.length)
+    distinct >=
+      Math.max(MIN_DISTINCT_TIES, Math.ceil(texts.length / TIES_PER_TEXT))
   )
 }

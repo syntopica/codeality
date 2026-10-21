@@ -118,7 +118,7 @@ Shipped from this tier, as built:
 Shipped on 2026-10-07 (third batch), as built. Nothing in this tier is open.
 
 - `off-scale-spacing`: padding, vertical margin and gap values of the main
-  region's boxes (computed px) that are not multiples of 4, reported once per
+  region's boxes (computed px) that are not multiples of 2, reported once per
   screen when at least 3 distinct ones appear. Horizontal margins are left out
   (`margin: auto` resolves to whatever width is left), as are 1px and 2px
   hairlines, a 3px value on a bordered box, values that are not whole pixels (em

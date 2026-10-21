@@ -57,6 +57,27 @@ const paragraph = (overrides: Parameters<typeof elementBox>[0]) =>
   })
 
 describe('raggedColumn', () => {
+  it.each([
+    { tag: 'button', role: '' },
+    { tag: 'div', role: 'button' },
+    { tag: 'div', role: 'tab' },
+  ])('preserves intrinsic width for a $tag with role $role', (semantics) => {
+    const control = elementBox({
+      ...heading,
+      ...semantics,
+      width: 120,
+      height: 32,
+      lines: 1,
+      text: 'Open',
+      backgroundColor: [20, 40, 80, 1],
+    })
+    expect(
+      raggedColumn(
+        snapshotOf([main, column, control, statCard, statText]),
+        ruleContext(),
+      ),
+    ).toEqual([])
+  })
   it('reports a heading that stops short above a block filling the column', () => {
     const findings = raggedColumn(
       snapshotOf([main, column, heading, statCard, statText]),

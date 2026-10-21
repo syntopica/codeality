@@ -1,5 +1,6 @@
 import { ancestorsOf } from '@/rules/ancestorsOf.js'
 import { FUNCTIONAL_TEXT_TAGS } from '@/rules/FUNCTIONAL_TEXT_TAGS.js'
+import { hasPaintedText } from '@/rules/hasPaintedText.js'
 import { MIN_BODY_FONT_SIZE } from '@/rules/MIN_BODY_FONT_SIZE.js'
 import { MIN_UI_FONT_SIZE } from '@/rules/MIN_UI_FONT_SIZE.js'
 import type { Rule } from '@/rules/Rule.js'
@@ -12,6 +13,7 @@ import { SMALL_TEXT_TAGS } from '@/rules/SMALL_TEXT_TAGS.js'
 export const undersizedText: Rule = (snapshot) =>
   snapshot.elements.flatMap((element) => {
     if (element.text === '') return []
+    if (!hasPaintedText(element)) return []
     const chain = [element, ...ancestorsOf(element, snapshot.elements)]
     if (chain.some((box) => SMALL_TEXT_TAGS.has(box.tag))) return []
     const functional = chain.some((box) => FUNCTIONAL_TEXT_TAGS.has(box.tag))

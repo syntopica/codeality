@@ -1,13 +1,14 @@
 import { ancestorsOf } from '@/rules/ancestorsOf.js'
 import { ASCII_ELLIPSIS } from '@/rules/ASCII_ELLIPSIS.js'
 import { CODE_TAGS } from '@/rules/CODE_TAGS.js'
+import { hasPaintedText } from '@/rules/hasPaintedText.js'
 import type { Rule } from '@/rules/Rule.js'
 
 // "Loading..." is three full stops; "Loading…" is one character that never
 // breaks across lines and sets at the right width. Code and other literal
 // text keep theirs.
 export const asciiEllipsis: Rule = (snapshot) =>
-  snapshot.elements.flatMap((element) => {
+  snapshot.elements.filter(hasPaintedText).flatMap((element) => {
     if (!ASCII_ELLIPSIS.test(element.text) && element.textTail !== '...')
       return []
     const chain = [element, ...ancestorsOf(element, snapshot.elements)]

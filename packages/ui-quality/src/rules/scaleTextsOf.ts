@@ -1,5 +1,6 @@
 import type { ElementBox } from '@/model/ElementBox.js'
 import { ancestorsOf } from '@/rules/ancestorsOf.js'
+import { hasPaintedText } from '@/rules/hasPaintedText.js'
 import { isInMain } from '@/rules/isInMain.js'
 import { isUserContent } from '@/rules/isUserContent.js'
 import { SMALL_TEXT_TAGS } from '@/rules/SMALL_TEXT_TAGS.js'
@@ -10,12 +11,14 @@ import { SMALL_TEXT_TAGS } from '@/rules/SMALL_TEXT_TAGS.js'
  * and subscripts, which are sized by design.
  */
 export const scaleTextsOf = (elements: ElementBox[]): ElementBox[] =>
-  elements.filter(
-    (element) =>
-      element.text !== '' &&
-      isInMain(element, elements) &&
-      ![element, ...ancestorsOf(element, elements)].some((box) =>
-        SMALL_TEXT_TAGS.has(box.tag),
-      ) &&
-      !isUserContent(element, elements),
-  )
+  elements
+    .filter(hasPaintedText)
+    .filter(
+      (element) =>
+        element.text !== '' &&
+        isInMain(element, elements) &&
+        ![element, ...ancestorsOf(element, elements)].some((box) =>
+          SMALL_TEXT_TAGS.has(box.tag),
+        ) &&
+        !isUserContent(element, elements),
+    )

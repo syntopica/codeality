@@ -5,7 +5,7 @@ import { rowTablesOf } from '@/rules/rowTablesOf.js'
 import type { Rule } from '@/rules/Rule.js'
 import { textBoxOf } from '@/rules/textBoxOf.js'
 
-// A column of amounts, counts, dates or times in repeated rows is compared
+// A column of amounts or counts in repeated rows is compared
 // digit by digit: it needs its values on the trailing edge and digits of one
 // width (`tabular-nums`, or a font whose figures are tabular already).
 export const numericAlignment: Rule = (snapshot, context) => {

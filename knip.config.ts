@@ -10,7 +10,7 @@ import type { KnipConfig } from 'knip'
 // file, tests included. Package `src/` and `bin/` patterns below carry the same
 // mark; their `tests/` globs do not, so production mode leaves tests out.
 const TEMPLATE_GLOB = [
-  '**/*.{ts,tsx,vue,astro}!',
+  '**/*.{ts,tsx}!',
   '!**/*.{test,spec}.{ts,tsx}!',
   '!**/{vite,vitest,playwright,astro,nuxt,next,tailwind,postcss,eslint,knip}.config.*!',
 ]
@@ -45,24 +45,24 @@ const config: KnipConfig = {
     '.': {
       entry: ['scripts/*.mjs'],
       project: ['scripts/*.mjs'],
-      // @syntopica/quality-config is a real dependency of the root
-      // .dependency-cruiser.cjs, but it's loaded through
-      // `jiti('@syntopica/quality-config/dependency-cruiser')` — a
-      // dynamic string argument, not a static import/require knip's
-      // analysis can trace back to the package.
-      ignoreDependencies: [
-        '@syntopica/quality-config',
-        // The root gates spawn these binaries through the baseline runners
-        // (`baseline-dupes` -> jscpd, `baseline-type-coverage` ->
-        // type-coverage). The runners resolve pnpm's entry point at runtime
-        // rather than naming it as a literal, so no file knip parses mentions
-        // either tool. Same reason the templates ignore them.
-        ...TEMPLATE_RUNNER_DEPENDENCIES,
-      ],
+      // The baseline runners spawn these tools outside Knip's script graph.
+      ignoreDependencies: ['jscpd', 'type-coverage'],
     },
     'packages/*': {
-      entry: ['src/index.ts!', 'src/*.ts!', 'bin/*.mjs!'],
+      entry: ['src/*.ts!', 'bin/*.mjs!'],
       project: ['src/**/*.ts!'],
+    },
+    'packages/create-baseline': {
+      entry: ['bin/*.mjs!'],
+      project: ['bin/**/*.mjs!', 'tests/**/*.mjs'],
+    },
+    'packages/eslint-config': {
+      entry: ['src/*.ts!'],
+      project: ['src/**/*.ts!'],
+    },
+    'packages/prettier-config': {
+      entry: ['*.mjs!'],
+      project: ['*.mjs!', 'tests/**/*.mjs'],
     },
     'packages/tsconfig': {
       // nextjs.json declares the Next TypeScript plugin by name, which knip
@@ -73,18 +73,13 @@ const config: KnipConfig = {
     'packages/eslint-plugin-code-policy': {
       // A workspace-specific key replaces rather than merges with the
       // `packages/*` wildcard, so entry/project are repeated here.
-      entry: ['src/index.ts!', 'src/*.ts!'],
+      entry: ['src/*.ts!'],
       // This is the one package whose tests live outside `src`. They are in
       // scope so the dependencies only they pull in (the parser the rule
       // tester runs on) count as used instead of being reported as unused
       // devDependencies; knip's vitest plugin supplies the test files
       // themselves as entry points.
       project: ['src/**/*.ts!', 'tests/**/*.ts'],
-      // Fixtures are read from disk by path, never imported, so knip cannot
-      // see a consumer and reports every one of them as an unused file. They
-      // live at the package root, not under tests/, because file-kind-placement
-      // exempts test scope and would otherwise exempt every fixture.
-      ignore: ['fixtures/**'],
       // @syntopica/eslint-config ships TypeScript source, so the plugins its
       // base config `require()`s resolve from whichever package composes it -
       // this one included. knip sees the import in eslint-config and the
@@ -109,7 +104,7 @@ const config: KnipConfig = {
     'packages/db-quality': {
       // A workspace-specific key replaces rather than merges with the
       // `packages/*` wildcard, so entry/project are repeated here.
-      entry: ['src/cli.ts!', 'bin/*.mjs!'],
+      entry: ['bin/*.mjs!'],
       project: ['src/**/*.ts!', 'tests/**/*.ts'],
       // The adapters spawn these as executables through the command runner
       // (`runSquawk` -> squawk, `runPrismaLint` -> prisma-lint) or load them
@@ -121,7 +116,6 @@ const config: KnipConfig = {
         'eslint-plugin-drizzle',
         'prisma-lint',
         'squawk-cli',
-        'typescript-eslint',
       ],
       // `sqlite3` is the system shell the sqlite adapter spawns; the
       // integration test calls it directly to build a fixture database.
@@ -141,15 +135,59 @@ const config: KnipConfig = {
         ...TEMPLATE_ESLINT_PEER_DEPENDENCIES,
       ],
     },
+    'templates/vite-react-app': {
+      entry: ['**/*.{ts,tsx,css}!', ...TEMPLATE_GLOB.slice(1)],
+      project: ['**/*.{ts,tsx,css}!', ...TEMPLATE_GLOB.slice(1)],
+      ignoreDependencies: [
+        ...TEMPLATE_RUNNER_DEPENDENCIES,
+        ...TEMPLATE_ESLINT_PEER_DEPENDENCIES.filter(
+          (dependency) => dependency !== 'eslint-config-prettier',
+        ),
+      ],
+    },
+    'templates/tauri-app': {
+      entry: ['**/*.{ts,tsx,css}!', ...TEMPLATE_GLOB.slice(1)],
+      project: ['**/*.{ts,tsx,css}!', ...TEMPLATE_GLOB.slice(1)],
+      ignoreDependencies: [
+        ...TEMPLATE_RUNNER_DEPENDENCIES,
+        ...TEMPLATE_ESLINT_PEER_DEPENDENCIES.filter(
+          (dependency) => dependency !== 'eslint-config-prettier',
+        ),
+      ],
+    },
+    'templates/vue-app': {
+      entry: ['**/*.{ts,tsx,vue,css}!', ...TEMPLATE_GLOB.slice(1)],
+      project: ['**/*.{ts,tsx,vue,css}!', ...TEMPLATE_GLOB.slice(1)],
+      ignoreDependencies: [
+        ...TEMPLATE_RUNNER_DEPENDENCIES,
+        ...TEMPLATE_ESLINT_PEER_DEPENDENCIES.filter(
+          (dependency) => dependency !== 'eslint-config-prettier',
+        ),
+      ],
+    },
+    'templates/astro-site': {
+      entry: ['**/*.{ts,tsx,astro}!', ...TEMPLATE_GLOB.slice(1)],
+      project: ['**/*.{ts,tsx,astro}!', ...TEMPLATE_GLOB.slice(1)],
+      ignoreDependencies: [
+        ...TEMPLATE_RUNNER_DEPENDENCIES,
+        ...TEMPLATE_ESLINT_PEER_DEPENDENCIES.filter(
+          (dependency) => dependency !== 'typescript-eslint',
+        ),
+      ],
+    },
     'templates/nuxt-app': {
       // A workspace-specific key replaces rather than merges with the
       // `templates/*` wildcard entry, so entry/project/ignoreDependencies are
       // repeated here rather than inherited.
-      entry: TEMPLATE_GLOB,
-      project: TEMPLATE_GLOB,
+      entry: ['**/*.{ts,tsx,vue,css}!', ...TEMPLATE_GLOB.slice(1)],
+      project: ['**/*.{ts,tsx,vue,css}!', ...TEMPLATE_GLOB.slice(1)],
       ignoreDependencies: [
         ...TEMPLATE_RUNNER_DEPENDENCIES,
-        ...TEMPLATE_ESLINT_PEER_DEPENDENCIES,
+        ...TEMPLATE_ESLINT_PEER_DEPENDENCIES.filter(
+          (dependency) =>
+            dependency !== 'eslint-config-prettier' &&
+            dependency !== 'typescript-eslint',
+        ),
         // vitest-environment-nuxt is a real dependency, not a false
         // positive: templates/nuxt-app/knip.config.ts (the per-template
         // gate a project scaffolded from this template runs) requires it
@@ -175,16 +213,7 @@ const config: KnipConfig = {
       vitest: false,
     },
   },
-  ignoreBinaries: [
-    'turbo',
-    'lhci',
-    'gitleaks',
-    'actionlint',
-    // `typescript` is installed under the npm alias `@typescript/typescript6`
-    // repo-wide (the TS7 native-compiler trial), so knip can't map the `tsc`
-    // binary in package.json scripts back to a declared dependency name.
-    'tsc',
-  ],
+  ignoreBinaries: ['gitleaks', 'actionlint'],
   rules: {
     files: 'error',
     dependencies: 'error',

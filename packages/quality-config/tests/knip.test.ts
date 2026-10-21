@@ -54,7 +54,7 @@ describe('createKnipConfig', () => {
       cwd: dir,
     })
     expect(config.entry).toEqual(['index.html!', 'vite.config.*'])
-    expect(config.project).toContain('src/**/*.{ts,vue}!')
+    expect(config.project).toContain('src/**/*.{ts,vue,css}!')
   })
 
   it('preserves explicit caller patterns even when their roots do not exist', () => {

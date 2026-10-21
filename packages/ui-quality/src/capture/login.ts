@@ -1,4 +1,5 @@
 import { gotoSettled } from '@/capture/gotoSettled.js'
+import { settleNavigation } from '@/capture/settleNavigation.js'
 import type { Page } from 'playwright'
 
 import { credentialFrom } from '@/capture/credentialFrom.js'
@@ -21,7 +22,9 @@ export const login = async (
   await Promise.all([
     page.waitForURL((url) => !url.pathname.endsWith(auth.loginPath), {
       timeout: 30_000,
+      waitUntil: 'domcontentloaded',
     }),
-    submit.click(),
+    submit.click({ noWaitAfter: true }),
   ])
+  await settleNavigation(page)
 }
