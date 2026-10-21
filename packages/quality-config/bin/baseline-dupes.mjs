@@ -38,7 +38,7 @@ import { tmpdir } from 'node:os'
 import { join } from 'node:path'
 import { argv, exit } from 'node:process'
 import { fileURLToPath } from 'node:url'
-import { pnpmCommand } from './pnpmCommand.mjs'
+import { localNodeToolCommand } from './localNodeToolCommand.mjs'
 
 const PACKAGED_CONFIG = fileURLToPath(new URL('../jscpd.json', import.meta.url))
 
@@ -109,8 +109,8 @@ if (found.value !== -1) args[found.value] = config
 else if (found.inline !== -1) args[found.inline] = `--config=${config}`
 else args.push('--config', config)
 
-const [pnpm, ...pnpmArgs] = pnpmCommand()
-const result = spawnSync(pnpm, [...pnpmArgs, 'exec', 'jscpd', ...args], {
+const [node, tool] = localNodeToolCommand('jscpd')
+const result = spawnSync(node, [tool, ...args], {
   stdio: 'inherit',
 })
 

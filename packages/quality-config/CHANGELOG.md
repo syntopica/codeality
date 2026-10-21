@@ -2,6 +2,10 @@
 
 ## [Unreleased]
 
+- fix: resolve the consumer-installed jscpd and type-coverage CLI entries
+  directly, including hoisted workspace dependencies, instead of requiring pnpm
+  or invoking another package manager.
+
 ## 0.15.0
 
 ### Patch Changes

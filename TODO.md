@@ -225,19 +225,6 @@ plus the release:
       next step: reproduce one workspace with strict configuration hints, then
       remove only exemptions or patterns proven redundant there.
 
-- [ ] **quality-config bins assume pnpm:** `baseline-dupes` and
-      `baseline-type-coverage` spawn `pnpm exec` (`pnpmCommand()`), so in a bun
-      project (teleporte-web, 2026-10-19) the first run made pnpm 12 install
-      itself: an untracked `pnpm-lock.yaml`, `pnpm-workspace.yaml` and a second
-      `node_modules/.pnpm` tree whose duplicate vite broke `tsc -b` on
-      `vite.config.ts`. A CI runner without pnpm would fail the gate outright.
-  - Workaround in teleporte-web:
-    `jscpd . --config node_modules/@syntopica/quality-config/jscpd.json` and
-    `type-coverage --strict --at-least 99` called directly.
-  - Next step: resolve the binary from the consumer's `node_modules/.bin` (or
-    detect the package manager from the lockfile) instead of always going
-    through pnpm.
-
 ## Routed from `~/p/TODO.md` (2026-10-03)
 
 Moved verbatim from `~/p/TODO.md` on 2026-10-03; the routing table in

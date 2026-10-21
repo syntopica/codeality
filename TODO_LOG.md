@@ -942,6 +942,29 @@ Closed work from `TODO.md`, grouped by year and month.
 
 ### 2026-10
 
+- [x] 2026-10-21 — **quality-config bins assume pnpm:** `baseline-dupes` and
+      `baseline-type-coverage` spawn `pnpm exec` (`pnpmCommand()`), so in a bun
+      project (teleporte-web, 2026-10-19) the first run made pnpm 12 install
+      itself: an untracked `pnpm-lock.yaml`, `pnpm-workspace.yaml` and a second
+      `node_modules/.pnpm` tree whose duplicate vite broke `tsc -b` on
+      `vite.config.ts`. A CI runner without pnpm would fail the gate outright.
+  - Workaround in teleporte-web:
+    `jscpd . --config node_modules/@syntopica/quality-config/jscpd.json` and
+    `type-coverage --strict --at-least 99` called directly.
+  - Next step: resolve the binary from the consumer's `node_modules/.bin` (or
+    detect the package manager from the lockfile) instead of always going
+    through pnpm.
+  - Result: baseline-dupes and baseline-type-coverage resolve the
+    consumer-installed Node CLI directly, including hoisted workspace
+    dependencies; arguments and failure behavior are preserved without invoking
+    a package manager.
+  - Evidence: Four CLI regressions failed before the change; pnpm --filter
+    @syntopica/quality-config test --maxWorkers=1 passed 9 files and 32 tests;
+    lint and type-check passed. Real jscpd scanned a temporary source fixture
+    and type-coverage measured 5/5 identifiers with empty PATH and no manager;
+    no pnpm lock/workspace files were created. Independent review found no
+    issues. Source correction only, not an npm publication.
+
 - [x] 2026-10-21 — **ui-quality:** **`check --routes` given twice silently keeps
       only the last glob** (2026-10-15, verticagtm).
       `--routes /today --routes /plans/<id> ...` drove only the last route,

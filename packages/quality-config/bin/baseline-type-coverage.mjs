@@ -36,7 +36,7 @@ import { existsSync, readdirSync, readFileSync } from 'node:fs'
 import { dirname, relative, resolve } from 'node:path'
 import { argv, cwd, exit } from 'node:process'
 import { fileURLToPath } from 'node:url'
-import { pnpmCommand } from './pnpmCommand.mjs'
+import { localNodeToolCommand } from './localNodeToolCommand.mjs'
 
 const IGNORED_FILES = ['.next/**', '.nuxt/**', 'tests/**', '**/*.test.*']
 const SKIPPED_DIRECTORIES = new Set([
@@ -217,17 +217,17 @@ if (!workspaces.length) {
   exit(1)
 }
 
-const [pnpm, ...pnpmArgs] = pnpmCommand()
-
 let failed = false
 for (const workspace of workspaces) {
   const label = relative(cwd(), workspace.project ?? workspace.directory) || '.'
+  const [node, tool] = localNodeToolCommand(
+    'type-coverage',
+    workspace.directory,
+  )
   const result = spawnSync(
-    pnpm,
+    node,
     [
-      ...pnpmArgs,
-      'exec',
-      'type-coverage',
+      tool,
       '--strict',
       '--at-least',
       threshold,
@@ -257,7 +257,7 @@ if (failed) {
       (override === undefined
         ? '.\n'
         : ` (this project's own floor; the shared bar is ${declared[1]}%).\n`) +
-      'Run `pnpm exec type-coverage --strict --detail` in the failing workspace to see where.',
+      'Run the installed `type-coverage --strict --detail` in the failing workspace to see where.',
   )
   exit(1)
 }
