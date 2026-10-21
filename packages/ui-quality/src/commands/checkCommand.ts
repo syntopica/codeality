@@ -6,6 +6,8 @@ import { renderClassified } from '@/baseline/renderClassified.js'
 import { UI_MEASUREMENT_POLICY } from '@/baseline/UI_MEASUREMENT_POLICY.js'
 import { runCheck } from '@/check/runCheck.js'
 import { writeReport } from '@/check/writeReport.js'
+import { assertSingleRoutesOption } from '@/commands/assertSingleRoutesOption.js'
+import { CHECK_OPTIONS } from '@/commands/CHECK_OPTIONS.js'
 import type { CommandIo } from '@/commands/CommandIo.js'
 import { readConfig } from '@/config/readConfig.js'
 import { renderFindings } from '@/report/renderFindings.js'
@@ -23,10 +25,8 @@ export const checkCommand = async (
   io: CommandIo,
 ): Promise<number> => {
   try {
-    const { values } = parseCommandArgs(argv, {
-      json: { type: 'boolean' },
-      routes: { type: 'string' },
-    })
+    const { values } = parseCommandArgs(argv, CHECK_OPTIONS)
+    assertSingleRoutesOption(argv)
     const config = readConfig(io.root)
     const routes = values['routes']
     const result = await runCheck(

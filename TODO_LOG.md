@@ -942,6 +942,20 @@ Closed work from `TODO.md`, grouped by year and month.
 
 ### 2026-10
 
+- [x] 2026-10-21 — **ui-quality:** **`check --routes` given twice silently keeps
+      only the last glob** (2026-10-15, verticagtm).
+      `--routes /today --routes /plans/<id> ...` drove only the last route,
+      while `.codeality-ui/screens/` still held older captures of the others, so
+      a review sent stale screenshots as current. Next step: accept a repeated
+      `--routes` (union of globs) or exit 2 on a repeat, with a test.
+  - Result: Repeated route options now fail before reading configuration,
+    launching a browser or writing artifacts; separate and equals spellings are
+    covered.
+  - Evidence: pnpm --filter @syntopica/ui-quality test --maxWorkers=1 passed 108
+    files and 387 tests; package type-check, lint, build and targeted formatting
+    passed; fresh compiled CLI returned exit 2 and preserved existing report and
+    screenshot bytes.
+
 - [x] 2026-10-21 — **Estate:** **Make the estate coverage cell reflect fatal
       coverage findings.** Reproduced 2026-10-21: calling `formatEstate` with
       one synthetic row and `{ id: 'coverage', level: 'error' }` prints `cov ok`
