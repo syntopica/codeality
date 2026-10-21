@@ -942,6 +942,20 @@ Closed work from `TODO.md`, grouped by year and month.
 
 ### 2026-10
 
+- [x] 2026-10-21 — **Verified timestamp classification repair:** **Prevent
+      eight-digit reference codes from being classified as relative times.** The
+      fiscal interaction sweep recorded compact NIF-shaped values with H, W and
+      M suffixes as timestamps.
+  - Result: Timestamp classification now excludes compact eight-digit references
+    with a letter suffix; spaced or explicitly named durations remain eligible.
+    The interaction-sweep parent remains partial with its other findings
+    pending.
+  - Evidence: Four synthetic reference regressions failed before the fix. pnpm
+    --filter @syntopica/ui-quality exec vitest run tests/rules --maxWorkers=1
+    passed 39 files and 196 tests; fields plus CLI copy integration passed 18
+    tests. Package lint and type-check passed. Independent review returned no
+    findings. No consumer deployment or package release.
+
 - [x] 2026-10-21 — **quality-config bins assume pnpm:** `baseline-dupes` and
       `baseline-type-coverage` spawn `pnpm exec` (`pnpmCommand()`), so in a bun
       project (teleporte-web, 2026-10-19) the first run made pnpm 12 install

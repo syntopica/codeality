@@ -119,11 +119,11 @@ plus the release:
     `redundant-column`: a column whose value is identical on every row and equal
     to a breadcrumb or picker value on the page.
 
-- [ ] **False positives from the InteliFactu interaction-state sweep**
-      (2026-10-12, workspace build d0c9743; screenshots under the sweep's
-      scratchpad `cq/.codeality-ui/screens/`, routes in
-      `~/p/intelifactu/codeality-ui.json`, each kept there by a `disable` with
-      its reason). Smallest next step: one near-miss fixture per item.
+- [~] **False positives from the InteliFactu interaction-state sweep**
+  (2026-10-12, workspace build d0c9743; screenshots under the sweep's scratchpad
+  `cq/.codeality-ui/screens/`, routes in `~/p/intelifactu/codeality-ui.json`,
+  each kept there by a `disable` with its reason). Smallest next step: one
+  near-miss fixture per item.
   - PDF.js text layer (`.textLayer span`, transparent selectable glyphs over a
     rendered page) fires `undersized-text`, `ascii-ellipsis` (form leaders
     "Ejercicio ......"), `bare-url` and `type-scale-sprawl` (4.2-11px sizes).
@@ -136,9 +136,6 @@ plus the release:
   - `raw-placeholder` snake_case shape on a supplier invoice number
     "a52529ccf174_817" (`td.max-w-32`, `/app?view=invoices`). Require
     letter-only words around the underscore before calling it an identifier.
-  - `time-without-datetime` on Spanish NIFs "45643725H", "26746886W",
-    "76033704M" (`/app?view=fiscal`, `/app?view=reports&screen=aging`): eight
-    digits and a letter parse as a time.
   - `text-hard-cut` with only 2 texts at 67 chars (AEAT casilla captions,
     `th.py-1.pr-1`, `/app?view=modelos&company=2`) and with fixed-width codes (4
     invoice numbers at 35 chars, `/app?view=reports`). Require 3 or more, and

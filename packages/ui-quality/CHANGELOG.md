@@ -2,6 +2,10 @@
 
 ## [Unreleased]
 
+- Fix: `time-without-datetime` no longer treats compact eight-digit references
+  with a letter suffix as relative durations. Spaced and explicitly named
+  durations remain eligible.
+
 - New rule: `control-row-ragged`, on by default. Fields, selects and buttons
   drawn as boxes side by side on one line of one card are reported when their
   heights or centres differ by more than `tolerance` (2px), a multi-line

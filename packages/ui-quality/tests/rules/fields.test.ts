@@ -122,6 +122,28 @@ describe('timeWithoutDatetime', () => {
     ])
       expect(isTimestampText(text)).toBe(false)
   })
+  it.each(['12345678H', '12345678W', '12345678M', '12345678h'])(
+    'does not classify the eight-digit reference %s as a duration',
+    (text) => {
+      expect(isTimestampText(text)).toBe(false)
+      expect(
+        timeWithoutDatetime(snapshotOf([cell, stamp(text)]), ruleContext()),
+      ).toEqual([])
+    },
+  )
+  it.each([
+    '3h',
+    '12 m',
+    '12345678 h',
+    '12345678 min',
+    '5 min ago',
+    'hace 3 horas',
+  ])('continues to classify the explicit duration %s', (text) => {
+    expect(isTimestampText(text)).toBe(true)
+    expect(
+      timeWithoutDatetime(snapshotOf([cell, stamp(text)]), ruleContext()),
+    ).toHaveLength(1)
+  })
   it('reports a timestamp in a cell with no time element and no title', () => {
     expect(
       timeWithoutDatetime(
