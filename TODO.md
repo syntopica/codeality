@@ -124,9 +124,6 @@ plus the release:
     Sharing a scroller does not justify an exemption. Smallest next step:
     recapture the original subject at its maximum scroll position and inspect
     the horizontal inset separately; the private-screen case is unverified.
-  - `row-height-scale` on the react-day-picker calendar (`.rdp-root table`,
-    weekday caption row 19px vs 36px day cells,
-    `/app?view=documentos&company=2&screen=viewer-dates`).
   - False negative: `crowded-meta-line` did not fire on the Modelos formula line
     ("Otras operaciones con in…", 3 children, 320px aside) because the visible
     text is over 12 characters; the casilla label was still unreadable.

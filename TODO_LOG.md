@@ -942,6 +942,20 @@ Closed work from `TODO.md`, grouped by year and month.
 
 ### 2026-10
 
+- [x] 2026-10-22 — **Compact table headers:** Allow a compact header above
+      consistently sized data rows.
+  - Result: Header rows shorter than the body median no longer produce
+    row-height-scale findings. The existing header-more-than-eight-pixels-taller
+    check and two-pixel body-row spread check remain unchanged. Generic table
+    fixtures and documentation capture the policy without a
+    calendar/library/class exemption; original private-screen acceptance is not
+    claimed.
+  - Evidence: The 19px-header/36px-body regression failed before the fix.
+    `pnpm --filter @syntopica/ui-quality exec vitest run tests/rules/tables.test.ts tests/cli.data-display.integration.test.ts --maxWorkers=1`
+    passed 36 tests in two files, including the existing 64px/40px tall-header,
+    uneven body, wrapped-row and tolerance controls. Package lint, type-check
+    and build passed; independent review returned no findings.
+
 - [x] 2026-10-22 — **Sticky-pager diagnostic fixture:** Preserve real visibility
       and horizontal-inset findings while investigating the sweep observation.
   - Result: Added a synthetic Chromium fixture with five measured scroll/layout

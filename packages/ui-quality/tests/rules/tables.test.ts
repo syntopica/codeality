@@ -58,6 +58,27 @@ describe('stickyTableHeader', () => {
 })
 
 describe('rowHeightScale', () => {
+  it('allows a compact header above uniform body rows', () => {
+    expect(
+      rowHeightScale(
+        snapshotOf(tableOf({ rows: 5, headerHeight: 19, rowHeight: () => 36 })),
+        ruleContext(),
+      ),
+    ).toEqual([])
+  })
+  it('still reports inconsistent body rows beneath a compact header', () => {
+    const findings = rowHeightScale(
+      snapshotOf(
+        tableOf({
+          rows: 5,
+          headerHeight: 19,
+          rowHeight: (i) => (i === 2 ? 52 : 36),
+        }),
+      ),
+      ruleContext(),
+    )
+    expect(findings[0]?.message).toContain('36px to 52px')
+  })
   it('reports body rows that differ by more than 2px', () => {
     const findings = rowHeightScale(
       snapshotOf(tableOf({ rows: 6, rowHeight: (i) => (i === 2 ? 56 : 40) })),

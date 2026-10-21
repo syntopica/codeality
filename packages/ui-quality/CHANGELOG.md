@@ -2,6 +2,9 @@
 
 ## [Unreleased]
 
+- Fix: table row-height checks allow compact headers while preserving oversized
+  header and inconsistent body-row findings.
+
 - Fix: list-end divider inference stops at genuine scrolling ancestors,
   preserving non-scrolling frames and distinct inner cards.
 

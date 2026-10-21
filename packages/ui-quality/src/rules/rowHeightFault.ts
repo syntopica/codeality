@@ -8,7 +8,8 @@ import type { TableRows } from '@/rules/TableRows.js'
  * What is wrong with a table's row heights, or null: body rows that are not
  * one height (rows with a cell on two lines or more wrap by design and are
  * left out, so are rows with a different number of cells than most, such as
- * a detail row), or a header row more than 8px off the body rows.
+ * a detail row), or a header row more than 8px taller than the body rows.
+ * Compact headers can use less height than the data they name.
  */
 export const rowHeightFault = ({ header, body }: TableRows): string | null => {
   const cellCounts = body.map(({ cells }) => cells.length)
@@ -24,7 +25,7 @@ export const rowHeightFault = ({ header, body }: TableRows): string | null => {
     return `its body rows run from ${String(Math.min(...heights))}px to ${String(Math.max(...heights))}px tall`
   const head = header[0]
   if (!head) return null
-  const difference = Math.abs(head.row.height - median(heights))
+  const difference = head.row.height - median(heights)
   return difference > MAX_HEADER_ROW_DIFFERENCE
     ? `its header row is ${String(head.row.height)}px tall against ${String(median(heights))}px for the body rows`
     : null
