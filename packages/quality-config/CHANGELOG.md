@@ -2,6 +2,8 @@
 
 ## [Unreleased]
 
+## 0.15.0
+
 ### Patch Changes
 
 - fix: omit missing preset entry files and source roots from Knip configuration,
