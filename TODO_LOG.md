@@ -938,6 +938,20 @@ Closed work from `TODO.md`, grouped by year and month.
 
 <!-- tadu:log v1 since 2026-10-12 -->
 
+## 2026
+
+### 2026-10
+
+- [x] 2026-10-21 — **Release:** Publish quality-config 0.15.0
+  - Result: Released the custom-layout Knip fix and the existing Dart/Swift
+    duplication configuration feature through GitHub OIDC. Updated the generated
+    baseline pin; other package versions are unchanged.
+  - Evidence: Full pnpm check:ci passed 58 tasks before the version-only commit;
+    package tests (28), create-baseline tests (198), lint, type-check,
+    publish:check and frozen install passed. Annotated quality-config@0.15.0
+    points to 3f00a217; workflow 39529271695 succeeded. The public npm tarball
+    has 38 files, matching source bytes and no private artifact paths.
+
 ## 2026-09
 
 ## 2026-08

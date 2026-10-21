@@ -28,6 +28,13 @@ verified complete - `[-]` obsolete or superseded.
 
 ## Estate
 
+- [ ] **Wait for registry availability in the npm publish workflow**
+      (2026-10-21). Run 39529271695 succeeded before quality-config 0.15.0 was
+      visible in npm metadata or installable; it became available a few minutes
+      later. Smallest next step: add pnpm's supported
+      `--publish-wait-timeout 600000` to the workflow publish command, so
+      success also verifies metadata and tarball availability.
+
 - [~] **`check:ci` queues behind a host admission wrapper** (2026-10-11).
   Decided 2026-10-11 (owner via Codex adjudication): one heavy suite per host,
   two test workers each. Done: `check:ci` runs `check:ci:run` through
@@ -201,19 +208,12 @@ plus the release:
 
 ## Cross-project (filed 2026-09-09 from two consumer backlog runs)
 
-- [~] **Ship the custom-layout Knip configuration fix** (2026-10-21). Source
-  omits unmatched preset patterns and limits ESLint compatibility exemptions to
-  consumers declaring the shared ESLint config. The agents consumer passes with
-  the local source and strict configuration hints; its installed quality-config
-  0.14.0 still reports eight inherited hints. Smallest next step: after the
-  package release is approved, publish the package and update that consumer.
-  Existing root/template Knip hints remain a separate cleanup: `pnpm knip`
-  reports 40 hints and exits 0, and four templates retain ESLint/CSS
-  configuration hints. Validation:
-  `pnpm --filter @syntopica/quality-config test` passes 28 tests; package lint,
-  type-check and publish checks pass. Workspace supply-chain settings now
-  explicitly require a 1440-minute cooldown and block exotic transitive
-  dependencies; `pnpm install --frozen-lockfile --ignore-scripts` passes.
+- [ ] **Remove stale root and template Knip hints** (2026-10-21). `pnpm knip`
+      reports 40 configuration hints and exits 0; four templates report ESLint
+      dependency/CSS configuration hints. These are separate from the
+      custom-layout consumer defaults fixed in quality-config 0.15.0. Smallest
+      next step: reproduce one workspace with strict configuration hints, then
+      remove only exemptions or patterns proven redundant there.
 
 - [ ] **quality-config bins assume pnpm:** `baseline-dupes` and
       `baseline-type-coverage` spawn `pnpm exec` (`pnpmCommand()`), so in a bun
