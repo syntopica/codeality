@@ -942,6 +942,21 @@ Closed work from `TODO.md`, grouped by year and month.
 
 ### 2026-10
 
+- [x] 2026-10-22 — **Column wrapping evidence:** Distinguish a container edge
+      from its independently constrained text child.
+  - Result: Wrapped text must share the candidate block's content-right boundary
+    within the existing two-pixel tolerance. Border, shadow and fill evidence is
+    unchanged. Near-miss fixtures cover one-line self-start headings and
+    overflowing single-line text; the interaction-sweep parent retains its other
+    findings.
+  - Evidence: The constrained-child regression failed before the fix.
+    `pnpm --filter @syntopica/ui-quality exec vitest run tests/rules/raggedColumn.test.ts tests/rules/raggedColumn.wrapping.test.ts tests/cli.ragged.integration.test.ts --maxWorkers=1`
+    passed 17 tests in three files, including the existing CLI capture.
+    Independent review returned no findings. Probe source confirms line counts
+    measure direct text nodes only, so ancestors do not inherit child line
+    counts. Package lint, type-check and build also passed. Original private
+    screens were not recaptured.
+
 - [x] 2026-10-22 — **UI repair validation:** Verify the combined navigation,
       paint, spacing and rule-precision repairs on the frozen source tree.
   - Result: The package gate covers the repaired client-document redirects,

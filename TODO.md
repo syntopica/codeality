@@ -116,10 +116,6 @@ plus the release:
   `cq/.codeality-ui/screens/`, routes in `~/p/intelifactu/codeality-ui.json`,
   each kept there by a `disable` with its reason). Smallest next step: one
   near-miss fixture per item.
-  - `ragged-column` still needs a near-miss fixture for noninteractive
-    `h2.self-start` sections and boxes narrower than their content's single
-    line. Native buttons and semantic button/tab controls now preserve their
-    intrinsic width; capped heading/card positives remain covered.
   - `list-dangling-rule` on virtualised rows (`div.absolute.left-0` inside a
     scrolling table body, `/app?view=administraciones&screen=deudas`): the
     scroller is an ancestor, not the list itself.

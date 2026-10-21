@@ -2,6 +2,9 @@
 
 ## [Unreleased]
 
+- Fix: column wrapping evidence follows the candidate content edge instead of a
+  separately constrained child, preserving painted edges and genuine wrapping.
+
 - Fix: visible-copy and typography checks ignore unpainted transparent PDF
   selection glyphs while retaining opaque, gradient and shadow-painted text.
 - Fix: column width checks preserve intrinsic button/tab widths, retaining
