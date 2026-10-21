@@ -208,6 +208,17 @@ plus the release:
 
 ## Cross-project (filed 2026-09-09 from two consumer backlog runs)
 
+- [ ] **Audit verification time in every project** (2026-10-21,
+      compratuentrada). Extend the existing `test-quality` audit to report cold
+      and warm lint/format times, full test wall time and phase shares, slowest
+      files, unnecessary DOM environments, coverage overhead, worker count and
+      host load. Compare equivalent runs before recommending a change; keep CI's
+      cold checks and all tests and coverage thresholds. Evidence: in
+      compratuentrada, cached ESLint fell from 188.41 s to 7.99 s and Prettier
+      from 54.09 s to 14.69 s, while 991 Vitest files still took 357.11 s.
+      Smallest next step: define a portable, read-only report for one consumer
+      and validate its findings against this case before rolling it out.
+
 - [ ] **Remove stale root and template Knip hints** (2026-10-21). `pnpm knip`
       reports 40 configuration hints and exits 0; four templates report ESLint
       dependency/CSS configuration hints. These are separate from the
