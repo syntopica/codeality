@@ -1,0 +1,87 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>Tab bar and independent panel heights</title>
+    <style>
+      body {
+        margin: 0;
+        font: 16px/1.5 sans-serif;
+      }
+      main {
+        padding: 24px;
+      }
+      .card {
+        width: 600px;
+        padding: 16px;
+        background: #f3f4f6;
+      }
+      [role='tablist'] {
+        padding: 12px;
+        border: 1px solid #64748b;
+      }
+      [role='tab'] {
+        display: inline-block;
+        padding: 4px 12px;
+        color: #111827;
+      }
+      [role='tabpanel'] {
+        height: 80px;
+      }
+      #review {
+        height: 240px;
+      }
+    </style>
+  </head>
+  <body>
+    <main>
+      <h1>Independent tab panels</h1>
+      <div class="card">
+        <div role="tablist" aria-label="View" data-view="review">
+          <a
+            role="tab"
+            href="#read"
+            aria-controls="read"
+            aria-selected="false"
+            data-view="read"
+            >Read</a
+          >
+          <a
+            role="tab"
+            href="#review"
+            aria-controls="review"
+            aria-selected="true"
+            data-view="review"
+            >Review</a
+          >
+        </div>
+        <section id="read" role="tabpanel" hidden>Short panel</section>
+        <section id="review" role="tabpanel">Tall panel</section>
+      </div>
+    </main>
+    <script>
+      ;(() => {
+        for (const list of document.querySelectorAll('[role="tablist"]')) {
+          for (const tab of list.querySelectorAll('[role="tab"]')) {
+            if (tab.closest('[role="tablist"]') !== list) continue
+            tab.addEventListener('click', (event) => {
+              event.preventDefault()
+              list.dataset.clicks = String(
+                Number(list.dataset.clicks || '0') + 1,
+              )
+              list.dataset.view = tab.dataset.view
+              for (const other of list.querySelectorAll('[role="tab"]')) {
+                if (other.closest('[role="tablist"]') !== list) continue
+                other.setAttribute('aria-selected', String(other === tab))
+                const panel = document.getElementById(
+                  other.getAttribute('aria-controls'),
+                )
+                if (panel) panel.hidden = other !== tab
+              }
+            })
+          }
+        }
+      })()
+    </script>
+  </body>
+</html>

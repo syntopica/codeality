@@ -154,11 +154,6 @@ plus the release:
   `git tag -a <name>@<version> -m ...`, push with the tag,
   `gh workflow run publish.yml -f package=<name>`, `gh run watch`,
   `pnpm release:check`.
-- [ ] **`interaction-shift` for tabs.** The owner's case was "a tab or segmented
-      control"; the shipped probe presses `role=group` sets of `aria-pressed`
-      buttons only, as the candidate specified. Next step: press `role=tab`
-      options of a `role=tablist` the same way, and measure the bar around the
-      tab list, not the panel (a panel of another height is expected).
 
 ## Cross-project (filed 2026-09-09 from two consumer backlog runs)
 

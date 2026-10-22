@@ -1,0 +1,137 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>Tab bar and independent panel heights</title>
+    <style>
+      body {
+        margin: 0;
+        font: 16px/1.5 sans-serif;
+      }
+      main {
+        padding: 24px;
+      }
+      .card {
+        width: 600px;
+        padding: 16px;
+        background: #f3f4f6;
+      }
+      [role='tablist'] {
+        padding: 12px;
+        border: 1px solid #64748b;
+      }
+      [role='tab'] {
+        display: inline-block;
+        padding: 4px 12px;
+        color: #111827;
+      }
+      [role='tabpanel'] {
+        height: 80px;
+      }
+      #review {
+        height: 240px;
+      }
+      [role='tablist'][data-view='option7']::after {
+        content: '';
+        display: block;
+        height: 40px;
+      }
+    </style>
+  </head>
+  <body>
+    <main>
+      <h1>Independent tab panels</h1>
+      <div class="card">
+        <div role="tablist" aria-label="Options" data-view="option7">
+          <a
+            role="tab"
+            href="#option1"
+            aria-controls="panel-option1"
+            aria-selected="false"
+            data-view="option1"
+            >Option 1</a
+          >
+          <a
+            role="tab"
+            href="#option2"
+            aria-controls="panel-option2"
+            aria-selected="false"
+            data-view="option2"
+            >Option 2</a
+          >
+          <a
+            role="tab"
+            href="#option3"
+            aria-controls="panel-option3"
+            aria-selected="false"
+            data-view="option3"
+            >Option 3</a
+          >
+          <a
+            role="tab"
+            href="#option4"
+            aria-controls="panel-option4"
+            aria-selected="false"
+            data-view="option4"
+            >Option 4</a
+          >
+          <a
+            role="tab"
+            href="#option5"
+            aria-controls="panel-option5"
+            aria-selected="false"
+            data-view="option5"
+            >Option 5</a
+          >
+          <a
+            role="tab"
+            href="#option6"
+            aria-controls="panel-option6"
+            aria-selected="false"
+            data-view="option6"
+            >Option 6</a
+          >
+          <a
+            role="tab"
+            href="#option7"
+            aria-controls="panel-option7"
+            aria-selected="true"
+            data-view="option7"
+            >Option 7</a
+          >
+        </div>
+        <section role="tabpanel" id="panel-option1" hidden>Panel 1</section>
+        <section role="tabpanel" id="panel-option2" hidden>Panel 2</section>
+        <section role="tabpanel" id="panel-option3" hidden>Panel 3</section>
+        <section role="tabpanel" id="panel-option4" hidden>Panel 4</section>
+        <section role="tabpanel" id="panel-option5" hidden>Panel 5</section>
+        <section role="tabpanel" id="panel-option6" hidden>Panel 6</section>
+        <section role="tabpanel" id="panel-option7">Panel 7</section>
+      </div>
+    </main>
+    <script>
+      ;(() => {
+        for (const list of document.querySelectorAll('[role="tablist"]')) {
+          for (const tab of list.querySelectorAll('[role="tab"]')) {
+            if (tab.closest('[role="tablist"]') !== list) continue
+            tab.addEventListener('click', (event) => {
+              event.preventDefault()
+              list.dataset.clicks = String(
+                Number(list.dataset.clicks || '0') + 1,
+              )
+              list.dataset.view = tab.dataset.view
+              for (const other of list.querySelectorAll('[role="tab"]')) {
+                if (other.closest('[role="tablist"]') !== list) continue
+                other.setAttribute('aria-selected', String(other === tab))
+                const panel = document.getElementById(
+                  other.getAttribute('aria-controls'),
+                )
+                if (panel) panel.hidden = other !== tab
+              }
+            })
+          }
+        }
+      })()
+    </script>
+  </body>
+</html>

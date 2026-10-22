@@ -942,6 +942,22 @@ Closed work from `TODO.md`, grouped by year and month.
 
 ### 2026-10
 
+- [x] 2026-10-22 — **ui-quality:** Detect interaction-driven height changes in
+      semantic tab lists.
+  - Result: Tab lists share the existing four-group/six-sample budget, measure
+    their own bar, preserve the original selection beyond the sample, skip
+    ambiguous states and retain earlier findings if another list disappears.
+    Variable panel heights remain clean.
+  - Evidence: Meaningful growing-bar and finding-retention regressions fail
+    before their respective corrections. Nine focused cases pass; original UI
+    lint, type-check, build and test --maxWorkers=2 pass, with 538 tests across
+    133 files and 97.02% statements/92.31% branches/95.76% functions/98.32%
+    lines. Scoped Prettier and both root dependency graphs pass. Verification
+    commands: from packages/ui-quality, pnpm run lint, pnpm run type-check, pnpm
+    run build and pnpm run test --maxWorkers=2; from the root, pnpm run
+    deps:graph and pnpm run deps:graph:aliased. Full guarded acceptance exits
+    zero with source, lock, installed state and tools parity.
+
 - [x] 2026-10-22 — **JavaScript dependency security:** Qualify JS and MJS
       unused-variable controls through all eight actual template configurations.
   - Result: All 16 controls select the shared wrapper with backend/parser 8.71.2

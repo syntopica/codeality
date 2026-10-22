@@ -1,6 +1,7 @@
 import type { Page } from 'playwright'
 
 import { interactionShiftFailureOf } from '@/behaviour/interactionShiftFailureOf.js'
+import { checkTabInteractionShift } from '@/capture/checkTabInteractionShift.js'
 import { CLICK_TIMEOUT_MS } from '@/capture/CLICK_TIMEOUT_MS.js'
 import { frameHeightOf } from '@/capture/frameHeightOf.js'
 import { heightsAcrossOptions } from '@/capture/heightsAcrossOptions.js'
@@ -44,5 +45,8 @@ export const checkInteractionShift = async (
     const failure = interactionShiftFailureOf(subject, heights)
     if (failure) failures.push(failure)
   }
+  failures.push(
+    ...(await checkTabInteractionShift(page, main, MAX_TOGGLE_GROUPS - count)),
+  )
   return failures
 }
