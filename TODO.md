@@ -106,11 +106,16 @@ plus the release:
   Source review on 2026-10-22 finds the current link-only server header is not
   exercised by sortTargetOf, which only admits buttons or aria-sort headers;
   missing findings therefore do not verify a fix. The generic waiter can accept
-  two stable reads of an intermediate changed state and predates this report. No
-  executed race reproduction exists yet. Next: add a controlled deferred-phase
-  regression and a local server-link fixture with explicit commit barriers and
-  broken-sort controls. Preserve the bounded deadline; do not increase sleeps or
-  blindly click links.
+  two stable reads of an intermediate changed state and predates this report.
+  Controlled pure tests now reproduce both false rejection and false acceptance:
+  two intended red contracts, seven passing controls. A separate loopback HTTP
+  Link/history fixture reproduces both races with explicit response/commit
+  barriers: two intended red contracts, three passing controls/observations.
+  Source and dependency parity hold; no real-screen reproduction is claimed.
+  Next: define an observable completion fence for the owning interaction and
+  review how unverifiable completion is represented. The same waiter serves
+  search and pagination; preserve their semantics and the bounded deadline. Do
+  not increase sleeps, poll until ordered or blindly click links.
 - [ ] **Identify the primary sort value in multiline count/year cells.** The
       tied-count sample `1\n2026`, `1\n2024`, `2\n2025` still reads as unordered
       before and after the digit-concatenation correction. Raw `innerText` does
