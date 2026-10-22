@@ -49,7 +49,11 @@
     "./jscpd": "./jscpd.json",
     "./commitlint": "./src/commitlint.ts",
     "./oxlint": "./oxlintrc.json",
-    "./pnpm-command": "./bin/pnpmCommand.mjs"
+    "./pnpm-command": "./bin/pnpmCommand.mjs",
+    "./cruise-tsconfig": {
+      "types": "./bin/withCruiseTsconfig.d.mts",
+      "default": "./bin/withCruiseTsconfig.mjs"
+    }
   },
   "scripts": {
     "fix": "pnpm run lint:fix",

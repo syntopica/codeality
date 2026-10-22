@@ -942,6 +942,25 @@ Closed work from `TODO.md`, grouped by year and month.
 
 ### 2026-10
 
+- [x] 2026-10-22 — **JavaScript dependency security:** Validate complete audit
+      reports and explicit own exceptions; preserve compiler alias origins.
+  - Result: Validate subprocess results and complete consistent audit reports
+    before applying the unchanged dated advisory policy. Reject inherited
+    exception properties while preserving explicit own entries and numeric
+    fallback. No threshold, waiver or expiry changed. Compiler-owned alias
+    origins, workspace discovery, temporary-file ownership and the typed
+    standalone cruise helper are also verified; package publication remains
+    separate.
+  - Evidence: Original quality-config lint and native type checks passed; pnpm
+    run test --maxWorkers=2 passed all 106 tests across 20 files. Exact packed
+    tarball passed license, strict publint and type analysis, strict external
+    consumer and shipped runtime checks. Packaged synthetic audit cases returned
+    error=2, inherited-exception=1 and valid-empty=0. Actual pnpm run deps:graph
+    and pnpm run deps:graph:aliased both exited 0; the former retained 127
+    dev-dependency warnings, and the latter found no orphans across six
+    workspaces. Source, dependency identities and temporary-file cleanup were
+    verified.
+
 - [x] 2026-10-22 — **JavaScript dependency security:** Replace vulnerable
       esbuild through tsup 9.0.0 in the four package builders.
   - Result: Raised the four builder floors and adopted the verified lock and

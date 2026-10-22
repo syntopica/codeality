@@ -27,7 +27,7 @@
     "check:all": "pnpm type-check && pnpm lint && pnpm format:check && pnpm dupes",
     "check:ci": "pnpm lint:fast && pnpm type-check && pnpm lint && pnpm format:check && pnpm test && pnpm dupes && pnpm knip",
     "perf:check": "baseline-env-init && pnpm build && lhci autorun --config=.lighthouserc.json && pnpm size",
-    "deps:graph": "depcruise app",
+    "deps:graph": "baseline-deps-graph --cwd-only app",
     "type-coverage": "baseline-type-coverage",
     "secrets:check": "gitleaks detect --no-banner --redact",
     "audit:check": "baseline-audit --level moderate",

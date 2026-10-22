@@ -97,3 +97,28 @@ not resolution bugs:
   `attw`'s sandbox only contains this package's own tarball, so it cannot see
   peers a real consumer installs, and flags those imports as unresolved. This is
   the intended shape of an optional peer, not a broken `exports` entry.
+
+## Canonical dependency-cruiser TypeScript configuration
+
+`@syntopica/quality-config/cruise-tsconfig` exports
+`withCruiseTsconfig(configPath, operation, { requirePaths = false })`. It
+synchronously invokes `operation` with an absolute tsconfig filename and returns
+the operation's result. Promise-like results are rejected. The original
+configuration and default input location are unchanged, and an exclusively
+created temporary file beside the original configuration is removed even if the
+operation fails.
+
+The existing required TypeScript peer reads JSONC and inherited configuration.
+Alias targets become absolute using the effective baseUrl, or the compiler's
+declaring-config origin when baseUrl is absent. The effective baseUrl is
+preserved. The latter origin uses checked internal `pathsBasePath` metadata:
+compiler versions without an absolute origin fail explicitly, with no CWD
+fallback. This does not establish compatibility with every version admitted by
+the existing peer range. No-paths configurations use their original filename
+unless `requirePaths` is true.
+
+`baseline-deps-graph --cwd-only app` selects only the invoking project's app
+directory. Without `--cwd-only`, existing recursive workspace discovery is
+preserved for both explicit and default source arguments. In cwd-only mode,
+every explicit source must exist or the command fails. Generated projects use
+the published runtime and never import the monorepo root runner.

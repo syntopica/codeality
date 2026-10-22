@@ -1,0 +1,32 @@
+{
+  "advisories": {
+    "100": {
+      "id": 100,
+      "github_advisory_id": "GHSA-audit-fixture",
+      "title": "Synthetic advisory",
+      "module_name": "fixture-package",
+      "vulnerable_versions": "<2.0.0",
+      "patched_versions": ">=2.0.0",
+      "severity": "moderate",
+      "url": "https://example.invalid/advisory",
+      "findings": [
+        {
+          "paths": ["fixture>fixture-package"]
+        }
+      ]
+    }
+  },
+  "metadata": {
+    "vulnerabilities": {
+      "info": 0,
+      "low": 0,
+      "moderate": 1,
+      "high": 0,
+      "critical": 0
+    },
+    "dependencies": 1,
+    "devDependencies": 0,
+    "optionalDependencies": 0,
+    "totalDependencies": 1
+  }
+}

@@ -22,105 +22,52 @@
 // Usage:
 //   node scripts/deps-graph-aliased.mjs
 
-import { spawnSync } from 'node:child_process'
-import { readFileSync, rmSync, writeFileSync } from 'node:fs'
-import { dirname, relative, resolve } from 'node:path'
+import { dirname, resolve } from 'node:path'
 import { exit } from 'node:process'
 import { fileURLToPath } from 'node:url'
 
+import { withCruiseTsconfig } from '@syntopica/quality-config/cruise-tsconfig'
+import { spawnCruise } from '../packages/quality-config/bin/spawnCruise.mjs'
+
 import { ALIASED_WORKSPACES } from './aliasedWorkspaces.mjs'
 
-const __dirname = dirname(fileURLToPath(import.meta.url))
-const REPO_ROOT = resolve(__dirname, '..')
-const CONFIG = resolve(REPO_ROOT, '.dependency-cruiser.workspace.cjs')
-// Resolved from the repo root rather than left to PATH, so no shell is needed
-// to find it and the arguments are never concatenated into a command string.
-const DEPCRUISE = resolve(REPO_ROOT, 'node_modules/.bin/depcruise')
+export function runAliasedDependencyGraphs() {
+  const __dirname = dirname(fileURLToPath(import.meta.url))
+  const REPO_ROOT = resolve(__dirname, '..')
+  const CONFIG = resolve(REPO_ROOT, '.dependency-cruiser.workspace.cjs')
+  // Resolved from the repo root rather than left to PATH, so no shell is needed
+  // to find it and the arguments are never concatenated into a command string.
+  const DEPCRUISE = resolve(REPO_ROOT, 'node_modules/.bin/depcruise')
 
-// Walks the `extends` chain until it finds the config that declares `paths`,
-// and returns it alongside its own directory - the base every relative entry in
-// it is written against. Only relative `extends` are followed: a bare specifier
-// points at a shared preset, which never declares project-local aliases.
-function findPathsDeclaration(configPath) {
-  // Repo tooling reading this repo's own configs, not untrusted input.
-  // eslint-disable-next-line security/detect-non-literal-fs-filename
-  const config = JSON.parse(readFileSync(configPath, 'utf8'))
-  const paths = config.compilerOptions?.paths
-  if (paths) return { paths, base: dirname(configPath) }
-  const parent = config.extends
-  if (typeof parent !== 'string' || !parent.startsWith('.')) return null
-  return findPathsDeclaration(resolve(dirname(configPath), parent))
-}
+  const failed = []
 
-// Rewrites every `paths` target so it is relative to the workspace root, which
-// is where dependency-cruiser will resolve them from.
-function rebasePaths(declaration, root) {
-  const rebased = {}
-  for (const [pattern, targets] of Object.entries(declaration.paths)) {
-    rebased[pattern] = targets.map((target) => {
-      if (typeof target !== 'string') return target
-      const absolute = resolve(declaration.base, target)
-      const fromRoot = relative(root, absolute)
-      return fromRoot.startsWith('.') ? fromRoot : `./${fromRoot}`
-    })
-  }
-  return rebased
-}
-
-const failed = []
-
-for (const { workspace, sources } of ALIASED_WORKSPACES) {
-  const root = resolve(REPO_ROOT, workspace)
-  const declaration = findPathsDeclaration(resolve(root, 'tsconfig.json'))
-  if (!declaration) {
-    console.error(
-      `deps:graph:aliased: no tsconfig "paths" reachable from ${workspace}/tsconfig.json. ` +
-        'Either the alias was removed - drop this workspace from ' +
-        'scripts/aliasedWorkspaces.mjs, which also stops the repo-wide run excluding ' +
-        'it, so that run checks it again - or the config moved and this lookup needs ' +
-        'updating.',
-    )
-    failed.push(workspace)
-    continue
+  for (const { workspace, sources } of ALIASED_WORKSPACES) {
+    const root = resolve(REPO_ROOT, workspace)
+    console.log(`deps:graph:aliased: cruising ${workspace}`)
+    try {
+      const result = withCruiseTsconfig(
+        resolve(root, 'tsconfig.json'),
+        spawnCruise.bind(
+          null,
+          DEPCRUISE,
+          [...sources, '--config', CONFIG],
+          root,
+        ),
+        { requirePaths: true },
+      )
+      if (result.status !== 0) failed.push(workspace)
+    } catch (error) {
+      console.error(`deps:graph:aliased: ${workspace}: ${String(error)}`)
+      failed.push(workspace)
+    }
   }
 
-  // Dot-prefixed so the orphan rule's own dotfile exemption covers it if a
-  // crash ever leaves one behind; also gitignored for the same reason.
-  const generated = resolve(root, '.baseline-depcruise.tsconfig.json')
-  console.log(
-    `deps:graph:aliased: cruising ${workspace} (${Object.keys(declaration.paths).join(', ')})`,
-  )
-  // Repo tooling writing into this repo's own workspaces, not untrusted input.
-  /* eslint-disable security/detect-non-literal-fs-filename */
-  writeFileSync(
-    generated,
-    JSON.stringify({
-      extends: `./${relative(root, resolve(root, 'tsconfig.json'))}`,
-      compilerOptions: { paths: rebasePaths(declaration, root) },
-    }),
-  )
-  try {
-    const result = spawnSync(
-      DEPCRUISE,
-      [
-        ...sources,
-        '--config',
-        CONFIG,
-        '--ts-config',
-        '.baseline-depcruise.tsconfig.json',
-      ],
-      { cwd: root, stdio: 'inherit' },
-    )
-    if (result.status !== 0) failed.push(workspace)
-  } finally {
-    rmSync(generated, { force: true })
+  if (failed.length) {
+    console.error(`deps:graph:aliased: failed for ${failed.join(', ')}`)
+    exit(1)
   }
-  /* eslint-enable security/detect-non-literal-fs-filename */
+
+  console.log('deps:graph:aliased: no orphans found.')
 }
 
-if (failed.length) {
-  console.error(`deps:graph:aliased: failed for ${failed.join(', ')}`)
-  exit(1)
-}
-
-console.log('deps:graph:aliased: no orphans found.')
+runAliasedDependencyGraphs()

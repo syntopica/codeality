@@ -37,31 +37,32 @@ verified complete - `[-]` obsolete or superseded.
   run. Remaining: turbo still runs up to ten package tasks at once inside one
   admitted run; decide whether the wrapped gate also takes `--concurrency=2`.
 
-- [ ] **Adopt the released typescript-eslint 8.71.2 fix and remove its temporary
-      overrides.** The 8.71.1 Espree regression (issue 12980) caused JavaScript
-      variables to be reported as type-only, so two overrides retained the
-      umbrella and plugin at 8.71.0. Rechecked 2026-10-22: both 8.71.2 packages
-      were published on 2026-10-12; the official release includes PR 12989 and
-      its tagged source tests `ref.isValueReference === false`. The upstream
-      release blocker is resolved, but adoption is not complete. The historical
-      72-hour age hold was incorrect: the unchanged repository policy is 1440
-      minutes (24 hours). The recorded 8.72.0 publication on 2026-10-19 around
-      17:10 UTC also exceeds that policy on 2026-10-22; release age is no longer
-      its blocker. Smallest next step: remove the two temporary overrides,
-      update relevant consumer minimums and adopt the mature 8.71.2 family
-      without moving unrelated dependencies; verify the Espree JavaScript
-      regression and required quality gates before publishing. Do not change
-      dependencies while the current source gates are frozen.
+- [ ] **Correct the 127 development-dependency graph diagnostics.** On
+      2026-10-22, original `pnpm run deps:graph` exited 0 with 3,693 modules,
+      5,394 dependencies, zero errors and 127 `no-dev-dep-in-production-code`
+      warnings. No warning originates from the 43-file audit/alias change; an
+      unchanged-source baseline count was not rerun. Smallest next step:
+      distinguish real runtime dependency declaration defects from type-only or
+      peer-dependency classification, then correct the owning declarations or
+      checker without suppressing diagnostics or changing severity.
+
+- [~] **Adopt the released typescript-eslint 8.71.2 fix and remove its temporary
+  overrides.** The isolated candidate removes the two temporary 8.71.0
+  overrides, updates thirteen floors and adds the shared config's explicit
+  runtime plugin dependency. All twelve new artifacts match official integrity
+  and satisfy the unchanged 1440-minute policy. The actual ESM wrapper
+  regression passes for JS and MJS with Espree 11.2.0, and all 25 affected
+  original build, lint, type and coverage stages pass. The first incomplete
+  scratch closure and generated-output classification failures remain recorded.
+  The unchanged audit policy also passes: the raw report retains the ten
+  original IDs, eight active exceptions and two below threshold. No actual
+  dependency adoption occurred. Eight template wrapper declarations and seven
+  older family nodes remain outside the narrow shared-wrapper path; no global
+  family migration is claimed. Smallest next step: compose the qualified floors
+  and override removal with the already adopted tsup 9 graph and qualified Nuxt
+  correction, then verify the combined lock before actual adoption.
 
 ## JavaScript dependency security
-
-- [~] **Reject error-shaped audit reports before evaluating exceptions.** On
-  2026-10-22 a network-free synthetic manager emitted a JSON error and exited 1;
-  the current `baseline-audit --level moderate` incorrectly exited 0 with zero
-  advisories. The reproduced source SHA starts `74e90eb26a14`. Smallest next
-  step: validate process/report structure before policy evaluation and add
-  synthetic error, malformed-report and valid-policy regressions. Preserve
-  existing thresholds and dated exceptions; do not add waivers.
 
 - [~] **Remediate the Nuxt template's critical simple-git dependency chain.** A
   fresh pnpm 12.9.1 `audit --json` on unchanged main 5c9ae09 returned exit 1
@@ -87,16 +88,32 @@ verified complete - `[-]` obsolete or superseded.
   selected workspaces plus the manager's existing root dependencies; all 30 root
   links match the frozen importer. Original build, types, both lints, format and
   tests passed (3 tests; 100% coverage, unchanged 80% thresholds). The next
-  original duplication gate failed at 5.90% versus 1%, counting generated .nuxt
-  output in the Git-less source archive. Exact jscpd 5.4.1 source requires Git
-  ancestry for .gitignore discovery; a controlled fixture is pending, not a
-  source ignore or threshold change. Knip and quality were not run. Smallest
-  next step: establish the exact Git-context cause and finish the remaining
-  original gates before adoption. Six raw findings remain; evaluate the
-  unchanged dated-exception policy separately. References:
+  original duplication gate initially failed at 5.90% versus 1% because the
+  Git-less archive lacked ignore discovery. An exact jscpd fixture proved the
+  cause; the original gate passed with owned Git context and unchanged ignores.
+  Original Knip passed with the source-proven CI setting. Compiler-owned alias
+  origins were corrected in shared tooling, preserving genuine orphan detection
+  and temporary-file ownership. All nine original Nuxt functional scripts have
+  successful retained records across qualified stages, including graph zero and
+  type coverage 75/75 against the unchanged 99% minimum; this was not one
+  all-green run. Combined shared tooling passes lint, native types, 106 tests
+  and exact tarball/strict external consumer checks. Both actual root graph
+  gates pass; the general graph retains 127 dev-dependency warnings recorded
+  separately. Preview/devtools smoke is still unqualified; earlier setup and
+  lifecycle failures are retained. Smallest next step: finish direct pinned Nuxt
+  CLI smoke and compose the dependency floor with the current tsup and
+  typescript-eslint graphs before actual adoption. Six raw findings remain;
+  evaluate the unchanged dated policy separately. References:
   https://github.com/advisories/GHSA-x6jw-m9v5-85vh and
   https://github.com/advisories/GHSA-v5rq-49vh-5v5c. No actual dependency
   changed.
+
+- [!] **Publish the verified quality-config audit and alias corrections.**
+  Source, 106 tests, both actual root graph gates and the exact packed consumer
+  boundary are verified. No npm release or registry consumer adoption has
+  occurred. Smallest unblock action: owner approval for the versioned release
+  and publication workflow; then verify installed registry consumers. Do not
+  treat the source commit or tarball pack as publication.
 
 - [!] **Upstream patches are unavailable for two high-severity audit findings.**
   Official advisories still list no patched release for node-forge through 1.4.0
