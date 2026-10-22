@@ -55,6 +55,14 @@ verified complete - `[-]` obsolete or superseded.
 
 ## JavaScript dependency security
 
+- [~] **Reject error-shaped audit reports before evaluating exceptions.** On
+  2026-10-22 a network-free synthetic manager emitted a JSON error and exited 1;
+  the current `baseline-audit --level moderate` incorrectly exited 0 with zero
+  advisories. The reproduced source SHA starts `74e90eb26a14`. Smallest next
+  step: validate process/report structure before policy evaluation and add
+  synthetic error, malformed-report and valid-policy regressions. Preserve
+  existing thresholds and dated exceptions; do not add waivers.
+
 - [~] **Remediate the Nuxt template's critical simple-git dependency chain.** A
   fresh pnpm 12.9.1 `audit --json` on unchanged main 5c9ae09 returned exit 1
   with 10 advisories: two critical, four high, two moderate and two low. Both
@@ -84,7 +92,8 @@ verified complete - `[-]` obsolete or superseded.
   ancestry for .gitignore discovery; a controlled fixture is pending, not a
   source ignore or threshold change. Knip and quality were not run. Smallest
   next step: establish the exact Git-context cause and finish the remaining
-  original gates before adoption. Six findings remain unsuppressed. References:
+  original gates before adoption. Six raw findings remain; evaluate the
+  unchanged dated-exception policy separately. References:
   https://github.com/advisories/GHSA-x6jw-m9v5-85vh and
   https://github.com/advisories/GHSA-v5rq-49vh-5v5c. No actual dependency
   changed.
@@ -110,10 +119,15 @@ verified complete - `[-]` obsolete or superseded.
   packed CLI captured two loopback fixtures and read its shipped probe. Its
   original outer harness failed the final lexical macOS path-alias assertion; an
   offline canonical-path check qualified the retained outputs without repeating
-  the browser. Existing failures and cleanup proofs remain retained. Next:
-  resolve the nine unsuppressed audit findings before adopting this qualified
-  candidate. No actual dependency changed; do not merge this lock with the Nuxt
-  candidate without a separately verified combined graph.
+  the browser. Existing failures and cleanup proofs remain retained. The fresh
+  required `baseline-audit --level moderate` gate passed with the unchanged
+  policy. An independently validated complete `pnpm audit --json` report still
+  contains nine advisories: one below threshold, eight covered by existing
+  active exceptions, zero expired and zero unwaived. Raw audit exit 1 does not
+  itself fail this existing policy gate; this is not vulnerability-free. Next:
+  review scoped adoption and verify the actual published boundary. No actual
+  dependency changed; do not merge this lock with the Nuxt candidate without a
+  separately verified combined graph.
 
 - [!] **Upstream patches are unavailable for two high-severity audit findings.**
   Official advisories still list no patched release for node-forge through 1.4.0
