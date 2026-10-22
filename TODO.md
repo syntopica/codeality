@@ -140,13 +140,15 @@ plus the release:
   review how unverifiable completion is represented. The same waiter serves
   search and pagination; preserve their semantics and the bounded deadline. Do
   not increase sleeps, poll until ordered or blindly click links.
-- [ ] **Identify the primary sort value in multiline count/year cells.** The
-      tied-count sample `1\n2026`, `1\n2024`, `2\n2025` still reads as unordered
-      before and after the digit-concatenation correction. Raw `innerText` does
-      not identify which line owns the sort; choosing every first line would
-      discard legitimate displayed values. Smallest next step: capture the
-      actual cell structure or explicit sort metadata and add a DOM-backed
-      fixture for ties, retaining wrapped currency support.
+- [~] **Identify the primary sort value in multiline count/year cells.** The
+  matching current consumer accessor sorts by the count of years; the exact
+  historical tied triple still has unknown provenance. The engine now accepts
+  one explicitly marked, rendered numeric primary descendant and preserves
+  legacy parsing when the declaration is invalid, hidden or ambiguous. Full
+  build/test passes 531 tests, including count ties, wrapped currency and
+  zero-area fallback. Next: review and adopt accessor-derived metadata in the
+  owning consumer, then verify the original affected screen. The consumer patch
+  remains unapplied; no package release or deployment occurred.
 - [~] **`touch-target` overlap with a sticky header.** Rows scrolled under a
   sticky `<thead>` in the phone capture are reported as overlapping its sort
   buttons; only the visible, unobscured part is a tap target. The browser probe

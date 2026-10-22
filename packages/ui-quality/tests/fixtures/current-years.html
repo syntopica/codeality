@@ -1,0 +1,124 @@
+<!doctype html>
+<html lang="en">
+  <meta charset="utf-8" /><title>
+    Current count and secondary years contract fixture
+  </title>
+  <style>
+    .block {
+      display: block;
+    }
+    .text-xs {
+      font-size: 12px;
+    }
+    .whitespace-nowrap {
+      white-space: nowrap;
+    }
+    td {
+      padding: 12px;
+    }
+  </style>
+  <main>
+    <h1>Count accessor contract</h1>
+    <table id="years">
+      <thead>
+        <tr>
+          <th aria-sort="none"><button id="sort">Years</button></th>
+        </tr>
+      </thead>
+      <tbody></tbody>
+    </table>
+    <button id="ties">Permute equal counts</button
+    ><button id="wrong">Wrong count order</button
+    ><button id="unmarked">Remove opt-in</button>
+    <table id="currency">
+      <tbody>
+        <tr>
+          <td><span>-2</span><span class="block">€</span></td>
+        </tr>
+        <tr>
+          <td><span>0</span><span class="block">€</span></td>
+        </tr>
+        <tr>
+          <td><span>1 234,50</span><span class="block">€</span></td>
+        </tr>
+      </tbody>
+    </table>
+    <table id="zero">
+      <tbody>
+        <tr>
+          <td>
+            <span
+              data-codeality-sort-type="number"
+              data-codeality-sort-value="0"
+              >0 años</span
+            ><span class="block"></span>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+    <table id="usd">
+      <tbody>
+        <tr>
+          <td><span>USD</span><span class="block">1 234,50</span></td>
+        </tr>
+      </tbody>
+    </table>
+  </main>
+  <script type="module">
+    const rows = [
+      { id: 'a', years: [2026] },
+      { id: 'b', years: [2024] },
+      { id: 'c', years: [2025, 2023] },
+    ]
+    let shown = [...rows]
+    let descending = false
+    let marked = true
+    function render() {
+      document.querySelector('#years tbody').replaceChildren(
+        ...shown.map((row) => {
+          const tr = document.createElement('tr')
+          tr.dataset.fixtureId = row.id
+          const td = document.createElement('td')
+          const primary = document.createElement('span')
+          primary.className = 'font-medium whitespace-nowrap text-gray-900'
+          primary.textContent = `${row.years.length} ${row.years.length === 1 ? 'año' : 'años'}`
+          if (marked) {
+            primary.dataset.codealitySortType = 'number'
+            primary.dataset.codealitySortValue = String(row.years.length)
+          }
+          const secondary = document.createElement('span')
+          secondary.className = 'block text-xs text-gray-500'
+          secondary.textContent = row.years.join(' · ')
+          td.append(primary, secondary)
+          tr.append(td)
+          return tr
+        }),
+      )
+    }
+    document.querySelector('#sort').onclick = () => {
+      descending = !descending
+      shown.sort(
+        (a, b) => (a.years.length - b.years.length) * (descending ? -1 : 1),
+      )
+      document
+        .querySelector('th')
+        .setAttribute('aria-sort', descending ? 'descending' : 'ascending')
+      render()
+    }
+    document.querySelector('#ties').onclick = () => {
+      const a = shown.indexOf(rows[0])
+      const b = shown.indexOf(rows[1])
+      ;[shown[a], shown[b]] = [shown[b], shown[a]]
+      render()
+    }
+    document.querySelector('#wrong').onclick = () => {
+      shown = [rows[0], rows[2], rows[1]]
+      render()
+    }
+    document.querySelector('#unmarked').onclick = () => {
+      marked = false
+      render()
+    }
+    render()
+  </script>
+</html>

@@ -237,6 +237,39 @@ button or declares `aria-sort`; the pager is a button or link named
 `rel="next"`/`rel="prev"`. Sorting and paging may persist in the app, as they
 would for a person.
 
+### Explicit numeric sort keys
+
+A cell can opt in to a numeric primary sort key by marking exactly one rendered
+descendant. Set both `data-codeality-sort-type="number"` and
+`data-codeality-sort-value` on that primary value:
+
+```html
+<td>
+  <span data-codeality-sort-type="number" data-codeality-sort-value="2"
+    >2 years</span
+  >
+  <span style="display: block">2025 · 2023</span>
+</td>
+```
+
+Derive the value from the actual sorting accessor: if the column sorts by
+`row.years.length`, emit `String(row.years.length)`. Equal counts remain ties
+regardless of the secondary years. The attribute is a trusted declaration of the
+visible primary value; Codeality cannot prove that an arbitrary declaration
+matches the application's sorting semantics.
+
+Values must be finite plain decimals, with an optional minus sign and dot
+fraction. Grouping, surrounding whitespace, exponent notation, leading plus
+signs, non-finite values and unsupported types are rejected. Numeric zero is
+valid. Missing, invalid, hidden, unsupported-visibility or duplicate
+declarations retain the existing leading-`time[datetime]`/full-text fallback;
+even a hidden second declaration makes the cell ambiguous. Unmarked cells,
+including wrapped currency and USD amounts, keep their existing parsing.
+
+The marker must be a descendant, not the `td` itself. It needs a layout box and
+CSS visibility/opacity; this does not establish viewport exposure or absence of
+occlusion. Mark only a primary value that the person can read.
+
 A main region with no table is paged through its largest repeated collection:
 the visible siblings of one tag that each hold a heading or a worded link, such
 as the cards of a grid, outside navigation. Each item is known by its first

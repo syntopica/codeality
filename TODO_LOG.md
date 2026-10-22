@@ -942,6 +942,21 @@ Closed work from `TODO.md`, grouped by year and month.
 
 ### 2026-10
 
+- [x] 2026-10-22 — **ui-quality:** Support explicit numeric primary sort keys.
+  - Result: Read declarations and legacy text atomically; accept one rendered
+    finite decimal declaration and preserve existing parsing for every rejected
+    or absent declaration. Count ties keep their meaning without choosing a
+    first line heuristically. Consumer adoption stays a separate partial task.
+  - Evidence: Original `pnpm run build` and `pnpm run test` passed 531 tests in
+    130 files on the combined sticky and numeric candidate. Coverage was 97.01%
+    statements, 92.35% branches, 95.70% functions and 98.30% lines against
+    unchanged thresholds. Full native TypeScript and ESLint passed after
+    correcting a fixture parameter-count violation; the failed first static run
+    is retained. Pure and real DOM zero-area controls pass. Final actual bytes,
+    modes and deletion match the 26-path frozen manifest; README permission
+    normalization changed no tested bytes. No consumer adoption, release or
+    deployment occurred.
+
 - [x] 2026-10-22 — **ui-quality:** Implement conservative sticky-header tap
       occlusion with imported browser helpers.
   - Result: Subtract confirmed header coverage into exposed target fragments,

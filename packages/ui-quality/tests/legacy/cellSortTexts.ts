@@ -1,4 +1,4 @@
-import type { SortCell } from '@/capture/SortCell.js'
+import type { SortCell } from './SortCell.js'
 
 /**
  * Reads each cell for ordering: the `datetime` of a `<time>` the cell opens

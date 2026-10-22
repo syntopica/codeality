@@ -1,8 +1,8 @@
 import type { Locator } from 'playwright'
 
 import type { SortKey } from '@/behaviour/SortKey.js'
-import { sortKeyOf } from '@/behaviour/sortKeyOf.js'
-import { cellSortTexts } from '@/capture/cellSortTexts.js'
+import { cellSortReadings } from '@/capture/cellSortReadings.js'
+import { sortKeyFromReading } from '@/capture/sortKeyFromReading.js'
 
 /**
  * The sort keys of one column, read from its cells in row order. A date
@@ -15,5 +15,5 @@ export const columnKeys = async (
   (
     await table
       .locator(`tbody tr > :nth-child(${String(index + 1)})`)
-      .evaluateAll(cellSortTexts)
-  ).map(sortKeyOf)
+      .evaluateAll(cellSortReadings)
+  ).map(sortKeyFromReading)

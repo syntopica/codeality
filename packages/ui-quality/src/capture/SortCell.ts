@@ -1,8 +1,11 @@
-/** The part of a table cell, as the page sees it, that ordering reads. */
+import type { SortDeclarationNode } from '@/capture/SortDeclarationNode.js'
+
+/** Cell capabilities used by the atomic browser-side evidence reader. */
 export type SortCell = {
-  innerText: string
+  innerText?: string
   querySelector: (selector: string) => {
-    innerText: string
+    innerText?: string
     getAttribute: (name: string) => string | null
   } | null
+  querySelectorAll: (selector: string) => ArrayLike<SortDeclarationNode>
 }
