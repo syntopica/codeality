@@ -66,11 +66,6 @@ plus the release:
       light) only, every run. Suspect the read lands during the RSC navigation
       after the filter probe's restore. Next step: log the keys
       `orderAfterClick` reads on that page.
-- [ ] **A count over a list of years reads as one grouped number.** A cell
-      showing "1" over "2026" (two block lines) has innerText "1\n2026", which
-      `AMOUNT_TEXT` takes as 12026, so a correct "Años" column was flagged
-      `sort-broken`. Worked around in the consumer ("1 año"); the probe could
-      read block lines separately.
 - [ ] **Identify the primary sort value in multiline count/year cells.** The
       tied-count sample `1\n2026`, `1\n2024`, `2\n2025` still reads as unordered
       before and after the digit-concatenation correction. Raw `innerText` does

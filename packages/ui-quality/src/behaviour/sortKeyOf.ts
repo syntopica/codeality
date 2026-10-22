@@ -1,6 +1,6 @@
+import { amountSortKeyOf } from '@/behaviour/amountSortKeyOf.js'
 import { DAY_MONTH_YEAR } from '@/behaviour/DAY_MONTH_YEAR.js'
 import { EMPTY_CELL } from '@/behaviour/EMPTY_CELL.js'
-import { numberOf } from '@/behaviour/numberOf.js'
 import type { SortKey } from '@/behaviour/SortKey.js'
 
 /** What a person reads a cell as when judging whether a column is sorted. */
@@ -13,5 +13,5 @@ export const sortKeyOf = (cell: string): SortKey => {
   if (/^\d{4}-\d{2}-\d{2}/.test(text))
     return Number(text.slice(0, 10).replaceAll('-', ''))
   if (/^\d{4}-\d{2}$/.test(text)) return Number(`${text.replace('-', '')}00`)
-  return numberOf(text) ?? text
+  return amountSortKeyOf(cell, text)
 }

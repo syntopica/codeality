@@ -942,6 +942,26 @@ Closed work from `TODO.md`, grouped by year and month.
 
 ### 2026-10
 
+- [x] 2026-10-22 — **ui-quality:** **A count over a list of years reads as one
+      grouped number.** A cell showing "1" over "2026" (two block lines) has
+      innerText "1\n2026", which `AMOUNT_TEXT` takes as 12026, so a correct
+      "Años" column was flagged `sort-broken`. Worked around in the consumer ("1
+      año"); the probe could read block lines separately.
+  - Result: Detect separate numeric lines before amount parsing so count/year
+    cells retain normalized textual keys instead of concatenating digits. Single
+    amounts with wrapped units, grouped horizontal whitespace and USD prefixes
+    retain numeric behavior. The separate tied-count primary-sort task remains
+    pending; no npm release or application deployment occurred.
+  - Evidence: From packages/ui-quality: ./node_modules/.bin/vitest run
+    --coverage --maxWorkers=2 passed 489 tests across 121 files. Original
+    coverage thresholds passed: statements 96.84%, branches 92.01%, functions
+    95.44%, lines 98.12%. ./node_modules/.bin/eslint src tests bin
+    --max-warnings 0, node node_modules/@typescript/native/bin/tsc --noEmit -p
+    tsconfig.json and ./node_modules/.bin/tsup all passed. Ten focused behavior
+    cases and independent review passed. Final parity covers 1050 source
+    files/modes, 2264 installed identities, 66 resolver links and four
+    lock/manager files; numberOf is unchanged from HEAD.
+
 - [x] 2026-10-22 — **Conformance:** Diagnose coverage for named CI test scripts.
   - Result: Discover directly qualified Vitest/Jest scripts reached from CI and
     target coverage fixes at their actual names. Keep missing coverage and
