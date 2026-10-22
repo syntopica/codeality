@@ -78,6 +78,20 @@ verified complete - `[-]` obsolete or superseded.
   and https://github.com/advisories/GHSA-v5rq-49vh-5v5c. No actual dependency
   changed.
 
+- [~] **Replace vulnerable esbuild through the four package builders' maintained
+  tsup update.** A separate scratch-only tsup 9.0.0 candidate changes four
+  manifest floors and resolved successfully with the pinned manager. Its 28
+  added and 30 removed package records remain within the tsup closure; retained
+  integrities are unchanged and old esbuild 0.27.7 records are absent. All 28
+  new registry integrities match with no prereleases. Installation is held until
+  Rollup and its 25 platform packages reach 72 hours on 2026-10-23 05:36:56.444
+  UTC. Tsup 9 raises the build-tool Node floor and changes watcher/debug
+  internals; preserve published package runtime floors and the explicit
+  code-policy type emission workaround. Next: compare the separate candidate
+  audit, then admit frozen installation and build/type/CLI/CJS/ESM/watch gates
+  after age checks. No actual dependency changed; do not merge this lock with
+  the Nuxt candidate without a separately verified combined graph.
+
 - [!] **Upstream patches are unavailable for two high-severity audit findings.**
   Official advisories still list no patched release for node-forge through 1.4.0
   (GHSA-86w9-cpqp-85rv, Nuxt/Nitro/listhen path) or braces through 3.0.3
