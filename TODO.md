@@ -16,38 +16,7 @@ verified complete - `[-]` obsolete or superseded.
   `<name>-v{{version}}`, environment `pub.dev`); CLAUDE.md has the steps. Until
   then consumers (stagebeat) pin both by git ref.
 
-## Estate
-
-- [~] **`check:ci` queues behind a host admission wrapper** (2026-10-11).
-  Decided 2026-10-11 (owner via Codex adjudication): one heavy suite per host,
-  two test workers each. Done: `check:ci` runs `check:ci:run` through
-  `heavy-suite` when it is on the PATH, and directly otherwise (CI included);
-  `turbo.json` passes `HEAVY_SUITE_ADMITTED`, `HEAVY_SUITE_WORKERS` and
-  `VITEST_MAX_WORKERS` through strict env mode, so the cap reaches each vitest
-  run. The inner Turbo command now runs package tasks serially with
-  `--concurrency=1` and explicitly sets `VITEST_MAX_WORKERS=2`, including the
-  fallback where heavy-suite is unavailable. Installed Turbo 2.11.7 dry runs
-  preserve all 72 planned task nodes, commands and dependency edges; the native
-  Vitest 5.0.3 configuration resolves two workers without starting tests or a
-  server. No timeout or gate was relaxed. Automatic CI runs 39814991736 and
-  39816197482 failed before this correction in Verify/check:ci; the latter
-  reported a null child status in the real-orphan probe under the former
-  ten-task scheduling. Remaining: verify the next automatic run with the bounded
-  scheduler, retain any failure and fix its concrete cause. Do not manually
-  dispatch or rerun hosted CI.
-
 ## JavaScript dependency security
-
-- [ ] **Qualify the remaining legacy typescript-eslint peer contexts.** The
-      adopted combined graph retains eight template
-      `eslint-plugin-unused-imports` peer contexts selecting plugin 8.71.0 and
-      seven broader 8.71.1 family snapshots. All eight template
-      `typescript-eslint` floors are 8.71.2 and their original lint/type checks
-      pass; the shared JS/MJS wrapper is fixed. Smallest next step: reproduce
-      unused-variable controls through each direct template config, then update
-      only the necessary peer declarations and frozen graph. Preserve declared
-      peer contracts, the 1440-minute policy and complete audit evidence; no
-      global family migration is implied by the shared fix.
 
 - [!] **Publish the verified quality-config audit and alias corrections.**
   Audit/alias source and its exact packed consumer boundary are verified. The

@@ -942,6 +942,29 @@ Closed work from `TODO.md`, grouped by year and month.
 
 ### 2026-10
 
+- [x] 2026-10-22 — **JavaScript dependency security:** Qualify JS and MJS
+      unused-variable controls through all eight actual template configurations.
+  - Result: All 16 controls select the shared wrapper with backend/parser 8.71.2
+    and Espree 11.2.0. Older direct peer contexts remain installed; no further
+    declaration or lock change is necessary for these controls, and no global
+    family migration is claimed.
+  - Evidence: The actual-template runner passes 16 unique template/extension
+    controls. Command: python3 -B verify_saved_proof.py; saved-proof
+    verification exits zero with current source, lock, native tools and
+    installed metadata/links/state parity. The original supervisor exits one
+    because Nuxt regenerated eslint-typegen.d.ts; that generated-output
+    provenance remains unqualified and is not claimed unchanged.
+
+- [x] 2026-10-22 — **Estate:** Bound package-task concurrency and test workers
+      in the CI fallback.
+  - Result: Package tasks execute serially with two Vitest workers; existing
+    host admission and all original checks remain enabled.
+  - Evidence: Automatic CI 39818227865 passes all seven jobs at
+    01bb08a437665600e11b5cdbf5a91c39c9ca67b1; verified with gh run view
+    39818227865 --repo syntopica/codeality --json
+    status,conclusion,headSha,jobs. Installed Turbo dry runs preserve all 72
+    planned task nodes, and Vitest resolveConfig reports maxWorkers=2.
+
 - [-] 2026-10-22 — **Python baseline:** Route cross-project debt to its owning
   backlogs.
   - Resolution: Routed to the existing owning DJCenterDeluxe and djplayerdeluxe
