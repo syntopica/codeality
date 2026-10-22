@@ -98,37 +98,6 @@ verified complete - `[-]` obsolete or superseded.
   https://github.com/advisories/GHSA-v5rq-49vh-5v5c. No actual dependency
   changed.
 
-- [~] **Replace vulnerable esbuild through the four package builders' maintained
-  tsup update.** A separate scratch-only tsup 9.0.0 candidate changes four
-  manifest floors and resolved successfully with the pinned manager. Its 28
-  added and 30 removed package records remain within the tsup closure; retained
-  integrities are unchanged and old esbuild 0.27.7 records are absent. All 28
-  new registry integrities match with no prereleases. All satisfy the unchanged
-  effective 24-hour repository policy; the earlier 72-hour installation hold was
-  incorrect and is superseded. Tsup 9 raises the build-tool Node floor and
-  changes watcher/debug internals; preserve published package runtime floors and
-  the explicit code-policy type emission workaround. The separate metadata audit
-  reduced ten findings to nine, removing only esbuild GHSA-g7r4-m6w7-qqqr
-  without new IDs; both Nuxt critical findings remain in this independent
-  candidate. Initial four-package full gates passed 1,357 tests with three
-  existing PostgreSQL tests skipped because no real database was configured.
-  Four packs, license and strict publint checks, plugin tarball type analysis,
-  eight captured-runtime checks and original three-state watch passed. The final
-  published sticky/numeric UI source was then independently integrated: all
-  seven affected gates pass, including 531 tests across 130 files. The newly
-  packed CLI captured two loopback fixtures and read its shipped probe. Its
-  original outer harness failed the final lexical macOS path-alias assertion; an
-  offline canonical-path check qualified the retained outputs without repeating
-  the browser. Existing failures and cleanup proofs remain retained. The fresh
-  required `baseline-audit --level moderate` gate passed with the unchanged
-  policy. An independently validated complete `pnpm audit --json` report still
-  contains nine advisories: one below threshold, eight covered by existing
-  active exceptions, zero expired and zero unwaived. Raw audit exit 1 does not
-  itself fail this existing policy gate; this is not vulnerability-free. Next:
-  review scoped adoption and verify the actual published boundary. No actual
-  dependency changed; do not merge this lock with the Nuxt candidate without a
-  separately verified combined graph.
-
 - [!] **Upstream patches are unavailable for two high-severity audit findings.**
   Official advisories still list no patched release for node-forge through 1.4.0
   (GHSA-86w9-cpqp-85rv, Nuxt/Nitro/listhen path) or braces through 3.0.3

@@ -942,6 +942,28 @@ Closed work from `TODO.md`, grouped by year and month.
 
 ### 2026-10
 
+- [x] 2026-10-22 — **JavaScript dependency security:** Replace vulnerable
+      esbuild through tsup 9.0.0 in the four package builders.
+  - Result: Raised the four builder floors and adopted the verified lock and
+    workspace installation, preserving previous source and generated outputs
+    recoverably. Failed offline attempts remain documented; a separate frozen
+    online install completed without changing policy, integrity or scripts. No
+    package release or deployment; Nuxt critical findings remain a separate
+    task.
+  - Evidence: Pinned pnpm 12.9.1 frozen installation selected all 19 workspaces
+    and matched the qualified 1,823-node graph, including only active esbuild
+    0.28.2 and three exact native artifacts. Original
+    `pnpm --filter ./packages/ui-quality run build`,
+    `pnpm --filter ./packages/test-quality run build`,
+    `pnpm --filter ./packages/db-quality run build` and
+    `pnpm --filter ./packages/eslint-plugin-code-policy run build` commands each
+    exited 0 on the actual checkout. Source, installed metadata, manager state
+    and the existing fixture remained unchanged during builds. Isolated affected
+    gates passed 1,357 tests with three existing database skips; final UI gates
+    passed 531 tests and package/runtime/watch checks passed. The unchanged
+    `baseline-audit --level moderate` policy passed with nine raw advisories,
+    eight existing active exceptions and one below threshold.
+
 - [x] 2026-10-22 — **Python baseline:** Adopt the fixed certifi bundle in both
       local Python quality environments.
   - Result: Replace only the managed certifi distributions with the verified
