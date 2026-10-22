@@ -943,6 +943,31 @@ Closed work from `TODO.md`, grouped by year and month.
 ### 2026-10
 
 - [x] 2026-10-22 — **JavaScript dependency security:** **Patch the newly indexed
+      ip-address security finding.** Automatic CI 39832505747 at
+      a9952345429c2535266d52da8f78a92a52bf1124 removes both Next.js findings but
+      fails audit:check on moderate GHSA-rxp7-6hxx-x8q5 through the
+      Lighthouse/Puppeteer proxy chain. Official advisory marks versions through
+      10.7.3 affected and 10.7.4 patched. Qualify the smallest supported
+      transitive lock update against parent ranges and the unchanged 1440-minute
+      release-age policy, then verify the full installed graph and original
+      audit/affected-consumer gates. Do not add an exception. Reference:
+      https://github.com/advisories/GHSA-rxp7-6hxx-x8q5.
+  - Result: Updated only the transitive lock selection from ip-address 10.7.3 to
+    10.7.4, within the retained socks parent range. Preserved every importer,
+    override, other artifact and snapshot edge; no new exception or release-age
+    bypass.
+  - Evidence: Official tarball SRI and mature publication metadata match. Exact
+    full-document comparison admits only the package/snapshot replacement and
+    sole socks edge. Full 19-workspace frozen candidate and actual installations
+    match the qualified graph and native identities; original root check:ci:run
+    passes all 58 tasks and 538 UI tests. Candidate and actual pnpm audit --json
+    return five historical findings with the new ip-address and both Next
+    advisories absent; pnpm run audit:check reports zero unwaived and zero
+    expired findings. Actual original root lint, format and both dependency
+    graphs pass. A pinned Node regression through socks passes three valid and
+    four invalid IPv6 samples, including two bounded long malformed zones.
+
+- [x] 2026-10-22 — **JavaScript dependency security:** **Patch the newly indexed
       Next.js security findings.** Automatic CI 39823659562 at
       d73307870e2ca81478027bb4af3eb72161a87c6b fails audit:check with critical
       GHSA-2464-fhr4-w9xw and high GHSA-p3m5-59mp-jv5r through
