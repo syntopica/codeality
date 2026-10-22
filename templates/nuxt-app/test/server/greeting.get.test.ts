@@ -3,7 +3,7 @@ import { expect, it } from 'vitest'
 
 import type { Greeting } from '~~/server/types/Greeting'
 
-import greetingHandler from './greeting.get'
+import greetingHandler from '~~/server/api/greeting.get'
 
 it('returns a schema-valid greeting payload', async () => {
   const handler = greetingHandler as EventHandler<never, Greeting>

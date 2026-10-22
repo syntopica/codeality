@@ -46,67 +46,18 @@ verified complete - `[-]` obsolete or superseded.
       peer-dependency classification, then correct the owning declarations or
       checker without suppressing diagnostics or changing severity.
 
-- [~] **Adopt the released typescript-eslint 8.71.2 fix and remove its temporary
-  overrides.** The isolated candidate removes the two temporary 8.71.0
-  overrides, updates thirteen floors and adds the shared config's explicit
-  runtime plugin dependency. All twelve new artifacts match official integrity
-  and satisfy the unchanged 1440-minute policy. The actual ESM wrapper
-  regression passes for JS and MJS with Espree 11.2.0, and all 25 affected
-  original build, lint, type and coverage stages pass. The first incomplete
-  scratch closure and generated-output classification failures remain recorded.
-  The unchanged audit policy also passes: the raw report retains the ten
-  original IDs, eight active exceptions and two below threshold. No actual
-  dependency adoption occurred. Eight template wrapper declarations and seven
-  older family nodes remain outside the narrow shared-wrapper path; no global
-  family migration is claimed. Smallest next step: compose the qualified floors
-  and override removal with the already adopted tsup 9 graph and qualified Nuxt
-  correction, then verify the combined lock before actual adoption.
-
 ## JavaScript dependency security
 
-- [~] **Remediate the Nuxt template's critical simple-git dependency chain.** A
-  fresh pnpm 12.9.1 `audit --json` on unchanged main 5c9ae09 returned exit 1
-  with 10 advisories: two critical, four high, two moderate and two low. Both
-  critical paths enter through Nuxt development tooling and resolve simple-git
-  3.36.0 with @simple-git/argv-parser 1.1.1. Official advisories identify
-  simple-git 4.0.1 and argv-parser 2.0.1 as patched; confirm their registry
-  publication and release age before selecting a compatible introducing-package
-  update. Preserve the raw audit and all other findings. A scratch-only Nuxt
-  4.6.2 candidate resolved successfully with the pinned manager: 28 package
-  records added, 49 removed, and no retained integrity changes. Independent
-  closure review found no unexpected movement; the simple-git/parser package
-  records are absent. All new artifacts satisfy the unchanged repository policy
-  `minimumReleaseAge: 1440` (24 hours). The earlier 72-hour hold was an
-  incorrect default assumption and is superseded; no age policy or exception
-  changed. Do not infer acceptance from resolution. A simple-git 4.0.1-only
-  override would still pin vulnerable argv-parser 2.0.0. The candidate's
-  metadata-only audit reduced ten findings to six, removing both critical and
-  both simple-git high findings without new advisory IDs. Candidate bytes/modes
-  and all twelve real dependency inputs retained parity. The audit harness used
-  an isolated XDG mutex; explicitly select the real shared heavy-suite state
-  before heavy gates. The isolated frozen installation now passed with six
-  selected workspaces plus the manager's existing root dependencies; all 30 root
-  links match the frozen importer. Original build, types, both lints, format and
-  tests passed (3 tests; 100% coverage, unchanged 80% thresholds). The next
-  original duplication gate initially failed at 5.90% versus 1% because the
-  Git-less archive lacked ignore discovery. An exact jscpd fixture proved the
-  cause; the original gate passed with owned Git context and unchanged ignores.
-  Original Knip passed with the source-proven CI setting. Compiler-owned alias
-  origins were corrected in shared tooling, preserving genuine orphan detection
-  and temporary-file ownership. All nine original Nuxt functional scripts have
-  successful retained records across qualified stages, including graph zero and
-  type coverage 75/75 against the unchanged 99% minimum; this was not one
-  all-green run. Combined shared tooling passes lint, native types, 106 tests
-  and exact tarball/strict external consumer checks. Both actual root graph
-  gates pass; the general graph retains 127 dev-dependency warnings recorded
-  separately. Preview/devtools smoke is still unqualified; earlier setup and
-  lifecycle failures are retained. Smallest next step: finish direct pinned Nuxt
-  CLI smoke and compose the dependency floor with the current tsup and
-  typescript-eslint graphs before actual adoption. Six raw findings remain;
-  evaluate the unchanged dated policy separately. References:
-  https://github.com/advisories/GHSA-x6jw-m9v5-85vh and
-  https://github.com/advisories/GHSA-v5rq-49vh-5v5c. No actual dependency
-  changed.
+- [ ] **Qualify the remaining legacy typescript-eslint peer contexts.** The
+      adopted combined graph retains eight template
+      `eslint-plugin-unused-imports` peer contexts selecting plugin 8.71.0 and
+      seven broader 8.71.1 family snapshots. All eight template
+      `typescript-eslint` floors are 8.71.2 and their original lint/type checks
+      pass; the shared JS/MJS wrapper is fixed. Smallest next step: reproduce
+      unused-variable controls through each direct template config, then update
+      only the necessary peer declarations and frozen graph. Preserve declared
+      peer contracts, the 1440-minute policy and complete audit evidence; no
+      global family migration is implied by the shared fix.
 
 - [!] **Publish the verified quality-config audit and alias corrections.**
   Source, 106 tests, both actual root graph gates and the exact packed consumer

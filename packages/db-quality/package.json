@@ -85,7 +85,7 @@
     "squawk-cli": "^2.68.0",
     "tsup": "^9.0.0",
     "typescript": "npm:@typescript/typescript6@^6.0.2",
-    "typescript-eslint": "^8.71.0",
+    "typescript-eslint": "^8.71.2",
     "vitest": "^5.0.3"
   },
   "dependencies": {

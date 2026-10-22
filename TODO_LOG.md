@@ -942,6 +942,39 @@ Closed work from `TODO.md`, grouped by year and month.
 
 ### 2026-10
 
+- [x] 2026-10-22 — **JavaScript dependency security:** Remove the critical Nuxt
+      dependency chain and accidental unit-test route.
+  - Result: Adopted Nuxt 4.6.2 with the combined frozen graph; simple-git and
+    its argv-parser are absent. Moved the unit test out of server/api so Nitro
+    cannot register it as an API route. The isolated development smoke restores
+    SSR, API and Devtools responses and returns 404 for the accidental test
+    route; production preview also passes. No interactive browser or package
+    publication is claimed.
+  - Evidence: All nine original Nuxt scripts pass within the combined 44-stage
+    verification. From templates/nuxt-app, actual pnpm run type-check, lint,
+    test --maxWorkers=2 and format:check exit 0; three tests pass with 100%
+    coverage against unchanged 80% thresholds. Root pnpm run lint:root,
+    format:check and audit:check pass. The complete five-advisory audit has no
+    critical, expired or unwaived finding; existing exceptions and
+    minimumReleaseAge 1440 are unchanged. All tracked source, full19 installed
+    metadata/links/state, native artifacts and pinned tools retain parity.
+
+- [x] 2026-10-22 — **JavaScript tooling:** Adopt the released typescript-eslint
+      8.71.2 shared-wrapper fix and remove obsolete overrides.
+  - Result: Raised thirteen floors, added the shared runtime plugin and removed
+    only the two obsolete overrides. Adopted the combined graph with Nuxt 4.6.2
+    and existing tsup 9. Eight legacy template-wrapper peer contexts and seven
+    broader old-family snapshots remain separately tracked; no global family
+    migration is claimed.
+  - Evidence: Pinned pnpm 12.9.1 frozen install selected all 19 workspaces and
+    matched the complete qualified graph and native artifacts. All 44 original
+    combined stages pass (937 tests, three existing PostgreSQL skips); eight
+    actual-checkout stages pass. Actual JS/MJS wrapper controls report exactly
+    two intended unused-variable errors each through Espree 11.2.0 and
+    plugin/parser 8.71.2. Original pnpm run audit:check exits 0: five
+    advisories, four existing active exceptions and one below threshold; no new
+    or extended waiver.
+
 - [x] 2026-10-22 — **JavaScript dependency security:** Validate complete audit
       reports and explicit own exceptions; preserve compiler alias origins.
   - Result: Validate subprocess results and complete consistent audit reports
