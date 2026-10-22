@@ -1,10 +1,7 @@
-// Serialises what the ui-quality rules need from a rendered page. It is
-// evaluated inside the page as `(source)(mainSelector)`, so it is plain
-// browser JavaScript with no imports, kept outside the bundle on purpose: a
-// bundler's injected helpers would not exist on the page. The bare expression
-// is the point: the caller wraps it, so nothing here uses it.
-// oxlint-disable-next-line no-unused-expressions
-;(mainSelector) => {
+// Serialises the measurements used by the UI-quality rules. The browser
+// module is bundled as a self-contained IIFE; its default export keeps the
+// synchronous main-selector contract used by every capture.
+export default (mainSelector) => {
   const canvas = document.createElement('canvas')
   canvas.width = 1
   canvas.height = 1

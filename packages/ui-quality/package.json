@@ -27,17 +27,19 @@
   "files": [
     "LICENSE",
     "README.md",
-    "assets",
+    "assets/codeality-ui.json",
+    "assets/generated/probe.global.js",
     "bin",
     "dist"
   ],
   "scripts": {
-    "build": "tsup",
+    "build": "pnpm run build:probe && tsup",
     "lint": "eslint src tests bin --max-warnings 0",
     "lint:fix": "eslint src tests bin --fix",
     "type-check": "node node_modules/@typescript/native/bin/tsc --noEmit -p tsconfig.json",
-    "test": "vitest run --coverage",
-    "publish:check": "baseline-licenses && publint --strict"
+    "test": "pnpm run build:probe && vitest run --coverage",
+    "publish:check": "baseline-licenses && publint --strict",
+    "build:probe": "tsup --config tsup.probe.config.ts"
   },
   "dependencies": {
     "@axe-core/playwright": "^4.13.0"

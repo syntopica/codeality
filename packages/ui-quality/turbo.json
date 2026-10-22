@@ -1,0 +1,11 @@
+{
+  "extends": ["//"],
+  "tasks": {
+    "build": {
+      "outputs": ["$TURBO_EXTENDS$", "assets/generated/**"]
+    },
+    "test": {
+      "dependsOn": ["$TURBO_EXTENDS$", "build"]
+    }
+  }
+}

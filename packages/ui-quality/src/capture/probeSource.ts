@@ -1,8 +1,11 @@
 import { readFileSync } from 'node:fs'
 
 import { assetPath } from '@/assetPath.js'
+import { PROBE_BUNDLE_NAME } from '@/capture/PROBE_BUNDLE_NAME.js'
 
-// Prettier guards the file's leading arrow function with a `;`, which would
-// break the `(source)(argument)` call it is wrapped in.
+/** A self-contained browser function expression with no page-global exports. */
 export const probeSource = (): string =>
-  readFileSync(assetPath('probe.js'), 'utf8').trim().replace(/^;/m, '')
+  `(() => {
+${readFileSync(assetPath('generated/probe.global.js'), 'utf8')}
+return ${PROBE_BUNDLE_NAME}.default
+})()`

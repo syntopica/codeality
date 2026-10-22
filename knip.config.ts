@@ -92,8 +92,13 @@ const config: KnipConfig = {
       project: ['src/**/*.ts!', 'tests/**/*.ts'],
     },
     'packages/ui-quality': {
-      entry: ['bin/*.mjs!'],
-      project: ['src/**/*.ts!', 'tests/**/*.ts'],
+      entry: ['bin/*.mjs!', 'tsup.probe.config.ts', 'assets/probe.js!'],
+      project: [
+        'src/**/*.ts!',
+        'tests/**/*.ts',
+        'tsup.probe.config.ts',
+        'assets/probe.js!',
+      ],
     },
     'packages/test-quality': {
       // The inventory probe in assets/ is run with node inside the audited

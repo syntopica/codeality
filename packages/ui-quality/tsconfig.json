@@ -8,6 +8,12 @@
       "@tests/*": ["./tests/*"]
     }
   },
-  "include": ["src/**/*", "tests/**/*", "tsup.config.ts", "vitest.config.ts"],
+  "include": [
+    "src/**/*",
+    "tests/**/*",
+    "tsup.config.ts",
+    "vitest.config.ts",
+    "tsup.probe.config.ts"
+  ],
   "exclude": ["node_modules", "dist"]
 }

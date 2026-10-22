@@ -123,9 +123,14 @@ plus the release:
       discard legitimate displayed values. Smallest next step: capture the
       actual cell structure or explicit sort metadata and add a DOM-backed
       fixture for ties, retaining wrapped currency support.
-- [ ] **`touch-target` overlap with a sticky header.** Rows scrolled under a
-      sticky `<thead>` in the phone capture are reported as overlapping its sort
-      buttons; only the visible, unobscured part is a tap target.
+- [~] **`touch-target` overlap with a sticky header.** Rows scrolled under a
+  sticky `<thead>` in the phone capture are reported as overlapping its sort
+  buttons; only the visible, unobscured part is a tap target. The browser probe
+  composition/distribution foundation is verified, including cold coverage,
+  packaged real-loader capture and cache restoration/invalidation. Next: extract
+  the reviewed occlusion helpers into explicit imported units and qualify the
+  sticky behavior; the earlier embedded-helper prototype remains unaccepted. No
+  sticky behavior has changed yet.
 
 - [ ] **Misses the owner caught by eye on InteliFactu's fiscal review**
       (2026-10-12, fixed there in 918be511 and 85616f03; route

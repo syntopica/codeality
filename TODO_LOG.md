@@ -942,6 +942,26 @@ Closed work from `TODO.md`, grouped by year and month.
 
 ### 2026-10
 
+- [x] 2026-10-22 — **ui-quality:** Build a composable browser probe distribution
+      foundation.
+  - Result: Bundle the unchanged legacy probe body as a self-contained browser
+    IIFE and load its synchronous default through a lexical wrapper. Build/test
+    scripts generate the asset, package files ship it explicitly, Knip covers
+    authoring entries and Turbo restores generated assets with CLI output. No
+    dependency, sticky behavior, package version or publication changed.
+  - Evidence: In the isolated candidate, pinned `pnpm run test` from a missing
+    generated asset passed 491 tests in 122 files with unchanged coverage
+    thresholds: 96.84% statements, 92.01% branches, 95.44% functions and 98.12%
+    lines. Full UI ESLint with `--max-warnings 0`, native TypeScript `--noEmit`,
+    `pnpm run build`, offline pack, canonical Knip comparison and DOM parity
+    passed. The packaged public CLI read the actual shipped asset and captured
+    one synthetic local screen; exit 1 retained three real touch-target
+    findings. Single-package Turbo cache miss/hit/invalidation/restoration
+    passed with byte/mode parity. Independent review found no actionable issue.
+    All ten actual source paths match the tested candidate bytes/modes; npm
+    release, consumer deployment and whole-workspace audit acceptance remain
+    unperformed.
+
 - [x] 2026-10-22 — **ui-quality:** **A count over a list of years reads as one
       grouped number.** A cell showing "1" over "2026" (two block lines) has
       innerText "1\n2026", which `AMOUNT_TEXT` takes as 12026, so a correct
