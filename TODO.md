@@ -43,11 +43,13 @@ verified complete - `[-]` obsolete or superseded.
       umbrella and plugin at 8.71.0. Rechecked 2026-10-22: both 8.71.2 packages
       were published on 2026-10-12; the official release includes PR 12989 and
       its tagged source tests `ref.isValueReference === false`. The upstream
-      release blocker is resolved, but adoption is not complete. Latest 8.72.0
-      was published on 2026-10-19 around 17:10 UTC and has not yet completed 72
-      hours at this check. Smallest next step: remove the two temporary
-      overrides, update relevant consumer minimums and adopt the mature 8.71.2
-      family without moving unrelated dependencies; verify the Espree JavaScript
+      release blocker is resolved, but adoption is not complete. The historical
+      72-hour age hold was incorrect: the unchanged repository policy is 1440
+      minutes (24 hours). The recorded 8.72.0 publication on 2026-10-19 around
+      17:10 UTC also exceeds that policy on 2026-10-22; release age is no longer
+      its blocker. Smallest next step: remove the two temporary overrides,
+      update relevant consumer minimums and adopt the mature 8.71.2 family
+      without moving unrelated dependencies; verify the Espree JavaScript
       regression and required quality gates before publishing. Do not change
       dependencies while the current source gates are frozen.
 
@@ -73,10 +75,18 @@ verified complete - `[-]` obsolete or superseded.
   both simple-git high findings without new advisory IDs. Candidate bytes/modes
   and all twelve real dependency inputs retained parity. The audit harness used
   an isolated XDG mutex; explicitly select the real shared heavy-suite state
-  before heavy gates. Smallest next step: verify age, frozen installation and
-  functional consumer gates before adopting the candidate. Six findings remain
-  unsuppressed. References: https://github.com/advisories/GHSA-x6jw-m9v5-85vh
-  and https://github.com/advisories/GHSA-v5rq-49vh-5v5c. No actual dependency
+  before heavy gates. The isolated frozen installation now passed with six
+  selected workspaces plus the manager's existing root dependencies; all 30 root
+  links match the frozen importer. Original build, types, both lints, format and
+  tests passed (3 tests; 100% coverage, unchanged 80% thresholds). The next
+  original duplication gate failed at 5.90% versus 1%, counting generated .nuxt
+  output in the Git-less source archive. Exact jscpd 5.4.1 source requires Git
+  ancestry for .gitignore discovery; a controlled fixture is pending, not a
+  source ignore or threshold change. Knip and quality were not run. Smallest
+  next step: establish the exact Git-context cause and finish the remaining
+  original gates before adoption. Six findings remain unsuppressed. References:
+  https://github.com/advisories/GHSA-x6jw-m9v5-85vh and
+  https://github.com/advisories/GHSA-v5rq-49vh-5v5c. No actual dependency
   changed.
 
 - [~] **Replace vulnerable esbuild through the four package builders' maintained
@@ -91,10 +101,19 @@ verified complete - `[-]` obsolete or superseded.
   the explicit code-policy type emission workaround. The separate metadata audit
   reduced ten findings to nine, removing only esbuild GHSA-g7r4-m6w7-qqqr
   without new IDs; both Nuxt critical findings remain in this independent
-  candidate. All 3,223 candidate bytes/modes retained parity. Next: admit frozen
-  installation and build/type/CLI/CJS/ESM/watch gates after age checks. No
-  actual dependency changed; do not merge this lock with the Nuxt candidate
-  without a separately verified combined graph.
+  candidate. Initial four-package full gates passed 1,357 tests with three
+  existing PostgreSQL tests skipped because no real database was configured.
+  Four packs, license and strict publint checks, plugin tarball type analysis,
+  eight captured-runtime checks and original three-state watch passed. The final
+  published sticky/numeric UI source was then independently integrated: all
+  seven affected gates pass, including 531 tests across 130 files. The newly
+  packed CLI captured two loopback fixtures and read its shipped probe. Its
+  original outer harness failed the final lexical macOS path-alias assertion; an
+  offline canonical-path check qualified the retained outputs without repeating
+  the browser. Existing failures and cleanup proofs remain retained. Next:
+  resolve the nine unsuppressed audit findings before adopting this qualified
+  candidate. No actual dependency changed; do not merge this lock with the Nuxt
+  candidate without a separately verified combined graph.
 
 - [!] **Upstream patches are unavailable for two high-severity audit findings.**
   Official advisories still list no patched release for node-forge through 1.4.0
