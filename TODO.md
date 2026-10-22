@@ -87,10 +87,13 @@ verified complete - `[-]` obsolete or superseded.
   Rollup and its 25 platform packages reach 72 hours on 2026-10-23 05:36:56.444
   UTC. Tsup 9 raises the build-tool Node floor and changes watcher/debug
   internals; preserve published package runtime floors and the explicit
-  code-policy type emission workaround. Next: compare the separate candidate
-  audit, then admit frozen installation and build/type/CLI/CJS/ESM/watch gates
-  after age checks. No actual dependency changed; do not merge this lock with
-  the Nuxt candidate without a separately verified combined graph.
+  code-policy type emission workaround. The separate metadata audit reduced ten
+  findings to nine, removing only esbuild GHSA-g7r4-m6w7-qqqr without new IDs;
+  both Nuxt critical findings remain in this independent candidate. All 3,223
+  candidate bytes/modes retained parity. Next: admit frozen installation and
+  build/type/CLI/CJS/ESM/watch gates after age checks. No actual dependency
+  changed; do not merge this lock with the Nuxt candidate without a separately
+  verified combined graph.
 
 - [!] **Upstream patches are unavailable for two high-severity audit findings.**
   Official advisories still list no patched release for node-forge through 1.4.0
