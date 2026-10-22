@@ -942,6 +942,20 @@ Closed work from `TODO.md`, grouped by year and month.
 
 ### 2026-10
 
+- [x] 2026-10-22 — **Conformance:** Diagnose coverage for named CI test scripts.
+  - Result: Discover directly qualified Vitest/Jest scripts reached from CI and
+    target coverage fixes at their actual names. Keep missing coverage and
+    missing thresholds fatal, reject ambiguous config ownership and disabled
+    coverage, and preserve the conventional test contract. Vexa metadata now
+    reports coverage-run for test:unit and coverage-thresholds instead of
+    claiming that no test suite exists. No consumer coverage settings changed.
+  - Evidence: From packages/create-baseline, heavy-suite
+    ./node_modules/.bin/vitest run --coverage --maxWorkers=2 passed 226 tests in
+    23 files with the original 80 percent thresholds; scoped ESLint passed.
+    Coordinator independently reran coverage/gate regressions and verified all
+    seven accepted file hashes. Current Vexa metadata retains both fatal
+    findings.
+
 - [x] 2026-10-22 — **Estate:** **Wait for registry availability in the npm
       publish workflow** (2026-10-21). Run 39529271695 succeeded before
       quality-config 0.15.0 was visible in npm metadata or installable; it

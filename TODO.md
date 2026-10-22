@@ -37,17 +37,19 @@ verified complete - `[-]` obsolete or superseded.
   run. Remaining: turbo still runs up to ten package tasks at once inside one
   admitted run; decide whether the wrapped gate also takes `--concurrency=2`.
 
-- [!] **Drop the typescript-eslint 8.71.1 overrides once 8.71.2 ships**
-  (2026-10-07). 8.71.1 reports every variable in a `.js`/`.mjs` file as "only
-  used as a type" (`isTypeOnlyReference` tests `!ref.isValueReference`,
-  undefined on espree references; upstream issue 12980, fixed on main,
-  unreleased). `pnpm-workspace.yaml` pins `typescript-eslint` and
-  `@typescript-eslint/eslint-plugin` 8.71.1 to 8.71.0 and the manifests stay on
-  `^8.71.0`. Consumers of `@syntopica/eslint-config` that resolve 8.71.1 hit the
-  same wall on their JS files. Next step: when
-  `npm view typescript-eslint version` passes 8.71.1, remove both lines,
-  `ncu -u`, `pnpm install`, `pnpm check:ci`. Rechecked 2026-10-11:
-  `npm view typescript-eslint version` and the plugin both still answer 8.71.1.
+- [ ] **Adopt the released typescript-eslint 8.71.2 fix and remove its temporary
+      overrides.** The 8.71.1 Espree regression (issue 12980) caused JavaScript
+      variables to be reported as type-only, so two overrides retained the
+      umbrella and plugin at 8.71.0. Rechecked 2026-10-22: both 8.71.2 packages
+      were published on 2026-10-12; the official release includes PR 12989 and
+      its tagged source tests `ref.isValueReference === false`. The upstream
+      release blocker is resolved, but adoption is not complete. Latest 8.72.0
+      was published on 2026-10-19 around 17:10 UTC and has not yet completed 72
+      hours at this check. Smallest next step: remove the two temporary
+      overrides, update relevant consumer minimums and adopt the mature 8.71.2
+      family without moving unrelated dependencies; verify the Espree JavaScript
+      regression and required quality gates before publishing. Do not change
+      dependencies while the current source gates are frozen.
 
 ## ui-quality
 

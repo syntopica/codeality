@@ -75,4 +75,141 @@ describe('checkCoverageThresholds', () => {
     const [finding] = checkCoverageThresholds({ scripts: {}, testConfig: null })
     expect(finding.id).toBe('coverage')
   })
+  it('diagnoses the reachable unit suite without declaring coverage complete', () => {
+    const scripts = {
+      'check:ci': 'pnpm check:all',
+      'check:all': 'pnpm test:unit && pnpm test:release && pnpm cargo:test',
+      'test:unit': 'vitest run',
+      'test:release': 'node --test release.test.mjs',
+      'cargo:test': 'cargo test --workspace',
+    }
+    const findings = checkCoverageThresholds({
+      scripts,
+      testConfig: CONFIG('test: { environment: "jsdom" }'),
+    })
+    expect(findings.map(({ id }) => id)).toEqual([
+      'coverage-run',
+      'coverage-thresholds',
+    ])
+    expect(findings.every(({ level }) => level === 'error')).toBe(true)
+    expect(findings[0].fix).toEqual({
+      kind: 'set-script',
+      name: 'test:unit',
+      value: 'vitest run --coverage',
+    })
+  })
+
+  it('recognizes a named runner invoked directly by CI', () => {
+    expect(
+      checkCoverageThresholds({
+        scripts: { 'test:unit': 'pnpm exec vitest run --coverage' },
+        workflows: [{ text: 'run: pnpm test:unit' }],
+        testConfig: WITH_THRESHOLDS,
+      }),
+    ).toEqual([])
+  })
+
+  it('follows local runners and terminates cyclic script references', () => {
+    expect(
+      checkCoverageThresholds({
+        scripts: {
+          'check:ci': 'node scripts/ci.mjs',
+          cycle: 'pnpm check:ci && pnpm test:unit',
+          'test:unit': 'jest --coverage',
+        },
+        runners: { 'scripts/ci.mjs': 'pnpm cycle' },
+        testConfig: {
+          name: 'jest.config.js',
+          path: '/repo/jest.config.js',
+          text: 'coverageThreshold: { global: { lines: 80 } }',
+        },
+      }),
+    ).toEqual([])
+  })
+
+  it('does not borrow coverage from an unreachable suite', () => {
+    const findings = checkCoverageThresholds({
+      scripts: {
+        'check:ci': 'pnpm test:release',
+        'test:release': 'node --test release.test.mjs',
+        'test:unit': 'vitest run --coverage',
+      },
+      testConfig: WITH_THRESHOLDS,
+    })
+    expect(findings.map(({ id }) => id)).toEqual(['coverage'])
+    expect(findings[0].level).toBe('error')
+  })
+
+  it('does not infer a runner from a script name or an echo', () => {
+    const findings = checkCoverageThresholds({
+      scripts: {
+        'check:ci': 'pnpm test:unit && pnpm cargo:test',
+        'test:unit': 'echo vitest --coverage',
+        'cargo:test': 'cargo test --workspace',
+      },
+      testConfig: WITH_THRESHOLDS,
+    })
+    expect(findings.map(({ id }) => id)).toEqual(['coverage'])
+  })
+
+  it('checks every reachable runner rather than borrowing a sibling flag', () => {
+    const findings = checkCoverageThresholds({
+      scripts: {
+        'check:ci': 'pnpm test:unit && pnpm test:integration',
+        'test:unit': 'vitest run --coverage',
+        'test:integration': 'vitest run',
+      },
+      testConfig: WITH_THRESHOLDS,
+    })
+    expect(findings).toHaveLength(1)
+    expect(findings[0].fix.name).toBe('test:integration')
+  })
+  it.each([
+    'vitest run --config other.config.ts --coverage',
+    'jest -c other.config.js --coverage',
+    'jest -cother.config.js --coverage',
+    'vitest --root other --coverage',
+    'vitest -r other --coverage',
+    'vitest -rother --coverage',
+    'vitest --dir=other --coverage',
+    'vitest --project other --coverage',
+    'vitest --workspace=other --coverage',
+    'vitest run && echo --coverage',
+    'vitest run --coverage $FLAGS',
+    'vitest run --coverage `flags`',
+  ])('leaves ambiguous command ownership unproven: %s', (command) => {
+    const findings = checkCoverageThresholds({
+      scripts: { 'check:ci': 'pnpm test:unit', 'test:unit': command },
+      testConfig: WITH_THRESHOLDS,
+    })
+    expect(findings.map(({ id }) => id)).toEqual(['coverage'])
+    expect(findings[0].level).toBe('error')
+  })
+
+  it.each([
+    'vitest run --coverage=false',
+    'vitest run coverage.test.ts',
+    'vitest run --coverage --coverage=false',
+    'vitest run --coverage --coverage.enabled=false',
+    'vitest run --coverage=false --coverage',
+    'vitest run --coverage --no-coverage',
+    'vitest run --coverage --no-coverage.enabled',
+  ])(
+    'does not treat a disabled flag or filename as coverage: %s',
+    (command) => {
+      const findings = checkCoverageThresholds({
+        scripts: { 'check:ci': 'pnpm test:unit', 'test:unit': command },
+        testConfig: WITH_THRESHOLDS,
+      })
+      expect(findings.map(({ id }) => id)).toEqual(['coverage-run'])
+    },
+  )
+  it('does not borrow thresholds from another test runner config', () => {
+    const findings = checkCoverageThresholds({
+      scripts: { 'check:ci': 'pnpm test:unit', 'test:unit': 'jest --coverage' },
+      testConfig: WITH_THRESHOLDS,
+    })
+    expect(findings.map(({ id }) => id)).toEqual(['coverage'])
+    expect(findings[0].level).toBe('error')
+  })
 })

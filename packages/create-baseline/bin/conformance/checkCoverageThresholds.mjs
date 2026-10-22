@@ -1,5 +1,7 @@
-const HAS_THRESHOLDS = /\bthresholds\s*:|\bcoverageThreshold\s*:/
-const HAS_COVERAGE_BLOCK = /\bcoverage\s*:\s*\{/g
+import { coverageBlockPattern } from './coverageBlockPattern.mjs'
+import { coverageTestScripts } from './coverageTestScripts.mjs'
+import { coverageThresholdPattern } from './coverageThresholdPattern.mjs'
+import { delegatesCoverageTests } from './delegatesCoverageTests.mjs'
 
 /**
  * Coverage has to be measured, and the measurement has to fail a build.
@@ -19,14 +21,15 @@ const HAS_COVERAGE_BLOCK = /\bcoverage\s*:\s*\{/g
  * builds red on the first day, and a gate that starts red gets deleted rather
  * than met.
  */
-export function checkCoverageThresholds({ scripts, testConfig }) {
+export function checkCoverageThresholds(context) {
+  const { scripts, testConfig } = context
   const findings = []
-  const test = scripts.test
+  const tests = coverageTestScripts(context)
 
   // A monorepo root runs its suites through the workspaces, and its coverage
   // configuration lives in each of them. Judging the root would report the
   // reference implementation as having no tests at all.
-  if (delegates(scripts)) {
+  if (delegatesCoverageTests(scripts)) {
     return [
       {
         id: 'coverage',
@@ -39,26 +42,36 @@ export function checkCoverageThresholds({ scripts, testConfig }) {
     ]
   }
 
-  if (!test) {
+  if (!tests.length) {
     return [
       {
         id: 'coverage',
         level: 'error',
-        message: 'no `test` script',
-        detail: 'Nothing to measure coverage of.',
+        message: 'no coverage test script',
+        detail:
+          'Expected a `test` script or a Vitest/Jest script reachable from CI.',
       },
     ]
   }
 
-  if (!/--coverage\b/.test(test) && !/\bcoverage\b/.test(test)) {
+  for (const [name, test] of tests) {
+    const measures =
+      name === 'test'
+        ? /--coverage\b|\bcoverage\b/.test(test)
+        : /(?:^|\s)--coverage(?:=true)?(?:\s|$)/.test(test) &&
+          !/(?:^|\s)--coverage(?:\.enabled)?(?:=|\s+)false(?:\s|$)/.test(
+            test,
+          ) &&
+          !/(?:^|\s)--no-coverage(?:\.enabled)?(?:\s|$|=)/.test(test)
+    if (measures) continue
     findings.push({
       id: 'coverage-run',
       level: 'error',
-      message: '`test` does not produce a coverage report',
+      message: `\`${name}\` does not produce a coverage report`,
       detail: 'Without `--coverage` the thresholds below are never evaluated.',
       fix: {
         kind: 'set-script',
-        name: 'test',
+        name,
         value: `${test.trim()} --coverage`,
       },
     })
@@ -75,9 +88,9 @@ export function checkCoverageThresholds({ scripts, testConfig }) {
     return findings
   }
 
-  if (HAS_THRESHOLDS.test(testConfig.text)) return findings
+  if (coverageThresholdPattern.test(testConfig.text)) return findings
 
-  const coverageBlocks = [...testConfig.text.matchAll(HAS_COVERAGE_BLOCK)]
+  const coverageBlocks = [...testConfig.text.matchAll(coverageBlockPattern)]
   findings.push({
     id: 'coverage-thresholds',
     level: 'error',
@@ -95,18 +108,4 @@ export function checkCoverageThresholds({ scripts, testConfig }) {
         : undefined,
   })
   return findings
-}
-
-// Whether the project hands its test run to a workspace runner rather than
-// running a suite of its own. Matched against every script, not just `test`:
-// the baseline repo reaches its suites through `check:ci`, which calls
-// `turbo run ... test ...`, and defines no root `test` script at all.
-function delegates(scripts) {
-  return Object.values(scripts).some(
-    (command) =>
-      typeof command === 'string' &&
-      /\b(?:turbo|nx|lerna)\s+run\s+(?:[\w:-]+\s+)*test\b|(?:pnpm|npm|yarn)\s+(?:-r|--recursive)\s+(?:run\s+)?test\b/.test(
-        command,
-      ),
-  )
 }
