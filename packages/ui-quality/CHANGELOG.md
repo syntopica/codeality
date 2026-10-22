@@ -2,6 +2,10 @@
 
 ## [Unreleased]
 
+- Fix: wrapped short labels detect sibling SVG viewports misaligned with the
+  first text line, preserving legacy snapshots and leaving ambiguous
+  compositions unclassified.
+
 - Fix: crowded metadata detects actively truncated line-clamped labels, while
   fitting text and legacy snapshots retain their prior behavior.
 

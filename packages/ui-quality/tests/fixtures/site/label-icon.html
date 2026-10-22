@@ -1,0 +1,51 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>Wrapped label icon alignment</title>
+    <style>
+      body {
+        margin: 0;
+        font:
+          16px/24px Arial,
+          sans-serif;
+      }
+      main {
+        padding: 24px;
+      }
+      dl {
+        display: grid;
+        grid-template-columns: 150px 30px;
+        gap: 16px;
+      }
+      dt {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+      }
+      dd {
+        margin: 0;
+      }
+      svg {
+        flex: none;
+        width: 16px;
+        height: 16px;
+      }
+      .text {
+        width: 95px;
+        flex: none;
+      }
+    </style>
+  </head>
+  <body>
+    <main>
+      <dl>
+        <dt id="label">
+          <svg viewBox="0 0 24 24"><path d="M2 2H22V22H2Z" /></svg
+          ><span class="text">Account status details</span>
+        </dt>
+        <dd>Ready</dd>
+      </dl>
+    </main>
+  </body>
+</html>

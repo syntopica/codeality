@@ -942,6 +942,26 @@ Closed work from `TODO.md`, grouped by year and month.
 
 ### 2026-10
 
+- [x] 2026-10-22 — **ui-quality:** **`label-wrap`: align wrapped-label icons
+      with the first text line** (2026-10-12). `textBoxOf` follows a
+      single-child chain and misses sibling SVG/text labels, while the probe
+      lacks the first text line's vertical centre. Smallest next step: measure
+      that centre from own-text Range rectangles, identify an unambiguous
+      SVG/text branch locally to the label rule, and compare against a
+      real-browser first-line-aligned control. Keep missing legacy metadata
+      conservative, ambiguous compositions unclassified, and SVG viewport
+      geometry distinct from optical painted alignment. Calibrate a tolerance
+      from fixtures before changing detection.
+  - Result: Detect SVG viewport misalignment against the first text line of
+    short wrapped labels, with conservative geometry, size and composition
+    guards. Consumer UI and optical artwork alignment remain separate acceptance
+    boundaries.
+  - Evidence: Isolated node node_modules/vitest/vitest.mjs run --coverage
+    --maxWorkers=1 passed 121 files and 482 tests; 24 focused tests, package
+    ESLint, type-check and build passed. Installed root Knip normal and
+    production --treat-config-hints-as-errors both exited 0; all 739 source
+    hashes remained unchanged. Independent review returned no findings.
+
 - [x] 2026-10-22 — **UI rules:** Detect actively clamped crowded metadata.
   - Result: Capture the computed line clamp and combine horizontal and vertical
     visible-text estimates for active clipping. Preserve roomy, multi-line and

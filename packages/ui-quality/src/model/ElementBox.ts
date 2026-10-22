@@ -71,6 +71,8 @@ export type ElementBox = {
   textTransform: string
   /** Lines the element's own text is laid out on; 0 without text. */
   lines: number
+  /** Centre of the first own-text Range fragment in document px; absent in legacy snapshots. */
+  firstTextLineCenterY?: number | null
   /** Where the glyphs of the element's own text start and end, in document px; 0 without text. */
   textLeft: number
   textRight: number

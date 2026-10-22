@@ -285,11 +285,14 @@
     const tops = []
     let left = Infinity
     let right = -Infinity
+    let firstLineCenterY = null
     for (const node of element.childNodes) {
       if (node.nodeType !== Node.TEXT_NODE || !node.textContent.trim()) continue
       range.selectNodeContents(node)
       for (const rect of range.getClientRects()) {
         if (rect.width === 0) continue
+        if (firstLineCenterY === null && rect.height > 0)
+          firstLineCenterY = rect.top + rect.height / 2 + window.scrollY
         left = Math.min(left, rect.left)
         right = Math.max(right, rect.right)
         if (!tops.some((top) => Math.abs(top - rect.top) < rect.height / 2))
@@ -298,6 +301,7 @@
     }
     return {
       lines: tops.length,
+      firstLineCenterY,
       left: tops.length ? Math.round(left + window.scrollX) : 0,
       right: tops.length ? Math.round(right + window.scrollX) : 0,
     }
@@ -497,7 +501,7 @@
     if (text) texted.push(element)
     const layout = text
       ? textLayoutOf(element)
-      : { lines: 0, left: 0, right: 0 }
+      : { lines: 0, left: 0, right: 0, firstLineCenterY: null }
     const contentWidth =
       element.clientWidth -
       parseFloat(style.paddingLeft) -
@@ -582,6 +586,7 @@
       textAlign: style.textAlign,
       textTransform: style.textTransform,
       lines: layout.lines,
+      firstTextLineCenterY: layout.firstLineCenterY,
       textLeft: layout.left,
       textRight: layout.right,
       measureCh: measureChOf(style, contentWidth, layout.lines),
