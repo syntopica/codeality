@@ -942,6 +942,15 @@ Closed work from `TODO.md`, grouped by year and month.
 
 ### 2026-10
 
+- [-] 2026-10-22 — **Python baseline:** Route cross-project debt to its owning
+  backlogs.
+  - Resolution: Routed to the existing owning DJCenterDeluxe and djplayerdeluxe
+    quality-baseline TODO entries. Live owning-backlog inspection confirms the
+    same accepted four fixture-SQL cases and the 39 structural findings / 28
+    mypy ignore sections remain tracked there. Codeality has no implementation
+    obligation for that duplicate bookmark; no hardware-dependent issue was
+    fixed, remeasured or dropped.
+
 - [x] 2026-10-22 — **Dependency graph:** Correct all 127 false
       runtime-development dependency diagnostics.
   - Result: Classify the complete emitted dependency types so erased type

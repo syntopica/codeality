@@ -5,16 +5,6 @@ Active backlog for the `baseline` repo. Closed items move to `TODO_LOG.md`.
 States: `[ ]` pending - `[~]` partial or unverified - `[!]` blocked - `[x]`
 verified complete - `[-]` obsolete or superseded.
 
-## Python baseline
-
-- [ ] Python backlog left after four passes (every gate exit 0 on a clean
-      `origin` worktree): DJCenterDeluxe 4 (test-fixture SQL, accepted).
-      djplayerdeluxe 39 findings and 28 mypy ignore sections: the Qt, audio and
-      Bluetooth modules (typing them changes the None path) and the backend
-      families chosen by try/except import, kept on purpose. Both TODO.md files
-      list the latent bugs the characterisation tests pinned. Next step only if
-      the hardware code is touched for another reason.
-
 ## Dart and Swift baseline
 
 - [!] Owner: first pub.dev release of `codeality_lints` then `codeality_dart` is
@@ -34,8 +24,17 @@ verified complete - `[-]` obsolete or superseded.
   `heavy-suite` when it is on the PATH, and directly otherwise (CI included);
   `turbo.json` passes `HEAVY_SUITE_ADMITTED`, `HEAVY_SUITE_WORKERS` and
   `VITEST_MAX_WORKERS` through strict env mode, so the cap reaches each vitest
-  run. Remaining: turbo still runs up to ten package tasks at once inside one
-  admitted run; decide whether the wrapped gate also takes `--concurrency=2`.
+  run. The inner Turbo command now runs package tasks serially with
+  `--concurrency=1` and explicitly sets `VITEST_MAX_WORKERS=2`, including the
+  fallback where heavy-suite is unavailable. Installed Turbo 2.11.7 dry runs
+  preserve all 72 planned task nodes, commands and dependency edges; the native
+  Vitest 5.0.3 configuration resolves two workers without starting tests or a
+  server. No timeout or gate was relaxed. Automatic CI runs 39814991736 and
+  39816197482 failed before this correction in Verify/check:ci; the latter
+  reported a null child status in the real-orphan probe under the former
+  ten-task scheduling. Remaining: verify the next automatic run with the bounded
+  scheduler, retain any failure and fix its concrete cause. Do not manually
+  dispatch or rerun hosted CI.
 
 ## JavaScript dependency security
 
