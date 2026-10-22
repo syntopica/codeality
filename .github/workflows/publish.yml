@@ -69,7 +69,8 @@ jobs:
       # short-lived credential. --ignore-scripts avoids re-running prepare hooks.
       - name: Publish to npm
         working-directory: packages/${{ inputs.package }}
-        run: pnpm publish --no-git-checks --ignore-scripts --access public
+        # A wait timeout can follow an accepted upload; check npm before retrying.
+        run: pnpm publish --no-git-checks --ignore-scripts --access public --publish-wait-timeout 600000
 
       - name: Publish failed notice
         if: failure()

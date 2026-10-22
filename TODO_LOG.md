@@ -942,6 +942,22 @@ Closed work from `TODO.md`, grouped by year and month.
 
 ### 2026-10
 
+- [x] 2026-10-22 — **Estate:** **Wait for registry availability in the npm
+      publish workflow** (2026-10-21). Run 39529271695 succeeded before
+      quality-config 0.15.0 was visible in npm metadata or installable; it
+      became available a few minutes later. Smallest next step: add pnpm's
+      supported `--publish-wait-timeout 600000` to the workflow publish command,
+      so success also verifies metadata and tarball availability.
+  - Result: The manual publish command now waits up to 600000 milliseconds for
+    exact-version registry metadata and tarball availability. It preserves OIDC,
+    ignore-scripts and the sole workflow_dispatch trigger; a comment warns that
+    a timeout may follow an accepted upload.
+  - Evidence: actionlint .github/workflows/publish.yml and pnpm exec prettier
+    --check .github/workflows/publish.yml exit 0. Structural comparison proves
+    triggers/permissions unchanged and the exact wait flag occurs once. Official
+    pinned pnpm 12.9.1 implementation supports the flag. No publication,
+    workflow dispatch or retry was executed.
+
 - [x] 2026-10-22 — **ui-quality:** **`label-wrap`: align wrapped-label icons
       with the first text line** (2026-10-12). `textBoxOf` follows a
       single-child chain and misses sibling SVG/text labels, while the probe

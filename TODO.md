@@ -28,13 +28,6 @@ verified complete - `[-]` obsolete or superseded.
 
 ## Estate
 
-- [ ] **Wait for registry availability in the npm publish workflow**
-      (2026-10-21). Run 39529271695 succeeded before quality-config 0.15.0 was
-      visible in npm metadata or installable; it became available a few minutes
-      later. Smallest next step: add pnpm's supported
-      `--publish-wait-timeout 600000` to the workflow publish command, so
-      success also verifies metadata and tarball availability.
-
 - [~] **`check:ci` queues behind a host admission wrapper** (2026-10-11).
   Decided 2026-10-11 (owner via Codex adjudication): one heavy suite per host,
   two test workers each. Done: `check:ci` runs `check:ci:run` through
@@ -76,6 +69,13 @@ plus the release:
       `AMOUNT_TEXT` takes as 12026, so a correct "Años" column was flagged
       `sort-broken`. Worked around in the consumer ("1 año"); the probe could
       read block lines separately.
+- [ ] **Identify the primary sort value in multiline count/year cells.** The
+      tied-count sample `1\n2026`, `1\n2024`, `2\n2025` still reads as unordered
+      before and after the digit-concatenation correction. Raw `innerText` does
+      not identify which line owns the sort; choosing every first line would
+      discard legitimate displayed values. Smallest next step: capture the
+      actual cell structure or explicit sort metadata and add a DOM-backed
+      fixture for ties, retaining wrapped currency support.
 - [ ] **`touch-target` overlap with a sticky header.** Rows scrolled under a
       sticky `<thead>` in the phone capture are reported as overlapping its sort
       buttons; only the visible, unobscured part is a tap target.
