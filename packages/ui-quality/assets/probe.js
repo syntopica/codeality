@@ -1,3 +1,7 @@
+import { tapOcclusionFields } from '../src/capture/tapOcclusionFields.js'
+
+import { stickyTapCover } from './probe/stickyTapCover.js'
+
 // Serialises the measurements used by the UI-quality rules. The browser
 // module is bundled as a self-contained IIFE; its default export keeps the
 // synchronous main-selector contract used by every capture.
@@ -591,6 +595,9 @@ export default (mainSelector) => {
       tappable,
       tapWidth: Math.round(tapWidth),
       tapHeight: Math.round(tapHeight),
+      ...tapOcclusionFields(
+        tappable ? stickyTapCover(element, rect) : undefined,
+      ),
       borderRadius: radiusOf(style, rect),
       padding: [
         parseFloat(style.paddingTop),

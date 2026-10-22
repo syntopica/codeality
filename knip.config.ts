@@ -98,6 +98,7 @@ const config: KnipConfig = {
         'tests/**/*.ts',
         'tsup.probe.config.ts',
         'assets/probe.js!',
+        'assets/probe/**/*.js!',
       ],
     },
     'packages/test-quality': {

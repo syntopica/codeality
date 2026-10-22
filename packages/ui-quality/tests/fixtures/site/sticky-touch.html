@@ -1,0 +1,78 @@
+<!doctype html> <meta charset="utf-8" /><meta
+  name="viewport"
+  content="width=device-width,initial-scale=1"
+/>
+<style>
+  body {
+    margin: 0;
+    min-height: 1400px;
+    font: 16px sans-serif;
+  }
+  main {
+    padding-top: 80px;
+  }
+  #scroller {
+    height: 180px;
+    overflow: auto;
+  }
+  table {
+    border-collapse: separate;
+    border-spacing: 0;
+    width: 360px;
+  }
+  thead {
+    position: sticky;
+    top: 0;
+    z-index: 2;
+    background: white;
+  }
+  th,
+  td {
+    padding: 0;
+    text-align: left;
+    height: 64px;
+    vertical-align: top;
+    line-height: 0;
+  }
+  button {
+    box-sizing: border-box;
+    width: 120px;
+    height: 48px;
+    padding: 0;
+    border: 0;
+  }
+  #sort {
+    margin-left: 16px;
+  }
+  #peer {
+    margin-left: -24px;
+  }
+</style>
+<main>
+  <div id="scroller">
+    <table>
+      <thead>
+        <tr>
+          <th><button id="sort" aria-label="Sort"></button></th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>
+            <button id="row" aria-label="Edit row"></button
+            ><button id="peer" aria-label="Delete row"></button>
+          </td>
+        </tr>
+        <tr>
+          <td><button aria-label="Edit second row"></button></td>
+        </tr>
+        <tr>
+          <td><button aria-label="Edit third row"></button></td>
+        </tr>
+        <tr>
+          <td><button aria-label="Edit fourth row"></button></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</main>

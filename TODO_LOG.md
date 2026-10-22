@@ -942,6 +942,21 @@ Closed work from `TODO.md`, grouped by year and month.
 
 ### 2026-10
 
+- [x] 2026-10-22 — **ui-quality:** Implement conservative sticky-header tap
+      occlusion with imported browser helpers.
+  - Result: Subtract confirmed header coverage into exposed target fragments,
+    preserving overlap tolerance, finding identity and legacy fallback. Reject
+    uncertain paint, including mask-border and WebKit mask-box sources. The
+    historical consumer report stays partial pending a current screen capture.
+  - Evidence: Isolated `pnpm run build` and original `pnpm run test` passed 516
+    tests in 128 files; coverage was 96.87% statements, 92.09% branches, 95.45%
+    functions and 98.14% lines against unchanged thresholds. Full UI ESLint,
+    native TypeScript, explicit browser-helper ESLint and 24-path Prettier
+    checks exited 0. Scoped canonical Knip found no new issues against the same
+    unbuilt baseline. Independent review's mask finding was corrected; final
+    actual bytes and modes match all 24 tested source paths. No release,
+    consumer deployment or full-workspace green claim is implied.
+
 - [x] 2026-10-22 — **ui-quality:** Exclude the generated browser bundle from
       root formatting.
   - Result: Add the exact generated asset directory to the root ignore file;

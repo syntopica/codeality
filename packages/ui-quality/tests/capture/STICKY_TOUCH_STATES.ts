@@ -1,0 +1,52 @@
+import type { StickyTouchState } from './StickyTouchState.js'
+
+export const STICKY_TOUCH_STATES: readonly StickyTouchState[] = [
+  { scroll: 48, style: '', covered: true, exposed: false },
+  { scroll: 32, style: '', covered: true, exposed: true },
+  { scroll: 0, style: '', covered: false },
+  {
+    scroll: 32,
+    style: '',
+    covered: true,
+    exposed: true,
+    documentScroll: 40,
+  },
+  {
+    scroll: 32,
+    style: '',
+    covered: true,
+    exposed: true,
+    sortStyle: 'position:relative;top:40px',
+    headerOverlap: true,
+  },
+  {
+    scroll: 32,
+    style: '',
+    covered: true,
+    exposed: true,
+    headerPeer: true,
+    headerOverlap: true,
+  },
+  {
+    scroll: 48,
+    style: '',
+    rowStyle: 'position:relative;z-index:3',
+    covered: false,
+  },
+  { scroll: 48, style: '', markup: '<span>Edit</span>', covered: false },
+  {
+    scroll: 48,
+    style: 'visibility:hidden',
+    sortStyle: 'visibility:visible',
+    covered: false,
+    exposed: true,
+  },
+  { scroll: 48, style: 'background-clip:text', covered: false },
+  { scroll: 48, style: 'background-clip:content-box', covered: false },
+  { scroll: 48, style: 'background-clip:padding-box', covered: false },
+  { scroll: 48, style: 'background:transparent', covered: false },
+  { scroll: 48, style: 'pointer-events:none', covered: false },
+  { scroll: 48, style: 'z-index:-1', covered: false },
+  { scroll: 48, style: 'border-radius:8px', covered: false },
+  { scroll: 48, style: 'transform:translateX(1px)', covered: false },
+]

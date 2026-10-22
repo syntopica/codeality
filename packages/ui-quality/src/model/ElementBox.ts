@@ -1,5 +1,6 @@
 import type { Rgba } from '@/model/Rgba.js'
 import type { ShadowLayer } from '@/model/ShadowLayer.js'
+import type { TapRect } from '@/model/TapRect.js'
 
 /** One visible element as the in-page probe serialises it; boxes are in document pixels. */
 export type ElementBox = {
@@ -89,6 +90,8 @@ export type ElementBox = {
   tapWidth: number
   /** For a tappable, the height in px it can be hit across; 0 otherwise. */
   tapHeight: number
+  /** Confirmed rectangular sticky table-header coverage; absent when uncertain. */
+  tapOcclusion?: TapRect
   /** The top-left corner radius in px. */
   borderRadius: number
   /** Padding in px: top, right, bottom, left. */

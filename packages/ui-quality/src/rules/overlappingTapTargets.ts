@@ -2,6 +2,7 @@ import type { ElementBox } from '@/model/ElementBox.js'
 import type { RawFinding } from '@/model/RawFinding.js'
 import { ancestorsOf } from '@/rules/ancestorsOf.js'
 import { overlapsPartly } from '@/rules/overlapsPartly.js'
+import { visibleTapOverlap } from '@/rules/visibleTapOverlap.js'
 
 /** Targets that cross another target's box, neither inside the other: a tap may land on either. */
 export const overlappingTapTargets = (
@@ -14,6 +15,7 @@ export const overlappingTapTargets = (
       .find(
         (candidate) =>
           overlapsPartly(target, candidate) &&
+          visibleTapOverlap(target, candidate) &&
           !ancestorsOf(candidate, elements).includes(target) &&
           !ancestorsOf(target, elements).includes(candidate),
       )
