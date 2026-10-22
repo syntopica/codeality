@@ -64,9 +64,10 @@ verified complete - `[-]` obsolete or superseded.
   4.6.2 candidate resolved successfully with the pinned manager: 28 package
   records added, 49 removed, and no retained integrity changes. Independent
   closure review found no unexpected movement; the simple-git/parser package
-  records are absent. Installation remains held: selected undici 8.12.3 reaches
-  the unchanged 72-hour age requirement at 2026-10-22 14:02:56.699 UTC. Do not
-  relax the policy or infer acceptance from resolution. A simple-git 4.0.1-only
+  records are absent. All new artifacts satisfy the unchanged repository policy
+  `minimumReleaseAge: 1440` (24 hours). The earlier 72-hour hold was an
+  incorrect default assumption and is superseded; no age policy or exception
+  changed. Do not infer acceptance from resolution. A simple-git 4.0.1-only
   override would still pin vulnerable argv-parser 2.0.0. The candidate's
   metadata-only audit reduced ten findings to six, removing both critical and
   both simple-git high findings without new advisory IDs. Candidate bytes/modes
@@ -83,17 +84,17 @@ verified complete - `[-]` obsolete or superseded.
   manifest floors and resolved successfully with the pinned manager. Its 28
   added and 30 removed package records remain within the tsup closure; retained
   integrities are unchanged and old esbuild 0.27.7 records are absent. All 28
-  new registry integrities match with no prereleases. Installation is held until
-  Rollup and its 25 platform packages reach 72 hours on 2026-10-23 05:36:56.444
-  UTC. Tsup 9 raises the build-tool Node floor and changes watcher/debug
-  internals; preserve published package runtime floors and the explicit
-  code-policy type emission workaround. The separate metadata audit reduced ten
-  findings to nine, removing only esbuild GHSA-g7r4-m6w7-qqqr without new IDs;
-  both Nuxt critical findings remain in this independent candidate. All 3,223
-  candidate bytes/modes retained parity. Next: admit frozen installation and
-  build/type/CLI/CJS/ESM/watch gates after age checks. No actual dependency
-  changed; do not merge this lock with the Nuxt candidate without a separately
-  verified combined graph.
+  new registry integrities match with no prereleases. All satisfy the unchanged
+  effective 24-hour repository policy; the earlier 72-hour installation hold was
+  incorrect and is superseded. Tsup 9 raises the build-tool Node floor and
+  changes watcher/debug internals; preserve published package runtime floors and
+  the explicit code-policy type emission workaround. The separate metadata audit
+  reduced ten findings to nine, removing only esbuild GHSA-g7r4-m6w7-qqqr
+  without new IDs; both Nuxt critical findings remain in this independent
+  candidate. All 3,223 candidate bytes/modes retained parity. Next: admit frozen
+  installation and build/type/CLI/CJS/ESM/watch gates after age checks. No
+  actual dependency changed; do not merge this lock with the Nuxt candidate
+  without a separately verified combined graph.
 
 - [!] **Upstream patches are unavailable for two high-severity audit findings.**
   Official advisories still list no patched release for node-forge through 1.4.0
