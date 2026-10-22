@@ -37,15 +37,6 @@ verified complete - `[-]` obsolete or superseded.
   run. Remaining: turbo still runs up to ten package tasks at once inside one
   admitted run; decide whether the wrapped gate also takes `--concurrency=2`.
 
-- [ ] **Correct the 127 development-dependency graph diagnostics.** On
-      2026-10-22, original `pnpm run deps:graph` exited 0 with 3,693 modules,
-      5,394 dependencies, zero errors and 127 `no-dev-dep-in-production-code`
-      warnings. No warning originates from the 43-file audit/alias change; an
-      unchanged-source baseline count was not rerun. Smallest next step:
-      distinguish real runtime dependency declaration defects from type-only or
-      peer-dependency classification, then correct the owning declarations or
-      checker without suppressing diagnostics or changing severity.
-
 ## JavaScript dependency security
 
 - [ ] **Qualify the remaining legacy typescript-eslint peer contexts.** The
@@ -60,8 +51,10 @@ verified complete - `[-]` obsolete or superseded.
       global family migration is implied by the shared fix.
 
 - [!] **Publish the verified quality-config audit and alias corrections.**
-  Source, 106 tests, both actual root graph gates and the exact packed consumer
-  boundary are verified. No npm release or registry consumer adoption has
+  Audit/alias source and its exact packed consumer boundary are verified. The
+  later runtime-dependency classification correction passes all 107 tests and
+  both actual root graphs; its final versioned package must be repacked and
+  checked during release. No npm release or registry consumer adoption has
   occurred. Smallest unblock action: owner approval for the versioned release
   and publication workflow; then verify installed registry consumers. Do not
   treat the source commit or tarball pack as publication.

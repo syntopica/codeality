@@ -942,6 +942,23 @@ Closed work from `TODO.md`, grouped by year and month.
 
 ### 2026-10
 
+- [x] 2026-10-22 — **Dependency graph:** Correct all 127 false
+      runtime-development dependency diagnostics.
+  - Result: Classify the complete emitted dependency types so erased type
+    imports and declared peers are distinguished from dev-only runtime
+    dependencies. Keep warning severity and every other rule unchanged. Six
+    real-detector controls preserve both genuine runtime warnings, including an
+    import resolving to a declaration file. No dependency, lock, path waiver or
+    suppression changed.
+  - Evidence: The focused integration test failed with the original rule (five
+    warnings instead of two), then passed after the classification fix. In
+    packages/quality-config, pnpm run lint, pnpm run type-check and pnpm run
+    test --maxWorkers=2 pass: 107 tests across 21 files. Original root pnpm run
+    deps:graph passes with zero violations across 3,698 modules and 5,401
+    dependencies; pnpm run deps:graph:aliased passes across all six workspaces
+    with no orphans. Full source, installed metadata/links/state, native
+    artifacts and pinned tools retain parity.
+
 - [x] 2026-10-22 — **JavaScript dependency security:** Remove the critical Nuxt
       dependency chain and accidental unit-test route.
   - Result: Adopted Nuxt 4.6.2 with the combined frozen graph; simple-git and

@@ -80,7 +80,10 @@ const REPO_SCOPE_RULES: IForbiddenRuleType[] = [
     comment:
       'A devDependency imported by shipped code will be missing at runtime for consumers.',
     from: { path: '^packages/[^/]+/src/', pathNot: '\\.(test|spec)\\.ts$' },
-    to: { dependencyTypes: ['npm-dev'] },
+    to: {
+      dependencyTypes: ['npm-dev'],
+      dependencyTypesNot: ['type-only', 'npm-peer'],
+    },
   },
   {
     name: 'no-deprecated-core',
