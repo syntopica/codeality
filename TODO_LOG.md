@@ -942,6 +942,25 @@ Closed work from `TODO.md`, grouped by year and month.
 
 ### 2026-10
 
+- [x] 2026-10-22 — **Python baseline:** Update both Python locks to the fixed
+      certifi trust bundle. (2026-10-22). The audit check failed while six other
+      required checks passed; advisory identifiers are absent from the human
+      log. Next step: reproduce the pinned audit and retain its structured
+      advisory report before selecting a dependency fix.
+  - Result: Update only certifi from 2026.7.22 to 2026.10.19 in the package and
+    template locks; preserve all other 44/47 registry records and original
+    quality policy. Existing local quality environments remain a separate
+    adoption task.
+  - Evidence: Both original isolated codeality-py gate --project commands exited
+    0 (seven required stages each), retaining coverage minimum 80 and original
+    pytest budgets 60/300 seconds. Explicit pip-audit --no-deps --disable-pip
+    --format json audits of 7 backend, 45 package and 48 template pins returned
+    zero vulnerabilities and zero skips. Frozen wheel-only sync, offline
+    hash-required editable installs, uv pip check, managed RECORD and
+    source/lock parity all passed. Exact final lock hashes:
+    2834b292397b2ed1d0f412ed4312cff1b96e361a118c9deae96ca70dbba17ccc and
+    126a0ec3ced9857b0932364152aea4563bca0ad7a5cdd60bb5b7584d0f3b2fcc.
+
 - [x] 2026-10-22 — **ui-quality:** Support explicit numeric primary sort keys.
   - Result: Read declarations and legacy text atomically; accept one rendered
     finite decimal declaration and preserve existing parsing for every rejected

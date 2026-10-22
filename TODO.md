@@ -7,11 +7,11 @@ verified complete - `[-]` obsolete or superseded.
 
 ## Python baseline
 
-- [ ] Investigate the Python gate pip-audit findings in CI run 39770037681
-      (2026-10-22). The audit check failed while six other required checks
-      passed; advisory identifiers are absent from the human log. Next step:
-      reproduce the pinned audit and retain its structured advisory report
-      before selecting a dependency fix.
+- [~] Adopt certifi 2026.10.19 in the two existing local Python quality
+  environments. Both installed metadata checks still report 2026.7.22 (45/48
+  distributions). Exact managed files and recoverable backups are prepared.
+  Next: apply the verified wheel offline without dependencies or builds; verify
+  the other 44/47 identities, RECORD, SSL loading and pip check.
 
 - [ ] Python backlog left after four passes (every gate exit 0 on a clean
       `origin` worktree): DJCenterDeluxe 4 (test-fixture SQL, accepted).
