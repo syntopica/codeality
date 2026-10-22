@@ -942,6 +942,33 @@ Closed work from `TODO.md`, grouped by year and month.
 
 ### 2026-10
 
+- [x] 2026-10-22 — **JavaScript dependency security:** **Patch the newly indexed
+      Next.js security findings.** Automatic CI 39823659562 at
+      d73307870e2ca81478027bb4af3eb72161a87c6b fails audit:check with critical
+      GHSA-2464-fhr4-w9xw and high GHSA-p3m5-59mp-jv5r through
+      templates/nextjs-app. Official advisories mark Next 16.0.0 through 16.4.0
+      affected and 16.4.1 patched. The fresh report has seven advisories, two
+      unwaived, zero expired and four existing exceptions; prior five-advisory
+      acceptance is historical. Smallest next step: qualify the corrected Next
+      family and full resolved graph against the unchanged 1440-minute
+      release-age policy, then preserve, install and run the original template
+      and audit gates. Do not add exceptions or bypass release age. References:
+      https://github.com/advisories/GHSA-2464-fhr4-w9xw and
+      https://github.com/advisories/GHSA-p3m5-59mp-jv5r.
+  - Result: Raised four Next-family declaration floors to 16.4.1 and replaced
+    the twelve matching lock artifacts. Eight upward shared snapshot bindings
+    remain within their declared ranges and were covered by full CI. Preserved
+    public peer ranges, Sharp 0.35.5, release-age policy, existing exceptions
+    and local data.
+  - Evidence: Next 16.4.1: pnpm audit --json retains five historical findings
+    and removes GHSA-2464-fhr4-w9xw and GHSA-p3m5-59mp-jv5r; pnpm run
+    audit:check passes with zero unwaived and zero expired findings. The
+    original full root check:ci:run passes 58 tasks, including 538 UI tests, and
+    the actual checkout passes the original Next build, lint:fast, type-check,
+    lint, format:check, coverage tests, dupes, knip, check:quality, root
+    lint/format and both dependency graphs. Full 19-workspace frozen
+    installation matches the qualified graph and native identities.
+
 - [x] 2026-10-22 — **ui-quality:** Detect interaction-driven height changes in
       semantic tab lists.
   - Result: Tab lists share the existing four-group/six-sample budget, measure
