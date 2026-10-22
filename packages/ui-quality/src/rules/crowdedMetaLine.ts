@@ -1,5 +1,6 @@
 import { childrenIndex } from '@/rules/childrenIndex.js'
 import { crowdedRowOf } from '@/rules/crowdedRowOf.js'
+import { hasEllipsizedText } from '@/rules/hasEllipsizedText.js'
 import { MIN_VISIBLE_CHARS } from '@/rules/MIN_VISIBLE_CHARS.js'
 import type { Rule } from '@/rules/Rule.js'
 import { visibleCharsOf } from '@/rules/visibleCharsOf.js'
@@ -11,8 +12,7 @@ import { visibleCharsOf } from '@/rules/visibleCharsOf.js'
 export const crowdedMetaLine: Rule = (snapshot) => {
   const children = childrenIndex(snapshot.elements)
   return snapshot.elements.flatMap((element) => {
-    if (element.text === '' || element.textOverflow !== 'ellipsis') return []
-    if (element.scrollWidth <= element.clientWidth + 1) return []
+    if (element.text === '' || !hasEllipsizedText(element)) return []
     const visible = visibleCharsOf(element)
     if (visible >= MIN_VISIBLE_CHARS) return []
     const row = crowdedRowOf(element, snapshot.elements, children)

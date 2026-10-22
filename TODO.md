@@ -128,14 +128,15 @@ plus the release:
     ("Otras operaciones con in…", 3 children, 320px aside) because the visible
     text is over 12 characters; the casilla label was still unreadable.
 
-- [ ] **`label-wrap`: the misaligned icon half, and line-clamp for
-      `crowded-meta-line`** (2026-10-12, deferred from the Modelos panel rules).
-      `label-wrap` measures the wrap only; an icon centred against a two-line
-      label is not measured, and `crowded-meta-line` reads
-      `text-overflow: ellipsis` only, not `-webkit-line-clamp`. Smallest next
-      step: have the probe read `-webkit-line-clamp`, and add a fixture with an
-      svg beside a wrapped `dt` to measure the icon's centre against the label's
-      first line.
+- [ ] **`label-wrap`: align wrapped-label icons with the first text line**
+      (2026-10-12). `textBoxOf` follows a single-child chain and misses sibling
+      SVG/text labels, while the probe lacks the first text line's vertical
+      centre. Smallest next step: measure that centre from own-text Range
+      rectangles, identify an unambiguous SVG/text branch locally to the label
+      rule, and compare against a real-browser first-line-aligned control. Keep
+      missing legacy metadata conservative, ambiguous compositions unclassified,
+      and SVG viewport geometry distinct from optical painted alignment.
+      Calibrate a tolerance from fixtures before changing detection.
 
 - [~] **Release ui-quality, db-quality and test-quality with the warning level
   removed.** ui-quality 0.8.0 is out (2026-10-11, logged); db-quality and

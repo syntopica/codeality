@@ -2,6 +2,9 @@
 
 ## [Unreleased]
 
+- Fix: crowded metadata detects actively truncated line-clamped labels, while
+  fitting text and legacy snapshots retain their prior behavior.
+
 - Fix: table row-height checks allow compact headers while preserving oversized
   header and inconsistent body-row findings.
 

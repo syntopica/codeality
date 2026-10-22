@@ -32,6 +32,8 @@ export type ElementBox = {
   /** Computed `flex-wrap`: a wrapping container lays its children out in lines, not rows. */
   flexWrap: string
   textOverflow: string
+  /** Configured legacy line clamp; 0 for none, absent in older snapshots. */
+  lineClamp?: number
   scrollWidth: number
   clientWidth: number
   scrollHeight: number

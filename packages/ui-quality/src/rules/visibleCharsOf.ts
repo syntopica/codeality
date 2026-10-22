@@ -1,8 +1,12 @@
 import type { ElementBox } from '@/model/ElementBox.js'
+import { isLineClamped } from '@/rules/isLineClamped.js'
 
-/** Roughly how many characters of an ellipsized text show: its length scaled by the share of its width on screen. */
+/** Estimate visible characters from horizontal extent and, for an active clamp, the visible height share. */
 export const visibleCharsOf = (element: ElementBox): number =>
   Math.floor(
-    (element.textLength * element.clientWidth) /
-      Math.max(element.scrollWidth, 1),
+    ((element.textLength * element.clientWidth) /
+      Math.max(element.scrollWidth, 1)) *
+      (isLineClamped(element)
+        ? element.clientHeight / Math.max(element.scrollHeight, 1)
+        : 1),
   )

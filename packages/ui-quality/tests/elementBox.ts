@@ -27,6 +27,7 @@ export const elementBox = (
   insetTop: 0,
   flexWrap: 'nowrap',
   textOverflow: 'clip',
+  lineClamp: 0,
   scrollWidth: 100,
   clientWidth: 100,
   contentHeight: 20,

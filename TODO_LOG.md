@@ -942,6 +942,21 @@ Closed work from `TODO.md`, grouped by year and month.
 
 ### 2026-10
 
+- [x] 2026-10-22 — **UI rules:** Detect actively clamped crowded metadata.
+  - Result: Capture the computed line clamp and combine horizontal and vertical
+    visible-text estimates for active clipping. Preserve roomy, multi-line and
+    missing-metadata controls. Icon alignment and the private Modelos label with
+    more than twelve visible characters remain open.
+  - Evidence: Package lint, type-check and build passed, as did normal and
+    production Knip with --treat-config-hints-as-errors. The independently
+    source-matched isolated command node node_modules/vitest/vitest.mjs run
+    --coverage --maxWorkers=1 passed 118 files and 458 tests with original
+    coverage thresholds: 98.1% lines, 95.4% functions and 91.82% branches.
+    Earlier execution passed 452 tests with six CLI timeouts; those six timed
+    out in both the directed retry and the published base control. Assertions,
+    timeouts and coverage thresholds were unchanged. Independent review found no
+    issues.
+
 - [x] 2026-10-22 — **Compact table headers:** Allow a compact header above
       consistently sized data rows.
   - Result: Header rows shorter than the body median no longer produce

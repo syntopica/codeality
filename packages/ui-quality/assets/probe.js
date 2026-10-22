@@ -547,6 +547,7 @@
       insetTop: parseFloat(style.top) || 0,
       flexWrap: style.flexWrap,
       textOverflow: style.textOverflow,
+      lineClamp: Math.max(0, parseInt(style.webkitLineClamp, 10) || 0),
       scrollWidth: element.scrollWidth,
       clientWidth: element.clientWidth,
       scrollHeight: element.scrollHeight,
