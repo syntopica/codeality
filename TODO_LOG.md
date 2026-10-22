@@ -942,11 +942,21 @@ Closed work from `TODO.md`, grouped by year and month.
 
 ### 2026-10
 
+- [x] 2026-10-22 — **Python baseline:** Adopt the fixed certifi bundle in both
+      local Python quality environments.
+  - Result: Replace only the managed certifi distributions with the verified
+    official 2026.10.19 wheel, offline and without dependencies or builds.
+    Preserve both editable roots and recoverable exact old-file backups.
+  - Evidence: Targeted uv pip install --offline --no-index --no-deps --no-build
+    --reinstall-package certifi completed in both exact prefixes. Both managed
+    RECORD checks, no-network SSL context loading (120 CA certificates) and uv
+    pip check passed. The other 44/47 distribution metadata and direct_url
+    identities, all tracked source hashes/modes and runtime prefixes stayed
+    identical. Shared 300/120 supervisor exited 0 in 4.07 seconds with no guard
+    trigger or owned process survivors.
+
 - [x] 2026-10-22 — **Python baseline:** Update both Python locks to the fixed
-      certifi trust bundle. (2026-10-22). The audit check failed while six other
-      required checks passed; advisory identifiers are absent from the human
-      log. Next step: reproduce the pinned audit and retain its structured
-      advisory report before selecting a dependency fix.
+      certifi trust bundle.
   - Result: Update only certifi from 2026.7.22 to 2026.10.19 in the package and
     template locks; preserve all other 44/47 registry records and original
     quality policy. Existing local quality environments remain a separate
