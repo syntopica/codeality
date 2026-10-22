@@ -53,19 +53,30 @@ verified complete - `[-]` obsolete or superseded.
 
 ## JavaScript dependency security
 
-- [ ] **Remediate the Nuxt template's critical simple-git dependency chain.** A
-      fresh pnpm 12.9.1 `audit --json` on unchanged main 5c9ae09 returned exit 1
-      with 10 advisories: two critical, four high, two moderate and two low.
-      Both critical paths enter through Nuxt development tooling and resolve
-      simple-git 3.36.0 with @simple-git/argv-parser 1.1.1. Official advisories
-      identify simple-git 4.0.1 and argv-parser 2.0.1 as patched; confirm their
-      registry publication and release age before selecting a compatible
-      introducing-package update. Preserve the raw audit and all other findings.
-      Smallest next step: inspect the current Nuxt/devtools dependency ranges,
-      prepare a scoped lock candidate and verify its consumers; do not force an
-      untested major override. References:
-      https://github.com/advisories/GHSA-x6jw-m9v5-85vh and
-      https://github.com/advisories/GHSA-v5rq-49vh-5v5c. No dependency changed.
+- [~] **Remediate the Nuxt template's critical simple-git dependency chain.** A
+  fresh pnpm 12.9.1 `audit --json` on unchanged main 5c9ae09 returned exit 1
+  with 10 advisories: two critical, four high, two moderate and two low. Both
+  critical paths enter through Nuxt development tooling and resolve simple-git
+  3.36.0 with @simple-git/argv-parser 1.1.1. Official advisories identify
+  simple-git 4.0.1 and argv-parser 2.0.1 as patched; confirm their registry
+  publication and release age before selecting a compatible introducing-package
+  update. Preserve the raw audit and all other findings. A scratch-only Nuxt
+  4.6.2 candidate resolved successfully with the pinned manager: 28 package
+  records added, 49 removed, and no retained integrity changes. Independent
+  closure review found no unexpected movement; the simple-git/parser package
+  records are absent. Installation remains held: selected undici 8.12.3 reaches
+  the unchanged 72-hour age requirement at 2026-10-22 14:02:56.699 UTC. Do not
+  relax the policy or infer acceptance from resolution. A simple-git 4.0.1-only
+  override would still pin vulnerable argv-parser 2.0.0. The candidate's
+  metadata-only audit reduced ten findings to six, removing both critical and
+  both simple-git high findings without new advisory IDs. Candidate bytes/modes
+  and all twelve real dependency inputs retained parity. The audit harness used
+  an isolated XDG mutex; explicitly select the real shared heavy-suite state
+  before heavy gates. Smallest next step: verify age, frozen installation and
+  functional consumer gates before adopting the candidate. Six findings remain
+  unsuppressed. References: https://github.com/advisories/GHSA-x6jw-m9v5-85vh
+  and https://github.com/advisories/GHSA-v5rq-49vh-5v5c. No actual dependency
+  changed.
 
 - [!] **Upstream patches are unavailable for two high-severity audit findings.**
   Official advisories still list no patched release for node-forge through 1.4.0
