@@ -942,6 +942,16 @@ Closed work from `TODO.md`, grouped by year and month.
 
 ### 2026-10
 
+- [x] 2026-10-22 — **ui-quality:** Exclude the generated browser bundle from
+      root formatting.
+  - Result: Add the exact generated asset directory to the root ignore file;
+    authoring assets and helpers retain formatting checks. CI run 39770037681
+    passed all 58 Turbo tasks and root ESLint, then exposed the missing ignore
+    at the formatting step.
+  - Evidence: Prettier 3.9.10 file-info assertions classify the generated bundle
+    as ignored and authoring sources as included; root `prettier --check .`
+    passes. The independent Python pip-audit failure remains in TODO.md.
+
 - [x] 2026-10-22 — **ui-quality:** Build a composable browser probe distribution
       foundation.
   - Result: Bundle the unchanged legacy probe body as a self-contained browser

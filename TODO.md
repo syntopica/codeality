@@ -7,6 +7,12 @@ verified complete - `[-]` obsolete or superseded.
 
 ## Python baseline
 
+- [ ] Investigate the Python gate pip-audit findings in CI run 39770037681
+      (2026-10-22). The audit check failed while six other required checks
+      passed; advisory identifiers are absent from the human log. Next step:
+      reproduce the pinned audit and retain its structured advisory report
+      before selecting a dependency fix.
+
 - [ ] Python backlog left after four passes (every gate exit 0 on a clean
       `origin` worktree): DJCenterDeluxe 4 (test-fixture SQL, accepted).
       djplayerdeluxe 39 findings and 28 mypy ignore sections: the Qt, audio and
