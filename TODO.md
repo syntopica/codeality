@@ -51,6 +51,33 @@ verified complete - `[-]` obsolete or superseded.
       regression and required quality gates before publishing. Do not change
       dependencies while the current source gates are frozen.
 
+## JavaScript dependency security
+
+- [ ] **Remediate the Nuxt template's critical simple-git dependency chain.** A
+      fresh pnpm 12.9.1 `audit --json` on unchanged main 5c9ae09 returned exit 1
+      with 10 advisories: two critical, four high, two moderate and two low.
+      Both critical paths enter through Nuxt development tooling and resolve
+      simple-git 3.36.0 with @simple-git/argv-parser 1.1.1. Official advisories
+      identify simple-git 4.0.1 and argv-parser 2.0.1 as patched; confirm their
+      registry publication and release age before selecting a compatible
+      introducing-package update. Preserve the raw audit and all other findings.
+      Smallest next step: inspect the current Nuxt/devtools dependency ranges,
+      prepare a scoped lock candidate and verify its consumers; do not force an
+      untested major override. References:
+      https://github.com/advisories/GHSA-x6jw-m9v5-85vh and
+      https://github.com/advisories/GHSA-v5rq-49vh-5v5c. No dependency changed.
+
+- [!] **Upstream patches are unavailable for two high-severity audit findings.**
+  Official advisories still list no patched release for node-forge through 1.4.0
+  (GHSA-86w9-cpqp-85rv, Nuxt/Nitro/listhen path) or braces through 3.0.3
+  (GHSA-vfj7-8cjw-p6xm, multiple lint/type tooling paths). A successful UI or
+  Python package gate does not make this whole-workspace audit green. Smallest
+  next step: monitor the maintained introducing dependency and actual patched
+  publication; retain the advisories without suppressions or removed tooling.
+  References: https://github.com/advisories/GHSA-86w9-cpqp-85rv and
+  https://github.com/advisories/GHSA-vfj7-8cjw-p6xm. Other audit findings remain
+  in the original report and require individual triage.
+
 ## ui-quality
 
 The candidates of the 2026-10-01 review and the 2026-10-08/09 inpractise-demo
@@ -58,14 +85,21 @@ findings have shipped (`ragged-column`, `interaction-shift`, `narrow-page`,
 unreleased on `main`; see `TODO_LOG.md`). One half of those findings is left,
 plus the release:
 
-- [ ] **`sort-broken` fires on a server-sorted board that sorts correctly.**
-      TienesLaVibra `/admin/councils` (2026-10-14): the "Ayuntamiento / Evento"
-      header is a `<Link>` to `?sort=nombre`; clicking it twice in Playwright
-      gives A..Z then Z..A, and the probe's own comparator accepts both orders,
-      yet the probe reports "out of order both times" on the first screen (1920
-      light) only, every run. Suspect the read lands during the RSC navigation
-      after the filter probe's restore. Next step: log the keys
-      `orderAfterClick` reads on that page.
+- [~] **`sort-broken` fires on a server-sorted board that sorts correctly.**
+  TienesLaVibra `/admin/councils` (2026-10-14): the "Ayuntamiento / Evento"
+  header is a `<Link>` to `?sort=nombre`; clicking it twice in Playwright gives
+  A..Z then Z..A, and the probe's own comparator accepts both orders, yet the
+  probe reports "out of order both times" on the first screen (1920 light) only,
+  every run. Suspect the read lands during the RSC navigation after the filter
+  probe's restore. Next step: log the keys `orderAfterClick` reads on that page.
+  Source review on 2026-10-22 finds the current link-only server header is not
+  exercised by sortTargetOf, which only admits buttons or aria-sort headers;
+  missing findings therefore do not verify a fix. The generic waiter can accept
+  two stable reads of an intermediate changed state and predates this report. No
+  executed race reproduction exists yet. Next: add a controlled deferred-phase
+  regression and a local server-link fixture with explicit commit barriers and
+  broken-sort controls. Preserve the bounded deadline; do not increase sleeps or
+  blindly click links.
 - [ ] **Identify the primary sort value in multiline count/year cells.** The
       tied-count sample `1\n2026`, `1\n2024`, `2\n2025` still reads as unordered
       before and after the digit-concatenation correction. Raw `innerText` does
