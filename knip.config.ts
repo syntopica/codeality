@@ -15,30 +15,12 @@ const TEMPLATE_GLOB = [
   '!**/{vite,vitest,playwright,astro,nuxt,next,tailwind,postcss,eslint,knip}.config.*!',
 ]
 
-// Each template installs these as peer dependencies of
-// @syntopica/eslint-config: the config factories (base.ts and friends)
-// `import` them by bare specifier, and pnpm's isolated node_modules needs
-// each consumer to declare them directly for that import to resolve. No
-// template file ever imports these packages itself (they only import from
-// '@syntopica/eslint-config/*'), so knip can't see the real caller and
-// reports them as unused.
-const TEMPLATE_ESLINT_PEER_DEPENDENCIES = [
-  '@eslint/js',
-  'eslint-config-prettier',
-  'eslint-plugin-promise',
-  'eslint-plugin-security',
-  'eslint-plugin-unused-imports',
-  'typescript-eslint',
-]
-
 // The tools @syntopica/quality-config's runners spawn through `pnpm exec`:
 // `baseline-dupes` spawns `jscpd`, `baseline-type-coverage` spawns
-// `type-coverage`, `baseline-hooks-install` spawns `lefthook`. A template
+// `type-coverage`. A template
 // declares the dependency because the runner spawns the binary rather than
-// vendoring it, but nothing in the template names it where knip can see. Mirrors BASELINE_RUNNER_DEPENDENCIES in that
-// package's own knip factory, which covers the per-template gate a scaffolded
-// project runs.
-const TEMPLATE_RUNNER_DEPENDENCIES = ['jscpd', 'type-coverage', 'lefthook']
+// vendoring it, but the root dependency graph does not see the executable use.
+const TEMPLATE_RUNNER_DEPENDENCIES = ['jscpd', 'type-coverage']
 
 const config: KnipConfig = {
   workspaces: {
@@ -92,14 +74,8 @@ const config: KnipConfig = {
       project: ['src/**/*.ts!', 'tests/**/*.ts'],
     },
     'packages/ui-quality': {
-      entry: ['bin/*.mjs!', 'tsup.probe.config.ts', 'assets/probe.js!'],
-      project: [
-        'src/**/*.ts!',
-        'tests/**/*.ts',
-        'tsup.probe.config.ts',
-        'assets/probe.js!',
-        'assets/probe/**/*.js!',
-      ],
+      entry: ['bin/*.mjs!'],
+      project: ['src/**/*.ts!', 'tests/**/*.ts', 'assets/probe/**/*.js!'],
     },
     'packages/test-quality': {
       // The inventory probe in assets/ is run with node inside the audited
@@ -136,50 +112,27 @@ const config: KnipConfig = {
     'templates/*': {
       entry: TEMPLATE_GLOB,
       project: TEMPLATE_GLOB,
-      ignoreDependencies: [
-        ...TEMPLATE_RUNNER_DEPENDENCIES,
-        ...TEMPLATE_ESLINT_PEER_DEPENDENCIES,
-      ],
+      ignoreDependencies: [...TEMPLATE_RUNNER_DEPENDENCIES],
     },
     'templates/vite-react-app': {
       entry: ['**/*.{ts,tsx,css}!', ...TEMPLATE_GLOB.slice(1)],
       project: ['**/*.{ts,tsx,css}!', ...TEMPLATE_GLOB.slice(1)],
-      ignoreDependencies: [
-        ...TEMPLATE_RUNNER_DEPENDENCIES,
-        ...TEMPLATE_ESLINT_PEER_DEPENDENCIES.filter(
-          (dependency) => dependency !== 'eslint-config-prettier',
-        ),
-      ],
+      ignoreDependencies: [...TEMPLATE_RUNNER_DEPENDENCIES],
     },
     'templates/tauri-app': {
       entry: ['**/*.{ts,tsx,css}!', ...TEMPLATE_GLOB.slice(1)],
       project: ['**/*.{ts,tsx,css}!', ...TEMPLATE_GLOB.slice(1)],
-      ignoreDependencies: [
-        ...TEMPLATE_RUNNER_DEPENDENCIES,
-        ...TEMPLATE_ESLINT_PEER_DEPENDENCIES.filter(
-          (dependency) => dependency !== 'eslint-config-prettier',
-        ),
-      ],
+      ignoreDependencies: [...TEMPLATE_RUNNER_DEPENDENCIES],
     },
     'templates/vue-app': {
       entry: ['**/*.{ts,tsx,vue,css}!', ...TEMPLATE_GLOB.slice(1)],
       project: ['**/*.{ts,tsx,vue,css}!', ...TEMPLATE_GLOB.slice(1)],
-      ignoreDependencies: [
-        ...TEMPLATE_RUNNER_DEPENDENCIES,
-        ...TEMPLATE_ESLINT_PEER_DEPENDENCIES.filter(
-          (dependency) => dependency !== 'eslint-config-prettier',
-        ),
-      ],
+      ignoreDependencies: [...TEMPLATE_RUNNER_DEPENDENCIES],
     },
     'templates/astro-site': {
       entry: ['**/*.{ts,tsx,astro}!', ...TEMPLATE_GLOB.slice(1)],
       project: ['**/*.{ts,tsx,astro}!', ...TEMPLATE_GLOB.slice(1)],
-      ignoreDependencies: [
-        ...TEMPLATE_RUNNER_DEPENDENCIES,
-        ...TEMPLATE_ESLINT_PEER_DEPENDENCIES.filter(
-          (dependency) => dependency !== 'typescript-eslint',
-        ),
-      ],
+      ignoreDependencies: [...TEMPLATE_RUNNER_DEPENDENCIES],
     },
     'templates/nuxt-app': {
       // A workspace-specific key replaces rather than merges with the
@@ -189,11 +142,6 @@ const config: KnipConfig = {
       project: ['**/*.{ts,tsx,vue,css}!', ...TEMPLATE_GLOB.slice(1)],
       ignoreDependencies: [
         ...TEMPLATE_RUNNER_DEPENDENCIES,
-        ...TEMPLATE_ESLINT_PEER_DEPENDENCIES.filter(
-          (dependency) =>
-            dependency !== 'eslint-config-prettier' &&
-            dependency !== 'typescript-eslint',
-        ),
         // vitest-environment-nuxt is a real dependency, not a false
         // positive: templates/nuxt-app/knip.config.ts (the per-template
         // gate a project scaffolded from this template runs) requires it

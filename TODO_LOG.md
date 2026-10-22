@@ -942,6 +942,20 @@ Closed work from `TODO.md`, grouped by year and month.
 
 ### 2026-10
 
+- [x] 2026-10-22 — **Quality:** Remove stale root and template Knip hints.
+  - Result: Removed 42 unused template declarations and obsolete root
+    exemptions. Shared Knip compatibility now distinguishes current
+    runtime-owned dependencies, legacy metadata and real unused custom
+    dependencies. Test reporters remain explicit subprocess fixtures.
+  - Evidence: pnpm run check:ci:run: 58/58 tasks passed, 0 cached; all eight
+    standalone pnpm exec knip --config ./knip.config.ts
+    --treat-config-hints-as-errors gates passed. Quality-config lint, type-check
+    and pnpm run test --maxWorkers=2 passed all 119 tests. Root strict Knip and
+    production mode, lint:root, format:check, deps:graph and deps:graph:aliased
+    passed. pnpm run audit:check passed with 0 unwaived and 0 expired
+    advisories; original waiver policy unchanged. Frozen full-19-workspace
+    installation verified. No registry release.
+
 - [x] 2026-10-22 — **JavaScript dependency security:** **Patch the newly indexed
       ip-address security finding.** Automatic CI 39832505747 at
       a9952345429c2535266d52da8f78a92a52bf1124 removes both Next.js findings but

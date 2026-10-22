@@ -174,18 +174,6 @@ plus the release:
       consumer and validate its findings against this case before rolling it
       out.
 
-- [~] **Remove stale root and template Knip hints** (2026-10-21). Root workspace
-  configuration now passes `pnpm knip --treat-config-hints-as-errors` with all
-  40 former hints removed; production strict mode also exits 0 and retains its
-  two pre-existing warning-only binaries. CSS source patterns for Vite React,
-  Vite Vue, Tauri and Nuxt now include CSS with production markers; four
-  real-Knip regression fixtures failed before and the quality-config suite now
-  passes 36 tests. Standalone Vite React strict mode retains one
-  `eslint-config-prettier` compatibility-exemption hint. Smallest next step:
-  reconcile that exemption against per-consumer ESLint loading without dropping
-  compatibility for older shared configs; check the other standalone template
-  gates as well. No package was published.
-
 ## Routed from `~/p/TODO.md` (2026-10-03)
 
 Moved verbatim from `~/p/TODO.md` on 2026-10-03; the routing table in

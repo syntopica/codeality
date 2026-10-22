@@ -10,6 +10,7 @@ import { FRAMEWORK_ENTRIES, type KnipFramework } from './knip-framework'
 import { matchedPresetPatterns } from './matchedPresetPatterns'
 import { peersOfListedDependencies } from './peersOfListedDependencies'
 import { PRODUCTION_PROJECT_EXCLUSIONS } from './PRODUCTION_PROJECT_EXCLUSIONS'
+import { readInstalledDependencyNames } from './readInstalledDependencyNames'
 import { readListedDependencies } from './readListedDependencies'
 import { runnerDependenciesToIgnore } from './runnerDependenciesToIgnore'
 
@@ -103,6 +104,9 @@ export const createKnipConfig = (options: {
 }): KnipConfiguration => {
   const cwd = options.cwd ?? process.cwd()
   const hostedPeers = peersOfListedDependencies(cwd)
+  const sharedConfigDependencies = new Set(
+    readInstalledDependencyNames(cwd, '@syntopica/eslint-config'),
+  )
   const usesSharedEslint = readListedDependencies(cwd).includes(
     '@syntopica/eslint-config',
   )
@@ -138,10 +142,15 @@ export const createKnipConfig = (options: {
     ignoreExportsUsedInFile: true,
     ignoreBinaries: ['gitleaks', ...(options.ignoreBinaries ?? [])],
     ignoreDependencies: [
-      ...runnerDependenciesToIgnore(cwd),
+      ...runnerDependenciesToIgnore(cwd).filter(
+        (dependency) => !hostedPeers.has(dependency),
+      ),
       ...(FRAMEWORK_RUNTIME_PACKAGES[options.framework] ?? []),
       ...ESLINT_PEER_DEPENDENCIES.filter(
-        (dependency) => usesSharedEslint && !hostedPeers.has(dependency),
+        (dependency) =>
+          usesSharedEslint &&
+          !hostedPeers.has(dependency) &&
+          !sharedConfigDependencies.has(dependency),
       ),
       ...(options.ignoreDependencies ?? []),
     ],
