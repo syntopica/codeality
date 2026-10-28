@@ -16,6 +16,18 @@ verified complete - `[-]` obsolete or superseded.
   `<name>-v{{version}}`, environment `pub.dev`); CLAUDE.md has the steps. Until
   then consumers (stagebeat) pin both by git ref.
 
+- [ ] 2026-10-28 **Swift: an unreadable source file is checked as empty and
+      passes.**
+      `packages/codeality-swift/Sources/CodealitySwiftCore/Parsing/ParseSourceFile.swift:12`
+      reads with `(try? String(contentsOf: url, encoding: .utf8)) ?? ""`, so a
+      file that exists but cannot be read (permissions, invalid UTF-8) is parsed
+      as empty, counted as scanned and can exit 0 while its violations go
+      unseen. The function already `throws`, and the Dart engine's
+      `readAsStringSync` fails loudly. Reported by Perch Scan cold outreach
+      (mail 2026-10-23), confirmed by reading the code. Smallest step: drop
+      `try?` so the read error propagates (or emit a parse-error finding), with
+      a test on an unreadable fixture.
+
 ## JavaScript dependency security
 
 - [!] **Publish the verified quality-config audit and alias corrections.**
