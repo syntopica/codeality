@@ -52,6 +52,21 @@ verified complete - `[-]` obsolete or superseded.
 
 ## ui-quality
 
+- [ ] **`placeholder-fit` rejects a fully visible multiline textarea hint.**
+      TienesLaVibra re-audit on 2026-10-24 reproduces this with the actual
+      `captureScreen` and `runRules` engine at 390x844: measured placeholder
+      width 617.56px, content width 258px, but all 86 characters wrap into three
+      lines (72px) inside 120px of content height. Textarea client/scroll
+      dimensions both remain 290x152px, and the paired screenshot confirms the
+      full hint is visible. The current rule only compares canvas width.
+      Evidence:
+      `../tieneslavibra/.codeality-ui/public-placeholder-wrap-proof-20261024-P26f7v/proof.json`;
+      command executed in that repo:
+      `nice -n 19 bun --tsconfig-override ../codeality/packages/ui-quality/tsconfig.json .codeality-ui/public-placeholder-wrap-proof-20261024.ts`
+      (exit 0). Next: account for textarea wrapping and available content
+      height; retain the single-line width guard for inputs. This synthetic
+      reproduction does not classify every finding on the real pages.
+
 The candidates of the 2026-10-01 review and the 2026-10-08/09 inpractise-demo
 findings have shipped (`ragged-column`, `interaction-shift`, `narrow-page`,
 unreleased on `main`; see `TODO_LOG.md`). One half of those findings is left,
