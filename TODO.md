@@ -52,6 +52,33 @@ verified complete - `[-]` obsolete or superseded.
 
 ## ui-quality
 
+- [ ] 2026-10-31 **CI critical path: `ui-quality:test` is one serial test
+      file.** In the `Verify` job, `@syntopica/ui-quality:test` took 197-250 s
+      of turbo's 391-524 s in runs 39820070499, 39847722320 and 40732843228
+      (turbo prints each group when its task finishes, so a group's time is the
+      gap since the previous group). Locally it is not CPU-bound: tests are 98%
+      of vitest's Duration, 2 workers 187.5 s, 4 workers 171.7 s, `--no-isolate`
+      171.2 s. One file dominates: `tests/cli.integration.test.ts` runs its 12
+      tests serially in one worker for 165 s of the 327 s summed file time; next
+      are `tests/cli.grid-pager.integration.test.ts` 39 s and
+      `tests/capture/navigation.integration.test.ts` 20 s. Separately,
+      `check:ci:run` runs turbo with `--concurrency=1` and
+      `VITEST_MAX_WORKERS=2` (01bb08a4, set for this host) on the 4-vCPU runner
+      as well. Smallest step: split `cli.integration.test.ts` into per-scenario
+      files so workers can share them, then re-measure `ui-quality:test`. After
+      that, decide whether CI alone may raise turbo concurrency.
+
+- [ ] 2026-10-31 **`turbo --affected` would skip work it should run.** Probed in
+      a scratch worktree with
+      `TURBO_SCM_BASE=HEAD~1 turbo run test lint type-check --affected --dry=json`:
+      a change in `packages/codeality-dart/lib/` or in root `scripts/*.mjs`
+      selects 0 packages, so the run would pass without checking anything. A
+      change in `packages/eslint-plugin-code-policy/src` or
+      `packages/quality-config/jscpd.json` selects all 18. CI does not use
+      `--affected` today. Smallest step: if `--affected` is ever adopted, run
+      the root and non-pnpm checks unconditionally, and add a test that a hidden
+      change fails the run instead of skipping it.
+
 - [ ] **`placeholder-fit` rejects a fully visible multiline textarea hint.**
       TienesLaVibra re-audit on 2026-10-24 reproduces this with the actual
       `captureScreen` and `runRules` engine at 390x844: measured placeholder
