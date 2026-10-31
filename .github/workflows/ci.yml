@@ -42,8 +42,14 @@ jobs:
       - name: Install Playwright Chromium
         run: pnpm --filter @syntopica/ui-quality exec playwright install --with-deps chromium
 
+      # Package tasks stay serial (--concurrency=1 in check:ci:run), but the
+      # runner is a dedicated 4-vCPU VM, so one test task may use all four
+      # cores. The default of two workers is for the shared development host.
+      # ui-quality's browser tests mostly wait, and gain the most from this.
       - name: check:ci
         run: pnpm run check:ci
+        env:
+          VITEST_MAX_WORKERS: '4'
 
       # Lighthouse needs every template's built bundle to actually render.
       # The client-side templates validate `import.meta.env` against a Zod
