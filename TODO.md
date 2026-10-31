@@ -63,9 +63,11 @@ verified complete - `[-]` obsolete or superseded.
   171.7 s to 112.4 s locally (540/540 pass). At 2 workers it stays ~199 s, so
   CI's `Verify` step now sets `VITEST_MAX_WORKERS=4`; `check:ci:run` keeps 2 as
   the default for this host, and turbo stays `--concurrency=1`, which fixed the
-  orphan-probe null status of runs 39814991736/39816197482. Remaining: confirm
-  on the next automatic `Verify` run that `ui-quality:test` drops and nothing
-  flakes. If it flakes, revert the CI env to 2.
+  orphan-probe null status of runs 39814991736/39816197482. First CI run with
+  both changes, 41212085819 (b8718a08 + 770696a0): `ui-quality:test` 144 s (was
+  197-250 s), turbo 6m45s (was 8m44s), Verify job 8m51s (was 10m54s), all green.
+  Remaining: watch two more automatic runs for flakes, and if they stay green,
+  try `VITEST_MAX_WORKERS=6` (the browser tests mostly wait) before closing.
 
 - [ ] 2026-10-31 **`turbo --affected` would skip work it should run.** Probed in
       a scratch worktree with
