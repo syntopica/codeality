@@ -52,21 +52,20 @@ verified complete - `[-]` obsolete or superseded.
 
 ## ui-quality
 
-- [ ] 2026-10-31 **CI critical path: `ui-quality:test` is one serial test
-      file.** In the `Verify` job, `@syntopica/ui-quality:test` took 197-250 s
-      of turbo's 391-524 s in runs 39820070499, 39847722320 and 40732843228
-      (turbo prints each group when its task finishes, so a group's time is the
-      gap since the previous group). Locally it is not CPU-bound: tests are 98%
-      of vitest's Duration, 2 workers 187.5 s, 4 workers 171.7 s, `--no-isolate`
-      171.2 s. One file dominates: `tests/cli.integration.test.ts` runs its 12
-      tests serially in one worker for 165 s of the 327 s summed file time; next
-      are `tests/cli.grid-pager.integration.test.ts` 39 s and
-      `tests/capture/navigation.integration.test.ts` 20 s. Separately,
-      `check:ci:run` runs turbo with `--concurrency=1` and
-      `VITEST_MAX_WORKERS=2` (01bb08a4, set for this host) on the 4-vCPU runner
-      as well. Smallest step: split `cli.integration.test.ts` into per-scenario
-      files so workers can share them, then re-measure `ui-quality:test`. After
-      that, decide whether CI alone may raise turbo concurrency.
+- [~] 2026-10-31 **CI critical path: `ui-quality:test` was one serial test
+  file.** Before: in `Verify`, `@syntopica/ui-quality:test` took 197-250 s of
+  turbo's 391-524 s (runs 39820070499, 39847722320, 40732843228). It is not
+  CPU-bound (tests are 96-98% of vitest's Duration), and
+  `tests/cli.integration.test.ts` ran 12 tests serially for 165 s. Done: split
+  into `cli.integration`, `cli.broken-inbox`, `cli.baseline`,
+  `cli.table-controls`, `cli.table-tight-header` and `cli.table-silent` with
+  shared `captureCli`/`cliProject` helpers. At 4 workers the suite fell from
+  171.7 s to 112.4 s locally (540/540 pass). At 2 workers it stays ~199 s, so
+  CI's `Verify` step now sets `VITEST_MAX_WORKERS=4`; `check:ci:run` keeps 2 as
+  the default for this host, and turbo stays `--concurrency=1`, which fixed the
+  orphan-probe null status of runs 39814991736/39816197482. Remaining: confirm
+  on the next automatic `Verify` run that `ui-quality:test` drops and nothing
+  flakes. If it flakes, revert the CI env to 2.
 
 - [ ] 2026-10-31 **`turbo --affected` would skip work it should run.** Probed in
       a scratch worktree with
