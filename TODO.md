@@ -222,6 +222,14 @@ plus the release:
 
 ## Cross-project (filed 2026-09-09 from two consumer backlog runs)
 
+- [ ] Unhappy-path audit (owner ask 2026-11-02, from verticagtm): a reusable
+      check that drives a web app with wrong, missing and failing inputs on
+      every form and server action it can enumerate, and reports each failure
+      whose message is absent, generic, or a framework-redacted error. Source
+      and first consumer: `verticagtm` TODO "Unhappy-path e2e". Smallest step:
+      design the enumeration (forms + actions) and the message rubric against
+      verticagtm's real failures before generalizing.
+
 - [ ] **Audit verification time in every project** (2026-10-21,
       compratuentrada). Extend the existing `test-quality` audit to report cold
       and warm lint/format times, full test wall time and phase shares, slowest
