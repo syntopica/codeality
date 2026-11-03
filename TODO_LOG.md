@@ -940,6 +940,24 @@ Closed work from `TODO.md`, grouped by year and month.
 
 ## 2026
 
+### 2026-11
+
+- [x] 2026-11-03 — **ui-quality:** 2026-11-02 **`time-without-datetime` reads a
+      length as a time.** On agropex.es a variation button labelled "100 m" (a
+      100-metre roll) is reported as a time without `datetime`, because
+      `RELATIVE_TIME_TEXT` accepts `\d+\s?m\b`; `tests/rules/fields.test.ts`
+      deliberately keeps "12 m" as a duration, so the fix is a decision, not a
+      typo. agropex-theme excludes the rule in `codeality-ui.json` meanwhile.
+      Smallest step: decide whether a spaced bare "m" stays a duration; if not,
+      add `expect(isTimestampText('100 m')).toBe(false)` beside the "12 m" case
+      and accept bare `m` only unspaced ("5m") or with "ago".
+  - Result: RELATIVE_TIME_TEXT accepts a bare m only unspaced (5m) or with ago;
+    a spaced "100 m" is a length, not a duration.
+  - Evidence: fields.test.ts: '100 m', '12 m', '100 m roll' now not timestamps,
+    '12m' and '12 m ago' still are; turbo type-check/lint/test/build for
+    @syntopica/ui-quality 5/5 green (544 tests), lint:fast, format:check, dupes
+    pass.
+
 ### 2026-10
 
 - [x] 2026-10-22 — **Quality:** Remove stale root and template Knip hints.

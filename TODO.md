@@ -52,16 +52,6 @@ verified complete - `[-]` obsolete or superseded.
 
 ## ui-quality
 
-- [ ] 2026-11-02 **`time-without-datetime` reads a length as a time.** On
-      agropex.es a variation button labelled "100 m" (a 100-metre roll) is
-      reported as a time without `datetime`, because `RELATIVE_TIME_TEXT`
-      accepts `\d+\s?m\b`; `tests/rules/fields.test.ts` deliberately keeps "12
-      m" as a duration, so the fix is a decision, not a typo. agropex-theme
-      excludes the rule in `codeality-ui.json` meanwhile. Smallest step: decide
-      whether a spaced bare "m" stays a duration; if not, add
-      `expect(isTimestampText('100 m')).toBe(false)` beside the "12 m" case and
-      accept bare `m` only unspaced ("5m") or with "ago".
-
 - [~] 2026-10-31 **CI critical path: `ui-quality:test` was one serial test
   file.** Before: in `Verify`, `@syntopica/ui-quality:test` took 197-250 s of
   turbo's 391-524 s (runs 39820070499, 39847722320, 40732843228). It is not
