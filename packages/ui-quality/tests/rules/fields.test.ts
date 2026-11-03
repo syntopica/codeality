@@ -133,7 +133,8 @@ describe('timeWithoutDatetime', () => {
   )
   it.each([
     '3h',
-    '12 m',
+    '12m',
+    '12 m ago',
     '12345678 h',
     '12345678 min',
     '5 min ago',
@@ -144,6 +145,15 @@ describe('timeWithoutDatetime', () => {
       timeWithoutDatetime(snapshotOf([cell, stamp(text)]), ruleContext()),
     ).toHaveLength(1)
   })
+  it.each(['100 m', '12 m', '100 m roll'])(
+    'does not classify the spaced length %s as a duration',
+    (text) => {
+      expect(isTimestampText(text)).toBe(false)
+      expect(
+        timeWithoutDatetime(snapshotOf([cell, stamp(text)]), ruleContext()),
+      ).toEqual([])
+    },
+  )
   it('reports a timestamp in a cell with no time element and no title', () => {
     expect(
       timeWithoutDatetime(
