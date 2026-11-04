@@ -312,13 +312,20 @@ export default (mainSelector) => {
   // run: its content box over the width of a zero in its font. Zero for
   // text on one line, which has no measure to speak of.
   const zeroWidthCache = new Map()
+  // Chromium serialises the computed `font` shorthand as "" whenever
+  // font-feature-settings or font-variation-settings is set, and a canvas
+  // given "" keeps its 10px default, so the font is rebuilt from longhands.
+  const canvasFontOf = (style) =>
+    style.font ||
+    `${style.fontStyle} ${style.fontWeight} ${style.fontSize} ${style.fontFamily}`
   const measureChOf = (style, contentWidth, lines) => {
     if (lines < 2 || !measure || contentWidth <= 0) return 0
-    if (!zeroWidthCache.has(style.font)) {
-      measure.font = style.font
-      zeroWidthCache.set(style.font, measure.measureText('0').width)
+    const font = canvasFontOf(style)
+    if (!zeroWidthCache.has(font)) {
+      measure.font = font
+      zeroWidthCache.set(font, measure.measureText('0').width)
     }
-    const zero = zeroWidthCache.get(style.font)
+    const zero = zeroWidthCache.get(font)
     return zero > 0 ? Math.round((contentWidth / zero) * 10) / 10 : 0
   }
 
