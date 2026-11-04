@@ -52,6 +52,18 @@ verified complete - `[-]` obsolete or superseded.
 
 ## ui-quality
 
+- [ ] **ui-quality 0.9.0 false positives seen on compratuentrada (2026-11-05).**
+      A run over `/`, an event page, `/conciertos/madrid` and `/admin` at 1440
+      and 390 px reported: `text-clipped` and `text-occlusion` on an `sr-only`
+      skip link ("Saltar al contenido"), which is hidden by design until
+      focused; `time-without-datetime` on the "7 días" / "30 días" period filter
+      links, which name a range, not a moment; and `nested-cards` plus
+      `ragged-column` treating a bordered inline-flex link button inside a card
+      as a card and as a column. Next step: add a fixture per case under
+      `packages/ui-quality/tests` that reproduces each finding, then exempt
+      `sr-only` (clip/1px) elements, duration phrases without a date, and inline
+      buttons.
+
 - [~] 2026-10-31 **CI critical path: `ui-quality:test` was one serial test
   file.** Before: in `Verify`, `@syntopica/ui-quality:test` took 197-250 s of
   turbo's 391-524 s (runs 39820070499, 39847722320, 40732843228). It is not
