@@ -942,6 +942,24 @@ Closed work from `TODO.md`, grouped by year and month.
 
 ### 2026-11
 
+- [x] 2026-11-06 — **create-baseline:** 2026-11-06 —
+      **`pnpm dlx @syntopica/create-baseline --write` crashes on a consumer that
+      already installed the baseline.** Observed in `bot` with create-baseline
+      0.10.6 and `@syntopica/quality-config` 0.15.0 installed in the project:
+      `Error: Cannot find module '@syntopica/quality-config/oxlint'` from
+      `bin/scaffold/oxlintConfig.mjs:16` (`require.resolve` runs from the dlx
+      cache, not the project), after it had already written `knip.config.ts`.
+      Installing `@syntopica/create-baseline` as a devDependency and running
+      `pnpm exec create-baseline --write` works. Smallest next step: resolve
+      `@syntopica/quality-config` with
+      `createRequire(join(cwd, 'package.json'))` and fall back to the bundled
+      copy.
+  - Result: oxlintConfig resolves @syntopica/quality-config/oxlint from the
+    project's package.json first, falling back to create-baseline's own
+    resolution.
+  - Evidence: New writeMissing integration test fails before the fix and passes
+    after; create-baseline lint, 227 tests and `pnpm check:ci` green.
+
 - [x] 2026-11-03 — **ui-quality:** 2026-11-02 **`time-without-datetime` reads a
       length as a time.** On agropex.es a variation button labelled "100 m" (a
       100-metre roll) is reported as a time without `datetime`, because

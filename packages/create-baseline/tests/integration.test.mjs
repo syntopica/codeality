@@ -147,6 +147,30 @@ describe('writeMissing', () => {
     expect(result.written).not.toContain('knip.config.ts')
   })
 
+  // Under `pnpm dlx` this package runs from the dlx cache, where
+  // quality-config is not installed: resolving only from there crashed with
+  // "Cannot find module" on a project that had it installed.
+  it("copies the oxlint config from the project's own quality-config", async () => {
+    await manifest({ name: 'x' })
+    const pkg = join(root, 'node_modules/@syntopica/quality-config')
+    await mkdir(pkg, { recursive: true })
+    await writeFile(
+      join(pkg, 'package.json'),
+      JSON.stringify({
+        name: '@syntopica/quality-config',
+        exports: { './oxlint': './oxlintrc.json' },
+      }),
+    )
+    await writeFile(join(pkg, 'oxlintrc.json'), '{"project":"copy"}\n')
+
+    const result = await writeMissing(root, {})
+
+    expect(result.written).toContain('.oxlintrc.json')
+    expect(await readFile(join(root, '.oxlintrc.json'), 'utf8')).toBe(
+      '{"project":"copy"}\n',
+    )
+  })
+
   it('never overwrites a script the project already defines', async () => {
     await manifest({ name: 'x', scripts: { knip: 'knip --production' } })
     await writeMissing(root, {})

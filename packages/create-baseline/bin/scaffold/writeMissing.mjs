@@ -43,7 +43,7 @@ export async function writeMissing(root, deps) {
       ],
     ],
     ['lefthook.yml', lefthookConfig, ['lefthook.yaml', '.lefthook.yml']],
-    ['.oxlintrc.json', oxlintConfig, ['oxlint.json', '.oxlintrc']],
+    ['.oxlintrc.json', () => oxlintConfig(root), ['oxlint.json', '.oxlintrc']],
     [
       'renovate.json',
       renovateConfig,
