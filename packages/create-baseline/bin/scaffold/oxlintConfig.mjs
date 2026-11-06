@@ -2,10 +2,6 @@ import { readFileSync } from 'node:fs'
 import { createRequire } from 'node:module'
 import { join } from 'node:path'
 
-const ownRequire = createRequire(import.meta.url)
-
-const SPECIFIER = '@syntopica/quality-config/oxlint'
-
 // The oxlint pre-filter config, read from @syntopica/quality-config rather
 // than restated here. oxlint takes a JSON file, not a factory, so the only way
 // to keep one source of truth is to copy the shipped file at scaffold time -
@@ -17,11 +13,12 @@ const SPECIFIER = '@syntopica/quality-config/oxlint'
 // crashed with "Cannot find module" on a project that had it. This package's
 // own resolution is the fallback, which is what the monorepo relies on.
 export function oxlintConfig(root) {
+  const specifier = '@syntopica/quality-config/oxlint'
   let path
   try {
-    path = createRequire(join(root, 'package.json')).resolve(SPECIFIER)
+    path = createRequire(join(root, 'package.json')).resolve(specifier)
   } catch {
-    path = ownRequire.resolve(SPECIFIER)
+    path = createRequire(import.meta.url).resolve(specifier)
   }
   // The path comes from module resolution of a fixed specifier, not from
   // anything a caller supplies.
