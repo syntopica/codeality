@@ -222,6 +222,21 @@ plus the release:
   `gh workflow run publish.yml -f package=<name>`, `gh run watch`,
   `pnpm release:check`.
 
+## create-baseline
+
+- [ ] 2026-11-06 — **`pnpm dlx @syntopica/create-baseline --write` crashes on a
+      consumer that already installed the baseline.** Observed in `bot` with
+      create-baseline 0.10.6 and `@syntopica/quality-config` 0.15.0 installed in
+      the project:
+      `Error: Cannot find module '@syntopica/quality-config/oxlint'` from
+      `bin/scaffold/oxlintConfig.mjs:16` (`require.resolve` runs from the dlx
+      cache, not the project), after it had already written `knip.config.ts`.
+      Installing `@syntopica/create-baseline` as a devDependency and running
+      `pnpm exec create-baseline --write` works. Smallest next step: resolve
+      `@syntopica/quality-config` with
+      `createRequire(join(cwd, 'package.json'))` and fall back to the bundled
+      copy.
+
 ## Cross-project (filed 2026-09-09 from two consumer backlog runs)
 
 - [ ] Unhappy-path audit (owner ask 2026-11-02, from verticagtm): a reusable
