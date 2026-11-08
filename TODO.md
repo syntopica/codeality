@@ -222,6 +222,30 @@ plus the release:
   `gh workflow run publish.yml -f package=<name>`, `gh run watch`,
   `pnpm release:check`.
 
+## db-quality
+
+- [ ] **db-quality: `audit --db-url` reports BDB330 on a CHECK-constrained
+      column (filed 2026-11-08 from compratuentrada).** The live schema is typed
+      with `kysely-codegen`, which maps a `varchar` to `string` whatever CHECK
+      it carries, so `membership.scope_type` (CHECK
+      `IN ('platform','promoter',     'event')`, declared as that literal union)
+      always drifts; a `disable` entry matches the whole code (`isDisabled`
+      compares `entry.code` only), and the README's "constrain the column (a
+      CHECK ...)" and "accept the finding in the baseline" advice is wrong for
+      this case. Evidence: compratuentrada `TODO.md`, "`codeality-db audit`
+      still reports BDB330". Next step: read a single-column `IN`/`= ANY` CHECK
+      as a literal union in type drift, or let a `disable` entry name a
+      `table.column` subject, and fix the two README claims.
+
+- [ ] **db-quality: migration compilation returns empty rows for guarded queries
+      (filed 2026-11-08 from compratuentrada).** 0.6.0 and 0.7.0 run a
+      migration's metadata guard queries against nothing, so a migration that
+      checks `information_schema` before altering fails
+      `BDB320/migration-does-not-compile`. Evidence: compratuentrada
+      `docs/patches/mysql-legacy-instants.md` and its `TODO.md` item "Widen
+      MySQL legacy instant columns before 2038". Next step: support declared
+      query responses during migration compilation.
+
 ## create-baseline
 
 ## Cross-project (filed 2026-09-09 from two consumer backlog runs)
