@@ -942,6 +942,27 @@ Closed work from `TODO.md`, grouped by year and month.
 
 ### 2026-11
 
+- [x] 2026-11-10 — **db-quality:** **db-quality: `audit --db-url` reports BDB330
+      on a CHECK-constrained column (filed 2026-11-08 from compratuentrada).**
+      The live schema is typed with `kysely-codegen`, which maps a `varchar` to
+      `string` whatever CHECK it carries, so `membership.scope_type` (CHECK
+      `IN ('platform','promoter',     'event')`, declared as that literal union)
+      always drifts; a `disable` entry matches the whole code (`isDisabled`
+      compares `entry.code` only), and the README's "constrain the column (a
+      CHECK ...)" and "accept the finding in the baseline" advice is wrong for
+      this case. Evidence: compratuentrada `TODO.md`, "`codeality-db audit`
+      still reports BDB330". Next step: read a single-column `IN`/`= ANY` CHECK
+      as a literal union in type drift, or let a `disable` entry name a
+      `table.column` subject, and fix the two README claims.
+  - Result: A disable entry on a BDB330/ code accepts a subject (table or
+    table.column) and drops only that finding; a subject on any other code is a
+    ConfigError. README now says a CHECK does not narrow kysely-codegen's type
+    and that audit findings never reach the baseline; CHANGELOG Unreleased entry
+    added.
+  - Evidence: pnpm test --no-file-parallelism in packages/db-quality: 530
+    passed; new cases in isDisabled, disableEntriesFrom and runKyselyTypeDrift
+    tests; eslint, type-check, root knip/dupes/oxlint green.
+
 - [x] 2026-11-06 — **create-baseline:** 2026-11-06 —
       **`pnpm dlx @syntopica/create-baseline --write` crashes on a consumer that
       already installed the baseline.** Observed in `bot` with create-baseline

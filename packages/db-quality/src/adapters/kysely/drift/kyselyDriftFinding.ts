@@ -3,7 +3,7 @@ import { isDisabled } from '@/config/isDisabled.js'
 import type { Finding } from '@/model/Finding.js'
 import { fingerprintFinding } from '@/model/fingerprintFinding.js'
 
-/** Zero or one `BDB330/<rule>` finding: none when the code is disabled. */
+/** Zero or one `BDB330/<rule>` finding: none when the code, or the code for this subject, is disabled. */
 export const kyselyDriftFinding = ({
   rule,
   severity,
@@ -14,7 +14,7 @@ export const kyselyDriftFinding = ({
   disabled,
 }: KyselyDriftFindingOptions): Finding[] => {
   const code = `BDB330/${rule}`
-  if (isDisabled(code, disabled)) return []
+  if (isDisabled(code, disabled, subject)) return []
   const partial = { code, severity, path, line, message, subject }
   return [
     {

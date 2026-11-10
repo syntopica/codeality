@@ -2,6 +2,15 @@
 
 ## [Unreleased]
 
+### Minor Changes
+
+- feat: a `disable` entry on a `BDB330/` code accepts a `subject` (a table, or
+  `table.column`) and then drops only that finding. A `varchar` with a `CHECK`
+  declared as a literal union always reads back as `string` from
+  `kysely-codegen`, and the only escape hatch was disabling the whole rule. A
+  `subject` on any other code is a configuration error. The README no longer
+  suggests a `CHECK` or the baseline for that case.
+
 ## 0.7.0
 
 ### Minor Changes

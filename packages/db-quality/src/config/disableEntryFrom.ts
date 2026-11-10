@@ -1,4 +1,5 @@
 import type { DisableEntry } from '@/config/DisableEntry.js'
+import { disableSubjectFrom } from '@/config/disableSubjectFrom.js'
 import { LEGACY_DISABLE_REASON } from '@/config/LEGACY_DISABLE_REASON.js'
 import { ConfigError } from '@syntopica/gate-kit/ConfigError'
 
@@ -15,10 +16,13 @@ export const disableEntryFrom = (
   }
   if (typeof raw !== 'object' || raw === null)
     throw new ConfigError('disable entries must be objects')
-  const { code, reason } = raw as Record<string, unknown>
+  const { code, reason, subject } = raw as Record<string, unknown>
   if (typeof code !== 'string')
     throw new ConfigError('disable code must be a string')
   if (typeof reason !== 'string' || reason.trim() === '')
     throw new ConfigError(`disable reason must not be empty (${code})`)
-  return { code, reason }
+  const validSubject = disableSubjectFrom(code, subject)
+  return validSubject === undefined
+    ? { code, reason }
+    : { code, reason, subject: validSubject }
 }

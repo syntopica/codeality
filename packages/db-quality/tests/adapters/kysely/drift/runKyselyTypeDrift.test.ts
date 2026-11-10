@@ -137,6 +137,23 @@ describe('runKyselyTypeDrift', { timeout: DRIFT_TEST_TIMEOUT_MS }, () => {
     })
   })
 
+  it('drops column-type-drift for a column a disable entry names as its subject', () => {
+    const dbTypes = DB_D_TS.replace('name: string', 'name: string | null')
+    const disable = (subject: string) => [
+      { code: 'BDB330/column-type-drift', reason: 'r', subject },
+    ]
+    const run = (subject: string) =>
+      runKyselyTypeDrift({
+        runner: runnerWriting(dbTypes),
+        root,
+        kysely: kyselyConfig(),
+        dbUrl: DB_URL,
+        disabled: disable(subject),
+      })
+    expect(run('event.name')).toEqual([])
+    expect(run('event.id')).toHaveLength(1)
+  })
+
   it('reports table-missing-in-type for a live table absent from the declared type', () => {
     const dbTypes = DB_D_TS.replace(
       'export interface DB {\n  event: Event\n}',
