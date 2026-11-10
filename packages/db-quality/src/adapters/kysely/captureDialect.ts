@@ -3,6 +3,7 @@ import type { Dialect } from 'kysely'
 import { captureDriver } from '@/adapters/kysely/captureDriver.js'
 import type { KyselyModule } from '@/adapters/kysely/KyselyModule.js'
 import type { KyselyStatement } from '@/adapters/kysely/KyselyStatement.js'
+import type { QueryAnswer } from '@/adapters/kysely/QueryAnswer.js'
 import type { KyselyDialect } from '@/config/KyselyDialect.js'
 
 // Kysely's documented split between building and running a query: the
@@ -13,6 +14,7 @@ export const captureDialect = (
   kysely: KyselyModule,
   dialect: KyselyDialect,
   sink: KyselyStatement[],
+  answer: QueryAnswer,
 ): Dialect => {
   const parts = {
     postgres: [
@@ -34,7 +36,7 @@ export const captureDialect = (
   const [Adapter, Introspector, QueryCompiler] = parts[dialect]
   return {
     createAdapter: () => new Adapter(),
-    createDriver: () => captureDriver(sink),
+    createDriver: () => captureDriver(sink, answer),
     createIntrospector: (db) => new Introspector(db),
     createQueryCompiler: () => new QueryCompiler(),
   }

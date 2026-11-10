@@ -1,4 +1,5 @@
 import type { KyselyDialect } from '@/config/KyselyDialect.js'
+import type { KyselyQueryResponse } from '@/config/KyselyQueryResponse.js'
 
 /** What the compiler process is asked to do, passed to it as one JSON argument. */
 export type KyselyCompileRequest = {
@@ -7,4 +8,5 @@ export type KyselyCompileRequest = {
   folder?: string
   export: string
   dialects: KyselyDialect[]
+  queryResponses?: KyselyQueryResponse[]
 }

@@ -285,8 +285,29 @@ newly configured dialect is added to a released one, and an edited migration is
 refused (exit 2) unless it is named with
 `baseline update --accept-edit <name>[,<name>]`.
 
-Limitation: the capturing driver returns no rows, so a migration that branches
-on data it reads only has its empty-database path compiled, checked and hashed.
+The capturing driver returns no rows unless `queryResponses` declares them. A
+migration that checks schema metadata or a session setting before it alters
+anything declares the rows it expects, per query and, when up and down need
+different answers, per migration and step:
+
+```json
+"queryResponses": [
+  {
+    "match": "from information_schema.columns",
+    "migration": "0068_mysql_legacy_instants",
+    "step": "up",
+    "rows": [{ "table_name": "event", "data_type": "timestamp" }]
+  },
+  { "match": "@@session.sql_mode", "rows": [{ "mode": "STRICT_TRANS_TABLES" }] }
+]
+```
+
+`match` is a substring of the compiled SQL; `migration` and `step` (`up` or
+`down`) narrow the entry; the first entry that applies wins, on every dialect.
+The queries are still recorded and hashed, and a query no entry matches still
+gets no rows, so declaring a response changes only the migrations whose queries
+it answers. Limitation: a migration that branches on data it reads only has the
+path its declared (or empty) rows lead to compiled, checked and hashed.
 
 ### Type drift
 

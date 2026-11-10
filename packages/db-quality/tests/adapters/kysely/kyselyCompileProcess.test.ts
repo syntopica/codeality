@@ -1,6 +1,7 @@
 import { afterEach, describe, expect, it, vi } from 'vitest'
 
 import { kyselyCompileMain } from '@/adapters/kysely/kyselyCompileMain.js'
+import { locatedMigrations } from '@/adapters/kysely/locatedMigrations.js'
 import { runKyselyCompile } from '@/adapters/kysely/runKyselyCompile.js'
 import type { CommandRunner } from '@/tools/CommandRunner.js'
 import { ConfigError } from '@syntopica/gate-kit/ConfigError'
@@ -55,6 +56,28 @@ describe('the compiler process', () => {
     expect(seen?.command).toBe(process.execPath)
     expect(seen?.args[0]).toMatch(/assets\/kysely-compile\.mjs$/)
     expect(JSON.parse(seen?.args[1] ?? '')).toEqual(request)
+  })
+  it('forwards the configured query responses to the compiler process', () => {
+    let sent: unknown
+    const runner: CommandRunner = (_command, args) => {
+      sent = JSON.parse(args[1] ?? '')
+      return { status: 0, stdout: '[]', stderr: '', missing: false }
+    }
+    const queryResponses = [
+      { match: '@@session.sql_mode', rows: [{ mode: '' }] },
+    ]
+    locatedMigrations(
+      runner,
+      FIXTURE,
+      {
+        folder: 'folder',
+        export: 'migrations',
+        moneyColumns: false,
+        queryResponses,
+      },
+      ['mysql'],
+    )
+    expect(sent).toMatchObject({ dialects: ['mysql'], queryResponses })
   })
   it('maps exit 2 to a ConfigError and any other failure to an Error', () => {
     expect(() =>

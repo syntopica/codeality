@@ -74,6 +74,66 @@ describe('compileKyselyMigrations', () => {
     ])
     expect(b?.dialects.postgres?.error).toBe('up: boom')
   })
+  it('answers declared query responses by SQL, migration and step', async () => {
+    const root = kyselyTempProject({
+      'm.ts': `import { sql, type Kysely } from 'kysely'
+const typeOf = async (db: Kysely<any>) => {
+  const { rows } = await sql<{ data_type: string }>\`select data_type from information_schema.columns where table_name = 't'\`.execute(db)
+  if (rows.length === 0) throw new Error('missing schema metadata')
+  return rows[0]?.data_type
+}
+export const migrations = {
+  widen: {
+    up: async (db: Kysely<any>) => { if ((await typeOf(db)) === 'timestamp') await sql\`alter table t modify at datetime\`.execute(db) },
+    down: async (db: Kysely<any>) => { if ((await typeOf(db)) === 'datetime') await sql\`alter table t modify at timestamp\`.execute(db) },
+  },
+  other: { up: async (db: Kysely<any>) => { await typeOf(db) } },
+}`,
+    })
+    const request = {
+      root,
+      module: 'm.ts',
+      export: 'migrations',
+      dialects: ['mysql' as const],
+    }
+    const [unanswered] = await compileKyselyMigrations(request)
+    expect(unanswered?.dialects.mysql?.error).toBe(
+      'up: missing schema metadata',
+    )
+    const [widen, other] = await compileKyselyMigrations({
+      ...request,
+      queryResponses: [
+        {
+          match: 'information_schema.columns',
+          migration: 'widen',
+          step: 'up',
+          rows: [{ data_type: 'timestamp' }],
+        },
+        {
+          match: 'information_schema.columns',
+          migration: 'widen',
+          rows: [{ data_type: 'datetime' }],
+        },
+      ],
+    })
+    expect(widen?.dialects.mysql).toEqual({
+      up: [
+        {
+          sql: "select data_type from information_schema.columns where table_name = 't'",
+          parameters: [],
+        },
+        { sql: 'alter table t modify at datetime', parameters: [] },
+      ],
+      down: [
+        {
+          sql: "select data_type from information_schema.columns where table_name = 't'",
+          parameters: [],
+        },
+        { sql: 'alter table t modify at timestamp', parameters: [] },
+      ],
+    })
+    expect(other?.dialects.mysql?.error).toBe('up: missing schema metadata')
+  })
   it('resolves the project tsconfig path aliases, through extends and comments', async () => {
     const root = kyselyTempProject({
       'tsconfig.json':
