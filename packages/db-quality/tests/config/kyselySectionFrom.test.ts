@@ -46,6 +46,23 @@ describe('kyselySectionFrom', () => {
       },
     })
   })
+  it('keeps declared query responses, with their optional migration and step', () => {
+    const queryResponses = [
+      {
+        match: 'information_schema.columns',
+        migration: '0068_widen',
+        step: 'up',
+        rows: [{ data_type: 'timestamp' }],
+      },
+      { match: '@@session.sql_mode', rows: [{ mode: '' }] },
+    ]
+    expect(
+      kyselySectionFrom({
+        roots: ['src'],
+        migrations: { module: MODULE, queryResponses },
+      }).migrations?.queryResponses,
+    ).toEqual(queryResponses)
+  })
   it.each([
     [{}, /kysely.roots/],
     [{ roots: ['src'], objectNames: 'db' }, /kysely.objectNames/],
@@ -77,6 +94,57 @@ describe('kyselySectionFrom', () => {
     [
       { roots: ['src'], migrations: { module: MODULE, dialects: [] } },
       /dialects/,
+    ],
+    [
+      { roots: ['src'], migrations: { module: MODULE, queryResponses: {} } },
+      /queryResponses must be a list/,
+    ],
+    [
+      {
+        roots: ['src'],
+        migrations: {
+          module: MODULE,
+          queryResponses: [{ match: '', rows: [] }],
+        },
+      },
+      /queryResponses\[0\]\.match must be a non-empty string/,
+    ],
+    [
+      {
+        roots: ['src'],
+        migrations: {
+          module: MODULE,
+          queryResponses: [{ match: 'x', rows: [1] }],
+        },
+      },
+      /queryResponses\[0\]\.rows must be a list of objects/,
+    ],
+    [
+      {
+        roots: ['src'],
+        migrations: {
+          module: MODULE,
+          queryResponses: [{ match: 'x', rows: [], step: 'both' }],
+        },
+      },
+      /queryResponses\[0\]\.step must be "up" or "down"/,
+    ],
+    [
+      {
+        roots: ['src'],
+        migrations: {
+          module: MODULE,
+          queryResponses: [{ match: 'x', rows: [], migration: 1 }],
+        },
+      },
+      /queryResponses\[0\]\.migration must be a string/,
+    ],
+    [
+      {
+        roots: ['src'],
+        migrations: { module: MODULE, queryResponses: [null] },
+      },
+      /queryResponses\[0\] must be an object/,
     ],
   ])('rejects %j', (raw, message) => {
     expect(() => kyselySectionFrom(raw)).toThrow(message)

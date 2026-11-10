@@ -1,5 +1,6 @@
 import { kyselyDialectsFrom } from '@/config/kyselyDialectsFrom.js'
 import type { KyselyMigrationsConfig } from '@/config/KyselyMigrationsConfig.js'
+import { kyselyQueryResponsesFrom } from '@/config/kyselyQueryResponsesFrom.js'
 import { ConfigError } from '@syntopica/gate-kit/ConfigError'
 
 export const kyselyMigrationsSectionFrom = (
@@ -17,11 +18,13 @@ export const kyselyMigrationsSectionFrom = (
   if (typeof moneyColumns !== 'boolean')
     throw new ConfigError('kysely.migrations.moneyColumns must be a boolean')
   const dialects = kyselyDialectsFrom(raw['dialects'])
+  const queryResponses = kyselyQueryResponsesFrom(raw['queryResponses'])
   return {
     ...(typeof module === 'string' ? { module } : {}),
     ...(typeof folder === 'string' ? { folder } : {}),
     export: exportName,
     ...(dialects === undefined ? {} : { dialects }),
     moneyColumns,
+    ...(queryResponses === undefined ? {} : { queryResponses }),
   }
 }

@@ -942,6 +942,20 @@ Closed work from `TODO.md`, grouped by year and month.
 
 ### 2026-11
 
+- [x] 2026-11-10 — **db-quality:** **db-quality: migration compilation returns
+      empty rows for guarded queries (filed 2026-11-08 from compratuentrada).**
+      0.6.0 and 0.7.0 run a migration's metadata guard queries against nothing,
+      so a migration that checks `information_schema` before altering fails
+      `BDB320/migration-does-not-compile`. Evidence: compratuentrada
+      `docs/patches/mysql-legacy-instants.md` and its `TODO.md` item "Widen
+      MySQL legacy instant columns before 2038". Next step: support declared
+      query responses during migration compilation.
+  - Result: kysely.migrations.queryResponses declares the rows the compile-only
+    driver answers (match substring, rows, optional migration and step);
+    undeclared queries still get no rows, so existing hashes are unchanged.
+  - Evidence: New tests in compileKyselyMigrations, kyselySectionFrom and
+    kyselyCompileProcess; pnpm check:ci exit 0 on 2026-11-10.
+
 - [x] 2026-11-10 — **db-quality:** **db-quality: `audit --db-url` reports BDB330
       on a CHECK-constrained column (filed 2026-11-08 from compratuentrada).**
       The live schema is typed with `kysely-codegen`, which maps a `varchar` to

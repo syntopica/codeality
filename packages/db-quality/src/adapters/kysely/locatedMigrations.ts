@@ -20,6 +20,9 @@ export const locatedMigrations = (
     ...(config.folder === undefined ? {} : { folder: config.folder }),
     export: config.export,
     dialects,
+    ...(config.queryResponses === undefined
+      ? {}
+      : { queryResponses: config.queryResponses }),
   }).map((migration) => ({
     ...migration,
     line: migrationLine(root, migration.path, migration.name),

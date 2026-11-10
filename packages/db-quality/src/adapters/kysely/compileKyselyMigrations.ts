@@ -27,7 +27,15 @@ export const compileKyselyMigrations = async (
   const migrations = await loadMigrations(jiti, request)
   const compiled = new Map<string, DialectCompilation[]>()
   for (const dialect of request.dialects)
-    compiled.set(dialect, await compileOnDialect(kysely, migrations, dialect))
+    compiled.set(
+      dialect,
+      await compileOnDialect(
+        kysely,
+        migrations,
+        dialect,
+        request.queryResponses,
+      ),
+    )
   return migrations.map((migration, index) => ({
     name: migration.name,
     path: migration.path,

@@ -11,6 +11,15 @@
   `subject` on any other code is a configuration error. The README no longer
   suggests a `CHECK` or the baseline for that case.
 
+- feat: `kysely.migrations.queryResponses` declares the rows the compile-only
+  driver answers, so a migration that reads `information_schema` or a session
+  setting before altering compiles its real path instead of failing
+  `BDB320/migration-does-not-compile` on an empty result. Each entry has a
+  `match` (a substring of the compiled SQL), `rows`, and optionally a
+  `migration` name and a `step` (`up` or `down`); the first entry that applies
+  wins. A query no entry matches still gets no rows, so the compiled SQL and the
+  `.codeality-db-kysely.json` hashes of every other migration are unchanged.
+
 ## 0.7.0
 
 ### Minor Changes

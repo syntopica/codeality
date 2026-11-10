@@ -224,15 +224,6 @@ plus the release:
 
 ## db-quality
 
-- [ ] **db-quality: migration compilation returns empty rows for guarded queries
-      (filed 2026-11-08 from compratuentrada).** 0.6.0 and 0.7.0 run a
-      migration's metadata guard queries against nothing, so a migration that
-      checks `information_schema` before altering fails
-      `BDB320/migration-does-not-compile`. Evidence: compratuentrada
-      `docs/patches/mysql-legacy-instants.md` and its `TODO.md` item "Widen
-      MySQL legacy instant columns before 2038". Next step: support declared
-      query responses during migration compilation.
-
 ## create-baseline
 
 ## Cross-project (filed 2026-09-09 from two consumer backlog runs)
