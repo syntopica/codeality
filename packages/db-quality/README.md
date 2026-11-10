@@ -322,8 +322,24 @@ as skipped, not as an error.
 | `BDB330/column-type-drift`          | a shared column's live SELECT type is not assignable to the declared SELECT type                 |
 
 A declared type narrower than the column is drift too: a `varchar` declared as a
-union of string literals reads back as `string`. Constrain the column (a `CHECK`
-or an enum type) or accept the finding in the baseline.
+union of string literals reads back as `string`, and a `CHECK` does not change
+that, because `kysely-codegen` types the column from its data type alone. Make
+the column an enum type, or, when the `CHECK` is the deliberate constraint,
+disable the finding for that column only with a `subject` naming it:
+
+```json
+"disable": [
+  {
+    "code": "BDB330/column-type-drift",
+    "subject": "membership.scope_type",
+    "reason": "CHECK (scope_type IN ('platform', 'promoter', 'event')) enforces the literal union"
+  }
+]
+```
+
+A `subject` is the finding's table (`table-missing-*`) or `table.column` (the
+other three rules), and is accepted on `BDB330/` codes only. Audit findings are
+never carried in the baseline, so the baseline is not an option here.
 
 Limitation: the live types are `kysely-codegen`'s defaults for the `pg` and
 `mysql2` drivers (for example PostgreSQL `numeric` and `int8` read as `string`,

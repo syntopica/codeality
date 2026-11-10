@@ -30,4 +30,23 @@ describe('disableEntriesFrom', () => {
       /disable must be a list/,
     )
   })
+  it('accepts a subject on a BDB330 code', () => {
+    const entry = {
+      code: 'BDB330/column-type-drift',
+      reason: 'CHECK-constrained',
+      subject: 'membership.scope_type',
+    }
+    expect(disableEntriesFrom([entry], 2)).toEqual([entry])
+  })
+  it('rejects a subject on any other code, and an empty subject', () => {
+    expect(() =>
+      disableEntriesFrom([{ code: 'BDB001', reason: 'r', subject: 't' }], 2),
+    ).toThrow(/subject is only supported on BDB330 codes/)
+    expect(() =>
+      disableEntriesFrom(
+        [{ code: 'BDB330/column-type-drift', reason: 'r', subject: ' ' }],
+        2,
+      ),
+    ).toThrow(/subject must be a non-empty string/)
+  })
 })
