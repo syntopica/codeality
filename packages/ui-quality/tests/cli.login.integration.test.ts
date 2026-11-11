@@ -41,4 +41,31 @@ describe('codeality-ui login', () => {
     expect(err.join('')).not.toContain('error:')
     expect(code).toBe(0)
   }, 120_000)
+
+  it('signs in on a form rendered in place at the route itself', async () => {
+    process.env['UIQ_TEST_USER'] = 'reader@example.com'
+    process.env['UIQ_TEST_PASSWORD'] = 'not-a-secret'
+    const root = mkdtempSync(join(tmpdir(), 'uiq-'))
+    writeFileSync(
+      join(root, 'codeality-ui.json'),
+      JSON.stringify({
+        baseUrl: `file://${site}`,
+        routes: [{ path: '/inplace.html', waitFor: '#signed-in' }],
+        viewports: [{ width: 1440, height: 900 }],
+        colorSchemes: ['light'],
+        auth: {
+          usernameEnv: 'UIQ_TEST_USER',
+          passwordEnv: 'UIQ_TEST_PASSWORD',
+        },
+      }),
+    )
+    const err: string[] = []
+    const code = await runCli(['check'], {
+      root,
+      stdout: () => undefined,
+      stderr: (text: string) => err.push(text),
+    })
+    expect(err.join('')).not.toContain('error:')
+    expect(code).toBe(0)
+  }, 120_000)
 })
