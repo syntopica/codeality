@@ -52,6 +52,20 @@ verified complete - `[-]` obsolete or superseded.
 
 ## ui-quality
 
+- [ ] **ui-quality false positives on the teleporte-web CRM dashboard
+      (2026-11-12).** `check --routes '/'` at 1280x800 and 390x844 reports:
+      `mixed-icon-family` on Recharts area, grid and pie marks
+      (`details.crm-analysis > div.crm-overview`, no icons there; the rule only
+      skips `nav` ancestors in `src/rules/mixedIconFamily.ts`);
+      `interaction-shift` on queue tiles that navigate rather than toggle;
+      `control-inset` on a hidden topbar search; `edge-misaligned` 228px on a
+      fixed sidebar. Next step: a fixture per case under
+      `packages/ui-quality/tests`, then skip elements under
+      `.recharts-wrapper`/`.recharts-surface` (or chart `svg`s) in
+      `mixedIconFamily`, ignore hidden controls and fixed sidebars, and treat
+      navigating links as non-toggles. Source item: teleporte-web `TODO.md`,
+      "Chart audit tooling" and "Dashboard codeality-ui leftovers".
+
 - [ ] **ui-quality 0.9.0 false positives seen on compratuentrada (2026-11-05).**
       A run over `/`, an event page, `/conciertos/madrid` and `/admin` at 1440
       and 390 px reported: `text-clipped` and `text-occlusion` on an `sr-only`
