@@ -1,0 +1,28 @@
+{
+  "tadu": 2,
+  "id": "t-e8d17c83-8bf0-46a0-a60f-e3e3289b26ac",
+  "title": "Renamed the Python baseline to `codeality-py`. `syntopica-codeality-py`",
+  "state": "done",
+  "category": "general",
+  "type": "untriaged",
+  "priority": "untriaged",
+  "notes": [
+    "    0.2.0 is on PyPI (run 35163939573, trusted publishing from a pending",
+    "    publisher on the personal account: owner `syntopica`, repository",
+    "    `codeality`, workflow `publish-python.yml`, environment `pypi`). Import",
+    "    package `codeality_py`, console script `codeality-py`, config",
+    "    `codeality-py.toml`, accepted-findings record",
+    "    `.codeality-py-baseline.json`, suppression prefix",
+    "    `# codeality-py: ignore`. Rule codes keep `BPY`. Migrated and pushed",
+    "    across the eleven adopting repositories, brain, clips, atrium and",
+    "    syntopica among them; one more carries two untracked files, renamed on",
+    "    disk only. `baseline check` reports `0 new` in every repository that",
+    "    carries a baseline except atrium, whose 2 new findings predate the rename.",
+    "    `busirocket-baseline-py` 0.1.12 stays published and unyanked."
+  ],
+  "closed": "2026-11-17",
+  "result": "Renamed the Python baseline to `codeality-py`. `syntopica-codeality-py`",
+  "evidence": [
+    "legacy item migrated to format 2 without a recorded evidence"
+  ]
+}

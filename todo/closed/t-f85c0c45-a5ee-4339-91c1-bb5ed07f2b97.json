@@ -1,0 +1,23 @@
+{
+  "tadu": 2,
+  "id": "t-f85c0c45-a5ee-4339-91c1-bb5ed07f2b97",
+  "title": "CI red on `main` since 2026-09-26, three causes: (1) `check:ci` -",
+  "state": "done",
+  "category": "general",
+  "type": "untriaged",
+  "priority": "untriaged",
+  "notes": [
+    "    ui-quality's integration tests exited 3 with an empty report because the",
+    "    Verify job never installed Playwright's Chromium; ci.yml now runs",
+    "    `playwright install --with-deps chromium`. (2) `check:quality` - depcruise",
+    "    `no-orphans` on ~40 files imported only through `@/`: db-quality,",
+    "    test-quality and ui-quality alias `@/` but were missing from",
+    "    `scripts/aliasedWorkspaces.mjs`; `pnpm check:quality` 6 gates passed. (3)",
+    "    `audit:check`, see the waivers entry."
+  ],
+  "closed": "2026-11-17",
+  "result": "CI red on `main` since 2026-09-26, three causes: (1) `check:ci` -",
+  "evidence": [
+    "legacy item migrated to format 2 without a recorded evidence"
+  ]
+}

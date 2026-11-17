@@ -1,0 +1,23 @@
+{
+  "tadu": 2,
+  "id": "t-002afb9a-b1c3-43da-b13a-ad9e65b2ed9a",
+  "title": "Python consumers, third pass (gates re-run on clean `origin` worktrees,",
+  "state": "done",
+  "category": "general",
+  "type": "untriaged",
+  "priority": "untriaged",
+  "notes": [
+    "    all exit 0): agent-deluxe 8 to 0 and `[mypy-agent]` gone, floor 35 to 42",
+    "    (5602689; dcb3802 and 7a40a27 tracked the `invoice_agents/logs/` package",
+    "    that `.gitignore`'s `logs/` had hidden, so a clean checkout failed to",
+    "    import); qlctool 4 to 0 (ad31c82); atrium 2 to 0 (2261ed5, `--help`",
+    "    byte-identical); DJCenterDeluxe 55 to 28 (b0e6d72); djplayerdeluxe 51 to",
+    "    44, `utils` renamed `runtime_services` (6f27e82). wiki gate green on 0.2.5",
+    "    (0dd884007: six one-liner scripts in `tools/` made entrypoints)."
+  ],
+  "closed": "2026-11-17",
+  "result": "Python consumers, third pass (gates re-run on clean `origin` worktrees,",
+  "evidence": [
+    "legacy item migrated to format 2 without a recorded evidence"
+  ]
+}

@@ -1,0 +1,23 @@
+{
+  "tadu": 2,
+  "id": "t-99da5569-9276-4266-b4ea-e0549a60cff0",
+  "title": "ui-quality tier 1 closed: `nested-cards`, `type-scale-sprawl`,",
+  "state": "done",
+  "category": "general",
+  "type": "untriaged",
+  "priority": "untriaged",
+  "notes": [
+    "    `accent-overuse` (new `palette.accent`), `text-occlusion`, the",
+    "    layout-shift half of `unstable-media-size` (init-script observer, total",
+    "    over 0.1) and the CSS-background half of `broken-image` (failed image",
+    "    requests). All warn; a scan of every existing fixture at 1440/390, light",
+    "    and dark, found none outside the new defect page. Evidence: ui-quality",
+    "    `test` 69 files, 224 tests; `cli.composition.integration.test.ts`;",
+    "    `pnpm check:ci` exit 0."
+  ],
+  "closed": "2026-11-17",
+  "result": "ui-quality tier 1 closed: `nested-cards`, `type-scale-sprawl`,",
+  "evidence": [
+    "legacy item migrated to format 2 without a recorded evidence"
+  ]
+}

@@ -1,0 +1,21 @@
+{
+  "tadu": 2,
+  "id": "t-5c1d8e72-b458-4f92-ab15-6250928ff20d",
+  "title": "ui-quality `content-width` only measures a main region with a data layout",
+  "state": "done",
+  "category": "general",
+  "type": "untriaged",
+  "priority": "untriaged",
+  "notes": [
+    "    (`hasDataLayout`: a `table`, or 3+ same-tag siblings that each have parts",
+    "    and no prose paragraph of 200+ characters or text field, `isRowItem`).",
+    "    Evidence: `contentWidth.test.ts` reports a narrow table and a narrow list",
+    "    of rows, and leaves a 720px prose column and a 448px three-field form",
+    "    alone; ui-quality 163 tests, lint, type-check clean."
+  ],
+  "closed": "2026-11-17",
+  "result": "ui-quality `content-width` only measures a main region with a data layout",
+  "evidence": [
+    "legacy item migrated to format 2 without a recorded evidence"
+  ]
+}

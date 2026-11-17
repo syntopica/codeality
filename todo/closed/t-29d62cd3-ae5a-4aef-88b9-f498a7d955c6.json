@@ -1,0 +1,38 @@
+{
+  "tadu": 2,
+  "id": "t-29d62cd3-ae5a-4aef-88b9-f498a7d955c6",
+  "title": "three newly published `high` advisories broke",
+  "state": "done",
+  "category": "security",
+  "type": "untriaged",
+  "priority": "untriaged",
+  "notes": [
+    "    `pnpm audit:check`, and the gate is green again. They were not caused by",
+    "    any change in this repo: audit resolves against the live advisory",
+    "    database, and the same three appear on the untouched lockfile at `HEAD`.",
+    "    `ip-address@<10.3.1` (GHSA-mwp4-54f8-5fhr, via",
+    "    `@lhci/cli > proxy-agent > socks`) and `brace-expansion` on two majors",
+    "    (GHSA-rgw5-rvv9-x895, via `nuxt > @nuxt/nitro-server` and via",
+    "    `eslint > @eslint/config-array > minimatch`). All three survived",
+    "    `pnpm dedupe`, so they took the documented route: scoped entries in the",
+    "    `overrides:` block. The `brace-expansion` entries are lower-bounded",
+    "    (`>=2.0.0 <2.1.4`, `>=5.0.0 <5.0.9`) rather than the obvious",
+    "    `brace-expansion@<2.1.4`, which would also capture the installed `1.1.18`",
+    "    edge - an edge the advisory does not flag - and drag it across two majors.",
+    "    The `ip-address` pin to `^10.3.1` also cleared the two `moderate`",
+    "    `ip-address` findings, which were patched at `10.2.1` and `10.2.2`.",
+    "    Separately, `@vitest/eslint-plugin` went `1.6.25 -> 1.6.26` across the",
+    "    nine workspaces that declare it, which removed one of the paths feeding",
+    "    the low `esbuild` advisory."
+  ],
+  "closed": "2026-08-04",
+  "result": "`pnpm audit` goes from `1 low | 3 moderate | 3 high` to `1 low | 1 moderate`; `pnpm audit --audit-level=high` exit `0`.",
+  "evidence": [
+    "`pnpm run check:security` exit `0` (gitleaks `no leaks found`, audit, actionlint); `pnpm run check:ci` exit `0`; `pnpm run check:quality` exit `0`."
+  ],
+  "files": [
+    "pnpm-workspace.yaml",
+    "pnpm-lock.yaml",
+    "nine `package.json` files under `packages/` and `templates/"
+  ]
+}

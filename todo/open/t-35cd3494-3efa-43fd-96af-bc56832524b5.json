@@ -1,0 +1,20 @@
+{
+  "tadu": 2,
+  "id": "t-35cd3494-3efa-43fd-96af-bc56832524b5",
+  "title": "2026-10-31 **`turbo --affected` would skip work it should run.** Probed in",
+  "state": "pending",
+  "category": "ui-quality",
+  "type": "untriaged",
+  "priority": "untriaged",
+  "notes": [
+    "    a scratch worktree with",
+    "    `TURBO_SCM_BASE=HEAD~1 turbo run test lint type-check --affected --dry=json`:",
+    "    a change in `packages/codeality-dart/lib/` or in root `scripts/*.mjs`",
+    "    selects 0 packages, so the run would pass without checking anything. A",
+    "    change in `packages/eslint-plugin-code-policy/src` or",
+    "    `packages/quality-config/jscpd.json` selects all 18. CI does not use",
+    "    `--affected` today. Smallest step: if `--affected` is ever adopted, run",
+    "    the root and non-pnpm checks unconditionally, and add a test that a hidden",
+    "    change fails the run instead of skipping it."
+  ]
+}

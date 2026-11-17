@@ -1,0 +1,43 @@
+{
+  "tadu": 2,
+  "id": "t-50d87a6d-2d17-497e-b390-c0cc8f41b392",
+  "title": "Turned `includeEntryExports` on for the per-template knip configs, which",
+  "state": "done",
+  "category": "2026-08",
+  "type": "untriaged",
+  "priority": "untriaged",
+  "notes": [
+    "    Task 8 had left off by evidence. Both blockers named in that entry are",
+    "    gone. `vue-app`'s false positive on `mountApp` was fixed at the source:",
+    "    `src/main.ts` now imports `@/app/index` explicitly instead of relying on",
+    "    knip resolving the path-aliased bare `@/app` to the directory's",
+    "    `index.ts`, so `src/app/index.ts` no longer has to be listed as an entry",
+    "    and the entry-to-entry import that knip refused to count as usage no",
+    "    longer exists. `nestjs-app`'s `bootstrap` is handled with",
+    "    `ignoreExportsUsedInFile: true`, which is the correct pairing with this",
+    "    repo's Primary Unit Rule: `code-policy/no-hidden-top-level-declarations`",
+    "    forbids a hidden top-level declaration, so an entry-point helper a file",
+    "    uses only itself still has to be exported. The narrower per-type form was",
+    "    tried first and does not work - knip's schema accepts only `class`,",
+    "    `enum`, `function`, `interface`, `member`, `type` and `variable`, and",
+    "    `export const bootstrap = async () => {}` matches none of them",
+    "    (`{ function: true, variable: true }` still reported it;",
+    "    `{ unknown: true }` is rejected as invalid input). The option only hides",
+    "    an export its own file already uses, so an export nothing references at",
+    "    all still fails. Coverage is real but partial, measured with a probe",
+    "    export rather than assumed: it now fails `nestjs-app` (`src/main.ts`) and",
+    "    `ts-package` (`src/index.ts`), where nothing caught a dead entry export",
+    "    before, and still does not fail `nextjs-app` (`app/page.tsx`),",
+    "    `vite-react-app` (`src/main.tsx`) or `vue-app` (`src/main.ts`) - knip's",
+    "    framework plugins register those files as entries of their own and the",
+    "    option does not reach them. Recorded in the config comment so the next",
+    "    reader does not re-derive it. Verified: all eight templates exit 0",
+    "    (`pnpm knip:templates`), probes removed, `pnpm check:ci` exit 0,",
+    "    `pnpm check:quality` exit 0."
+  ],
+  "closed": "2026-11-17",
+  "result": "Turned `includeEntryExports` on for the per-template knip configs, which",
+  "evidence": [
+    "legacy item migrated to format 2 without a recorded evidence"
+  ]
+}

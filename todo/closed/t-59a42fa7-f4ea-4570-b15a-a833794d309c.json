@@ -1,0 +1,23 @@
+{
+  "tadu": 2,
+  "id": "t-59a42fa7-f4ea-4570-b15a-a833794d309c",
+  "title": "2026-08-28 - **Stryker no longer copies `coverage/` and `dist/` into its",
+  "state": "done",
+  "category": "2026-08",
+  "type": "untriaged",
+  "priority": "untriaged",
+  "notes": [
+    "    sandbox.** `ignorePatterns: ['coverage', 'dist']` added to",
+    "    `packages/eslint-plugin-code-policy/stryker.config.mjs` with a comment",
+    "    recording the `ENOENT ... copyfile ... coverage/base.css` crash that a",
+    "    concurrent `test` run caused mid-copy (observed 2026-08-27). Evidence:",
+    "    `pnpm run mutation` after the change exits 0 in 47s with the identical",
+    "    score - \"Final mutation score of 67.68 is greater than or equal to break",
+    "    threshold 67\" (755 killed, 321 survived, 0 errors)."
+  ],
+  "closed": "2026-11-17",
+  "result": "2026-08-28 - **Stryker no longer copies `coverage/` and `dist/` into its",
+  "evidence": [
+    "legacy item migrated to format 2 without a recorded evidence"
+  ]
+}

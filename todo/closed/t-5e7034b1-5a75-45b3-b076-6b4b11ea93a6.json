@@ -1,0 +1,21 @@
+{
+  "tadu": 2,
+  "id": "t-5e7034b1-5a75-45b3-b076-6b4b11ea93a6",
+  "title": "ui-quality `listOfTable` reads the header as textContent, the text",
+  "state": "done",
+  "category": "general",
+  "type": "untriaged",
+  "priority": "untriaged",
+  "notes": [
+    "    `hasText` matches. The cause was not the tab-joined cells as filed: React",
+    "    renders `<th>`s with no whitespace between them, so textContent is",
+    "    `NivelDígitos...` and the innerText `Nivel<TAB>Dígitos` normalised to",
+    "    `Nivel Dígitos` matched no table. Fixture `table.html#broken-tight`:",
+    "    before `empty-state-missing`, after `filter-broken` (the real defect)."
+  ],
+  "closed": "2026-11-17",
+  "result": "ui-quality `listOfTable` reads the header as textContent, the text",
+  "evidence": [
+    "legacy item migrated to format 2 without a recorded evidence"
+  ]
+}

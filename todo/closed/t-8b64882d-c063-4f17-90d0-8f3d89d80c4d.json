@@ -1,0 +1,22 @@
+{
+  "tadu": 2,
+  "id": "t-8b64882d-c063-4f17-90d0-8f3d89d80c4d",
+  "title": "verticagtm: removed the `vitest@<4.1.11` and `@vitest/mocker@<4.1.11`",
+  "state": "done",
+  "category": "general",
+  "type": "untriaged",
+  "priority": "untriaged",
+  "notes": [
+    "    overrides (Codex D3 option A, confidence high). They rewrote the vitest",
+    "    peer ranges of test-quality, jest-dom and @vitest/eslint-plugin to 4.1.11",
+    "    against a direct `vitest@^5.0.3`. `pnpm peers check` no longer lists",
+    "    vitest; `pnpm check:ci` exit 0; verticagtm da9c36b8 pushed. Codex D2",
+    "    (option A, medium) confirmed publishing eslint-plugin-code-policy 0.8.0 at",
+    "    error severity."
+  ],
+  "closed": "2026-11-17",
+  "result": "verticagtm: removed the `vitest@<4.1.11` and `@vitest/mocker@<4.1.11`",
+  "evidence": [
+    "legacy item migrated to format 2 without a recorded evidence"
+  ]
+}

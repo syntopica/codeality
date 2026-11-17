@@ -1,0 +1,24 @@
+{
+  "tadu": 2,
+  "id": "t-44870bb7-c346-4648-b9b6-f733f48d9ac2",
+  "title": "Trusted publishing is configured for all six npm packages. The five",
+  "state": "done",
+  "category": "general",
+  "type": "untriaged",
+  "priority": "untriaged",
+  "notes": [
+    "    `@syntopica/*` packages (`eslint-config`, `prettier-config`,",
+    "    `quality-config`, `tsconfig`, `create-baseline`) had none after their",
+    "    manual first publish on 2026-09-14; each now trusts GitHub Actions",
+    "    `syntopica/codeality` `publish.yml` (`npm trust github`, one passkey",
+    "    escalation per package), confirmed on every npmjs.com access page.",
+    "    `eslint-plugin-code-policy` already trusted it. The next release of each",
+    "    is the end-to-end proof. Gotcha: `npm trust` only prints its auth URL on a",
+    "    TTY; without one it prints `***` and exits EOTP."
+  ],
+  "closed": "2026-11-17",
+  "result": "Trusted publishing is configured for all six npm packages. The five",
+  "evidence": [
+    "legacy item migrated to format 2 without a recorded evidence"
+  ]
+}

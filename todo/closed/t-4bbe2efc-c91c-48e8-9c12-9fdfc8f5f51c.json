@@ -1,0 +1,17 @@
+{
+  "tadu": 2,
+  "id": "t-4bbe2efc-c91c-48e8-9c12-9fdfc8f5f51c",
+  "title": "Rule precision fixes from the Codex tools",
+  "state": "done",
+  "category": "code-policy",
+  "type": "untriaged",
+  "priority": "untriaged",
+  "notes": [
+    "    review."
+  ],
+  "closed": "2026-10-13",
+  "result": "exemptions match whole file names (`reindex.js`, `myindex.ts`, `homepage.tsx`, `myproxy.ts` no longer exempt; `.mjs`/`.mts` barrels recognised); `public-api-imports` and `no-cross-module-deep-imports` check `export from`, `export *` and literal `import()`, plus `allowedSubpaths`; `view-logic-separation` skips `useXxx` hooks and sees `React.useState`, `memo` and `forwardRef`; `one-primary-unit` message says at most one; five missing rule pages written; docs URLs point at this repository.",
+  "evidence": [
+    "dc8a74b; 289 plugin tests; `pnpm check:ci` passed."
+  ]
+}

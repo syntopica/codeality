@@ -1,0 +1,22 @@
+{
+  "tadu": 2,
+  "id": "t-b6969d56-daf0-47d0-9d8b-e84441e549b7",
+  "title": "knip on the templates: `gitleaks` is ignored by default in",
+  "state": "done",
+  "category": "general",
+  "type": "untriaged",
+  "priority": "untriaged",
+  "notes": [
+    "    `createKnipConfig` (the baseline writes it into every `secrets:check`; all",
+    "    eight templates reported it unlisted), the nextjs preset drops",
+    "    `{,src/}{middleware,proxy}.ts` (knip's Next plugin registers both) and the",
+    "    Vite presets drop `src/main.*` (reached through index.html). A dead file",
+    "    in vite-react still reports. Remaining hints are the documented",
+    "    `ignoreDependencies` ones."
+  ],
+  "closed": "2026-11-17",
+  "result": "knip on the templates: `gitleaks` is ignored by default in",
+  "evidence": [
+    "legacy item migrated to format 2 without a recorded evidence"
+  ]
+}

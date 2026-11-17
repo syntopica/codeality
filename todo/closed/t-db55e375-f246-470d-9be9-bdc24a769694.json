@@ -1,0 +1,18 @@
+{
+  "tadu": 2,
+  "id": "t-db55e375-f246-470d-9be9-bdc24a769694",
+  "title": "`quality-config@0.12.0` tag added at f6c7239 (the bump commit, 05:24Z;",
+  "state": "done",
+  "category": "general",
+  "type": "untriaged",
+  "priority": "untriaged",
+  "notes": [
+    "    publish run 37179879613, npm 05:28Z; no later change to the package).",
+    "    `pnpm release:check`: 9 packages fully released."
+  ],
+  "closed": "2026-11-17",
+  "result": "`quality-config@0.12.0` tag added at f6c7239 (the bump commit, 05:24Z;",
+  "evidence": [
+    "legacy item migrated to format 2 without a recorded evidence"
+  ]
+}

@@ -1,0 +1,26 @@
+{
+  "tadu": 2,
+  "id": "t-afe7c468-a322-45f9-850d-8caf7c41e58f",
+  "title": "2026-08-25 - **Release tags: the convention is now checked, not",
+  "state": "done",
+  "category": "2026-08",
+  "type": "untriaged",
+  "priority": "untriaged",
+  "notes": [
+    "    remembered.** `scripts/release-check.mjs` reads `git cat-file -t` for",
+    "    every tag and warns on each lightweight one, naming it and the",
+    "    `git tag -a <tag> -m \"<message>\"` form that avoids the next. It warns",
+    "    rather than fails, because a pushed release tag is immutable and nine of",
+    "    them already exist. README's publish section states the convention.",
+    "- **The backlog entry undercounted.** It said three lightweight tags, all cut",
+    "  2026-08-04, with everything before them annotated. The check reports nine of",
+    "  twenty: `create-baseline@0.2.0`, `0.2.1`, `0.3.2`, `eslint-config@0.4.1`,",
+    "  `0.4.2`, `0.6.0`, `eslint-plugin-code-policy@0.5.1`, `0.5.2` and",
+    "  `quality-config@0.3.0`. The habit predates the date the entry blamed."
+  ],
+  "closed": "2026-11-17",
+  "result": "2026-08-25 - **Release tags: the convention is now checked, not",
+  "evidence": [
+    "`pnpm release:check --no-npm` exits 0 with the warning block and six packages reported fully released; `eslint scripts --max-warnings 0` clean."
+  ]
+}

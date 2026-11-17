@@ -1,0 +1,22 @@
+{
+  "tadu": 2,
+  "id": "t-3f02ea93-405e-4a31-886b-d1a7f5317d85",
+  "title": "test-quality candidate list measured: on 10xjoy 11 of the 70 DOM-word",
+  "state": "done",
+  "category": "general",
+  "type": "untriaged",
+  "priority": "untriaged",
+  "notes": [
+    "    files passed under node anyway, 10 because of a bare `location` (an HTTP",
+    "    header) and one of `document` as a noun. `document`/`location` now count",
+    "    only as `document.`/`location.` globals and `Blob` is out (node has it):",
+    "    10xjoy 82 of 82 candidates pass under node (was 71 of 71), no failed",
+    "    candidate; verticagtm none left after its four files moved to node",
+    "    (verticagtm 327a0215)."
+  ],
+  "closed": "2026-11-17",
+  "result": "test-quality candidate list measured: on 10xjoy 11 of the 70 DOM-word",
+  "evidence": [
+    "legacy item migrated to format 2 without a recorded evidence"
+  ]
+}

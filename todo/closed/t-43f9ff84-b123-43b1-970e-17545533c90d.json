@@ -1,0 +1,18 @@
+{
+  "tadu": 2,
+  "id": "t-43f9ff84-b123-43b1-970e-17545533c90d",
+  "title": "**Keep dates, times",
+  "state": "done",
+  "category": "verified-interaction-sweep-repairs",
+  "type": "untriaged",
+  "priority": "untriaged",
+  "notes": [
+    "    and reference columns outside quantity alignment requirements.** The sweep",
+    "    applied quantity formatting to fiscal dates and identifiers."
+  ],
+  "closed": "2026-10-21",
+  "result": "The quantity-alignment check excludes recognized dates and clock times before its existing numeric-share calculation. Existing alphanumeric reference behavior and amount checks remain unchanged.",
+  "evidence": [
+    "Four date/time regressions failed before the fix; pnpm --filter @syntopica/ui-quality exec vitest run tests/rules/numericAlignment.test.ts --maxWorkers=1 passes all 8 cases, including the previously accepted reference control and genuine amount faults. Targeted ESLint passes. Independent review returned no findings."
+  ]
+}

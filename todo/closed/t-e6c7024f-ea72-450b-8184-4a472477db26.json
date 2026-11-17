@@ -1,0 +1,21 @@
+{
+  "tadu": 2,
+  "id": "t-e6c7024f-ea72-450b-8184-4a472477db26",
+  "title": "ui-quality `disable` entries take `message`, a substring the finding's",
+  "state": "done",
+  "category": "general",
+  "type": "untriaged",
+  "priority": "untriaged",
+  "notes": [
+    "    message must contain, so one third-party `console-error` (Turnstile's",
+    "    picture-in-picture violation) is kept without disabling the rule on the",
+    "    route. Evidence: `tests/config/isDisabled.test.ts` (message match and",
+    "    mismatch), config parse test; ui-quality 157 tests, lint, type-check",
+    "    clean."
+  ],
+  "closed": "2026-11-17",
+  "result": "ui-quality `disable` entries take `message`, a substring the finding's",
+  "evidence": [
+    "legacy item migrated to format 2 without a recorded evidence"
+  ]
+}

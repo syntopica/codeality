@@ -1,0 +1,29 @@
+{
+  "tadu": 2,
+  "id": "t-7041f741-cf35-4dff-bd33-a909d6fd43cf",
+  "title": "2026-08-27 - **`atomic-file.ts` mutation score 49.72% → 92.74%; package",
+  "state": "done",
+  "category": "2026-08",
+  "type": "untriaged",
+  "priority": "untriaged",
+  "notes": [
+    "    floor ratcheted 60 → 67.** First rule of the per-rule tightening pass",
+    "    (delegated to Codex CLI, verified independently). Survivors in",
+    "    `atomic-file.ts` fell 65 → 12; package score 60.80% → 67.68% (755 killed,",
+    "    321 survived); every other rule's score unchanged. Tests now assert exact",
+    "    `meta`, `messageId`, line/column, report count, and filename/AST",
+    "    boundaries instead of bare `messageId`. `stryker.config.mjs`",
+    "    `thresholds.break` raised to 67 with the ratchet comment updated.",
+    "    Evidence: own re-run of",
+    "    `pnpm --filter eslint-plugin-code-policy run mutation` exits 0 - \"Final",
+    "    mutation score of 67.68 is greater than or equal to break threshold 67\";",
+    "    package test suite 173 tests pass; eslint `--max-warnings 0` and",
+    "    `prettier --check` clean on both changed files. Remaining per-rule work",
+    "    stays in TODO.md with the new table."
+  ],
+  "closed": "2026-11-17",
+  "result": "2026-08-27 - **`atomic-file.ts` mutation score 49.72% → 92.74%; package",
+  "evidence": [
+    "legacy item migrated to format 2 without a recorded evidence"
+  ]
+}

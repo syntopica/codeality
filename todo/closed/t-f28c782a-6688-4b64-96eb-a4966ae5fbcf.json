@@ -1,0 +1,18 @@
+{
+  "tadu": 2,
+  "id": "t-f28c782a-6688-4b64-96eb-a4966ae5fbcf",
+  "title": "commitlint and `todo:`: backlog commits are `docs(todo):`, documented in",
+  "state": "done",
+  "category": "general",
+  "type": "untriaged",
+  "priority": "untriaged",
+  "notes": [
+    "    `docs/standards/quality-gates.md` (`todo` would need a changelog mapping",
+    "    for a change with nothing to release)."
+  ],
+  "closed": "2026-11-17",
+  "result": "commitlint and `todo:`: backlog commits are `docs(todo):`, documented in",
+  "evidence": [
+    "legacy item migrated to format 2 without a recorded evidence"
+  ]
+}

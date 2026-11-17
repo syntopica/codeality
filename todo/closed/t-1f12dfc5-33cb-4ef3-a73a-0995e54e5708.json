@@ -1,0 +1,17 @@
+{
+  "tadu": 2,
+  "id": "t-1f12dfc5-33cb-4ef3-a73a-0995e54e5708",
+  "title": "Allow a compact header above",
+  "state": "done",
+  "category": "compact-table-headers",
+  "type": "untriaged",
+  "priority": "untriaged",
+  "notes": [
+    "    consistently sized data rows."
+  ],
+  "closed": "2026-10-22",
+  "result": "Header rows shorter than the body median no longer produce row-height-scale findings. The existing header-more-than-eight-pixels-taller check and two-pixel body-row spread check remain unchanged. Generic table fixtures and documentation capture the policy without a calendar/library/class exemption; original private-screen acceptance is not claimed.",
+  "evidence": [
+    "The 19px-header/36px-body regression failed before the fix. `pnpm --filter @syntopica/ui-quality exec vitest run tests/rules/tables.test.ts tests/cli.data-display.integration.test.ts --maxWorkers=1` passed 36 tests in two files, including the existing 64px/40px tall-header, uneven body, wrapped-row and tolerance controls. Package lint, type-check and build passed; independent review returned no findings."
+  ]
+}

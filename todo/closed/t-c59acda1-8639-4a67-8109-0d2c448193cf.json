@@ -1,0 +1,18 @@
+{
+  "tadu": 2,
+  "id": "t-c59acda1-8639-4a67-8109-0d2c448193cf",
+  "title": "**Preserve alphanumeric invoice",
+  "state": "done",
+  "category": "verified-ui-rule-repairs",
+  "type": "untriaged",
+  "priority": "untriaged",
+  "notes": [
+    "    references in raw-placeholder.** The fiscal sweep misclassified a supplier",
+    "    invoice reference as snake_case."
+  ],
+  "closed": "2026-10-21",
+  "result": "Only letter-only snake_case words qualify as implementation labels; camelCase and key-and-ID detection remain unchanged.",
+  "evidence": [
+    "Three alphanumeric reference regressions failed before the fix; all 18 newRules tests passed afterward, including four genuine identifier controls. Independent review returned no findings."
+  ]
+}

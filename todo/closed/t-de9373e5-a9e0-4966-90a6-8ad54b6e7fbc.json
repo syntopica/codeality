@@ -1,0 +1,34 @@
+{
+  "tadu": 2,
+  "id": "t-de9373e5-a9e0-4966-90a6-8ad54b6e7fbc",
+  "title": "the peer packages each `@busirocket/eslint-config`",
+  "state": "done",
+  "category": "docs",
+  "type": "untriaged",
+  "priority": "untriaged",
+  "notes": [
+    "    subpath needs are now listed per subpath. The reported gap -",
+    "    `createCodeQualityConfig` failing a consumer's `tsc --noEmit` with",
+    "    `Cannot find module 'eslint-plugin-testing-library'` - was documentation,",
+    "    not the manifest: the plugin was already an optional peer, and the",
+    "    manifest is right, because the plugin is only mandatory for the subpaths",
+    "    that reach `./testing`. The README `Stacks` table gained an",
+    "    `Install alongside` column covering all twelve subpaths, plus the reason",
+    "    the list is longer than `peerDependencies` suggests: the package ships raw",
+    "    `.ts`, so its imports resolve from the consumer and pnpm's isolated",
+    "    `node_modules` requires a direct declaration even for the config's own",
+    "    `dependencies`. `docs/adoption/existing-repo.md` points at that table and",
+    "    calls out the two easy misses (`/code-quality` needing the testing",
+    "    plugins, `/nextjs` and `/vite-react` needing `eslint-plugin-boundaries`)",
+    "    and the ESLint 10 React-version note."
+  ],
+  "closed": "2026-08-04",
+  "result": "the peer packages each `@busirocket/eslint-config`",
+  "evidence": [
+    "`pnpm format:check` clean; `pnpm knip` exit `0`."
+  ],
+  "files": [
+    "packages/eslint-config/README.md",
+    "docs/adoption/existing-repo.md"
+  ]
+}

@@ -1,0 +1,20 @@
+{
+  "tadu": 2,
+  "id": "t-176460cb-7796-4034-a68f-ec7dc7189a96",
+  "title": "Gate packages share one ESLint config: `gateCliEslintConfig` in gate-kit",
+  "state": "done",
+  "category": "general",
+  "type": "untriaged",
+  "priority": "untriaged",
+  "notes": [
+    "    replaces the copies in db-quality, ui-quality and test-quality (609 rules",
+    "    on each `--print-config`, a hidden top-level const still errors), and",
+    "    their direct `@syntopica/eslint-config`/`eslint-plugin-regexp` devDeps go",
+    "    (knip). jscpd 0.94% to 0.76%."
+  ],
+  "closed": "2026-11-17",
+  "result": "Gate packages share one ESLint config: `gateCliEslintConfig` in gate-kit",
+  "evidence": [
+    "legacy item migrated to format 2 without a recorded evidence"
+  ]
+}

@@ -1,0 +1,24 @@
+{
+  "tadu": 2,
+  "id": "t-1b0b4ae6-70f6-4aaa-896d-5971b73274ed",
+  "title": "ui-quality `ghost-elevation` (warn): owner said yes and asked for Codex;",
+  "state": "done",
+  "category": "general",
+  "type": "untriaged",
+  "priority": "untriaged",
+  "notes": [
+    "    Codex (`codex exec -s read-only`, verdict D1 option B, confidence high)",
+    "    chose reporting only shadows larger than shadcn's default. Probe field",
+    "    `shadowBlur` (widest visible outer blur); the rule fires on a box with a",
+    "    full visible border, blur over `GHOST_SHADOW_BLUR` (3px, Tailwind",
+    "    shadow-sm) and no fixed/absolute ancestor or dialog. Evidence:",
+    "    `cli.elevation.integration.test.ts` reports only `main > section.ghost`;",
+    "    threshold 1000 drops it, threshold 0 adds `section.resting` while the",
+    "    popover stays excluded."
+  ],
+  "closed": "2026-11-17",
+  "result": "ui-quality `ghost-elevation` (warn): owner said yes and asked for Codex;",
+  "evidence": [
+    "legacy item migrated to format 2 without a recorded evidence"
+  ]
+}

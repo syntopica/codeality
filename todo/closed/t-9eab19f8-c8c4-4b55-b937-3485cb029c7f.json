@@ -1,0 +1,20 @@
+{
+  "tadu": 2,
+  "id": "t-9eab19f8-c8c4-4b55-b937-3485cb029c7f",
+  "title": "ui-quality reaches views held in client state: `routes[].localStorage` is",
+  "state": "done",
+  "category": "general",
+  "type": "untriaged",
+  "priority": "untriaged",
+  "notes": [
+    "    written by an init script before the route loads (guarded by URL so it",
+    "    applies to that route alone). Found on InteliFactu, whose zustand store",
+    "    persists the current view; tested with a fixture that renders nothing",
+    "    without the stored view."
+  ],
+  "closed": "2026-11-17",
+  "result": "ui-quality reaches views held in client state: `routes[].localStorage` is",
+  "evidence": [
+    "legacy item migrated to format 2 without a recorded evidence"
+  ]
+}

@@ -1,0 +1,17 @@
+{
+  "tadu": 2,
+  "id": "t-efd15f26-c909-4439-b154-fb84695fd4c8",
+  "title": "`knip --production` reports real",
+  "state": "done",
+  "category": "quality-config",
+  "type": "untriaged",
+  "priority": "untriaged",
+  "notes": [
+    "    findings."
+  ],
+  "closed": "2026-10-13",
+  "result": "presets mark runtime entries and sources with `!`, exclude tests, mocks and stories in production only, and ignore `astro`/`nuxt` in production only; `existingEntries` strips the mark; root config marks package and template sources. Root production run went from 22 dependency reports to 3, all `@tailwindcss/vite` (a build plugin declared in `dependencies`, a true finding left for the templates to decide); default run output identical.",
+  "evidence": [
+    "f412b33; `tests/knip.production.test.ts` runs real knip; 8 templates exit 0 in default mode."
+  ]
+}

@@ -1,0 +1,17 @@
+{
+  "tadu": 2,
+  "id": "t-6535d5a8-2f3f-40b5-9133-d55a36e55c8b",
+  "title": "Preserve real visibility",
+  "state": "done",
+  "category": "sticky-pager-diagnostic-fixture",
+  "type": "untriaged",
+  "priority": "untriaged",
+  "notes": [
+    "    and horizontal-inset findings while investigating the sweep observation."
+  ],
+  "closed": "2026-10-22",
+  "result": "Added a synthetic Chromium fixture with five measured scroll/layout states. A covered intermediate row becomes exposed on further scrolling; a layout reserving pager space exposes the final row, while an overlapping pager permanently covers it at maximum scroll. Sixteen-pixel horizontal insets stay clean and genuine two-pixel insets remain cramped. No production rule or exemption changed; the original private-screen observation remains pending.",
+  "evidence": [
+    "`pnpm --filter @syntopica/ui-quality exec vitest run tests/capture/stickyPager.integration.test.ts --maxWorkers=1` passes the actual probe and both rules across all five captures. Targeted ESLint, package type-check, Prettier and diff checks pass. The prior scratch diagnostic independently measured twelve states; no private data or external page was used."
+  ]
+}

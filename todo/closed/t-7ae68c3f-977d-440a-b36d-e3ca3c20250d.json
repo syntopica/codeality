@@ -1,0 +1,23 @@
+{
+  "tadu": 2,
+  "id": "t-7ae68c3f-977d-440a-b36d-e3ca3c20250d",
+  "title": "db-quality passes every file it writes (`codeality-db.json`,",
+  "state": "done",
+  "category": "general",
+  "type": "untriaged",
+  "priority": "untriaged",
+  "notes": [
+    "    `package.json`, bench README, `.codeality-db-bench.json`,",
+    "    `.codeality-db-perf.json`) through the project's own",
+    "    `prettier --write --ignore-unknown` (`runProjectPrettier`); no Prettier",
+    "    means files stay as written. Evidence:",
+    "    `initCommand.prettier.integration.test.ts` (printWidth 40, proseWrap",
+    "    always) passes and fails with the call disabled; db-quality 348 tests,",
+    "    lint, type-check clean."
+  ],
+  "closed": "2026-11-17",
+  "result": "db-quality passes every file it writes (`codeality-db.json`,",
+  "evidence": [
+    "legacy item migrated to format 2 without a recorded evidence"
+  ]
+}

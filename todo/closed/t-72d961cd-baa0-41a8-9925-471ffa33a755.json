@@ -1,0 +1,17 @@
+{
+  "tadu": 2,
+  "id": "t-72d961cd-baa0-41a8-9925-471ffa33a755",
+  "title": "Adopt the fixed certifi bundle in both",
+  "state": "done",
+  "category": "python-baseline",
+  "type": "untriaged",
+  "priority": "untriaged",
+  "notes": [
+    "    local Python quality environments."
+  ],
+  "closed": "2026-10-22",
+  "result": "Replace only the managed certifi distributions with the verified official 2026.10.19 wheel, offline and without dependencies or builds. Preserve both editable roots and recoverable exact old-file backups.",
+  "evidence": [
+    "Targeted uv pip install --offline --no-index --no-deps --no-build --reinstall-package certifi completed in both exact prefixes. Both managed RECORD checks, no-network SSL context loading (120 CA certificates) and uv pip check passed. The other 44/47 distribution metadata and direct_url identities, all tracked source hashes/modes and runtime prefixes stayed identical. Shared 300/120 supervisor exited 0 in 4.07 seconds with no guard trigger or owned process survivors."
+  ]
+}

@@ -1,0 +1,18 @@
+{
+  "tadu": 2,
+  "id": "t-fe50eed6-70cc-41c0-9d6e-dde5c300c35f",
+  "title": "`docs/adoption/existing-repo.md` gains \"The first `check:ci` on a",
+  "state": "done",
+  "category": "general",
+  "type": "untriaged",
+  "priority": "untriaged",
+  "notes": [
+    "    repository older than the baseline\": TS4111 sweep, tool directories out of",
+    "    Prettier/ESLint, the suppressions ratchet, and the knip findings."
+  ],
+  "closed": "2026-11-17",
+  "result": "`docs/adoption/existing-repo.md` gains \"The first `check:ci` on a",
+  "evidence": [
+    "legacy item migrated to format 2 without a recorded evidence"
+  ]
+}

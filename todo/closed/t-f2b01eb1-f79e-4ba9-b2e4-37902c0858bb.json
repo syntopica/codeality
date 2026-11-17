@@ -1,0 +1,17 @@
+{
+  "tadu": 2,
+  "id": "t-f2b01eb1-f79e-4ba9-b2e4-37902c0858bb",
+  "title": "Verify the combined navigation,",
+  "state": "done",
+  "category": "ui-repair-validation",
+  "type": "untriaged",
+  "priority": "untriaged",
+  "notes": [
+    "    paint, spacing and rule-precision repairs on the frozen source tree."
+  ],
+  "closed": "2026-10-22",
+  "result": "The package gate covers the repaired client-document redirects, unfinished resources, references, dates, hidden measurement text, transparent PDF glyphs, intrinsic controls and two-pixel spacing. Existing standalone ESLint compatibility and noninteractive column cases remain in the active backlog.",
+  "evidence": [
+    "`pnpm --filter @syntopica/ui-quality lint`, `pnpm --filter @syntopica/ui-quality type-check`, `pnpm --filter @syntopica/ui-quality build` and `pnpm --filter @syntopica/ui-quality test --maxWorkers=1` all exited 0; 113 files and 430 tests passed with coverage. Root `pnpm knip --treat-config-hints-as-errors` and its `--production` variant passed; the two existing production binary warnings remain. Quality-config's full suite passed 36 tests in ten files, with package lint/typecheck and formatting. This is source validation, not npm publication or consumer deployment."
+  ]
+}

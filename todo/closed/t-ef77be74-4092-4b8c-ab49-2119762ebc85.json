@@ -1,0 +1,21 @@
+{
+  "tadu": 2,
+  "id": "t-ef77be74-4092-4b8c-ab49-2119762ebc85",
+  "title": "ui-quality `slow-request` per-request disable: already possible, now",
+  "state": "done",
+  "category": "general",
+  "type": "untriaged",
+  "priority": "untriaged",
+  "notes": [
+    "    documented. The finding's subject is the request (`POST /api/track`), so",
+    "    `disable[].selector` matches its URL, and the new `message` field matches",
+    "    anything in the message. A server action is named only by its Next.js",
+    "    action id; the function name (`trackRosterAccess`) never reaches the",
+    "    browser, so matching by name is not possible from the capture."
+  ],
+  "closed": "2026-11-17",
+  "result": "ui-quality `slow-request` per-request disable: already possible, now",
+  "evidence": [
+    "legacy item migrated to format 2 without a recorded evidence"
+  ]
+}

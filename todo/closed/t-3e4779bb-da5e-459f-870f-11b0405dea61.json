@@ -1,0 +1,35 @@
+{
+  "tadu": 2,
+  "id": "t-3e4779bb-da5e-459f-870f-11b0405dea61",
+  "title": "Root `pnpm knip` vs per-template `pnpm knip` disagreed about",
+  "state": "done",
+  "category": "2026-08",
+  "type": "untriaged",
+  "priority": "untriaged",
+  "notes": [
+    "    `vitest-environment-nuxt` (`templates/nuxt-app`). Task 8 declared the",
+    "    dependency in `templates/nuxt-app/package.json` because",
+    "    `app/components/TheCounter.test.ts`'s `// @vitest-environment nuxt` pragma",
+    "    genuinely needs it resolvable, and the per-template `knip.config.ts`",
+    "    correctly demanded that. The root `knip.config.ts` couldn't see that same",
+    "    usage — its `templates/nuxt-app` workspace override sets `vitest: false`",
+    "    to dodge a real `@nuxt/kit`/jiti crash in knip's vitest plugin — so it",
+    "    flagged the newly-declared dependency as unused, dropping root `pnpm knip`",
+    "    from exit 0 to exit 1. Reproduced the original crash by temporarily",
+    "    re-enabling the plugin: knip failed to load",
+    "    `templates/nuxt-app/vitest.config.ts`, unable to resolve `@nuxt/kit`,",
+    "    confirming `vitest: false` still has to stay. Resolved by adding",
+    "    `vitest-environment-nuxt` to a narrowly-scoped `ignoreDependencies` entry",
+    "    on the root config's `templates/nuxt-app` workspace override (alongside",
+    "    the existing `TEMPLATE_ESLINT_PEER_DEPENDENCIES`, with a comment",
+    "    explaining the dependency is real and only invisible because the vitest",
+    "    plugin is off there) rather than reverting the dependency or re-enabling",
+    "    the plugin. Verified: `pnpm knip` (root) exit 0,",
+    "    `pnpm -r --filter \"./templates/*\" knip` exit 0, `pnpm check:ci` exit 0."
+  ],
+  "closed": "2026-11-17",
+  "result": "Root `pnpm knip` vs per-template `pnpm knip` disagreed about",
+  "evidence": [
+    "legacy item migrated to format 2 without a recorded evidence"
+  ]
+}

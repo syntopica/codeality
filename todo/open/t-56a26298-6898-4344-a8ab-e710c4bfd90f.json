@@ -1,0 +1,28 @@
+{
+  "tadu": 2,
+  "id": "t-56a26298-6898-4344-a8ab-e710c4bfd90f",
+  "title": "Audit verification time in every project",
+  "state": "pending",
+  "category": "cross-project-filed-2026-09-09-from-two-consumer-backlog-runs",
+  "type": "untriaged",
+  "priority": "untriaged",
+  "notes": [
+    "(2026-10-21,",
+    "",
+    "    compratuentrada). Extend the existing `test-quality` audit to report cold",
+    "    and warm lint/format times, full test wall time and phase shares, slowest",
+    "    files, unnecessary DOM environments, coverage overhead, worker count and",
+    "    host load. Where the installed Vitest supports it, run `vitest doctor` on",
+    "    representative subsets as an opt-in diagnostic, record passing and failing",
+    "    candidates, and confirm any recommendation against the full suite before",
+    "    changing defaults. Compare equivalent runs before recommending a change;",
+    "    keep CI's cold checks and all tests and coverage thresholds. Evidence: in",
+    "    compratuentrada, cached ESLint fell from 188.41 s to 7.99 s and Prettier",
+    "    from 54.09 s to 14.69 s, while 991 Vitest files still took 357.11 s. A",
+    "    33-file `vitest doctor` sample recommended disabling isolation (9.01 s to",
+    "    4.76 s), but a three-worker variant failed; this is not proof for the full",
+    "    suite. Smallest next step: define a portable, read-only report for one",
+    "    consumer and validate its findings against this case before rolling it",
+    "    out."
+  ]
+}

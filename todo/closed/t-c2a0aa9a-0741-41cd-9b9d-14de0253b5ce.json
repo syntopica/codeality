@@ -1,0 +1,17 @@
+{
+  "tadu": 2,
+  "id": "t-c2a0aa9a-0741-41cd-9b9d-14de0253b5ce",
+  "title": "Qualify JS and MJS",
+  "state": "done",
+  "category": "javascript-dependency-security",
+  "type": "untriaged",
+  "priority": "untriaged",
+  "notes": [
+    "    unused-variable controls through all eight actual template configurations."
+  ],
+  "closed": "2026-10-22",
+  "result": "All 16 controls select the shared wrapper with backend/parser 8.71.2 and Espree 11.2.0. Older direct peer contexts remain installed; no further declaration or lock change is necessary for these controls, and no global family migration is claimed.",
+  "evidence": [
+    "The actual-template runner passes 16 unique template/extension controls. Command: python3 -B verify_saved_proof.py; saved-proof verification exits zero with current source, lock, native tools and installed metadata/links/state parity. The original supervisor exits one because Nuxt regenerated eslint-typegen.d.ts; that generated-output provenance remains unqualified and is not claimed unchanged."
+  ]
+}

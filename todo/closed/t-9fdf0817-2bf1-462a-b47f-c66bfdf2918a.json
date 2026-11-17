@@ -1,0 +1,23 @@
+{
+  "tadu": 2,
+  "id": "t-9fdf0817-2bf1-462a-b47f-c66bfdf2918a",
+  "title": "db-quality `sqlite.queries` follow-ups (Vexa): `exclude` root-relative",
+  "state": "done",
+  "category": "general",
+  "type": "untriaged",
+  "priority": "untriaged",
+  "notes": [
+    "    globs (`readQueryFiles` via `node:path` `matchesGlob`, validated in",
+    "    `sqliteQueriesSectionFrom`), and with `database` set a BDB404 whose",
+    "    statement plans with no scan is dropped (`planScansNothing`,",
+    "    `dropIndexedGuards`). Evidence: integration fixture `jobs_guarded.sql`",
+    "    reports BDB404 statically and none with dev.db (test fails with the drop",
+    "    disabled); exclude test returns []; db-quality 347 tests pass, lint and",
+    "    type-check clean."
+  ],
+  "closed": "2026-11-17",
+  "result": "db-quality `sqlite.queries` follow-ups (Vexa): `exclude` root-relative",
+  "evidence": [
+    "legacy item migrated to format 2 without a recorded evidence"
+  ]
+}

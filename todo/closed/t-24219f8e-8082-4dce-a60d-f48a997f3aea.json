@@ -1,0 +1,21 @@
+{
+  "tadu": 2,
+  "id": "t-24219f8e-8082-4dce-a60d-f48a997f3aea",
+  "title": "ui-quality `check --routes <glob>` measures only the matching routes",
+  "state": "done",
+  "category": "general",
+  "type": "untriaged",
+  "priority": "untriaged",
+  "notes": [
+    "    (`node:path` `matchesGlob`, extglob such as `'/!(admin)**'` works) and",
+    "    skips the up-front credential check; a selected route that bounces to the",
+    "    login still fails with the missing-variable error, and a glob matching",
+    "    nothing is exit 2. Evidence: `tests/cli.routes.integration.test.ts` (4",
+    "    cases); ui-quality 161 tests, lint, type-check clean."
+  ],
+  "closed": "2026-11-17",
+  "result": "ui-quality `check --routes <glob>` measures only the matching routes",
+  "evidence": [
+    "legacy item migrated to format 2 without a recorded evidence"
+  ]
+}

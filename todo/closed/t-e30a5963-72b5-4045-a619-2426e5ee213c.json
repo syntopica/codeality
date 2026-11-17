@@ -1,0 +1,33 @@
+{
+  "tadu": 2,
+  "id": "t-e30a5963-72b5-4045-a619-2426e5ee213c",
+  "title": "2026-08-27 - **The tsconfig lessons from a consumer are documented where",
+  "state": "done",
+  "category": "2026-08",
+  "type": "untriaged",
+  "priority": "untriaged",
+  "notes": [
+    "    the next adopter will look.** `packages/tsconfig/README.md` gained \"The",
+    "    two root shapes\" (single-project root extends a preset; multi-project root",
+    "    stays `{\"files\": [], \"references\": [...]}` with presets on the leaves, and",
+    "    why: `baseline-type-coverage` walks references, and the wrong shape once",
+    "    produced `type-coverage: ok . 0 / 0` over a whole repository) and \"Next.js",
+    "    notes\" (never include `.next/dev/types` - `TS1434` on a gitignored dev",
+    "    artifact reads as unfixable and gets the Next project dropped from",
+    "    `type-check`; and Next does not rewrite a tsconfig the preset completed,",
+    "    so it can leave `.prettierignore`). `docs/adoption/existing-repo.md`",
+    "    section 5 gained \"What turning the strictness on actually costs\": 33",
+    "    pre-existing findings in that consumer, all in `scripts/` and `e2e/`, two",
+    "    real bugs of the `name in obj` shape fixed with `Object.hasOwn`; plus the",
+    "    two adoption notes - the lint wave arrives WITH the tsconfig change (adopt",
+    "    eslint-config and tsconfig in one pass), and fixes belong at the source,",
+    "    never `?? ''` fallbacks. Evidence:",
+    "    `pnpm exec eslint <both files> --max-warnings 0` and `prettier --check`",
+    "    pass. Closes five TODO items in one pass."
+  ],
+  "closed": "2026-11-17",
+  "result": "2026-08-27 - **The tsconfig lessons from a consumer are documented where",
+  "evidence": [
+    "legacy item migrated to format 2 without a recorded evidence"
+  ]
+}

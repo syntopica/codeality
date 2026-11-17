@@ -1,0 +1,32 @@
+{
+  "tadu": 2,
+  "id": "t-f689b7ae-9d9e-4edb-860f-7960bce4aae7",
+  "title": "Released and published everything the repo was holding unreleased:",
+  "state": "done",
+  "category": "2026-08",
+  "type": "untriaged",
+  "priority": "untriaged",
+  "notes": [
+    "    `@busirocket/quality-config@0.2.0` (the `createKnipConfig` behavior change",
+    "    from this same session - a consumer that adopts it now fails on a dead",
+    "    entry-file export, which is a ratchet, not a patch),",
+    "    `@busirocket/prettier-config@0.1.2` and `@busirocket/tsconfig@0.2.1`",
+    "    (metadata only: their published tarballs predated the commits that pointed",
+    "    `repository`/`homepage`/`bugs` at this monorepo, so npm still linked the",
+    "    retired standalone `BusiRocket/prettier-config` repo), and",
+    "    `@busirocket/create-baseline@0.3.1` (its pins are derived from those",
+    "    versions). Published in dependency order through `publish.yml`, four",
+    "    successful runs (30809357438, 30809414554, 30809464477, 30809523862).",
+    "    `create-baseline` showed the propagation lag documented earlier in this",
+    "    log - `npm view` reported 0.3.0 for a moment after a successful run - and",
+    "    settled on 0.3.1. Also pushed the three backfilled tags plus the four new",
+    "    ones. Evidence: `pnpm release:check` exit 0 with all six packages at their",
+    "    published versions, CI green on the release commit (run 30809332981), and",
+    "    `pnpm audit --audit-level=high` exit 0."
+  ],
+  "closed": "2026-11-17",
+  "result": "Released and published everything the repo was holding unreleased:",
+  "evidence": [
+    "legacy item migrated to format 2 without a recorded evidence"
+  ]
+}

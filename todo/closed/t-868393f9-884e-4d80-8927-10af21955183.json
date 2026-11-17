@@ -1,0 +1,25 @@
+{
+  "tadu": 2,
+  "id": "t-868393f9-884e-4d80-8927-10af21955183",
+  "title": "Template `prepare` race on `.git/hooks`: new `baseline-hooks-install` bin",
+  "state": "done",
+  "category": "general",
+  "type": "untriaged",
+  "priority": "untriaged",
+  "notes": [
+    "    in quality-config runs `lefthook install` only when the package is the git",
+    "    repository root, and all eight templates use it in `prepare`.",
+    "    `pnpm install --force` now reports each template as nested in the",
+    "    repository root and skipped, and only the root syncs the hooks; a",
+    "    standalone git repo still gets its hooks, a non-git directory exits 0.",
+    "    `lefthook` joined the runner dependency lists in both knip configs. Needs",
+    "    a quality-config minor release before a copied template can resolve the",
+    "    bin. Evidence: `pnpm knip`, `pnpm lint:root`, quality-config `lint`,",
+    "    `type-check`, `publish:check` all exit 0."
+  ],
+  "closed": "2026-11-17",
+  "result": "Template `prepare` race on `.git/hooks`: new `baseline-hooks-install` bin",
+  "evidence": [
+    "legacy item migrated to format 2 without a recorded evidence"
+  ]
+}

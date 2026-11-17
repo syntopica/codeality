@@ -1,0 +1,11 @@
+{
+  "tadu": 2,
+  "id": "t-95e51152-3f59-4650-bb7a-404599227eb1",
+  "title": "Pipe oxlint before ESLint in pre-commit",
+  "state": "cancelled",
+  "category": "hooks",
+  "type": "untriaged",
+  "priority": "untriaged",
+  "closed": "2026-10-13",
+  "resolution": "measured on the ts-package template with lefthook 2.2.1: a failing file 0.5 s instead of 2.5 s, a clean file 2.2 s instead of 1.7 s; clean commits dominate, so the hook stays parallel. OXLINT.md records the numbers and the type-aware oxlint caveat (8457615)."
+}

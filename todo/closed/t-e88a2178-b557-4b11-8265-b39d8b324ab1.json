@@ -1,0 +1,17 @@
+{
+  "tadu": 2,
+  "id": "t-e88a2178-b557-4b11-8265-b39d8b324ab1",
+  "title": "Exclude unpainted",
+  "state": "done",
+  "category": "pdf-selection-layer-repairs",
+  "type": "untriaged",
+  "priority": "untriaged",
+  "notes": [
+    "    transparent glyphs from visible-copy and typography rules."
+  ],
+  "closed": "2026-10-21",
+  "result": "A shared paint classifier protects undersized-text, ascii-ellipsis, bare-url and type-scale-sprawl without removing probe geometry or exempting a CSS class. Opaque, clipped-background, shadow-painted and unknown-color controls retain conservative checks.",
+  "evidence": [
+    "The undersized-text regression and three remaining rule regressions failed before their fixes. `pnpm --filter @syntopica/ui-quality exec vitest run tests/rules/pdfSelectionText.test.ts tests/rules/undersizedText.paint.test.ts tests/rules/typography.test.ts tests/rules/typeScaleSprawl.test.ts tests/rules/copy.test.ts tests/rules/newRules.test.ts --maxWorkers=1` passed 37 tests in six files. Independent review returned no findings. Official PDF.js text_layer_builder.css declares selection spans transparent; no production PDF or consumer deployment was tested."
+  ]
+}

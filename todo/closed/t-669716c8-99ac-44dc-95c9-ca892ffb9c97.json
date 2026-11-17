@@ -1,0 +1,21 @@
+{
+  "tadu": 2,
+  "id": "t-669716c8-99ac-44dc-95c9-ca892ffb9c97",
+  "title": "Every JS template ships a `.baseline-advisories.json` with only the no-fix",
+  "state": "done",
+  "category": "general",
+  "type": "untriaged",
+  "priority": "untriaged",
+  "notes": [
+    "    advisories its own tree reaches, and `docs/adoption/new-repo.md` gives the",
+    "    three overrides (tmp, basic-ftp, @puppeteer/browsers) for the fixable ones",
+    "    under @lhci/cli. Measured on a fresh resolution of each template outside",
+    "    the workspace (published @syntopica versions):",
+    "    `baseline-audit --level moderate` 0 unwaived in all eight."
+  ],
+  "closed": "2026-11-17",
+  "result": "Every JS template ships a `.baseline-advisories.json` with only the no-fix",
+  "evidence": [
+    "legacy item migrated to format 2 without a recorded evidence"
+  ]
+}

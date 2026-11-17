@@ -1,0 +1,15 @@
+{
+  "tadu": 2,
+  "id": "t-4e83bad4-b0a0-4c7b-a5d8-688fab309a99",
+  "title": "Untested claims worth measuring, in Codex's order: blind human review time",
+  "state": "pending",
+  "category": "positioning-and-documentation-codex-value-review-2026-10-13",
+  "type": "untriaged",
+  "priority": "untriaged",
+  "notes": [
+    "    on strict vs original patches; a lighter cap/complexity/boundary gate",
+    "    against the full structural gate; first-run adoption on clean fixtures;",
+    "    per-rule false-positive rate in report-only mode. Smallest step: design",
+    "    the human review pilot (6-10 reviewers, paired patches)."
+  ]
+}

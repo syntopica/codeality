@@ -1,0 +1,18 @@
+{
+  "tadu": 2,
+  "id": "t-575d11c0-a8d5-43c6-a607-cff934cc4f0d",
+  "title": "**Require sufficient prose",
+  "state": "done",
+  "category": "verified-ui-rule-repairs",
+  "type": "untriaged",
+  "priority": "untriaged",
+  "notes": [
+    "    evidence for text-hard-cut.** The fiscal sweep reported two natural",
+    "    67-character captions and four fixed-width 35-character codes."
+  ],
+  "closed": "2026-10-21",
+  "result": "Require at least three eligible texts, remove the two-text majority exception, and exclude texts without internal whitespace. Positive fixtures represent actual prose and three eligible cuts.",
+  "evidence": [
+    "Both near-miss regressions failed before the fix; all 13 textHardCut tests pass afterward. Independent review returned no findings. Other interaction-sweep findings remain pending."
+  ]
+}

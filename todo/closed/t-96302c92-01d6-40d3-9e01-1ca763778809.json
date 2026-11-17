@@ -1,0 +1,23 @@
+{
+  "tadu": 2,
+  "id": "t-96302c92-01d6-40d3-9e01-1ca763778809",
+  "title": "ui-quality turns on axe's `target-size` (WCAG 2.2 AA 2.5.8): axe-core 4.13",
+  "state": "done",
+  "category": "general",
+  "type": "untriaged",
+  "priority": "untriaged",
+  "notes": [
+    "    ships it `enabled: false`, so the default `AxeBuilder` run never reported",
+    "    it; now enabled through run options (`AXE_OPT_IN_RULES`). Evidence:",
+    "    `cli.target-size.integration.test.ts` reports `a11y/target-size` on two",
+    "    touching 16px buttons and fails with the option removed; it also caught a",
+    "    19.6px `<summary>` in the clean `fixed.html` fixture, padded to 24px+.",
+    "    ui-quality 167 tests pass. Consumers will see new `a11y/target-size`",
+    "    findings on upgrade: note it in the CHANGELOG."
+  ],
+  "closed": "2026-11-17",
+  "result": "ui-quality turns on axe's `target-size` (WCAG 2.2 AA 2.5.8): axe-core 4.13",
+  "evidence": [
+    "legacy item migrated to format 2 without a recorded evidence"
+  ]
+}

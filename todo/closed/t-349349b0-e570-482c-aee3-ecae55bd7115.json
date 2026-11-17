@@ -1,0 +1,17 @@
+{
+  "tadu": 2,
+  "id": "t-349349b0-e570-482c-aee3-ecae55bd7115",
+  "title": "Adopt the released typescript-eslint",
+  "state": "done",
+  "category": "javascript-tooling",
+  "type": "untriaged",
+  "priority": "untriaged",
+  "notes": [
+    "    8.71.2 shared-wrapper fix and remove obsolete overrides."
+  ],
+  "closed": "2026-10-22",
+  "result": "Raised thirteen floors, added the shared runtime plugin and removed only the two obsolete overrides. Adopted the combined graph with Nuxt 4.6.2 and existing tsup 9. Eight legacy template-wrapper peer contexts and seven broader old-family snapshots remain separately tracked; no global family migration is claimed.",
+  "evidence": [
+    "Pinned pnpm 12.9.1 frozen install selected all 19 workspaces and matched the complete qualified graph and native artifacts. All 44 original combined stages pass (937 tests, three existing PostgreSQL skips); eight actual-checkout stages pass. Actual JS/MJS wrapper controls report exactly two intended unused-variable errors each through Espree 11.2.0 and plugin/parser 8.71.2. Original pnpm run audit:check exits 0: five advisories, four existing active exceptions and one below threshold; no new or extended waiver."
+  ]
+}

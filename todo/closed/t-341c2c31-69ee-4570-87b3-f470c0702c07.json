@@ -1,0 +1,14 @@
+{
+  "tadu": 2,
+  "id": "t-341c2c31-69ee-4570-87b3-f470c0702c07",
+  "title": "`--json` emits the shared diagnostics",
+  "state": "done",
+  "category": "db-quality",
+  "type": "untriaged",
+  "priority": "untriaged",
+  "closed": "2026-10-13",
+  "result": "`check`, `audit`, `gate`, `perf diff` and `perf bench` add `diagnostics` beside their existing fields; gate stages keep their findings and the top level flattens them in stage order; database findings (`postgres`, `supabase`) carry no location; `rerun` is a fixed command per producer, with `--db-url \"$DB_URL\"` instead of the URL.",
+  "evidence": [
+    "ef8b8bf; 525 db-quality tests passed."
+  ]
+}

@@ -1,0 +1,38 @@
+{
+  "tadu": 2,
+  "id": "t-94d1ae2b-c10e-4747-acdf-4a66a16c0b81",
+  "title": "Built the release-integrity gate the \"a release is not done when the",
+  "state": "done",
+  "category": "2026-08",
+  "type": "untriaged",
+  "priority": "untriaged",
+  "notes": [
+    "    version is bumped\" entry asked for, and closed the drift it found.",
+    "    `pnpm release:check` (`scripts/release-check.mjs`) checks every",
+    "    non-private package in `packages/*` for three things: a git tag",
+    "    `<unscoped-name>@<version>`, that exact version on the npm registry, and a",
+    "    `## <version>` heading in the package's `CHANGELOG.md`. Deliberately kept",
+    "    out of `check:ci`: it needs the network, and the commit that bumps a",
+    "    version legitimately precedes both its tag and its publish, so wiring it",
+    "    into CI would fail every release commit by construction. First run failed",
+    "    on three packages nobody had noticed: `@busirocket/eslint-config@0.5.0`,",
+    "    `@busirocket/prettier-config@0.1.1` and `@busirocket/tsconfig@0.2.0` each",
+    "    had no tag and no CHANGELOG at all - the same failure as the original",
+    "    entry, three times over. npm itself was clean: all six packages' published",
+    "    versions match source. Closed by writing the three missing changelogs",
+    "    (reconstructed from git history, each entry naming the commit that",
+    "    introduced the version, with pre-monorepo releases marked as such rather",
+    "    than invented) and creating three annotated tags at the commit that bumped",
+    "    each version - `ee83404`, `84ecc6f`, and for prettier-config `2acff2e`,",
+    "    the first commit in this repository carrying 0.1.1 since the published",
+    "    release predates the monorepo migration. Evidence: `pnpm release:check`",
+    "    went from exit 1 with three FAIL blocks to exit 0 with",
+    "    `6 packages fully released`. `pnpm check:ci` exit 0, `pnpm check:quality`",
+    "    exit 0. The tags are local; pushing them is tracked in `TODO.md`."
+  ],
+  "closed": "2026-11-17",
+  "result": "Built the release-integrity gate the \"a release is not done when the",
+  "evidence": [
+    "legacy item migrated to format 2 without a recorded evidence"
+  ]
+}

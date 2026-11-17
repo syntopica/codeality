@@ -1,0 +1,23 @@
+{
+  "tadu": 2,
+  "id": "t-edecf212-7098-478f-a3f6-8899c9ac14f8",
+  "title": "**db-quality: migration compilation returns",
+  "state": "done",
+  "category": "db-quality",
+  "type": "untriaged",
+  "priority": "untriaged",
+  "notes": [
+    "    empty rows for guarded queries (filed 2026-11-08 from compratuentrada).**",
+    "    0.6.0 and 0.7.0 run a migration's metadata guard queries against nothing,",
+    "    so a migration that checks `information_schema` before altering fails",
+    "    `BDB320/migration-does-not-compile`. Evidence: compratuentrada",
+    "    `docs/patches/mysql-legacy-instants.md` and its `TODO.md` item \"Widen",
+    "    MySQL legacy instant columns before 2038\". Next step: support declared",
+    "    query responses during migration compilation."
+  ],
+  "closed": "2026-11-10",
+  "result": "kysely.migrations.queryResponses declares the rows the compile-only driver answers (match substring, rows, optional migration and step); undeclared queries still get no rows, so existing hashes are unchanged.",
+  "evidence": [
+    "New tests in compileKyselyMigrations, kyselySectionFrom and kyselyCompileProcess; pnpm check:ci exit 0 on 2026-11-10."
+  ]
+}

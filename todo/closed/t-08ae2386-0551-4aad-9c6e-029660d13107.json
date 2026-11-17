@@ -1,0 +1,23 @@
+{
+  "tadu": 2,
+  "id": "t-08ae2386-0551-4aad-9c6e-029660d13107",
+  "title": "ui-quality: `slow-request` times a slow GET a second time once the page",
+  "state": "done",
+  "category": "general",
+  "type": "untriaged",
+  "priority": "untriaged",
+  "notes": [
+    "    settled (`retimeSlowRequests`, through the context's own session) and",
+    "    reports it only when it is still over `maxMs`; POSTs and server actions",
+    "    are never repeated. New `pagination-missing`: a main table rendering over",
+    "    300 body rows with no next-page control (fixture `long.html`). 112 tests.",
+    "    InteliFactu full sweep at load average 11-13: one `slow-request` left",
+    "    (`GET /api/purchases` 1635 ms, 1973 ms again), down from 12 machine-load",
+    "    findings, and two `pagination-missing` on Contabilidad (428 accounts)."
+  ],
+  "closed": "2026-11-17",
+  "result": "ui-quality: `slow-request` times a slow GET a second time once the page",
+  "evidence": [
+    "legacy item migrated to format 2 without a recorded evidence"
+  ]
+}

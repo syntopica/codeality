@@ -1,0 +1,20 @@
+{
+  "tadu": 2,
+  "id": "t-897c463a-8824-4e99-ac86-4346092b5827",
+  "title": "codeality-py 0.2.5: three defects the backlog pass found. `BPY002` kept no",
+  "state": "done",
+  "category": "general",
+  "type": "untriaged",
+  "priority": "untriaged",
+  "notes": [
+    "    underscore after a one-letter word (`is_a_step` to `is_astep.py`), cut",
+    "    plural acronyms (`URLs` to `ur_ls.py`), and `BPY001` reported an",
+    "    `entrypoint` `__main__.py` that only calls an imported function. Evidence:",
+    "    248 tests, `codeality-py gate --project packages/codeality-py` exit 0."
+  ],
+  "closed": "2026-11-17",
+  "result": "codeality-py 0.2.5: three defects the backlog pass found. `BPY002` kept no",
+  "evidence": [
+    "legacy item migrated to format 2 without a recorded evidence"
+  ]
+}

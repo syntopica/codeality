@@ -1,0 +1,17 @@
+{
+  "tadu": 2,
+  "id": "t-8fb853d1-2de3-4787-a5a7-1f2c8ee94251",
+  "title": "Remove the critical Nuxt",
+  "state": "done",
+  "category": "javascript-dependency-security",
+  "type": "untriaged",
+  "priority": "untriaged",
+  "notes": [
+    "    dependency chain and accidental unit-test route."
+  ],
+  "closed": "2026-10-22",
+  "result": "Adopted Nuxt 4.6.2 with the combined frozen graph; simple-git and its argv-parser are absent. Moved the unit test out of server/api so Nitro cannot register it as an API route. The isolated development smoke restores SSR, API and Devtools responses and returns 404 for the accidental test route; production preview also passes. No interactive browser or package publication is claimed.",
+  "evidence": [
+    "All nine original Nuxt scripts pass within the combined 44-stage verification. From templates/nuxt-app, actual pnpm run type-check, lint, test --maxWorkers=2 and format:check exit 0; three tests pass with 100% coverage against unchanged 80% thresholds. Root pnpm run lint:root, format:check and audit:check pass. The complete five-advisory audit has no critical, expired or unwaived finding; existing exceptions and minimumReleaseAge 1440 are unchanged. All tracked source, full19 installed metadata/links/state, native artifacts and pinned tools retain parity."
+  ]
+}

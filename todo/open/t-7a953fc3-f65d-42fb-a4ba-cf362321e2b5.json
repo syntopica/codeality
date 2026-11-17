@@ -1,0 +1,17 @@
+{
+  "tadu": 2,
+  "id": "t-7a953fc3-f65d-42fb-a4ba-cf362321e2b5",
+  "title": "Unhappy-path audit (owner ask 2026-11-02, from verticagtm): a reusable",
+  "state": "pending",
+  "category": "cross-project-filed-2026-09-09-from-two-consumer-backlog-runs",
+  "type": "untriaged",
+  "priority": "untriaged",
+  "notes": [
+    "    check that drives a web app with wrong, missing and failing inputs on",
+    "    every form and server action it can enumerate, and reports each failure",
+    "    whose message is absent, generic, or a framework-redacted error. Source",
+    "    and first consumer: `verticagtm` TODO \"Unhappy-path e2e\". Smallest step:",
+    "    design the enumeration (forms + actions) and the message rubric against",
+    "    verticagtm's real failures before generalizing."
+  ]
+}

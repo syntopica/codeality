@@ -1,0 +1,17 @@
+{
+  "tadu": 2,
+  "id": "t-5f12fd7e-10ca-46c8-b600-00c6c4beac97",
+  "title": "`publish:check` lints with the packed tarball",
+  "state": "done",
+  "category": "packaging",
+  "type": "untriaged",
+  "priority": "untriaged",
+  "notes": [
+    "    of `eslint-plugin-code-policy`, every preset as ESM and CJS."
+  ],
+  "closed": "2026-10-13",
+  "result": "`publish:check` lints with the packed tarball",
+  "evidence": [
+    "f56ff7f; deleting the `./configs/boundaries` export makes it fail with `ERR_PACKAGE_PATH_NOT_EXPORTED`."
+  ]
+}

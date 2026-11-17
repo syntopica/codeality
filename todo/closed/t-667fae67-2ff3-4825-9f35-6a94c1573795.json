@@ -1,0 +1,14 @@
+{
+  "tadu": 2,
+  "id": "t-667fae67-2ff3-4825-9f35-6a94c1573795",
+  "title": "Diagnose coverage for named CI test scripts",
+  "state": "done",
+  "category": "conformance",
+  "type": "untriaged",
+  "priority": "untriaged",
+  "closed": "2026-10-22",
+  "result": "Discover directly qualified Vitest/Jest scripts reached from CI and target coverage fixes at their actual names. Keep missing coverage and missing thresholds fatal, reject ambiguous config ownership and disabled coverage, and preserve the conventional test contract. Vexa metadata now reports coverage-run for test:unit and coverage-thresholds instead of claiming that no test suite exists. No consumer coverage settings changed.",
+  "evidence": [
+    "From packages/create-baseline, heavy-suite ./node_modules/.bin/vitest run --coverage --maxWorkers=2 passed 226 tests in 23 files with the original 80 percent thresholds; scoped ESLint passed. Coordinator independently reran coverage/gate regressions and verified all seven accepted file hashes. Current Vexa metadata retains both fatal findings."
+  ]
+}

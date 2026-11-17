@@ -1,0 +1,21 @@
+{
+  "tadu": 2,
+  "id": "t-ba63bbf5-5e18-4798-9155-536afecb38bc",
+  "title": "Identify the primary sort value in multiline count/year cells",
+  "state": "in_progress",
+  "category": "ui-quality",
+  "type": "untriaged",
+  "priority": "untriaged",
+  "notes": [
+    "The",
+    "",
+    "matching current consumer accessor sorts by the count of years; the exact",
+    "historical tied triple still has unknown provenance. The engine now accepts",
+    "one explicitly marked, rendered numeric primary descendant and preserves",
+    "legacy parsing when the declaration is invalid, hidden or ambiguous. Full",
+    "build/test passes 531 tests, including count ties, wrapped currency and",
+    "zero-area fallback. Next: review and adopt accessor-derived metadata in the",
+    "owning consumer, then verify the original affected screen. The consumer patch",
+    "remains unapplied; no package release or deployment occurred."
+  ]
+}

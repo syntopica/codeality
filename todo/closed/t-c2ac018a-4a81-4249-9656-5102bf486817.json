@@ -1,0 +1,17 @@
+{
+  "tadu": 2,
+  "id": "t-c2ac018a-4a81-4249-9656-5102bf486817",
+  "title": "Distinguish a container edge",
+  "state": "done",
+  "category": "column-wrapping-evidence",
+  "type": "untriaged",
+  "priority": "untriaged",
+  "notes": [
+    "    from its independently constrained text child."
+  ],
+  "closed": "2026-10-22",
+  "result": "Wrapped text must share the candidate block's content-right boundary within the existing two-pixel tolerance. Border, shadow and fill evidence is unchanged. Near-miss fixtures cover one-line self-start headings and overflowing single-line text; the interaction-sweep parent retains its other findings.",
+  "evidence": [
+    "The constrained-child regression failed before the fix. `pnpm --filter @syntopica/ui-quality exec vitest run tests/rules/raggedColumn.test.ts tests/rules/raggedColumn.wrapping.test.ts tests/cli.ragged.integration.test.ts --maxWorkers=1` passed 17 tests in three files, including the existing CLI capture. Independent review returned no findings. Probe source confirms line counts measure direct text nodes only, so ancestors do not inherit child line counts. Package lint, type-check and build also passed. Original private screens were not recaptured."
+  ]
+}

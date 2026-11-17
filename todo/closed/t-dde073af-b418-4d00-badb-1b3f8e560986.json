@@ -1,0 +1,14 @@
+{
+  "tadu": 2,
+  "id": "t-dde073af-b418-4d00-badb-1b3f8e560986",
+  "title": "Route cross-project debt to its owning",
+  "state": "cancelled",
+  "category": "python-baseline",
+  "type": "untriaged",
+  "priority": "untriaged",
+  "notes": [
+    "backlogs."
+  ],
+  "closed": "2026-10-22",
+  "resolution": "Routed to the existing owning DJCenterDeluxe and djplayerdeluxe quality-baseline TODO entries. Live owning-backlog inspection confirms the same accepted four fixture-SQL cases and the 39 structural findings / 28 mypy ignore sections remain tracked there. Codeality has no implementation obligation for that duplicate bookmark; no hardware-dependent issue was fixed, remeasured or dropped."
+}

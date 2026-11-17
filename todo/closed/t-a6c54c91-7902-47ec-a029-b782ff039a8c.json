@@ -1,0 +1,17 @@
+{
+  "tadu": 2,
+  "id": "t-a6c54c91-7902-47ec-a029-b782ff039a8c",
+  "title": "Stryker scored 3% on Vitest 5 because",
+  "state": "done",
+  "category": "mutation-testing",
+  "type": "untriaged",
+  "priority": "untriaged",
+  "notes": [
+    "    the runner's test-name filter matched nothing (stryker-js#6210)."
+  ],
+  "closed": "2026-10-13",
+  "result": "pnpm patch joins names with ' > ' untrimmed; new contract tests kill new survivors.",
+  "evidence": [
+    "83cc0a2, b9fbb96; `pnpm mutation` 89.98 (break 89), was 3.37."
+  ]
+}

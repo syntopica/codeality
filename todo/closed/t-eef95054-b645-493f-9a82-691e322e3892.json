@@ -1,0 +1,19 @@
+{
+  "tadu": 2,
+  "id": "t-eef95054-b645-493f-9a82-691e322e3892",
+  "title": "Kysely support for `db-quality` is filed in `TODO.md` with its design spec",
+  "state": "done",
+  "category": "general",
+  "type": "untriaged",
+  "priority": "untriaged",
+  "notes": [
+    "    (`docs/superpowers/specs/2026-09-30-db-quality-kysely-design.md`),",
+    "    including the cross-dialect rule `kysely.inline-references` for the MySQL",
+    "    8.4 case where an inline column `.references()` creates no foreign key."
+  ],
+  "closed": "2026-11-17",
+  "result": "Kysely support for `db-quality` is filed in `TODO.md` with its design spec",
+  "evidence": [
+    "legacy item migrated to format 2 without a recorded evidence"
+  ]
+}

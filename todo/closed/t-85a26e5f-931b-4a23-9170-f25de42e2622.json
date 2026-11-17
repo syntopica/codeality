@@ -1,0 +1,28 @@
+{
+  "tadu": 2,
+  "id": "t-85a26e5f-931b-4a23-9170-f25de42e2622",
+  "title": "`ragged-column` (candidate 2026-10-08/09)",
+  "state": "done",
+  "category": "general",
+  "type": "untriaged",
+  "priority": "untriaged",
+  "notes": [
+    ": a block in the main region",
+    "",
+    "    that starts on its column's left edge, sits alone in its row next to a",
+    "    block filling the column, and ends over 15% of the column short while its",
+    "    edge shows (border, shadow, distinct fill, or text wrapping there).",
+    "    Paragraphs keep their measure unless the full-width neighbour is a card;",
+    "    tables are left out. No probe change: the snapshot already carries boxes,",
+    "    padding, lines and fills. A first cut, judging box width alone, reported",
+    "    the `<table>` of `table.html` and broke 4 integration tests; requiring a",
+    "    visible edge fixed that. Evidence: `tests/rules/raggedColumn.test.ts` (6),",
+    "    `tests/cli.ragged.integration.test.ts` on `ragged.html` and its clean",
+    "    twin."
+  ],
+  "closed": "2026-11-17",
+  "result": "`ragged-column` (candidate 2026-10-08/09)",
+  "evidence": [
+    "legacy item migrated to format 2 without a recorded evidence"
+  ]
+}

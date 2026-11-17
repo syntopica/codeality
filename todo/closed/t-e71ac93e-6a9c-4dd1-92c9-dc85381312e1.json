@@ -1,0 +1,40 @@
+{
+  "tadu": 2,
+  "id": "t-e71ac93e-6a9c-4dd1-92c9-dc85381312e1",
+  "title": "the React presets no longer depend on",
+  "state": "done",
+  "category": "eslint-config",
+  "type": "untriaged",
+  "priority": "untriaged",
+  "notes": [
+    "    `eslint-plugin-react`'s own version detection, which is broken on",
+    "    ESLint 10. `settings.react.version` was `'detect'`, and detection calls",
+    "    `context.getFilename()`, removed in ESLint 10, so a consumer on",
+    "    `eslint@10` fails every file with",
+    "    `contextOrFilename.getFilename is not a function` before a rule runs. This",
+    "    repo could not see it: `patches/eslint-plugin-react.patch` fixes",
+    "    `resolveBasedir` locally, so the templates lint green while external",
+    "    consumers crash - the patch is what made this a report from a consumer",
+    "    rather than a failing gate here. `createNextjsConfig` and",
+    "    `createViteReactConfig` now resolve the React installed beside the linted",
+    "    project (`resolveReactVersion`, `require.resolve('react/package.json')`",
+    "    from `process.cwd()`) and hand the plugin a concrete version, with a new",
+    "    `reactVersion` option to override and `'detect'` only as the last",
+    "    fallback. The settings live in an unscoped config object because the two",
+    "    `eslint-plugin-react` flat configs carry no `files` key, so a file outside",
+    "    `**/*.{js,jsx,ts,tsx}` would otherwise re-enter detection.",
+    "    `createViteReactConfig` was fixed alongside `createNextjsConfig`: the",
+    "    report named only the Next.js preset, but `vite-react.ts` had the",
+    "    identical `'detect'` setting."
+  ],
+  "closed": "2026-08-04",
+  "result": "the React presets no longer depend on",
+  "evidence": [
+    "probe from `templates/nextjs-app` returns `[{\"version\":\"19.2.8\"}]` (one settings entry, no `detect`) and `createNextjsConfig({ reactVersion: '18.3.1' })` returns `[{\"version\":\"18.3.1\"}]`; `eslint src --max-warnings 0` and `tsc --noEmit` clean for the package; `turbo run type-check lint` 24/24 successful."
+  ],
+  "files": [
+    "packages/eslint-config/src/react-version.ts` (new)",
+    "packages/eslint-config/src/nextjs.ts",
+    "packages/eslint-config/src/vite-react.ts"
+  ]
+}

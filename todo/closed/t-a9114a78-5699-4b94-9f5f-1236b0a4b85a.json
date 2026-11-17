@@ -1,0 +1,26 @@
+{
+  "tadu": 2,
+  "id": "t-a9114a78-5699-4b94-9f5f-1236b0a4b85a",
+  "title": "ui-quality 0.8.0 released",
+  "state": "done",
+  "category": "general",
+  "type": "untriaged",
+  "priority": "untriaged",
+  "notes": [
+    "Approved by the owner on 2026-10-11 (\"sí\").",
+    "",
+    "    Ships the error-only severity (breaking) and the `narrow-page`,",
+    "    `ragged-column` and `interaction-shift` rules. Release commit `17ee9d6`,",
+    "    annotated tag `ui-quality@0.8.0`, published by",
+    "    https://github.com/syntopica/codeality/actions/runs/38173478148 (OIDC",
+    "    trusted publishing, signed provenance). Evidence:",
+    "    `npm view @syntopica/ui-quality@0.8.0 version` prints `0.8.0`;",
+    "    `pnpm release:check` reports `ok @syntopica/ui-quality@0.8.0`. db-quality",
+    "    and test-quality stay unreleased: not approved."
+  ],
+  "closed": "2026-11-17",
+  "result": "ui-quality 0.8.0 released",
+  "evidence": [
+    "legacy item migrated to format 2 without a recorded evidence"
+  ]
+}

@@ -1,0 +1,24 @@
+{
+  "tadu": 2,
+  "id": "t-05d65dd5-fecc-48d3-a8cc-cbdd6daf6656",
+  "title": "Warning severity removed from ui-quality",
+  "state": "done",
+  "category": "general",
+  "type": "untriaged",
+  "priority": "untriaged",
+  "notes": [
+    "Decided 2026-10-11 (owner):",
+    "",
+    "    no warnings, error or nothing. `Severity` is `'error'` alone; the 58 rules",
+    "    and check findings that warned now error, `WARN_BEHAVIOURS` and",
+    "    `BLOCKING_IMPACTS` (axe `moderate`/`minor` as warnings) are deleted, and",
+    "    the \"advisory\" wording is gone from the AI-tell rules and docs. `check`",
+    "    already exited 1 on any finding, so the gate's exit code is unchanged;",
+    "    only the reported severity is. Release left to the owner (`TODO.md`)."
+  ],
+  "closed": "2026-11-17",
+  "result": "Warning severity removed from ui-quality",
+  "evidence": [
+    "legacy item migrated to format 2 without a recorded evidence"
+  ]
+}

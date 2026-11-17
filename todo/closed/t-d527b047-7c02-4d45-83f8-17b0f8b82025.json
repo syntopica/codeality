@@ -1,0 +1,29 @@
+{
+  "tadu": 2,
+  "id": "t-d527b047-7c02-4d45-83f8-17b0f8b82025",
+  "title": "Evaluated `isIncludeEntryExports` for the **root** `knip.config.ts` and",
+  "state": "done",
+  "category": "2026-08",
+  "type": "untriaged",
+  "priority": "untriaged",
+  "notes": [
+    "    left it off, now with the concrete list the old entry could only predict.",
+    "    `pnpm knip --include-entry-exports` at the root reports 17 unused exports",
+    "    and 4 unused exported types, and every one is a false positive of a",
+    "    different kind: `@busirocket/quality-config`'s public API",
+    "    (`createDepCruiserConfig`, `createKnipConfig`, `createLefthookConfig`,",
+    "    `TYPE_COVERAGE_THRESHOLD`, each reported twice - at its source file and at",
+    "    the barrel), the `default` export of all eight templates' `knip.config.ts`",
+    "    plus `nuxt-app/vitest.config.ts` (config files a tool loads, not a caller",
+    "    imports), `nestjs-app`'s `bootstrap`, and four generated types in",
+    "    `templates/nextjs-app/.next/types/routes.d.ts`. Suppressing that many real",
+    "    public exports to enable the flag would cost more than it buys, so the",
+    "    root config keeps the default. Revisit only if knip gains a",
+    "    per-entry-pattern override."
+  ],
+  "closed": "2026-11-17",
+  "result": "Evaluated `isIncludeEntryExports` for the **root** `knip.config.ts` and",
+  "evidence": [
+    "legacy item migrated to format 2 without a recorded evidence"
+  ]
+}

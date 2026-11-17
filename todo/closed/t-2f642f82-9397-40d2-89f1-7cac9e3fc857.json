@@ -1,0 +1,17 @@
+{
+  "tadu": 2,
+  "id": "t-2f642f82-9397-40d2-89f1-7cac9e3fc857",
+  "title": "Stop inferring the logical",
+  "state": "done",
+  "category": "scrolling-list-boundaries",
+  "type": "untriaged",
+  "priority": "untriaged",
+  "notes": [
+    "    list end across a genuinely scrolling ancestor."
+  ],
+  "closed": "2026-10-22",
+  "result": "The frame traversal stops at vertical auto/scroll ancestors whose content exceeds the client height by more than the existing two-pixel slack. Ordinary frames, nonoverflowing auto containers and distinct inner cards retain their behavior. Immediate-list handling is unchanged; original private-screen acceptance is not claimed.",
+  "evidence": [
+    "Two virtual-spacer regressions failed before the fix and seven controls passed. `pnpm --filter @syntopica/ui-quality exec vitest run tests/rules/listDanglingRule.scrolling.test.ts tests/cli.data-display.integration.test.ts --maxWorkers=1` passed 36 tests in two files. Package lint, type-check and build passed; independent review returned no findings. CodeGraph sync, formatting, doctor and diff checks passed."
+  ]
+}

@@ -1,0 +1,21 @@
+{
+  "tadu": 2,
+  "id": "t-24fff1b6-6298-42f6-a56a-a1ab745897c6",
+  "title": "ui-quality grid pagination ignores a \"next\" link whose address leaves the",
+  "state": "done",
+  "category": "general",
+  "type": "untriaged",
+  "priority": "untriaged",
+  "notes": [
+    "    route (`isPagerAddress`: same path with another query, or a path below it)",
+    "    unless a numbered \"2\" link backs it. Evidence: new fixture `article.html`",
+    "    -> `article-next.html` with the same related posts gives no finding, and",
+    "    `pagination-broken` with the guard disabled; `isPagerAddress.test.ts`;",
+    "    ui-quality 166 tests, lint, type-check clean."
+  ],
+  "closed": "2026-11-17",
+  "result": "ui-quality grid pagination ignores a \"next\" link whose address leaves the",
+  "evidence": [
+    "legacy item migrated to format 2 without a recorded evidence"
+  ]
+}

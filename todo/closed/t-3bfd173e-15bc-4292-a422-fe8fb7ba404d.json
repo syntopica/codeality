@@ -1,0 +1,21 @@
+{
+  "tadu": 2,
+  "id": "t-3bfd173e-15bc-4292-a422-fe8fb7ba404d",
+  "title": "ui-quality interaction states: `routes[].scroll` (`\"bottom\"` or a",
+  "state": "done",
+  "category": "general",
+  "type": "untriaged",
+  "priority": "untriaged",
+  "notes": [
+    "    selector), `routes[].hover` and `routes[].focus` measure the screen in",
+    "    that state after the clicks, the screenshot keeps it, and a missing target",
+    "    is a `click-failed` finding naming the action (a click keeps its bare",
+    "    selector identity, so baselines still match). Evidence:",
+    "    `tests/cli.states.integration.test.ts`."
+  ],
+  "closed": "2026-11-17",
+  "result": "ui-quality interaction states: `routes[].scroll` (`\"bottom\"` or a",
+  "evidence": [
+    "legacy item migrated to format 2 without a recorded evidence"
+  ]
+}

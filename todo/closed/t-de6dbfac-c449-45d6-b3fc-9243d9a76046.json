@@ -1,0 +1,23 @@
+{
+  "tadu": 2,
+  "id": "t-de6dbfac-c449-45d6-b3fc-9243d9a76046",
+  "title": "`narrow-page` threshold kept at 0.55",
+  "state": "done",
+  "category": "general",
+  "type": "untriaged",
+  "priority": "untriaged",
+  "notes": [
+    "Decided 2026-10-11 (owner via",
+    "",
+    "    Codex adjudication, u2): keep `NARROW_PAGE_RATIO` at 0.55; a 960px data",
+    "    column at 1920px uses half the width, which is what the rule is for.",
+    "    Evidence: `src/rules/NARROW_PAGE_RATIO.ts` unchanged at 0.55;",
+    "    `pnpm exec vitest run tests/rules/narrowPage.test.ts tests/cli.narrow.integration.test.ts`",
+    "    in `packages/ui-quality`, 7 tests passed."
+  ],
+  "closed": "2026-11-17",
+  "result": "`narrow-page` threshold kept at 0.55",
+  "evidence": [
+    "legacy item migrated to format 2 without a recorded evidence"
+  ]
+}

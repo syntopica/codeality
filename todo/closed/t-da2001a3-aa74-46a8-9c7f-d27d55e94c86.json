@@ -1,0 +1,21 @@
+{
+  "tadu": 2,
+  "id": "t-da2001a3-aa74-46a8-9c7f-d27d55e94c86",
+  "title": "ui-quality `mixed-icon-family` (warn): a repeated sibling group outside",
+  "state": "done",
+  "category": "general",
+  "type": "untriaged",
+  "priority": "untriaged",
+  "notes": [
+    "    `nav` whose items each draw exactly one svg mixes filled and stroke-only",
+    "    first shapes (computed `fill`/`stroke`). Navigation is excluded because a",
+    "    filled icon there usually marks the active entry. Evidence: same",
+    "    integration test reports the solid WhatsApp glyph beside the outline",
+    "    envelope (`main > ul`)."
+  ],
+  "closed": "2026-11-17",
+  "result": "ui-quality `mixed-icon-family` (warn): a repeated sibling group outside",
+  "evidence": [
+    "legacy item migrated to format 2 without a recorded evidence"
+  ]
+}

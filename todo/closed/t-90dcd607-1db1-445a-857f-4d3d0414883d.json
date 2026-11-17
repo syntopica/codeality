@@ -1,0 +1,24 @@
+{
+  "tadu": 2,
+  "id": "t-90dcd607-1db1-445a-857f-4d3d0414883d",
+  "title": "`syntopica-codeality-py` 0.2.3 is on PyPI (run 35791330170, trusted",
+  "state": "done",
+  "category": "general",
+  "type": "untriaged",
+  "priority": "untriaged",
+  "notes": [
+    "    publishing). It adds `test-budget-seconds`: the gate reports a passing",
+    "    pytest stage as `over-budget` past it, with `--durations=10` on every run,",
+    "    and `init` scaffolds `pytest-xdist` with `-n auto`. The python-package",
+    "    template now carries `test-budget-seconds = 300` and locks 0.2.3; its gate",
+    "    passes against the published package. The first consumer budgeted is",
+    "    qlctool at 120 s, whose suite went from 19 minutes to 32 seconds on",
+    "    2026-09-22 - the measurement that became",
+    "    `docs/standards/testing.md#suite-time-budget`."
+  ],
+  "closed": "2026-11-17",
+  "result": "`syntopica-codeality-py` 0.2.3 is on PyPI (run 35791330170, trusted",
+  "evidence": [
+    "legacy item migrated to format 2 without a recorded evidence"
+  ]
+}

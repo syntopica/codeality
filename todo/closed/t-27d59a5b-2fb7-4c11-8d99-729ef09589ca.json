@@ -1,0 +1,23 @@
+{
+  "tadu": 2,
+  "id": "t-27d59a5b-2fb7-4c11-8d99-729ef09589ca",
+  "title": "ui-quality reports `dark-scheme-ignored` (warn, once per run) when a dark",
+  "state": "done",
+  "category": "general",
+  "type": "untriaged",
+  "priority": "untriaged",
+  "notes": [
+    "    screenshot is byte-identical to its light twin (`screenshotDigest`,",
+    "    SHA-256 of the capture), naming how many screens and which routes, and",
+    "    pointing at `routes[].localStorage`/init scripts or dropping `dark`.",
+    "    Evidence: `schemeDuplicateFinding.test.ts`;",
+    "    `cli.dark-scheme.integration.test.ts` (fixed.html with both schemes",
+    "    reports it, broken.html with a dark stylesheet does not); ui-quality 171",
+    "    tests pass. Integration fixtures without dark styles now run light only."
+  ],
+  "closed": "2026-11-17",
+  "result": "ui-quality reports `dark-scheme-ignored` (warn, once per run) when a dark",
+  "evidence": [
+    "legacy item migrated to format 2 without a recorded evidence"
+  ]
+}

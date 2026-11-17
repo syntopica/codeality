@@ -1,0 +1,17 @@
+{
+  "tadu": 2,
+  "id": "t-275dcd80-59ae-4b3f-a223-7832b3e42516",
+  "title": "Preserve intrinsic button and tab",
+  "state": "done",
+  "category": "column-width-precision",
+  "type": "untriaged",
+  "priority": "untriaged",
+  "notes": [
+    "    widths beside full-width content."
+  ],
+  "closed": "2026-10-21",
+  "result": "Native buttons and semantic button/tab controls share the existing content-sized table exception. They remain in adjacency and row calculations; noninteractive self-start sections remain a pending sweep case.",
+  "evidence": [
+    "Three control regressions failed before the fix; `pnpm --filter @syntopica/ui-quality exec vitest run tests/rules/raggedColumn.test.ts --maxWorkers=1` passed all nine tests, including capped heading, note and prose positives. Targeted ESLint and independent review passed."
+  ]
+}

@@ -1,0 +1,22 @@
+{
+  "tadu": 2,
+  "id": "t-7b578524-3ec7-4f64-8bbd-2e96cfd0d993",
+  "title": "Release 2026-10-07 (b4a0c2f, annotated tags pushed): published",
+  "state": "done",
+  "category": "general",
+  "type": "untriaged",
+  "priority": "untriaged",
+  "notes": [
+    "    `@syntopica/ui-quality@0.3.0`, `@syntopica/db-quality@0.4.0` and",
+    "    `@syntopica/quality-config@0.12.1` (runs 37631196044, 37631206196,",
+    "    37631172774; `npm view` confirms). `pnpm check:ci` exit 0 before tagging.",
+    "    CI had been red since 76f88d7 on jscpd duplication (1.4% over 1%); 5110a09",
+    "    moved eleven ui-quality CLI tests onto `tests/fixtureFindings.ts`,",
+    "    duplication 0.67%."
+  ],
+  "closed": "2026-11-17",
+  "result": "Release 2026-10-07 (b4a0c2f, annotated tags pushed): published",
+  "evidence": [
+    "legacy item migrated to format 2 without a recorded evidence"
+  ]
+}

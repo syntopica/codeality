@@ -1,0 +1,19 @@
+{
+  "tadu": 2,
+  "id": "t-b2ef6f55-30f5-41c6-9138-c9a44a97bc92",
+  "title": "cargo-baseline passes its own check again: `child_paths` moved to",
+  "state": "done",
+  "category": "general",
+  "type": "untriaged",
+  "priority": "untriaged",
+  "notes": [
+    "    `src/engine/child_paths.rs`.",
+    "    `cargo run -p cargo-baseline -- baseline     check` 0 errors, `cargo test`",
+    "    100 passed, clippy `-D warnings` clean."
+  ],
+  "closed": "2026-11-17",
+  "result": "cargo-baseline passes its own check again: `child_paths` moved to",
+  "evidence": [
+    "legacy item migrated to format 2 without a recorded evidence"
+  ]
+}

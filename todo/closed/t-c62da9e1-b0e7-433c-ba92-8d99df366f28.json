@@ -1,0 +1,27 @@
+{
+  "tadu": 2,
+  "id": "t-c62da9e1-b0e7-433c-ba92-8d99df366f28",
+  "title": "2026-08-26 - **cargo-baseline reads the declaring `mod`, so a",
+  "state": "done",
+  "category": "2026-08",
+  "type": "untriaged",
+  "priority": "untriaged",
+  "notes": [
+    "    `#[cfg(test)] mod name;` file is test scope without an inner attribute.**",
+    "    New `engine/cfg_test_module_paths.rs` resolves those declarations across",
+    "    the crate's parsed files (2018-edition module resolution, both `name.rs`",
+    "    and `name/mod.rs`, test scope inherited through plain child modules), and",
+    "    `is_test_scope_file` takes the resulting set. Verified against a fixture",
+    "    reproducing the consumer's shape: before, 23 test `unwrap()` calls counted",
+    "    as production plus a spurious `file-matches-item` error; after, zero of",
+    "    each. That crate now anchors the tip at `src/ops/clean_name.rs` with the",
+    "    correct crate total of 45. 100 tests pass.",
+    "    `docs/guides/rust-baseline-adoption.md` no longer asks adopters to add",
+    "    `#![cfg(test)]` for this tool's sake."
+  ],
+  "closed": "2026-11-17",
+  "result": "2026-08-26 - **cargo-baseline reads the declaring `mod`, so a",
+  "evidence": [
+    "legacy item migrated to format 2 without a recorded evidence"
+  ]
+}

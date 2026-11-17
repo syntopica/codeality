@@ -1,0 +1,18 @@
+{
+  "tadu": 2,
+  "id": "t-edc6768b-818e-4f74-865c-8b68a163cefb",
+  "title": "`react/prop-types` off for `**/*.{ts,tsx}` in the nextjs and vite-react",
+  "state": "done",
+  "category": "general",
+  "type": "untriaged",
+  "priority": "untriaged",
+  "notes": [
+    "    layers. A/B on a shadcn-style `forwardRef` `TableCell` in each template:",
+    "    before `'className' is missing in props validation`, after 0."
+  ],
+  "closed": "2026-11-17",
+  "result": "`react/prop-types` off for `**/*.{ts,tsx}` in the nextjs and vite-react",
+  "evidence": [
+    "legacy item migrated to format 2 without a recorded evidence"
+  ]
+}

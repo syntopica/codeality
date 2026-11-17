@@ -1,0 +1,23 @@
+{
+  "tadu": 2,
+  "id": "t-d9e5361c-e16d-48d5-9f2a-f68c1394771b",
+  "title": "`docs/standards/testing.md#suite-time-budget` gains \"Vitest suites against",
+  "state": "done",
+  "category": "general",
+  "type": "untriaged",
+  "priority": "untriaged",
+  "notes": [
+    "    a real database\": nine techniques measured A/B (best of three under load)",
+    "    on a Next.js + MySQL monorepo, 819 s -> 139 s for the full check. Kept:",
+    "    dirty-table cleanup, a parallel DB-free project, tmpfs MySQL, a schema per",
+    "    worker, a node/DOM split, happy-dom. Rejected with numbers:",
+    "    `fsModuleCache`, `isolate: false`, `DELETE` over `TRUNCATE`, per-test",
+    "    rollback. Step 6 now points at per-worker copies as the way out of a",
+    "    shared resource, which the \"never by worker groups\" rule had left open."
+  ],
+  "closed": "2026-11-17",
+  "result": "`docs/standards/testing.md#suite-time-budget` gains \"Vitest suites against",
+  "evidence": [
+    "legacy item migrated to format 2 without a recorded evidence"
+  ]
+}

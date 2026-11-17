@@ -1,0 +1,17 @@
+{
+  "tadu": 2,
+  "id": "t-df10d0cf-a7f7-4f0d-8dfa-264f8ba4af0d",
+  "title": "Baselines catch a carried finding",
+  "state": "done",
+  "category": "gate-kit-ui-quality",
+  "type": "untriaged",
+  "priority": "untriaged",
+  "notes": [
+    "    whose measured value grew."
+  ],
+  "closed": "2026-10-13",
+  "result": "`horizontal-overflow` (`overflow-excess-px/v1`) and `a11y/*` (`affected-elements/v1`) carry a numeric measurement per screen, kept at the worst through grouping and merging and surfaced as `observed`/`threshold`; the baseline gains an optional validated `measurements` map, and `classifyFindings` takes a policy that fails a known finding risen past its tolerance (1 px, exact count) against the recorded value. Count-only baselines and DB stay unchanged.",
+  "evidence": [
+    "five CLI captures of one build gave identical values; end to end, +43 px exits 1 (`1 new (1 worse than recorded)`), +1 px exits 0; gate-kit 21 and ui-quality 367 tests passed."
+  ]
+}

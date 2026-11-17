@@ -1,0 +1,27 @@
+{
+  "tadu": 2,
+  "id": "t-2a0d6af3-cdba-460e-b6aa-de9fb0019919",
+  "title": "`interaction-shift` (candidate 2026-10-09)",
+  "state": "done",
+  "category": "general",
+  "type": "untriaged",
+  "priority": "untriaged",
+  "notes": [
+    ": a behaviour check run with",
+    "",
+    "    the others on the first screen of each route. Every `role=group` of",
+    "    `aria-pressed` buttons in the main region (4 groups, 6 options at most) is",
+    "    pressed through; the nearest sticky or surface ancestor's height is read",
+    "    after each press, a spread over 4px is reported at `warn`, and the option",
+    "    on before is pressed again. Evidence:",
+    "    `tests/behaviour/interactionShiftFailureOf.test.ts`,",
+    "    `tests/cli.shift.integration.test.ts` on `shift.html` (a filter row shown",
+    "    with `display`) and its twin (`visibility`). The page-wide narrow cap and",
+    "    tabs stay in `TODO.md`."
+  ],
+  "closed": "2026-11-17",
+  "result": "`interaction-shift` (candidate 2026-10-09)",
+  "evidence": [
+    "legacy item migrated to format 2 without a recorded evidence"
+  ]
+}

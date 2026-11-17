@@ -1,0 +1,30 @@
+{
+  "tadu": 2,
+  "id": "t-5eeadaac-8437-4eed-88d6-a94e7b4b99c9",
+  "title": "`sort-broken` fires on a server-sorted board that sorts correctly",
+  "state": "in_progress",
+  "category": "ui-quality",
+  "type": "untriaged",
+  "priority": "untriaged",
+  "notes": [
+    "TienesLaVibra `/admin/councils` (2026-10-14): the \"Ayuntamiento / Evento\"",
+    "header is a `<Link>` to `?sort=nombre`; clicking it twice in Playwright gives",
+    "A..Z then Z..A, and the probe's own comparator accepts both orders, yet the",
+    "probe reports \"out of order both times\" on the first screen (1920 light) only,",
+    "every run. Suspect the read lands during the RSC navigation after the filter",
+    "probe's restore. Next step: log the keys `orderAfterClick` reads on that page.",
+    "Source review on 2026-10-22 finds the current link-only server header is not",
+    "exercised by sortTargetOf, which only admits buttons or aria-sort headers;",
+    "missing findings therefore do not verify a fix. The generic waiter can accept",
+    "two stable reads of an intermediate changed state and predates this report.",
+    "Controlled pure tests now reproduce both false rejection and false acceptance:",
+    "two intended red contracts, seven passing controls. A separate loopback HTTP",
+    "Link/history fixture reproduces both races with explicit response/commit",
+    "barriers: two intended red contracts, three passing controls/observations.",
+    "Source and dependency parity hold; no real-screen reproduction is claimed.",
+    "Next: define an observable completion fence for the owning interaction and",
+    "review how unverifiable completion is represented. The same waiter serves",
+    "search and pagination; preserve their semantics and the bounded deadline. Do",
+    "not increase sleeps, poll until ordered or blindly click links."
+  ]
+}

@@ -1,0 +1,18 @@
+{
+  "tadu": 2,
+  "id": "t-9f02c909-e583-4f6b-af6c-ce647e3f5ef1",
+  "title": "the seven workspace packages type-check",
+  "state": "done",
+  "category": "typescript-7",
+  "type": "untriaged",
+  "priority": "untriaged",
+  "notes": [
+    "    with the pinned native compiler instead of whatever global `tsc` the",
+    "    machine had."
+  ],
+  "closed": "2026-10-19",
+  "result": "their `type-check` (and the plugin's declaration build) called a bare `tsc`, but `@typescript/typescript6` ships only `tsc6`, so it resolved to Homebrew's global TS 7.0.2 locally and to the runner image's global on CI, unpinned. Each package now declares `@typescript/native` (`npm:typescript@^7.0.2`) and calls `node node_modules/@typescript/native/bin/tsc`, the layout in `docs/typescript-7-migration.md`; `typescript` stays the 6.0.2 alias because TS 7.0 has no API and typescript-eslint allows `<6.1.0`.",
+  "evidence": [
+    "`pnpm run check:ci` exit 0; an injected `string` to `number` assignment in gate-kit fails `type-check` with TS2322."
+  ]
+}

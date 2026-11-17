@@ -1,0 +1,21 @@
+{
+  "tadu": 2,
+  "id": "t-0bc69b3f-b75e-4e3a-bce1-2b4158702afa",
+  "title": "ui-quality `text-hard-cut` false positive closed: a tie at the longest",
+  "state": "done",
+  "category": "general",
+  "type": "untriaged",
+  "priority": "untriaged",
+  "notes": [
+    "    length now has to outnumber the texts within 10 characters below it",
+    "    (`pilesAtLongest`). InteliFactu's chart of accounts, once paged to 50,",
+    "    showed three whole PGC names of exactly 50 characters over twelve of 40-49",
+    "    and was reported as cut. Regression test in `textHardCut.test.ts`;",
+    "    InteliFactu full sweep afterwards: 1 finding, a real one."
+  ],
+  "closed": "2026-11-17",
+  "result": "ui-quality `text-hard-cut` false positive closed: a tie at the longest",
+  "evidence": [
+    "legacy item migrated to format 2 without a recorded evidence"
+  ]
+}

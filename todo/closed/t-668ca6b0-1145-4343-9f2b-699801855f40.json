@@ -1,0 +1,14 @@
+{
+  "tadu": 2,
+  "id": "t-668ca6b0-1145-4343-9f2b-699801855f40",
+  "title": "`@eslint/js@10` against eslint 9: obsolete, the estate and every template",
+  "state": "cancelled",
+  "category": "general",
+  "type": "untriaged",
+  "priority": "untriaged",
+  "notes": [
+    "are on eslint 10.12."
+  ],
+  "closed": "2026-11-17",
+  "resolution": "legacy item migrated to format 2 without a recorded resolution"
+}

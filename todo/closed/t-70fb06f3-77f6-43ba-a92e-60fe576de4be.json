@@ -1,0 +1,20 @@
+{
+  "tadu": 2,
+  "id": "t-70fb06f3-77f6-43ba-a92e-60fe576de4be",
+  "title": "Push of 92360a5 (Kysely) was rejected with GitHub",
+  "state": "done",
+  "category": "general",
+  "type": "untriaged",
+  "priority": "untriaged",
+  "notes": [
+    "    `Internal Server     Error` six times over ~3 minutes (request",
+    "    F592:1ACBE8:32C91B:396F21:6AC6792A) while githubstatus.com reported all",
+    "    operational; it went through unchanged a few minutes later. Transient, no",
+    "    repository cause."
+  ],
+  "closed": "2026-11-17",
+  "result": "Push of 92360a5 (Kysely) was rejected with GitHub",
+  "evidence": [
+    "legacy item migrated to format 2 without a recorded evidence"
+  ]
+}

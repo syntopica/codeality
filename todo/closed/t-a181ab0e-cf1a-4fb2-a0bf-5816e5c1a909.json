@@ -1,0 +1,20 @@
+{
+  "tadu": 2,
+  "id": "t-a181ab0e-cf1a-4fb2-a0bf-5816e5c1a909",
+  "title": "`@syntopica/eslint-config`: the four peers `/code-quality` imports",
+  "state": "done",
+  "category": "general",
+  "type": "untriaged",
+  "priority": "untriaged",
+  "notes": [
+    "    unconditionally (`@vitest/eslint-plugin`, `eslint-plugin-testing-library`,",
+    "    `eslint-plugin-sonarjs`, `eslint-plugin-code-policy`) are no longer",
+    "    optional, so `auto-install-peers` installs them and a plain install warns,",
+    "    instead of ESLint dying at config load. README says why."
+  ],
+  "closed": "2026-11-17",
+  "result": "`@syntopica/eslint-config`: the four peers `/code-quality` imports",
+  "evidence": [
+    "legacy item migrated to format 2 without a recorded evidence"
+  ]
+}

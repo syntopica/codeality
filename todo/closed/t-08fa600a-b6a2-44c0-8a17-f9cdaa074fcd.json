@@ -1,0 +1,28 @@
+{
+  "tadu": 2,
+  "id": "t-08fa600a-b6a2-44c0-8a17-f9cdaa074fcd",
+  "title": "**A whole page capped narrow on a wide screen (2026-10-09), shipped as",
+  "state": "done",
+  "category": "general",
+  "type": "untriaged",
+  "priority": "untriaged",
+  "notes": [
+    "    `narrow-page`.** Decided 2026-10-11 (owner via Codex adjudication):",
+    "    trigger on wide viewports when the main content is materially capped and",
+    "    leaves unused space beside it, prose measure excluded. At 1600px up, the",
+    "    ink of the main region spanning under 55% of the viewport less any side",
+    "    panel (siblings of main or its ancestors sharing its row), on a page with",
+    "    a card-like surface without fields or a data layout; a data page that",
+    "    `content-width` already reports is skipped. Threshold from measurements of",
+    "    every fixture at 1600 and 1920px: the `max-w-4xl` report 51% / 43%, a",
+    "    1280px container 75% / 63%, 960px pages 60% / 50%. Evidence:",
+    "    `tests/rules/narrowPage.test.ts` (6),",
+    "    `tests/cli.narrow.integration.test.ts` on `narrow.html` (both widths),",
+    "    `narrow-clean.html` and `narrow-reading.html` (none)."
+  ],
+  "closed": "2026-11-17",
+  "result": "**A whole page capped narrow on a wide screen (2026-10-09), shipped as",
+  "evidence": [
+    "legacy item migrated to format 2 without a recorded evidence"
+  ]
+}

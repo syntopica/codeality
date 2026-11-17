@@ -1,0 +1,31 @@
+{
+  "tadu": 2,
+  "id": "t-cdc5e6ec-3661-448b-9afe-1b09b4029197",
+  "title": "New package `@syntopica/test-quality` (`codeality-test`), from the",
+  "state": "done",
+  "category": "general",
+  "type": "untriaged",
+  "priority": "untriaged",
+  "notes": [
+    "    verticagtm test-cost diagnosis. `check` lists the suite through the",
+    "    project's own vitest (`assets/vitest-inventory.mjs`, nothing executed) and",
+    "    reads the git hooks: `duplicate-file-run`, `dom-environment-unused`,",
+    "    `uncached-hook-lint`, `hook-runs-full-gate`. `measure` runs the suite with",
+    "    the JSON reporter and samples RSS of vitest and its workers:",
+    "    `environment-dominates` (vitest 5 shares and vitest 4 seconds),",
+    "    `slowest-files`, `memory-use`, and with `--node-candidates` a rerun under",
+    "    `--environment node`. Generalises: 10xjoy (vitest 4, global jsdom) 71 of",
+    "    141 files are DOM-free and all 71 pass under node, environment 63-65% of",
+    "    the work vs tests 7%. verticagtm after its fix: no environment finding, 4",
+    "    files left that pass under node, 58 s wall, peak 3.3 GB. Running it on",
+    "    verticagtm caught a false positive in the tool itself (a",
+    "    `--cache-location .../eslint/` path read as an uncached eslint), fixed",
+    "    with that script as the fixture. gate-kit gained `readCliInvocation`,",
+    "    `cliTsupOptions`, `cliTestAliases`."
+  ],
+  "closed": "2026-11-17",
+  "result": "New package `@syntopica/test-quality` (`codeality-test`), from the",
+  "evidence": [
+    "legacy item migrated to format 2 without a recorded evidence"
+  ]
+}

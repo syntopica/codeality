@@ -1,0 +1,30 @@
+{
+  "tadu": 2,
+  "id": "t-b378f925-1d86-44e4-ac73-de3c5c5ff192",
+  "title": "2026-08-31 - **Every workspace dependency taken to its latest release,",
+  "state": "done",
+  "category": "2026-08",
+  "type": "untriaged",
+  "priority": "untriaged",
+  "notes": [
+    "    majors included.** Two passes over the root, the seven packages and the",
+    "    eight templates: patch/minor first (`9e73a4b`), then the majors it left",
+    "    behind (`4c20c50`) - eslint-plugin-regexp 2 to 3, eslint-plugin-unicorn",
+    "    57/72 to 74, globals to 17.11, NestJS 11 to 12,",
+    "    eslint-plugin-react-refresh to 0.5.5. None needed a config change. Two",
+    "    things worth keeping: `ncu` strips the integrity hash from",
+    "    `packageManager`, so `corepack use pnpm@<version>` has to follow every",
+    "    run; and `h3` cannot go to 2.x while the template is on Nuxt 4.5, which",
+    "    ships Nitro 2 and requires `h3@^1.15.11` - with `h3@2` present,",
+    "    `@nuxt/test-utils` selects its Nitro-3 adapter and the tests die on",
+    "    `Could not resolve \"h3-next/generic\"`. That is now encoded in",
+    "    `.ncurc.json` (`reject: [\"h3\"]`, plus `deep`, so `ncu -u` alone is the",
+    "    whole procedure) and explained in `CLAUDE.md`. Evidence: `pnpm check:ci`",
+    "    exits 0 with all 41 turbo tasks green."
+  ],
+  "closed": "2026-11-17",
+  "result": "2026-08-31 - **Every workspace dependency taken to its latest release,",
+  "evidence": [
+    "legacy item migrated to format 2 without a recorded evidence"
+  ]
+}

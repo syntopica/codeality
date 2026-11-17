@@ -1,0 +1,33 @@
+{
+  "tadu": 2,
+  "id": "t-ce489fe2-f81c-49a6-aa32-ae9bf0dbae6b",
+  "title": "cut `eslint-config@0.6.0`,",
+  "state": "done",
+  "category": "release",
+  "type": "untriaged",
+  "priority": "untriaged",
+  "notes": [
+    "    `quality-config@0.3.0` and `create-baseline@0.3.2` up to the tag. Both",
+    "    minors are behavior changes rather than patches: the React presets now",
+    "    report a concrete `settings.react.version` and accept a `reactVersion`",
+    "    option, and the knip Next.js preset changes what a `src/app` project sees.",
+    "    `eslint-config` also carried one patch that had been unreleased since",
+    "    `0.5.0` - the `.lighthouseci/` ignore from `cb20628`. `create-baseline`",
+    "    follows because `baseline-versions.json` pins the two bumped packages, the",
+    "    same pairing as the `0.3.1` release.",
+    "- Note: these three tags were created lightweight while every earlier release",
+    "  tag is annotated. They are pushed and immutable, so the fix belongs to the",
+    "  next release - tracked in `TODO.md`."
+  ],
+  "closed": "2026-08-04",
+  "result": "three tags on `ac7b511`, pushed, and all three published to npm through the manual `publish.yml` `workflow_dispatch` (tokenless OIDC), `create-baseline` last so it never pinned a version npm did not yet serve. `pnpm release:check` -> `6 packages fully released.`",
+  "evidence": [
+    "`pnpm run check:ci`, `check:quality` and `check:security` all exit `0` before the tag; `sync-versions --check` reports derived files in sync; workflow runs `30902237324`, `30902305336`, `30902401887` all successful; `npm view` returns `0.6.0` / `0.3.0` / `0.3.2`."
+  ],
+  "files": [
+    "packages/{eslint-config",
+    "quality-config",
+    "create-baseline}/` `package.json` and `CHANGELOG.md",
+    "packages/create-baseline/baseline-versions.json"
+  ]
+}

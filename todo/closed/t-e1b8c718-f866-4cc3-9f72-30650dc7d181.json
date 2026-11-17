@@ -1,0 +1,23 @@
+{
+  "tadu": 2,
+  "id": "t-e1b8c718-f866-4cc3-9f72-30650dc7d181",
+  "title": "`runKyselyTypeDrift` timed out under load and left temp dirs behind",
+  "state": "done",
+  "category": "general",
+  "type": "untriaged",
+  "priority": "untriaged",
+  "notes": [
+    ":",
+    "",
+    "    the suite now runs with a 60 s timeout, and its projects live under",
+    "    `node_modules/.cache/db-quality-drift/` (removed in `afterAll`) instead of",
+    "    `tests/.tmp-drift-*`, which a killed run left for the next lint to trip",
+    "    on. Evidence: the test failed 3 of 5 full local gates at load 70-87 before",
+    "    the change; passes alone and in the gate after it."
+  ],
+  "closed": "2026-11-17",
+  "result": "`runKyselyTypeDrift` timed out under load and left temp dirs behind",
+  "evidence": [
+    "legacy item migrated to format 2 without a recorded evidence"
+  ]
+}

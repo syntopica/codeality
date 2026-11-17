@@ -1,0 +1,43 @@
+{
+  "tadu": 2,
+  "id": "t-7b7a920d-7379-4994-8e0c-363d9f93f68c",
+  "title": "2026-08-25 - **Next 16.3.2, two security overrides gone, and one flag that",
+  "state": "done",
+  "category": "2026-08",
+  "type": "untriaged",
+  "priority": "untriaged",
+  "notes": [
+    "    explains why.** Closes the `[!]` that had held since 2026-08-04.",
+    "- **The alias is not rejected by Next 16.3 - its `tsc` bin is.** Next 16.3",
+    "  flipped `experimental.useTypeScriptCli` to default-on, and that path locates",
+    "  the compiler through the resolved `typescript` package's own `bin.tsc`.",
+    "  `@typescript/typescript6@6.0.2` declares `bin.tsc6` and nothing else, so",
+    "  `getTypeScriptPackageInfo` returns `tscPath: undefined` and `next build`",
+    "  aborts with \"It looks like you're trying to use TypeScript but do not have",
+    "  the required package(s) installed\" - having first run",
+    "  `pnpm install --save-dev typescript` over the alias. Everything the check",
+    "  actually resolves is fine: probed `hasNecessaryDependencies` from the",
+    "  template directory with Next's own module and it returns `missing: []`.",
+    "- **`experimental.useTypeScriptCli: false` fixes it.** That sends Next back to",
+    "  the compiler API entry (`lib/typescript.js`), which resolves through the",
+    "  alias normally. Measured on 16.3.2: build fails without the flag, succeeds",
+    "  with it, type-checks in 1.5s. The flag is experimental and the template",
+    "  carries a comment saying exactly what removes it - the alias shipping a",
+    "  `tsc` bin, or a move to a real `typescript` package.",
+    "- **Two of the three load-bearing overrides are now dead.** Deleted",
+    "  `sharp@<0.35.0` (GHSA-f88m-g3jw-g9cj) and `postcss@<8.5.18`",
+    "  (GHSA-6g55-p6wh-862q / GHSA-r28c-9q8g-f849) from `pnpm-workspace.yaml` and",
+    "  reinstalled: `pnpm audit --audit-level=high` exits 0, total findings still 2",
+    "  (1 low, 1 moderate - the pair deliberately left below the gate). `tmp`",
+    "  stays: `@lhci/cli` is still 0.15.1 and has no newer floor.",
+    "- **The pins are ranges again.** `next`, `eslint-config-next` and",
+    "  `@next/eslint-plugin-next` go from an exact `16.2.12` to `^16.3.2`, and",
+    "  `docs/adoption/new-repo.md` no longer tells adopters the ceiling is",
+    "  untested - it gives them the flag and the measurement."
+  ],
+  "closed": "2026-11-17",
+  "result": "2026-08-25 - **Next 16.3.2, two security overrides gone, and one flag that",
+  "evidence": [
+    "`pnpm check:ci` 39/39 exit 0, `pnpm check:quality` exit 0, `pnpm check:security` exit 0 (gitleaks clean, audit clean at `high`, actionlint clean), `pnpm perf:check` exit 0, `pnpm sync-versions:check` in sync."
+  ]
+}

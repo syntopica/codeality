@@ -1,0 +1,35 @@
+{
+  "tadu": 2,
+  "id": "t-25802910-93fe-4aa2-ae5b-9b85ad128c53",
+  "title": "2026-08-27 - **Conformance grew a tsconfig column: solution references",
+  "state": "done",
+  "category": "2026-08",
+  "type": "untriaged",
+  "priority": "untriaged",
+  "notes": [
+    "    must reach `type-check`, and every project config must extend a preset.**",
+    "    Two new checks in `create-baseline` (`checkTsconfigProjects.mjs`,",
+    "    `checkTsconfigPresets.mjs`), `loadContext` now parses the root tsconfig",
+    "    (JSONC tolerated) and resolves a solution root's references, and the",
+    "    estate matrix gained a `tscfg` column. The first check diffs a solution",
+    "    root's `references` against the expanded `type-check` text (bare",
+    "    `tsc -b`/`vue-tsc -b` covers everything; a project-scoped `tsc -b x`",
+    "    covers only what it names); the second judges by shape - leaves must",
+    "    extend `@busirocket/tsconfig`, a solution root must not, a single-project",
+    "    root must. Verified: 162 tests pass (17 new); a scratch fixture",
+    "    reproducing that consumer's defect (three references, two type-checked,",
+    "    one hand-written leaf) yields exactly `tsconfig-project:tsconfig.app.json`",
+    "    and `tsconfig-preset:tsconfig.node.json`; the repaired consumer passes",
+    "    both checks legitimately; `pnpm estate ~/p` prints the column. Dogfooding",
+    "    caught the first offender: this repo's own root `tsconfig.json` was",
+    "    hand-written - it now extends `base.json` with `@busirocket/tsconfig`",
+    "    added as a root devDependency, and `create-baseline --check` here reports",
+    "    wiring OK. CHANGELOG carries an Unreleased entry; no version bump",
+    "    (release-time policy)."
+  ],
+  "closed": "2026-11-17",
+  "result": "2026-08-27 - **Conformance grew a tsconfig column: solution references",
+  "evidence": [
+    "legacy item migrated to format 2 without a recorded evidence"
+  ]
+}

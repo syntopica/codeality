@@ -1,0 +1,22 @@
+{
+  "tadu": 2,
+  "id": "t-90ea49cf-20ef-4df8-9722-6c32c4e001b1",
+  "title": "ui-quality `check` reads `baseUrl/sitemap.xml` (one level of a sitemap",
+  "state": "done",
+  "category": "general",
+  "type": "untriaged",
+  "priority": "untriaged",
+  "notes": [
+    "    index, up to 10 children, 10 s timeout, file: URLs too) and reports",
+    "    `route-uncovered` (warn) once per first-segment template (`/artistas/*`,",
+    "    `/legal`) that no configured route renders; skipped under `--routes` and",
+    "    when there is no sitemap. Evidence: `cli.sitemap.integration.test.ts`",
+    "    (home configured, artist pages and legal page reported, nothing with",
+    "    `--routes`), `routeTemplate.test.ts`; ui-quality 177 tests pass."
+  ],
+  "closed": "2026-11-17",
+  "result": "ui-quality `check` reads `baseUrl/sitemap.xml` (one level of a sitemap",
+  "evidence": [
+    "legacy item migrated to format 2 without a recorded evidence"
+  ]
+}

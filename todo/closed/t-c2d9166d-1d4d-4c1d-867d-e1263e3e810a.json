@@ -1,0 +1,20 @@
+{
+  "tadu": 2,
+  "id": "t-c2d9166d-1d4d-4c1d-867d-e1263e3e810a",
+  "title": "ui-quality `transition-all` (warn): `transition-property: all` with a",
+  "state": "done",
+  "category": "general",
+  "type": "untriaged",
+  "priority": "untriaged",
+  "notes": [
+    "    non-zero duration, one finding per element signature. Evidence:",
+    "    `cli.icons.integration.test.ts` reports `main > div.card`; ui-quality 191",
+    "    tests pass. `ghost-elevation` from the same item is parked `[!]` for an",
+    "    owner decision (shadcn's default Card/Input are border plus shadow)."
+  ],
+  "closed": "2026-11-17",
+  "result": "ui-quality `transition-all` (warn): `transition-property: all` with a",
+  "evidence": [
+    "legacy item migrated to format 2 without a recorded evidence"
+  ]
+}

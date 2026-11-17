@@ -1,0 +1,24 @@
+{
+  "tadu": 2,
+  "id": "t-f28510f6-062f-4e05-822f-5caf8f44c02d",
+  "title": "**Navigation waits for `load`, so one stuck",
+  "state": "done",
+  "category": "ui-quality",
+  "type": "untriaged",
+  "priority": "untriaged",
+  "notes": [
+    "    image hangs a capture.** `gotoSettled` and `login` (`waitForURL` default)",
+    "    wait for the `load` event before the bounded `networkidle` settle.",
+    "    TienesLaVibra `/admin/leads` (2026-10-15) keeps per-lead",
+    "    `/api/admin/avatar?phone=...` image requests open past commit locally, and",
+    "    a propose run against production never reached a screenshot. Smallest",
+    "    step: reproduce with a fixture page whose image never finishes, then",
+    "    navigate on `domcontentloaded` and bound the wait for `load` like",
+    "    `networkidle`."
+  ],
+  "closed": "2026-10-21",
+  "result": "Route navigation and login wait for DOMContentLoaded, then bound load and network-idle settlement concurrently. Document navigation failures still reject. Pending main-document redirects must reach DOM readiness within the settle cap; latest failed redirects reject, while newer successful navigation and same-document history redirects remain valid.",
+  "evidence": [
+    "The real Chromium unfinished-image route fixture timed out before the fix. Targeted navigation, existing CLI login and raw-placeholder tests pass all 22 cases; the fixture covers route navigation, form login with an unfinished image and failed document navigation. Independent review returned no findings. The first complete frozen run exposed a client-auth redirect race (415/416 tests passed). Two additional deterministic pending/aborted redirect regressions failed before their corrections; all eight Chromium navigation cases, ESLint and package typecheck then passed."
+  ]
+}

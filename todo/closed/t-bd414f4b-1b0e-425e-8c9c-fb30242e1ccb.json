@@ -1,0 +1,21 @@
+{
+  "tadu": 2,
+  "id": "t-bd414f4b-1b0e-425e-8c9c-fb30242e1ccb",
+  "title": "ui-quality login takes the first visible element of the first selector",
+  "state": "done",
+  "category": "general",
+  "type": "untriaged",
+  "priority": "untriaged",
+  "notes": [
+    "    alternative that has one (`firstInSelectorOrder`), for username, password",
+    "    and submit. Fixtures `login.html` (off-screen honeypot first) and",
+    "    `gate.html`: before `page.waitForURL: Timeout 30000ms exceeded`, after",
+    "    exit 0. css-what was tried for the splitting and rejected: it rewrites",
+    "    `:has-text(\"a, b\")` and throws on `>>`."
+  ],
+  "closed": "2026-11-17",
+  "result": "ui-quality login takes the first visible element of the first selector",
+  "evidence": [
+    "legacy item migrated to format 2 without a recorded evidence"
+  ]
+}

@@ -1,0 +1,14 @@
+{
+  "tadu": 2,
+  "id": "t-27341d2b-4058-4f12-900a-dcad72cd2031",
+  "title": "Distinct boundary preset and an atomic opt-out",
+  "state": "done",
+  "category": "presets",
+  "type": "untriaged",
+  "priority": "untriaged",
+  "closed": "2026-10-13",
+  "result": "`configs.boundaries` (three import rules) and `createCodeQualityConfig({ atomic: false })`; default unchanged.",
+  "evidence": [
+    "8f06b56; `tests/configs.test.ts`; probe lint of one file gave four code-policy rules with `atomic: true`, only `public-api-imports` with false."
+  ]
+}

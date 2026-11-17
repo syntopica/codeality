@@ -1,0 +1,19 @@
+{
+  "tadu": 2,
+  "id": "t-47843901-e721-478a-9ccd-f92eb99c5813",
+  "title": "`check:ci` vs `check:security`: kept apart on purpose (advisories land",
+  "state": "done",
+  "category": "general",
+  "type": "untriaged",
+  "priority": "untriaged",
+  "notes": [
+    "    daily, an audit in `check:ci` turns an unchanged commit red overnight);",
+    "    documented in `docs/adoption/new-repo.md` with `pnpm check:security` as",
+    "    the local pre-release step."
+  ],
+  "closed": "2026-11-17",
+  "result": "`check:ci` vs `check:security`: kept apart on purpose (advisories land",
+  "evidence": [
+    "legacy item migrated to format 2 without a recorded evidence"
+  ]
+}

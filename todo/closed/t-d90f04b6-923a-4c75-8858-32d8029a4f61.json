@@ -1,0 +1,33 @@
+{
+  "tadu": 2,
+  "id": "t-d90f04b6-923a-4c75-8858-32d8029a4f61",
+  "title": "the knip Next.js preset now covers the",
+  "state": "done",
+  "category": "quality-config",
+  "type": "untriaged",
+  "priority": "untriaged",
+  "notes": [
+    "    `src/app` layout. Entry globs were rooted at `app/`, so a project using",
+    "    `src/app/` matched none of them. The reported symptom (knip exits 0 having",
+    "    inspected nothing) did not reproduce; the measured behavior is worse in a",
+    "    different way: with no entry matching, knip reports the application's own",
+    "    route files as **unused files** and never checks their exports. Probe on a",
+    "    `src/app` fixture, old patterns: `Unused files (2)` naming both",
+    "    `src/app/y/page.tsx` and `src/lib/orphan.ts`, and the dead export in",
+    "    `page.tsx` is not reported. New patterns: only the real orphan is flagged",
+    "    and `deadEntryExport` surfaces as an unused export. Fixed by carrying both",
+    "    roots in one pattern - `{,src/}app/**/{page,layout,...}.{ts,tsx}` and",
+    "    `{,src/}middleware.ts` - rather than adding a `srcDir` option: verified",
+    "    with knip's own glob engine (`tinyglobby`) that `{,src/}` matches both",
+    "    layouts, so neither produces a `Refine entry pattern (no matches)` hint.",
+    "    `next.config.*` stays root-only, where Next.js requires it."
+  ],
+  "closed": "2026-08-04",
+  "result": "the knip Next.js preset now covers the",
+  "evidence": [
+    "knip probe above; `pnpm knip` and `pnpm knip:templates` both exit `0` with no new hint for the `templates/nextjs-app` entry patterns."
+  ],
+  "files": [
+    "packages/quality-config/src/knip-framework.ts"
+  ]
+}

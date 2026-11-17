@@ -1,0 +1,23 @@
+{
+  "tadu": 2,
+  "id": "t-65201fd5-ba73-484b-999c-fd74ecac8cc5",
+  "title": "Python consumer backlog, first pass (all pushed, each repo's",
+  "state": "done",
+  "category": "general",
+  "type": "untriaged",
+  "priority": "untriaged",
+  "notes": [
+    "    `uv run codeality-py gate` exit 0): atrium 19 to 2 findings, coverage",
+    "    floor 54 to 80 (b3b09c6); agent-deluxe 26 to 9, `ignore_errors` 12 to 2,",
+    "    floor 9 to 35, oauthlib 4.0.0 for pip-audit (09e42b0); qlctool",
+    "    `ignore_errors` 26 to 0, floor 85 to 95 (cd7412c); djplayerdeluxe 64 to",
+    "    51, 51 to 29, floor 5 to 38 (af55eda on `master`; 54c3c7e alone does not",
+    "    import); DJCenterDeluxe 194 to 114, 36 to 2, floor 35 to 36 (13492fd).",
+    "    Remainder moved to a second-pass item in TODO.md."
+  ],
+  "closed": "2026-11-17",
+  "result": "Python consumer backlog, first pass (all pushed, each repo's",
+  "evidence": [
+    "legacy item migrated to format 2 without a recorded evidence"
+  ]
+}

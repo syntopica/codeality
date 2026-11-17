@@ -1,0 +1,19 @@
+{
+  "tadu": 2,
+  "id": "t-04fa2af3-dc19-4817-bf32-b78fde4fcf2a",
+  "title": "knip 6.35 and `vite.config.ts`'s default export: fixed on 2026-09-21",
+  "state": "done",
+  "category": "general",
+  "type": "untriaged",
+  "priority": "untriaged",
+  "notes": [
+    "    (`46bf2e3`), every framework-owned preset sets",
+    "    `includeEntryExports:     false`; `pnpm knip:templates` green on knip",
+    "    6.40."
+  ],
+  "closed": "2026-11-17",
+  "result": "knip 6.35 and `vite.config.ts`'s default export: fixed on 2026-09-21",
+  "evidence": [
+    "legacy item migrated to format 2 without a recorded evidence"
+  ]
+}

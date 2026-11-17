@@ -1,0 +1,21 @@
+{
+  "tadu": 2,
+  "id": "t-bd18061d-442a-4c32-89a8-1656aa25a3ae",
+  "title": "**`check --routes` given twice silently keeps",
+  "state": "done",
+  "category": "ui-quality",
+  "type": "untriaged",
+  "priority": "untriaged",
+  "notes": [
+    "    only the last glob** (2026-10-15, verticagtm).",
+    "    `--routes /today --routes /plans/<id> ...` drove only the last route,",
+    "    while `.codeality-ui/screens/` still held older captures of the others, so",
+    "    a review sent stale screenshots as current. Next step: accept a repeated",
+    "    `--routes` (union of globs) or exit 2 on a repeat, with a test."
+  ],
+  "closed": "2026-10-21",
+  "result": "Repeated route options now fail before reading configuration, launching a browser or writing artifacts; separate and equals spellings are covered.",
+  "evidence": [
+    "pnpm --filter @syntopica/ui-quality test --maxWorkers=1 passed 108 files and 387 tests; package type-check, lint, build and targeted formatting passed; fresh compiled CLI returned exit 2 and preserved existing report and screenshot bytes."
+  ]
+}

@@ -1,0 +1,23 @@
+{
+  "tadu": 2,
+  "id": "t-cd8d1520-b7f2-4899-ae27-1a21871aa0a8",
+  "title": "Python consumers on codeality-py 0.2.5 (every gate exit 0, pushed): brain,",
+  "state": "done",
+  "category": "general",
+  "type": "untriaged",
+  "priority": "untriaged",
+  "notes": [
+    "    clips, memory-bench, syntopica, atrium, worker, djplayerdeluxe,",
+    "    DeluxeServerTools (urllib3 2.8.0), qlctool 6 to 4, agent-deluxe 9 to 8",
+    "    (`__main__.py` as entrypoint). agent-deluxe 36a77b5 ports the browser code",
+    "    to browser-use 0.5.9 (`BrowserProfile`/`BrowserSession`; the old kwargs",
+    "    were silently dropped). DJCenterDeluxe 4e1fe3f moved 52 inline queries to",
+    "    `sql/queries/` (BPY006 56 to 4) and c19e24d typed",
+    "    `holded_invoices_handler` (ignore list 35 to 0); baseline 114 to 55."
+  ],
+  "closed": "2026-11-17",
+  "result": "Python consumers on codeality-py 0.2.5 (every gate exit 0, pushed): brain,",
+  "evidence": [
+    "legacy item migrated to format 2 without a recorded evidence"
+  ]
+}

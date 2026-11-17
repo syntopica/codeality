@@ -1,0 +1,21 @@
+{
+  "tadu": 2,
+  "id": "t-e777061c-ffc5-4535-8445-ecdbfa89971b",
+  "title": "`pnpm audit:check` green: 0 unwaived of 10. Expiring waivers (2026-12-31)",
+  "state": "done",
+  "category": "general",
+  "type": "untriaged",
+  "priority": "untriaged",
+  "notes": [
+    "    for the advisories with no usable fix - node-forge, braces, sprintf-js (no",
+    "    patched release) and four simple-git ones. Forcing simple-git 4 was tried",
+    "    and reverted: @nuxt/devtools 3.4.2 does `import Git from 'simple-git'` and",
+    "    4.x has no default export (`m.default is not a function`), so `nuxt dev`",
+    "    would break."
+  ],
+  "closed": "2026-11-17",
+  "result": "`pnpm audit:check` green: 0 unwaived of 10. Expiring waivers (2026-12-31)",
+  "evidence": [
+    "legacy item migrated to format 2 without a recorded evidence"
+  ]
+}

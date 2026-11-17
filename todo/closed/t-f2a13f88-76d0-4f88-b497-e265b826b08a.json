@@ -1,0 +1,14 @@
+{
+  "tadu": 2,
+  "id": "t-f2a13f88-76d0-4f88-b497-e265b826b08a",
+  "title": "Occurrence counting in `classifyFindings`",
+  "state": "done",
+  "category": "baselines",
+  "type": "untriaged",
+  "priority": "untriaged",
+  "closed": "2026-10-13",
+  "result": "each fingerprint occurrence beyond the recorded count is new, each fixed one is resolved; the value-growth gap stays open in TODO.md.",
+  "evidence": [
+    "cb35d97; `classifyFindings.worsening.test.ts`; db-quality 518 and ui-quality 359 tests pass."
+  ]
+}

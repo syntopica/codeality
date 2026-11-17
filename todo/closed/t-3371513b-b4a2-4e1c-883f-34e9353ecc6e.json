@@ -1,0 +1,18 @@
+{
+  "tadu": 2,
+  "id": "t-3371513b-b4a2-4e1c-883f-34e9353ecc6e",
+  "title": "Test files and `check:ci` lint: every template keeps its tests under",
+  "state": "done",
+  "category": "general",
+  "type": "untriaged",
+  "priority": "untriaged",
+  "notes": [
+    "    `src/` (or `app/`, `server/` for nuxt, linted with `eslint .`), which its",
+    "    `lint` script already covers. The gap was compratuentrada's own layout."
+  ],
+  "closed": "2026-11-17",
+  "result": "Test files and `check:ci` lint: every template keeps its tests under",
+  "evidence": [
+    "legacy item migrated to format 2 without a recorded evidence"
+  ]
+}

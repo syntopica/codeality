@@ -1,0 +1,31 @@
+{
+  "tadu": 2,
+  "id": "t-506ef01b-d1cc-41ab-b0e9-7706dfa495b5",
+  "title": "The pre-commit lint hook could not lint the files it existed for",
+  "state": "done",
+  "category": "2026-08",
+  "type": "untriaged",
+  "priority": "untriaged",
+  "notes": [
+    "    `pnpm exec eslint <path>` run at the repo root resolves each plugin's own",
+    "    dependencies against the root `node_modules`, which a pnpm workspace does",
+    "    not have, so staging any file in a Tailwind template aborted the hook with",
+    "    `Error: Could not find tailwindcss` before a single rule ran. Found by",
+    "    hitting it: the commit for the knip change, which touches",
+    "    `templates/vue-app/src/main.ts`, failed. ESLint itself was never the",
+    "    problem - it walks up from the file and finds the right config; the",
+    "    plugins' runtime lookups need the workspace as the working directory.",
+    "    `scripts/lint-staged.mjs` groups the staged paths by owning workspace and",
+    "    runs eslint once per group from that directory. Verified directly: the",
+    "    same file that failed from the root passes from `templates/vue-app/`, and",
+    "    the hook now prints one `eslint (<workspace>/)` line per group and passes.",
+    "    `createLefthookConfig()` is deliberately unchanged - a single-project",
+    "    consumer has no workspaces and can keep running eslint from its root - and",
+    "    `lefthook.yml` records why the two differ."
+  ],
+  "closed": "2026-11-17",
+  "result": "The pre-commit lint hook could not lint the files it existed for",
+  "evidence": [
+    "legacy item migrated to format 2 without a recorded evidence"
+  ]
+}

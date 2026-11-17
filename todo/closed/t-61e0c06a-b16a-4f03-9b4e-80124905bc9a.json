@@ -1,0 +1,27 @@
+{
+  "tadu": 2,
+  "id": "t-61e0c06a-b16a-4f03-9b4e-80124905bc9a",
+  "title": "Release 2026-10-07 (5e450b3, annotated tags pushed): published",
+  "state": "done",
+  "category": "general",
+  "type": "untriaged",
+  "priority": "untriaged",
+  "notes": [
+    "    `@syntopica/quality-config@0.13.0` (`baseline-hooks-install`),",
+    "    `@syntopica/db-quality@0.5.0` (Kysely, perf previous window),",
+    "    `@syntopica/ui-quality@0.4.0` (tier 1 rules, scroll/hover/focus),",
+    "    `@syntopica/test-quality@0.1.2` and `@syntopica/create-baseline@0.10.2`",
+    "    (pins quality-config 0.13.0), runs 37656818849, 37656823210, 37656827665,",
+    "    37656832386, 37656932686. `pnpm check:ci` exit 0 before tagging;",
+    "    `pnpm release:check` all ok once the registry caught up (the packuments",
+    "    lagged a few minutes behind the green runs). The first `check:ci` failed",
+    "    on test-quality's own integration test: `duplicate-file-run` listed",
+    "    projects in the order vitest finished collecting them (`node, dom` vs",
+    "    `dom, node`); the evidence is now sorted, with a unit test."
+  ],
+  "closed": "2026-11-17",
+  "result": "Release 2026-10-07 (5e450b3, annotated tags pushed): published",
+  "evidence": [
+    "legacy item migrated to format 2 without a recorded evidence"
+  ]
+}

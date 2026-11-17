@@ -1,0 +1,14 @@
+{
+  "tadu": 2,
+  "id": "t-5ba2d10a-3408-4cd0-9235-0f4541beff83",
+  "title": "runner patch keeps empty `describe('')` names",
+  "state": "done",
+  "category": "stryker",
+  "type": "untriaged",
+  "priority": "untriaged",
+  "closed": "2026-10-13",
+  "result": "the patch joins every suite name with `' > '` without filtering, which is the full name Vitest 5.0.3 matches (`\" > leaf\"` for an empty suite); `stryker.config.mjs` comment now says the run fails below `thresholds.break`.",
+  "evidence": [
+    "f6cea15; probe of Vitest 5.0.3 task chain; `pnpm mutation` 89.98, 6.63 tests per mutant."
+  ]
+}

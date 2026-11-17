@@ -1,0 +1,19 @@
+{
+  "tadu": 2,
+  "id": "t-c60f2501-6881-4569-9ce8-f86794e39b02",
+  "title": "Wrong plugin name and `onlyBuiltDependencies` in README/templates: already",
+  "state": "done",
+  "category": "general",
+  "type": "untriaged",
+  "priority": "untriaged",
+  "notes": [
+    "    gone - no `@syntopica/eslint-plugin-code-policy` or",
+    "    `onlyBuiltDependencies` left in packages, templates, docs or README (grep",
+    "    2026-10-07)."
+  ],
+  "closed": "2026-11-17",
+  "result": "Wrong plugin name and `onlyBuiltDependencies` in README/templates: already",
+  "evidence": [
+    "legacy item migrated to format 2 without a recorded evidence"
+  ]
+}

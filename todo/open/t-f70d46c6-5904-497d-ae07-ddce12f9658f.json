@@ -1,0 +1,23 @@
+{
+  "tadu": 2,
+  "id": "t-f70d46c6-5904-497d-ae07-ddce12f9658f",
+  "title": "`touch-target` overlap with a sticky header",
+  "state": "in_progress",
+  "category": "ui-quality",
+  "type": "untriaged",
+  "priority": "untriaged",
+  "notes": [
+    "Rows scrolled under a",
+    "",
+    "sticky `<thead>` in the phone capture are reported as overlapping its sort",
+    "buttons; only the visible, unobscured part is a tap target. The browser probe",
+    "composition/distribution foundation and conservative sticky clipping are now",
+    "implemented with explicit imported helpers. The full isolated named build/test",
+    "passed 516 tests with unchanged coverage thresholds; the 17-state DOM matrix,",
+    "mask refusal and exposed-fragment regressions pass. Scope remains native tbody",
+    "buttons beneath an opaque rectangular sticky THEAD; ambiguous paint retains",
+    "existing findings. Next: capture the original affected consumer screen and",
+    "confirm its markup qualifies before claiming that historical report resolved.",
+    "No package release or consumer deployment has occurred."
+  ]
+}

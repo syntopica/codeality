@@ -1,0 +1,21 @@
+{
+  "tadu": 2,
+  "id": "t-8f1e5a77-0bbe-4fde-b186-18bd05235ac1",
+  "title": "ui-quality retries a screen once and records a `capture-failed` finding",
+  "state": "done",
+  "category": "general",
+  "type": "untriaged",
+  "priority": "untriaged",
+  "notes": [
+    "    when both attempts fail; ConfigError and a closed browser/page still end",
+    "    the run (exit 2/3). The page is parked on about:blank after each failure:",
+    "    Chromium's own error-page navigation otherwise interrupted the next",
+    "    route's `goto`. Test: `/missing.html` then `/fixed.html` gives one",
+    "    `capture-failed` and the fixed screenshot."
+  ],
+  "closed": "2026-11-17",
+  "result": "ui-quality retries a screen once and records a `capture-failed` finding",
+  "evidence": [
+    "legacy item migrated to format 2 without a recorded evidence"
+  ]
+}

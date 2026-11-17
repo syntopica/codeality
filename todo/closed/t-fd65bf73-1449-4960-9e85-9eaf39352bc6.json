@@ -1,0 +1,22 @@
+{
+  "tadu": 2,
+  "id": "t-fd65bf73-1449-4960-9e85-9eaf39352bc6",
+  "title": "ui-quality `placeholder-fit` (warn): an empty field whose placeholder",
+  "state": "done",
+  "category": "general",
+  "type": "untriaged",
+  "priority": "untriaged",
+  "notes": [
+    "    (canvas `measureText` with the computed font) is over 20% wider than its",
+    "    content box (client width less horizontal padding). Probe gains",
+    "    `contentWidth` and `placeholderWidth`. Evidence:",
+    "    `cli.placeholder.integration.test.ts` reports only the 160px field with a",
+    "    long hint (not the short hint, not the filled field);",
+    "    `placeholderFit.test.ts`; ui-quality 188 tests."
+  ],
+  "closed": "2026-11-17",
+  "result": "ui-quality `placeholder-fit` (warn): an empty field whose placeholder",
+  "evidence": [
+    "legacy item migrated to format 2 without a recorded evidence"
+  ]
+}

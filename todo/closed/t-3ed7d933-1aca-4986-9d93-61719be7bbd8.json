@@ -1,0 +1,14 @@
+{
+  "tadu": 2,
+  "id": "t-3ed7d933-1aca-4986-9d93-61719be7bbd8",
+  "title": "TS7, Knip production, strict-boolean-expressions,",
+  "state": "cancelled",
+  "category": "pilots",
+  "type": "untriaged",
+  "priority": "untriaged",
+  "notes": [
+    "Vitest related hook, bundled-CLI recipe."
+  ],
+  "closed": "2026-10-13",
+  "resolution": "TS7 `tsc` already runs in the plain-TS templates through `@typescript/native`; Knip production mode moved to TODO.md (needs `!` entries); `strict-boolean-expressions` gave 59 reports in 1388 files, none a bug (each treats `''` as absent on purpose), so it stays off; a Vitest related hook is not added, since T4 measured no token saving from faster gates; the bundling recipe is in `docs/standards/code-quality.md`."
+}

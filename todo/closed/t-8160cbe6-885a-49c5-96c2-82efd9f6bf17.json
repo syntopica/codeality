@@ -1,0 +1,21 @@
+{
+  "tadu": 2,
+  "id": "t-8160cbe6-885a-49c5-96c2-82efd9f6bf17",
+  "title": "ui-quality `duplicate-nav-icon` (warn): links or buttons under `nav` whose",
+  "state": "done",
+  "category": "general",
+  "type": "untriaged",
+  "priority": "untriaged",
+  "notes": [
+    "    first svg has the same markup digest (djb2 of the svg with",
+    "    class/style/size/id/aria attributes removed) and different names",
+    "    (aria-label or text) are reported once per icon. Evidence:",
+    "    `cli.icons.integration.test.ts` reports `Clientes / Contactos` (same icon",
+    "    at 20px and 24px) and not Plantillas."
+  ],
+  "closed": "2026-11-17",
+  "result": "ui-quality `duplicate-nav-icon` (warn): links or buttons under `nav` whose",
+  "evidence": [
+    "legacy item migrated to format 2 without a recorded evidence"
+  ]
+}

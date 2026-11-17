@@ -1,0 +1,26 @@
+{
+  "tadu": 2,
+  "id": "t-9de41a5a-23cf-4f1d-b641-f43c57393d22",
+  "title": "`@busirocket/quality-config` was not a root `devDependency` (removed by",
+  "state": "done",
+  "category": "2026-08",
+  "type": "untriaged",
+  "priority": "untriaged",
+  "notes": [
+    "    Task 6 as genuinely unused at the time). Task 9 re-added it",
+    "    (`pnpm add -D -w @busirocket/quality-config@workspace:*`) and the new root",
+    "    `.dependency-cruiser.cjs` now consumes it via",
+    "    `jiti('@busirocket/quality-config/dependency-cruiser')`, giving it a real",
+    "    consumer. Because that load goes through a dynamic string argument rather",
+    "    than a static import, root `pnpm knip` still flagged it as unused; fixed",
+    "    with a scoped `ignoreDependencies` entry for the package on the `.`",
+    "    workspace in `knip.config.ts`, with a comment explaining why. Verified:",
+    "    `pnpm knip` (root) exit 0, `pnpm deps:graph` exit 0, `pnpm check:ci`",
+    "    exit 0."
+  ],
+  "closed": "2026-11-17",
+  "result": "`@busirocket/quality-config` was not a root `devDependency` (removed by",
+  "evidence": [
+    "legacy item migrated to format 2 without a recorded evidence"
+  ]
+}

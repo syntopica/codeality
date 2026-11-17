@@ -1,0 +1,24 @@
+{
+  "tadu": 2,
+  "id": "t-399d9a3d-3311-4c33-b763-baf0c558013d",
+  "title": "Moved the `eslint-config` / `eslint-plugin-code-policy` cyclic-dependency",
+  "state": "done",
+  "category": "2026-08",
+  "type": "untriaged",
+  "priority": "untriaged",
+  "notes": [
+    "    entry out of the backlog. It is not work: it is a standing constraint that",
+    "    already enforces itself, since reintroducing a bare",
+    "    `@busirocket/eslint-config` import in the plugin breaks the build with",
+    "    `Cyclic dependency detected: eslint-plugin-code-policy#build, @busirocket/eslint-config#build`.",
+    "    Recorded as \"Decision 5 - the two ESLint packages must not declare a",
+    "    workspace cycle\" in `docs/platform-decisions.md`, naming both real edges,",
+    "    why only one may be declared, and that the fix is restoring the relative",
+    "    import rather than adding the dependency."
+  ],
+  "closed": "2026-11-17",
+  "result": "Moved the `eslint-config` / `eslint-plugin-code-policy` cyclic-dependency",
+  "evidence": [
+    "legacy item migrated to format 2 without a recorded evidence"
+  ]
+}

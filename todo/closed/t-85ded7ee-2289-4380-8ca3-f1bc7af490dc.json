@@ -1,0 +1,25 @@
+{
+  "tadu": 2,
+  "id": "t-85ded7ee-2289-4380-8ca3-f1bc7af490dc",
+  "title": "Kysely type drift (`BDB330`)",
+  "state": "done",
+  "category": "general",
+  "type": "untriaged",
+  "priority": "untriaged",
+  "notes": [
+    ": `audit --db-url` compares the live",
+    "",
+    "    schema (kysely-codegen 0.20.0 via npx) with `kysely.databaseType` through",
+    "    the project's TypeScript; `kysely.databaseTypeIgnores` for tables kept out",
+    "    on purpose. Evidence: db-quality 512 tests, `pnpm check:ci` green; live",
+    "    against compratuentrada (local PostgreSQL, 17 migrations): 1 true finding",
+    "    (`membership.scope_type` varchar declared as a literal union), and an",
+    "    added table, added column, renamed column and dropped `NOT NULL` each",
+    "    reported. Code generated on max-lane (Sonnet)."
+  ],
+  "closed": "2026-11-17",
+  "result": "Kysely type drift (`BDB330`)",
+  "evidence": [
+    "legacy item migrated to format 2 without a recorded evidence"
+  ]
+}

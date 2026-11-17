@@ -1,0 +1,23 @@
+{
+  "tadu": 2,
+  "id": "t-37586b71-6eb1-47bd-9ecf-1ec1e7318167",
+  "title": "Moved four items already closed and verified earlier out of the active",
+  "state": "done",
+  "category": "general",
+  "type": "untriaged",
+  "priority": "untriaged",
+  "notes": [
+    "    backlog: `ui-quality@0.2.0` published 2026-10-07 (run 37538934323, after",
+    "    recreating the expired trusted publisher); axe no longer hangs on a",
+    "    script-less sandboxed `srcdoc` frame (2026-10-06, `axe.exclude`,",
+    "    `axe.timeoutMs`, `tests/cli.desktop-shell.integration.test.ts`);",
+    "    `icon-contrast` reads the `html`/`body` fills (2026-10-06,",
+    "    `tests/rules/iconContrastCanvas.test.ts`); config `initScripts` for a",
+    "    desktop-shell IPC stub (2026-10-06, the desktop-shell integration test)."
+  ],
+  "closed": "2026-11-17",
+  "result": "Moved four items already closed and verified earlier out of the active",
+  "evidence": [
+    "legacy item migrated to format 2 without a recorded evidence"
+  ]
+}

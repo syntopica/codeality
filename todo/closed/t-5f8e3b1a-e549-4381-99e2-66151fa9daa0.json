@@ -1,0 +1,17 @@
+{
+  "tadu": 2,
+  "id": "t-5f8e3b1a-e549-4381-99e2-66151fa9daa0",
+  "title": "`@tailwindcss/vite` moved to `devDependencies`",
+  "state": "done",
+  "category": "templates",
+  "type": "untriaged",
+  "priority": "untriaged",
+  "notes": [
+    "    in the three Vite templates."
+  ],
+  "closed": "2026-10-13",
+  "result": "root `knip --production` reports no unused dependency.",
+  "evidence": [
+    "43909aa; vue-app and vite-react-app build; per-template knip exit 0."
+  ]
+}

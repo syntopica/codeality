@@ -1,0 +1,39 @@
+{
+  "tadu": 2,
+  "id": "t-50cbb5eb-14db-4173-ab2f-8f462403f644",
+  "title": "2026-08-04 - **Consumer findings:** Fix the five gaps that adopting the",
+  "state": "done",
+  "category": "2026-08",
+  "type": "untriaged",
+  "priority": "untriaged",
+  "notes": [
+    "    standard in a consumer (Next.js 16, ESLint 10.8) exposed.",
+    "- The exemptions are two patterns rather than one with `(.*/)?` on purpose:",
+    "  dependency-cruiser runs every `pathNot` entry through safe-regex and",
+    "  **abandons the whole rule** when one is rejected, so a nested quantifier",
+    "  turns the orphan check off instead of narrowing it. Verified directly -",
+    "  `safe-regex` rejects `(^|/)app/(.*/)?(page)\\.tsx?$` and accepts both new",
+    "  forms - and documented in the factory and in `quality-gates.md`.",
+    "- The adoption guide now says to delete any inherited",
+    "  `settings: { react: { version: 'detect' } }` override: it reinstates the",
+    "  detection `createNextjsConfig` exists to avoid, and on ESLint 10 that is not",
+    "  a warning but every file failing at",
+    "  `Error while loading rule 'react/display-name'`.",
+    "- The `Remove from ignoreDependencies` hints are documented as expected rather",
+    "  than patched: the preset's ESLint peer list is redundant in the one layout",
+    "  where knip resolves the real caller and load-bearing in every other, and a",
+    "  consumer-side filter would drift the moment the list changes.",
+    "- Released as `quality-config@0.4.0` through the `publish.yml` workflow",
+    "  (tokenless OIDC trusted publishing - there is no local npm credential to",
+    "  have, which is what the 401 from `npm whoami` was really saying), on an",
+    "  annotated tag. `pnpm release:check` reports all six packages fully released.",
+    "  That consumer is on `^0.4.0` with its local patches deleted and both gates",
+    "  green, which is the acceptance test passing for real rather than against a",
+    "  working copy."
+  ],
+  "closed": "2026-11-17",
+  "result": "`quality-config` 0.4.0. The knip Next.js preset named `middleware.ts`, renamed `proxy.ts` in Next 16, so the proxy read as an unused file; it now matches either in one pattern, and the App Router metadata routes plus `global-error` joined the entry alternation. The dependency-cruiser `no-orphans` exemptions covered only `sitemap` and `robots`, so a normal App Router reported one orphan per route file; every convention is exempt now, at any depth, and so is `middleware`/`proxy`.",
+  "evidence": [
+    "the new patterns were unit-checked against 13 real consumer paths (route files, nested routes, metadata routes, `src/proxy.ts`, and the near-misses `app/blog/mypage.tsx` and `src/lib/route.ts`), `pnpm check:quality` passes here, and the consumer passes `knip` and `deps:graph` with its local patches deleted and this factory in place."
+  ]
+}

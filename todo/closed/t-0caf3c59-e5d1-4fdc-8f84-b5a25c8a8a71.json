@@ -1,0 +1,20 @@
+{
+  "tadu": 2,
+  "id": "t-0caf3c59-e5d1-4fdc-8f84-b5a25c8a8a71",
+  "title": "teapartydolls#55 merged and deployed (Workers Builds green, site 200)",
+  "state": "done",
+  "category": "general",
+  "type": "untriaged",
+  "priority": "untriaged",
+  "notes": [
+    "    jobradar: boards committed (3c163f2), every dependency to latest",
+    "    (5092741), five dev-tool advisories overridden and braces",
+    "    GHSA-vfj7-8cjw-p6xm waived until 2027-01-07 (e70323b); `check:ci` and",
+    "    `check:security` exit 0."
+  ],
+  "closed": "2026-11-17",
+  "result": "teapartydolls#55 merged and deployed (Workers Builds green, site 200)",
+  "evidence": [
+    "legacy item migrated to format 2 without a recorded evidence"
+  ]
+}

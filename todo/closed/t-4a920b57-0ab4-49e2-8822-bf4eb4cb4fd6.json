@@ -1,0 +1,17 @@
+{
+  "tadu": 2,
+  "id": "t-4a920b57-0ab4-49e2-8822-bf4eb4cb4fd6",
+  "title": "Shared `Diagnostic` shape in gate-kit,",
+  "state": "done",
+  "category": "diagnostics",
+  "type": "untriaged",
+  "priority": "untriaged",
+  "notes": [
+    "    emitted by `codeality-ui check --json` with a shell-quoted `rerun`."
+  ],
+  "closed": "2026-10-13",
+  "result": "Shared `Diagnostic` shape in gate-kit,",
+  "evidence": [
+    "016db46, 84c44ed; `report.test.ts`, `shellQuoted.test.ts` runs a hostile route through `sh -c` and gets it back verbatim."
+  ]
+}

@@ -1,0 +1,20 @@
+{
+  "tadu": 2,
+  "id": "t-6d913963-9118-48e5-8694-aa9cd17ac1a1",
+  "title": "`edge-misaligned` false positives on InteliFactu closed: full-bleed",
+  "state": "done",
+  "category": "general",
+  "type": "untriaged",
+  "priority": "untriaged",
+  "notes": [
+    "    section bands and fixed drawers (82118ab) and contentless absolute",
+    "    ornaments such as a blurred circle overhanging a card (bfc77ee) no longer",
+    "    count as content edges. Verified by a full 45-route sweep of InteliFactu",
+    "    ending with 0 findings."
+  ],
+  "closed": "2026-11-17",
+  "result": "`edge-misaligned` false positives on InteliFactu closed: full-bleed",
+  "evidence": [
+    "legacy item migrated to format 2 without a recorded evidence"
+  ]
+}

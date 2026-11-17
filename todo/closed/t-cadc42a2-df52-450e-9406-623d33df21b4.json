@@ -1,0 +1,17 @@
+{
+  "tadu": 2,
+  "id": "t-cadc42a2-df52-450e-9406-623d33df21b4",
+  "title": "Accept two-pixel token half steps",
+  "state": "done",
+  "category": "spacing-precision",
+  "type": "untriaged",
+  "priority": "untriaged",
+  "notes": [
+    "    while retaining irregular-spacing detection."
+  ],
+  "closed": "2026-10-21",
+  "result": "The default spacing quantum is 2px. Existing exclusions and noise thresholds remain unchanged; deliberately broken fixtures now use 5/9/13px instead of legitimate 6/10/14px values. No token-configuration API was added.",
+  "evidence": [
+    "The mixed 6/10/14px screen regression failed before the fix. Focused spacing and CLI tests passed 12 cases; the split unit fixtures passed 11 cases and whole-package typecheck passed. The final combined package gate is recorded in the 2026-10-22 validation entry."
+  ]
+}

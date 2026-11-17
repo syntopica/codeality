@@ -1,0 +1,24 @@
+{
+  "tadu": 2,
+  "id": "t-84736f45-17c4-4e2a-b51a-b9e5cb037be0",
+  "title": "`no-inline-types-in-runtime-files` reports anonymous object types in",
+  "state": "done",
+  "category": "general",
+  "type": "untriaged",
+  "priority": "untriaged",
+  "notes": [
+    "    runtime code (annotations, assertions, parameters, return types, type",
+    "    arguments; outermost literal only; `declare global`/`declare module`",
+    "    exempt) as `anonymousTypeLiteral`. It found 28 in this repo's packages and",
+    "    1 in `templates/nextjs-app/app/layout.tsx`, all extracted to named type",
+    "    files. Evidence: rule tests 30 pass (8 new), `pnpm check:ci` 56/56 tasks,",
+    "    `pnpm check:quality` 6 gates. Estate impact not measured yet: sweep the",
+    "    adopting repos before publishing the plugin, since",
+    "    `({ children }: { children: ReactNode })` is a common shape."
+  ],
+  "closed": "2026-11-17",
+  "result": "`no-inline-types-in-runtime-files` reports anonymous object types in",
+  "evidence": [
+    "legacy item migrated to format 2 without a recorded evidence"
+  ]
+}

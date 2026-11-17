@@ -1,0 +1,23 @@
+{
+  "tadu": 2,
+  "id": "t-aecce028-dc7c-4b37-b209-d27fbd5b3786",
+  "title": "ui-quality `text-clipped` reports a select whose content box (client",
+  "state": "done",
+  "category": "general",
+  "type": "untriaged",
+  "priority": "untriaged",
+  "notes": [
+    "    height less vertical padding) is over 1px shorter than one line of its",
+    "    font (canvas `fontBoundingBox` ascent+descent, probed for selects only).",
+    "    Confirmed first in Chromium that it clips the option text to the content",
+    "    box (28px select with 9px padding: text cut top and bottom). Evidence:",
+    "    `cli.select.integration.test.ts` (tight select reported with a 10px box,",
+    "    roomy one not), unit case in `textClipped.test.ts`; ui-quality 173 tests",
+    "    pass."
+  ],
+  "closed": "2026-11-17",
+  "result": "ui-quality `text-clipped` reports a select whose content box (client",
+  "evidence": [
+    "legacy item migrated to format 2 without a recorded evidence"
+  ]
+}

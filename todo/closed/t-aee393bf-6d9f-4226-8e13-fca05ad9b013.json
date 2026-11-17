@@ -1,0 +1,14 @@
+{
+  "tadu": 2,
+  "id": "t-aee393bf-6d9f-4226-8e13-fca05ad9b013",
+  "title": "warn-level suppression on adoption",
+  "state": "done",
+  "category": "docs",
+  "type": "untriaged",
+  "priority": "untriaged",
+  "closed": "2026-10-13",
+  "result": "`docs/adoption/existing-repo.md` says to keep the promotion to `error` in the config, with the override and `--suppress-rule` command; demoting back to `warn` brings the violations back.",
+  "evidence": [
+    "ESLint 10.12.0 `suppressions-service.js:246-258` counts severity 2 only; scratch probe: warn `--suppress-all` wrote `{}`, error `--suppress-rule` exit 0, demoted to warn exit non-zero."
+  ]
+}

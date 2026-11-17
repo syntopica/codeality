@@ -1,0 +1,19 @@
+{
+  "tadu": 2,
+  "id": "t-9206983a-4732-4c5d-bf00-b2ac7be40940",
+  "title": "db-quality BDB406 no longer reports a `DELETE`/`UPDATE` with no `WHERE`",
+  "state": "done",
+  "category": "general",
+  "type": "untriaged",
+  "priority": "untriaged",
+  "notes": [
+    "    (`isWholeTableWrite`, skipped in `queryPlanFindings`). Evidence: fixtures",
+    "    `DELETE FROM jobs;` and `UPDATE jobs SET state = 'a';` against a 2000-row",
+    "    table produce no finding; unit test `isWholeTableWrite.test.ts`."
+  ],
+  "closed": "2026-11-17",
+  "result": "db-quality BDB406 no longer reports a `DELETE`/`UPDATE` with no `WHERE`",
+  "evidence": [
+    "legacy item migrated to format 2 without a recorded evidence"
+  ]
+}

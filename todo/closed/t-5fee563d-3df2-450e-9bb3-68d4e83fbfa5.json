@@ -1,0 +1,17 @@
+{
+  "tadu": 2,
+  "id": "t-5fee563d-3df2-450e-9bb3-68d4e83fbfa5",
+  "title": "`check` reports DOM-free candidates as an",
+  "state": "done",
+  "category": "test-quality",
+  "type": "untriaged",
+  "priority": "untriaged",
+  "notes": [
+    "    observation; only `measure --node-candidates` fails on them."
+  ],
+  "closed": "2026-10-13",
+  "result": "`check` reports DOM-free candidates as an",
+  "evidence": [
+    "436c95d; 43 tests including the CLI integration test."
+  ]
+}

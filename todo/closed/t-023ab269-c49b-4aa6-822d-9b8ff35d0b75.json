@@ -1,0 +1,17 @@
+{
+  "tadu": 2,
+  "id": "t-023ab269-c49b-4aa6-822d-9b8ff35d0b75",
+  "title": "Bound package-task concurrency and test workers",
+  "state": "done",
+  "category": "estate",
+  "type": "untriaged",
+  "priority": "untriaged",
+  "notes": [
+    "    in the CI fallback."
+  ],
+  "closed": "2026-10-22",
+  "result": "Package tasks execute serially with two Vitest workers; existing host admission and all original checks remain enabled.",
+  "evidence": [
+    "Automatic CI 39818227865 passes all seven jobs at 01bb08a437665600e11b5cdbf5a91c39c9ca67b1; verified with gh run view 39818227865 --repo syntopica/codeality --json status,conclusion,headSha,jobs. Installed Turbo dry runs preserve all 72 planned task nodes, and Vitest resolveConfig reports maxWorkers=2."
+  ]
+}

@@ -1,0 +1,17 @@
+{
+  "tadu": 2,
+  "id": "t-f2f54192-09bf-4ec7-a3ec-b2e5714ebbb6",
+  "title": "`createDepCruiserConfig({ moduleRoots })`",
+  "state": "done",
+  "category": "boundaries",
+  "type": "untriaged",
+  "priority": "untriaged",
+  "notes": [
+    "    judges cross-module imports on resolved paths."
+  ],
+  "closed": "2026-10-13",
+  "result": "`createDepCruiserConfig({ moduleRoots })`",
+  "evidence": [
+    "37ffe8a; `moduleBoundaryRules.test.ts` cruises a fixture and gets exactly the deep import, not the index or same-module edges."
+  ]
+}

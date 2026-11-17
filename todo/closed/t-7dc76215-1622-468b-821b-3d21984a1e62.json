@@ -1,0 +1,27 @@
+{
+  "tadu": 2,
+  "id": "t-7dc76215-1622-468b-821b-3d21984a1e62",
+  "title": "2026-11-06 —",
+  "state": "done",
+  "category": "create-baseline",
+  "type": "untriaged",
+  "priority": "untriaged",
+  "notes": [
+    "    **`pnpm dlx @syntopica/create-baseline --write` crashes on a consumer that",
+    "    already installed the baseline.** Observed in `bot` with create-baseline",
+    "    0.10.6 and `@syntopica/quality-config` 0.15.0 installed in the project:",
+    "    `Error: Cannot find module '@syntopica/quality-config/oxlint'` from",
+    "    `bin/scaffold/oxlintConfig.mjs:16` (`require.resolve` runs from the dlx",
+    "    cache, not the project), after it had already written `knip.config.ts`.",
+    "    Installing `@syntopica/create-baseline` as a devDependency and running",
+    "    `pnpm exec create-baseline --write` works. Smallest next step: resolve",
+    "    `@syntopica/quality-config` with",
+    "    `createRequire(join(cwd, 'package.json'))` and fall back to the bundled",
+    "    copy."
+  ],
+  "closed": "2026-11-06",
+  "result": "oxlintConfig resolves @syntopica/quality-config/oxlint from the project's package.json first, falling back to create-baseline's own resolution.",
+  "evidence": [
+    "New writeMissing integration test fails before the fix and passes after; create-baseline lint, 227 tests and `pnpm check:ci` green."
+  ]
+}

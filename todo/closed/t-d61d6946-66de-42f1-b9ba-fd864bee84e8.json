@@ -1,0 +1,34 @@
+{
+  "tadu": 2,
+  "id": "t-d61d6946-66de-42f1-b9ba-fd864bee84e8",
+  "title": "2026-08-31 - **The five bumped-but-unpublished packages are released, and",
+  "state": "done",
+  "category": "2026-08",
+  "type": "untriaged",
+  "priority": "untriaged",
+  "notes": [
+    "    the estate's lockfile blocker is gone.** `eslint-plugin-code-policy`",
+    "    0.7.4, `tsconfig` 0.3.0, `quality-config` 0.11.0, `eslint-config` 0.8.0",
+    "    and `create-baseline` 0.9.0 are tagged, pushed and on npm;",
+    "    `pnpm release:check` reports \"6 packages fully released\". No `npm login`",
+    "    at any point: publishing is",
+    "    `gh workflow run publish.yml -f package=<name>`, tokenless over OIDC, and",
+    "    `npm whoami` returning 401 on this machine is the normal state rather than",
+    "    a blocker. That premise had been recorded backwards in `TODO.md`, which is",
+    "    why the release sat blocked; it is now corrected there, in the project",
+    "    memory and in a new `CLAUDE.md`. Each package was dispatched once but",
+    "    GitHub recorded two `workflow_dispatch` runs per package (ten runs, five",
+    "    successes and five failures). The duplicate always lost the race and",
+    "    failed with",
+    "    `E403 ... cannot publish over the previously published versions`, which is",
+    "    npm refusing to overwrite an immutable version - harmless, but the",
+    "    doubling itself is unexplained and worth watching on the next release.",
+    "    Evidence: `curl registry.npmjs.org/<pkg>` shows every version live with a",
+    "    2026-08-31 timestamp, and `pnpm release:check` exits 0."
+  ],
+  "closed": "2026-11-17",
+  "result": "2026-08-31 - **The five bumped-but-unpublished packages are released, and",
+  "evidence": [
+    "legacy item migrated to format 2 without a recorded evidence"
+  ]
+}

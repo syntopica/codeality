@@ -1,0 +1,28 @@
+{
+  "tadu": 2,
+  "id": "t-fa835c8a-45c7-4f55-8e7b-f36cf1ed837b",
+  "title": "db-quality reads SQLite query files (unreleased): `sqlite.queries`",
+  "state": "done",
+  "category": "general",
+  "type": "untriaged",
+  "priority": "untriaged",
+  "notes": [
+    "    (`paths`, optional `database`, `minRows` default 10000) adds `BDB404`",
+    "    (optional-parameter guard), `BDB405` (comma-list `instr()`) and `BDB406`",
+    "    (full table or index scan of a table above `minRows` in the plan of each",
+    "    statement, parameters unbound) to `check` and `gate`. Replayed on Vexa's",
+    "    dev store copy: the `jobs_list.sql` before f1052981 gives all three (a",
+    "    `SCAN jobs` of 800,535 rows plus a temp B-tree for ORDER BY), and the",
+    "    `mailbox_counts.sql` before 7bbbd697 gives `BDB406` (a full scan of the",
+    "    `message_placements` autoindex, 233,351 rows). The current 541 files give",
+    "    38 `BDB404` and 67 `BDB406` in 7.7 s. Gotcha: the sqlite3 shell draws",
+    "    `EXPLAIN QUERY PLAN` as a tree even under `-json`, so the plan is parsed",
+    "    from the tree. Not done: a per-file allowlist (the baseline covers",
+    "    intended scans) and `init` detection."
+  ],
+  "closed": "2026-11-17",
+  "result": "db-quality reads SQLite query files (unreleased): `sqlite.queries`",
+  "evidence": [
+    "legacy item migrated to format 2 without a recorded evidence"
+  ]
+}

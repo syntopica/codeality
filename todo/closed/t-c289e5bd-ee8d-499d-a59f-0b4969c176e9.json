@@ -1,0 +1,26 @@
+{
+  "tadu": 2,
+  "id": "t-c289e5bd-ee8d-499d-a59f-0b4969c176e9",
+  "title": "2026-08-25 - **`check:quality` names the gate that fails.** It was",
+  "state": "done",
+  "category": "2026-08",
+  "type": "untriaged",
+  "priority": "untriaged",
+  "notes": [
+    "    `pnpm knip && pnpm knip:templates && ...`, six gates behind one exit",
+    "    code - the reason a cold-run failure got recorded as \"check:quality",
+    "    failed\" and could never be acted on. `scripts/check-quality.mjs` keeps the",
+    "    chain's semantics (in order, first failure stops) and prints",
+    "    `check:quality: FAIL     <step> (exit <code>)` plus the `pnpm run <step>`",
+    "    to re-run. Verified both directions: the real run prints all six `running`",
+    "    lines and `6 gates passed`, exit 0; a probe copy with an injected bad step",
+    "    prints `check:quality: FAIL     definitely-not-a-script (exit 1)` and",
+    "    exits 1. `docs/standards/quality-gates.md` documents it, along with the",
+    "    pnpm bin-relink trap that produced one such failure locally."
+  ],
+  "closed": "2026-11-17",
+  "result": "2026-08-25 - **`check:quality` names the gate that fails.** It was",
+  "evidence": [
+    "legacy item migrated to format 2 without a recorded evidence"
+  ]
+}

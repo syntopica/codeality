@@ -1,0 +1,28 @@
+{
+  "tadu": 2,
+  "id": "t-9fdf9f0b-8251-4b09-ad05-163567f55d55",
+  "title": "`includeEntryExports` probe surfaced `bootstrap` in",
+  "state": "done",
+  "category": "2026-08",
+  "type": "untriaged",
+  "priority": "untriaged",
+  "notes": [
+    "    `templates/nestjs-app/src/main.ts` as an apparently-dead export. Attempted",
+    "    to drop the `export` keyword; `pnpm lint` then failed on",
+    "    `code-policy/no-hidden-top-level-declarations` (this repo's Primary Unit",
+    "    Rule, enforced via `eslint-plugin-code-policy`), which requires every",
+    "    top-level declaration to be exported so a file never carries a hidden",
+    "    internal helper. Reverted the drop. `bootstrap` is not dead code: it looks",
+    "    unused only because `src/main.ts` is a process entry point that nothing",
+    "    inside this monorepo imports as a module (same shape as",
+    "    `main.tsx`/`page.tsx` in the other templates) — the export exists to",
+    "    satisfy the template's own one-exported-unit-per-file convention, not to",
+    "    be consumed by an in-repo caller. No source change needed; documented in",
+    "    `TODO.md`'s `includeEntryExports` entry."
+  ],
+  "closed": "2026-11-17",
+  "result": "`includeEntryExports` probe surfaced `bootstrap` in",
+  "evidence": [
+    "legacy item migrated to format 2 without a recorded evidence"
+  ]
+}

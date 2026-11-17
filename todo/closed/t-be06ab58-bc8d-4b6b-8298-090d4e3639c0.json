@@ -1,0 +1,18 @@
+{
+  "tadu": 2,
+  "id": "t-be06ab58-bc8d-4b6b-8298-090d4e3639c0",
+  "title": "**Exclude the",
+  "state": "done",
+  "category": "verified-interaction-sweep-repairs",
+  "type": "untriaged",
+  "priority": "untriaged",
+  "notes": [
+    "    offscreen Recharts text measurement helper from painted-text inspection.**",
+    "    The sweep flagged the helper's small font as readable UI text."
+  ],
+  "closed": "2026-10-21",
+  "result": "The probe skips only the exact private measurement ID while its box is entirely above the viewport; visible content with the same ID remains inspected.",
+  "evidence": [
+    "A real Chromium regression failed before the fix, then both offscreen and visible control cases passed: pnpm --filter @syntopica/ui-quality exec vitest run tests/capture/probe.measurement.integration.test.ts --maxWorkers=1. Upstream DOMUtils.ts confirms top -20000px placement (https://raw.githubusercontent.com/recharts/recharts/main/src/util/DOMUtils.ts). Independent review returned no findings."
+  ]
+}

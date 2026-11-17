@@ -1,0 +1,22 @@
+{
+  "tadu": 2,
+  "id": "t-0ee240a2-89bc-4c08-b2aa-7676bd417f45",
+  "title": "Python consumers, fourth pass (owner-approved; gates re-run on clean",
+  "state": "done",
+  "category": "general",
+  "type": "untriaged",
+  "priority": "untriaged",
+  "notes": [
+    "    `origin` worktrees, exit 0): DJCenterDeluxe 28 to 4 (a440988): 280",
+    "    characterisation tests first (232364c), then the 8 large classes split,",
+    "    the `veoplan`, `scrapers/goldwing` and `spotify` scripts moved to",
+    "    `python -m` (86508ce), spiders renamed, coverage floor 36 to 65.",
+    "    djplayerdeluxe 44 to 39 (97ecfd1): `fileman`, `djpd` and `djpdplayer`",
+    "    split behind their tests, `fileman` typed, floor 38 to 65."
+  ],
+  "closed": "2026-11-17",
+  "result": "Python consumers, fourth pass (owner-approved; gates re-run on clean",
+  "evidence": [
+    "legacy item migrated to format 2 without a recorded evidence"
+  ]
+}

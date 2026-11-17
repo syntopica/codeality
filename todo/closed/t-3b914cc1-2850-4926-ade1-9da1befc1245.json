@@ -1,0 +1,14 @@
+{
+  "tadu": 2,
+  "id": "t-3b914cc1-2850-4926-ade1-9da1befc1245",
+  "title": "Publish quality-config 0.15.0",
+  "state": "done",
+  "category": "release",
+  "type": "untriaged",
+  "priority": "untriaged",
+  "closed": "2026-10-21",
+  "result": "Released the custom-layout Knip fix and the existing Dart/Swift duplication configuration feature through GitHub OIDC. Updated the generated baseline pin; other package versions are unchanged.",
+  "evidence": [
+    "Full pnpm check:ci passed 58 tasks before the version-only commit; package tests (28), create-baseline tests (198), lint, type-check, publish:check and frozen install passed. Annotated quality-config@0.15.0 points to 3f00a217; workflow 39529271695 succeeded. The public npm tarball has 38 files, matching source bytes and no private artifact paths."
+  ]
+}
