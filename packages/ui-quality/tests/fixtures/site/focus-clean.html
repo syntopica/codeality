@@ -51,11 +51,22 @@
         outline: 2px solid #2563eb;
         outline-offset: 2px;
       }
+      /* Focused on load, with a ring that eases in: its resting look must be
+         read after the blur, not while it still holds focus. */
+      .search {
+        transition: border-color 120ms;
+      }
+      .search:focus {
+        border-color: #2563eb;
+      }
     </style>
   </head>
   <body>
     <main>
       <h1>Invoice filters</h1>
+      <p>
+        <input class="search" type="search" aria-label="Search" autofocus />
+      </p>
       <p><a href="#top">Back to top</a></p>
       <p class="field">
         <input type="text" aria-label="Customer" value="Acme" />

@@ -2,6 +2,9 @@
 
 ## [Unreleased]
 
+- Fix: focus-invisible records each element's resting look after dropping focus,
+  so a field the page focuses on load is no longer reported.
+
 - Fix: wrapped short labels detect sibling SVG viewports misaligned with the
   first text line, preserving legacy snapshots and leaving ambiguous
   compositions unclassified.

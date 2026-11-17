@@ -2,12 +2,19 @@
  * Runs in the page before the Tab pass: records, for every focusable element
  * the probe walked, the look of the element and of the boxes a focus ring may
  * be painted on instead (three ancestors for `:focus-within`, the siblings for
- * a custom checkbox). A string, because this package compiles without the DOM
- * library.
+ * a custom checkbox). Focus is dropped and running transitions finished
+ * first, so a field the page focused on load is recorded at rest. A string,
+ * because this package compiles without the DOM library.
  */
 export const FOCUS_SETUP_SCRIPT = `(() => {
   const ids = window.__uiqIds
   if (!ids) return 0
+  if (document.activeElement) document.activeElement.blur()
+  getComputedStyle(document.body).outlineStyle
+  for (const animation of document.getAnimations()) {
+    if (!(animation instanceof CSSTransition)) continue
+    try { animation.finish() } catch (error) { void error }
+  }
   const FOCUSABLE = 'a[href], button, input, select, textarea, summary, [tabindex], [contenteditable=""], [contenteditable="true"]'
   const look = (element) => {
     const s = getComputedStyle(element)
@@ -34,6 +41,5 @@ export const FOCUS_SETUP_SCRIPT = `(() => {
     rest.set(element, around(element))
   }
   window.__uiqFocusRest = rest
-  if (document.activeElement) document.activeElement.blur()
   return rest.size
 })()`
