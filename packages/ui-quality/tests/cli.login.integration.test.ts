@@ -68,4 +68,32 @@ describe('codeality-ui login', () => {
     expect(err.join('')).not.toContain('error:')
     expect(code).toBe(0)
   }, 120_000)
+
+  it('measures a signed-in page that changes the password instead of signing in on it', async () => {
+    process.env['UIQ_TEST_USER'] = 'reader@example.com'
+    process.env['UIQ_TEST_PASSWORD'] = 'not-a-secret'
+    const root = mkdtempSync(join(tmpdir(), 'uiq-'))
+    writeFileSync(
+      join(root, 'codeality-ui.json'),
+      JSON.stringify({
+        baseUrl: `file://${site}`,
+        routes: ['/account.html'],
+        viewports: [{ width: 1440, height: 900 }],
+        colorSchemes: ['light'],
+        auth: {
+          loginPath: '/login.html',
+          usernameEnv: 'UIQ_TEST_USER',
+          passwordEnv: 'UIQ_TEST_PASSWORD',
+        },
+      }),
+    )
+    const out: string[] = []
+    const code = await runCli(['check', '--json'], {
+      root,
+      stdout: (text: string) => out.push(text),
+      stderr: () => undefined,
+    })
+    expect(out.join('')).not.toContain('capture-failed')
+    expect(code).toBe(0)
+  }, 120_000)
 })

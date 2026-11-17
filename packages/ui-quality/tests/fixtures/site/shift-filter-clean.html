@@ -1,0 +1,57 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>A list filter that sits straight in the main region</title>
+    <style>
+      body {
+        margin: 0;
+        font: 16px/1.5 sans-serif;
+        color: #111827;
+        background: #ffffff;
+      }
+      main {
+        padding: 24px;
+      }
+      button {
+        font: inherit;
+        color: #111827;
+        background: #ffffff;
+        border: 1px solid #6b7280;
+        padding: 4px 12px;
+      }
+      [aria-pressed='true'] {
+        background: #dbeafe;
+      }
+    </style>
+  </head>
+  <body>
+    <!-- The filter's own row keeps its height; only the list it filters
+         changes length, which is what a filter is for. -->
+    <main>
+      <h1>Requests</h1>
+      <div role="group" aria-label="Owner">
+        <button type="button" aria-pressed="true" data-rows="2">Mine</button>
+        <button type="button" aria-pressed="false" data-rows="20">All</button>
+      </div>
+      <ul></ul>
+    </main>
+    <script>
+      const list = document.querySelector('ul')
+      const show = (rows) => {
+        list.innerHTML = Array.from(
+          { length: rows },
+          (_, row) => `<li>Request ${String(row + 1)}</li>`,
+        ).join('')
+      }
+      show(2)
+      for (const button of document.querySelectorAll('button')) {
+        button.addEventListener('click', () => {
+          for (const other of document.querySelectorAll('button'))
+            other.setAttribute('aria-pressed', String(other === button))
+          show(Number(button.dataset.rows))
+        })
+      }
+    </script>
+  </body>
+</html>

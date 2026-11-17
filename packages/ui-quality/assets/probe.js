@@ -92,6 +92,16 @@ export default (mainSelector) => {
     style.visibility !== 'hidden' &&
     Number(style.opacity) > 0
 
+  // A box of one pixel or less that clips its overflow hides everything in
+  // it, however large: a search field parked inside a 1px clipped wrapper
+  // until it is opened is not on screen.
+  const clipsToPixel = (style, rect) =>
+    (rect.width <= 1 || rect.height <= 1) &&
+    (style.overflowX !== 'visible' ||
+      style.overflowY !== 'visible' ||
+      style.clipPath !== 'none' ||
+      style.clip !== 'auto')
+
   const ownText = (element) => {
     let text = ''
     for (const node of element.childNodes) {
@@ -494,13 +504,21 @@ export default (mainSelector) => {
       (header) => !header.closest('article, aside, main, nav, section'),
     )
 
+  const pixelClips = new Set()
   for (const element of document.body.querySelectorAll('*')) {
     if (SKIP.has(element.tagName)) continue
     if (element.closest('svg') && element.tagName.toLowerCase() !== 'svg')
       continue
+    if (pixelClips.has(element.parentElement)) {
+      pixelClips.add(element)
+      continue
+    }
     const style = getComputedStyle(element)
     const rect = element.getBoundingClientRect()
-    if (!isVisible(element, style, rect)) continue
+    if (!isVisible(element, style, rect)) {
+      if (clipsToPixel(style, rect)) pixelClips.add(element)
+      continue
+    }
     const text = ownText(element)
     let parent = element.parentElement
     while (parent && !ids.has(parent)) parent = parent.parentElement

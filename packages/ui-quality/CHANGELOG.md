@@ -2,6 +2,21 @@
 
 ## [Unreleased]
 
+- Fix: touch-target overlap and text occlusion let content scroll out from under
+  a bar fixed to the bottom of the window, as a phone tab bar is, while a fixed
+  top bar and pinned content still count.
+
+- Fix: a signed-in page that holds password fields, such as an account page that
+  changes the password, is no longer taken for the login form; a login form
+  needs a visible username field too.
+
+- Fix: the probe skips the children of an element clipped to one pixel, so a
+  visually hidden search wrapper no longer reports its input.
+
+- Fix: interaction-shift measures a toggle group placed straight in the main
+  region by its own row, so a filter that changes the length of the list below
+  it is not reported.
+
 - Fix: focus-invisible records each element's resting look after dropping focus,
   so a field the page focuses on load is no longer reported.
 

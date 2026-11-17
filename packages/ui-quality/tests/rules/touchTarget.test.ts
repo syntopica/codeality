@@ -103,4 +103,27 @@ describe('touchTarget', () => {
       ]),
     ).toEqual(['button.a'])
   })
+
+  it('lets a row scroll out from under a tab bar fixed to the bottom, not from under a top bar', () => {
+    const ROW = 'button.row'
+    const bar = elementBox({
+      id: 2,
+      tag: 'nav',
+      position: 'fixed',
+      y: 788,
+      width: 390,
+      height: 56,
+    })
+    const tab = tap(1, { selector: 'button.tab', x: 0, y: 788, parent: 2 })
+    const row = tap(0, { selector: ROW, x: 20, y: 770 })
+    const tall = { ...phone, viewportHeight: 844, documentHeight: 1200 }
+    expect(subjectsOf([row, tab, bar], tall)).toEqual([])
+    expect(
+      subjectsOf([row, tab, bar], { ...tall, documentHeight: 844 }),
+    ).toEqual([ROW])
+    const topTab = { ...tab, y: 0 }
+    const topBar = { ...bar, y: 0 }
+    const under = tap(0, { selector: ROW, x: 20, y: 10 })
+    expect(subjectsOf([under, topTab, topBar], tall)).toEqual([ROW])
+  })
 })

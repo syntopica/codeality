@@ -48,4 +48,15 @@ describe('textOcclusion', () => {
     ])
       expect(subjectsOf(textOcclusion, boxes)).toEqual([])
   })
+
+  it('leaves text a bottom bar covers until the page scrolls, not text it always covers', () => {
+    const below = { ...text, y: 800 }
+    const bar = cover({ position: 'fixed', y: 788, height: 56 })
+    const page = { viewportHeight: 844, documentHeight: 1200 }
+    expect(
+      textOcclusion(snapshotOf([below, bar], page), ruleContext()),
+    ).toEqual([])
+    const short = snapshotOf([below, bar], { ...page, documentHeight: 844 })
+    expect(textOcclusion(short, ruleContext())[0]?.subject).toBe('p.note')
+  })
 })

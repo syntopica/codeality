@@ -3,11 +3,13 @@ import { MIN_OCCLUDED_SHARE } from '@/rules/MIN_OCCLUDED_SHARE.js'
 import { overlapArea } from '@/rules/overlapArea.js'
 import { paintsOpaque } from '@/rules/paintsOpaque.js'
 import type { Rule } from '@/rules/Rule.js'
+import { scrollsClearOf } from '@/rules/scrollsClearOf.js'
 
 // Text with something opaque painted over it: the element hit at the centre
 // of its first line is not the text, its ancestor or its descendant, and
 // covers over 20% of the text's box. An open dialog and its backdrop cover
-// the page on purpose and are left alone.
+// the page on purpose and are left alone, and so is text a bar fixed to the
+// bottom covers only until the page scrolls.
 export const textOcclusion: Rule = (snapshot) => {
   const { elements } = snapshot
   return elements.flatMap((element) => {
@@ -15,6 +17,7 @@ export const textOcclusion: Rule = (snapshot) => {
       element.occluder === null ? undefined : elements[element.occluder]
     if (!occluder || !paintsOpaque(occluder)) return []
     if (isModalLayer(occluder, elements)) return []
+    if (scrollsClearOf(element, occluder, snapshot)) return []
     const area = element.width * element.height
     if (
       area === 0 ||

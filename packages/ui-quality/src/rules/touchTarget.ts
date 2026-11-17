@@ -15,6 +15,6 @@ export const touchTarget: Rule = (snapshot) => {
   const targets = elements.filter((element) => isTapTarget(element, elements))
   return [
     ...smallTapTargets(targets),
-    ...overlappingTapTargets(targets, elements),
+    ...overlappingTapTargets(targets, snapshot),
   ]
 }

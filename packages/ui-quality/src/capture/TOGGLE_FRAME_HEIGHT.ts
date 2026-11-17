@@ -4,8 +4,10 @@ import { TOGGLE_GROUP } from '@/capture/TOGGLE_GROUP.js'
  * Source of a function that, given the main selector and the index of a
  * toggle group in it, returns the height of the bar the group sits in: its
  * nearest ancestor inside the main region that is sticky or draws a surface
- * (a shadow, a border on every side, a painted fill), else its parent. A
- * string, because this package compiles without the DOM library.
+ * (a shadow, a border on every side, a painted fill), else its parent, or
+ * the group itself when its parent is the main region: a filter row placed
+ * straight in the page is its own bar, and the list it filters below may
+ * change length. A string, because this package compiles without the DOM library.
  */
 export const TOGGLE_FRAME_HEIGHT = `(main, index) => {
   const region = document.querySelector(main)
@@ -20,5 +22,6 @@ export const TOGGLE_FRAME_HEIGHT = `(main, index) => {
   for (let box = group.parentElement; box && box !== region; box = box.parentElement) {
     if (surface(getComputedStyle(box))) return box.getBoundingClientRect().height
   }
-  return group.parentElement.getBoundingClientRect().height
+  const fallback = group.parentElement === region ? group : group.parentElement
+  return fallback.getBoundingClientRect().height
 }`

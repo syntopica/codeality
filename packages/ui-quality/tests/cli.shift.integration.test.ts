@@ -3,9 +3,9 @@ import { describe, expect, it } from 'vitest'
 import { fixtureFindings } from './fixtureFindings.js'
 
 describe('codeality-ui interaction-shift', () => {
-  it('reports a toolbar that grows when a toggle is pressed and not its fixed twin', async () => {
+  it('reports a toolbar that grows when a toggle is pressed and not its fixed twin or a list filter', async () => {
     const findings = await fixtureFindings({
-      routes: ['/shift.html', '/shift-clean.html'],
+      routes: ['/shift.html', '/shift-clean.html', '/shift-filter-clean.html'],
     })
     const on = (route: string) =>
       findings.filter(
@@ -18,5 +18,6 @@ describe('codeality-ui interaction-shift', () => {
     ])
     expect(shifts[0]?.severity).toBe('error')
     expect(on('/shift-clean.html')).toEqual([])
+    expect(on('/shift-filter-clean.html')).toEqual([])
   }, 120_000)
 })
