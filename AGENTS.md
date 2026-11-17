@@ -9,7 +9,7 @@ Read `docs/README.md` inside that installed package first, then read the relevan
 This block is written and re-added by `turbo` before repository-scoped commands when an AI agent is detected. In the Turborepo source repository, its template is defined in `crates/turborepo-cli/src/cli/agent_guidance.rs`. Removing the managed block while updates are enabled means a later qualifying invocation will add it again. Set `"agentGuidance": false` in the root `turbo.json` or `turbo.jsonc` to opt out; this does not remove an existing block. Keep the block committed with your work to avoid an uncommitted change on the next agent invocation.
 <!-- END:turborepo-agent-rules -->
 
-<!-- tadu:rule v4 -->
+<!-- tadu:rule v5 -->
 
 ## Continuous TODO, Work Log, and History Coverage
 
@@ -53,6 +53,8 @@ conversations more than once.
   (`--resolution`, or `--duplicate-of ID`). Close reports the tasks that no
   longer wait on it; decide for each whether it moves to pending. Every command
   is a dry run until `--write`.
+- In anything a person reads, such as a summary, a report or a question, name a
+  task by its title, never by its ID; IDs stay in commands and tool calls.
 - Before reviewing past conversations, consult the history index and skip
   unchanged records already marked `complete` or `irrelevant`. Update a record
   only after its findings are reconciled; interrupted work stays `partial`.
