@@ -1,0 +1,19 @@
+{
+  "tadu": 2,
+  "id": "t-e67dd6df-7ffc-436e-963d-7a6b8f3a97db",
+  "title": "ui-quality text-occlusion and touch-target still flag content under a phone tab bar that scrolls clear",
+  "state": "pending",
+  "category": "ui-quality",
+  "type": "bug",
+  "priority": "normal",
+  "labels": ["ui-quality"],
+  "created": "2026-11-17",
+  "notes": [
+    "Observed 2026-11-17 on the Teleporte CRM at 390x844: /tasks flags \"Completar\" and /team \"Activo\" under the fixed `nav.crm-tabbar`, after c6cc000b added `scrollsClearOf`.",
+    "Evidence: a Playwright probe scrolled to the bottom measured the tab bar top at 779px and the lowest content at 741px (document 888px, so 44px of scroll); the content does clear the bar, so `lift <= documentHeight - viewportHeight` should hold.",
+    "Next step: dump the snapshot of that route (bar and subject boxes, documentHeight, viewportHeight) and find which input disagrees with the live page; add the case to tests/rules/textOcclusion.test.ts."
+  ],
+  "done_when": [
+    "Both routes report no text-occlusion or touch-target against the tab bar, with a regression test."
+  ]
+}
