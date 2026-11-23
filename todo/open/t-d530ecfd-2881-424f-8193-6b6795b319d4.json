@@ -18,6 +18,7 @@
     "    `.recharts-wrapper`/`.recharts-surface` (or chart `svg`s) in",
     "    `mixedIconFamily`, ignore hidden controls and fixed sidebars, and treat",
     "    navigating links as non-toggles. Source item: teleporte-web `TODO.md`,",
-    "    \"Chart audit tooling\" and \"Dashboard codeality-ui leftovers\"."
+    "    \"Chart audit tooling\" and \"Dashboard codeality-ui leftovers\".",
+    "2026-11-23: palette also misses tokens declared on a non-root element: teleporte-web sets chart colours as --crm-* custom properties on .crm-shell (apps/crm/src/crm-ui/data/CRM_SHELL.ts), and assets/probe.js collects variables only from :root, so 7 palette findings remain with variablePrefixes set. Next step: also read custom properties from the main region's ancestors (or every element's own style) when matching variablePrefixes, with a fixture. touch-target on the phone tab bar is the separate task about content under a scrolling tab bar."
   ]
 }
