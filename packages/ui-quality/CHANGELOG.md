@@ -2,6 +2,12 @@
 
 ## [Unreleased]
 
+- Fix: sort-broken, filter-broken and the table pager no longer read a table
+  while the request their own click or search sent is still open. Rows that
+  changed meanwhile, a loading placeholder or an optimistic guess, were taken
+  for the result. A sort still loading at the deadline is skipped rather than
+  judged.
+
 - Fix: placeholder-fit leaves a text area alone when it wraps the whole hint
   into the lines it has room for; a text area too short for its hint is still
   reported.

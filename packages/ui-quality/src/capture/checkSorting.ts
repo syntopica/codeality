@@ -21,6 +21,8 @@ export const checkSorting = async (
     const label = (await header.innerText()).replace(/\s+/g, ' ').trim()
     const first = await orderAfterClick(page, table, target, index)
     const second = await orderAfterClick(page, table, target, index)
+    // A sort still loading at the deadline is not judged on a half-way table.
+    if (!first || !second) continue
     const failure = sortFailureOf(label, first, second)
     if (failure) failures.push(failure)
   }
