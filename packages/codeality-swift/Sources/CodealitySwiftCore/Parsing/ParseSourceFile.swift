@@ -9,7 +9,7 @@ public func parseSourceFile(projectRoot: String, path: String, config: SwiftConf
   -> SourceFile
 {
   let url = URL(fileURLWithPath: projectRoot).appendingPathComponent(path)
-  var text = (try? String(contentsOf: url, encoding: .utf8)) ?? ""
+  var text = try readSourceText(url: url, path: path)
   if text.hasPrefix("\u{FEFF}") { text.removeFirst() }
   let tree = Parser.parse(source: text)
   let converter = SourceLocationConverter(fileName: path, tree: tree)
