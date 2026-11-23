@@ -1,0 +1,17 @@
+{
+  "tadu": 2,
+  "id": "t-6da56920-0b89-4acd-b992-a7713aa8a0ed",
+  "title": "Swift test baselineCreateRefusesToOverwriteAndUpdateDoes is flaky on CI",
+  "state": "pending",
+  "category": "dart-and-swift-baseline",
+  "type": "bug",
+  "priority": "low",
+  "kind": "task",
+  "created": "2026-11-23",
+  "notes": [
+    "2026-11-23: failed once on main at 01887cb5 (CheckCommandTests.swift:50-52, all three runBinary statuses wrong), passed on the re-run and on the previous commit with identical Swift sources and Package.resolved. Likely a race between tests that spawn the built binary against a shared fixture or build product."
+  ],
+  "done_when": [
+    "The cause is identified and the test passes 20 consecutive runs, or it is shown to be runner noise."
+  ]
+}
