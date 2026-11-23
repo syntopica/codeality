@@ -1,5 +1,6 @@
 import { describe, expect, it } from 'vitest'
 
+import { descendantCount } from '@/measure/descendantCount.js'
 import { parseProcessTable } from '@/measure/parseProcessTable.js'
 import { treeRssKb } from '@/measure/treeRssKb.js'
 
@@ -19,5 +20,14 @@ describe('treeRssKb', () => {
   })
   it('is zero for a process that is gone', () => {
     expect(treeRssKb(parseProcessTable(TABLE), 99)).toBe(0)
+  })
+})
+
+describe('descendantCount', () => {
+  it('counts the processes under a process, not itself or its siblings', () => {
+    const rows = parseProcessTable(TABLE)
+    expect(descendantCount(rows, 10)).toBe(2)
+    expect(descendantCount(rows, 30)).toBe(0)
+    expect(descendantCount(rows, 99)).toBe(0)
   })
 })

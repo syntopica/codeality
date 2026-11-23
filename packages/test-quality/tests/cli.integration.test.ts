@@ -87,6 +87,13 @@ describe('codeality-test', () => {
     expect(byName['suite-run']?.message).toMatch(/^vitest exited 0 after/)
     expect(byName['slowest-files']?.evidence).toHaveLength(2)
     expect(byName['memory-use']?.message).toMatch(/peaked at \d+ MB/)
+    expect(byName['phase-shares']?.evidence).toContainEqual(
+      expect.stringMatching(/^tests \d+%$/),
+    )
+    expect(byName['worker-processes']?.message).toMatch(
+      /^\d+ processes were seen /,
+    )
+    expect(byName['host-load']?.message).toMatch(/on \d+ CPUs/)
     const byRule = Object.fromEntries(rules.map((f) => [f.rule, f]))
     expect(byRule['dom-environment-unused']?.message).toBe(
       '1 of 1 candidate files pass under node and still run under a DOM environment',

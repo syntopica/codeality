@@ -1,18 +1,20 @@
 import { spawn } from 'node:child_process'
 import { mkdtempSync, rmSync } from 'node:fs'
-import { tmpdir } from 'node:os'
+import { availableParallelism, tmpdir } from 'node:os'
 import { join } from 'node:path'
 import { env, execPath } from 'node:process'
 
 import type { VitestRun } from '@/model/VitestRun.js'
 import { readJsonReport } from '@/tools/readJsonReport.js'
+import { readLoadAverage } from '@/tools/readLoadAverage.js'
 import { resolveVitestBin } from '@/tools/resolveVitestBin.js'
 import { startRssSampler } from '@/tools/startRssSampler.js'
 import { waitForExit } from '@/tools/waitForExit.js'
 
 /**
  * Runs the project's own vitest with a JSON report beside the default one,
- * sampling the memory of vitest and every worker it starts once a second.
+ * sampling the memory of vitest and every worker it starts once a second and
+ * reading the host's load before and after, so two runs can be compared.
  */
 export const runVitestMeasured = async (
   root: string,
@@ -21,6 +23,7 @@ export const runVitestMeasured = async (
   const vitest = resolveVitestBin(root)
   const dir = mkdtempSync(join(tmpdir(), 'codeality-test-'))
   const reportPath = join(dir, 'report.json')
+  const loadBefore = readLoadAverage()
   const started = Date.now()
   const child = spawn(
     execPath,
@@ -40,9 +43,21 @@ export const runVitestMeasured = async (
     stdout += chunk.toString()
   })
   const exitCode = await waitForExit(child)
-  const rssSamplesMb = stopSampling()
+  const samples = stopSampling()
   const report = readJsonReport(reportPath)
   rmSync(dir, { recursive: true, force: true })
   const wallSeconds = (Date.now() - started) / 1000
-  return { exitCode, stdout, report, wallSeconds, rssSamplesMb }
+  return {
+    exitCode,
+    stdout,
+    report,
+    wallSeconds,
+    rssSamplesMb: samples.rssMb,
+    workerSamples: samples.descendants,
+    host: {
+      cpus: availableParallelism(),
+      loadBefore,
+      loadAfter: readLoadAverage(),
+    },
+  }
 }

@@ -71,11 +71,17 @@ one, sampling the resident memory of vitest and every worker once a second:
 | `environment-dominates`  | environment setup is over 40% of the work and outweighs the tests         |
 | `dom-environment-unused` | with `--node-candidates`: candidates that pass under `--environment node` |
 
-| observation     | meaning                                    |
-| --------------- | ------------------------------------------ |
-| `suite-run`     | vitest's exit code and the run's wall time |
-| `slowest-files` | the `--top` slowest files (default 10)     |
-| `memory-use`    | peak and mean RSS of the run               |
+| observation        | meaning                                                                      |
+| ------------------ | ---------------------------------------------------------------------------- |
+| `suite-run`        | vitest's exit code and the run's wall time                                   |
+| `host-load`        | the 1-minute load before and after the run, and the CPU count                |
+| `phase-shares`     | each phase's share of summed worker time, from vitest's `Duration` line      |
+| `slowest-files`    | the `--top` slowest files (default 10)                                       |
+| `memory-use`       | peak and mean RSS of the run                                                 |
+| `worker-processes` | the most processes seen under vitest in one sample: a floor on the real peak |
+
+Compare two `measure` runs only when their `host-load` lines are close: on a
+machine shared with other jobs, a slower run can be the neighbours' fault.
 
 The candidate list is deliberately broad on the DOM side: a file that names
 `window`, `render`, `@testing-library/...` and the like is never proposed, and

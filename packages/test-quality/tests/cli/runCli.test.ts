@@ -96,6 +96,8 @@ describe('runCli', () => {
             ],
           },
           rssSamplesMb: [100, 300],
+          workerSamples: [0, 3, 2],
+          host: { cpus: 10, loadBefore: 3.5, loadAfter: 6.25 },
         }),
         vitestRun({
           report: {
@@ -132,6 +134,12 @@ describe('runCli', () => {
     expect(text).toContain('suite-run: vitest exited 0')
     expect(text).toContain(`1.50 s ${A}`)
     expect(text).toContain('peaked at 300 MB, mean 200 MB')
+    expect(text).toContain('phase-shares: vitest reported 10.00 s')
+    expect(text).toContain('environment 70%')
+    expect(text).toContain('3 processes were seen under vitest at once')
+    expect(text).toContain(
+      'host-load: 1-minute load 3.50 before and 6.25 after the run, on 10 CPUs',
+    )
     expect(text).toContain('1 of 2 candidate files pass under node')
   })
 

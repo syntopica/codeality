@@ -2,6 +2,12 @@
 
 ## [Unreleased]
 
+- `measure` reports three more observations, so two runs can be compared:
+  `host-load` (the 1-minute load before and after the run, and the CPU count),
+  `phase-shares` (every phase of vitest's `Duration` line, not only when the
+  environment dominates) and `worker-processes` (the most processes seen under
+  vitest in one sample, a floor on the real peak). They never fail the command.
+
 ## 0.2.0
 
 ### Minor Changes

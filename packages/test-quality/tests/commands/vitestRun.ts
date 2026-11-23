@@ -7,5 +7,7 @@ export const vitestRun = (overrides: Partial<VitestRun>): VitestRun => ({
   report: { testResults: [] },
   wallSeconds: 10,
   rssSamplesMb: [],
+  workerSamples: [],
+  host: { cpus: 8, loadBefore: 1, loadAfter: 2 },
   ...overrides,
 })
