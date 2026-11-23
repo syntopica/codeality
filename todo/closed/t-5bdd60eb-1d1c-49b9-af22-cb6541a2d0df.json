@@ -2,7 +2,7 @@
   "tadu": 2,
   "id": "t-5bdd60eb-1d1c-49b9-af22-cb6541a2d0df",
   "title": "Decide when crowded-meta-line reports a label that still shows 12 or more characters",
-  "state": "pending",
+  "state": "done",
   "category": "ui-quality",
   "type": "feature",
   "priority": "normal",
@@ -11,5 +11,10 @@
   "discovered_from": "t-8e6c6841-ad0a-4261-8385-df1b89011633",
   "notes": [
     "The Modelos formula line on InteliFactu (\"Otras operaciones con in...\", 3 items, 320px aside) was unreadable yet not reported: about 24 characters stay visible, over MIN_VISIBLE_CHARS (12). Reporting by visible share instead would also report every inbox preview cut on purpose. Options: a share threshold only for labels that name a value beside them; or leave it to the new text-clipped slack check; or no change. The original DOM was not captured, so no faithful fixture exists."
+  ],
+  "closed": "2026-11-23",
+  "result": "Decide when crowded-meta-line reports a label that still shows 12 or more characters",
+  "evidence": [
+    "Decided 2026-11-23 (owner delegated the call): no change to crowded-meta-line. MIN_VISIBLE_CHARS stays the only trigger: a visible-share threshold would report every preview cut on purpose, and no captured DOM exists to build a faithful fixture. A truncated label beside a wider neighbour with room is now reported by the text-clipped slack check; a line with no room to give is a layout choice the tool cannot judge. Reopen with a captured snapshot if the Modelos line still goes unreported after the next ui-quality release."
   ]
 }

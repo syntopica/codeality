@@ -408,3 +408,14 @@ not reported twice.
    case table, with the catalog's verdict. Transport-case findings from the same
    run are reported but do not count toward the 13, because they do not
    reproduce a catalog failure.
+
+The throwaway environment for step 6 exists in verticagtm (checked 2026-11-23):
+the isolated local lane under `scripts/isolated-db/`, started with
+`start.sh <work-dir>` and seeded with `seed-demo-copy.sh <work-dir>`, which
+writes the local owner's sign-in to `<work-dir>/owner.env`. It carries
+production's schema and no production data, sends no mail and blanks the Stripe,
+Resend and model keys. Roles there are owner, admin and member;
+`src/test/isolated-db/` seeds any of them. Its `dev.sh` runs `next dev` only, so
+step 6 starts by adding a sibling script that runs `next build` and `next start`
+under the same environment. Nothing launched with verticagtm's plain
+`.env.local` is safe: it points at production.
