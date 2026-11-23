@@ -114,9 +114,21 @@ tests and the audit are not baselined.
   `--check`), replaced only with `--force`. v1 does not merge linter lists; a
   consumer that needs a local exception adds it under the marked
   `# local overrides` block, which `init` preserves.
-- With `--ci`, merges a `go-<module path>` job into the git root's
+- With `--ci`, merges the module's job into the git root's
   `.github/workflows/codeality.yml`, as the Dart and Swift tools do, with the
-  Go, golangci-lint, govulncheck and codeality-go versions pinned.
+  golangci-lint, govulncheck and codeality-go versions pinned and the Go version
+  read from the module's `go.mod`. The job id is `go` for a module at the
+  repository root and `go-<path>` below it, where `<path>` is the module's
+  directory relative to the root with every non-word character replaced by `-`
+  (`services/api` -> `go-services-api`). The directory, not the module path,
+  names the job: it is what the job's `working-directory` needs and what the
+  estate check can compute without parsing `go.mod`. The job is compared as
+  parsed YAML, so a re-indented job is not a conflict; an edited one is.
+- A repository with no other workflow also gets a minimal `quality.yml` that
+  calls `codeality.yml`; one with CI that does not call it gets a note.
+- The shipped `.golangci.yml` ends at the `# local overrides` marker. `init`
+  compares only what is above the marker, and `--force` rewrites that part and
+  keeps what is below.
 
 ## Structural rules (`BGO`)
 
@@ -152,7 +164,9 @@ A **unit** is one of:
   - the compile-time interface assertion `var _ I = (*T)(nil)`.
 - A **function unit**: one top-level function.
 - A **value unit**: one `const` or `var` declaration (a single spec or one
-  parenthesised group). Only legal as the unit of a `data` file, or unexported.
+  parenthesised group). An exported one is legal as the unit of a `data` file,
+  or as the primary of its own file (`file_name.go` holding `FileName`): one
+  named constant is a unit like any other. Unexported ones are helpers.
 
 An ordinary file contains exactly one unit that the file is named after — its
 **primary** — and may also contain unexported helper units used only inside that
@@ -260,17 +274,23 @@ a builder call:
 Every enabled linter must pass on `templates/go-module` and on the tool's own
 source with no `//nolint`.
 
+The shipped file excludes `gosec` G304 and G703 in `_test.go` files: tests read
+and write fixtures by computed path under `t.TempDir`. The tool's own module
+adds one local override, G204 for the single file that starts the gate's tools.
+A test asserts that the tool's `.golangci.yml` starts with the shipped file, so
+the tool is always linted by what it ships.
+
 ## Gate stages
 
-| Stage      | Required | Command                                                                                              |
-| ---------- | -------- | ---------------------------------------------------------------------------------------------------- |
-| format     | yes      | `golangci-lint fmt --diff`; a non-empty diff is a finding whatever the exit code                     |
-| mod        | yes      | `go mod tidy -diff` and `go mod verify`                                                              |
-| lint       | yes      | `golangci-lint run --output.json.path stdout` (`govet` runs inside it)                               |
-| structure  | yes      | `codeality-go check` (or `baseline check` when a baseline file exists)                               |
-| duplicates | yes      | jscpd over the module with the `go` format                                                           |
-| test       | yes      | `go test -race -shuffle=on -coverprofile=<tmp> ./...`, then a statement-coverage floor (default 80%) |
-| audit      | yes      | `govulncheck ./...` in text mode, judged by its exit code                                            |
+| Stage      | Required | Command                                                                                                              |
+| ---------- | -------- | -------------------------------------------------------------------------------------------------------------------- |
+| format     | yes      | `golangci-lint fmt --diff`; a non-empty diff is a finding whatever the exit code                                     |
+| mod        | yes      | `go mod tidy -diff` and `go mod verify`                                                                              |
+| lint       | yes      | `golangci-lint run --output.json.path stdout` (`govet` runs inside it)                                               |
+| structure  | yes      | `codeality-go check` (or `baseline check` when a baseline file exists)                                               |
+| duplicates | yes      | jscpd over the module with the `go` format                                                                           |
+| test       | yes      | `go test -race -shuffle=on -coverpkg=./... -coverprofile=<tmp> ./...`, then a statement-coverage floor (default 80%) |
+| audit      | yes      | `govulncheck ./...` in text mode, judged by its exit code                                                            |
 
 `go test -race` needs cgo and a C toolchain; a platform without one is an
 infrastructure failure, not a skip. `race: false` in the config turns the flag
@@ -278,7 +298,9 @@ off for modules that cross-compile only. The coverage floor and a test-time
 budget are config keys, as in `codeality-py`. The coverage total is computed
 from the profile by the tool, over the packages the config does not exclude
 (`cmd/**` entrypoints are excluded by default, as `main` wiring is covered by
-the packages it calls).
+the packages it calls). `-coverpkg=./...` counts a statement as covered
+whichever package's tests ran it, so a package exercised through its callers is
+not reported at zero.
 
 ## Duplicates
 
@@ -320,7 +342,8 @@ on `templates/go-module`. `release:check` learns the
 Following `packages/create-baseline/bin/swift/`:
 
 - `estate/findGoConsumers.mjs`: a `codeality-go.yaml`, up to 3 levels deep.
-- `go/runGoConformance.mjs`: the gate job exists and its pinned versions match
+- `go/runGoConformance.mjs`: the module's gate job exists (same job id as `init`
+  computes) and the `codeality-go@v<version>` it installs matches
   `go-versions.json`. Findings prefixed `go-`.
 - `estate/formatGoEstate.mjs`: one more table in `baseline-estate`.
 

@@ -2,7 +2,7 @@
 
 These folders are **validated starters** for Next.js, Vite + React, Vite + Vue,
 Nuxt 4, Astro, Tauri, a generic TypeScript package, a Python package, a Dart
-package, a Flutter app and a Swift package.
+package, a Flutter app, a Swift package and a Go module.
 
 ## Published dependencies
 
@@ -59,4 +59,14 @@ A SwiftPM library whose quality chain is `codeality-swift gate`. Its
 ```bash
 swift test
 codeality-swift gate
+```
+
+## go-module
+
+A Go module whose quality chain is `codeality-go gate`. Its `codeality-go.yaml`
+and `.golangci.yml` are what `codeality-go init` writes.
+
+```sh
+go test ./...
+codeality-go gate
 ```

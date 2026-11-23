@@ -7,6 +7,8 @@
 // The Dart packages (pubspec.yaml) are checked the same way against pub.dev,
 // tagged `<name>-v<version>`. codeality-swift has no registry: its tag
 // `codeality-swift-v<version>` is the release consumers build from.
+// codeality-go is tagged `packages/codeality-go/v<version>`, which is what
+// `go install ...@v<version>` resolves.
 //
 // Deliberately NOT part of `check:ci`: it needs the network, and the commit
 // that bumps a version legitimately precedes its tag and its publish. Run it
@@ -69,6 +71,28 @@ async function readSwiftPackage(dir) {
   }
 }
 
+// A Go module in a subdirectory is released by the tag the Go toolchain
+// resolves `@v<version>` to: `<directory>/v<version>`.
+async function readGoModule(dir) {
+  try {
+    const path = resolve(dir, 'internal/version/number.go')
+    // eslint-disable-next-line security/detect-non-literal-fs-filename
+    const text = await readFile(path, 'utf8')
+    const version = /Number\s*=\s*"([^"]+)"/.exec(text)?.[1]
+    if (!version) return null
+    const name = 'codeality-go'
+    return {
+      dir,
+      name,
+      version,
+      registry: null,
+      tag: `packages/${name}/v${version}`,
+    }
+  } catch {
+    return null
+  }
+}
+
 async function readPublishablePackages() {
   const entries = await readdir(PACKAGES_DIR, { withFileTypes: true })
   const packages = []
@@ -78,7 +102,8 @@ async function readPublishablePackages() {
     const pkg =
       (await readPackageJson(dir)) ??
       (await readPubspec(dir)) ??
-      (await readSwiftPackage(dir))
+      (await readSwiftPackage(dir)) ??
+      (await readGoModule(dir))
     if (pkg) packages.push(pkg)
   }
   return packages.sort((a, b) => a.name.localeCompare(b.name))

@@ -1,0 +1,8 @@
+schema-version: 1
+
+overrides:
+  - paths:
+      - internal/rule/no_inline_sql_test.go
+    disable:
+      - BGO006
+    reason: The fixtures of the SQL rule are SQL statements by necessity.

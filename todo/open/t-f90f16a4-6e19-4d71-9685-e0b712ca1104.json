@@ -1,0 +1,14 @@
+{
+  "tadu": 2,
+  "id": "t-f90f16a4-6e19-4d71-9685-e0b712ca1104",
+  "title": "pnpm knip exits 1 on main: unlisted lefthook binary in the templates and a stale ignoreUnresolved hint for packages/tsconfig",
+  "state": "pending",
+  "category": "baselines",
+  "type": "bug",
+  "priority": "normal",
+  "kind": "task",
+  "created": "2026-11-23",
+  "notes": [
+    "Seen 2026-11-23 on a clean tree before the codeality-go change; smallest step: run pnpm knip and add lefthook to the templates' ignoreBinaries or drop the stale hint."
+  ]
+}

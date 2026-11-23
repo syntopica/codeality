@@ -18,5 +18,9 @@ public enum JscpdDefaults {
     "**/.build/**",
     "**/build/**",
     "**/.dart_tool/**",
+    "**/vendor/**",
+    "**/testdata/**",
+    "**/*.pb.go",
+    "**/*_gen.go",
   ]
 }

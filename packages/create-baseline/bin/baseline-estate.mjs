@@ -9,12 +9,15 @@ import { runDartConformance } from './dart/runDartConformance.mjs'
 import { conformRows } from './estate/conformRows.mjs'
 import { findConsumers } from './estate/findConsumers.mjs'
 import { findDartConsumers } from './estate/findDartConsumers.mjs'
+import { findGoConsumers } from './estate/findGoConsumers.mjs'
 import { findPythonConsumers } from './estate/findPythonConsumers.mjs'
 import { findSwiftConsumers } from './estate/findSwiftConsumers.mjs'
 import { formatDartEstate } from './estate/formatDartEstate.mjs'
 import { formatEstate } from './estate/formatEstate.mjs'
+import { formatGoEstate } from './estate/formatGoEstate.mjs'
 import { formatPythonEstate } from './estate/formatPythonEstate.mjs'
 import { formatSwiftEstate } from './estate/formatSwiftEstate.mjs'
+import { runGoConformance } from './go/runGoConformance.mjs'
 import { runPythonConformance } from './python/runPythonConformance.mjs'
 import { runSwiftConformance } from './swift/runSwiftConformance.mjs'
 
@@ -38,17 +41,22 @@ async function main() {
   const swiftVersions = JSON.parse(
     await readFile(resolve(PACKAGE_ROOT, 'swift-versions.json'), 'utf8'),
   )
+  const goVersions = JSON.parse(
+    await readFile(resolve(PACKAGE_ROOT, 'go-versions.json'), 'utf8'),
+  )
   const today = new Date().toISOString().slice(0, 10)
 
   const consumers = await findConsumers(root)
   const pythonConsumers = await findPythonConsumers(root)
   const dartConsumers = await findDartConsumers(root)
   const swiftConsumers = await findSwiftConsumers(root)
+  const goConsumers = await findGoConsumers(root)
   if (
     !consumers.length &&
     !pythonConsumers.length &&
     !dartConsumers.length &&
-    !swiftConsumers.length
+    !swiftConsumers.length &&
+    !goConsumers.length
   ) {
     console.log(`baseline-estate: no @syntopica consumers under ${root}.`)
     return
@@ -74,7 +82,7 @@ async function main() {
   const pythonRows = await conformRows(pythonConsumers, (path) =>
     runPythonConformance(path, pythonVersions),
   )
-  // Dart and Swift follow the same shape: their gates live in the root
+  // Dart, Swift and Go follow the same shape: their gates live in the root
   // codeality.yml, one job per project, so each table asks whether that job
   // exists and pins a released tool.
   const dartRows = await conformRows(dartConsumers, (path) =>
@@ -83,10 +91,14 @@ async function main() {
   const swiftRows = await conformRows(swiftConsumers, (path) =>
     runSwiftConformance(path, swiftVersions),
   )
+  const goRows = await conformRows(goConsumers, (path) =>
+    runGoConformance(path, goVersions),
+  )
   const tables = [
     [pythonRows, formatPythonEstate],
     [dartRows, formatDartEstate],
     [swiftRows, formatSwiftEstate],
+    [goRows, formatGoEstate],
   ]
   let printed = rows.length > 0
   for (const [tableRows, format] of tables) {
@@ -96,9 +108,13 @@ async function main() {
     printed = true
   }
 
-  const failing = [...rows, ...pythonRows, ...dartRows, ...swiftRows].filter(
-    (row) => row.error || row.findings.some((f) => f.level === 'error'),
-  )
+  const failing = [
+    ...rows,
+    ...pythonRows,
+    ...dartRows,
+    ...swiftRows,
+    ...goRows,
+  ].filter((row) => row.error || row.findings.some((f) => f.level === 'error'))
   // Exit non-zero so this can gate a release the same way any other check
   // does. The estate is the release's blast radius; publishing into a red one
   // is the mistake this is meant to prevent.

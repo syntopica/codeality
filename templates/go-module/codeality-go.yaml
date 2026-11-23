@@ -1,0 +1,38 @@
+# codeality-go configuration. Every key but schema-version is optional;
+# the defaults are in the comments.
+# https://github.com/syntopica/codeality/tree/main/packages/codeality-go
+schema-version: 1
+
+# Globs, relative to go.mod, that no stage looks at.
+# exclude: []
+
+# Extra globs of generated files; files with the standard
+# "// Code generated ... DO NOT EDIT." header are recognised already.
+# generated: []
+
+# Files that only hold tables of constants or variables.
+# roles:
+#   data: []
+
+# Import-path globs of packages meant to be imported from outside the
+# module; every other package belongs under internal/ (BGO007).
+# public-packages: []
+
+# limits:
+#   max-file-lines: 200
+#   test-max-file-lines: 400
+
+# coverage-threshold: 80
+# coverage-exclude: ['cmd/**']
+# test-budget-seconds: 120
+# race: true
+
+# duplicates:
+#   min-tokens: 70
+#   threshold: 1
+
+# A rule switched off for some paths, with the reason it is.
+# overrides:
+#   - paths: ['internal/legacy/**']
+#     disable: [BGO004]
+#     reason: Scheduled for removal.

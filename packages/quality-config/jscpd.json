@@ -10,7 +10,8 @@
     "astro",
     "rust",
     "dart",
-    "swift"
+    "swift",
+    "go"
   ],
   "gitignore": true,
   "ignore": [
@@ -24,7 +25,11 @@
     "**/*.freezed.dart",
     "**/.build/**",
     "**/build/**",
-    "**/.dart_tool/**"
+    "**/.dart_tool/**",
+    "**/vendor/**",
+    "**/testdata/**",
+    "**/*.pb.go",
+    "**/*_gen.go"
   ],
   "reporters": ["console"]
 }

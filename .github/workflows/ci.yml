@@ -237,6 +237,39 @@ jobs:
           packages/codeality-swift/.build/debug/codeality-swift gate --project packages/codeality-swift
           packages/codeality-swift/.build/debug/codeality-swift gate --project templates/swift-package
 
+  go:
+    name: Go
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
+        with:
+          persist-credentials: false
+
+      - uses: actions/setup-go@d8cbb8045d7f43706b9177cceb36c1f91a6644d5 # v7.1.0
+        with:
+          go-version-file: packages/codeality-go/go.mod
+          cache-dependency-path: packages/codeality-go/go.sum
+
+      # The duplicates stage runs jscpd through npx.
+      - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7
+        with:
+          node-version: 22
+          package-manager-cache: false
+
+      - name: Install the tools of the gate
+        run: |
+          go install github.com/golangci/golangci-lint/v2/cmd/golangci-lint@v2.15.0
+          go install golang.org/x/vuln/cmd/govulncheck@v1.10.0
+
+      - name: Build codeality-go
+        working-directory: packages/codeality-go
+        run: go build -o "$RUNNER_TEMP/codeality-go" ./cmd/codeality-go
+
+      - name: codeality-go gate on itself and the template
+        run: |
+          (cd packages/codeality-go && "$RUNNER_TEMP/codeality-go" gate)
+          (cd templates/go-module && "$RUNNER_TEMP/codeality-go" gate)
+
   security:
     name: Security gates
     runs-on: ubuntu-latest

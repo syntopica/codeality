@@ -1,0 +1,224 @@
+# Strict Go lint set, written by `codeality-go init`.
+# https://github.com/syntopica/codeality
+#
+# The list is explicit (`default: none`) so that upgrading golangci-lint never
+# turns a rule on silently. Structure (one unit per file, file names, package
+# layout, file length) is checked by `codeality-go check`, not here.
+version: '2'
+
+run:
+  relative-path-mode: gomod
+  tests: true
+
+issues:
+  # A truncated report is a green gate that did not run.
+  max-issues-per-linter: 0
+  max-same-issues: 0
+
+formatters:
+  enable:
+    - gofumpt
+    - gci
+  settings:
+    gofumpt:
+      extra:
+        group-params: true
+        clothe-returns: true
+    gci:
+      sections:
+        - standard
+        - default
+        - localmodule
+
+linters:
+  default: none
+  enable:
+    # Correctness.
+    - asasalint
+    - bodyclose
+    - copyloopvar
+    - durationcheck
+    - errcheck
+    - errchkjson
+    - errorlint
+    - exhaustive
+    - forcetypeassert
+    - gocheckcompilerdirectives
+    - gochecksumtype
+    - govet
+    - ineffassign
+    - makezero
+    - musttag
+    - nilerr
+    - nilnesserr
+    - nilnil
+    - reassign
+    - recvcheck
+    - rowserrcheck
+    - sqlclosecheck
+    - staticcheck
+    - unused
+    - wastedassign
+    # Context and concurrency.
+    - containedctx
+    - contextcheck
+    - fatcontext
+    - noctx
+    # Errors.
+    - err113
+    - errname
+    - wrapcheck
+    # Security.
+    - asciicheck
+    - bidichk
+    - gosec
+    # Complexity.
+    - cyclop
+    - funlen
+    - gocognit
+    - interfacebloat
+    - nestif
+    # API and style.
+    - canonicalheader
+    - dogsled
+    - dupword
+    - embeddedstructfieldcheck
+    - exptostd
+    - funcorder
+    - gochecknoglobals
+    - gochecknoinits
+    - goconst
+    - gocritic
+    - godoclint
+    - godot
+    - goprintffuncname
+    - iface
+    - inamedparam
+    - intrange
+    - mirror
+    - misspell
+    - mnd
+    - modernize
+    - nakedret
+    - nolintlint
+    - nosprintfhostport
+    - perfsprint
+    - prealloc
+    - predeclared
+    - revive
+    - sloglint
+    - unconvert
+    - unparam
+    - usestdlibvars
+    - whitespace
+    # Tests.
+    - paralleltest
+    - testableexamples
+    - thelper
+    - tparallel
+    - usetesting
+  # Left out on purpose:
+  #   varnamelen, nlreturn, wsl_v5, noinlineerr, nonamedreturns, ireturn,
+  #   exhaustruct_v5 - they reject idiomatic Go (short receivers and loop
+  #     variables, zero-value struct fields, returning an interface from a
+  #     constructor that hides its implementation).
+  #   lll - gofumpt and the reader decide line breaks; file length is BGO004.
+  #   dupl - duplicates are their own gate stage.
+  #   gocyclo, maintidx - cyclop and gocognit already measure complexity.
+  #   testpackage - in-package tests are how unexported helpers get covered.
+  #   depguard, gomodguard_v2, forbidigo, importas, goheader, tagliatelle -
+  #     need per-project policy; add them under "local overrides".
+  #   ginkgolinter, testifylint, zerologlint, promlinter, protogetter,
+  #   spancheck, loggercheck, and the database-specific linters - only
+  #     meaningful with their framework.
+  settings:
+    cyclop:
+      max-complexity: 10
+    errcheck:
+      check-type-assertions: true
+    exhaustive:
+      check:
+        - switch
+        - mapliteral
+    funlen:
+      lines: 60
+      statements: 40
+      ignore-comments: true
+    gocognit:
+      min-complexity: 15
+    gocritic:
+      enable-all: true
+    godot:
+      scope: toplevel
+    govet:
+      enable-all: true
+      disable:
+        # Reordering struct fields for padding trades readability for bytes.
+        - fieldalignment
+    interfacebloat:
+      max: 5
+    mnd:
+      ignored-numbers:
+        - '2'
+    nakedret:
+      max-func-lines: 0
+    nestif:
+      min-complexity: 4
+    nolintlint:
+      require-explanation: true
+      require-specific: true
+      allow-unused: false
+    revive:
+      enable-all-rules: false
+      rules:
+        - name: blank-imports
+        - name: context-as-argument
+        - name: context-keys-type
+        - name: dot-imports
+        - name: early-return
+        - name: empty-block
+        - name: error-naming
+        - name: error-return
+        - name: error-strings
+        - name: errorf
+        - name: exported
+          arguments:
+            - checkPrivateReceivers
+            - sayRepetitiveInsteadOfStutters
+        - name: increment-decrement
+        - name: indent-error-flow
+        - name: package-comments
+        - name: range
+        - name: receiver-naming
+        - name: redefines-builtin-id
+        - name: superfluous-else
+        - name: time-naming
+        - name: unexported-return
+        - name: unreachable-code
+        - name: unused-parameter
+        - name: unused-receiver
+        - name: use-any
+        - name: var-declaration
+        - name: var-naming
+    wrapcheck:
+      # Errors from the module's own packages already carry their context.
+      ignore-package-globs:
+        - '**/internal/**'
+  exclusions:
+    generated: strict
+    warn-unused: true
+    rules:
+      # Table-driven tests are long by nature, and their literals are data.
+      - path: _test\.go$
+        linters:
+          - funlen
+          - mnd
+          - goconst
+          - wrapcheck
+          - err113
+      # Tests read and write fixtures by computed path, under t.TempDir.
+      - path: _test\.go$
+        linters:
+          - gosec
+        text: G304|G703
+      # local overrides - `codeality-go init` preserves everything below.
