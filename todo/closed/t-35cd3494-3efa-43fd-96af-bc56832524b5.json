@@ -2,7 +2,7 @@
   "tadu": 2,
   "id": "t-35cd3494-3efa-43fd-96af-bc56832524b5",
   "title": "2026-10-31 **`turbo --affected` would skip work it should run.** Probed in",
-  "state": "pending",
+  "state": "done",
   "category": "ui-quality",
   "type": "untriaged",
   "priority": "untriaged",
@@ -16,5 +16,10 @@
     "    `--affected` today. Smallest step: if `--affected` is ever adopted, run",
     "    the root and non-pnpm checks unconditionally, and add a test that a hidden",
     "    change fails the run instead of skipping it."
+  ],
+  "closed": "2026-11-23",
+  "result": "2026-10-31 **`turbo --affected` would skip work it should run.** Probed in",
+  "evidence": [
+    "16368def: ci.yml records beside the check:ci step why --affected must not be adopted and what adopting it needs first. CI does not use --affected."
   ]
 }

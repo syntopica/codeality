@@ -2,7 +2,7 @@
   "tadu": 2,
   "id": "t-6da56920-0b89-4acd-b992-a7713aa8a0ed",
   "title": "Swift test baselineCreateRefusesToOverwriteAndUpdateDoes is flaky on CI",
-  "state": "pending",
+  "state": "done",
   "category": "dart-and-swift-baseline",
   "type": "bug",
   "priority": "low",
@@ -13,5 +13,10 @@
   ],
   "done_when": [
     "The cause is identified and the test passes 20 consecutive runs, or it is shown to be runner noise."
+  ],
+  "closed": "2026-11-23",
+  "result": "Swift test baselineCreateRefusesToOverwriteAndUpdateDoes is flaky on CI",
+  "evidence": [
+    "933ac351. CI log of run 45247092190 attempt 1: the first baseline create failed and the second returned 0, and the only non-deterministic step in create is npx --yes jscpd (registry fetch, concurrent with DuplicatesTests). Not reproduced locally in 6 cold-cache runs. The test now records --sections structure; swift test passed 20/20 consecutive runs."
   ]
 }

@@ -2,7 +2,7 @@
   "tadu": 2,
   "id": "t-6c3d7e2f-473a-4040-b039-88f9d2920016",
   "title": "`check:ci` queues behind a host admission wrapper",
-  "state": "in_progress",
+  "state": "done",
   "category": "general",
   "type": "untriaged",
   "priority": "untriaged",
@@ -15,5 +15,10 @@
     "`Tasks: 58 successful, 58 total`; `turbo run test --dry=json` lists the three",
     "variables under `globalCacheInputs` pass-through. Item stays open in `TODO.md`",
     "for the turbo concurrency question."
+  ],
+  "closed": "2026-11-23",
+  "result": "`check:ci` queues behind a host admission wrapper",
+  "evidence": [
+    "The open turbo concurrency question is settled: check:ci:run runs turbo with --concurrency=1 and VITEST_MAX_WORKERS default 2 (package.json:28), CI sets 4 workers; CI run 45249194435 green, Tasks: 58 successful, 58 total."
   ]
 }

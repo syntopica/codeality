@@ -2,7 +2,7 @@
   "tadu": 2,
   "id": "t-de5abfd1-3b18-4c39-b591-a40f0f3b53cc",
   "title": "2026-10-28 **Swift: an unreadable source file is checked as empty and",
-  "state": "pending",
+  "state": "done",
   "category": "dart-and-swift-baseline",
   "type": "untriaged",
   "priority": "untriaged",
@@ -17,5 +17,10 @@
     "    (mail 2026-10-23), confirmed by reading the code. Smallest step: drop",
     "    `try?` so the read error propagates (or emit a parse-error finding), with",
     "    a test on an unreadable fixture."
+  ],
+  "closed": "2026-11-23",
+  "result": "2026-10-28 **Swift: an unreadable source file is checked as empty and",
+  "evidence": [
+    "4dfbc881: parseSourceFile reads through readSourceText, which throws InfrastructureError; UnreadableSourceTests (invalid UTF-8 fixture) pass, swift test 90 tests green, codeality-swift gate on itself exit 0."
   ]
 }

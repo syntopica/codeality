@@ -2,7 +2,7 @@
   "tadu": 2,
   "id": "t-0ea758e1-8739-408b-a13f-89dfe9eb8fde",
   "title": "ui-quality `empty-dialog` (warn): an open `dialog[open]`,",
-  "state": "in_progress",
+  "state": "done",
   "category": "general",
   "type": "untriaged",
   "priority": "untriaged",
@@ -13,5 +13,10 @@
     "(drawer opened by `routes[].click`, reported with `#empty`, passed with its",
     "links), `emptyDialog.test.ts`; ui-quality 185 tests. The interaction-states",
     "item stays open for scroll and hover/focus capture."
+  ],
+  "closed": "2026-11-23",
+  "result": "ui-quality `empty-dialog` (warn): an open `dialog[open]`,",
+  "evidence": [
+    "empty-dialog is shipped: tests/cli.dialog.integration.test.ts and the emptyDialog rule test pass (2 files, 4 tests, 2026-11-23). The scroll and hover/focus capture it mentions is tracked by the interaction-state tasks."
   ]
 }

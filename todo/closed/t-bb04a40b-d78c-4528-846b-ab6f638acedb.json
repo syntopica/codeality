@@ -2,7 +2,7 @@
   "tadu": 2,
   "id": "t-bb04a40b-d78c-4528-846b-ab6f638acedb",
   "title": "2026-10-31 **CI critical path: `ui-quality:test` was one serial test",
-  "state": "in_progress",
+  "state": "done",
   "category": "ui-quality",
   "type": "untriaged",
   "priority": "untriaged",
@@ -22,5 +22,10 @@
     "197-250 s), turbo 6m45s (was 8m44s), Verify job 8m51s (was 10m54s), all green.",
     "Remaining: watch two more automatic runs for flakes, and if they stay green,",
     "try `VITEST_MAX_WORKERS=6` (the browser tests mostly wait) before closing."
+  ],
+  "closed": "2026-11-23",
+  "result": "2026-10-31 **CI critical path: `ui-quality:test` was one serial test",
+  "evidence": [
+    "Two further green automatic runs with VITEST_MAX_WORKERS=4: 45247092190 (turbo 6m26s) and 45249194435 (turbo 6m13.75s, Verify job 8m09s), against 8m44s before the split. The VITEST_MAX_WORKERS=6 trial was not run."
   ]
 }
