@@ -32,11 +32,9 @@ const INLINE_REFERENCES = [
   'BDB320/inline-references',
   '2026_01_05_pet_inline_references',
 ]
-const SQUAWK = [
-  'constraint-missing-not-valid',
-  'disallowed-unique-constraint',
-  'prefer-robust-stmts',
-].map((rule) => ['13', `BDB100/${rule}`, '2026_01_04_unique_email'])
+const SQUAWK = ['disallowed-unique-constraint', 'prefer-robust-stmts'].map(
+  (rule) => ['13', `BDB100/${rule}`, '2026_01_04_unique_email'],
+)
 const SQLITE = [
   ['0', 'BDB403', 'tag'],
   ['12', 'BDB320/migration-fails-on-sqlite', '2026_01_03_mood_enum'],

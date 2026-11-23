@@ -29,6 +29,7 @@ export default createRule<Options, MessageIds>({
         'File contains multiple primary exported units (found {{count}}). The Atomic File Rule allows at most one primary exported unit per file; move this one to its own file.',
     },
   },
+  // eslint-disable-next-line @typescript-eslint/no-deprecated -- meta.defaultOptions needs ESLint 9.15; the peer range starts at 9.0
   defaultOptions: [],
   create(context) {
     const filename = context.filename || context.physicalFilename || ''

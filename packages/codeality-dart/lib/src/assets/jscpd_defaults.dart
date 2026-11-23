@@ -3,7 +3,7 @@
 
 /// The shared jscpd defaults and the pinned jscpd version.
 abstract final class JscpdDefaults {
-  static const String version = '5.4.1';
+  static const String version = '5.4.3';
   static const int minTokens = 70;
   static const num threshold = 1;
   static const List<String> ignore = [

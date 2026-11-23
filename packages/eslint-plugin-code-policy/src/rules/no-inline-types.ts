@@ -39,6 +39,7 @@ export default createRule<Options, MessageIds>({
     // reported. Off in the recommended config since that rule landed; this
     // marks it for consumers who enabled it directly.
     deprecated: true,
+    // eslint-disable-next-line @typescript-eslint/no-deprecated -- deprecated.replacedBy needs ESLint 9.21; the peer range starts at 9.0
     replacedBy: ['code-policy/no-inline-types-in-runtime-files'],
     schema: [],
     messages: {
@@ -46,6 +47,7 @@ export default createRule<Options, MessageIds>({
         'Atomic File Rule violation: file contains multiple declarations. Extract "{{name}}" into its own file.',
     },
   },
+  // eslint-disable-next-line @typescript-eslint/no-deprecated -- meta.defaultOptions needs ESLint 9.15; the peer range starts at 9.0
   defaultOptions: [],
   create(context) {
     // Allow multiple declarations in ambient definition files

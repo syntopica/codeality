@@ -20,14 +20,17 @@ allowBuilds:
 minimumReleaseAgeExclude:
   - vue-tsc
   - '@vue/language-core'
+# @astrojs/astro2tsx pins @emnapi/core to 1.11.3 but leaves @emnapi/runtime to
+# its wasm runtime's peer range, which also admits the 2.0 betas. rolldown's
+# wasm binding puts 2.0.0-beta.2 in the tree, pnpm reuses it for that peer, and
+# `astro check` dies on `this.bridge.setLastError is not a function`. Pin the
+# runtime beside the core it was built against. Drop when astro2tsx declares
+# @emnapi/runtime itself.
+packageExtensions:
+  '@astrojs/astro2tsx@0.1.2':
+    dependencies:
+      '@emnapi/runtime': 1.11.3
 patchedDependencies:
-  # Vitest 5 matches testNamePattern against the suite chain joined by ' > ',
-  # untrimmed and with empty describe('') names kept; the runner joins with a
-  # space, so every covered mutant ran zero tests and survived (code-policy
-  # scored 3% instead of 89%+). Vitest 5 only: it would break filtering on
-  # Vitest 4. Drop when a release fixing stryker-mutator/stryker-js#6210
-  # still scores 89+ on `pnpm mutation`.
-  '@stryker-mutator/vitest-runner@10.0.0': patches/@stryker-mutator__vitest-runner@10.0.0.patch
   eslint-plugin-react: patches/eslint-plugin-react.patch
 # Security overrides: `pnpm audit --audit-level=high` findings that survived
 # `pnpm dedupe`. Each pins the transitive edge forward to the patched line
@@ -61,12 +64,15 @@ overrides:
   # on both sides because the advisory is: the 6.10 line and anything past
   # 6.15.1 are unaffected, and an open lower bound would drag the older line
   # forward for no gate benefit.
-  # GHSA-4mjr-xmp4-gh2g and GHSA-x5fp-wj9c-mxmx moved that floor to 6.16.0.
-  'qs@>=6.11.1 <6.16.0': ^6.16.0
+  # GHSA-4mjr-xmp4-gh2g and GHSA-x5fp-wj9c-mxmx moved that floor to 6.16.0,
+  # GHSA-6pq8-jhm2-2vcw to 6.16.1.
+  'qs@>=6.11.1 <6.16.1': ^6.16.1
   # GHSA-jqff-g426-hqxp, GHSA-f65p-4m7j-42xc, GHSA-fph4-wmhf-6fwf and
-  # GHSA-5jgf-p345-68v8 are all patched in 3.1.6. Bounded below 4 on purpose:
-  # fast-uri 4 is a major its consumers here have not adopted.
-  'fast-uri@>=3.0.0 <3.1.6': ^3.1.6 # via ajv, in eslint and the template toolchains
+  # GHSA-5jgf-p345-68v8 are all patched in 3.1.6; GHSA-w74x-v6f9-j3xg,
+  # GHSA-xhq7-xmqj-769h, GHSA-wjr9-j795-jxcr and GHSA-333x-w4r6-6crp in 3.1.9.
+  # Bounded below 4 on purpose: fast-uri 4 is a major its consumers here have
+  # not adopted.
+  'fast-uri@>=3.0.0 <3.1.9': ^3.1.9 # via ajv, in eslint and the template toolchains
   # GHSA-wc9g-mqfw-jrwm and GHSA-535w-7cp7-47q4 are patched in 2.3.0.
   # GHSA-qfvm-cv95-jqjf has no patched release and flags exactly 2.2.0, which
   # is what the tree resolved, so moving off that version clears it too.
@@ -82,3 +88,14 @@ overrides:
   # patched in 4.7.10. eslint-plugin-boundaries 7.2.0 and @boundaries/elements
   # 3.1.1, the latest of both, pin handlebars to exactly 4.7.9.
   'handlebars@<4.7.10': ^4.7.10 # via eslint-plugin-boundaries>@boundaries/elements
+  # The node-forge advisories up to GHSA-j8rw-jp99-435v are all patched by 1.4.3.
+  'node-forge@<1.4.3': ^1.4.3 # via nuxt>nitropack>listhen
+  # GHSA-27r3-jxmh-p828 patched each major separately, so one entry per line.
+  'body-parser@<1.20.9': ^1.20.9 # via @lhci/cli>express
+  'body-parser@>=2.0.0 <2.4.0': ^2.4.0 # via @nestjs/platform-express>express
+  'serialize-javascript@<7.1.3': ^7.1.3 # GHSA-m5mm-p8h7-m29v, via nuxt>nitropack>@rollup/plugin-terser
+  # GHSA-g3hv-75wg-m249 and GHSA-3g3m-2fjr-6pw4 are patched only on the newest
+  # major of each. Lower-bounded so the older lines the advisories do not reach
+  # through these consumers stay where they are.
+  'minimatch@>=10.0.0 <11.0.1': ^11.0.1 # via type-coverage-core, eslint-plugin-import-x, @stryker-mutator/core, glob
+  'glob@>=11.0.0 <14.0.2': ^14.0.2 # via prisma-lint, @vue/test-utils>js-beautify, nitropack>@vercel/nft

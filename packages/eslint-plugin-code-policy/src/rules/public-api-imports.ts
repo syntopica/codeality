@@ -39,6 +39,7 @@ export default createRule<Options, MessageIds>({
         'Deep import "{{importPath}}" is not allowed. Import from the public API (root) of the module instead.',
     },
   },
+  // eslint-disable-next-line @typescript-eslint/no-deprecated -- meta.defaultOptions needs ESLint 9.15; the peer range starts at 9.0
   defaultOptions: [{}],
   create(context, [options]) {
     const bannedSubpaths = options?.bannedSubpaths ?? ['/src/']

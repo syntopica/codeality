@@ -52,6 +52,7 @@ export default createRule<Options, MessageIds>({
         'Generic grouping folders like "utils" or "helpers" are forbidden. Use semantic folders (e.g., formatters, validators, mappers, extractors), or enable the "allowGenericFolders" option.',
     },
   },
+  // eslint-disable-next-line @typescript-eslint/no-deprecated -- meta.defaultOptions needs ESLint 9.15; the peer range starts at 9.0
   defaultOptions: [{}],
   create(context, [options]) {
     const allowGenericFolders = options?.allowGenericFolders ?? false

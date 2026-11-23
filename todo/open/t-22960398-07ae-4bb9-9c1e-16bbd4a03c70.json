@@ -1,0 +1,19 @@
+{
+  "tadu": 2,
+  "id": "t-22960398-07ae-4bb9-9c1e-16bbd4a03c70",
+  "title": "Drop the zod GHSA-mrhx-c7xc-m3w5 waiver when prisma-lint ships on zod 4",
+  "state": "pending",
+  "category": "javascript-dependency-security",
+  "type": "chore",
+  "priority": "normal",
+  "kind": "waiting",
+  "created": "2026-11-23",
+  "due": "2026-12-31",
+  "check_on": "2026-12-15",
+  "notes": [
+    "Only waiver left in .baseline-advisories.json after the 2026-11-23 dependency update; expires 2026-12-31. prisma-lint 0.13.1 declares zod ^3.21.4 and the fix exists only on 4.6.6+."
+  ],
+  "done_when": [
+    "pnpm audit:check passes with the waiver removed, or the waiver is renewed with fresh evidence."
+  ]
+}

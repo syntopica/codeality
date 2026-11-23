@@ -3,6 +3,7 @@ library;
 
 import 'dart:io';
 
+import 'package:codeality_dart/src/assets/jscpd_defaults.dart';
 import 'package:codeality_dart/src/baseline/baseline_file.dart';
 import 'package:codeality_dart/src/config/load_config.dart';
 import 'package:codeality_dart/src/gate/duplicates_stage.dart';
@@ -101,7 +102,7 @@ void main() {
         environment: const {'PATH': ''},
       );
       expect(result.status, StageStatus.failedToRun);
-      expect(result.command, contains('jscpd@5.4.1'));
+      expect(result.command, contains('jscpd@${JscpdDefaults.version}'));
     },
   );
 }

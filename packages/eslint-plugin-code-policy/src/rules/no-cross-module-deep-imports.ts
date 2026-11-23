@@ -64,6 +64,7 @@ export default createRule<Options, MessageIds>({
         'Cross-module deep import "{{importPath}}" bypasses the module\'s public API. Import from the module root (index) instead.',
     },
   },
+  // eslint-disable-next-line @typescript-eslint/no-deprecated -- meta.defaultOptions needs ESLint 9.15; the peer range starts at 9.0
   defaultOptions: [{}],
   create(context, [options]) {
     const minParentTraversals = options?.minParentTraversals ?? 2

@@ -20,15 +20,15 @@ export const ACTION_PINS = {
     tag: 'v7',
   },
   setupPnpm: {
-    uses: 'pnpm/action-setup@ea17c68df8912ef543352723c149a84f56e3d413',
-    tag: 'v6.1.0',
+    uses: 'pnpm/action-setup@73e46992e05b19abd31f2f3c20e0e7370d762115',
+    tag: 'v6.1.1',
   },
   actionlint: {
     uses: 'raven-actions/actionlint@3d39aea434753780c3b3d4a1a31c854b4dbf49d7',
     tag: 'v2',
   },
   zizmor: {
-    uses: 'zizmorcore/zizmor-action@cc914d7f3750a2d13d75c7f184a1060aa0e9d482',
-    tag: 'v0.6.4',
+    uses: 'zizmorcore/zizmor-action@bd12b495c90993a4301c73398142281a61499af3',
+    tag: 'v0.9.0',
   },
 }

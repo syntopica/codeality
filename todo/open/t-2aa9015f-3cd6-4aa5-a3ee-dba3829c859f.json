@@ -1,0 +1,17 @@
+{
+  "tadu": 2,
+  "id": "t-2aa9015f-3cd6-4aa5-a3ee-dba3829c859f",
+  "title": "Move code-policy rule defaults to meta.defaultOptions and deprecated.replacedBy once the ESLint peer floor reaches 9.21",
+  "state": "pending",
+  "category": "code-policy",
+  "type": "chore",
+  "priority": "low",
+  "kind": "later",
+  "created": "2026-11-23",
+  "notes": [
+    "typescript-eslint 8.73 deprecates the top-level defaultOptions and meta.replacedBy. 12 sites in packages/eslint-plugin-code-policy/src/rules carry a reasoned eslint-disable for @typescript-eslint/no-deprecated because the peer range starts at eslint 9.0 and the contract tests pin the rule shape."
+  ],
+  "done_when": [
+    "No no-deprecated suppression is left in src/rules and the contract tests pass on the new shape."
+  ]
+}

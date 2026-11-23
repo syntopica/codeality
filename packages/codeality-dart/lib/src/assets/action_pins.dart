@@ -6,7 +6,7 @@ abstract final class ActionPins {
   static const String flutter =
       'subosito/flutter-action@1a449444c387b1966244ae4d4f8c696479add0b2 # v2.23.0';
   static const String dart =
-      'dart-lang/setup-dart@6afc89df92d6eb3834022f73cd65adc8cdfcb92d # v1.8.1';
+      'dart-lang/setup-dart@2286a0c042b44434fe26d292bbce8d34f7ec662b # v1.8.2';
   static const String node =
       'actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7';
   static const String nodeVersion = '22';

@@ -21,6 +21,7 @@ export default createRule<Options, MessageIds>({
     // exemptions. Off in the recommended config since that split landed;
     // this marks it for consumers who enabled it directly.
     deprecated: true,
+    // eslint-disable-next-line @typescript-eslint/no-deprecated -- deprecated.replacedBy needs ESLint 9.21; the peer range starts at 9.0
     replacedBy: [
       'code-policy/one-primary-unit',
       'code-policy/no-hidden-top-level-declarations',
@@ -31,6 +32,7 @@ export default createRule<Options, MessageIds>({
         'File contains multiple top-level declarations (found {{count}}). Extract them into separate files to enforce atomic file structure.',
     },
   },
+  // eslint-disable-next-line @typescript-eslint/no-deprecated -- meta.defaultOptions needs ESLint 9.15; the peer range starts at 9.0
   defaultOptions: [],
   create(context) {
     const filename = context.filename || context.physicalFilename || ''

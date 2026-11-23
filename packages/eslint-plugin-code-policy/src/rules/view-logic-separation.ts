@@ -25,6 +25,7 @@ export default createRule<Options, MessageIds>({
         'Strict View Separation: Inline function or handler declaration ({{name}}) inside a view component is forbidden. Return it from your custom hook instead.',
     },
   },
+  // eslint-disable-next-line @typescript-eslint/no-deprecated -- meta.defaultOptions needs ESLint 9.15; the peer range starts at 9.0
   defaultOptions: [],
   create(context) {
     const filename = context.filename

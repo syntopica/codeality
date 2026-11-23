@@ -25,3 +25,6 @@ reports/mutation/
 
 # turbo rewrites its agent-guidance block unwrapped before every agent-run command
 AGENTS.md
+
+# tadu owns the task files and their canonical form (`tadu fmt`, doctor J004)
+todo/

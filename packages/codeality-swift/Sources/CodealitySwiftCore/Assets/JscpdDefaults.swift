@@ -3,7 +3,7 @@
 
 /// The shared jscpd defaults and the pinned jscpd version.
 public enum JscpdDefaults {
-  public static let version = "5.4.1"
+  public static let version = "5.4.3"
   public static let minTokens = 70
   public static let threshold: Double = 1
   public static let ignore: [String] = [

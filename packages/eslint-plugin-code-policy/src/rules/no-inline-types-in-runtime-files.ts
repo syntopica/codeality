@@ -25,6 +25,7 @@ export default createRule<Options, MessageIds>({
         'Anonymous object types are not permitted within runtime files. Name this shape and extract it into its own dedicated file according to the Atomic File architecture.',
     },
   },
+  // eslint-disable-next-line @typescript-eslint/no-deprecated -- meta.defaultOptions needs ESLint 9.15; the peer range starts at 9.0
   defaultOptions: [],
   create(context) {
     const filename = context.filename || context.physicalFilename || ''
