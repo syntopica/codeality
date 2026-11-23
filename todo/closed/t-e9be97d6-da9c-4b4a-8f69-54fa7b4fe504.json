@@ -2,7 +2,7 @@
   "tadu": 2,
   "id": "t-e9be97d6-da9c-4b4a-8f69-54fa7b4fe504",
   "title": "Cut the first codeality-go release: annotated tag packages/codeality-go/v0.1.0 once the Go CI job is green on main",
-  "state": "pending",
+  "state": "done",
   "category": "release",
   "type": "chore",
   "priority": "high",
@@ -13,5 +13,10 @@
   ],
   "done_when": [
     "git tag packages/codeality-go/v0.1.0 is pushed and pnpm release:check --no-npm lists codeality-go as released"
+  ],
+  "closed": "2026-11-24",
+  "result": "Cut the first codeality-go release: annotated tag packages/codeality-go/v0.1.0 once the Go CI job is green on main",
+  "evidence": [
+    "Annotated tag packages/codeality-go/v0.1.0 on 1a3f1461 pushed; go install ...@v0.1.0 builds; release-check ok for codeality-go"
   ]
 }
