@@ -2,6 +2,10 @@
 
 ## [Unreleased]
 
+- Fix: placeholder-fit leaves a text area alone when it wraps the whole hint
+  into the lines it has room for; a text area too short for its hint is still
+  reported.
+
 - Fix: palette resolves custom properties declared on the main region or one of
   its ancestors, such as an app shell, not only on the root.
 

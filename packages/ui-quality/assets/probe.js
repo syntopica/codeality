@@ -167,12 +167,33 @@ export default (mainSelector) => {
     return metrics.fontBoundingBoxAscent + metrics.fontBoundingBoxDescent
   }
 
-  // The width of the placeholder an empty field shows; 0 when it shows none.
+  // The width of the placeholder an empty field shows; 0 when it shows none,
+  // or when a textarea wraps the whole hint into the lines it has room for.
   const placeholderWidthOf = (element, style) => {
     const placeholder = element.getAttribute('placeholder')
     if (!placeholder || element.value || !measure) return 0
     measure.font = style.font
-    return measure.measureText(placeholder).width
+    const width = measure.measureText(placeholder).width
+    return wrapsIntoView(element, style, width) ? 0 : width
+  }
+
+  // Whether a textarea shows a hint of `width` px by wrapping it. Breaking at
+  // words wastes the end of each line, so one line more than the area needs
+  // must fit.
+  const wrapsIntoView = (element, style, width) => {
+    if (element.tagName !== 'TEXTAREA' || !style.whiteSpace.endsWith('wrap'))
+      return false
+    const room =
+      element.clientWidth -
+      parseFloat(style.paddingLeft) -
+      parseFloat(style.paddingRight)
+    const height =
+      element.clientHeight -
+      parseFloat(style.paddingTop) -
+      parseFloat(style.paddingBottom)
+    const lineHeight = lineHeightOf(style)
+    if (room <= 0 || lineHeight <= 0) return false
+    return (Math.ceil(width / room) + 1) * lineHeight <= height
   }
 
   // Which icon an svg draws, whatever its size or classes: its markup with
