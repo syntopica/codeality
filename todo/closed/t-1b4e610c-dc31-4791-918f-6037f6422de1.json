@@ -2,7 +2,7 @@
   "tadu": 2,
   "id": "t-1b4e610c-dc31-4791-918f-6037f6422de1",
   "title": "`placeholder-fit` rejects a fully visible multiline textarea hint",
-  "state": "pending",
+  "state": "done",
   "category": "ui-quality",
   "type": "untriaged",
   "priority": "untriaged",
@@ -20,5 +20,10 @@
     "    (exit 0). Next: account for textarea wrapping and available content",
     "    height; retain the single-line width guard for inputs. This synthetic",
     "    reproduction does not classify every finding on the real pages."
+  ],
+  "closed": "2026-11-23",
+  "result": "`placeholder-fit` rejects a fully visible multiline textarea hint",
+  "evidence": [
+    "52e9a2b7: the probe skips a textarea that wraps its whole placeholder into its rows. tests/cli.placeholder.integration.test.ts reports only 'main > input' and 'main > textarea.cramped' (the roomy 4-row textarea is clean); full ui-quality suite 150 files / 581 tests pass."
   ]
 }

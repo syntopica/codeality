@@ -1,0 +1,15 @@
+{
+  "tadu": 2,
+  "id": "t-451a6b33-70ca-463c-b048-96d307031e3e",
+  "title": "Open disclosure triggers before the sweep snapshots a route",
+  "state": "pending",
+  "category": "ui-quality",
+  "type": "feature",
+  "priority": "normal",
+  "kind": "task",
+  "created": "2026-11-23",
+  "discovered_from": "t-99f0cada-213a-4db5-ae60-a0754aaf2bcb",
+  "notes": [
+    "date-locale never saw the ISO dates on InteliFactu's fiscal review: they sit in tray rows that mount only after a tray counter is clicked. Routes can already list click selectors; the gap is discovering such triggers without configuration. Smallest next step: decide how a trigger is recognised (aria-expanded=false, aria-controls) and capture one extra state per trigger, bounded."
+  ]
+}

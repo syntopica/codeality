@@ -2,7 +2,7 @@
   "tadu": 2,
   "id": "t-5eeadaac-8437-4eed-88d6-a94e7b4b99c9",
   "title": "`sort-broken` fires on a server-sorted board that sorts correctly",
-  "state": "in_progress",
+  "state": "done",
   "category": "ui-quality",
   "type": "untriaged",
   "priority": "untriaged",
@@ -26,5 +26,10 @@
     "review how unverifiable completion is represented. The same waiter serves",
     "search and pagination; preserve their semantics and the bounded deadline. Do",
     "not increase sleeps, poll until ordered or blindly click links."
+  ],
+  "closed": "2026-11-23",
+  "result": "`sort-broken` fires on a server-sorted board that sorts correctly",
+  "evidence": [
+    "f90c0d16: sort, filter and pager reads wait for the fetch/xhr/document requests their own interaction started, and a sort still loading at the deadline is skipped. tests/capture/sortFence.integration.test.ts: an answer delayed 6 s reads asc then desc; a request that never answers yields no verdict; both failed on the old code. Not reproduced on the original TienesLaVibra board: its link-only header is not a sort target, so this covers the waiter race, the one mechanism that reports a correct server sort as broken."
   ]
 }

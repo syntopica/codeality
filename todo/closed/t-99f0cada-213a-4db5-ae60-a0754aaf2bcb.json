@@ -2,7 +2,7 @@
   "tadu": 2,
   "id": "t-99f0cada-213a-4db5-ae60-a0754aaf2bcb",
   "title": "Misses the owner caught by eye on InteliFactu's fiscal review",
-  "state": "pending",
+  "state": "done",
   "category": "ui-quality",
   "type": "untriaged",
   "priority": "untriaged",
@@ -36,5 +36,10 @@
     "  offering other companies than the selected one. Candidate rule",
     "  `redundant-column`: a column whose value is identical on every row and equal",
     "  to a breadcrumb or picker value on the page."
+  ],
+  "closed": "2026-11-23",
+  "result": "Misses the owner caught by eye on InteliFactu's fiscal review",
+  "evidence": [
+    "95448964 cramped-select-caret (fixture select-caret.html, 3 tests); 8b7ac875 pointer parked after route clicks (cli.hover-row test fails without it); 86cdb348 text-clipped slack check (cli.truncate-slack test; inbox fixture stays clean). repeated-row-action, redundant-column and disclosure-trigger opening filed as their own tasks. Suite 150 files / 581 tests pass."
   ]
 }

@@ -21,6 +21,7 @@
     "  the horizontal inset separately; the private-screen case is unverified.",
     "- False negative: `crowded-meta-line` did not fire on the Modelos formula line",
     "  (\"Otras operaciones con in…\", 3 children, 320px aside) because the visible",
-    "  text is over 12 characters; the casilla label was still unreadable."
+    "  text is over 12 characters; the casilla label was still unreadable.",
+    "2026-11-23: the crowded-meta-line false negative is filed as its own decision task (no faithful fixture: the original DOM was not captured). The viewer-row recheck still needs the private screen."
   ]
 }

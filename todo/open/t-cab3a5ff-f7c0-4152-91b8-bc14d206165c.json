@@ -1,0 +1,15 @@
+{
+  "tadu": 2,
+  "id": "t-cab3a5ff-f7c0-4152-91b8-bc14d206165c",
+  "title": "Report a column that repeats the page's own scope on every row (redundant-column)",
+  "state": "pending",
+  "category": "ui-quality",
+  "type": "feature",
+  "priority": "normal",
+  "kind": "task",
+  "created": "2026-11-23",
+  "discovered_from": "t-99f0cada-213a-4db5-ae60-a0754aaf2bcb",
+  "notes": [
+    "Seen on InteliFactu's fiscal review, 2026-10-12: every rule row said \"VeoPlan ESPJ\" on VeoPlan's screen. Candidate: a column whose value is identical on every row and equal to a breadcrumb or picker value on the page. Smallest next step: a fixture with a company picker and the repeated column."
+  ]
+}
