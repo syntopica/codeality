@@ -7,6 +7,10 @@
   whatever `padding-right` says, so the caret sits flush where the text keeps
   clear. An unpadded select, a list box and `appearance: none` are left alone.
 
+- Fix: a route's clicks no longer leave the pointer on what they clicked. The
+  row under it painted its hover colours into the screenshot and the
+  measurements; a `hover` the route asks for still applies.
+
 - Fix: sort-broken, filter-broken and the table pager no longer read a table
   while the request their own click or search sent is still open. Rows that
   changed meanwhile, a loading placeholder or an optimistic guess, were taken

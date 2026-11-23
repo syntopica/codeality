@@ -1,0 +1,48 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>Hover row</title>
+    <style>
+      body {
+        margin: 0;
+        font:
+          16px/1.5 system-ui,
+          sans-serif;
+        color: #111827;
+        background: #ffffff;
+      }
+      main {
+        max-width: 640px;
+        margin: 0 auto;
+        padding: 32px;
+      }
+      li {
+        list-style: none;
+        padding: 12px 16px;
+      }
+      /* Unreadable only while the pointer rests on the row. */
+      li:hover {
+        color: #9ca3af;
+        background: #d1d5db;
+      }
+      button {
+        min-height: 44px;
+        padding: 0 16px;
+        font: inherit;
+      }
+    </style>
+  </head>
+  <body>
+    <main>
+      <h1>Invoices</h1>
+      <ul style="padding: 0">
+        <li id="row">
+          Bank fees for October
+          <button id="open" type="button">Open</button>
+        </li>
+        <li>Rent for October</li>
+      </ul>
+    </main>
+  </body>
+</html>
