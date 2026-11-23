@@ -47,14 +47,17 @@ import Testing
 
   @Test func baselineCreateRefusesToOverwriteAndUpdateDoes() throws {
     let fixture = project()
-    #expect(try runBinary(["baseline", "create", "--project", fixture.root]).status == 0)
+    // Structure only: the duplicates section runs `npx jscpd`, a registry
+    // fetch that failed once on CI and has its own suite.
+    let write = ["--project", fixture.root, "--sections", "structure"]
+    #expect(try runBinary(["baseline", "create"] + write).status == 0)
     #expect(try runBinary(["baseline", "check", "--project", fixture.root]).status == 0)
-    #expect(try runBinary(["baseline", "create", "--project", fixture.root]).status == 2)
+    #expect(try runBinary(["baseline", "create"] + write).status == 2)
     fixture.write("Sources/Q.swift", "struct Q {}\nlet q = \"DELETE FROM users\"\n")
     let grown = try runBinary(["baseline", "check", "--project", fixture.root])
     #expect(grown.status == 1)
     #expect(grown.stdout.contains("BSW005"))
-    #expect(try runBinary(["baseline", "update", "--project", fixture.root]).status == 0)
+    #expect(try runBinary(["baseline", "update"] + write).status == 0)
     #expect(try runBinary(["baseline", "check", "--project", fixture.root]).status == 0)
   }
 
