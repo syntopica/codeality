@@ -571,7 +571,7 @@ of the changelog and still finds it with `git log --grep '(todo)'`.
 `perf:check`.
 
 **Threshold:** per template, set from the measured brotli size with roughly 15%
-headroom - 72 KB for vite-react and tauri, 50 KB for vue, 172 KB for Next, 85 KB
+headroom - 72 KB for vite-react and tauri, 58 KB for vue, 172 KB for Next, 85 KB
 for Nuxt. Astro's budget covers `dist/**/*.{js,css,html}` at 10 KB against a
 measured 262 B, because Astro ships no JavaScript unless an island asks for it
 and a JS-only glob would have no files to measure.
