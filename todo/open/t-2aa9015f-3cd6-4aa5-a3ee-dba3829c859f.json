@@ -1,7 +1,7 @@
 {
   "tadu": 2,
   "id": "t-2aa9015f-3cd6-4aa5-a3ee-dba3829c859f",
-  "title": "Move code-policy rule defaults to meta.defaultOptions and deprecated.replacedBy once the ESLint peer floor reaches 9.21",
+  "title": "Move code-policy rule defaults to meta.defaultOptions and replacedBy to deprecated.replacedBy once the ESLint peer floor reaches 9.21",
   "state": "pending",
   "category": "code-policy",
   "type": "chore",
@@ -9,7 +9,8 @@
   "kind": "later",
   "created": "2026-11-23",
   "notes": [
-    "typescript-eslint 8.73 deprecates the top-level defaultOptions and meta.replacedBy. 12 sites in packages/eslint-plugin-code-policy/src/rules carry a reasoned eslint-disable for @typescript-eslint/no-deprecated because the peer range starts at eslint 9.0 and the contract tests pin the rule shape."
+    "typescript-eslint 8.73 deprecates the top-level defaultOptions and meta.replacedBy. 12 sites in packages/eslint-plugin-code-policy/src/rules carry a reasoned eslint-disable for @typescript-eslint/no-deprecated because the peer range starts at eslint 9.0 and the contract tests pin the rule shape.",
+    "2026-11-24 audit: verified still open and correctly deferred. 12 no-deprecated suppressions remain in 10 files under packages/eslint-plugin-code-policy/src/rules (grep no-deprecated); peer range in packages/eslint-plugin-code-policy/package.json:125 is eslint >=9.0.0. Left: raise peer floor (owner decision on dropping ESLint 9.0-9.20), then migrate the 12 sites and drop the disables. Next: none until the floor is raised."
   ],
   "done_when": [
     "No no-deprecated suppression is left in src/rules and the contract tests pass on the new shape."

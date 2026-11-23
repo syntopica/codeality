@@ -1,11 +1,12 @@
 {
   "tadu": 2,
   "id": "t-e67dd6df-7ffc-436e-963d-7a6b8f3a97db",
-  "title": "ui-quality text-occlusion and touch-target still flag content under a phone tab bar that scrolls clear",
+  "title": "ui-quality flags content under the Teleporte CRM phone tab bar on /tasks and /team that scrolls clear; capture the snapshot and add a regression case",
   "state": "blocked",
   "category": "ui-quality",
   "type": "bug",
   "priority": "normal",
+  "kind": "waiting",
   "labels": [
     "ui-quality"
   ],
@@ -17,7 +18,8 @@
     "Next step: dump the snapshot of that route (bar and subject boxes, documentHeight, viewportHeight) and find which input disagrees with the live page; add the case to tests/rules/textOcclusion.test.ts.",
     "2026-11-23: not reproduced. tests/fixtures/site/tab-bar-clean.html (rows with tap targets under a fixed bottom bar, phone emulation at 390x844) reports no touch-target or text-occlusion at 5, 6, 7, 8 and 24 rows, nor with a row 420, 700 or 900px wide. Ruled out: the rule order of content and bar, the parent chain of the bar buttons, scrolling before the probe (only a configured route scroll does it), and the formula under horizontal overflow (phone emulation grows innerHeight and moves the fixed bar with it, so documentHeight - viewportHeight is still the scroll range). The Teleporte report of 2026-11-23 still lists touch-target against nav.crm-tabbar on / at 390x844, so the disagreeing input is only visible in that snapshot.",
     "Smallest next step: on a seeded Teleporte fixture database with its audit login, run check --routes /tasks at 390x844 with a temporary dump of the bar box, the subject box, documentHeight and viewportHeight, then turn the dumped values into the unit case in tests/rules/textOcclusion.test.ts.",
-    "2026-11-23: coordinated with the teleporte-web session. No seeded audit user, dev login route or storageState exists there; a local user is made by hand in a disposable MariaDB. Filed in the teleporte-web backlog: \"Seed a local audit login and sample tasks and team rows for codeality-ui\". Unblocks when that script exists; then run codeality-ui check --routes /tasks,/team against http://localhost:3100 (localhost, not 127.0.0.1) with a local ui-quality build."
+    "2026-11-23: coordinated with the teleporte-web session. No seeded audit user, dev login route or storageState exists there; a local user is made by hand in a disposable MariaDB. Filed in the teleporte-web backlog: \"Seed a local audit login and sample tasks and team rows for codeality-ui\". Unblocks when that script exists; then run codeality-ui check --routes /tasks,/team against http://localhost:3100 (localhost, not 127.0.0.1) with a local ui-quality build.",
+    "2026-11-24 audit: still blocked, not reproduced in codeality (fixture packages/ui-quality/tests/fixtures/site/tab-bar-clean.html exists and is clean). Dependency task in teleporte-web (Seed a local audit login and sample tasks and team rows for codeality-ui) is still pending as of today. Next: once it lands, run codeality-ui check --routes /tasks,/team on localhost:3100 at 390x844 with a temp dump of bar box, subject box, documentHeight, viewportHeight, then add the unit case to textOcclusion.test.ts."
   ],
   "done_when": [
     "Both routes report no text-occlusion or touch-target against the tab bar, with a regression test."

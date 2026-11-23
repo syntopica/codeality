@@ -1,10 +1,14 @@
 {
   "tadu": 2,
   "id": "t-98acc8bb-6cc4-4027-892f-07244ae678d0",
-  "title": "Owner: first pub.dev release of `codeality_lints` then `codeality_dart` is",
+  "title": "Owner: first manual pub.dev publish of codeality_lints then codeality_dart, then enable GitHub Actions automated publishing",
   "state": "blocked",
   "category": "dart-and-swift-baseline",
-  "type": "untriaged",
-  "priority": "untriaged",
-  "blocker": "manual (pub.dev cannot enable automated publishing for a package that does not exist). Blocked on the owner's pub.dev login. Smallest step: in each of `packages/codeality-dart-lints` and `packages/codeality-dart` run `dart pub publish`, then on each package's Admin tab enable GitHub Actions publishing (repository `syntopica/codeality`, tag pattern `<name>-v{{version}}`, environment `pub.dev`); CLAUDE.md has the steps. Until then consumers (stagebeat) pin both by git ref."
+  "type": "chore",
+  "priority": "normal",
+  "kind": "waiting",
+  "blocker": "manual (pub.dev cannot enable automated publishing for a package that does not exist). Blocked on the owner's pub.dev login. Smallest step: in each of `packages/codeality-dart-lints` and `packages/codeality-dart` run `dart pub publish`, then on each package's Admin tab enable GitHub Actions publishing (repository `syntopica/codeality`, tag pattern `<name>-v{{version}}`, environment `pub.dev`); CLAUDE.md has the steps. Until then consumers (stagebeat) pin both by git ref.",
+  "notes": [
+    "2026-11-24 audit: verified still not done. pub.dev API returns 404 for both codeality_lints and codeality_dart; both pubspecs at 0.1.0; no dart tags in repo; CLAUDE.md lines 49-73 hold the steps. Left: owner runs dart pub publish in packages/codeality-dart-lints then packages/codeality-dart, then enables GitHub Actions publishing on each Admin tab (repo syntopica/codeality, tag pattern <name>-v{{version}}, environment pub.dev). Only the owner can do this."
+  ]
 }

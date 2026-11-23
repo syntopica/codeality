@@ -1,11 +1,12 @@
 {
   "tadu": 2,
   "id": "t-8e6c6841-ad0a-4261-8385-df1b89011633",
-  "title": "False positives from the InteliFactu interaction-state sweep",
-  "state": "in_progress",
+  "title": "Recapture the InteliFactu documents-viewer row at max scroll to confirm text-occlusion and text-cramped are false positives",
+  "state": "pending",
   "category": "ui-quality",
-  "type": "untriaged",
-  "priority": "untriaged",
+  "type": "bug",
+  "priority": "low",
+  "kind": "task",
   "notes": [
     "(2026-10-12, workspace build d0c9743; screenshots under the sweep's scratchpad",
     "`cq/.codeality-ui/screens/`, routes in `~/p/intelifactu/codeality-ui.json`,",
@@ -22,6 +23,7 @@
     "- False negative: `crowded-meta-line` did not fire on the Modelos formula line",
     "  (\"Otras operaciones con in…\", 3 children, 320px aside) because the visible",
     "  text is over 12 characters; the casilla label was still unreadable.",
-    "2026-11-23: the crowded-meta-line false negative is filed as its own decision task (no faithful fixture: the original DOM was not captured). The viewer-row recheck still needs the private screen."
+    "2026-11-23: the crowded-meta-line false negative is filed as its own decision task (no faithful fixture: the original DOM was not captured). The viewer-row recheck still needs the private screen.",
+    "2026-11-24 audit: partial. Sticky-pager fixture and test landed (cfd91365 packages/ui-quality tests/fixtures/site/sticky-pager.html, stickyPager.integration.test.ts) and sticky-header tap fragments fixed (6d2611f8); crowded-meta-line false negative split into its own task (done). Still open: recapture /app?view=bank&company=2&screen=documents-viewer at max scroll and inspect the horizontal inset; intelifactu/codeality-ui.json lines 586-594 still disable text-occlusion and text-cramped for it, so the recheck never happened. Needs private InteliFactu screen. Next: rerun the sweep on that route with those two disables lifted."
   ]
 }

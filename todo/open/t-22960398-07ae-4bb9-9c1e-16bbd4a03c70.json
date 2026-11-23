@@ -12,7 +12,8 @@
   "check_on": "2026-12-15",
   "notes": [
     "Only waiver left in .baseline-advisories.json after the 2026-11-23 dependency update; expires 2026-12-31. prisma-lint 0.13.1 declares zod ^3.21.4 and the fix exists only on 4.6.6+.",
-    "2026-11-23: prisma-lint 0.13.1 is still the latest release and depends on zod ^3.21.4, so the waiver stays."
+    "2026-11-23: prisma-lint 0.13.1 is still the latest release and depends on zod ^3.21.4, so the waiver stays.",
+    "2026-11-24 audit: verified still waiting. npm view prisma-lint shows 0.13.1 latest with zod ^3.21.4; waiver GHSA-mrhx-c7xc-m3w5 still in .baseline-advisories.json (expires 2026-12-31). Left: when prisma-lint ships on zod 4, bump it, drop waiver, run pnpm audit:check; else renew waiver with fresh evidence before 2026-12-31. Next: re-check on 2026-12-15."
   ],
   "done_when": [
     "pnpm audit:check passes with the waiver removed, or the waiver is renewed with fresh evidence."

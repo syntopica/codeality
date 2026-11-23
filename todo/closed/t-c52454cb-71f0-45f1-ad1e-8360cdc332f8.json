@@ -1,11 +1,12 @@
 {
   "tadu": 2,
   "id": "t-c52454cb-71f0-45f1-ad1e-8360cdc332f8",
-  "title": "**Release ui-quality, db-quality and test-quality with the warning level",
-  "state": "in_progress",
+  "title": "Release ui-quality, db-quality and test-quality without warnings (published; close)",
+  "state": "done",
   "category": "ui-quality",
-  "type": "untriaged",
-  "priority": "untriaged",
+  "type": "chore",
+  "priority": "low",
+  "kind": "task",
   "notes": [
     "removed.** ui-quality 0.8.0 is out (2026-10-11, logged); db-quality and",
     "test-quality wait on owner approval. Decided 2026-10-11 (owner): no warnings,",
@@ -25,6 +26,12 @@
     "`pnpm sync-versions`, `pnpm check:ci`, commit,",
     "`git tag -a <name>@<version> -m ...`, push with the tag,",
     "`gh workflow run publish.yml -f package=<name>`, `gh run watch`,",
-    "`pnpm release:check`."
+    "`pnpm release:check`.",
+    "2026-11-24 audit: DONE. npm @syntopica/ui-quality 0.9.0, db-quality 0.7.0, test-quality 0.2.0 are published (npm view, 2026-11-24); tags ui-quality@0.8.0 and @0.9.0, db-quality@0.7.0, test-quality@0.2.0 exist; package.json versions match. Nothing left; close."
+  ],
+  "closed": "2026-11-24",
+  "result": "Release ui-quality, db-quality and test-quality without warnings (published; close)",
+  "evidence": [
+    "npm view: ui-quality 0.9.0, db-quality 0.7.0, test-quality 0.2.0; tags ui-quality@0.8.0 (17ee9d60), ui-quality@0.9.0, db-quality@0.7.0, test-quality@0.2.0 (all f6569671); package.json versions match; CHANGELOGs have 0.2.0/0.7.0/0.9.0 sections"
   ]
 }

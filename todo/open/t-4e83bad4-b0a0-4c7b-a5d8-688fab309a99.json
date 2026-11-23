@@ -1,11 +1,11 @@
 {
   "tadu": 2,
   "id": "t-4e83bad4-b0a0-4c7b-a5d8-688fab309a99",
-  "title": "Untested claims worth measuring, in Codex's order: blind human review time",
+  "title": "Run the human review pilot (6 reviewers, paired patches); first rebuild both ccmanager trees at 46fe720 durably, then design the 3 other claims",
   "state": "pending",
   "category": "positioning-and-documentation-codex-value-review-2026-10-13",
-  "type": "untriaged",
-  "priority": "untriaged",
+  "type": "test",
+  "priority": "low",
   "kind": "task",
   "notes": [
     "    on strict vs original patches; a lighter cap/complexity/boundary gate",
@@ -13,6 +13,7 @@
     "    per-rule false-positive rate in report-only mode. Smallest step: design",
     "    the human review pilot (6-10 reviewers, paired patches).",
     "2026-11-23: the human review pilot is pre-registered in docs/evidence/2026-10-30-human-review-pilot-design.md, with a second review applied (noncentral-t sample size, zero-variance detection interval, unavailable sensitivity model). Nothing can run until the owner decides: whether to recruit 6, 8 or 10 reviewers and who, and who the two blinded scorers are. The other three claims (lighter gate, first-run adoption, per-rule false-positive rate) are not designed.",
-    "2026-11-23, owner answer to the recruiting question: \"lo que veas y usa codex\" (decide yourself, use Codex). Decision: six reviewers (R1-R6), the smallest table, and Codex generates the patch pairs. Reading \"use Codex\" as Codex also playing the reviewers and scorers is my interpretation, not confirmed; a run like that measures agent review, not the human claim, and must be reported under that label. Blocker found the same day: the October material (measure3/v3/t5: 20 task statements, frozen hidden tests, both ccmanager trees) lived in a session scratchpad that no longer exists, and no copy was found on disk or on GitHub. The design covers this: write eight new tasks, freeze their hidden tests, report the deviation. The strict tree (one exported unit per file, 1342 files) has to be rebuilt first. Next step: rebuild both trees at 46fe720 in a durable directory outside /tmp."
+    "2026-11-23, owner answer to the recruiting question: \"lo que veas y usa codex\" (decide yourself, use Codex). Decision: six reviewers (R1-R6), the smallest table, and Codex generates the patch pairs. Reading \"use Codex\" as Codex also playing the reviewers and scorers is my interpretation, not confirmed; a run like that measures agent review, not the human claim, and must be reported under that label. Blocker found the same day: the October material (measure3/v3/t5: 20 task statements, frozen hidden tests, both ccmanager trees) lived in a session scratchpad that no longer exists, and no copy was found on disk or on GitHub. The design covers this: write eight new tasks, freeze their hidden tests, report the deviation. The strict tree (one exported unit per file, 1342 files) has to be rebuilt first. Next step: rebuild both trees at 46fe720 in a durable directory outside /tmp.",
+    "2026-11-24 audit: verified not_done. Only the pre-registration exists (docs/evidence/2026-10-30-human-review-pilot-design.md, commit 369bc301); no rebuilt ccmanager trees or pilot artifacts found on disk (find under ~ depth 4 only hits ~/.config/ccmanager, unrelated). Other 3 claims still undesigned. Left: rebuild both trees at 46fe720 in a durable dir, write 8 new tasks with frozen hidden tests, run pilot (label agent-reviewer runs as such). Evidence: git log docs/evidence, ls docs/evidence."
   ]
 }

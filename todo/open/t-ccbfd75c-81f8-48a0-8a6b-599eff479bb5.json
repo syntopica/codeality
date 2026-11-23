@@ -1,15 +1,17 @@
 {
   "tadu": 2,
   "id": "t-ccbfd75c-81f8-48a0-8a6b-599eff479bb5",
-  "title": "README hero still reads \"Zero effort for you. Fewer tokens for them.\",",
+  "title": "Replace README hero line 'Fewer tokens for them' (refuted by token measurement) and align GitHub description and image prompts",
   "state": "pending",
   "category": "positioning-and-documentation-codex-value-review-2026-10-13",
-  "type": "untriaged",
-  "priority": "untriaged",
+  "type": "docs",
+  "priority": "low",
+  "kind": "decision",
   "notes": [
     "    which `docs/evidence/2026-10-12-agent-token-measurement.md` refutes; the",
     "    body below it was corrected on 2026-10-13. Smallest step: owner picks the",
     "    new hero line and GitHub description, then update `README.md` line 5 and",
-    "    `docs/marketing/image-prompts.md`."
+    "    `docs/marketing/image-prompts.md`.",
+    "2026-11-24 audit: not_done. README.md line 5 still says \"Zero effort for you. Fewer tokens for them.\" and docs/marketing/image-prompts.md line 33 still has \"Zero effort. Fewer tokens.\"; no commit touched them since f0059f00. Owner must pick the new hero line and GitHub description; then edit those two lines. Evidence: grep of both files."
   ]
 }

@@ -1,11 +1,12 @@
 {
   "tadu": 2,
   "id": "t-ba63bbf5-5e18-4798-9155-536afecb38bc",
-  "title": "Identify the primary sort value in multiline count/year cells",
+  "title": "Adopt data-codeality-sort-value in the consumer app and verify the original multiline count/year screen",
   "state": "in_progress",
   "category": "ui-quality",
-  "type": "untriaged",
-  "priority": "untriaged",
+  "type": "feature",
+  "priority": "normal",
+  "kind": "task",
   "notes": [
     "The",
     "",
@@ -16,6 +17,7 @@
     "build/test passes 531 tests, including count ties, wrapped currency and",
     "zero-area fallback. Next: review and adopt accessor-derived metadata in the",
     "owning consumer, then verify the original affected screen. The consumer patch",
-    "remains unapplied; no package release or deployment occurred."
+    "remains unapplied; no package release or deployment occurred.",
+    "2026-11-24 audit: engine side done (commit 5a6fe19e, README section on data-codeality-sort-value, src/capture/cellSortReadings.ts, explicitNumericSortKey.ts). Left: adopt accessor-derived marker in the owning consumer app (patch unapplied, other repo), then verify original affected screen; consumer not checked here. Next: apply consumer patch."
   ]
 }

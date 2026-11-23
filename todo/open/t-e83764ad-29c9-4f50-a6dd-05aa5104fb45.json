@@ -1,15 +1,16 @@
 {
   "tadu": 2,
   "id": "t-e83764ad-29c9-4f50-a6dd-05aa5104fb45",
-  "title": "Report a text button repeated on every row of a list (repeated-row-action)",
+  "title": "Add ui-quality rule repeated-row-action: warn when 4+ rows carry a byte-identical text button label (should be icon + tooltip)",
   "state": "pending",
   "category": "ui-quality",
   "type": "feature",
-  "priority": "normal",
+  "priority": "low",
   "kind": "task",
   "created": "2026-11-23",
   "discovered_from": "t-99f0cada-213a-4db5-ae60-a0754aaf2bcb",
   "notes": [
-    "Seen on InteliFactu's fiscal review, 2026-10-12: \"Documentos candidatos\" on every row, a column of identical words. Candidate: 4 or more rows carrying a byte-identical button label should be an icon with a tooltip. Smallest next step: a fixture with the repeated label and a clean one, then the rule as a warning."
+    "Seen on InteliFactu's fiscal review, 2026-10-12: \"Documentos candidatos\" on every row, a column of identical words. Candidate: 4 or more rows carrying a byte-identical button label should be an icon with a tooltip. Smallest next step: a fixture with the repeated label and a clean one, then the rule as a warning.",
+    "2026-11-24 audit: not done. No rule repeated-row-action in packages/ui-quality (grep of src and README finds nothing; no matching git log commit). Left: add fixture with a repeated button label on 4+ rows plus a clean one, then the rule as a warning. Next: write fixture first."
   ]
 }

@@ -1,11 +1,12 @@
 {
   "tadu": 2,
   "id": "t-f70d46c6-5904-497d-ae07-ddce12f9658f",
-  "title": "`touch-target` overlap with a sticky header",
-  "state": "in_progress",
+  "title": "Confirm the touch-target sticky-header fix against the original consumer screen capture, then close",
+  "state": "pending",
   "category": "ui-quality",
-  "type": "untriaged",
-  "priority": "untriaged",
+  "type": "bug",
+  "priority": "normal",
+  "kind": "task",
   "notes": [
     "Rows scrolled under a",
     "",
@@ -18,6 +19,7 @@
     "buttons beneath an opaque rectangular sticky THEAD; ambiguous paint retains",
     "existing findings. Next: capture the original affected consumer screen and",
     "confirm its markup qualifies before claiming that historical report resolved.",
-    "No package release or consumer deployment has occurred."
+    "No package release or consumer deployment has occurred.",
+    "2026-11-24 audit: probe fix is implemented (assets/probe/stickyTapCover.js, commit 6d2611f8 retains exposed tap fragments below sticky headers); not released or deployed. Left: capture the original affected consumer screen and confirm its markup is native tbody buttons under an opaque rectangular sticky THEAD, then close. Needs the consumer app, so not verifiable here."
   ]
 }
