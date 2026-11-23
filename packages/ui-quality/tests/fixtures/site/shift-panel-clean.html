@@ -1,0 +1,85 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>A scope switch in the head of a card that holds the list</title>
+    <style>
+      body {
+        margin: 0;
+        font: 16px/1.5 sans-serif;
+        color: #111827;
+        background: #ffffff;
+      }
+      main {
+        padding: 24px;
+      }
+      section {
+        border: 1px solid #6b7280;
+        background: #f9fafb;
+      }
+      .head {
+        display: flex;
+        justify-content: space-between;
+        padding: 16px;
+      }
+      h2 {
+        margin: 0;
+        font-size: 18px;
+      }
+      button {
+        font: inherit;
+        color: #111827;
+        background: #ffffff;
+        border: 1px solid #6b7280;
+        padding: 4px 12px;
+      }
+      [aria-pressed='true'] {
+        background: #dbeafe;
+      }
+      ul {
+        margin: 0;
+        padding: 0 16px 16px 32px;
+      }
+    </style>
+  </head>
+  <body>
+    <!-- The bordered card is a panel of records, not a bar: its head row keeps
+         its height while the list under it changes length. One scope is
+         empty, so the card holds no list at all in that state. -->
+    <main>
+      <h1>Queue</h1>
+      <section aria-labelledby="queue-title">
+        <div class="head">
+          <h2 id="queue-title">Attend now</h2>
+          <div role="group" aria-label="Pending for">
+            <button type="button" aria-pressed="true" data-rows="0">
+              Mine
+            </button>
+            <button type="button" aria-pressed="false" data-rows="20">
+              Team
+            </button>
+          </div>
+        </div>
+        <p>Nothing is waiting.</p>
+      </section>
+    </main>
+    <script>
+      const card = document.querySelector('section')
+      for (const button of card.querySelectorAll('[aria-pressed]'))
+        button.addEventListener('click', () => {
+          for (const other of card.querySelectorAll('[aria-pressed]'))
+            other.setAttribute('aria-pressed', String(other === button))
+          card.querySelector('ul, p').remove()
+          const rows = Number(button.dataset.rows)
+          const body = document.createElement(rows === 0 ? 'p' : 'ul')
+          if (rows === 0) body.textContent = 'Nothing is waiting.'
+          for (let row = 0; row < rows; row += 1) {
+            const item = document.createElement('li')
+            item.textContent = 'Request ' + String(row + 1)
+            body.append(item)
+          }
+          card.append(body)
+        })
+    </script>
+  </body>
+</html>

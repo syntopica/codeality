@@ -132,4 +132,48 @@ describe('edgeMisaligned', () => {
       [],
     )
   })
+  it('skips the side a fixed sidebar stands on and still compares the other', () => {
+    const shellMain = elementBox({ id: 1, isMain: true, x: 224, width: 1216 })
+    const rail = elementBox({
+      id: 5,
+      y: 76,
+      width: 224,
+      height: 824,
+      position: 'fixed',
+    })
+    const logo = elementBox({
+      id: 2,
+      parent: 0,
+      x: 32,
+      width: 120,
+      text: 'CRM',
+    })
+    const user = elementBox({
+      id: 3,
+      parent: 0,
+      x: 1300,
+      width: 108,
+      text: 'Ana',
+    })
+    const wideBanner = elementBox({ id: 0, isBanner: true, width: 1440 })
+    const content = (width: number) =>
+      elementBox({ id: 4, parent: 1, x: 260, width, text: 'Leads' })
+    const run = (width: number, extra = [rail]) =>
+      edgeMisaligned(
+        snapshotOf([
+          wideBanner,
+          shellMain,
+          logo,
+          user,
+          content(width),
+          ...extra,
+        ]),
+        ruleContext(),
+      )
+    expect(run(1148)).toEqual([])
+    expect(run(1144)[0]?.message).toBe(
+      'header and main content edges differ by 4px on the right at 1440px; put both on the same container',
+    )
+    expect(run(1148, [])[0]?.message).toContain('228px on the left')
+  })
 })

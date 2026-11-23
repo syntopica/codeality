@@ -1,0 +1,50 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>Tokens declared on the app shell</title>
+    <style>
+      :root {
+        color-scheme: light;
+      }
+      body {
+        margin: 0;
+        font: 16px/1.4 sans-serif;
+        color: #000000;
+        background: #ffffff;
+      }
+      /* The shell, not :root, owns the chart colours. */
+      .shell {
+        --brand-won: #27866e;
+        --brand-lost: #969da7;
+      }
+      main {
+        padding: 24px;
+      }
+      .won {
+        background: var(--brand-won);
+      }
+      .lost {
+        background: var(--brand-lost);
+      }
+      /* Declared beside the main region, so it is nobody's token there. */
+      aside {
+        --brand-stray: #d9731a;
+      }
+      .stray {
+        background: #d9731a;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="shell">
+      <aside>Legend</aside>
+      <main>
+        <h1>Pipeline</h1>
+        <p class="won">Won</p>
+        <p class="lost">Lost</p>
+        <p class="stray">Stray</p>
+      </main>
+    </div>
+  </body>
+</html>

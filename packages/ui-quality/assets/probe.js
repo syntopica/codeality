@@ -80,6 +80,19 @@ export default (mainSelector) => {
 
   // A box of one pixel or less paints nothing a person can see: it is the
   // screen-reader-only pattern, whose clipping is the point.
+  // The same pattern padded past one pixel still paints nothing when its clip
+  // has no area: \`clip-path: inset(50%)\`, or \`clip: rect()\` on an absolute
+  // box whose edges meet. A clip that leaves an area shows what is in it.
+  const hasEmptyClip = (style) => {
+    if (style.clipPath.replace(/\s+/g, '') === 'inset(50%)') return true
+    if (style.position !== 'absolute' && style.position !== 'fixed')
+      return false
+    const edges = style.clip.match(/-?[\d.]+/g)
+    if (!style.clip.startsWith('rect(') || !edges || edges.length !== 4)
+      return false
+    const [top, right, bottom, left] = edges.map(Number)
+    return right <= left || bottom <= top
+  }
   // checkVisibility also sees what the box does not: content inside a closed
   // <details> keeps a layout box but is hidden by content-visibility.
   const isVisible = (element, style, rect) =>
@@ -88,6 +101,7 @@ export default (mainSelector) => {
     element.checkVisibility({ checkOpacity: true, checkVisibilityCSS: true }) &&
     rect.width > 1 &&
     rect.height > 1 &&
+    !hasEmptyClip(style) &&
     style.display !== 'none' &&
     style.visibility !== 'hidden' &&
     Number(style.opacity) > 0
@@ -813,13 +827,18 @@ export default (mainSelector) => {
   // shadcn/ui keeps a token as its channels alone ("222 47% 11%") and wraps it
   // in hsl() where it is used, so a bare triplet is read as hsl.
   const HSL_TRIPLET = /^-?[\d.]+(deg)?\s+[\d.]+%\s+[\d.]+%(\s*\/\s*[\d.]+%?)?$/
+  // Read at the root and again at the main region, which inherits the tokens
+  // an app shell around it declares instead of \`:root\`.
   const variables = {}
-  const rootStyle = getComputedStyle(document.documentElement)
-  for (const name of rootStyle) {
-    if (!name.startsWith('--')) continue
-    const value = rootStyle.getPropertyValue(name).trim()
-    const rgba = toRgba(HSL_TRIPLET.test(value) ? `hsl(${value})` : value)
-    if (rgba) variables[name] = rgba
+  for (const scope of [document.documentElement, main]) {
+    if (!scope) continue
+    const scoped = getComputedStyle(scope)
+    for (const name of scoped) {
+      if (!name.startsWith('--')) continue
+      const value = scoped.getPropertyValue(name).trim()
+      const rgba = toRgba(HSL_TRIPLET.test(value) ? `hsl(${value})` : value)
+      if (rgba) variables[name] = rgba
+    }
   }
 
   // The walk above starts inside body, so the canvas every fill sits on is
@@ -887,7 +906,7 @@ export default (mainSelector) => {
     viewportHeight: window.innerHeight,
     documentWidth: document.documentElement.scrollWidth,
     documentHeight: document.documentElement.scrollHeight,
-    rootColorScheme: rootStyle.colorScheme,
+    rootColorScheme: getComputedStyle(document.documentElement).colorScheme,
     lang: (document.documentElement.lang || '').trim().toLowerCase(),
     bodyFontFamily: getComputedStyle(document.body)
       .fontFamily.split(',')[0]

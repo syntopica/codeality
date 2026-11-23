@@ -2,6 +2,29 @@
 
 ## [Unreleased]
 
+- Fix: palette resolves custom properties declared on the main region or one of
+  its ancestors, such as an app shell, not only on the root.
+
+- Fix: edge-misaligned does not compare the side of the main region that a fixed
+  full-height rail occupies; the other side is still compared.
+
+- Fix: mixed-icon-family leaves an svg over 64px on its longest side alone; it
+  is a drawing or a chart, not an icon.
+
+- Fix: interaction-shift measures a toggle group inside a panel of records (a
+  list, a table, or a section with a heading) by its own row, not by the panel
+  that grows with the records.
+
+- Fix: the probe skips an element clipped to nothing (`clip-path: inset(50%)`,
+  or an empty `clip: rect()` on an out-of-flow box), so a visually hidden skip
+  link is not reported as clipped or covered text.
+
+- Fix: time-without-datetime no longer takes a period filter such as "7 días" or
+  "2 hours" for a relative timestamp; "5 min ago" and "3h" still are.
+
+- Fix: nested-cards exempts an inline link or button no taller than 64px that is
+  styled as a button; a taller linked card inside a card is still reported.
+
 - Fix: touch-target overlap and text occlusion let content scroll out from under
   a bar fixed to the bottom of the window, as a phone tab bar is, while a fixed
   top bar and pinned content still count.

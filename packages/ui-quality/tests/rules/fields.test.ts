@@ -122,6 +122,18 @@ describe('timeWithoutDatetime', () => {
     ])
       expect(isTimestampText(text)).toBe(false)
   })
+  it.each(['7 días', '30 días', '1 semana', '2 hours'])(
+    'does not read the period filter %s as a timestamp',
+    (text) => {
+      expect(isTimestampText(text)).toBe(false)
+    },
+  )
+  it.each(['7d', '5 min ago', 'hace 3 horas', '3h'])(
+    'still reads %s as a timestamp',
+    (text) => {
+      expect(isTimestampText(text)).toBe(true)
+    },
+  )
   it.each(['12345678H', '12345678W', '12345678M', '12345678h'])(
     'does not classify the eight-digit reference %s as a duration',
     (text) => {

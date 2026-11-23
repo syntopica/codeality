@@ -2,7 +2,7 @@
   "tadu": 2,
   "id": "t-d530ecfd-2881-424f-8193-6b6795b319d4",
   "title": "**ui-quality false positives on the teleporte-web CRM dashboard",
-  "state": "pending",
+  "state": "done",
   "category": "ui-quality",
   "type": "untriaged",
   "priority": "untriaged",
@@ -20,5 +20,10 @@
     "    navigating links as non-toggles. Source item: teleporte-web `TODO.md`,",
     "    \"Chart audit tooling\" and \"Dashboard codeality-ui leftovers\".",
     "2026-11-23: palette also misses tokens declared on a non-root element: teleporte-web sets chart colours as --crm-* custom properties on .crm-shell (apps/crm/src/crm-ui/data/CRM_SHELL.ts), and assets/probe.js collects variables only from :root, so 7 palette findings remain with variablePrefixes set. Next step: also read custom properties from the main region's ancestors (or every element's own style) when matching variablePrefixes, with a fixture. touch-target on the phone tab bar is the separate task about content under a scrolling tab bar."
+  ],
+  "closed": "2026-11-23",
+  "result": "**ui-quality false positives on the teleporte-web CRM dashboard",
+  "evidence": [
+    "packages/ui-quality: pnpm test 145 files, 571 tests pass; pnpm check:ci exit 0. Fixed with a fixture or unit case each: palette tokens declared on an app shell (cli.scoped-tokens), edge-misaligned beside a fixed rail with the 4px right-edge near miss still reported (rules/edgeMisaligned), mixed-icon-family on chart svgs over 64px (rules/mixedIconFamily), interaction-shift on a toggle inside a panel of records (shift-panel-clean). Not changed: control-inset is no longer reported; the remaining interaction-shift is a real scope toggle, and the 4px header offset is a genuine finding for the consumer."
   ]
 }

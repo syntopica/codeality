@@ -91,11 +91,12 @@ pnpm exec codeality-ui init
   device. Use it for a mobile site or webview that picks its layout from the
   user agent rather than the width. Reports and screenshots name such a screen
   `390x844 phone`, apart from a desktop window of the same size.
-- `palette` is the set of colours a page may show: root custom properties whose
-  names start with one of `variablePrefixes`, plus literal hex values. Without
-  it the `palette` rule is off. `palette.accent` (`#rgb` or `#rrggbb`) names the
-  colour of the one primary action for `accent-overuse`; without it that rule
-  takes the most saturated filled button for the accent.
+- `palette` is the set of colours a page may show: custom properties on the root
+  or the main region whose names start with one of `variablePrefixes`, plus
+  literal hex values. Without it the `palette` rule is off. `palette.accent`
+  (`#rgb` or `#rrggbb`) names the colour of the one primary action for
+  `accent-overuse`; without it that rule takes the most saturated filled button
+  for the accent.
 - `register` (`"product"` or `"brand"`) says what the project is. Only
   `"product"` switches on `card-radius-admin`, which holds cards to 8px of
   corner radius; a brand surface chooses its own, and without the setting the

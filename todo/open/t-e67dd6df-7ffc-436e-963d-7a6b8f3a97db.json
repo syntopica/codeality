@@ -2,16 +2,21 @@
   "tadu": 2,
   "id": "t-e67dd6df-7ffc-436e-963d-7a6b8f3a97db",
   "title": "ui-quality text-occlusion and touch-target still flag content under a phone tab bar that scrolls clear",
-  "state": "pending",
+  "state": "blocked",
   "category": "ui-quality",
   "type": "bug",
   "priority": "normal",
-  "labels": ["ui-quality"],
+  "labels": [
+    "ui-quality"
+  ],
   "created": "2026-11-17",
+  "blocker": "Needs the page snapshot of the Teleporte CRM route; no local audit login for it is recorded.",
   "notes": [
     "Observed 2026-11-17 on the Teleporte CRM at 390x844: /tasks flags \"Completar\" and /team \"Activo\" under the fixed `nav.crm-tabbar`, after c6cc000b added `scrollsClearOf`.",
     "Evidence: a Playwright probe scrolled to the bottom measured the tab bar top at 779px and the lowest content at 741px (document 888px, so 44px of scroll); the content does clear the bar, so `lift <= documentHeight - viewportHeight` should hold.",
-    "Next step: dump the snapshot of that route (bar and subject boxes, documentHeight, viewportHeight) and find which input disagrees with the live page; add the case to tests/rules/textOcclusion.test.ts."
+    "Next step: dump the snapshot of that route (bar and subject boxes, documentHeight, viewportHeight) and find which input disagrees with the live page; add the case to tests/rules/textOcclusion.test.ts.",
+    "2026-11-23: not reproduced. tests/fixtures/site/tab-bar-clean.html (rows with tap targets under a fixed bottom bar, phone emulation at 390x844) reports no touch-target or text-occlusion at 5, 6, 7, 8 and 24 rows, nor with a row 420, 700 or 900px wide. Ruled out: the rule order of content and bar, the parent chain of the bar buttons, scrolling before the probe (only a configured route scroll does it), and the formula under horizontal overflow (phone emulation grows innerHeight and moves the fixed bar with it, so documentHeight - viewportHeight is still the scroll range). The Teleporte report of 2026-11-23 still lists touch-target against nav.crm-tabbar on / at 390x844, so the disagreeing input is only visible in that snapshot.",
+    "Smallest next step: on a seeded Teleporte fixture database with its audit login, run check --routes /tasks at 390x844 with a temporary dump of the bar box, the subject box, documentHeight and viewportHeight, then turn the dumped values into the unit case in tests/rules/textOcclusion.test.ts."
   ],
   "done_when": [
     "Both routes report no text-occlusion or touch-target against the tab bar, with a regression test."

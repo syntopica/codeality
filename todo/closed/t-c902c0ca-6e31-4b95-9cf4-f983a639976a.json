@@ -2,7 +2,7 @@
   "tadu": 2,
   "id": "t-c902c0ca-6e31-4b95-9cf4-f983a639976a",
   "title": "ui-quality 0.9.0 false positives seen on compratuentrada (2026-11-05)",
-  "state": "pending",
+  "state": "done",
   "category": "ui-quality",
   "type": "untriaged",
   "priority": "untriaged",
@@ -17,5 +17,10 @@
     "    `packages/ui-quality/tests` that reproduces each finding, then exempt",
     "    `sr-only` (clip/1px) elements, duration phrases without a date, and inline",
     "    buttons."
+  ],
+  "closed": "2026-11-23",
+  "result": "ui-quality 0.9.0 false positives seen on compratuentrada (2026-11-05)",
+  "evidence": [
+    "packages/ui-quality: pnpm test 145 files, 571 tests pass; pnpm check:ci exit 0. cli.link-button covers the clean page (visually hidden skip links, period filter, link button in a card) and a dirty control (a clip that shows its box, a tall linked card in a card); rules/fields covers period phrases against real relative timestamps. ragged-column on the link button was not reproduced by the fixture, so no change was made for it."
   ]
 }

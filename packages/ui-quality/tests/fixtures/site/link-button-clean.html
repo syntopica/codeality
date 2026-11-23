@@ -1,0 +1,104 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>Skip link, period filter and inline button</title>
+    <style>
+      body {
+        margin: 0;
+        font: 14px/1.4 sans-serif;
+        color: #000000;
+        background: #ffffff;
+      }
+      main {
+        padding: 24px;
+      }
+      .sr-only {
+        position: absolute;
+        width: 1px;
+        height: 1px;
+        padding: 0;
+        margin: -1px;
+        overflow: hidden;
+        clip: rect(0, 0, 0, 0);
+        white-space: nowrap;
+        border-width: 0;
+      }
+      /* Tailwind 4's sr-only with the padding of a skip link added back. */
+      .skip-padded {
+        position: absolute;
+        width: 1px;
+        height: 1px;
+        padding: 8px 12px;
+        margin: -1px;
+        overflow: hidden;
+        clip-path: inset(50%);
+        white-space: nowrap;
+        box-sizing: border-box;
+      }
+      /* The older spelling of the same, also wider than one pixel. */
+      .skip-rect {
+        position: absolute;
+        width: 2px;
+        height: 2px;
+        overflow: hidden;
+        clip: rect(0, 0, 0, 0);
+        white-space: nowrap;
+      }
+      .card {
+        border: 1px solid #000000;
+        border-radius: 8px;
+        padding: 16px;
+        margin-bottom: 16px;
+      }
+      .wide {
+        width: 100%;
+        box-sizing: border-box;
+      }
+      .narrow {
+        width: 60%;
+        box-sizing: border-box;
+      }
+      .btn {
+        display: inline-flex;
+        align-items: center;
+        border: 1px solid #000000;
+        border-radius: 8px;
+        padding: 8px 16px;
+        color: #000000;
+        text-decoration: none;
+        min-height: 44px;
+        box-sizing: border-box;
+      }
+      table {
+        border-collapse: collapse;
+      }
+      td {
+        padding: 8px 12px;
+      }
+    </style>
+  </head>
+  <body>
+    <a class="sr-only" href="#main">Saltar al contenido</a>
+    <a class="skip-padded" href="#main">Saltar a la navegacion</a>
+    <a class="skip-rect" href="#main">Saltar al pie</a>
+    <header style="background: #1e293b; color: #ffffff; padding: 16px">
+      Header
+    </header>
+    <main id="main">
+      <h1>Panel</h1>
+      <table>
+        <tr>
+          <td><a href="#7">7 días</a></td>
+          <td><a href="#30">30 días</a></td>
+          <td><a href="#w">1 semana</a></td>
+        </tr>
+      </table>
+      <div class="card wide">
+        <p>Card with an inline button.</p>
+        <a class="btn" href="#go">Ver detalle</a>
+      </div>
+      <a class="btn" href="#out">Volver</a>
+    </main>
+  </body>
+</html>

@@ -1,0 +1,90 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Rows under a phone tab bar until the page scrolls</title>
+    <style>
+      body {
+        margin: 0;
+        font: 16px/1.5 sans-serif;
+        color: #111827;
+        background: #ffffff;
+      }
+      main {
+        padding: 16px 16px 104px;
+      }
+      ul {
+        margin: 0;
+        padding: 0;
+        list-style: none;
+      }
+      li {
+        display: grid;
+        gap: 8px;
+        padding: 12px 0;
+        border-top: 1px solid #6b7280;
+      }
+      .actions {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 12px;
+      }
+      .actions a,
+      .actions button,
+      nav button {
+        box-sizing: border-box;
+        min-height: 48px;
+        min-width: 96px;
+        padding: 8px 16px;
+        font: inherit;
+        color: #111827;
+        background: #ffffff;
+        border: 1px solid #6b7280;
+        border-radius: 8px;
+        text-decoration: none;
+      }
+      nav {
+        position: fixed;
+        right: 0;
+        bottom: 0;
+        left: 0;
+        display: grid;
+        grid-auto-flow: column;
+        grid-auto-columns: 1fr;
+        padding: 4px;
+        background: #ffffff;
+        border-top: 1px solid #6b7280;
+      }
+      nav button {
+        min-height: 56px;
+        min-width: 0;
+        border: 0;
+      }
+    </style>
+  </head>
+  <body>
+    <!-- The tab bar covers whichever row sits at the fold of the first frame;
+         every row scrolls out from under it. -->
+    <nav aria-label="Sections">
+      <button type="button">Home</button>
+      <button type="button">Requests</button>
+      <button type="button">More</button>
+    </nav>
+    <main>
+      <h1>Queue</h1>
+      <ul></ul>
+    </main>
+    <script>
+      const list = document.querySelector('ul')
+      for (let row = 1; row <= 24; row += 1) {
+        const item = document.createElement('li')
+        item.innerHTML =
+          '<span>Request ' +
+          String(row) +
+          '</span><span class="actions"><a href="#call">Call</a><button type="button">Postpone</button></span>'
+        list.append(item)
+      }
+    </script>
+  </body>
+</html>
