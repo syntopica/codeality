@@ -681,6 +681,14 @@ export default (mainSelector) => {
           : element.tagName === 'TEXTAREA'
             ? 'textarea'
             : '',
+      // A single-line select whose arrow the engine paints: Chromium draws it
+      // about 2px inside the border whatever padding-right says.
+      nativeCaret:
+        element.tagName === 'SELECT' &&
+        !element.multiple &&
+        element.size <= 1 &&
+        style.appearance !== 'none' &&
+        style.appearance !== 'base-select',
       visibleLabel:
         (element.tagName === 'INPUT' || element.tagName === 'TEXTAREA') &&
         hasVisibleLabel(element),

@@ -104,6 +104,8 @@ export type ElementBox = {
   placeholder: boolean
   /** For an input, its `type`; `textarea` for a textarea; empty for anything else. */
   inputType: string
+  /** A single-line select whose dropdown arrow the engine paints; absent in older snapshots. */
+  nativeCaret?: boolean
   /** For an input or textarea: a label with painted text, or an `aria-labelledby` target with some, names it. */
   visibleLabel: boolean
   /** A non-empty `title` attribute. */

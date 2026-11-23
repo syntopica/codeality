@@ -1,0 +1,64 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>Select carets</title>
+    <style>
+      body {
+        margin: 0;
+        font: 16px/1.4 sans-serif;
+        color: #000000;
+        background: #ffffff;
+      }
+      main {
+        padding: 24px;
+      }
+      select {
+        display: block;
+        box-sizing: border-box;
+        width: 240px;
+        height: 40px;
+        margin-bottom: 16px;
+        border: 1px solid #000000;
+        background-color: #ffffff;
+        color: #000000;
+        font-size: 16px;
+      }
+      #cramped {
+        padding: 0 12px;
+      }
+      #drawn {
+        appearance: none;
+        padding: 0 2rem 0 12px;
+      }
+    </style>
+  </head>
+  <body>
+    <main>
+      <h1>Province</h1>
+      <!-- px-3: the text starts 12px in, the arrow 2px from the border. -->
+      <select id="cramped" aria-label="Cramped">
+        <option>Barcelona</option>
+      </select>
+      <!-- appearance: none with 2rem of right room for a drawn chevron. -->
+      <select id="drawn" aria-label="Drawn">
+        <option>Barcelona</option>
+      </select>
+      <!-- The browser's own select: no inset, nothing to compare. -->
+      <select aria-label="Native">
+        <option>Barcelona</option>
+      </select>
+      <!-- A list box draws no caret at all. -->
+      <select
+        id="list"
+        aria-label="List"
+        size="3"
+        style="padding: 0 12px; height: auto"
+      >
+        <option>Barcelona</option>
+        <option>Girona</option>
+        <option>Lleida</option>
+      </select>
+    </main>
+  </body>
+</html>

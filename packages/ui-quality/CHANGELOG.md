@@ -2,6 +2,11 @@
 
 ## [Unreleased]
 
+- New: `cramped-select-caret` reports a single-line native select whose text is
+  inset past 4px: Chromium paints the arrow about 2px inside the right border
+  whatever `padding-right` says, so the caret sits flush where the text keeps
+  clear. An unpadded select, a list box and `appearance: none` are left alone.
+
 - Fix: sort-broken, filter-broken and the table pager no longer read a table
   while the request their own click or search sent is still open. Rows that
   changed meanwhile, a loading placeholder or an optimistic guess, were taken
