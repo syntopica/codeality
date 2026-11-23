@@ -1,0 +1,15 @@
+{
+  "tadu": 2,
+  "id": "t-09f87b41-6f07-4c2e-b011-79332fd21319",
+  "title": "Upstream patches are unavailable for two high-severity audit findings",
+  "state": "done",
+  "category": "javascript-dependency-security",
+  "type": "untriaged",
+  "priority": "untriaged",
+  "blocker": "Official advisories still list no patched release for node-forge through 1.4.0 (GHSA-86w9-cpqp-85rv, Nuxt/Nitro/listhen path) or braces through 3.0.3 (GHSA-vfj7-8cjw-p6xm, multiple lint/type tooling paths). A successful UI or Python package gate does not make this whole-workspace audit green. Smallest next step: monitor the maintained introducing dependency and actual patched publication; retain the advisories without suppressions or removed tooling. References: https://github.com/advisories/GHSA-86w9-cpqp-85rv and https://github.com/advisories/GHSA-vfj7-8cjw-p6xm. Other audit findings remain in the original report and require individual triage.",
+  "closed": "2026-11-23",
+  "result": "Upstream patches are unavailable for two high-severity audit findings",
+  "evidence": [
+    "pnpm audit --json on 2026-11-23 lists two advisories, katex (low) and zod GHSA-mrhx-c7xc-m3w5 (high, waived, tracked separately); neither GHSA-86w9-cpqp-85rv nor GHSA-vfj7-8cjw-p6xm is reported. node-forge resolves to 1.4.3 through the override in pnpm-workspace.yaml (commit 75aab28e); braces stays at 3.0.3, which the audit no longer flags."
+  ]
+}

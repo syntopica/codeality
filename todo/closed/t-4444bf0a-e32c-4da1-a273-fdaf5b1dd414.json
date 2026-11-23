@@ -1,0 +1,15 @@
+{
+  "tadu": 2,
+  "id": "t-4444bf0a-e32c-4da1-a273-fdaf5b1dd414",
+  "title": "`patches/@stryker-mutator__vitest-runner@10.0.0.patch` restores mutation",
+  "state": "done",
+  "category": "rule-precision-and-tooling-roadmap-codex-tools-review-2026-10-13",
+  "type": "untriaged",
+  "priority": "untriaged",
+  "blocker": "testing on Vitest 5 (`' > '` join, empty `describe('')` names kept). Blocked on upstream: 10.0.0 is still the latest release. Smallest step: drop it when a release fixing stryker-mutator/stryker-js#6210 ships and `pnpm mutation` still scores 89.98 or more without it.",
+  "closed": "2026-11-23",
+  "result": "`patches/@stryker-mutator__vitest-runner@10.0.0.patch` restores mutation",
+  "evidence": [
+    "Commit 75aab28e moved to @stryker-mutator/vitest-runner 10.1.1, which carries the Vitest 5 fix, and removed the patch: patches/ holds only eslint-plugin-react.patch and pnpm-workspace.yaml patchedDependencies lists nothing else. That commit records mutation at 90.88 against the 89 break threshold. Mutation was not re-run on 2026-11-23."
+  ]
+}

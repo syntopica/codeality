@@ -23,6 +23,7 @@
     "    4.76 s), but a three-worker variant failed; this is not proof for the full",
     "    suite. Smallest next step: define a portable, read-only report for one",
     "    consumer and validate its findings against this case before rolling it",
-    "    out."
+    "    out.",
+    "2026-11-23: measure now reports host-load, phase-shares and worker-processes (a sampled floor, not a ceiling), on top of suite-run, slowest-files and memory-use. Still missing: cold and warm lint/format times, unnecessary DOM environments in the report, coverage overhead, the opt-in vitest doctor subset run, and validation of the report against the compratuentrada case. Smallest next step: run codeality-test measure in compratuentrada and compare with the 357.11 s figure."
   ]
 }

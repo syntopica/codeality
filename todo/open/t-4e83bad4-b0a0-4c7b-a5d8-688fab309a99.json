@@ -6,10 +6,12 @@
   "category": "positioning-and-documentation-codex-value-review-2026-10-13",
   "type": "untriaged",
   "priority": "untriaged",
+  "kind": "decision",
   "notes": [
     "    on strict vs original patches; a lighter cap/complexity/boundary gate",
     "    against the full structural gate; first-run adoption on clean fixtures;",
     "    per-rule false-positive rate in report-only mode. Smallest step: design",
-    "    the human review pilot (6-10 reviewers, paired patches)."
+    "    the human review pilot (6-10 reviewers, paired patches).",
+    "2026-11-23: the human review pilot is pre-registered in docs/evidence/2026-10-30-human-review-pilot-design.md, with a second review applied (noncentral-t sample size, zero-variance detection interval, unavailable sensitivity model). Nothing can run until the owner decides: whether to recruit 6, 8 or 10 reviewers and who, and who the two blinded scorers are. The other three claims (lighter gate, first-run adoption, per-rule false-positive rate) are not designed."
   ]
 }
