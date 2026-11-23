@@ -25,6 +25,10 @@ go install golang.org/x/vuln/cmd/govulncheck@v1.10.0
 
 Node is needed for the `duplicates` stage, which runs jscpd through `npx`.
 
+The audit reports vulnerabilities in the standard library of the Go that runs
+it. Keep a `toolchain` line in `go.mod` at a patched release: the generated CI
+job installs the Go that `go.mod` names.
+
 ## Use
 
 Run every command from the directory that holds `go.mod`.
