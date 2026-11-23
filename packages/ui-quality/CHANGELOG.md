@@ -7,6 +7,10 @@
   whatever `padding-right` says, so the caret sits flush where the text keeps
   clear. An unpadded select, a list box and `appearance: none` are left alone.
 
+- New: text-clipped reports text cut to an ellipsis while a wider neighbour on
+  its row leaves more width unused than the text is missing, in every row of the
+  list: a name held to a fixed 112px beside a stretched cell of two words.
+
 - Fix: a route's clicks no longer leave the pointer on what they clicked. The
   row under it painted its hover colours into the screenshot and the
   measurements; a `hover` the route asks for still applies.

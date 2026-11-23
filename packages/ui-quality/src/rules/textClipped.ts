@@ -4,6 +4,7 @@ import { clippedSelectFinding } from '@/rules/clippedSelectFinding.js'
 import { clipsOverflow } from '@/rules/clipsOverflow.js'
 import type { Rule } from '@/rules/Rule.js'
 import { SCROLLABLE } from '@/rules/SCROLLABLE.js'
+import { truncatedBesideSlackFindings } from '@/rules/truncatedBesideSlackFindings.js'
 
 // Two ways text is cut without telling the reader: the element clips its own
 // overflow with no ellipsis, or it grows past an ancestor that clips. The
@@ -12,11 +13,13 @@ import { SCROLLABLE } from '@/rules/SCROLLABLE.js'
 // text and the clipper keeps the text reachable: a tab strip or a wide table
 // scrolled sideways is not cut, so the search stops there. A clipper that
 // ends in an ellipsis tells the reader, so a suffix it hides is not silent.
-// A select is cut a third way, by a content box shorter than its line.
+// A select is cut a third way, by a content box shorter than its line. An
+// ellipsis beside unused room is the fourth: it hides what would have fitted.
 export const textClipped: Rule = (snapshot) => {
   const findings: RawFinding[] = snapshot.elements
     .map(clippedSelectFinding)
     .filter((finding): finding is RawFinding => finding !== null)
+  findings.push(...truncatedBesideSlackFindings(snapshot.elements))
   for (const element of snapshot.elements) {
     if (element.text === '') continue
     const ownOverflow = element.scrollWidth - element.clientWidth

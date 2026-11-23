@@ -1,0 +1,66 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="utf-8" />
+    <title>Reglas</title>
+    <style>
+      body {
+        margin: 0;
+        font:
+          16px/1.5 system-ui,
+          sans-serif;
+        color: #111827;
+        background: #ffffff;
+      }
+      main {
+        max-width: 720px;
+        margin: 0 auto;
+        padding: 32px;
+      }
+      .row {
+        display: flex;
+        gap: 16px;
+        padding: 12px 0;
+      }
+      .name {
+        flex: none;
+        width: 112px;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+      }
+      .kind {
+        flex: 1;
+        min-width: 0;
+      }
+    </style>
+  </head>
+  <body>
+    <main>
+      <h1>Reglas</h1>
+      <!-- 112px for the name while the cell beside it holds two words. -->
+      <section>
+        <div class="row">
+          <span id="slack" class="name">Comisiones bancarias trimestrales</span>
+          <span class="kind">Gasto fijo</span>
+        </div>
+      </section>
+      <!-- The same cut, but another row fills the column beside it. -->
+      <section>
+        <div class="row">
+          <span id="column" class="name"
+            >Comisiones bancarias trimestrales</span
+          >
+          <span class="kind">Gasto fijo</span>
+        </div>
+        <div class="row">
+          <span id="snug" class="name">Comisiones bancarias trimestrales</span>
+          <span class="kind"
+            >Gasto fijo deducible que se reparte entre las cuatro sociedades del
+            grupo según su facturación</span
+          >
+        </div>
+      </section>
+    </main>
+  </body>
+</html>

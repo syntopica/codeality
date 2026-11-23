@@ -61,4 +61,66 @@ describe('textClipped', () => {
     const free = elementBox({ id: 0, text: 'no clipper', width: 5000 })
     expect(textClipped(snapshotOf([free]), ruleContext())).toEqual([])
   })
+  it('reports an ellipsis beside a wider neighbour with room to spare, not beside a full one', () => {
+    const row = elementBox({ id: 0, width: 600 })
+    const label = elementBox({
+      id: 1,
+      parent: 0,
+      text: 'Comisiones bancarias',
+      overflowX: 'hidden',
+      textOverflow: 'ellipsis',
+      width: 112,
+      scrollWidth: 160,
+      clientWidth: 112,
+    })
+    const neighbour = (textRight: number) =>
+      elementBox({
+        id: 2,
+        parent: 0,
+        text: 'Gasto fijo',
+        x: 112,
+        width: 488,
+        textLeft: 112,
+        textRight,
+      })
+    expect(
+      textClipped(snapshotOf([row, label, neighbour(180)]), ruleContext())[0]
+        ?.message,
+    ).toContain(
+      'truncated 48px short while a wider neighbour on its row leaves 420px',
+    )
+    expect(
+      textClipped(snapshotOf([row, label, neighbour(590)]), ruleContext()),
+    ).toEqual([])
+  })
+  it('leaves an ellipsis alone when its neighbour is full in another row', () => {
+    const cells = (row: number, textRight: number) => [
+      elementBox({ id: row, tag: 'li', width: 600 }),
+      elementBox({
+        id: row + 1,
+        parent: row,
+        text: 'Comisiones bancarias',
+        overflowX: 'hidden',
+        textOverflow: 'ellipsis',
+        width: 112,
+        scrollWidth: 160,
+        clientWidth: 112,
+      }),
+      elementBox({
+        id: row + 2,
+        parent: row,
+        text: 'Gasto fijo',
+        x: 112,
+        width: 488,
+        textLeft: 112,
+        textRight,
+      }),
+    ]
+    expect(
+      textClipped(
+        snapshotOf([...cells(10, 180), ...cells(20, 590)]),
+        ruleContext(),
+      ),
+    ).toEqual([])
+  })
 })
