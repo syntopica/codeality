@@ -1,0 +1,29 @@
+{
+  "tadu": 2,
+  "id": "t-f24a6fcd-2c19-4184-9782-bd166ee024b5",
+  "title": "Fix setup-go dependency caching for Go modules without go.sum",
+  "state": "done",
+  "category": "adoption-findings",
+  "type": "bug",
+  "priority": "normal",
+  "kind": "task",
+  "created": "2026-11-24",
+  "started": "2026-11-24",
+  "assignees": [
+    "agent:codex"
+  ],
+  "notes": [
+    "ReadyLit run 45309110094 passed the Go gate but setup-go skipped the cache because the generated workflow referenced only the absent go.sum."
+  ],
+  "done_when": [
+    "Generated workflows key the cache from the module-specific go.mod and include go.sum when it exists. Root and nested modules have regression coverage."
+  ],
+  "links": [
+    "https://github.com/syntopica/readylit/actions/runs/45309110094"
+  ],
+  "closed": "2026-11-24",
+  "result": "Fix setup-go dependency caching for Go modules without go.sum",
+  "evidence": [
+    "The scaffold regression failed before the fix and passes for root and nested modules. The pinned setup-go hashFiles dependency hashes go.mod without go.sum, invalidates the key when either file changes, and isolates nested paths. The rebuilt codeality-go gate passed all seven stages on the tool and the template."
+  ]
+}

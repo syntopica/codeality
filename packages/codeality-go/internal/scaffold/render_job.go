@@ -33,7 +33,9 @@ const jobTemplate = `  {id}:
       - uses: {setup-go}
         with:
           go-version-file: {go.mod}
-          cache-dependency-path: {go.sum}
+          cache-dependency-path: |
+            {go.mod}
+            {go.sum}
       # The duplicates stage runs jscpd through npx.
       - uses: {setup-node}
         with:

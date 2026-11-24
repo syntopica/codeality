@@ -45,8 +45,9 @@ codeality-go check               # the structural rules alone
   `# local overrides` line: what a module adds below that line is kept, and an
   edit above it is a conflict that only `--force` replaces. `--ci` adds the
   module's job to `.github/workflows/codeality.yml` at the repository root,
-  leaving the jobs of other tools byte-identical. `--check` exits 2 on a
-  conflict.
+  leaving the jobs of other tools byte-identical. The job keys the Go cache from
+  the module's `go.mod` and includes `go.sum` when present. `--check` exits 2 on
+  a conflict.
 - `check [PATH...] [--format text|json] [--fail-fast]` runs the structural rules
   and fails on any finding.
 - `baseline create|update|check` records the lint, structure and duplicate
