@@ -2,6 +2,13 @@
 
 ## [Unreleased]
 
+- New: `redundant-column` reports a table column whose text is identical on
+  every row of 4 or more and equals a breadcrumb item or a combobox value on the
+  page.
+
+- New: `repeated-row-action` reports 4 or more rows of a table that each hold a
+  button with the same text label; an icon with a tooltip would say it once.
+
 - New: `cramped-select-caret` reports a single-line native select whose text is
   inset past 4px: Chromium paints the arrow about 2px inside the right border
   whatever `padding-right` says, so the caret sits flush where the text keeps
