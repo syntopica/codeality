@@ -1,0 +1,11 @@
+{
+  "tadu": 2,
+  "id": "t-2ad65715-1f8d-4db1-8f1c-32c4eb4c9f0a",
+  "title": "Unhappy-path audit design: settle what the step 1 rubric had to assume (failure-word list, what a detail page is, the bare status, the coverage outcome name, single-word generic phrases)",
+  "state": "pending",
+  "category": "gate-kit-ui-quality",
+  "type": "docs",
+  "priority": "low",
+  "kind": "decision",
+  "created": "2026-11-24"
+}

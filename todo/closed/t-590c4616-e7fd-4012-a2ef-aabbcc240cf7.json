@@ -2,7 +2,7 @@
   "tadu": 2,
   "id": "t-590c4616-e7fd-4012-a2ef-aabbcc240cf7",
   "title": "Build the unhappy-path audit pure message rubric actionMessageVerdictOf with one negative fixture per verdict (design step 1)",
-  "state": "pending",
+  "state": "done",
   "category": "ui-quality",
   "type": "feature",
   "priority": "normal",
@@ -13,5 +13,10 @@
     "Step 1 of docs/superpowers/specs/2026-11-02-unhappy-path-audit-design.md: a pure rubric with fixtures drawn from the verticagtm catalog, one negative fixture per verdict. Steps 2 to 6 (enumeration with scopes and deadlines, transport injections, server cases behind allowWrites, the Next.js adapter, the first run on a verticagtm throwaway org) follow in that order; the last needs a throwaway org from the owner.",
     "2026-11-23: the owner question about a throwaway org is answered in the design (end of Remaining steps): verticagtm has an isolated local lane under scripts/isolated-db/; step 6 needs a build-and-start sibling of its dev.sh.",
     "2026-11-24 audit: not_done. actionMessageVerdictOf appears only in the design spec docs/superpowers/specs/2026-11-02-unhappy-path-audit-design.md; no source, test or fixture exists (grep over repo, git ls-files for unhappy/verdict names empty). Spec commits 369bc301, 1eff2512 are docs only. Next: write the pure rubric plus fixtures from the verticagtm catalog, one negative per verdict."
+  ],
+  "closed": "2026-11-24",
+  "result": "Build the unhappy-path audit pure message rubric actionMessageVerdictOf with one negative fixture per verdict (design step 1)",
+  "evidence": [
+    "packages/ui-quality/src/behaviour/actionMessageVerdictOf.ts with 14 tests (one positive and one negative fixture per verdict): vitest 14 passed, type-check exit 0, eslint --max-warnings 0 exit 0, pnpm knip exit 0. Parts the design leaves open are tracked in a follow-up task."
   ]
 }
