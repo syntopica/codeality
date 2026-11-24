@@ -2,7 +2,7 @@
   "tadu": 2,
   "id": "t-cab3a5ff-f7c0-4152-91b8-bc14d206165c",
   "title": "Add ui-quality rule redundant-column: flag a table column with the same value on every row that equals a page breadcrumb or picker value",
-  "state": "pending",
+  "state": "done",
   "category": "ui-quality",
   "type": "feature",
   "priority": "low",
@@ -12,5 +12,10 @@
   "notes": [
     "Seen on InteliFactu's fiscal review, 2026-10-12: every rule row said \"VeoPlan ESPJ\" on VeoPlan's screen. Candidate: a column whose value is identical on every row and equal to a breadcrumb or picker value on the page. Smallest next step: a fixture with a company picker and the repeated column.",
     "2026-11-24 audit: not done. No redundant-column rule in packages/ui-quality/src/rules (only redundantTotal.ts, a different rule) nor in README rule table; git log shows no commit for it. Next: add fixture with company picker plus repeated column and its near-miss twin, then the rule, following d0c9743b pattern."
+  ],
+  "closed": "2026-11-24",
+  "result": "Add ui-quality rule redundant-column: flag a table column with the same value on every row that equals a page breadcrumb or picker value",
+  "evidence": [
+    "redundant-column rule in packages/ui-quality/src/rules/redundantColumn.ts, registered in TABLE_RULES; package suite 153 files, 600 tests pass. Sources are role=combobox and breadcrumb-labelled elements; a native select is not detected."
   ]
 }
