@@ -2,6 +2,11 @@
 
 ## [Unreleased]
 
+- New: opt-in `searchable-dropdown` reports native single-select dropdowns and
+  expanded custom listbox pickers without an editable search field.
+
+- Fix: the table search probe skips editable comboboxes used to pick options.
+
 ## 0.10.0
 
 - New: `redundant-column` reports a table column whose text is identical on

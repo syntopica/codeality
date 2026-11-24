@@ -102,9 +102,10 @@ pnpm exec codeality-ui init
   corner radius; a brand surface chooses its own, and without the setting the
   rule is off.
 - `enable` lists the opt-in rules a project switches on, for want of a
-  convention every design system shares. The only one is `label-punctuation`
-  (`"enable": ["label-punctuation"]`): a label with a trailing colon or an
-  asterisk for a required field. An unknown id is a configuration error.
+  convention every design system shares. `label-punctuation` reports a label
+  with a trailing colon or an asterisk for a required field. Set
+  `"enable": ["searchable-dropdown"]` to require a custom dropdown with search.
+  An unknown id is a configuration error.
 - `rules.z-index-sprawl` takes `maxLayers` (6) and `ceiling` (1000): the most
   distinct positive `z-index` values a screen may use, and the value from which
   one is reported by itself. A project whose own scale starts in the thousands
@@ -160,6 +161,7 @@ finding kept on purpose goes under `disable`.
 | `input-zoom`             | a field the user types into sets text under 16px below 1024px wide, so iOS Safari zooms the page on focus                                                                                                                                                                                                                                |
 | `placeholder-fit`        | an empty field whose placeholder is over 20% wider than the box its text is laid in, so the hint is cut mid-word                                                                                                                                                                                                                         |
 | `cramped-select-caret`   | a single-line native select (appearance not `none`) whose text is inset over 4px: the browser draws its arrow about 2px inside the right border whatever the padding says, so the caret sits flush where the text keeps clear                                                                                                            |
+| `searchable-dropdown`    | a native single-select dropdown regardless of appearance, or an expanded custom listbox picker without an editable search field in the trigger or controlled popup                                                                                                                                                                       |
 | `duplicate-nav-icon`     | two navigation entries drawing the same icon (svg markup compared without classes or sizes)                                                                                                                                                                                                                                              |
 | `mixed-icon-family`      | one repeated group outside navigation whose single icons mix filled and outline glyphs                                                                                                                                                                                                                                                   |
 | `ghost-elevation`        | a bordered box in the page flow with a shadow blurred over 3px (past `shadow-sm`): two edges for one surface; dialogs, popovers and other floating layers are left alone                                                                                                                                                                 |
@@ -225,6 +227,11 @@ finding kept on purpose goes under `disable`.
 | `action-silent`          | the first form of the main region, submitted while every write fails, changes nothing the user can see                                                                                                                                                                                                                                   |
 | `interaction-shift`      | a toggle group (`role=group` of `aria-pressed` buttons) whose sticky or surface bar changes height by over 4px as each option is pressed, moving everything below it; the option on before is pressed again after                                                                                                                        |
 | `modal-dismiss`          | a dialog or drawer left open by the route's clicks that stays open after a click on its backdrop (the widest band of overlay outside the panel, when one covers the window) or after Escape; it is reopened with the route's clicks between the two tries and after them; alert dialogs are not judged                                   |
+
+For `searchable-dropdown`, Codeality measures the rendered route state. Use
+`routes[].click` to expand a custom picker and render its controlled listbox for
+the audit. The rule checks for an editable search field in that capture.
+Filtering behavior requires an interaction test.
 
 For `label-wrap`, icon alignment compares the SVG viewport centre with the first
 own-text Range fragment centre. It applies only to an unambiguous sibling

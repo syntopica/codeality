@@ -106,6 +106,8 @@ export type ElementBox = {
   inputType: string
   /** A single-line select whose dropdown arrow the engine paints; absent in older snapshots. */
   nativeCaret?: boolean
+  /** A native single-select or an open custom listbox picker without editable search. */
+  dropdownWithoutSearch?: boolean
   /** For an input or textarea: a label with painted text, or an `aria-labelledby` target with some, names it. */
   visibleLabel: boolean
   /** A non-empty `title` attribute. */

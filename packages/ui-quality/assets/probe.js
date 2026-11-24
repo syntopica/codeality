@@ -1,5 +1,7 @@
 import { tapOcclusionFields } from '../src/capture/tapOcclusionFields.js'
 
+import { isNativeDropdown } from './probe/isNativeDropdown.js'
+import { markDropdownsWithoutSearch } from './probe/markDropdownsWithoutSearch.js'
 import { stickyTapCover } from './probe/stickyTapCover.js'
 
 // Serialises the measurements used by the UI-quality rules. The browser
@@ -684,9 +686,7 @@ export default (mainSelector) => {
       // A single-line select whose arrow the engine paints: Chromium draws it
       // about 2px inside the border whatever padding-right says.
       nativeCaret:
-        element.tagName === 'SELECT' &&
-        !element.multiple &&
-        element.size <= 1 &&
+        isNativeDropdown(element) &&
         style.appearance !== 'none' &&
         style.appearance !== 'base-select',
       visibleLabel:
@@ -720,6 +720,8 @@ export default (mainSelector) => {
       occluder: null,
     })
   }
+
+  markDropdownsWithoutSearch(elements, ids)
 
   // What paints on top of each text: the element hit at the centre of its
   // first line. Only texts on screen, hit-testable and not scrolled out of a

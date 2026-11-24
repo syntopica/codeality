@@ -1,6 +1,6 @@
 import type { Locator, Page } from 'playwright'
 
-/** The visible search field of the main region, by type, role or placeholder. */
+/** The visible table search field of the main region, by type, role or placeholder. */
 export const searchBoxOf = async (
   page: Page,
   main: string,
@@ -15,7 +15,7 @@ export const searchBoxOf = async (
         'input[placeholder*="filter" i]',
         'input[placeholder*="filtrar" i]',
       ]
-        .map((selector) => `${main} ${selector}`)
+        .map((selector) => `${main} ${selector}:not([role="combobox" i])`)
         .join(', '),
     )
     .first()

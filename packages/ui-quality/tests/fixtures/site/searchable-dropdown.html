@@ -1,0 +1,125 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>Searchable dropdowns</title>
+    <style>
+      .compact {
+        appearance: none;
+        padding: 0;
+      }
+    </style>
+  </head>
+  <body>
+    <main>
+      <h1>Dropdowns</h1>
+      <select id="native" aria-label="Native dropdown">
+        <option>Today</option>
+        <option>Yesterday</option>
+      </select>
+      <select id="drawn" class="compact" aria-label="Styled dropdown">
+        <option>Today</option>
+        <option>Yesterday</option>
+      </select>
+      <select id="multiple" multiple aria-label="Multiple options">
+        <option>Today</option>
+        <option>Yesterday</option>
+      </select>
+      <select id="inline" size="2" aria-label="Inline options">
+        <option>Today</option>
+        <option>Yesterday</option>
+      </select>
+      <button
+        id="select-only"
+        type="button"
+        role="combobox"
+        aria-label="Date"
+        aria-expanded="true"
+        aria-controls="dates"
+      >
+        Today
+      </button>
+      <div id="dates" role="listbox" aria-label="Dates">
+        <div role="option" aria-selected="true">Today</div>
+        <div role="option" aria-selected="false">Yesterday</div>
+      </div>
+      <button
+        id="readonly-search"
+        type="button"
+        aria-haspopup="listbox"
+        aria-expanded="true"
+        aria-controls="readonly-popup"
+      >
+        City
+      </button>
+      <div id="readonly-popup">
+        <input type="search" aria-label="Read-only city search" readonly />
+        <input type="search" aria-label="Hidden city search" hidden />
+        <div role="listbox" aria-label="Cities">
+          <div role="option" aria-selected="true">Barcelona</div>
+        </div>
+      </div>
+      <button
+        id="popup-search"
+        type="button"
+        aria-haspopup="listbox"
+        aria-expanded="true"
+        aria-controls="search-popup"
+      >
+        Province
+      </button>
+      <div id="search-popup">
+        <input type="search" aria-label="Search provinces" />
+        <div role="listbox" aria-label="Provinces">
+          <div role="option" aria-selected="true">Barcelona</div>
+        </div>
+      </div>
+      <input
+        id="editable"
+        type="text"
+        role="combobox"
+        aria-label="Search channels"
+        aria-expanded="true"
+        aria-controls="channels"
+      />
+      <div id="channels" role="listbox" aria-label="Channels">
+        <div role="option" aria-selected="false">Messages</div>
+      </div>
+      <button
+        id="collapsed"
+        type="button"
+        role="combobox"
+        aria-label="Collapsed dates"
+        aria-expanded="false"
+        aria-controls="collapsed-dates"
+      >
+        Today
+      </button>
+      <div id="collapsed-dates" role="listbox" aria-label="Dates" hidden>
+        <div role="option" aria-selected="true">Today</div>
+      </div>
+      <button
+        id="unobserved"
+        type="button"
+        role="combobox"
+        aria-label="Pending dates"
+        aria-expanded="true"
+        aria-controls="pending-dates"
+      >
+        Loading
+      </button>
+      <button
+        id="actions"
+        type="button"
+        aria-haspopup="menu"
+        aria-expanded="true"
+        aria-controls="action-menu"
+      >
+        Actions
+      </button>
+      <div id="action-menu" role="menu" aria-label="Actions">
+        <button type="button" role="menuitem">Archive</button>
+      </div>
+    </main>
+  </body>
+</html>
