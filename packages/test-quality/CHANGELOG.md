@@ -2,6 +2,8 @@
 
 ## [Unreleased]
 
+## 0.3.0
+
 - `measure` reports three more observations, so two runs can be compared:
   `host-load` (the 1-minute load before and after the run, and the CPU count),
   `phase-shares` (every phase of vitest's `Duration` line, not only when the

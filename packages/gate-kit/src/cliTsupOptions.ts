@@ -15,6 +15,7 @@ export const cliTsupOptions = (packageDir: string) => ({
   minify: false,
   target: 'node22',
   esbuildOptions(options: EsbuildAliasOptions): void {
+    options.sourcesContent = false
     options.alias = { '@': resolve(packageDir, 'src') }
   },
 })

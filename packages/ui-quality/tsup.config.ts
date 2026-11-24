@@ -12,6 +12,7 @@ export default defineConfig({
   minify: false,
   target: 'node22',
   esbuildOptions(options) {
+    options.sourcesContent = false
     options.alias = { '@': path.resolve(import.meta.dirname, 'src') }
   },
 })

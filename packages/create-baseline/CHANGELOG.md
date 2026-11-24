@@ -2,6 +2,16 @@
 
 ## [Unreleased]
 
+## 0.11.0
+
+- Add Dart, Swift and Go projects to the estate report and check their gate
+  versions.
+
+- Recognize coverage scripts invoked by CI and report fatal coverage findings.
+
+- Resolve the Oxlint configuration from the consumer project and update the
+  baseline package pins.
+
 ## 0.10.6
 
 ### Patch Changes

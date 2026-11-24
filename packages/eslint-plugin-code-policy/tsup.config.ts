@@ -21,6 +21,7 @@ export default defineConfig({
   sourcemap: true,
   minify: false,
   esbuildOptions(options) {
+    options.sourcesContent = false
     options.alias = {
       '@': path.resolve(import.meta.dirname, 'src'),
     }

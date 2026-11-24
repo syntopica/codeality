@@ -5,6 +5,13 @@
 
 ## [Unreleased]
 
+## 0.10.1
+
+- Update typescript-eslint and declare its ESLint plugin as a runtime
+  dependency.
+
+- Update eslint-plugin-security to 4.2.1.
+
 ## 0.10.0
 
 ### Minor Changes

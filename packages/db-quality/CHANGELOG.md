@@ -2,6 +2,8 @@
 
 ## [Unreleased]
 
+## 0.8.0
+
 ### Minor Changes
 
 - feat: a `disable` entry on a `BDB330/` code accepts a `subject` (a table, or

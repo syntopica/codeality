@@ -2,6 +2,10 @@
 
 ## [Unreleased]
 
+## 0.9.1
+
+- Update the TypeScript ESLint utilities to 8.73.0 and refresh the build.
+
 ## 0.9.0
 
 ### Minor Changes

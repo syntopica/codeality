@@ -2,6 +2,8 @@
 
 ## [Unreleased]
 
+## 0.10.0
+
 - New: `redundant-column` reports a table column whose text is identical on
   every row of 4 or more and equals a breadcrumb item or a combobox value on the
   page.
@@ -122,6 +124,8 @@
   an inline edit row where a helper text makes one cell taller and the field
   centred in the next one drops. `rules.control-row-ragged` takes `tolerance`
   and `maxGap` (48px). It may report on projects that passed before.
+
+- Add a message verdict rubric with fixtures for the unhappy-path audit.
 
 ## 0.9.0
 

@@ -2,6 +2,8 @@
 
 ## [Unreleased]
 
+## 0.16.0
+
 - fix: include imported CSS in Vite React, Vite Vue, Tauri and Nuxt project
   patterns so Knip follows compiled stylesheet imports in normal and production
   analysis.
@@ -9,6 +11,14 @@
 - fix: resolve the consumer-installed jscpd and type-coverage CLI entries
   directly, including hoisted workspace dependencies, instead of requiring pnpm
   or invoking another package manager.
+
+- Export `@syntopica/quality-config/cruise-tsconfig` to preserve TypeScript
+  alias origins for dependency-cruiser.
+
+- Validate the structure of package audit reports and report incomplete results.
+
+- Keep runtime-used development dependencies visible in Knip production analysis
+  and remove stale compatibility hints.
 
 ## 0.15.0
 
