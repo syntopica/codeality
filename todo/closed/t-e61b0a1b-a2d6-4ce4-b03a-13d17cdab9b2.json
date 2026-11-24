@@ -2,7 +2,7 @@
   "tadu": 2,
   "id": "t-e61b0a1b-a2d6-4ce4-b03a-13d17cdab9b2",
   "title": "Release quality-config with the audit validation and runtime-dependency fixes (unpublished since 0.15.0)",
-  "state": "blocked",
+  "state": "done",
   "category": "javascript-dependency-security",
   "type": "chore",
   "priority": "normal",
@@ -10,5 +10,10 @@
   "blocker": "Audit/alias source and its exact packed consumer boundary are verified. The later runtime-dependency classification correction passes all 107 tests and both actual root graphs; its final versioned package must be repacked and checked during release. No npm release or registry consumer adoption has occurred. Smallest unblock action: owner approval for the versioned release and publication workflow; then verify installed registry consumers. Do not treat the source commit or tarball pack as publication.",
   "notes": [
     "2026-11-24 audit: verified still unreleased. Fix commits 5c0d8909 (validate audits, preserve alias origins) and 47967b7f (classify runtime dev deps) are dated 2026-10-22 and in no quality-config tag; latest tag/package.json/npm @syntopica/quality-config is 0.15.0 (published 2026-10-21). Left: owner approves a version bump and publish, then repack and verify registry consumers. Next: owner decision to release (bump to 0.15.1 or 0.16.0)."
+  ],
+  "closed": "2026-11-24",
+  "result": "Release quality-config with the audit validation and runtime-dependency fixes (unpublished since 0.15.0)",
+  "evidence": [
+    "Published @syntopica/quality-config 0.16.0 from 9581e246. GitHub Actions publish 45325361400 succeeded, the registry serves the exact version, the remote tag resolves to the release commit, and pnpm release:check reports this package OK. Portal Unico installs 0.16.0 from npm and passed check:ci, check:quality, and check:security with zero advisories."
   ]
 }
