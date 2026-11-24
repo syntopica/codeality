@@ -17,10 +17,10 @@ const TEMPLATE_GLOB = [
 
 // The tools @syntopica/quality-config's runners spawn through `pnpm exec`:
 // `baseline-dupes` spawns `jscpd`, `baseline-type-coverage` spawns
-// `type-coverage`. A template
+// `type-coverage`, `baseline-hooks-install` spawns `lefthook`. A template
 // declares the dependency because the runner spawns the binary rather than
 // vendoring it, but the root dependency graph does not see the executable use.
-const TEMPLATE_RUNNER_DEPENDENCIES = ['jscpd', 'type-coverage']
+const TEMPLATE_RUNNER_DEPENDENCIES = ['jscpd', 'type-coverage', 'lefthook']
 
 const config: KnipConfig = {
   workspaces: {
@@ -45,12 +45,6 @@ const config: KnipConfig = {
     'packages/prettier-config': {
       entry: ['*.mjs!'],
       project: ['*.mjs!', 'tests/**/*.mjs'],
-    },
-    'packages/tsconfig': {
-      // nextjs.json declares the Next TypeScript plugin by name, which knip
-      // reads as an import. The preset is for consumers that install Next
-      // themselves; this package must not depend on it.
-      ignoreUnresolved: ['next'],
     },
     'packages/eslint-plugin-code-policy': {
       // A workspace-specific key replaces rather than merges with the

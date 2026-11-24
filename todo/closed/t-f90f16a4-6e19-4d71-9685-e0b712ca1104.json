@@ -2,7 +2,7 @@
   "tadu": 2,
   "id": "t-f90f16a4-6e19-4d71-9685-e0b712ca1104",
   "title": "Make pnpm knip exit 0 on main: lefthook unlisted-binary report and ignoreUnresolved hint for packages/tsconfig",
-  "state": "pending",
+  "state": "done",
   "category": "baselines",
   "type": "bug",
   "priority": "normal",
@@ -11,5 +11,10 @@
   "notes": [
     "Seen 2026-11-23 on a clean tree before the codeality-go change; smallest step: run pnpm knip and add lefthook to the templates' ignoreBinaries or drop the stale hint.",
     "2026-11-24 audit: not verified fixed. No commit since 2026-11-23 touches knip.config.ts (last: 8f4ca39f, Oct 22). knip.config.ts still has packages/tsconfig ignoreUnresolved [next] (line 53) and root ignoreBinaries only [gitleaks, actionlint] (line 170); lefthook is a devDependency in root and templates/*/package.json, so the unlisted report source is unclear. Did not run knip (heavy). Smallest next step: run pnpm knip once, read the exact lefthook/next findings, then add lefthook to ignoreBinaries or drop the hint."
+  ],
+  "closed": "2026-11-24",
+  "result": "Make pnpm knip exit 0 on main: lefthook unlisted-binary report and ignoreUnresolved hint for packages/tsconfig",
+  "evidence": [
+    "'pnpm knip' exit 0 with no output (was exit 1: lefthook unused devDependency in 8 templates plus a stale ignoreUnresolved hint for packages/tsconfig). lefthook joins TEMPLATE_RUNNER_DEPENDENCIES because baseline-hooks-install spawns it; the stale block is removed. eslint and prettier on knip.config.ts exit 0."
   ]
 }
