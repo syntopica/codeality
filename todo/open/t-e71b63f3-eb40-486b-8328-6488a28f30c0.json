@@ -1,0 +1,18 @@
+{
+  "tadu": 2,
+  "id": "t-e71b63f3-eb40-486b-8328-6488a28f30c0",
+  "title": "Add a ui-quality rule that flags native select dropdowns",
+  "state": "pending",
+  "category": "gate-kit-ui-quality",
+  "type": "feature",
+  "priority": "normal",
+  "kind": "task",
+  "created": "2026-11-25",
+  "notes": [
+    "Owner 2026-11-25: codeality-ui should flag native system dropdowns; in compratuentrada every dropdown must be a custom searchable one, and the same happens in other projects.",
+    "ui-quality has no warning severity since 2026-10-11 (error or nothing), so this is an error rule, likely opt-in or configurable per project."
+  ],
+  "done_when": [
+    "A page rendering a native <select> fails ui-quality in a project that enables the rule, with a fixture test."
+  ]
+}
