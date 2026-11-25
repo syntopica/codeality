@@ -2,6 +2,11 @@
 
 ## [Unreleased]
 
+- Fix: `touch-target` no longer reports a page control that overlaps a control
+  inside a modal dialog (`aria-modal="true"` or `showModal()`): the dialog makes
+  the page inert, so the two never compete for a tap. Two controls inside the
+  dialog that cross are still reported.
+
 - Change: `ragged-column` also reports a block whose width is an explicit
   `max-width` left-aligned in a wider column, with no full-width neighbour
   needed and prose included; media, form controls and centred blocks are left

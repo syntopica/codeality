@@ -149,6 +149,8 @@ export type ElementBox = {
   isTextEntry: boolean
   /** An open dialog or drawer: `dialog[open]`, a dialog role or `aria-modal`. */
   isDialog: boolean
+  /** A dialog that makes the page behind it inert: `aria-modal="true"` or `showModal()`; absent in older snapshots. */
+  isModal?: boolean
   /** The `aria-label`, trimmed, first 80 characters; empty when absent. */
   label: string
   isMain: boolean

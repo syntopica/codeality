@@ -127,3 +127,32 @@ describe('touchTarget', () => {
     expect(subjectsOf([under, topTab, topBar], tall)).toEqual([ROW])
   })
 })
+
+describe('touchTarget under a modal dialog', () => {
+  const dialog = () =>
+    elementBox({
+      id: 1,
+      tag: 'div',
+      isDialog: true,
+      isModal: true,
+      width: 390,
+      height: 844,
+    })
+  const inDialog = (id: number, x: number) => tap(id, { parent: 1, x, y: 0 })
+
+  it('skips a page target the modal covers', () => {
+    expect(
+      subjectsOf([tap(0, { x: 0, y: 0 }), dialog(), inDialog(2, 20)]),
+    ).toEqual([])
+  })
+  it('still reports two targets inside the dialog that cross', () => {
+    expect(
+      subjectsOf([
+        elementBox({ id: 0 }),
+        dialog(),
+        inDialog(2, 0),
+        inDialog(3, 20),
+      ]),
+    ).toEqual(['#e2'])
+  })
+})

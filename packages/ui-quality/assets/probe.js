@@ -730,6 +730,10 @@ export default (mainSelector) => {
       transitionMs: Math.round(transitions.longest),
       isTextEntry: isTextEntry(element),
       isDialog: element.matches(DIALOG),
+      // Modal: aria-modal, or a <dialog> shown with showModal(); the page under it is inert.
+      isModal:
+        element.matches('[aria-modal="true"]') ||
+        (element.tagName === 'DIALOG' && element.matches(':modal')),
       label: (element.getAttribute('aria-label') ?? '').trim().slice(0, 80),
       isMain: element === main,
       isBanner: element === banner,

@@ -2,6 +2,7 @@ import type { ElementBox } from '@/model/ElementBox.js'
 import type { PageSnapshot } from '@/model/PageSnapshot.js'
 import type { RawFinding } from '@/model/RawFinding.js'
 import { ancestorsOf } from '@/rules/ancestorsOf.js'
+import { insideModal } from '@/rules/insideModal.js'
 import { overlapsPartly } from '@/rules/overlapsPartly.js'
 import { scrollsClearOf } from '@/rules/scrollsClearOf.js'
 import { visibleTapOverlap } from '@/rules/visibleTapOverlap.js'
@@ -9,7 +10,8 @@ import { visibleTapOverlap } from '@/rules/visibleTapOverlap.js'
 /**
  * Targets that cross another target's box, neither inside the other: a tap may
  * land on either. Content a bottom bar covers only until the page scrolls is
- * not a crossing.
+ * not a crossing, nor is a page control under a modal dialog's control: the
+ * dialog makes the page inert, so the two never compete for a tap.
  */
 export const overlappingTapTargets = (
   targets: ElementBox[],
@@ -23,6 +25,7 @@ export const overlappingTapTargets = (
         (candidate) =>
           overlapsPartly(target, candidate) &&
           visibleTapOverlap(target, candidate) &&
+          insideModal(target, elements) === insideModal(candidate, elements) &&
           !ancestorsOf(candidate, elements).includes(target) &&
           !ancestorsOf(target, elements).includes(candidate) &&
           !scrollsClearOf(target, candidate, snapshot) &&
