@@ -1,0 +1,76 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>Input icons</title>
+    <style>
+      body {
+        margin: 0;
+        font: 16px/1.4 sans-serif;
+        color: #000000;
+        background: #ffffff;
+      }
+      main {
+        padding: 24px;
+      }
+      input {
+        display: block;
+        box-sizing: border-box;
+        width: 240px;
+        height: 40px;
+        margin-bottom: 16px;
+        padding: 0 12px;
+        border: 1px solid #000000;
+        background: #ffffff;
+        color: #000000;
+        font-size: 16px;
+      }
+      .wrap {
+        position: relative;
+        width: 240px;
+      }
+      .wrap input {
+        padding-right: 40px;
+      }
+      .wrap svg {
+        position: absolute;
+        width: 16px;
+        height: 16px;
+      }
+      /* Centred and inset by the field's own 12px padding. */
+      #ok-svg {
+        top: 12px;
+        right: 12px;
+      }
+      /* 8px too low and 4px too close to the edge. */
+      #bad-svg {
+        top: 20px;
+        right: 8px;
+      }
+      /* A date picker icon pushed down and in by margins. */
+      #bad-date::-webkit-calendar-picker-indicator {
+        margin-top: 8px;
+        margin-right: 10px;
+      }
+    </style>
+  </head>
+  <body>
+    <main>
+      <h1>Invoice</h1>
+      <input id="ok-date" type="date" aria-label="Issued" />
+      <input id="bad-date" type="date" aria-label="Due" />
+      <div class="wrap">
+        <input id="ok-text" type="text" aria-label="Search" />
+        <svg id="ok-svg" viewBox="0 0 16 16">
+          <circle cx="8" cy="8" r="6" />
+        </svg>
+      </div>
+      <div class="wrap">
+        <input id="bad-text" type="text" aria-label="Find" />
+        <svg id="bad-svg" viewBox="0 0 16 16">
+          <circle cx="8" cy="8" r="6" />
+        </svg>
+      </div>
+    </main>
+  </body>
+</html>

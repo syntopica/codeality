@@ -2,6 +2,14 @@
 
 ## [Unreleased]
 
+- New: `input-icon-misaligned` reports a field whose trailing or leading icon
+  sits more than 2px off the content box's vertical centre, or whose gap to the
+  field's edge differs by more than 2px from its padding on the opposite side.
+  It covers the picker icon of date, time, datetime-local, month and week inputs
+  and a text-free absolute svg, img or button laid over a text field in a
+  positioned wrapper. The picker icon is read through DevTools, so it is
+  measured in Chromium only.
+
 - Fix: `touch-target` no longer reports a page control that overlaps a control
   inside a modal dialog (`aria-modal="true"` or `showModal()`): the dialog makes
   the page inert, so the two never compete for a tap. Two controls inside the

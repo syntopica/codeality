@@ -1,4 +1,5 @@
 import { freeAnimationsOf } from '@/capture/freeAnimationsOf.js'
+import { nativeInputIconsOf } from '@/capture/nativeInputIconsOf.js'
 import type { ProbedPageReading } from '@/capture/ProbedPageReading.js'
 import type { ScreenPage } from '@/capture/ScreenPage.js'
 import { tabThroughPage } from '@/capture/tabThroughPage.js'
@@ -17,4 +18,5 @@ export const readProbedPage = async (
   freeAnimations: await freeAnimationsOf(page, probe, mainSelector).catch(
     () => [],
   ),
+  inputIcons: await nativeInputIconsOf(page).catch(() => []),
 })

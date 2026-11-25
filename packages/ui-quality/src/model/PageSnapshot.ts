@@ -1,6 +1,7 @@
 import type { AxeViolation } from '@/model/AxeViolation.js'
 import type { BehaviourFailure } from '@/model/BehaviourFailure.js'
 import type { FocusStop } from '@/model/FocusStop.js'
+import type { InputIcon } from '@/model/InputIcon.js'
 import type { InteractionFailure } from '@/model/InteractionFailure.js'
 import type { MotionRecord } from '@/model/MotionRecord.js'
 import type { ProbeResult } from '@/model/ProbeResult.js'
@@ -30,4 +31,6 @@ export type PageSnapshot = ProbeResult & {
   focusStops: FocusStop[]
   /** The animations running with motion not reduced, transitions aside; the probe's own run has it reduced. */
   freeAnimations: MotionRecord[]
+  /** The picker icons the browser draws inside date-family inputs; empty off Chromium. */
+  inputIcons: InputIcon[]
 }

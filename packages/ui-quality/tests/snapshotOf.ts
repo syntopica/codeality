@@ -36,5 +36,6 @@ export const snapshotOf = (
   failedImages: [],
   focusStops: [],
   freeAnimations: [],
+  inputIcons: [],
   ...overrides,
 })
