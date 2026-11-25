@@ -1,0 +1,19 @@
+{
+  "tadu": 2,
+  "id": "t-bd5e174c-9d00-45aa-a651-4d772132513a",
+  "title": "ui-quality: flag a calendar or other trailing icon that sits misaligned inside a date or text input",
+  "state": "pending",
+  "category": "ui-quality",
+  "type": "feature",
+  "priority": "normal",
+  "kind": "task",
+  "created": "2026-11-25",
+  "notes": [
+    "Observed 2026-11-25 on InteliFactu Nueva factura (/app?view=sales&screen=new-invoice, 1440 px light): the native date inputs Fecha de emision and Vencimiento show their calendar icon off the input's vertical centre and padding grid; the owner spotted it, codeality-ui check reported nothing.",
+    "Evidence: intelifactu .codeality-ui/propose/2026-11-25-0215-forms/1-desktop-new-invoice.png and 3-desktop-popovers.png (local, gitignored).",
+    "Smallest next step: a rule that, for every input with a trailing icon (::-webkit-calendar-picker-indicator or an absolutely positioned svg sibling), compares the icon box centre with the input content box centre and its right inset with the input's left padding; warn above 2 px. Add a fixture page reproducing the InteliFactu date input."
+  ],
+  "done_when": [
+    "codeality-ui check flags the InteliFactu date input fixture and passes a correctly centred one"
+  ]
+}
