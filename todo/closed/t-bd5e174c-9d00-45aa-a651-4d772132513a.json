@@ -2,7 +2,7 @@
   "tadu": 2,
   "id": "t-bd5e174c-9d00-45aa-a651-4d772132513a",
   "title": "ui-quality: flag a calendar or other trailing icon that sits misaligned inside a date or text input",
-  "state": "pending",
+  "state": "done",
   "category": "ui-quality",
   "type": "feature",
   "priority": "normal",
@@ -15,5 +15,10 @@
   ],
   "done_when": [
     "codeality-ui check flags the InteliFactu date input fixture and passes a correctly centred one"
+  ],
+  "closed": "2026-11-25",
+  "result": "ui-quality: flag a calendar or other trailing icon that sits misaligned inside a date or text input",
+  "evidence": [
+    "commit acb71485; tests/cli.input-icon.integration.test.ts 'reports the misaligned date picker and overlaid svg, not the centred ones'; tests/rules/inputIconMisaligned.test.ts"
   ]
 }
