@@ -98,6 +98,8 @@ export type ElementBox = {
   padding: [number, number, number, number]
   /** Computed margin in px: top, right, bottom, left; `auto` resolves to the used width. */
   margin: [number, number, number, number]
+  /** Computed `max-width` as a border-box length in px; null for `none`, a percentage or any non-length value, absent in older snapshots. */
+  maxWidth?: number | null
   /** Computed `row-gap` and `column-gap` in px; 0 for `normal`. */
   gap: [number, number]
   /** An input or textarea with a non-empty `placeholder`. */

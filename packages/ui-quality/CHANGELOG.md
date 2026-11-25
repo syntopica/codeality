@@ -2,6 +2,11 @@
 
 ## [Unreleased]
 
+- Change: `ragged-column` also reports a block whose width is an explicit
+  `max-width` left-aligned in a wider column, with no full-width neighbour
+  needed and prose included; media, form controls and centred blocks are left
+  alone. The probe now records the computed `max-width`.
+
 - New: opt-in `searchable-dropdown` reports native single-select dropdowns and
   expanded custom listbox pickers without an editable search field.
 

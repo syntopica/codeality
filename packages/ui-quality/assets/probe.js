@@ -457,6 +457,21 @@ export default (mainSelector) => {
       : length
   }
 
+  // The computed `max-width` as a border-box length in px; null for `none`,
+  // a percentage or any other non-length value.
+  const maxWidthOf = (style) => {
+    if (!style.maxWidth.endsWith('px')) return null
+    const cap = parseFloat(style.maxWidth)
+    if (style.boxSizing === 'border-box') return cap
+    return (
+      cap +
+      parseFloat(style.paddingLeft) +
+      parseFloat(style.paddingRight) +
+      parseFloat(style.borderLeftWidth) +
+      parseFloat(style.borderRightWidth)
+    )
+  }
+
   // What a visitor can operate or that a screen reader announces as a
   // control: a click handler on anything else has no keyboard or role.
   const INTERACTIVE = [
@@ -673,6 +688,7 @@ export default (mainSelector) => {
         parseFloat(style.marginBottom) || 0,
         parseFloat(style.marginLeft) || 0,
       ],
+      maxWidth: maxWidthOf(style),
       gap: [parseFloat(style.rowGap) || 0, parseFloat(style.columnGap) || 0],
       placeholder:
         (element.getAttribute('placeholder') ?? '').trim() !== '' &&
