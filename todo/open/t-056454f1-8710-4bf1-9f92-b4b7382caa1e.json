@@ -1,0 +1,19 @@
+{
+  "tadu": 2,
+  "id": "t-056454f1-8710-4bf1-9f92-b4b7382caa1e",
+  "title": "Skip the generated CI gates and pre-commit hooks on backlog-only changes, running only tadu doctor",
+  "state": "pending",
+  "category": "create-baseline",
+  "type": "feature",
+  "priority": "normal",
+  "kind": "task",
+  "created": "2026-11-28",
+  "notes": [
+    "Owner request 2026-11-28: in every adopter, a commit or push that only touches tadu backlog paths (todo/, TODO.md, TODO_LOG.md) must not run the full gate set; at most tadu doctor checks the backlog. Seen 2026-11-27 in ~/p/intelifactu, where the pre-commit ran type-check, lint and 4.900 tests on one todo/ JSON and failed on an unrelated test. The tadu side (README snippet for husky and plain hooks) is the tadu task 'Ship a pre-commit snippet that skips a repository's full gate on backlog-only commits and runs tadu doctor instead'.",
+    "Where: packages/create-baseline/bin/scaffold/ciWorkflow.mjs (generated ci.yml: add paths-ignore for the backlog paths on push and pull_request, plus a small job or workflow that runs tadu doctor . when they change), bin/scaffold/lefthookConfig.mjs and @syntopica/quality-config createLefthookConfig (exclude todo/** from format, add a backlog command with glob on the backlog paths running tadu doctor .), and this repo's own lefthook.yml and .github/workflows/ci.yml. Keep checkCiWorkflow and checkGateCoverage passing for existing adopters.",
+    "Risk: paths-ignore on a workflow whose job is a required status check leaves a backlog-only pull request waiting forever; either keep the required check name reporting (a doctor job with the same name) or document that direct pushes to main are the supported path."
+  ],
+  "done_when": [
+    "create-baseline writes a ci.yml and lefthook.yml that skip the gates on a backlog-only change and run tadu doctor instead, with tests for a backlog-only and a mixed change, and this repository uses them"
+  ]
+}
