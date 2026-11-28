@@ -1,3 +1,6 @@
+import type { LefthookOptions } from './LefthookOptions'
+import { TADU_BACKLOG_PATHS } from './TADU_BACKLOG_PATHS'
+
 /** Shape of a lefthook.yml configuration document. */
 type LefthookConfig = Record<string, unknown>
 
@@ -13,41 +16,62 @@ type LefthookConfig = Record<string, unknown>
  * `lefthook.yml` files by hand — see the comment at the top of those files —
  * and is what create-baseline uses to generate `lefthook.yml` for new
  * projects it scaffolds.
+ *
+ * With `tadu`, the file checks exclude the backlog (tadu writes JSON that
+ * prettier rejects) and a `backlog` command runs `tadu doctor .` on it,
+ * skipped when tadu is not installed.
  */
-export const createLefthookConfig = (): LefthookConfig => ({
-  'pre-commit': {
-    parallel: true,
-    commands: {
-      'lint:fast': {
-        glob: '*.{js,jsx,ts,tsx,vue,astro,mjs,cjs}',
-        run: 'pnpm exec oxlint --deny-warnings {staged_files}',
-      },
-      lint: {
-        glob: '*.{js,jsx,ts,tsx,vue,astro,mjs,cjs}',
-        run: 'pnpm exec eslint --max-warnings 0 --no-warn-ignored {staged_files}',
-      },
-      format: {
-        glob: '*.{js,jsx,ts,tsx,vue,astro,mjs,cjs,json,md,css,yml,yaml}',
-        run: 'pnpm exec prettier --check {staged_files}',
+export const createLefthookConfig = ({
+  tadu = false,
+}: LefthookOptions = {}): LefthookConfig => {
+  const exclude = tadu ? { exclude: TADU_BACKLOG_PATHS } : {}
+  return {
+    'pre-commit': {
+      parallel: true,
+      commands: {
+        'lint:fast': {
+          glob: '*.{js,jsx,ts,tsx,vue,astro,mjs,cjs}',
+          ...exclude,
+          run: 'pnpm exec oxlint --deny-warnings {staged_files}',
+        },
+        lint: {
+          glob: '*.{js,jsx,ts,tsx,vue,astro,mjs,cjs}',
+          ...exclude,
+          run: 'pnpm exec eslint --max-warnings 0 --no-warn-ignored {staged_files}',
+        },
+        format: {
+          glob: '*.{js,jsx,ts,tsx,vue,astro,mjs,cjs,json,md,css,yml,yaml}',
+          ...exclude,
+          run: 'pnpm exec prettier --check {staged_files}',
+        },
+        ...(tadu
+          ? {
+              backlog: {
+                glob: TADU_BACKLOG_PATHS,
+                skip: [{ run: '! command -v tadu' }],
+                run: 'tadu doctor .',
+              },
+            }
+          : {}),
       },
     },
-  },
-  // The release tooling reads the commit type to pick the semver bump and to
-  // build the changelog, so a mistyped subject is a silent release defect.
-  // This is the only place it can be caught: by the time the tag is cut the
-  // message is already history.
-  'commit-msg': {
-    commands: {
-      commitlint: {
-        run: 'pnpm exec commitlint --edit {1}',
+    // The release tooling reads the commit type to pick the semver bump and to
+    // build the changelog, so a mistyped subject is a silent release defect.
+    // This is the only place it can be caught: by the time the tag is cut the
+    // message is already history.
+    'commit-msg': {
+      commands: {
+        commitlint: {
+          run: 'pnpm exec commitlint --edit {1}',
+        },
       },
     },
-  },
-  'pre-push': {
-    commands: {
-      secrets: {
-        run: 'gitleaks detect --no-banner --redact',
+    'pre-push': {
+      commands: {
+        secrets: {
+          run: 'gitleaks detect --no-banner --redact',
+        },
       },
     },
-  },
-})
+  }
+}

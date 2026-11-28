@@ -2,6 +2,7 @@ import { mkdir, readdir, readFile, writeFile } from 'node:fs/promises'
 import { resolve } from 'node:path'
 
 import { ciWorkflow } from './ciWorkflow.mjs'
+import { hasTaduBacklog } from './hasTaduBacklog.mjs'
 
 const WORKFLOW_DIR = '.github/workflows'
 const WORKFLOW_NAME = 'ci.yml'
@@ -49,6 +50,10 @@ export async function writeCiWorkflow(root, { hasBuild }) {
   // eslint-disable-next-line security/detect-non-literal-fs-filename
   await mkdir(dir, { recursive: true })
   // eslint-disable-next-line security/detect-non-literal-fs-filename
-  await writeFile(resolve(dir, WORKFLOW_NAME), ciWorkflow({ hasBuild }), 'utf8')
+  await writeFile(
+    resolve(dir, WORKFLOW_NAME),
+    ciWorkflow({ hasBuild, tadu: await hasTaduBacklog(root) }),
+    'utf8',
+  )
   return { written: `${WORKFLOW_DIR}/${WORKFLOW_NAME}`, existing: null }
 }

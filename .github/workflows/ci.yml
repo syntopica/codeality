@@ -18,9 +18,59 @@ permissions:
   contents: read
 
 jobs:
+  changes:
+    name: Classify the change
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    outputs:
+      code: ${{ steps.classify.outputs.code }}
+      backlog: ${{ steps.classify.outputs.backlog }}
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
+        with:
+          fetch-depth: 0
+          persist-credentials: false
+
+      # A change that touches only the tadu backlog skips the gates and runs
+      # tadu doctor instead. A job skipped by `if` reports success, so a
+      # required check stays satisfied, which `paths-ignore` would not do.
+      - name: Classify the changed paths
+        id: classify
+        env:
+          BASE: ${{ github.event.pull_request.base.sha || github.event.before }}
+        run: |
+          backlog=(todo TODO.md TODO_LOG.md TODO_HISTORY_INDEX.jsonl)
+          outside=(.)
+          for path in "${backlog[@]}"; do outside+=(":(exclude)$path"); done
+          code=true
+          touched=true
+          # No usable base (a new branch, or history GitHub did not send): run everything.
+          if [ -n "${BASE//0/}" ] && git cat-file -e "$BASE^{commit}" 2>/dev/null; then
+            git diff --quiet --no-renames "$BASE" HEAD -- "${outside[@]}" && code=false
+            git diff --quiet --no-renames "$BASE" HEAD -- "${backlog[@]}" && touched=false
+          fi
+          echo "code=$code" >> "$GITHUB_OUTPUT"
+          echo "backlog=$touched" >> "$GITHUB_OUTPUT"
+
+  backlog:
+    name: tadu doctor
+    needs: changes
+    if: needs.changes.outputs.backlog == 'true'
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
+        with:
+          persist-credentials: false
+
+      # pipx is preinstalled on ubuntu-latest runners; the version is pinned.
+      - run: pipx run --spec tadu==0.2.0 tadu doctor .
+
   verify:
     name: Verify
     runs-on: ubuntu-latest
+    needs: changes
+    if: needs.changes.outputs.code == 'true'
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
         with:
@@ -72,6 +122,8 @@ jobs:
   quality:
     name: Quality gates
     runs-on: ubuntu-latest
+    needs: changes
+    if: needs.changes.outputs.code == 'true'
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
         with:
@@ -98,6 +150,8 @@ jobs:
   rust:
     name: Rust
     runs-on: ubuntu-latest
+    needs: changes
+    if: needs.changes.outputs.code == 'true'
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
         with:
@@ -124,6 +178,8 @@ jobs:
   python:
     name: Python
     runs-on: ubuntu-latest
+    needs: changes
+    if: needs.changes.outputs.code == 'true'
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
         with:
@@ -158,6 +214,8 @@ jobs:
   dart:
     name: Dart
     runs-on: ubuntu-latest
+    needs: changes
+    if: needs.changes.outputs.code == 'true'
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
         with:
@@ -206,6 +264,8 @@ jobs:
   swift:
     name: Swift
     runs-on: ubuntu-latest
+    needs: changes
+    if: needs.changes.outputs.code == 'true'
     # The official image rather than swift-actions/setup-swift, whose latest
     # release stops at Swift 6.2.1; pinned by digest. Swift 6 toolchains ship
     # `swift format`, which the gate's format stage needs.
@@ -240,6 +300,8 @@ jobs:
   go:
     name: Go
     runs-on: ubuntu-latest
+    needs: changes
+    if: needs.changes.outputs.code == 'true'
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
         with:
@@ -273,6 +335,8 @@ jobs:
   security:
     name: Security gates
     runs-on: ubuntu-latest
+    needs: changes
+    if: needs.changes.outputs.code == 'true'
     steps:
       # Full history: gitleaks cannot see a secret committed three commits ago
       # from a shallow clone.

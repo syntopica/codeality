@@ -2,6 +2,10 @@
 
 ## [Unreleased]
 
+- feat: `createLefthookConfig({ tadu: true })` excludes the tadu backlog from
+  the lint and format hooks and adds a `backlog` hook that runs `tadu doctor .`
+  when tadu is installed.
+
 ## 0.16.0
 
 - fix: include imported CSS in Vite React, Vite Vue, Tauri and Nuxt project

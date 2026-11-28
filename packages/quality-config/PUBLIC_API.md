@@ -14,6 +14,14 @@ are **private** and may change without a major bump.
 | `@syntopica/quality-config/lefthook`           | `createLefthookConfig` — shared git hook pipeline           |
 | `@syntopica/quality-config/jscpd`              | `jscpd.json` — cross-file duplication gate config           |
 
+### `createLefthookConfig(options)`
+
+`options.tadu` (default `false`) is for a repository that keeps a tadu backlog.
+The lint and format commands then exclude `todo/**`, `TODO.md`, `TODO_LOG.md`
+and `TODO_HISTORY_INDEX.jsonl`, and a `backlog` command runs `tadu doctor .` on
+those paths, skipped when `tadu` is not installed. Without it the output is
+unchanged.
+
 ### `createDepCruiserConfig(options)`
 
 Every option is optional and every default is project-agnostic: the factory

@@ -4,6 +4,7 @@ import { resolve } from 'node:path'
 import { baselineScripts } from './baselineScripts.mjs'
 import { depCruiserConfig } from './depCruiserConfig.mjs'
 import { detectFramework } from './detectFramework.mjs'
+import { hasTaduBacklog } from './hasTaduBacklog.mjs'
 import { knipConfig } from './knipConfig.mjs'
 import { lefthookConfig } from './lefthookConfig.mjs'
 import { oxlintConfig } from './oxlintConfig.mjs'
@@ -27,6 +28,7 @@ export async function writeMissing(root, deps) {
   const written = []
   const shadowed = []
   const framework = detectFramework(deps)
+  const tadu = await hasTaduBacklog(root)
 
   const files = [
     [
@@ -42,7 +44,11 @@ export async function writeMissing(root, deps) {
         '.knip.jsonc',
       ],
     ],
-    ['lefthook.yml', lefthookConfig, ['lefthook.yaml', '.lefthook.yml']],
+    [
+      'lefthook.yml',
+      () => lefthookConfig({ tadu }),
+      ['lefthook.yaml', '.lefthook.yml'],
+    ],
     ['.oxlintrc.json', () => oxlintConfig(root), ['oxlint.json', '.oxlintrc']],
     [
       'renovate.json',

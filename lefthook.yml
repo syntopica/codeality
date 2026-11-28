@@ -2,15 +2,36 @@
 # is what create-baseline uses to generate this file for new projects. The one
 # deliberate difference is the lint command: a single-project consumer can run
 # eslint from its root, this workspace cannot (see scripts/lint-staged.mjs).
+# The backlog excludes and the `backlog` command are the `tadu: true` form of
+# that factory: tadu writes JSON prettier rejects, so `tadu doctor` validates it.
 pre-commit:
   parallel: true
   commands:
     lint:
       glob: '*.{js,jsx,ts,tsx,vue,astro,mjs,cjs}'
+      exclude:
+        - todo/**
+        - TODO.md
+        - TODO_LOG.md
+        - TODO_HISTORY_INDEX.jsonl
       run: node scripts/lint-staged.mjs {staged_files}
     format:
       glob: '*.{js,jsx,ts,tsx,vue,astro,mjs,cjs,json,md,css,yml,yaml}'
+      exclude:
+        - todo/**
+        - TODO.md
+        - TODO_LOG.md
+        - TODO_HISTORY_INDEX.jsonl
       run: pnpm exec prettier --check {staged_files}
+    backlog:
+      glob:
+        - todo/**
+        - TODO.md
+        - TODO_LOG.md
+        - TODO_HISTORY_INDEX.jsonl
+      skip:
+        - run: '! command -v tadu'
+      run: tadu doctor .
 
 # The release tooling reads the commit type to pick the semver bump and to
 # build the changelog, so a mistyped subject is a silent release defect. This

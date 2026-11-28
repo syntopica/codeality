@@ -2,6 +2,12 @@
 
 ## [Unreleased]
 
+- Generated CI workflow and `lefthook.yml` skip the gates on backlog-only
+  changes in repositories that keep a tadu backlog (`todo/tadu.json` or
+  `TODO.md`), running `tadu doctor .` instead. Output for other repositories is
+  unchanged. Adopters running `prettier --check .` must add `todo/` to
+  `.prettierignore`.
+
 ## 0.11.0
 
 - Add Dart, Swift and Go projects to the estate report and check their gate

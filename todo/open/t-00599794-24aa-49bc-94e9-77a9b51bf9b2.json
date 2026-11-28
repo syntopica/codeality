@@ -1,0 +1,13 @@
+{
+  "tadu": 2,
+  "id": "t-00599794-24aa-49bc-94e9-77a9b51bf9b2",
+  "title": "check:ci fails: ui-quality lint reports inline object types in two rule files",
+  "state": "pending",
+  "category": "ui-quality",
+  "type": "bug",
+  "priority": "high",
+  "created": "2026-11-28",
+  "notes": [
+    "pnpm run check:ci on 2026-11-28 fails at @syntopica/ui-quality#lint: code-policy/no-inline-types-in-runtime-files at packages/ui-quality/src/rules/isExemptFromRagged.ts:14:10 and isRaggedCandidate.ts:17:10. Unrelated to the backlog-only CI work; ui-quality was untouched. Next step: extract each parameter shape into its own type file."
+  ]
+}

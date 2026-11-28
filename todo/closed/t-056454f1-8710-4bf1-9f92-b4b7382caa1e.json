@@ -2,7 +2,7 @@
   "tadu": 2,
   "id": "t-056454f1-8710-4bf1-9f92-b4b7382caa1e",
   "title": "Skip the generated CI gates and pre-commit hooks on backlog-only changes, running only tadu doctor",
-  "state": "pending",
+  "state": "done",
   "category": "create-baseline",
   "type": "feature",
   "priority": "normal",
@@ -15,5 +15,10 @@
   ],
   "done_when": [
     "create-baseline writes a ci.yml and lefthook.yml that skip the gates on a backlog-only change and run tadu doctor instead, with tests for a backlog-only and a mixed change, and this repository uses them"
+  ],
+  "closed": "2026-11-28",
+  "result": "Skip the generated CI gates and pre-commit hooks on backlog-only changes, running only tadu doctor",
+  "evidence": [
+    "create-baseline ciWorkflow/lefthookConfig take a tadu option (auto-detected by hasTaduBacklog), quality-config createLefthookConfig mirrors it; root ci.yml classifies the change and gates 8 jobs on it, root lefthook excludes the backlog from lint/format and runs tadu doctor; vitest 247 + 121 pass, lint, type-check, lint:root, format:check, actionlint, lefthook validate pass; tadu 0.2.0 doctor passes on this repo"
   ]
 }
